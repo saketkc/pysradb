@@ -36,5 +36,5 @@ Features
 See Notebook: https://nbviewer.jupyter.org/github/saketkc/pysradb/blob/master/notebooks/demo.ipynb
 
 * Free software: BSD license
-* Documentation: https://pysradb.readthedocs.io.
+* Documentation: https://saketkc.github.io/pysradb
 
