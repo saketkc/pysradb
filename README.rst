@@ -6,13 +6,8 @@ pysradb
 .. image:: https://img.shields.io/pypi/v/pysradb.svg
         :target: https://pypi.python.org/pypi/pysradb
 
-.. image:: https://img.shields.io/travis/saketkc/pysradb.svg
-        :target: https://travis-ci.org/saketkc/pysradb
-
-.. image:: https://readthedocs.org/projects/pysradb/badge/?version=latest
-        :target: https://pysradb.readthedocs.io/en/latest/?badge=latest
-        :alt: Documentation Status
-
+.. image:: https://travis-ci.com/saketkc/pysradb.svg?branch=master
+        :target: https://travis-ci.com/saketkc/pysradb
 
 
 
@@ -25,16 +20,17 @@ Dependecies
 ~~~~~~~~~~~
 
 .. code-block:: bash
-   
+
    pandas>=0.23.4
-   click>=0.6
+   click>=6.0
+   tqdm>=4.28
    aspera-client
    SRAmetadb.sqlite
-   
+
 SRAmetadb can be downloaded as:
 
 .. code-block:: bash
-    
+
    wget -c https://starbuck1.s3.amazonaws.com/sradb/SRAmetadb.sqlite.gz && gunzip SRAmetadb.sqlite.gz
 
 `aspera-client` needs to be installed as well. Instructions are available here: https://downloads.asperasoft.com/connect2/
@@ -43,7 +39,7 @@ SRAmetadb can be downloaded as:
 
 .. code-block:: bash
 
-   pip install -U pandas click
+   pip install -U pandas click tqdm
    git clone https://github.com/saketkc/pysradb.git
    cd pysradb
    pip install -e .
@@ -56,7 +52,7 @@ Downloading an entire project arranged experiment wise
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 .. code-block:: python
-   
+
    from pysradb import SRAdb
    db = SRAdb('SRAmetadb.sqlite')
    df = db.sra_convert('SRP017942')
@@ -71,11 +67,10 @@ Downloading a subset of experiments
    db.download(df=df_rna, out_dir='/pysradb_downloads')()
 
 
+Demo
+----
 
-Features
---------
-
-See Notebook: https://nbviewer.jupyter.org/github/saketkc/pysradb/blob/master/notebooks/demo.ipynb
+https://nbviewer.jupyter.org/github/saketkc/pysradb/blob/master/notebooks/demo.ipynb
 
 * Free software: BSD license
 * Documentation: https://saketkc.github.io/pysradb
