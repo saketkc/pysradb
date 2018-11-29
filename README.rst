@@ -16,22 +16,25 @@ pysradb
 
 
 
-Python package for interacting with SRAdb and downloading datasets from SRA
+Python package for interacting with SRAdb and downloading datasets from SRA.
 
+Installation
+------------
 
-* Free software: BSD license
-* Documentation: https://pysradb.readthedocs.io.
+.. code-block:: bash
+
+   pip install -U pandas click
+   git clone https://github.com/saketkc/pysradb.git
+   cd pysradb
+   pip install -e .
+
 
 
 Features
 --------
 
-* TODO
+See Notebook: 
 
-Credits
--------
+* Free software: BSD license
+* Documentation: https://pysradb.readthedocs.io.
 
-This package was created with Cookiecutter_ and the `audreyr/cookiecutter-pypackage`_ project template.
-
-.. _Cookiecutter: https://github.com/audreyr/cookiecutter
-.. _`audreyr/cookiecutter-pypackage`: https://github.com/audreyr/cookiecutter-pypackage
