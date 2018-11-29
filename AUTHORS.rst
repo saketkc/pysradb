@@ -5,7 +5,7 @@ Credits
 Development Lead
 ----------------
 
-* Audrey Roy Greenfeld <Saket Choudhary>
+* Saket Choudhary <saketkc@gmail.com>
 
 Contributors
 ------------
