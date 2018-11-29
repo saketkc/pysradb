@@ -4,8 +4,10 @@ import os
 import re
 import shlex
 import sqlite3
-import pandas as pd
 import subprocess
+
+import pandas as pd
+from tqdm import tqdm
 
 FTP_PREFIX = {
     'fasp': 'anonftp@ftp-trace.ncbi.nlm.nih.gov:',
@@ -28,10 +30,9 @@ def _find_aspera_keypath(aspera_dir=None):
                     Location to aspera key
     """
     if aspera_dir is None:
-        aspera_dir = os.path.join(
-            os.path.expanduser('~'), '.aspera')
+        aspera_dir = os.path.join(os.path.expanduser('~'), '.aspera')
     aspera_keypath = os.path.join(aspera_dir, 'connect', 'etc',
-        'asperaweb_id_dsa.openssh')
+                                  'asperaweb_id_dsa.openssh')
     if os.path.isfile(aspera_keypath):
         return aspera_keypath
 
@@ -59,18 +60,20 @@ def mkdir_p(path):
                 raise
 
 
-def run_command(command):
-    """Run a shell o"""
-    process = subprocess.Popen(shlex.split(command),
-                               stdout=subprocess.PIPE,
-                               stderr=subprocess.STDOUT,
-                               encoding='utf8')
+def run_command(command, verbose=False):
+    """Run a shell command"""
+    process = subprocess.Popen(
+        shlex.split(command),
+        stdout=subprocess.PIPE,
+        stderr=subprocess.STDOUT,
+        encoding='utf8')
     while True:
         output = str(process.stdout.readline().strip())
         if output == '' and process.poll() is not None:
             break
         if output:
-            print(str(output.strip()))
+            if verbose:
+                print(str(output.strip()))
     rc = process.poll()
     return rc
 
@@ -231,7 +234,8 @@ class SRAdb(object):
                  df=None,
                  out_dir=None,
                  protocol='fasp',
-                 ascp_dir=None):
+                 ascp_dir=None,
+                 verbose=False):
         """Download SRA files
 
         Parameters
@@ -259,17 +263,21 @@ class SRAdb(object):
         download_list = df[[
             'study_accession', 'experiment_accession', 'download_url'
         ]].values
-        for srp, srx, url in download_list:
-            srp_dir = os.path.join(out_dir, srp)
-            srx_dir = os.path.join(srp_dir, srx)
-            mkdir_p(srx_dir)
-            print('Downloading {}....'.format(url))
-            if ascp_dir is None:
-                ascp_dir = os.path.join(os.path.expanduser('~'), '.aspera')
-            ascp_bin = os.path.join(ascp_dir, 'connect', 'bin', 'ascp')
-            cmd = ASCP_CMD_PREFIX.replace('ascp', ascp_bin)
-            cmd = '{} {} {} {}'.format(cmd, _find_aspera_keypath(ascp_dir), url,
-                                       srx_dir)
-            run_command(cmd)
-            print('Finished {}....'.format(url))
+        with tqdm(total=download_list.shape[0]) as pbar:
+            for srp, srx, url in download_list:
+                srp_dir = os.path.join(out_dir, srp)
+                srx_dir = os.path.join(srp_dir, srx)
+                mkdir_p(srx_dir)
+                if verbose:
+                    print('Downloading {}....'.format(url))
+                if ascp_dir is None:
+                    ascp_dir = os.path.join(os.path.expanduser('~'), '.aspera')
+                ascp_bin = os.path.join(ascp_dir, 'connect', 'bin', 'ascp')
+                cmd = ASCP_CMD_PREFIX.replace('ascp', ascp_bin)
+                cmd = '{} {} {} {}'.format(cmd, _find_aspera_keypath(ascp_dir),
+                                           url, srx_dir)
+                run_command(cmd, verbose)
+                if verbose:
+                    print('Finished {}....'.format(url))
+                pbar.update()
         return df
