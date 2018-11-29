@@ -4,7 +4,6 @@ import os
 import re
 import shlex
 import sqlite3
-import sys
 import pandas as pd
 import subprocess
 
@@ -15,9 +14,23 @@ FTP_PREFIX = {
 ASCP_CMD_PREFIX = 'ascp -k 1 -QT -l 2000m -i'
 
 
-def _find_aspera_keypath():
-    aspera_keypath = os.path.join(
-        os.path.expanduser('~'), '.aspera', 'connect', 'etc',
+def _find_aspera_keypath(aspera_dir=None):
+    """Locate aspera key.
+
+    Parameters
+    ----------
+    aspera_dir: string
+                Location to aspera directory (optional)
+
+    Returns
+    -------
+    aspera_keypath: string
+                    Location to aspera key
+    """
+    if aspera_dir is None:
+        aspera_dir = os.path.join(
+            os.path.expanduser('~'), '.aspera')
+    aspera_keypath = os.path.join(aspera_dir, 'connect', 'etc',
         'asperaweb_id_dsa.openssh')
     if os.path.isfile(aspera_keypath):
         return aspera_keypath
@@ -33,8 +46,8 @@ def mkdir_p(path):
 
     Parameters
     ----------
-
-    path : str
+    path : string
+           Path to directory to create
     """
     if path:
         try:
@@ -47,10 +60,13 @@ def mkdir_p(path):
 
 
 def run_command(command):
-    process = subprocess.Popen(
-        shlex.split(command), stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+    """Run a shell o"""
+    process = subprocess.Popen(shlex.split(command),
+                               stdout=subprocess.PIPE,
+                               stderr=subprocess.STDOUT,
+                               encoding='utf8')
     while True:
-        output = process.stdout.readline()
+        output = str(process.stdout.readline().strip())
         if output == '' and process.poll() is not None:
             break
         if output:
@@ -189,11 +205,20 @@ class SRAdb(object):
 
     def convert_gse_to_srp(self, gse):
         """Convert GSE to SRP id.
-        Requires input db to be GEOmetadb.sqlite
+        Requires input db to be GEOmetadb.sqlite.
+
+        Parameters
+        ----------
+        gse: string
+             GSE ID
+
+        Returns
+        -------
+        srp: string
+             SRP ID
         """
         results = self.get_query('SELECT * from gse WHERE gse = "' + gse + '"')
         if results.shape[0] == 1:
-            #result = results[0].split(';')[0]
             splitted = results['supplementary_file'][0].split(';')
             if len(splitted):
                 match = re.findall('SRP.*', splitted[-1])
@@ -206,8 +231,22 @@ class SRAdb(object):
                  df=None,
                  out_dir=None,
                  protocol='fasp',
-                 ascp_bin=None):
-        """Download SRA files"""
+                 ascp_dir=None):
+        """Download SRA files
+
+        Parameters
+        ----------
+        srp: string
+             SRP ID (optional)
+        df: Dataframe
+            A dataframe as obtained from `sra_convert`
+        out_dir: string
+                 Directory location for download
+        protocol: string
+                  ['fasp'/'ftp'] fasp => faster download, ftp => slower
+        ascp_dir: string
+                  Location of ascp directory
+        """
         if out_dir is None:
             out_dir = os.path.join(os.getcwd(), 'pysradb_downloads')
         if srp:
@@ -224,11 +263,13 @@ class SRAdb(object):
             srp_dir = os.path.join(out_dir, srp)
             srx_dir = os.path.join(srp_dir, srx)
             mkdir_p(srx_dir)
-            if ascp_bin:
-                cmd = ASCP_CMD_PREFIX.replace('ascp', ascp_bin)
-            else:
-                cmd = ASCP_CMD_PREFIX
-            cmd = '{} {} {} {}'.format(cmd, _find_aspera_keypath(), url,
+            print('Downloading {}....'.format(url))
+            if ascp_dir is None:
+                ascp_dir = os.path.join(os.path.expanduser('~'), '.aspera')
+            ascp_bin = os.path.join(ascp_dir, 'connect', 'bin', 'ascp')
+            cmd = ASCP_CMD_PREFIX.replace('ascp', ascp_bin)
+            cmd = '{} {} {} {}'.format(cmd, _find_aspera_keypath(ascp_dir), url,
                                        srx_dir)
             run_command(cmd)
+            print('Finished {}....'.format(url))
         return df
