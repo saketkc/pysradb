@@ -2,25 +2,25 @@
 import errno
 import os
 import re
+import shlex
 import sqlite3
+import sys
 import pandas as pd
 import subprocess
 
 FTP_PREFIX = {
-    'fasp': 'anonftp@ftp-trace.ncbi.nlm.nih.gov',
+    'fasp': 'anonftp@ftp-trace.ncbi.nlm.nih.gov:',
     'ftp': 'ftp://ftp-trace.ncbi.nlm.nih.gov'
 }
+ASCP_CMD_PREFIX = 'ascp -k 1 -QT -l 2000m -i'
 
 
-def _find_aspera():
+def _find_aspera_keypath():
     aspera_keypath = os.path.join(
         os.path.expanduser('~'), '.aspera', 'connect', 'etc',
         'asperaweb_id_dsa.openssh')
     if os.path.isfile(aspera_keypath):
         return aspera_keypath
-
-
-ASCP_CMD_PREFIX = 'ascp -k 1 -QT -l 2000m -i'
 
 
 def _extract_first_field(data):
@@ -44,6 +44,19 @@ def mkdir_p(path):
                 pass
             else:
                 raise
+
+
+def run_command(command):
+    process = subprocess.Popen(
+        shlex.split(command), stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+    while True:
+        output = process.stdout.readline()
+        if output == '' and process.poll() is not None:
+            break
+        if output:
+            print(str(output.strip()))
+    rc = process.poll()
+    return rc
 
 
 class SRAdb(object):
@@ -188,7 +201,12 @@ class SRAdb(object):
                     srp = match[0].split('/')[-1]
                     return srp
 
-    def download(self, srp=None, df=None, out_dir=None, protocol='ftp', ascp_bin=None):
+    def download(self,
+                 srp=None,
+                 df=None,
+                 out_dir=None,
+                 protocol='fasp',
+                 ascp_bin=None):
         """Download SRA files"""
         if out_dir is None:
             out_dir = os.path.join(os.getcwd(), 'pysradb_downloads')
@@ -196,9 +214,9 @@ class SRAdb(object):
             df = self.sra_convert(srp)
         df.loc[:, 'download_url'] = FTP_PREFIX[
             protocol] + '/sra/sra-instant/reads/ByRun/sra/' + df[
-                'run_accession'].str[:3] + '/' + df['run_accession'].str[
-                    3:6] + df['run_accession'] + '/' + df[
-                        'run_accession'] + '.sra'
+                'run_accession'].str[:3] + '/' + df[
+                    'run_accession'].str[:6] + '/' + df[
+                        'run_accession'] + '/' + df['run_accession'] + '.sra'
         download_list = df[[
             'study_accession', 'experiment_accession', 'download_url'
         ]].values
@@ -207,11 +225,10 @@ class SRAdb(object):
             srx_dir = os.path.join(srp_dir, srx)
             mkdir_p(srx_dir)
             if ascp_bin:
-                cmd = ASCP_CMD_PREFIX.replace('ascp', ascp_bin).split(  )
+                cmd = ASCP_CMD_PREFIX.replace('ascp', ascp_bin)
             else:
-                cmd = ASCP_CMD_PREFIX.split(' ')
-            cmd += [_find_aspera(), url, srx_dir]
-            print(cmd)
-            run = subprocess.run(cmd, check=True, capture_output=True)
-            print(run)
+                cmd = ASCP_CMD_PREFIX
+            cmd = '{} {} {} {}'.format(cmd, _find_aspera_keypath(), url,
+                                       srx_dir)
+            run_command(cmd)
         return df
