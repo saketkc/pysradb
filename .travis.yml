@@ -8,8 +8,8 @@ python:
 
 # Command to install dependencies, e.g. pip install -r requirements.txt --use-mirrors
 install:
-- pip install -U pandas click travis-sphinx
-- pip install -U sphinx mock ipython
+- pip install -U pandas click tqdm
+- pip install -U sphinx ipython travis-sphinx
 - pip install -U numpydoc sphinxcontrib-fulltoc guzzle_sphinx_theme
 
 # Command to run tests, e.g. python setup.py test
