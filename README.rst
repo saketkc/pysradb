@@ -1,6 +1,6 @@
-=======
+#######
 pysradb
-=======
+#######
 
 
 .. image:: https://img.shields.io/pypi/v/pysradb.svg
@@ -13,11 +13,12 @@ pysradb
 
 Python package for interacting with SRAdb and downloading datasets from SRA.
 
+************
 Installation
-------------
+************
 
 Dependecies
-~~~~~~~~~~~
+===========
 
 .. code-block:: bash
 
@@ -27,16 +28,29 @@ Dependecies
    aspera-client
    SRAmetadb.sqlite
 
+SRAmetadb
+=========
+
 SRAmetadb can be downloaded as:
 
 .. code-block:: bash
 
    wget -c https://starbuck1.s3.amazonaws.com/sradb/SRAmetadb.sqlite.gz && gunzip SRAmetadb.sqlite.gz
 
+aspera-client
+=============
+
+
 `aspera-client` needs to be installed as well. Instructions are available here: https://downloads.asperasoft.com/connect2/
+Direct download links:
+
+- Linux: https://download.asperasoft.com/download/sw/connect/3.8.1/ibm-aspera-connect-3.8.1.161274-linux-g2.12-64.tar.gz
+- MacOS: https://download.asperasoft.com/download/sw/connect/3.8.1/IBMAsperaConnectInstaller-3.8.1.161274.dmg
+- Windows: https://download.asperasoft.com/download/sw/connect/3.8.1/IBMAsperaConnect-ML-3.8.1.161274.msi
 
 
-
+Install pysradb
+===============
 .. code-block:: bash
 
    pip install -U pandas click tqdm
@@ -45,11 +59,14 @@ SRAmetadb can be downloaded as:
    pip install -e .
 
 
-Downloading data fron SRA
--------------------------
+********************
+Interacting with SRA
+********************
+
+
 
 Downloading an entire project arranged experiment wise
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+======================================================
 
 .. code-block:: python
 
@@ -59,16 +76,16 @@ Downloading an entire project arranged experiment wise
    db.download(df)
 
 Downloading a subset of experiments
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+===================================
 
 .. code-block:: python
 
    df = db.sra_convert('SRP000941')
    db.download(df=df_rna, out_dir='/pysradb_downloads')()
 
-
+****
 Demo
-----
+****
 
 https://nbviewer.jupyter.org/github/saketkc/pysradb/blob/master/notebooks/demo.ipynb
 
