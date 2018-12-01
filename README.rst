@@ -110,6 +110,21 @@ Demo
 
 https://nbviewer.jupyter.org/github/saketkc/pysradb/blob/master/notebooks/demo.ipynb
 
+
+********
+Citation
+********
+
+Pending. 
+
+A lot of functionality in `pysradb` is based on ideas from the original `SRAdb package 
+<https://bioconductor.org/packages/release/bioc/html/SRAdb.html>`_. Please cite the original SRAdb publication:
+
+    Zhu, Yuelin, Robert M. Stephens, Paul S. Meltzer, and Sean R. Davis. "SRAdb: query and use public next-generation sequencing data from within R." BMC bioinformatics 14, no. 1 (2013): 19.
+
+    
+
+
 * Free software: BSD license
 * Documentation: https://saketkc.github.io/pysradb
 
