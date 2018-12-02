@@ -4,14 +4,6 @@ pysradb package
 Submodules
 ----------
 
-pysradb.cli module
-------------------
-
-.. automodule:: pysradb.cli
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
 pysradb.pysradb module
 ----------------------
 
