@@ -27,6 +27,7 @@ deploy:
   password:
     secure: PLEASE_REPLACE_ME
   on:
+    branch: master
     tags: true
     repo: saketkc/pysradb
     python: 3.6

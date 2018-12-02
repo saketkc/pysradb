@@ -23,7 +23,6 @@ Dependecies
 .. code-block:: bash
 
    pandas>=0.23.4
-   click>=6.0
    tqdm>=4.28
    aspera-client
    SRAmetadb.sqlite
@@ -53,7 +52,7 @@ Install pysradb
 ===============
 .. code-block:: bash
 
-   pip install -U pandas click tqdm
+   pip install -U pandas tqdm
    git clone https://github.com/saketkc/pysradb.git
    cd pysradb
    pip install -e .
@@ -73,8 +72,8 @@ Fetch the metadata table (SRA-runtable)
    db = SRAdb('SRAmetadb.sqlite')
    df = db.sra_convert('SRP098789')
    df.head()
-   
-.. table:: 
+
+.. table::
 
     ===============  ====================  ======================================================================  =============  ========  =================  ==============  ================  ==============  ============  ==========  ========  ============  ===============
     study_accession  experiment_accession                             experiment_title                             run_accession  taxon_id  library_selection  library_layout  library_strategy  library_source  library_name    bases      spots    adapter_spec  avg_read_length
@@ -115,14 +114,14 @@ https://nbviewer.jupyter.org/github/saketkc/pysradb/blob/master/notebooks/demo.i
 Citation
 ********
 
-Pending. 
+Pending.
 
-A lot of functionality in `pysradb` is based on ideas from the original `SRAdb package 
+A lot of functionality in `pysradb` is based on ideas from the original `SRAdb package
 <https://bioconductor.org/packages/release/bioc/html/SRAdb.html>`_. Please cite the original SRAdb publication:
 
     Zhu, Yuelin, Robert M. Stephens, Paul S. Meltzer, and Sean R. Davis. "SRAdb: query and use public next-generation sequencing data from within R." BMC bioinformatics 14, no. 1 (2013): 19.
 
-    
+
 
 
 * Free software: BSD license
