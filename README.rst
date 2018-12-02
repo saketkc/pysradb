@@ -17,6 +17,16 @@ Python package for interacting with SRAdb and downloading datasets from SRA.
 Installation
 ************
 
+To install stable version:
+
+.. code-block:: bash
+
+   pip install pysradb
+
+This step will install all the dependencies except aspera-client_. 
+Both Python 2 and Python 3 are supported. 
+
+
 Dependecies
 ===========
 
@@ -35,6 +45,9 @@ SRAmetadb can be downloaded as:
 .. code-block:: bash
 
    wget -c https://starbuck1.s3.amazonaws.com/sradb/SRAmetadb.sqlite.gz && gunzip SRAmetadb.sqlite.gz
+
+.. _aspera-client:
+
 
 aspera-client
 =============
@@ -101,7 +114,15 @@ Downloading a subset of experiments
 .. code-block:: python
 
    df = db.sra_convert('SRP000941')
+   print(df.library_strategy.unique())
+   ['ChIP-Seq' 'Bisulfite-Seq' 'RNA-Seq' 'WGS' 'OTHER']
+
+   
+.. code-block:: python
+
+   df_rna = df[df.library_strategy == 'RNA-Seq']
    db.download(df=df_rna, out_dir='/pysradb_downloads')()
+   
 
 ****
 Demo
