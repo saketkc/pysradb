@@ -20,9 +20,11 @@ Installation
 To install stable version:
 
 .. code-block:: bash
+
    pip install pysradb
 
-Both Python 2 and Python 3 are supported. This step will install all the dependencies except aspera-client_.
+This step will install all the dependencies except aspera-client_. 
+Both Python 2 and Python 3 are supported. 
 
 
 Dependecies
