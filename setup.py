@@ -18,8 +18,8 @@ setup_requirements = ['pytest-runner', ]
 test_requirements = ['pytest', ]
 
 setup(
-    author="Audrey Roy Greenfeld",
-    author_email='Saket Choudhary',
+    author='Saket Choudhary',
+    author_email='saketkc@gmail.com',
     classifiers=[
         'Development Status :: 2 - Pre-Alpha',
         'Intended Audience :: Developers',
