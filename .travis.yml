@@ -1,32 +1,24 @@
-# Config file for automatic testing at travis-ci.org
-
 language: python
 python:
-  - 3.6
-  - 3.5
-  - 2.7
-
-# Command to install dependencies, e.g. pip install -r requirements.txt --use-mirrors
+- 3.6
+- 3.5
+- 2.7
 install:
 - pip install -U pandas click tqdm
 - pip install -U sphinx ipython travis-sphinx
 - pip install -U numpydoc sphinxcontrib-fulltoc guzzle_sphinx_theme
-
-# Command to run tests, e.g. python setup.py test
 script:
 - make install
 - travis-sphinx build --source=$TRAVIS_BUILD_DIR/docs
-
 after_success:
 - travis-sphinx deploy
-
 deploy:
   provider: pypi
-  distributions: sdist bdist_wheel
+  distributions: sdist bdist bdist_wheel
   user: saketkc
   password:
-    secure: PLEASE_REPLACE_ME
+    secure: CHb2u5l7Psxa5AeXdWR3c8FDUG7ESQYUla/B3ARwi8cwCrcwrocM7uHuxlK6CchY3HT5qL4lNDDU2ElDFZIl8m9+Hg8yH193/2VdwbTT9jd8yCKZjWQWL1vbd/w6gijWaVR+n1ZHe6LKSahNhhl+8FEU65WjdUx/socYdUjwXNECrNobskubU0NghUDK9+8ND6iV195OJGk32jjxlCF00MhsX9mw+ZS0MDR34hzkMyknzSkzGrbFf5JYkQOJbTNAP6ajCp3C5Kgm1XbkjCyV0rhBA7d0snfMF+3mTtH4ZNmyUSZe3OONiZFdmJEncVDKxsaR0CdvEy7qoA4FgqN5q1hTXQYd5ZCJLPujpn1iMkxsqdjI3e6aH0knrv+dgPYHLQxANAmzlkfP0CWiG/9KzpbF4eeDk6rWvf5RgP00wOUi1H4bpDx5aA8nAXPNWoYl31KWQH7UbJ9zrdgsAD8jgBc3XN6sozK4z5AIvXdUEm/hqba4DB3sJ2lyFRfeky6vYlMfxwAVL+YMlQnyE1P3kbaVSy01rQroTzPp3fnArUiIsqlGcIemV9Eu6UNpTInODzr9uFmcEL3GGQhRQXgYiVsJSzZjBnkoFKldj0LMdn8t5HZbl4vEDLGdYgMgk3281C9MMp4K+eSL650eL3ymrCRc3uz3+2Vn4EaZk2b6Hh0=
   on:
     tags: true
     repo: saketkc/pysradb
-    python: 3.6
+    skip_existing: true
