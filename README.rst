@@ -17,6 +17,14 @@ Python package for interacting with SRAdb and downloading datasets from SRA.
 Installation
 ************
 
+To install stable version:
+
+.. code-block:: bash
+   pip install pysradb
+
+Both Python 2 and Python 3 are supported. This step will install all the dependencies except aspera-client_.
+
+
 Dependecies
 ===========
 
@@ -35,6 +43,9 @@ SRAmetadb can be downloaded as:
 .. code-block:: bash
 
    wget -c https://starbuck1.s3.amazonaws.com/sradb/SRAmetadb.sqlite.gz && gunzip SRAmetadb.sqlite.gz
+
+.. _aspera-client:
+
 
 aspera-client
 =============
