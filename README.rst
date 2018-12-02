@@ -114,7 +114,15 @@ Downloading a subset of experiments
 .. code-block:: python
 
    df = db.sra_convert('SRP000941')
+   print(df.library_strategy.unique())
+   ['ChIP-Seq' 'Bisulfite-Seq' 'RNA-Seq' 'WGS' 'OTHER']
+
+   
+.. code-block:: python
+
+   df_rna = df[df.library_strategy == 'RNA-Seq']
    db.download(df=df_rna, out_dir='/pysradb_downloads')()
+   
 
 ****
 Demo
