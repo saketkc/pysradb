@@ -23,8 +23,8 @@ To install stable version:
 
    pip install pysradb
 
-This step will install all the dependencies except aspera-client_. 
-Both Python 2 and Python 3 are supported. 
+This step will install all the dependencies except aspera-client_.
+Both Python 2 and Python 3 are supported.
 
 
 Dependecies
@@ -52,17 +52,31 @@ SRAmetadb can be downloaded as:
 aspera-client
 =============
 
+We strongly recommend using `aspera-client` (which uses UDP) since it enables faster downloads as compared to `ftp/http` based
+downloads.
 
-`aspera-client` needs to be installed as well. Instructions are available here: https://downloads.asperasoft.com/connect2/
+PDF intructions are available here: https://downloads.asperasoft.com/connect2/.
+
 Direct download links:
 
 - Linux: https://download.asperasoft.com/download/sw/connect/3.8.1/ibm-aspera-connect-3.8.1.161274-linux-g2.12-64.tar.gz
 - MacOS: https://download.asperasoft.com/download/sw/connect/3.8.1/IBMAsperaConnectInstaller-3.8.1.161274.dmg
 - Windows: https://download.asperasoft.com/download/sw/connect/3.8.1/IBMAsperaConnect-ML-3.8.1.161274.msi
 
+Once you download the tar relevant to your OS, say linux, follow these steps to install aspera:
 
-Install pysradb
-===============
+.. code-block:: bash
+
+   tar -zxvf ibm-aspera-connect-3.8.1.161274-linux-g2.12-64.tar.gz
+   bash ibm-aspera-connect-3.8.1.161274-linux-g2.12-64.sh
+   Installing IBM Aspera Connect
+   Deploying IBM Aspera Connect (/home/saket/.aspera/connect) for the current user only.
+   Install complete.
+
+
+Installing pysradb in development mode
+======================================
+
 .. code-block:: bash
 
    pip install -U pandas tqdm
@@ -83,7 +97,7 @@ Fetch the metadata table (SRA-runtable)
 
    from pysradb import SRAdb
    db = SRAdb('SRAmetadb.sqlite')
-   df = db.sra_convert('SRP098789')
+   df = db.sra_metadata('SRP098789')
    df.head()
 
 .. table::
@@ -105,7 +119,7 @@ Downloading an entire project arranged experiment wise
 
    from pysradb import SRAdb
    db = SRAdb('SRAmetadb.sqlite')
-   df = db.sra_convert('SRP017942')
+   df = db.sra_metadata('SRP017942')
    db.download(df)
 
 Downloading a subset of experiments
@@ -113,16 +127,16 @@ Downloading a subset of experiments
 
 .. code-block:: python
 
-   df = db.sra_convert('SRP000941')
+   df = db.sra_metadata('SRP000941')
    print(df.library_strategy.unique())
    ['ChIP-Seq' 'Bisulfite-Seq' 'RNA-Seq' 'WGS' 'OTHER']
 
-   
+
 .. code-block:: python
 
    df_rna = df[df.library_strategy == 'RNA-Seq']
    db.download(df=df_rna, out_dir='/pysradb_downloads')()
-   
+
 
 ****
 Demo
