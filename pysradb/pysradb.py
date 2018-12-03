@@ -449,7 +449,9 @@ class SRAdb(object):
         if srp:
             df = self.sra_metadata(srp)
         if protocol == 'ftp':
-            warnings.warn('Using `ftp` protocol leads to slower downloads.\n Consider using `fastp` after installing aspera-client.', UserWarning)
+            warnings.warn(
+                'Using `ftp` protocol leads to slower downloads.\n Consider using `fastp` after installing aspera-client.',
+                UserWarning)
         if protocol == 'fasp':
             if ascp_dir is None:
                 ascp_dir = os.path.join(os.path.expanduser('~'), '.aspera')
