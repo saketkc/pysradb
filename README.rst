@@ -46,6 +46,17 @@ SRAmetadb can be downloaded as:
 
    wget -c https://starbuck1.s3.amazonaws.com/sradb/SRAmetadb.sqlite.gz && gunzip SRAmetadb.sqlite.gz
 
+Alternatively, you can aslo download it using `pysradb`:
+
+
+.. code-block:: python
+
+   from pysradb import download_sradb_file
+   download_sradb_file()
+
+   SRAmetadb.sqlite.gz: 2.44GB [01:10, 36.9MB/s]
+
+
 .. _aspera-client:
 
 
