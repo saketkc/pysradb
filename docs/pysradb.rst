@@ -12,6 +12,14 @@ pysradb.pysradb module
     :undoc-members:
     :show-inheritance:
 
+pysradb.utils module
+--------------------
+
+.. automodule:: pysradb.utils
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
 
 Module contents
 ---------------
