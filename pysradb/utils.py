@@ -7,7 +7,8 @@ class TqdmUpTo(tqdm):
     Inspired by [twine#242](https://github.com/pypa/twine/pull/242),
     [here](https://github.com/pypa/twine/commit/42e55e06).
 
-    Credits: https://github.com/tqdm/tqdm/blob/69326b718905816bb827e0e66c5508c9c04bc06c/examples/tqdm_wget.py
+    Credits:
+    https://github.com/tqdm/tqdm/blob/69326b718905816bb827e0e66c5508c9c04bc06c/examples/tqdm_wget.py
     """
 
     def update_to(self, b=1, bsize=1, tsize=None):
