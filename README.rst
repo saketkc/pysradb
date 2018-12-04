@@ -149,6 +149,31 @@ Downloading a subset of experiments
    db.download(df=df_rna, out_dir='/pysradb_downloads')()
 
 
+
+Searching for datasets
+======================
+
+Search for all datasets where `ribosome profiling` appears somewhere
+in the description:
+
+.. code-block:: python
+
+
+   df = db.search_sra(search_str='"ribosome profiling"')
+   df.head()
+
+.. table::
+
+    ===============  ====================  =======================================================  =============  ========  =================  ==============  ================  ==============  ============  ==========  ========
+    study_accession  experiment_accession                     experiment_title                      run_accession  taxon_id  library_selection  library_layout  library_strategy  library_source  library_name    bases      spots
+    ===============  ====================  =======================================================  =============  ========  =================  ==============  ================  ==============  ============  ==========  ========
+    DRP003075        DRX019536             Illumina Genome Analyzer IIx sequencing of SAMD00018584  DRR021383         83333  other              SINGLE -        OTHER             TRANSCRIPTOMIC  GAII05_3       978776480  12234706
+    DRP003075        DRX019537             Illumina Genome Analyzer IIx sequencing of SAMD00018585  DRR021384         83333  other              SINGLE -        OTHER             TRANSCRIPTOMIC  GAII05_4       894201680  11177521
+    DRP003075        DRX019538             Illumina Genome Analyzer IIx sequencing of SAMD00018586  DRR021385         83333  other              SINGLE -        OTHER             TRANSCRIPTOMIC  GAII05_5       931536720  11644209
+    DRP003075        DRX019540             Illumina Genome Analyzer IIx sequencing of SAMD00018588  DRR021387         83333  other              SINGLE -        OTHER             TRANSCRIPTOMIC  GAII07_4      2759398700  27593987
+    DRP003075        DRX019541             Illumina Genome Analyzer IIx sequencing of SAMD00018589  DRR021388         83333  other              SINGLE -        OTHER             TRANSCRIPTOMIC  GAII07_5      2386196500  23861965
+    ===============  ====================  =======================================================  =============  ========  =================  ==============  ================  ==============  ============  ==========  ========
+
 ****
 Demo
 ****
