@@ -11,10 +11,7 @@ with open('README.rst') as readme_file:
 with open('HISTORY.rst') as history_file:
     history = history_file.read()
 
-requirements = ['pandas>=0.23.4', 'tqdm>=4.28.']
-
-setup_requirements = ['pytest-runner', ]
-
+requirements = ['pandas>=0.23.4', 'tqdm>=4.28']
 test_requirements = ['pytest', ]
 
 setup(
@@ -42,7 +39,7 @@ setup(
     keywords='pysradb',
     name='pysradb',
     packages=['pysradb'],
-    setup_requires=setup_requirements,
+    setup_requires=requirements,
     test_suite='tests',
     tests_require=test_requirements,
     url='https://github.com/saketkc/pysradb',
