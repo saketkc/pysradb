@@ -58,6 +58,7 @@ def _extract_first_field(data):
     """Extract first field from a list of fields."""
     return list(next(zip(*data)))
 
+
 def order_dataframe(df, columns):
     """Order a dataframe
 
@@ -73,6 +74,7 @@ def order_dataframe(df, columns):
     remaining_columns = [w for w in df.columns if w not in columns]
     df = df[columns + remaining_columns]
     return df
+
 
 def mkdir_p(path):
     """Python version mkdir -p
@@ -226,7 +228,6 @@ class SRAdb(object):
     def close(self):
         """Close sqlite connection."""
         self.db.close()
-
 
     def list_tables(self):
         """List all tables in the sqlite file.
@@ -387,29 +388,35 @@ class SRAdb(object):
         metadata_df = df[out_type + ['avg_read_length']].reset_index(drop=True)
         return metadata_df
 
+    def search_sra(
+            self,
+            search_str,
+            out_type=[
+                'study_accession', 'experiment_accession', 'experiment_title',
+                'run_accession', 'taxon_id', 'library_selection',
+                'library_layout', 'library_strategy', 'library_source',
+                'library_name', 'bases', 'spots'
+            ]):
+        """Search SRA for any search term.
 
-    def search_sra(self,
-                   search_str,
-                   out_type=['study_accession',
-                       'experiment_accession',
-                       'experiment_title',
-                       'run_accession',
-                       'taxon_id',
-                       'library_selection',
-                       'library_layout',
-                       'library_strategy',
-                       'library_source',
-                       'library_name',
-                       'bases',
-                       'spots']):
+        Parameters
+        ----------
+        search_str: string
+                    SQL like text string to search.
+                    SQL like text => For example,
+                    terms in quotes "" enforce an exact search.
+
+        Returns
+        -------
+        query_df: DataFrame
+                  Dataframe with relevant query results
+        """
 
         select_type = out_type
         select_type_sql = (',').join(select_type)
-        #acc_not_null = '{}'
         sql = "SELECT DISTINCT " + select_type_sql + " FROM sra_ft WHERE sra_ft MATCH '" + search_str + "';"
         df = self.query(sql)
         return order_dataframe(df, out_type)
-
 
     def search_experiment(self, srx):
         """Search for a SRX/GSM id in the experiments.
