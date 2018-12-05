@@ -1,21 +1,23 @@
 """Methods to interact with SRA"""
 from __future__ import (absolute_import, division, print_function,
                         unicode_literals)
-import errno
 import gzip
 import os
 import re
-import shlex
 import shutil
 import sqlite3
 import sys
-import subprocess
 import warnings
 
 import pandas as pd
 from tqdm import tqdm
 
-from .utils import TqdmUpTo
+from .utils import _extract_first_field
+from .utils import _find_aspera_keypath
+from .utils import _get_url
+from .utils import mkdir_p
+from .utils import order_dataframe
+from .utils import run_command
 
 PY3 = True
 if sys.version_info[0] < 3:
@@ -31,115 +33,6 @@ SRADB_URL = [
 ]
 
 ASCP_CMD_PREFIX = 'ascp -k 1 -QT -l 2000m -i'
-
-
-def _find_aspera_keypath(aspera_dir=None):
-    """Locate aspera key.
-
-    Parameters
-    ----------
-    aspera_dir: string
-                Location to aspera directory (optional)
-
-    Returns
-    -------
-    aspera_keypath: string
-                    Location to aspera key
-    """
-    if aspera_dir is None:
-        aspera_dir = os.path.join(os.path.expanduser('~'), '.aspera')
-    aspera_keypath = os.path.join(aspera_dir, 'connect', 'etc',
-                                  'asperaweb_id_dsa.openssh')
-    if os.path.isfile(aspera_keypath):
-        return aspera_keypath
-
-
-def _extract_first_field(data):
-    """Extract first field from a list of fields."""
-    return list(next(zip(*data)))
-
-
-def order_dataframe(df, columns):
-    """Order a dataframe
-
-    Order a dataframe by moving the `columns` in the front
-
-    Parameters
-    ----------
-    df: Dataframe
-        Dataframe
-    columns: list
-             List of columns that need to be put in front
-    """
-    remaining_columns = [w for w in df.columns if w not in columns]
-    df = df[columns + remaining_columns]
-    return df
-
-
-def mkdir_p(path):
-    """Python version mkdir -p
-
-    Parameters
-    ----------
-    path : string
-           Path to directory to create
-    """
-    if path:
-        try:
-            os.makedirs(path)
-        except OSError as exc:  # Python >2.5
-            if exc.errno == errno.EEXIST and os.path.isdir(path):
-                pass
-            else:
-                raise
-
-
-def _get_url(url, download_to, show_progress=True):
-    """Download anything at a given url.
-
-    Parameters
-    ----------
-    url: string
-         http/https/ftp url
-    download_to: string
-                 File location to write the downloaded file to
-    show_progress: bool
-                   Set to True by default to print progress bar
-    """
-    if PY3:
-        import urllib.request as urllib_request
-    else:
-        import urllib as urllib_request
-    desc_file = url.split('/')[-1]
-    if show_progress:
-        with TqdmUpTo(
-                unit='B',
-                unit_scale=True,
-                unit_divisor=1024,
-                miniters=1,
-                desc=desc_file) as t:
-            urllib_request.urlretrieve(
-                url, download_to, reporthook=t.update_to, data=None)
-    else:
-        urllib_request.urlretrieve(url, download_to)
-
-
-def run_command(command, verbose=False):
-    """Run a shell command"""
-    process = subprocess.Popen(
-        shlex.split(command),
-        stdout=subprocess.PIPE,
-        stderr=subprocess.STDOUT,
-        encoding='utf8')
-    while True:
-        output = str(process.stdout.readline().strip())
-        if output == '' and process.poll() is not None:
-            break
-        if output:
-            if verbose:
-                print(str(output.strip()))
-    rc = process.poll()
-    return rc
 
 
 def download_sradb_file(download_dir=os.getcwd(), overwrite=True):
@@ -170,6 +63,9 @@ def download_sradb_file(download_dir=os.getcwd(), overwrite=True):
         _get_url(SRADB_URL[0], download_location)
     except Exception as e:
         # Try other URL
+        warnings.warn(
+            'Could not use {}.\nException: {}.\nTrying alternate url ...\n'.
+            format(SRADB_URL[0], e), RuntimeWarning)
         _get_url(SRADB_URL[1], download_location)
     print('Extracting {} ...'.format(download_location))
     with gzip.open(download_location, 'rb') as fh_in:
@@ -341,6 +237,8 @@ class SRAdb(object):
                          'study_accession',
                          'experiment_accession',
                          'experiment_title',
+                         'experiment_attribute',
+                         'sample_attribute',
                          'run_accession',
                          'taxon_id',
                          'library_selection',
@@ -351,7 +249,8 @@ class SRAdb(object):
                          'bases',
                          'spots',
                          'adapter_spec',
-                     ]):
+                     ],
+                     expand_sample_attributes=False):
         """Get metadata for the provided SRA accession.
 
         Parameters
@@ -386,6 +285,8 @@ class SRAdb(object):
             'experiment_accession', 'library_selection'
         ])
         metadata_df = df[out_type + ['avg_read_length']].reset_index(drop=True)
+        if expand_sample_attributes:
+            pass
         return metadata_df
 
     def search_sra(
@@ -393,9 +294,10 @@ class SRAdb(object):
             search_str,
             out_type=[
                 'study_accession', 'experiment_accession', 'experiment_title',
-                'run_accession', 'taxon_id', 'library_selection',
-                'library_layout', 'library_strategy', 'library_source',
-                'library_name', 'bases', 'spots'
+                'experiment_attribute', 'sample_attribute', 'run_accession',
+                'taxon_id', 'library_selection', 'library_layout',
+                'library_strategy', 'library_source', 'library_name', 'bases',
+                'spots'
             ]):
         """Search SRA for any search term.
 
@@ -474,8 +376,7 @@ class SRAdb(object):
                  df=None,
                  out_dir=None,
                  protocol='fasp',
-                 ascp_dir=None,
-                 verbose=False):
+                 ascp_dir=None):
         """Download SRA files.
 
         Parameters
@@ -524,17 +425,13 @@ class SRAdb(object):
                 srx_dir = os.path.join(srp_dir, srx)
                 srr_location = os.path.join(srx_dir, srr + '.sra')
                 mkdir_p(srx_dir)
-                if verbose:
-                    print('Downloading {}....'.format(url))
                 if protocol == 'fasp':
                     cmd = ASCP_CMD_PREFIX.replace('ascp', ascp_bin)
                     cmd = '{} {} {} {}'.format(cmd,
                                                _find_aspera_keypath(ascp_dir),
                                                url, srx_dir)
-                    run_command(cmd, verbose)
+                    run_command(cmd, verbose=False)
                 else:
                     _get_url(url, srr_location, show_progress=False)
-                if verbose:
-                    print('Finished {}....'.format(url))
                 pbar.update()
         return df
