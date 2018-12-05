@@ -4,6 +4,14 @@ pysradb package
 Submodules
 ----------
 
+pysradb.filter\_attrs module
+----------------------------
+
+.. automodule:: pysradb.filter_attrs
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
 pysradb.pysradb module
 ----------------------
 
