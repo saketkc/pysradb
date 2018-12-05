@@ -149,6 +149,31 @@ Downloading a subset of experiments
    db.download(df=df_rna, out_dir='/pysradb_downloads')()
 
 
+Getting cell-type/treatment information from sample_attributes
+===============================================================
+
+Cell type/tissue informations is ussually hidden in the `sample_attributes` column,
+which can be expanded:
+
+.. code-block:: python
+   
+   from pysradb.filter_attrs import expand_sample_attribute_columns
+   df = db.sra_metadata('SRP017942')
+   expand_sample_attribute_columns(df).head()
+
+
+.. table:: 
+
+    ===============  ====================  =====================================================================  =========================  ========================================================================================================================================================  =============  ========  =================  ==============  ================  ==============  ============  ==========  =========  ============  ===============  ==========  ==========  ===========  ================  ===============================
+    study_accession  experiment_accession                            experiment_title                               experiment_attribute                                                                         sample_attribute                                                                      run_accession  taxon_id  library_selection  library_layout  library_strategy  library_source  library_name    bases       spots    adapter_spec  avg_read_length  assay_type  cell_line   source_name  transfected_with             treatment           
+    ===============  ====================  =====================================================================  =========================  ========================================================================================================================================================  =============  ========  =================  ==============  ================  ==============  ============  ==========  =========  ============  ===============  ==========  ==========  ===========  ================  ===============================
+    SRP017942        SRX217028             GSM1063575: 293T_GFP; Homo sapiens; RNA-Seq                            GEO Accession: GSM1063575  source_name: 293T cells || cell line: 293T cells || transfected with: 3XFLAG-GFP || assay type: Riboseq                                                   SRR648667          9606  other              SINGLE -        RNA-Seq           TRANSCRIPTOMIC                1806641316   50184481                             36  riboseq     293t cells  293t cells   3xflag-gfp        NaN                            
+    SRP017942        SRX217029             GSM1063576: 293T_GFP_2hrs_severe_Heat_Shock; Homo sapiens; RNA-Seq     GEO Accession: GSM1063576  source_name: 293T cells || cell line: 293T cells || transfected with: 3XFLAG-GFP || treatment: severe heat shock (44C 2 hours) || assay type: Riboseq     SRR648668          9606  other              SINGLE -        RNA-Seq           TRANSCRIPTOMIC                3436984836   95471801                             36  riboseq     293t cells  293t cells   3xflag-gfp        severe heat shock (44c 2 hours)
+    SRP017942        SRX217030             GSM1063577: 293T_Hspa1a; Homo sapiens; RNA-Seq                         GEO Accession: GSM1063577  source_name: 293T cells || cell line: 293T cells || transfected with: 3XFLAG-Hspa1a || assay type: Riboseq                                                SRR648669          9606  other              SINGLE -        RNA-Seq           TRANSCRIPTOMIC                3330909216   92525256                             36  riboseq     293t cells  293t cells   3xflag-hspa1a     NaN                            
+    SRP017942        SRX217031             GSM1063578: 293T_Hspa1a_2hrs_severe_Heat_Shock; Homo sapiens; RNA-Seq  GEO Accession: GSM1063578  source_name: 293T cells || cell line: 293T cells || transfected with: 3XFLAG-Hspa1a || treatment: severe heat shock (44C 2 hours) || assay type: Riboseq  SRR648670          9606  other              SINGLE -        RNA-Seq           TRANSCRIPTOMIC                3622123512  100614542                             36  riboseq     293t cells  293t cells   3xflag-hspa1a     severe heat shock (44c 2 hours)
+    SRP017942        SRX217956             GSM794854: 3T3-Control-Riboseq; Mus musculus; RNA-Seq                  GEO Accession: GSM794854   source_name: 3T3 cells || treatment: control || cell line: 3T3 cells || assay type: Riboseq                                                               SRR649752         10090  cDNA               SINGLE -        RNA-Seq           TRANSCRIPTOMIC                 594945396   16526261                             36  riboseq     3t3 cells   3t3 cells    NaN               control                        
+    ===============  ====================  =====================================================================  =========================  ========================================================================================================================================================  =============  ========  =================  ==============  ================  ==============  ============  ==========  =========  ============  ===============  ==========  ==========  ===========  ================  ===============================
+
 
 Searching for datasets
 ======================
@@ -173,6 +198,8 @@ in the description:
     DRP003075        DRX019540             Illumina Genome Analyzer IIx sequencing of SAMD00018588  DRR021387         83333  other              SINGLE -        OTHER             TRANSCRIPTOMIC  GAII07_4      2759398700  27593987
     DRP003075        DRX019541             Illumina Genome Analyzer IIx sequencing of SAMD00018589  DRR021388         83333  other              SINGLE -        OTHER             TRANSCRIPTOMIC  GAII07_5      2386196500  23861965
     ===============  ====================  =======================================================  =============  ========  =================  ==============  ================  ==============  ============  ==========  ========
+
+
 
 ****
 Demo
