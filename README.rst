@@ -20,13 +20,20 @@ Python package for interacting with SRAdb and downloading datasets from SRA.
 Installation
 ************
 
-To install stable version:
+
+To install stable version using `pip`:
 
 .. code-block:: bash
 
    pip install pysradb
 
-This step will install all the dependencies except aspera-client_.
+Alternatively, if you use conda:
+
+.. code-block:: bash
+
+   conda install -c bioconda pysradb
+
+This step will install all the dependencies except aspera-client_ (which is not required, but highly recommended). 
 Both Python 2 and Python 3 are supported.
 
 
@@ -40,16 +47,19 @@ Dependecies
    aspera-client
    SRAmetadb.sqlite
 
-SRAmetadb
-=========
+Step 0. Downloading SRAmetadb
+===============================
 
-SRAmetadb can be downloaded as:
+We need a SQLite database file that has preprocessed metadata made available by the 
+SRAdb project. 
+
+SRAmetadb can be downloaded using:
 
 .. code-block:: bash
 
    wget -c https://starbuck1.s3.amazonaws.com/sradb/SRAmetadb.sqlite.gz && gunzip SRAmetadb.sqlite.gz
 
-Alternatively, you can aslo download it using `pysradb`:
+Alternatively, you can also download it using `pysradb`:
 
 
 .. code-block:: python
@@ -106,6 +116,11 @@ Interacting with SRA
 Fetch the metadata table (SRA-runtable)
 ========================================
 
+The simplest use case of `pysradb` is when you apriopri know the SRA project ID (SRP)
+and would simply want to fetch the metadata associated with it. This is generally
+reflected in the `SraRunTable.txt` that you get from NCBI's website. 
+See an example of what a SraRunTable looks like `here<https://www.ncbi.nlm.nih.gov/Traces/study/?acc=SRP098789>_`.
+
 
 .. code-block:: python
 
@@ -126,8 +141,22 @@ Fetch the metadata table (SRA-runtable)
     SRP098789        SRX2536407            GSM2476001: 0.3 Ã‚ÂµM PF-067446846, 10 min, rep 2; Homo sapiens; OTHER  SRR5227292         9606  other              SINGLE -        OTHER             TRANSCRIPTOMIC                3027621850  60552437                             50
     ===============  ====================  ======================================================================  =============  ========  =================  ==============  ================  ==============  ============  ==========  ========  ============  ===============
 
+The metadata is returned as a `pandas` dataframe and hence allows you to perform
+all regular select/query operations available through `pandas`.
+
 Downloading an entire project arranged experiment wise
 ======================================================
+
+Once you have fetched the metadata and made sure, this is the project
+you were looking for, you would want to download everything at once.
+NCBI follows this hiererachy: `SRP => SRX => SRR`. Each `SRP` (project) has multiple
+`SRX` (experiments) and each `SRX` in turn has multiple `SRR` (runs) inside it.
+We want to mimick this hiereachy in our downloads. The reason to do that is simple:
+in most cases you care about `SRX` the most, and would want to "merge" your SRRs
+in one way or the other. Having this hierearchy ensures your downstream code
+can handle such cases easily, without worrying about which runs (SRR) need to be merged.
+
+We strongly recommend installing `aspera-client` which uses UDP and is `designed to be faster<http://www.skullbox.net/tcpudp.php>_`.
 
 .. code-block:: python
 
@@ -139,11 +168,19 @@ Downloading an entire project arranged experiment wise
 Downloading a subset of experiments
 ===================================
 
+Often, you need to process only a smaller set of samples from a project (SRP).
+Consider this project which has data spanning four assays.
+
 .. code-block:: python
 
    df = db.sra_metadata('SRP000941')
    print(df.library_strategy.unique())
    ['ChIP-Seq' 'Bisulfite-Seq' 'RNA-Seq' 'WGS' 'OTHER']
+
+
+But, you might be only interested in analyzing the `RNA-seq` samples and would just want to download that subset.
+This is simple using `pysradb` since the metadata can be subset just as you would subset a dataframe in 
+pandas.
 
 
 .. code-block:: python
