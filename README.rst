@@ -8,6 +8,9 @@ pysradb
 
 .. image:: https://travis-ci.com/saketkc/pysradb.svg?branch=master
         :target: https://travis-ci.com/saketkc/pysradb
+        
+.. image:: https://img.shields.io/badge/install%20with-bioconda-brightgreen.svg?style=flat-square
+        :target: http://bioconda.github.io/recipes/pysradb/README.html
 
 
 
