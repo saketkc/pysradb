@@ -47,8 +47,8 @@ Dependecies
    aspera-client
    SRAmetadb.sqlite
 
-Step 0. Downloading SRAmetadb
-===============================
+Downloading SRAmetadb
+=====================
 
 We need a SQLite database file that has preprocessed metadata made available by the 
 `SRAdb <https://bmcbioinformatics.biomedcentral.com/articles/10.1186/1471-2105-14-19>`_ project. 
@@ -78,7 +78,7 @@ aspera-client
 
 We strongly recommend using `aspera-client` (which uses UDP) since it `warrants faster downloads <http://www.skullbox.net/tcpudp.php>`_ as compared to `ftp/http` based downloads.
 
-PDF intructions are available `here <https://downloads.asperasoft.com/connect2/>`_.
+PDF intructions are available on IBM's `website <https://downloads.asperasoft.com/connect2/>`_.
 
 Direct download links:
 
@@ -112,13 +112,13 @@ Installing pysradb in development mode
 Interacting with SRA
 ********************
 
-Fetch the metadata table (SRA-runtable)
-========================================
+Use Case 1: Fetch the metadata table (SRA-runtable)
+===================================================
 
 The simplest use case of `pysradb` is when you apriopri know the SRA project ID (SRP)
 and would simply want to fetch the metadata associated with it. This is generally
 reflected in the `SraRunTable.txt` that you get from NCBI's website. 
-See an example of what a SraRunTable looks like `here <https://www.ncbi.nlm.nih.gov/Traces/study/?acc=SRP098789>`_.
+See an `example <https://www.ncbi.nlm.nih.gov/Traces/study/?acc=SRP098789>`_ of a SraRunTable.
 
 
 .. code-block:: python
@@ -143,8 +143,8 @@ See an example of what a SraRunTable looks like `here <https://www.ncbi.nlm.nih.
 The metadata is returned as a `pandas` dataframe and hence allows you to perform
 all regular select/query operations available through `pandas`.
 
-Downloading an entire project arranged experiment wise
-======================================================
+Use Case 2: Downloading an entire project arranged experiment wise
+==================================================================
 
 Once you have fetched the metadata and made sure, this is the project
 you were looking for, you would want to download everything at once.
@@ -164,8 +164,8 @@ We strongly recommend installing `aspera-client` which uses UDP and is `designed
    df = db.sra_metadata('SRP017942')
    db.download(df)
 
-Downloading a subset of experiments
-===================================
+Use Case 3: Downloading a subset of experiments
+===============================================
 
 Often, you need to process only a smaller set of samples from a project (SRP).
 Consider this project which has data spanning four assays.
@@ -188,10 +188,10 @@ pandas.
    db.download(df=df_rna, out_dir='/pysradb_downloads')()
 
 
-Getting cell-type/treatment information from sample_attributes
-===============================================================
+Use Case 4: Getting cell-type/treatment information from sample_attributes
+==========================================================================
 
-Cell type/tissue informations is ussually hidden in the `sample_attributes` column,
+Cell type/tissue informations is usually hidden in the `sample_attributes` column,
 which can be expanded:
 
 .. code-block:: python
@@ -214,10 +214,13 @@ which can be expanded:
     ===============  ====================  =====================================================================  =========================  ========================================================================================================================================================  =============  ========  =================  ==============  ================  ==============  ============  ==========  =========  ============  ===============  ==========  ==========  ===========  ================  ===============================
 
 
-Searching for datasets
-======================
+Use Case 5: Searching for datasets
+==================================
 
-Search for all datasets where `ribosome profiling` appears somewhere
+Another common operation that we do on SRA is seach, plain text search.
+
+
+If you want to look up for all projects where `ribosome profiling` appears somewhere
 in the description:
 
 .. code-block:: python
@@ -238,7 +241,9 @@ in the description:
     DRP003075        DRX019541             Illumina Genome Analyzer IIx sequencing of SAMD00018589  DRR021388         83333  other              SINGLE -        OTHER             TRANSCRIPTOMIC  GAII07_5      2386196500  23861965
     ===============  ====================  =======================================================  =============  ========  =================  ==============  ================  ==============  ============  ==========  ========
 
-
+Again, the results are available as a `pandas` dataframe and hence 
+you can perform all subset operations post your query. Your query doesn't need
+to be exact.
 
 ****
 Demo
