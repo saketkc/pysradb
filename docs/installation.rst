@@ -19,6 +19,16 @@ This is the preferred method to install pysradb, as it will always install the m
 If you don't have `pip`_ installed, this `Python installation guide`_ can guide
 you through the process.
 
+
+Alternatively, if you use conda:
+
+.. code-block:: bash
+
+   conda install -c bioconda pysradb
+
+This step will install all the dependencies except aspera-client, which is not required, but highly recommended.
+Both Python 2 and Python 3 are supported.
+
 .. _pip: https://pip.pypa.io
 .. _Python installation guide: http://docs.python-guide.org/en/latest/starting/installation/
 

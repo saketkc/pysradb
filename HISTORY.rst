@@ -2,6 +2,17 @@
 History
 #######
 
+*******************
+0.3.0 (12--2018)
+*******************
+
+New methods/functionality
+=========================
+
+* `sample_attribute` and `experiment_attribute` are now included by default in the df returned by `sra_metadata()`
+* `expand_sample_attribute_columns: expand metadata dataframe based on attributes in `sample_attribute` column
+*  New methods to guess cell/tissue/strain: `guess_cell_type()`/`guess_tissue_type()`/`guess_strain_type()`
+
 
 *******************
 0.2.2 (12-03-2018)
