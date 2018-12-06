@@ -51,7 +51,7 @@ Step 0. Downloading SRAmetadb
 ===============================
 
 We need a SQLite database file that has preprocessed metadata made available by the 
-SRAdb project. 
+`SRAdb<https://bmcbioinformatics.biomedcentral.com/articles/10.1186/1471-2105-14-19>`_ project. 
 
 SRAmetadb can be downloaded using:
 
@@ -76,10 +76,9 @@ Alternatively, you can also download it using `pysradb`:
 aspera-client
 =============
 
-We strongly recommend using `aspera-client` (which uses UDP) since it enables faster downloads as compared to `ftp/http` based
-downloads.
+We strongly recommend using `aspera-client` (which uses UDP) since it `warrants faster downloads<http://www.skullbox.net/tcpudp.php>`_ as compared to `ftp/http` based downloads.
 
-PDF intructions are available here: https://downloads.asperasoft.com/connect2/.
+PDF intructions are available `here<https://downloads.asperasoft.com/connect2/>`_.
 
 Direct download links:
 
@@ -119,7 +118,7 @@ Fetch the metadata table (SRA-runtable)
 The simplest use case of `pysradb` is when you apriopri know the SRA project ID (SRP)
 and would simply want to fetch the metadata associated with it. This is generally
 reflected in the `SraRunTable.txt` that you get from NCBI's website. 
-See an example of what a SraRunTable looks like `here<https://www.ncbi.nlm.nih.gov/Traces/study/?acc=SRP098789>_`.
+See an example of what a SraRunTable looks like `here<https://www.ncbi.nlm.nih.gov/Traces/study/?acc=SRP098789>`_.
 
 
 .. code-block:: python
@@ -156,7 +155,7 @@ in most cases you care about `SRX` the most, and would want to "merge" your SRRs
 in one way or the other. Having this hierearchy ensures your downstream code
 can handle such cases easily, without worrying about which runs (SRR) need to be merged.
 
-We strongly recommend installing `aspera-client` which uses UDP and is `designed to be faster<http://www.skullbox.net/tcpudp.php>_`.
+We strongly recommend installing `aspera-client` which uses UDP and is `designed to be faster<http://www.skullbox.net/tcpudp.php>`_.
 
 .. code-block:: python
 
