@@ -7,3 +7,4 @@ __version__ = '0.2.2'
 
 from .pysradb import download_sradb_file
 from .pysradb import SRAdb
+from .filter_attrs import expand_sample_attribute_columns

@@ -8,7 +8,7 @@ pysradb
 
 .. image:: https://travis-ci.com/saketkc/pysradb.svg?branch=master
         :target: https://travis-ci.com/saketkc/pysradb
-        
+
 .. image:: https://img.shields.io/badge/install%20with-bioconda-brightgreen.svg?style=flat-square
         :target: http://bioconda.github.io/recipes/pysradb/README.html
 
@@ -33,7 +33,7 @@ Alternatively, if you use conda:
 
    conda install -c bioconda pysradb
 
-This step will install all the dependencies except aspera-client_ (which is not required, but highly recommended). 
+This step will install all the dependencies except aspera-client_ (which is not required, but highly recommended).
 Both Python 2 and Python 3 are supported.
 
 
@@ -50,8 +50,8 @@ Dependecies
 Downloading SRAmetadb
 =====================
 
-We need a SQLite database file that has preprocessed metadata made available by the 
-`SRAdb <https://bmcbioinformatics.biomedcentral.com/articles/10.1186/1471-2105-14-19>`_ project. 
+We need a SQLite database file that has preprocessed metadata made available by the
+`SRAdb <https://bmcbioinformatics.biomedcentral.com/articles/10.1186/1471-2105-14-19>`_ project.
 
 SRAmetadb can be downloaded using:
 
@@ -117,7 +117,7 @@ Use Case 1: Fetch the metadata table (SRA-runtable)
 
 The simplest use case of `pysradb` is when you apriopri know the SRA project ID (SRP)
 and would simply want to fetch the metadata associated with it. This is generally
-reflected in the `SraRunTable.txt` that you get from NCBI's website. 
+reflected in the `SraRunTable.txt` that you get from NCBI's website.
 See an `example <https://www.ncbi.nlm.nih.gov/Traces/study/?acc=SRP098789>`_ of a SraRunTable.
 
 
@@ -178,7 +178,7 @@ Consider this project which has data spanning four assays.
 
 
 But, you might be only interested in analyzing the `RNA-seq` samples and would just want to download that subset.
-This is simple using `pysradb` since the metadata can be subset just as you would subset a dataframe in 
+This is simple using `pysradb` since the metadata can be subset just as you would subset a dataframe in
 pandas.
 
 
@@ -195,22 +195,22 @@ Cell type/tissue informations is usually hidden in the `sample_attributes` colum
 which can be expanded:
 
 .. code-block:: python
-   
+
    from pysradb.filter_attrs import expand_sample_attribute_columns
    df = db.sra_metadata('SRP017942')
    expand_sample_attribute_columns(df).head()
 
 
-.. table:: 
+.. table::
 
     ===============  ====================  =====================================================================  =========================  ========================================================================================================================================================  =============  ========  =================  ==============  ================  ==============  ============  ==========  =========  ============  ===============  ==========  ==========  ===========  ================  ===============================
-    study_accession  experiment_accession                            experiment_title                               experiment_attribute                                                                         sample_attribute                                                                      run_accession  taxon_id  library_selection  library_layout  library_strategy  library_source  library_name    bases       spots    adapter_spec  avg_read_length  assay_type  cell_line   source_name  transfected_with             treatment           
+    study_accession  experiment_accession                            experiment_title                               experiment_attribute                                                                         sample_attribute                                                                      run_accession  taxon_id  library_selection  library_layout  library_strategy  library_source  library_name    bases       spots    adapter_spec  avg_read_length  assay_type  cell_line   source_name  transfected_with             treatment
     ===============  ====================  =====================================================================  =========================  ========================================================================================================================================================  =============  ========  =================  ==============  ================  ==============  ============  ==========  =========  ============  ===============  ==========  ==========  ===========  ================  ===============================
-    SRP017942        SRX217028             GSM1063575: 293T_GFP; Homo sapiens; RNA-Seq                            GEO Accession: GSM1063575  source_name: 293T cells || cell line: 293T cells || transfected with: 3XFLAG-GFP || assay type: Riboseq                                                   SRR648667          9606  other              SINGLE -        RNA-Seq           TRANSCRIPTOMIC                1806641316   50184481                             36  riboseq     293t cells  293t cells   3xflag-gfp        NaN                            
+    SRP017942        SRX217028             GSM1063575: 293T_GFP; Homo sapiens; RNA-Seq                            GEO Accession: GSM1063575  source_name: 293T cells || cell line: 293T cells || transfected with: 3XFLAG-GFP || assay type: Riboseq                                                   SRR648667          9606  other              SINGLE -        RNA-Seq           TRANSCRIPTOMIC                1806641316   50184481                             36  riboseq     293t cells  293t cells   3xflag-gfp        NaN
     SRP017942        SRX217029             GSM1063576: 293T_GFP_2hrs_severe_Heat_Shock; Homo sapiens; RNA-Seq     GEO Accession: GSM1063576  source_name: 293T cells || cell line: 293T cells || transfected with: 3XFLAG-GFP || treatment: severe heat shock (44C 2 hours) || assay type: Riboseq     SRR648668          9606  other              SINGLE -        RNA-Seq           TRANSCRIPTOMIC                3436984836   95471801                             36  riboseq     293t cells  293t cells   3xflag-gfp        severe heat shock (44c 2 hours)
-    SRP017942        SRX217030             GSM1063577: 293T_Hspa1a; Homo sapiens; RNA-Seq                         GEO Accession: GSM1063577  source_name: 293T cells || cell line: 293T cells || transfected with: 3XFLAG-Hspa1a || assay type: Riboseq                                                SRR648669          9606  other              SINGLE -        RNA-Seq           TRANSCRIPTOMIC                3330909216   92525256                             36  riboseq     293t cells  293t cells   3xflag-hspa1a     NaN                            
+    SRP017942        SRX217030             GSM1063577: 293T_Hspa1a; Homo sapiens; RNA-Seq                         GEO Accession: GSM1063577  source_name: 293T cells || cell line: 293T cells || transfected with: 3XFLAG-Hspa1a || assay type: Riboseq                                                SRR648669          9606  other              SINGLE -        RNA-Seq           TRANSCRIPTOMIC                3330909216   92525256                             36  riboseq     293t cells  293t cells   3xflag-hspa1a     NaN
     SRP017942        SRX217031             GSM1063578: 293T_Hspa1a_2hrs_severe_Heat_Shock; Homo sapiens; RNA-Seq  GEO Accession: GSM1063578  source_name: 293T cells || cell line: 293T cells || transfected with: 3XFLAG-Hspa1a || treatment: severe heat shock (44C 2 hours) || assay type: Riboseq  SRR648670          9606  other              SINGLE -        RNA-Seq           TRANSCRIPTOMIC                3622123512  100614542                             36  riboseq     293t cells  293t cells   3xflag-hspa1a     severe heat shock (44c 2 hours)
-    SRP017942        SRX217956             GSM794854: 3T3-Control-Riboseq; Mus musculus; RNA-Seq                  GEO Accession: GSM794854   source_name: 3T3 cells || treatment: control || cell line: 3T3 cells || assay type: Riboseq                                                               SRR649752         10090  cDNA               SINGLE -        RNA-Seq           TRANSCRIPTOMIC                 594945396   16526261                             36  riboseq     3t3 cells   3t3 cells    NaN               control                        
+    SRP017942        SRX217956             GSM794854: 3T3-Control-Riboseq; Mus musculus; RNA-Seq                  GEO Accession: GSM794854   source_name: 3T3 cells || treatment: control || cell line: 3T3 cells || assay type: Riboseq                                                               SRR649752         10090  cDNA               SINGLE -        RNA-Seq           TRANSCRIPTOMIC                 594945396   16526261                             36  riboseq     3t3 cells   3t3 cells    NaN               control
     ===============  ====================  =====================================================================  =========================  ========================================================================================================================================================  =============  ========  =================  ==============  ================  ==============  ============  ==========  =========  ============  ===============  ==========  ==========  ===========  ================  ===============================
 
 
@@ -241,7 +241,7 @@ in the description:
     DRP003075        DRX019541             Illumina Genome Analyzer IIx sequencing of SAMD00018589  DRR021388         83333  other              SINGLE -        OTHER             TRANSCRIPTOMIC  GAII07_5      2386196500  23861965
     ===============  ====================  =======================================================  =============  ========  =================  ==============  ================  ==============  ============  ==========  ========
 
-Again, the results are available as a `pandas` dataframe and hence 
+Again, the results are available as a `pandas` dataframe and hence
 you can perform all subset operations post your query. Your query doesn't need
 to be exact.
 
