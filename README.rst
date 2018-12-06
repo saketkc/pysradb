@@ -2,13 +2,12 @@
 pysradb
 #######
 
-------------
 
 
-.. image:: https://img.shields.io/pypi/v/pysradb.svg
+.. image:: https://img.shields.io/pypi/v/pysradb.svg?style=flat-square
         :target: https://pypi.python.org/pypi/pysradb
 
-.. image:: https://travis-ci.com/saketkc/pysradb.svg?branch=master
+.. image:: https://img.shields.io/travis-ci/saketkc/pysradb.svg?style=flat-square
         :target: https://travis-ci.com/saketkc/pysradb
 
 .. image:: https://img.shields.io/badge/install%20with-bioconda-brightgreen.svg?style=flat-square
@@ -18,7 +17,6 @@ pysradb
 
 Python package for interacting with SRAdb and downloading datasets from SRA.
 
-------------
 
 
 ************
@@ -113,7 +111,6 @@ Installing pysradb in development mode
    pip install -e .
 
 
-------------
 
 
 ********************
@@ -151,7 +148,6 @@ See an `example <https://www.ncbi.nlm.nih.gov/Traces/study/?acc=SRP098789>`_ of 
 The metadata is returned as a `pandas` dataframe and hence allows you to perform
 all regular select/query operations available through `pandas`.
 
-------------
 
 
 Use Case 2: Downloading an entire project arranged experiment wise
@@ -182,7 +178,6 @@ You can specify a location by:
     
    db.download(df=df, out_dir='/pysradb_downloads')
 
-------------
 
 
 Use Case 3: Downloading a subset of experiments
@@ -208,7 +203,6 @@ pandas.
    df_rna = df[df.library_strategy == 'RNA-Seq']
    db.download(df=df_rna, out_dir='/pysradb_downloads')
 
-------------
 
 Use Case 4: Getting cell-type/treatment information from sample_attributes
 ==========================================================================
@@ -235,7 +229,6 @@ which can be expanded:
     SRP017942        SRX217956             GSM794854: 3T3-Control-Riboseq; Mus musculus; RNA-Seq                  GEO Accession: GSM794854   source_name: 3T3 cells || treatment: control || cell line: 3T3 cells || assay type: Riboseq                                                               SRR649752         10090  cDNA               SINGLE -        RNA-Seq           TRANSCRIPTOMIC                 594945396   16526261                             36  riboseq     3t3 cells   3t3 cells    NaN               control
     ===============  ====================  =====================================================================  =========================  ========================================================================================================================================================  =============  ========  =================  ==============  ================  ==============  ============  ==========  =========  ============  ===============  ==========  ==========  ===========  ================  ===============================
 
-------------
 
 Use Case 5: Searching for datasets
 ==================================
@@ -268,7 +261,6 @@ Again, the results are available as a `pandas` dataframe and hence
 you can perform all subset operations post your query. Your query doesn't need
 to be exact.
 
-------------
 
 ****
 Demo
@@ -276,7 +268,6 @@ Demo
 
 https://nbviewer.jupyter.org/github/saketkc/pysradb/blob/master/notebooks/demo.ipynb
 
-------------
 
 ********
 Citation
@@ -288,7 +279,6 @@ A lot of functionality in `pysradb` is based on ideas from the original `SRAdb p
 
     Zhu, Yuelin, Robert M. Stephens, Paul S. Meltzer, and Sean R. Davis. "SRAdb: query and use public next-generation sequencing data from within R." BMC bioinformatics 14, no. 1 (2013): 19.
 
-------------
 
 
 
