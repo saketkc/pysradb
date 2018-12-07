@@ -12,6 +12,8 @@ from tqdm import tqdm
 
 from .basedb import BASEdb
 
+from .filter_attrs import expand_sample_attribute_columns
+
 from .utils import _find_aspera_keypath
 from .utils import _get_url
 from .utils import mkdir_p
@@ -142,6 +144,8 @@ class SRAdb(BASEdb):
              SRA accession ID
         out_type: list
                   List of columns to output
+        expand_sample_attributes: bool
+                                  Should sample_attribute column be expanded?
 
         Returns
         -------
@@ -157,7 +161,8 @@ class SRAdb(BASEdb):
 
         select_type = [in_type + '_accession'] + out_type
         select_type_sql = (',').join(select_type)
-        sql = "SELECT DISTINCT " + select_type_sql + " FROM sra_ft WHERE sra_ft MATCH '" + acc + "';"
+        sql = "SELECT DISTINCT " + select_type_sql + \
+              " FROM sra_ft WHERE sra_ft MATCH '" + acc + "';"
         df = self.query(sql)
         df['avg_read_length'] = df['bases'] / df['spots']
         df['spots'] = df['spots'].astype(int)
@@ -169,7 +174,8 @@ class SRAdb(BASEdb):
         ])
         metadata_df = df[out_type + ['avg_read_length']].reset_index(drop=True)
         if expand_sample_attributes:
-            pass
+            if 'sample_attribute' in metadata_df.columns:
+                metadata_df = expand_sample_attribute_columns(metadata_df)
         return metadata_df
 
     def search_sra(
@@ -199,7 +205,8 @@ class SRAdb(BASEdb):
 
         select_type = out_type
         select_type_sql = (',').join(select_type)
-        sql = "SELECT DISTINCT " + select_type_sql + " FROM sra_ft WHERE sra_ft MATCH '" + search_str + "';"
+        sql = "SELECT DISTINCT " + select_type_sql +\
+              " FROM sra_ft WHERE sra_ft MATCH '" + search_str + "';"
         df = self.query(sql)
         if len(df.index) > 0:
             return order_dataframe(df, out_type)
@@ -259,14 +266,17 @@ class SRAdb(BASEdb):
             df = self.sra_metadata(srp)
         if protocol == 'ftp':
             warnings.warn(
-                'Using `ftp` protocol leads to slower downloads.\n Consider using `fastp` after installing aspera-client.',
+                '''Using `ftp` protocol leads to slower downloads.\n
+                Consider using `fastp` after installing aspera-client.''',
                 UserWarning)
         if protocol == 'fasp':
             if ascp_dir is None:
                 ascp_dir = os.path.join(os.path.expanduser('~'), '.aspera')
             if not os.path.exists(ascp_dir):
                 raise RuntimeError(
-                    'Count not find aspera at: {}\n Install aspera-client following instructions in the README.rst OR set `protocol`=ftp.\n'
+                    '''Count not find aspera at: {}\n
+                    Install aspera-client following instructions
+                    in the README.rst OR set `protocol`=ftp.\n'''
                     .format(ascp_dir))
             ascp_bin = os.path.join(ascp_dir, 'connect', 'bin', 'ascp')
         df = df.copy()
