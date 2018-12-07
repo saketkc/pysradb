@@ -167,10 +167,12 @@ class GEOdb(BASEdb):
         """
         results = self.query('SELECT * FROM gse WHERE gse = "' + gse + '"')
         if results.shape[0] == 1:
-            splitted = results['supplementary_file'][0].split(';')
-            if len(splitted):
-                match = re.findall('SRP.*', splitted[-1])
-                if len(match):
-                    srp = match[0].split('/')[-1]
-                    return srp
+            supp_file = results['supplementary_file'][0]
+            if supp_file:
+                splitted = supp_file.split(';')
+                if len(splitted):
+                    match = re.findall('SRP.*', splitted[-1])
+                    if len(match):
+                        srp = match[0].split('/')[-1]
+                        return srp
         return None

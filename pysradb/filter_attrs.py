@@ -1,8 +1,7 @@
 import warnings
 import re
-import numpy as np
 import pandas as pd
-
+import numpy as np
 
 def _get_sample_attr_keys(sample_attribute):
     if sample_attribute is None:
@@ -43,6 +42,9 @@ def expand_sample_attribute_columns(metadata_df):
     additional_columns = []
     for idx, row in metadata_df.iterrows():
         sample_attribute = row['sample_attribute']
+        if not sample_attribute:
+            continue
+        sample_attribute = sample_attribute.strip()
         sample_attribute_keys, _ = _get_sample_attr_keys(sample_attribute)
         if sample_attribute_keys:
             additional_columns += sample_attribute_keys
@@ -60,12 +62,15 @@ def expand_sample_attribute_columns(metadata_df):
         sample_attribute = row['sample_attribute']
         sample_attribute_keys, sample_attribute_values = _get_sample_attr_keys(
             sample_attribute)
-        sample_attribute_keys = list(
-            map(
-                lambda x: x if x not in metadata_df.columns.tolist() else x + '_expanded',
-                sample_attribute_keys))
+        if sample_attribute_keys:
+            sample_attribute_keys = list(
+                map(
+                    lambda x: x if x not in metadata_df.columns.tolist() else x + '_expanded',
+                    sample_attribute_keys))
         metadata_df_expanded.loc[
             idx, sample_attribute_keys] = sample_attribute_values
+    if np.nan in metadata_df_expanded.columns.tolist():
+        del metadata_df_expanded[np.nan]
     return metadata_df_expanded
 
 
