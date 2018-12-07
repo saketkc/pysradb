@@ -273,11 +273,10 @@ class SRAdb(BASEdb):
             if ascp_dir is None:
                 ascp_dir = os.path.join(os.path.expanduser('~'), '.aspera')
             if not os.path.exists(ascp_dir):
-                raise RuntimeError(
-                    '''Count not find aspera at: {}\n
+                raise RuntimeError('''Count not find aspera at: {}\n
                     Install aspera-client following instructions
-                    in the README.rst OR set `protocol`=ftp.\n'''
-                    .format(ascp_dir))
+                    in the README.rst OR set `protocol`=ftp.\n'''.format(
+                    ascp_dir))
             ascp_bin = os.path.join(ascp_dir, 'connect', 'bin', 'ascp')
         df = df.copy()
         df.loc[:, 'download_url'] = FTP_PREFIX[

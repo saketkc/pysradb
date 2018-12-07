@@ -3,7 +3,7 @@ History
 #######
 
 *******************
-0.4.0 (---2018)
+0.4.0 (12--2018)
 *******************
 
 New methods/functionality
@@ -11,6 +11,12 @@ New methods/functionality
 
 * Added a new `BASEdb` class to handle common database connections
 * Initial support for GEOmetadb through GEOdb class
+* Initial support or a command line interface:
+  - download      Download SRA project (SRPnnnn)
+  - gse-metadata  Fetch metadata for GEO ID (GSEnnnn)
+  - gse-to-gsm    Get GSM(s) for GSE
+  - gsm-metadata  Fetch metadata for GSM ID (GSMnnnn)
+  - sra-metadata  Fetch metadata for SRA project (SRPnnnn)
 
 
 *******************

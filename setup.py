@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 """The setup script."""
 
-from setuptools import setup, find_packages
+from setuptools import setup
 
 with open('README.rst') as readme_file:
     readme = readme_file.read()
@@ -19,7 +19,7 @@ setup(
     author='Saket Choudhary',
     author_email='saketkc@gmail.com',
     classifiers=[
-        'Development Status :: 2 - Pre-Alpha',
+        'Development Status :: 4 - Beta',
         'Intended Audience :: Developers',
         'License :: OSI Approved :: BSD License',
         'Natural Language :: English',
@@ -32,7 +32,7 @@ setup(
     ],
     description=
     "Python package for interacting with SRAdb and downloading datasets from SRA",
-    entry_points={},
+    entry_points={'console_scripts': ['pysradb=pysradb.cli:cli']},
     install_requires=requirements,
     license="BSD license",
     long_description=readme + '\n\n' + history,
