@@ -3,6 +3,17 @@ History
 #######
 
 *******************
+0.4.0 (---2018)
+*******************
+
+New methods/functionality
+=========================
+
+* Added a new `BASEdb` class to handle common database connections
+* Initial support for GEOmetadb through GEOdb class
+
+
+*******************
 0.3.0 (12-05-2018)
 *******************
 
