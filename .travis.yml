@@ -9,6 +9,7 @@ install:
 - pip install -U numpydoc sphinxcontrib-fulltoc guzzle_sphinx_theme
 script:
 - make install
+- pysradb
 - travis-sphinx build --source=$TRAVIS_BUILD_DIR/docs
 after_success:
 - travis-sphinx deploy
