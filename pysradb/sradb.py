@@ -5,14 +5,13 @@ import gzip
 import os
 import re
 import shutil
-import sqlite3
 import sys
 import warnings
 
-import pandas as pd
 from tqdm import tqdm
 
-from .utils import _extract_first_field
+from .basedb import BASEdb
+
 from .utils import _find_aspera_keypath
 from .utils import _get_url
 from .utils import mkdir_p
@@ -79,7 +78,7 @@ def download_sradb_file(download_dir=os.getcwd(), overwrite=True):
     print(metadata)
 
 
-class SRAdb(object):
+class SRAdb(BASEdb):
     def __init__(self, sqlite_file):
         """Initialize SRAdb.
 
@@ -91,9 +90,8 @@ class SRAdb(object):
 
 
         """
-        self.sqlite_file = sqlite_file
-        self.open()
-        self.cursor = self.db.cursor()
+        super(SRAdb, self).__init__(sqlite_file)
+        self._db_type = 'SRA'
         self.valid_in_acc_type = [
             'SRA', 'ERA', 'DRA', 'SRP', 'ERP', 'DRP', 'SRS', 'ERS', 'DRS',
             'SRX', 'ERX', 'DRX', 'SRR', 'ERR', 'DRR'
@@ -115,121 +113,6 @@ class SRAdb(object):
             'ERR': 'run',
             'DRR': 'run'
         }
-
-    def open(self):
-        """Open sqlite connection."""
-        self.db = sqlite3.connect(self.sqlite_file)
-        self.db.text_factory = str
-
-    def close(self):
-        """Close sqlite connection."""
-        self.db.close()
-
-    def list_tables(self):
-        """List all tables in the sqlite file.
-
-
-        Returns
-        -------
-        table_list: list
-                    List of all table names
-        """
-        results = self.cursor.execute(
-            'SELECT name FROM sqlite_master WHERE type="table";').fetchall()
-        return _extract_first_field(results)
-
-    def list_fields(self, table):
-        """List all fields in a given table.
-
-        Parameters
-        ----------
-        table: string
-               Table name.
-               See `list_tables` for getting all table names
-
-        Returns
-        -------
-        field_list: list
-                    A list of field names for the table
-        """
-        results = self.cursor.execute('SELECT * FROM {}'.format(table))
-        return _extract_first_field(results.description)
-
-    def desc_table(self, table):
-        """Describe all fields in a table.
-
-        Parameters
-        ----------
-        table: string
-               Table name.
-               See `list_tables` for getting all table names
-
-        Returns
-        -------
-        table_desc: DataFrame
-                    A DataFrame with field name and its
-                    schema description
-        """
-        results = self.cursor.execute(
-            'PRAGMA table_info("{}")'.format(table)).fetchall()
-        columns = ['cid', 'name', 'dtype', 'notnull', 'dflt_value', 'pk']
-        data = []
-        for result in results:
-            data.append(list(map(lambda x: str(x), result)))
-        table_desc = pd.DataFrame(data, columns=columns)
-        return table_desc
-
-    def query(self, sql_query):
-        """Run SQL query.
-
-        Parameters
-        ----------
-        sql_query: string
-                   SQL query string
-
-        Returns
-        -------
-        results: DataFrame
-                 Query results formatted as dataframe
-
-        """
-        results = self.cursor.execute(sql_query).fetchall()
-        column_names = list(map(lambda x: x[0], self.cursor.description))
-        results = [dict(zip(column_names, result)) for result in results]
-        return pd.DataFrame(results)
-
-    def get_row_count(self, table):
-        """Get row counts for a table.
-
-        Parameters
-        ----------
-        table: string
-               Table name.
-               See `list_tables` for getting all table names
-
-        Returns
-        -------
-        row_count: int
-                   Number of rows in table
-        """
-        return self.cursor.execute(
-            'SELECT max(rowid) FROM {}'.format(table)).fetchone()[0]
-
-    def all_row_counts(self):
-        """Get row counts of all tables in the db file.
-
-        Returns
-        -------
-        row_counts: DataFrame
-                    A dataframe with table names and corresponding
-                    row count.
-
-        """
-        tables = self.list_tables()
-        results = dict(
-            [(table, self.get_row_count(table)) for table in tables])
-        return pd.DataFrame.from_dict(
-            results, orient='index', columns=['count'])
 
     def sra_metadata(self,
                      acc,
@@ -318,7 +201,9 @@ class SRAdb(object):
         select_type_sql = (',').join(select_type)
         sql = "SELECT DISTINCT " + select_type_sql + " FROM sra_ft WHERE sra_ft MATCH '" + search_str + "';"
         df = self.query(sql)
-        return order_dataframe(df, out_type)
+        if len(df.index) > 0:
+            return order_dataframe(df, out_type)
+        return None
 
     def search_experiment(self, srx):
         """Search for a SRX/GSM id in the experiments.
@@ -346,30 +231,6 @@ class SRAdb(object):
         column_names = list(map(lambda x: x[0], self.cursor.description))
         results = dict(zip(column_names, results))
         return results
-
-    def convert_gse_to_srp(self, gse):
-        """Convert GSE to SRP id.
-
-        Requires input db to be GEOmetadb.sqlite.
-
-        Parameters
-        ----------
-        gse: string
-             GSE ID
-
-        Returns
-        -------
-        srp: string
-             SRP ID
-        """
-        results = self.query('SELECT * from gse WHERE gse = "' + gse + '"')
-        if results.shape[0] == 1:
-            splitted = results['supplementary_file'][0].split(';')
-            if len(splitted):
-                match = re.findall('SRP.*', splitted[-1])
-                if len(match):
-                    srp = match[0].split('/')[-1]
-                    return srp
 
     def download(self,
                  srp=None,

@@ -1,6 +1,5 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-
 """The setup script."""
 
 from setuptools import setup, find_packages
@@ -12,7 +11,9 @@ with open('HISTORY.rst') as history_file:
     history = history_file.read()
 
 requirements = ['pandas>=0.23.4', 'tqdm>=4.28']
-test_requirements = ['pytest', ]
+test_requirements = [
+    'pytest',
+]
 
 setup(
     author='Saket Choudhary',
@@ -29,9 +30,9 @@ setup(
         'Programming Language :: Python :: 3.6',
         'Programming Language :: Python :: 3.7',
     ],
-    description="Python package for interacting with SRAdb and downloading datasets from SRA",
-    entry_points={
-    },
+    description=
+    "Python package for interacting with SRAdb and downloading datasets from SRA",
+    entry_points={},
     install_requires=requirements,
     license="BSD license",
     long_description=readme + '\n\n' + history,

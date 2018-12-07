@@ -4,6 +4,14 @@ pysradb package
 Submodules
 ----------
 
+pysradb.basedb module
+---------------------
+
+.. automodule:: pysradb.basedb
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
 pysradb.filter\_attrs module
 ----------------------------
 
@@ -12,10 +20,18 @@ pysradb.filter\_attrs module
     :undoc-members:
     :show-inheritance:
 
-pysradb.pysradb module
-----------------------
+pysradb.geodb module
+--------------------
 
-.. automodule:: pysradb.pysradb
+.. automodule:: pysradb.geodb
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+pysradb.sradb module
+--------------------
+
+.. automodule:: pysradb.sradb
     :members:
     :undoc-members:
     :show-inheritance:
