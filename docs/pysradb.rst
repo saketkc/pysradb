@@ -12,6 +12,14 @@ pysradb.basedb module
     :undoc-members:
     :show-inheritance:
 
+pysradb.cli module
+------------------
+
+.. automodule:: pysradb.cli
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
 pysradb.filter\_attrs module
 ----------------------------
 
