@@ -111,6 +111,7 @@ def _get_url(url, download_to, show_progress=True):
     else:
         import urllib as urllib_request
     desc_file = url.split('/')[-1]
+    mkdir_p(os.path.dirname(download_to))
     if show_progress:
         with TqdmUpTo(
                 unit='B',
