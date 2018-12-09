@@ -63,5 +63,5 @@ def test_gse_to_gsm(runner):
 
 def test_cmd_gse_to_gsm_empty(runner):
     result = runner.invoke(sradbcli.cmd_gse_to_gsm, input='\n')
-    assert 'Missing argument "GSE_ID".' in result.output
+    assert 'Missing argument' in result.output
     assert result.exit_code == 2
