@@ -4,10 +4,11 @@ from __future__ import (absolute_import, division, print_function,
 import gzip
 import os
 import re
-import shutil
 import sys
 
 from .utils import _get_url
+from .utils import get_gzip_uncompressed_size
+from .utils import copyfileobj
 from .basedb import BASEdb
 
 PY3 = True
@@ -47,9 +48,14 @@ def download_geodb_file(download_dir=os.getcwd(), overwrite=True):
         raise RuntimeError('Could not use {}.\nException: {}.\n'.format(
             GEOmetadb_URL, e))
     print('Extracting {} ...'.format(download_location))
+    filesize = get_gzip_uncompressed_size(download_location)
     with gzip.open(download_location, 'rb') as fh_in:
         with open(download_location_unzip, 'wb') as fh_out:
-            shutil.copyfileobj(fh_in, fh_out)
+            copyfileobj(
+                fh_in,
+                fh_out,
+                filesize=filesize,
+                desc='Extracting {}'.format('GEOmetadb.sqlite.gz'))
     print('Done!')
     db = GEOdb(download_location_unzip)
     metadata = db.query('SELECT * FROM metaInfo')

@@ -13,13 +13,14 @@ def sradb_connection(conf_download_sradb_file):
     db = SRAdb(db_file)
     return db
 
+
 def test_list_tables(sradb_connection):
     sra_tables = sradb_connection.list_tables()
-    assert sra_tables == ['metaInfo', 'submission', 'study',
-                          'sample', 'experiment', 'run', 'sra',
-                          'sra_ft', 'sra_ft_content', 'sra_ft_segments',
-                          'sra_ft_segdir', 'col_desc', 'fastq']
-
+    assert sra_tables == [
+        'metaInfo', 'submission', 'study', 'sample', 'experiment', 'run',
+        'sra', 'sra_ft', 'sra_ft_content', 'sra_ft_segments', 'sra_ft_segdir',
+        'col_desc', 'fastq'
+    ]
 
 
 def test_list_fields(sradb_connection):
@@ -49,6 +50,12 @@ def test_all_row_counts(sradb_connection):
 def test_sra_metadata(sradb_connection):
     df = sradb_connection.sra_metadata('SRP017942')
     assert df['experiment_accession'][0] == 'SRX217028'
+
+
+def test_sra_metadata2(sradb_connection):
+    df = sradb_connection.sra_metadata(
+        'SRP017942', expand_sample_attributes=True)
+    assert df['transfected_with'][0] == '3xflag-gfp'
 
 
 def test_search(sradb_connection):
