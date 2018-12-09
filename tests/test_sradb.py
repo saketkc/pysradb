@@ -3,8 +3,10 @@
 
 from __future__ import (absolute_import, division, print_function,
                         unicode_literals)
+import os
 import pytest
 from pysradb import SRAdb
+from pysradb.filter_attrs import guess_cell_type, guess_tissue_type, guess_strain_type
 
 
 @pytest.fixture(scope="module")
@@ -61,3 +63,41 @@ def test_sra_metadata2(sradb_connection):
 def test_search(sradb_connection):
     df = sradb_connection.search_sra(search_str="breast cancer")
     assert len(df.index)
+
+
+def test_download_fasp(sradb_connection):
+    df = sradb_connection.sra_metadata('SRP098789')
+    df = df[df.experiment_accession == 'SRX2536403']
+    sradb_connection.download(df=df, out_dir='data/')
+    assert os.path.isfile('data/SRP098789/SRX2536403/SRR5227288.sra')
+    assert os.path.getsize('data/SRP098789/SRX2536403/SRR5227288.sra')
+    os.remove('data/SRP098789/SRX2536403/SRR5227288.sra')
+
+
+def test_download_ftp(sradb_connection):
+    df = sradb_connection.sra_metadata('SRP098789')
+    df = df[df.experiment_accession == 'SRX2536404']
+    sradb_connection.download(df=df, protocol='ftp', out_dir='data/')
+    assert os.path.isfile('data/SRP098789/SRX2536404/SRR5227289.sra')
+    assert os.path.getsize('data/SRP098789/SRX2536404/SRR5227289.sra')
+    os.remove('data/SRP098789/SRX2536404/SRR5227289.sra')
+
+
+def test_tissue_type(sradb_connection):
+    df = sradb_connection.sra_metadata('SRP016501')
+    df = df[df.experiment_accession == 'SRX196389']
+    cell_type = df['sample_attribute'].apply(lambda x: guess_cell_type(x))
+    tissue_type = df['sample_attribute'].apply(lambda x: guess_tissue_type(x))
+    assert cell_type.tolist() == ['chicken_brain']
+    assert tissue_type.tolist() == ['brain']
+
+
+def test_strain_type(sradb_connection):
+    df = sradb_connection.sra_metadata('SRP043036')
+    df = df.sort_values(by='experiment_accession')
+    strains = df['sample_attribute'].apply(
+        lambda x: guess_strain_type(x)).tolist()
+    assert strains == [
+        'by4741', 'by4741', 'by4741', 'by4741', 'by4741', 'by4741', 'by4741',
+        'by4741', 's288c', 's288c', 's288c', 's288c'
+    ]
