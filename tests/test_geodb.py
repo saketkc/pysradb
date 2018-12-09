@@ -30,3 +30,8 @@ def test_gse_to_gsm(geodb_connection):
 def test_geo_convert(geodb_connection):
     df = geodb_connection.geo_convert('GSM3139409')
     assert df['to_acc'][0] == 'GSE114314'
+
+
+def test_guess_srp_form_gse(geodb_connection):
+    srp = geodb_connection.guess_srp_from_gse('GSE73136')
+    assert srp == 'SRP063852'
