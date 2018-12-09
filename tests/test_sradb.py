@@ -65,6 +65,11 @@ def test_search(sradb_connection):
     assert len(df.index)
 
 
+def test_search_by_expt_id(sradb_connection):
+    df = sradb_connection.search_by_expt_id('SRX1254413')
+    assert df.study_name.tolist()[0] == 'GSE73136'
+
+
 def test_download_fasp(sradb_connection):
     df = sradb_connection.sra_metadata('SRP098789')
     df = df[df.experiment_accession == 'SRX2536403']

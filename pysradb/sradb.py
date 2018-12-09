@@ -7,6 +7,7 @@ import re
 import sys
 import warnings
 
+import pandas as pd
 from tqdm import tqdm
 
 from .basedb import BASEdb
@@ -221,7 +222,7 @@ class SRAdb(BASEdb):
             return order_dataframe(df, out_type)
         return None
 
-    def search_SRX(self, srx):
+    def search_by_expt_id(self, srx):
         """Search for a SRX/GSM id in the experiments.
 
         Parameters
