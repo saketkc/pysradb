@@ -221,7 +221,7 @@ class SRAdb(BASEdb):
             return order_dataframe(df, out_type)
         return None
 
-    def search_experiment(self, srx):
+    def search_SRX(self, srx):
         """Search for a SRX/GSM id in the experiments.
 
         Parameters
@@ -246,7 +246,7 @@ class SRAdb(BASEdb):
         results = results[0]
         column_names = list(map(lambda x: x[0], self.cursor.description))
         results = dict(zip(column_names, results))
-        return results
+        return pd.DataFrame.from_dict(results, orient='index').T
 
     def download(self,
                  srp=None,
