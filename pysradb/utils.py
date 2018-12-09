@@ -1,7 +1,10 @@
 import errno
+import io
+import gzip
 import os
 import shlex
 import sys
+import struct
 import subprocess
 from tqdm import tqdm
 PY3 = True
@@ -110,7 +113,7 @@ def _get_url(url, download_to, show_progress=True):
         import urllib.request as urllib_request
     else:
         import urllib as urllib_request
-    desc_file = url.split('/')[-1]
+    desc_file = 'Downloading {}'.format(url.split('/')[-1])
     mkdir_p(os.path.dirname(download_to))
     if show_progress:
         with TqdmUpTo(
@@ -141,3 +144,60 @@ def run_command(command, verbose=False):
                 print(str(output.strip()))
     rc = process.poll()
     return rc
+
+
+def get_gzip_uncompressed_size(filepath):
+    """Get uncompressed size of a .gz file
+
+    Parameters
+    ----------
+    filepath: string
+              Path to input file
+
+    Returns
+    -------
+    filesize: int
+              Uncompressed file size
+    """
+    if PY3:
+        with gzip.open(filepath, 'rb') as file_obj:
+            return file_obj.seek(0, io.SEEK_END)
+    # For python2, there is a bug
+    # since the compression ratios for files>2GB
+    # will be negative. This causes the progress
+    # bar to end earlier than it should.
+    # No fixes known
+    with open(filepath, 'rb') as f:
+        f.seek(-4, 2)
+        return struct.unpack('I', f.read(4))[0]
+
+
+def copyfileobj(fsrc, fdst, bufsize=16384, filesize=None, desc=''):
+    """Copy file object with a progress bar.
+
+    Parameters
+    ----------
+    fsrc: filehandle
+          Input file handle
+    fdst: filehandle
+          Output file handle
+    bufsize: int
+             Length of output buffer
+    filesize: int
+              Input file file size
+    desc: string
+          Description for tqdm status
+    """
+    with tqdm(
+            total=filesize,
+            unit='B',
+            unit_scale=True,
+            miniters=1,
+            unit_divisor=1024,
+            desc=desc) as pbar:
+        while True:
+            buf = fsrc.read(bufsize)
+            if not buf:
+                break
+            fdst.write(buf)
+            pbar.update(len(buf))

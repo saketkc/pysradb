@@ -14,6 +14,7 @@ from .geodb import GEOdb
 import click
 import pandas as pd
 
+click.disable_unicode_literals_warning = True
 CONTEXT_SETTINGS = dict(help_option_names=['-h', '--help'])
 
 
@@ -43,6 +44,30 @@ def cli():
     Citation: Pending.
     """
     pass
+
+
+@cli.command(
+    'srametadb',
+    context_settings=CONTEXT_SETTINGS,
+    help='Download SRAmetadb.sqlite')
+@click.option('--out_dir', type=str, help='Output directory location')
+@click.option('--overwrite', type=bool, help='Overwrite existing file')
+def cmd_download_sra(out_dir, overwrite):
+    if out_dir is None:
+        out_dir = os.getcwd()
+    download_sradb_file(out_dir, overwrite)
+
+
+@cli.command(
+    'geometadb',
+    context_settings=CONTEXT_SETTINGS,
+    help='Download GEOmetadb.sqlite')
+@click.option('--out_dir', type=str, help='Output directory location')
+@click.option('--overwrite', type=bool, help='Overwrite existing file')
+def cmd_download_geo(out_dir, overwrite):
+    if out_dir is None:
+        out_dir = os.getcwd()
+    download_geodb_file(out_dir, overwrite)
 
 
 @cli.command(
@@ -119,7 +144,7 @@ def cmd_gse_metadata(gse_id, db, saveto):
 def cmd_gsm_metadata(gsm_id, db, saveto):
     db = _check_geodb_file(db)
     geodb = GEOdb(db)
-    df = geodb.gse_metadata(gsm=gsm_id)
+    df = geodb.gsm_metadata(gsm=gsm_id)
     if saveto:
         df.to_csv(saveto, index=False, header=True, sep='\t')
     else:
