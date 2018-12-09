@@ -38,7 +38,7 @@ class TqdmUpTo(tqdm):
 
 def _extract_first_field(data):
     """Extract first field from a list of fields."""
-    return list(iter(next(zip(*data))))
+    return list(next(iter(zip(*data))))
 
 
 def _find_aspera_keypath(aspera_dir=None):
