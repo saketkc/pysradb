@@ -13,7 +13,8 @@ pysradb
 .. image:: https://img.shields.io/badge/install%20with-bioconda-brightgreen.svg?style=flat-square
         :target: http://bioconda.github.io/recipes/pysradb/README.html
 
-
+.. image:: https://codecov.io/gh/saketkc/pysradb/branch/master/graph/badge.svg?style=flat-square
+        :target: https://codecov.io/gh/saketkc/pysradb
 
 Python package for interacting with SRAdb and downloading datasets from SRA.
 
