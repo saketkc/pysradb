@@ -7,12 +7,13 @@ install:
 - pip install -U pandas click tqdm
 - pip install -U sphinx ipython travis-sphinx
 - pip install -U numpydoc sphinxcontrib-fulltoc guzzle_sphinx_theme
-- pip install pytest coverage
+- pip install pytest coverage pytest-cov codecov
 script:
 - make install
 - pysradb
 - make test
 - make coverage
+- codecov
 - travis-sphinx build --source=$TRAVIS_BUILD_DIR/docs
 after_success:
 - travis-sphinx deploy

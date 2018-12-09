@@ -17,7 +17,7 @@ def test_all_row_counts(geodb_connection):
     assert geodb_connection.all_row_counts().loc['metaInfo', 'count'] == 2
 
 
-def test_sra_metadata(geodb_connection):
+def test_gse_metadata(geodb_connection):
     df = geodb_connection.gse_metadata('GSE114314')
     assert int(df['pubmed_id'][0]) == 29925996
 
