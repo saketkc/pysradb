@@ -20,6 +20,17 @@ Python package for interacting with SRAdb and downloading datasets from SRA.
 
 
 
+**************
+Demo Notebooks
+**************
+
+These notebooks document all the possible features of `pysradb`:
+
+1. `SRAmetadb operations <https://nbviewer.jupyter.org/github/saketkc/pysradb/blob/master/notebooks/01.SRAdb-demo.ipynb>`_
+2. `GEOmetadb operations <https://nbviewer.jupyter.org/github/saketkc/pysradb/blob/master/notebooks/02.GEOmetadb-demo.ipynb>`_
+3. `Command line usage <https://nbviewer.jupyter.org/github/saketkc/pysradb/blob/master/notebooks/03.CommandLine-demo.ipynb>`_
+
+
 ************
 Installation
 ************
@@ -263,11 +274,6 @@ you can perform all subset operations post your query. Your query doesn't need
 to be exact.
 
 
-****
-Demo
-****
-
-https://nbviewer.jupyter.org/github/saketkc/pysradb/blob/master/notebooks/demo.ipynb
 
 
 ********
