@@ -130,20 +130,12 @@ def _get_url(url, download_to, show_progress=True):
 
 def run_command(command, verbose=False):
     """Run a shell command"""
-    if PY3:
-        process = subprocess.Popen(
-            shlex.split(command),
-            stdout=subprocess.PIPE,
-            stderr=subprocess.STDOUT,
-            encoding='utf8')
-    else:
-        process = subprocess.Popen(
-            shlex.split(command),
-            stdout=subprocess.PIPE,
-            stderr=subprocess.STDOUT)
+    process = subprocess.Popen(
+        shlex.split(command), stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
 
     while True:
         output = str(process.stdout.readline().strip())
+        output = output.encode().decode()
         if output == '' and process.poll() is not None:
             break
         if output:
