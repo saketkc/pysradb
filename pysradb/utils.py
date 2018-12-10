@@ -134,9 +134,12 @@ def run_command(command, verbose=False):
         shlex.split(command), stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
 
     while True:
-        output = str(process.stdout.readline().strip())
-        output = output.encode().decode()
-        if output == '' and process.poll() is not None:
+        output = process.stdout.readline().strip()
+        if not PY3:
+            output = output.encode().decode()
+        else:
+            output = output.decode('utf-8')
+        if output == u'' and process.poll() is not None:
             break
         if output:
             if verbose:

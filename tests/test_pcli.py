@@ -50,6 +50,11 @@ def test_sra_metadata(runner):
                            ['SRP098789', '--db', 'data/SRAmetadb.sqlite'])
     assert 'SRX2536403' in result.output
 
+def test_sra_metadata(runner):
+    result = runner.invoke(sradbcli.cmd_sra_metadata,
+                           ['SRP098789', '--db', 'data/SRAmetadb.sqlite', '--expand'])
+    assert 'treatment_time' in result.output
+
 
 def test_gse_metadata(runner):
     result = runner.invoke(sradbcli.cmd_gse_metadata,

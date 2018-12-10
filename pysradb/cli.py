@@ -95,7 +95,7 @@ def cmd_download_sra(out_dir, db, srp_ids):
 @click.option('--db', help='Path to SRAmetadb.sqlite file')
 @click.option(
     '--expand',
-    type=bool,
+    is_flag=True,
     help='Should sample_attribute be expanded',
     default=False)
 @click.argument('srp_id', required=True)

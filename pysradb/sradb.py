@@ -277,7 +277,7 @@ class SRAdb(BASEdb):
         if protocol == 'ftp':
             warnings.warn(
                 '''Using `ftp` protocol leads to slower downloads.\n
-                Consider using `fastp` after installing aspera-client.''',
+                Consider using `fasp` after installing aspera-client.''',
                 UserWarning)
         if protocol == 'fasp':
             if ascp_dir is None:
