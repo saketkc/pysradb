@@ -59,6 +59,7 @@ Dependecies
 
    pandas>=0.23.4
    tqdm>=4.28
+   click>=7.0
    aspera-client
    SRAmetadb.sqlite
 
@@ -187,7 +188,7 @@ The default download location is `pysradb_downloads/` created inside your curren
 You can specify a location by:
 
 .. code-block:: python
-    
+
    db.download(df=df, out_dir='/pysradb_downloads')
 
 
