@@ -3,7 +3,7 @@ History
 #######
 
 *******************
-0.4.0 (12--2018)
+0.4.0 (12-12-2018)
 *******************
 
 New methods/functionality
@@ -17,7 +17,7 @@ New methods/functionality
   - gse-to-gsm    Get GSM(s) for GSE
   - gsm-metadata  Fetch metadata for GSM ID (GSMnnnn)
   - sra-metadata  Fetch metadata for SRA project (SRPnnnn)
-
+* Added three separate notebooks for SRAdb, GEOdb, CLI usage
 
 *******************
 0.3.0 (12-05-2018)
