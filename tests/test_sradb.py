@@ -51,13 +51,13 @@ def test_all_row_counts(sradb_connection):
 
 def test_sra_metadata(sradb_connection):
     df = sradb_connection.sra_metadata('SRP017942')
-    assert df['experiment_accession'][0] == 'SRX217028'
+    assert df['experiment_accession'][0] == 'SRX217027'
 
 
 def test_sra_metadata2(sradb_connection):
     df = sradb_connection.sra_metadata(
         'SRP017942', expand_sample_attributes=True)
-    assert df['transfected_with'][0] == '3xflag-gfp'
+    assert '3xflag-gfp' in df['transfected_with'].tolist()
 
 
 def test_search(sradb_connection):
