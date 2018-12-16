@@ -106,10 +106,27 @@ def cmd_sra_metadata(srp_id, db, expand, saveto):
     if saveto:
         df.to_csv(saveto, index=False, header=True, sep='\t')
     else:
-        with pd.option_context('display.max_rows', None, 'display.max_columns',
-                               None):
-            if len(df.index):
-                print(df)
+        if len(df.index):
+            print(df.to_string(index=False))
+    sradb.close()
+
+
+@cli.command(
+    'srp-to-srx',
+    context_settings=CONTEXT_SETTINGS,
+    help='Get SRX/SRR for a SRP')
+@click.option('--db', help='Path to GEOmetadb.sqlite file')
+@click.option('--saveto', help='Save output to file')
+@click.argument('srp_id', required=True)
+def cmd_srp_to_srx(srp_id, db, saveto):
+    db = _check_sradb_file(db)
+    sradb = SRAdb(db)
+    df = sradb.srp_to_srx(srp=srp_id)
+    if saveto:
+        df.to_csv(saveto, index=False, header=True, sep='\t')
+    else:
+        if len(df.index):
+            print(df.to_string(index=False, justify='left', col_space=0))
     sradb.close()
 
 

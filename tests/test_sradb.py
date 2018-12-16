@@ -78,6 +78,7 @@ def test_download_fasp(sradb_connection):
     assert os.path.getsize('data/SRP098789/SRX2536403/SRR5227288.sra')
     os.remove('data/SRP098789/SRX2536403/SRR5227288.sra')
 
+
 @pytest.mark.xfail
 def test_download_ftp(sradb_connection):
     # This happens to fail because of ftp problems
@@ -87,6 +88,7 @@ def test_download_ftp(sradb_connection):
     assert os.path.isfile('data/SRP098789/SRX2536404/SRR5227289.sra')
     assert os.path.getsize('data/SRP098789/SRX2536404/SRR5227289.sra')
     os.remove('data/SRP098789/SRX2536404/SRR5227289.sra')
+
 
 def test_tissue_type(sradb_connection):
     df = sradb_connection.sra_metadata('SRP016501')
