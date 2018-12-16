@@ -3,6 +3,16 @@ History
 #######
 
 *******************
+0.4.1 (12-15-2018)
+*******************
+
+New methods/functionality
+=========================
+
+* New command line utility `srp-to-srx` to convert SRP to SRX/SRR
+
+
+*******************
 0.4.0 (12-12-2018)
 *******************
 

@@ -145,7 +145,8 @@ class SRAdb(BASEdb):
                          'spots',
                          'adapter_spec',
                      ],
-                     expand_sample_attributes=False):
+                     expand_sample_attributes=False,
+                     output_read_lengths=False):
         """Get metadata for the provided SRA accession.
 
         Parameters
@@ -174,19 +175,39 @@ class SRAdb(BASEdb):
         sql = "SELECT DISTINCT " + select_type_sql + \
               " FROM sra_ft WHERE sra_ft MATCH '" + acc + "';"
         df = self.query(sql)
-        df['avg_read_length'] = df['bases'] / df['spots']
-        df['spots'] = df['spots'].astype(int)
-        df['bases'] = df['bases'].astype(int)
-        df['taxon_id'] = df['taxon_id'].fillna(0).astype(int)
-        df = df.sort_values(by=[
-            'taxon_id', 'avg_read_length', 'run_accession',
-            'experiment_accession', 'library_selection'
-        ])
-        metadata_df = df[out_type + ['avg_read_length']].reset_index(drop=True)
+        if 'bases' in df.columns:
+            if 'spots' in df.columns:
+                df['avg_read_length'] = df['bases'] / df['spots']
+                df['spots'] = df['spots'].astype(int)
+            df['bases'] = df['bases'].astype(int)
+        if 'taxon_id' in df.columns:
+            df['taxon_id'] = df['taxon_id'].fillna(0).astype(int)
+            df = df.sort_values(by=['taxon_id'])
+
+        df = df.sort_values(by=['experiment_accession', 'run_accession'])
+        if output_read_lengths and 'avg_read_length' in df.columns:
+            out_type = out_type + ['avg_read_length']
+        metadata_df = df[out_type].reset_index(drop=True)
         if expand_sample_attributes:
             if 'sample_attribute' in metadata_df.columns:
                 metadata_df = expand_sample_attribute_columns(metadata_df)
         return metadata_df
+
+    def srp_to_srx(self, srp):
+        """Convert SRP to SRX/SRR.
+
+        Parameters
+        ----------
+        srp: string
+             SRP ID
+
+        Returns
+        -------
+        srp_to_srx_df: DataFrame
+                       DataFrame with two columns for SRX/SRR
+        """
+        out_type = ['experiment_accession', 'run_accession']
+        return self.sra_metadata(acc=srp, out_type=out_type)
 
     def search_sra(
             self,
