@@ -4,6 +4,7 @@ from __future__ import (absolute_import, division, print_function,
                         unicode_literals)
 
 import os
+import sys
 
 from . import __version__
 from .sradb import download_sradb_file
@@ -16,6 +17,10 @@ import pandas as pd
 
 click.disable_unicode_literals_warning = True
 CONTEXT_SETTINGS = dict(help_option_names=['-h', '--help'])
+
+PY3 = True
+if sys.version_info[0] < 3:
+    PY3 = False
 
 
 def _check_sradb_file(db):
@@ -107,7 +112,12 @@ def cmd_sra_metadata(srp_id, db, expand, saveto):
         df.to_csv(saveto, index=False, header=True, sep='\t')
     else:
         if len(df.index):
-            print(df.to_string(index=False))
+            if PY3:
+                print(df.to_string(index=False, justify='left', col_space=0))
+            else:
+                print(df.to_string(index=False, justify='left',
+                                   col_space=0).encode('utf-8'))
+
     sradb.close()
 
 
@@ -126,7 +136,11 @@ def cmd_srp_to_srx(srp_id, db, saveto):
         df.to_csv(saveto, index=False, header=True, sep='\t')
     else:
         if len(df.index):
-            print(df.to_string(index=False, justify='left', col_space=0))
+            if PY3:
+                print(df.to_string(index=False, justify='left', col_space=0))
+            else:
+                print(df.to_string(index=False, justify='left',
+                                   col_space=0).encode('utf-8'))
     sradb.close()
 
 
