@@ -2,14 +2,15 @@
 History
 #######
 
+
 *******************
-0.4.1 (12-15-2018)
+0.4.2 (12-16-2018)
 *******************
 
-New methods/functionality
-=========================
+Bugfix
+======
 
-* New command line utility `srp-to-srx` to convert SRP to SRX/SRR
+* Fixed unicode error in tests for Python2
 
 
 *******************
