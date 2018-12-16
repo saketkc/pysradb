@@ -2,7 +2,8 @@
 pysradb
 #######
 
-
+.. image:: https://zenodo.org/badge/159590788.svg
+   :target: https://zenodo.org/badge/latestdoi/159590788
 
 .. image:: https://img.shields.io/pypi/v/pysradb.svg?style=flat-square
         :target: https://pypi.python.org/pypi/pysradb
