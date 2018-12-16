@@ -2,7 +2,8 @@
 pysradb
 #######
 
-
+.. image:: https://zenodo.org/badge/159590788.svg
+   :target: https://zenodo.org/badge/latestdoi/159590788
 
 .. image:: https://img.shields.io/pypi/v/pysradb.svg?style=flat-square
         :target: https://pypi.python.org/pypi/pysradb
@@ -281,7 +282,9 @@ to be exact.
 Citation
 ********
 
-Pending.
+Zenodo archive: https://zenodo.org/badge/latestdoi/159590788
+
+DOI: 10.5281/zenodo.2306881 
 
 A lot of functionality in `pysradb` is based on ideas from the original `SRAdb package <https://bioconductor.org/packages/release/bioc/html/SRAdb.html>`_. Please cite the original SRAdb publication:
 
