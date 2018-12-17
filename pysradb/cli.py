@@ -115,8 +115,9 @@ def cmd_sra_metadata(srp_id, db, expand, saveto):
             if PY3:
                 print(df.to_string(index=False, justify='left', col_space=0))
             else:
-                print(df.to_string(index=False, justify='left',
-                                   col_space=0).encode('utf-8'))
+                print(
+                    df.to_string(index=False, justify='left',
+                                 col_space=0).encode('utf-8'))
 
     sradb.close()
 
@@ -139,8 +140,9 @@ def cmd_srp_to_srx(srp_id, db, saveto):
             if PY3:
                 print(df.to_string(index=False, justify='left', col_space=0))
             else:
-                print(df.to_string(index=False, justify='left',
-                                   col_space=0).encode('utf-8'))
+                print(
+                    df.to_string(index=False, justify='left',
+                                 col_space=0).encode('utf-8'))
     sradb.close()
 
 
