@@ -8,8 +8,29 @@ def _get_sample_attr_keys(sample_attribute):
     if sample_attribute is None:
         return None, None
     sample_attribute_splitted = sample_attribute.split('||')
-    sample_attribute_dict = dict(
-        [str(attr).split(': ') for attr in sample_attribute_splitted])
+    split_by_colon = [
+        str(attr).split(': ') for attr in sample_attribute_splitted
+    ]
+    # Iterate once more to consider first one as the key
+    # and remaining as the value
+    # This is because of bad annotations like in this example
+    # Example: isolate: not applicable || organism: Mus musculus || cell_line: 17-Cl1 ||\
+    # infect: MHV-A59 || time point: 5: hour || compound: cycloheximide ||\
+    # sequencing protocol: RiboSeq || biological repeat: long read sequencing
+    # Notice the `time: 5: hour`
+
+    for index, element in enumerate(split_by_colon):
+        if len(element) > 2:
+            key = element[0]
+            value = ':'.join(element[1:])
+            split_by_colon[index] = [key, value]
+
+    try:
+        sample_attribute_dict = dict(split_by_colon)
+    except ValueError:
+        print('This is most likely a bug, please report it upstream.')
+        print('sample_attribute: {}'.format(sample_attribute))
+        raise
     sample_attribute_keys = list(
         map(lambda x: x.lstrip(' ').replace(' ', '_').lower(),
             list(sample_attribute_dict.keys())))
