@@ -81,14 +81,15 @@ def cmd_download_geo(out_dir, overwrite):
     help='Download SRA project (SRPnnnn)')
 @click.option('--out_dir', help='Output directory root')
 @click.option('--db', help='Path to SRAmetadb.sqlite file')
+@click.option('--srx', '-x', help='Download only these SRX(s)', multiple=True)
 @click.argument('srp_ids', nargs=-1, required=True)
-def cmd_download_sra(out_dir, db, srp_ids):
+def cmd_download_sra(out_dir, db, srx, srp_ids):
     db = _check_sradb_file(db)
     if out_dir is None:
         out_dir = os.path.join(os.getcwd(), 'pysradb_downloads')
     sradb = SRAdb(db)
     for srp in srp_ids:
-        sradb.download(srp=srp, out_dir=out_dir)
+        sradb.download(srp=srp, out_dir=out_dir, filter_by_srx=srx)
     sradb.close()
 
 

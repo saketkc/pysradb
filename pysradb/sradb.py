@@ -274,6 +274,7 @@ class SRAdb(BASEdb):
                  srp=None,
                  df=None,
                  out_dir=None,
+                 filter_by_srx=[],
                  protocol='fasp',
                  ascp_dir=None):
         """Download SRA files.
@@ -286,6 +287,8 @@ class SRAdb(BASEdb):
             A dataframe as obtained from `sra_metadata`
         out_dir: string
                  Directory location for download
+        filter_by_srx: list
+                       List of SRX ids to filter
         protocol: string
                   ['fasp'/'ftp'] fasp => faster download, ftp => slower
         ascp_dir: string
@@ -310,6 +313,11 @@ class SRAdb(BASEdb):
                     ascp_dir))
             ascp_bin = os.path.join(ascp_dir, 'connect', 'bin', 'ascp')
         df = df.copy()
+        if filter_by_srx:
+            if isinstance(filter_by_srx, str):
+                filter_by_srx = [filter_by_srx]
+        if filter_by_srx:
+            df = df[df.experiment_accession.isin(filter_by_srx)]
         df.loc[:, 'download_url'] = FTP_PREFIX[
             protocol] + '/sra/sra-instant/reads/ByRun/sra/' + df[
                 'run_accession'].str[:3] + '/' + df[
