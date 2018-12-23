@@ -19,7 +19,9 @@ pysradb
 
 Python package for interacting with SRAdb and downloading datasets from SRA.
 
+.. raw:: html
 
+    <a href="https://asciinema.org/a/0C3SjYmPTkkemldprUpdVhiKx?speed=3" target="_blank"><img src="https://asciinema.org/a/0C3SjYmPTkkemldprUpdVhiKx.svg" /></a>
 
 **************
 Demo Notebooks
