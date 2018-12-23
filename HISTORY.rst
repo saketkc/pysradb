@@ -4,6 +4,22 @@ History
 
 
 *******************
+0.5.0 (12--2018)
+*******************
+
+Bugfix
+======
+
+*
+
+
+New methods/functionality
+=========================
+* Support for filtering by SRX Id for SRA downloads.
+
+
+
+*******************
 0.4.2 (12-16-2018)
 *******************
 
