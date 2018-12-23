@@ -41,7 +41,7 @@ def _check_geodb_file(db):
     return db
 
 
-@click.group()
+@click.group(context_settings=CONTEXT_SETTINGS)
 @click.version_option(version=__version__)
 def cli():
     """pysradb: Query NGS metadata and data from NCBI Sequence Read Archive.
@@ -80,7 +80,7 @@ def cmd_download_geo(out_dir, overwrite):
     context_settings=CONTEXT_SETTINGS,
     help='Download SRA project (SRPnnnn)')
 @click.option('--out_dir', help='Output directory root')
-@click.option('--db', help='Path to SRAmetadb.sqlite file')
+@click.option('--db', help='Path to SRAmetadb.sqlite file', type=click.Path(exists=True, dir_okay=False))
 @click.option('--srx', '-x', help='Download only these SRX(s)', multiple=True)
 @click.argument('srp_ids', nargs=-1, required=True)
 def cmd_download_sra(out_dir, db, srx, srp_ids):
@@ -98,7 +98,7 @@ def cmd_download_sra(out_dir, db, srx, srp_ids):
     context_settings=CONTEXT_SETTINGS,
     help='Fetch metadata for SRA project (SRPnnnn)')
 @click.option('--saveto', help='Save metadata dataframe to file')
-@click.option('--db', help='Path to SRAmetadb.sqlite file')
+@click.option('--db', help='Path to SRAmetadb.sqlite file', type=click.Path(exists=True, dir_okay=False))
 @click.option(
     '--expand',
     is_flag=True,
@@ -127,7 +127,7 @@ def cmd_sra_metadata(srp_id, db, expand, saveto):
     'srp-to-srx',
     context_settings=CONTEXT_SETTINGS,
     help='Get SRX/SRR for a SRP')
-@click.option('--db', help='Path to GEOmetadb.sqlite file')
+@click.option('--db', help='Path to GEOmetadb.sqlite file', type=click.Path(exists=True, dir_okay=False))
 @click.option('--saveto', help='Save output to file')
 @click.argument('srp_id', required=True)
 def cmd_srp_to_srx(srp_id, db, saveto):
@@ -152,7 +152,7 @@ def cmd_srp_to_srx(srp_id, db, saveto):
     context_settings=CONTEXT_SETTINGS,
     help='Fetch metadata for GEO ID (GSEnnnn)')
 @click.option('--saveto', help='Save metadata dataframe to file')
-@click.option('--db', help='Path to GEOmetadb.sqlite file')
+@click.option('--db', help='Path to GEOmetadb.sqlite file', type=click.Path(exists=True, dir_okay=False))
 @click.argument('gse_id', required=True)
 def cmd_gse_metadata(gse_id, db, saveto):
     db = _check_geodb_file(db)
@@ -173,7 +173,7 @@ def cmd_gse_metadata(gse_id, db, saveto):
     context_settings=CONTEXT_SETTINGS,
     help='Fetch metadata for GSM ID (GSMnnnn)')
 @click.option('--saveto', help='Save metadata dataframe to file')
-@click.option('--db', help='Path to GEOmetadb.sqlite file')
+@click.option('--db', help='Path to GEOmetadb.sqlite file', type=click.Path(exists=True, dir_okay=False))
 @click.argument('gsm_id', required=True)
 def cmd_gsm_metadata(gsm_id, db, saveto):
     db = _check_geodb_file(db)
@@ -192,7 +192,7 @@ def cmd_gsm_metadata(gsm_id, db, saveto):
 @cli.command(
     'gse-to-gsm', context_settings=CONTEXT_SETTINGS, help='Get GSM(s) for GSE')
 @click.option('--saveto', help='Save metadata dataframe to file')
-@click.option('--db', help='Path to GEOmetadb.sqlite file')
+@click.option('--db', help='Path to GEOmetadb.sqlite file', type=click.Path(exists=True, dir_okay=False))
 @click.argument('gse_id', required=True)
 def cmd_gse_to_gsm(gse_id, db, saveto):
     db = _check_geodb_file(db)
