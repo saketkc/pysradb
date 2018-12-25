@@ -98,3 +98,13 @@ A more complicated example will consist of multiple assays. For example `SRP0009
     28 WGS
 
 
+Getting SRR for SRX:
+
+.. code-block:: bash
+
+   $ pysradb srx-to-srr --db data/SRAmetadb.sqlite SRX217956  SRX2536403 --desc                                                                    
+   experiment_accession run_accession study_accession sample_attribute                                                                                                                
+   SRX217956            SRR649752     SRP017942       source_name: 3T3 cells || treatment: control || cell line: 3T3 cells || assay type: Riboseq                                    
+   SRX2536403           SRR5227288    SRP098789       source_name: Huh7_1.5 Ã‚ÂµM PF-067446846_10 min_ribo-seq || cell line: Huh7 || treatment time: 10 min || library type: ribo-seq
+
+
