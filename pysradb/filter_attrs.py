@@ -62,6 +62,7 @@ def expand_sample_attribute_columns(metadata_df):
                  to sample_attribute appended
     """
     additional_columns = []
+    metadata_df = metadata_df.copy()
     for idx, row in metadata_df.iterrows():
         sample_attribute = row['sample_attribute']
         if not sample_attribute:

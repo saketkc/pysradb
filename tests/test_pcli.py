@@ -54,7 +54,7 @@ def test_sra_metadata(runner):
 def test_sra_metadata(runner):
     result = runner.invoke(
         sradbcli.cmd_sra_metadata,
-        ['SRP098789', '--db', 'data/SRAmetadb.sqlite', '--expand'])
+        ['SRP098789', '--db', 'data/SRAmetadb.sqlite', '--detailed', '--expand'])
     assert 'treatment_time' in result.output
 
 
@@ -62,6 +62,21 @@ def test_srp_to_srx(runner):
     result = runner.invoke(sradbcli.cmd_srp_to_srx,
                            ['SRP098789', '--db', 'data/SRAmetadb.sqlite'])
     assert 'SRX2536403' in result.output
+
+def test_srp_assay(runner):
+    result = runner.invoke(sradbcli.cmd_sra_metadata,
+                            ['SRP098789', '--db', 'data/SRAmetadb.sqlite', '--assay'])
+    assert 'RNA-Seq' in result.output
+
+def srr_to_srx(runner):
+    result = runner.invoke(sradbcli.cmd_srr_to_srx,
+                           ['--db', 'data/SRAmetadb.sqlite', 'SRR5227288', 'SRR649752', '--desc'])
+    assert '3T3 cells' in result.output
+
+def srx_to_srr(runner):
+    result = runner.invoke(sradbcli.cmd_srr_to_srx,
+                           ['--db', 'data/SRAmetadb.sqlite', 'SRX217956', 'SRX2536403', '--desc'])
+    assert '3T3 cells' in result.output
 
 
 def test_gse_metadata(runner):

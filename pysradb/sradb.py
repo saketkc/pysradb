@@ -159,26 +159,29 @@ class SRAdb(BASEdb):
             raise ValueError('{} not a valid input type'.format(in_acc_type))
 
         in_type = self.valid_in_type[in_acc_type]
+        output_columns = out_type.copy()
         if detailed:
-            out_type += [
+            output_columns += [
                 'experiment_title', 'experiment_attribute', 'sample_attribute',
                 'run_accession', 'taxon_id', 'library_selection',
                 'library_layout', 'library_strategy', 'library_source',
                 'library_name', 'bases', 'spots', 'adapter_spec'
             ]
         if assay:
-            if 'library_layout' not in out_type:
-                out_type += ['library_strategy', 'library_layout']
+            if 'library_layout' not in output_columns:
+                output_columns += ['library_strategy', 'library_layout']
         if sample_attribute:
-            if 'sample_attribute' not in out_type:
-                out_type += ['sample_attribute']
-        out_type = [x for x in out_type if x != in_type]
-
-        select_type = [in_type + '_accession'] + out_type
+            if 'sample_attribute' not in output_columns:
+                output_columns += ['sample_attribute']
+        output_columns = [x for x in output_columns if x != in_type]
+        select_type = [in_type + '_accession'] + output_columns
         select_type_sql = (',').join(select_type)
         sql = "SELECT DISTINCT " + select_type_sql + \
               " FROM sra_ft WHERE sra_ft MATCH '" + acc + "';"
         df = self.query(sql)
+        if not len(df.index):
+            warnings.warn('Empty results', UserWarning)
+            return df
         if 'bases' in df.columns:
             if 'spots' in df.columns:
                 df['avg_read_length'] = df['bases'] / df['spots']
@@ -187,13 +190,14 @@ class SRAdb(BASEdb):
         if 'taxon_id' in df.columns:
             df['taxon_id'] = df['taxon_id'].fillna(0).astype(int)
             df = df.sort_values(by=['taxon_id'])
-
-        df = df.sort_values(by=['experiment_accession', 'run_accession'])
+        if len(df.index):
+            df = df.sort_values(by=['experiment_accession', 'run_accession'])
         if output_read_lengths and 'avg_read_length' in df.columns:
-            out_type = out_type + ['avg_read_length']
-        metadata_df = df[out_type].reset_index(drop=True)
+            output_columns = output_columns + ['avg_read_length']
+        metadata_df = df.reset_index(drop=True)
+        metadata_df = order_dataframe(metadata_df, output_columns)
         if expand_sample_attributes:
-            if 'sample_attribute' in metadata_df.columns:
+            if 'sample_attribute' in metadata_df.columns.tolist():
                 metadata_df = expand_sample_attribute_columns(metadata_df)
         return metadata_df
 

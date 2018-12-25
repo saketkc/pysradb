@@ -56,7 +56,8 @@ def test_sra_metadata(sradb_connection):
 
 def test_sra_metadata2(sradb_connection):
     df = sradb_connection.sra_metadata(
-        'SRP017942', expand_sample_attributes=True)
+        'SRP017942', detailed=True,
+        expand_sample_attributes=True)
     assert '3xflag-gfp' in df['transfected_with'].tolist()
 
 
@@ -91,7 +92,7 @@ def test_download_ftp(sradb_connection):
 
 
 def test_tissue_type(sradb_connection):
-    df = sradb_connection.sra_metadata('SRP016501')
+    df = sradb_connection.sra_metadata('SRP016501', detailed=True)
     df = df[df.experiment_accession == 'SRX196389']
     cell_type = df['sample_attribute'].apply(lambda x: guess_cell_type(x))
     tissue_type = df['sample_attribute'].apply(lambda x: guess_tissue_type(x))
@@ -100,7 +101,7 @@ def test_tissue_type(sradb_connection):
 
 
 def test_strain_type(sradb_connection):
-    df = sradb_connection.sra_metadata('SRP043036')
+    df = sradb_connection.sra_metadata('SRP043036', detailed=True)
     df = df.sort_values(by='experiment_accession')
     strains = df['sample_attribute'].apply(
         lambda x: guess_strain_type(x)).tolist()
