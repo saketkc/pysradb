@@ -56,7 +56,6 @@ master_doc = 'index'
 project = u'pysradb'
 copyright = u"2018, Saket Choudhary"
 author = u"Saket Choudhary"
-
 # The version info for the project you're documenting, acts as replacement
 # for |version| and |release|, also used in various other places throughout
 # the built documents.
@@ -182,3 +181,7 @@ html_theme_options = {
     # Set the name of the project to appear in the sidebar
     "project_nav_name": "pysradb",
 }
+
+scv_greatest_tag = True
+scv_show_banner = True
+
