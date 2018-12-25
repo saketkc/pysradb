@@ -4,6 +4,7 @@ from __future__ import (absolute_import, division, print_function,
                         unicode_literals)
 
 import os
+import re
 import sys
 
 from . import __version__
@@ -22,6 +23,10 @@ PY3 = True
 if sys.version_info[0] < 3:
     PY3 = False
 
+if PY3:
+    from io import StringIO
+else:
+    from StringIO import StringIO
 
 def _check_sradb_file(db):
     if db is None:
@@ -85,14 +90,27 @@ def cmd_download_geo(out_dir, overwrite):
     help='Path to SRAmetadb.sqlite file',
     type=click.Path(exists=True, dir_okay=False))
 @click.option('--srx', '-x', help='Download only these SRX(s)', multiple=True)
-@click.argument('srp_ids', nargs=-1, required=True)
-def cmd_download_sra(out_dir, db, srx, srp_ids):
+@click.option('--srp', '-p', help='SRP ID', multiple=True)
+def cmd_download_sra(out_dir, db, srx, srp):
     db = _check_sradb_file(db)
     if out_dir is None:
         out_dir = os.path.join(os.getcwd(), 'pysradb_downloads')
     sradb = SRAdb(db)
-    for srp in srp_ids:
-        sradb.download(srp=srp, out_dir=out_dir, filter_by_srx=srx)
+    if not srp:
+        stdin_text = click.get_text_stream('stdin').read()#.replace('\t', '  ')#.strip()
+        text = ''
+        for line in stdin_text.split('\n'):
+            line = line.strip()
+            line = line.lstrip(' ')
+            line = re.sub( '\s+', ' ', line).strip()
+            text += '{}\n'.format(line)
+        print(text)
+        df = pd.read_csv(StringIO(text), sep=' ')
+        print(df)
+        sradb.download(df=df, out_dir=out_dir, filter_by_srx=srx)
+    else:
+        for srp_x in sorted(unique(srp)):
+            sradb.download(srp=srp_x, out_dir=out_dir, filter_by_srx=srx)
     sradb.close()
 
 
