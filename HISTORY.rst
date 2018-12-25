@@ -7,16 +7,15 @@ History
 0.5.0 (12--2018)
 *******************
 
-Bugfix
-======
-
-*
-
 
 New methods/functionality
 =========================
 * Support for filtering by SRX Id for SRA downloads.
-
+* `srr_to_srx`: Convert SRR to SRX/SRP
+* `srp_to_srx`: Convert SRP to SRX
+* Stripped down `sra-metadata` to give minimal information
+* Added `--assay`, `--desc`, `--detailed` flag for `sra-metadata`
+* Improved table printing on terminal
 
 
 *******************

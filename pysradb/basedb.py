@@ -33,7 +33,6 @@ class BASEdb(object):
     def list_tables(self):
         """List all tables in the sqlite file.
 
-
         Returns
         -------
         table_list: list
