@@ -159,7 +159,7 @@ class SRAdb(BASEdb):
             raise ValueError('{} not a valid input type'.format(in_acc_type))
 
         in_type = self.valid_in_type[in_acc_type]
-        output_columns = out_type.copy()
+        output_columns = out_type[:]
         if detailed:
             output_columns += [
                 'experiment_title', 'experiment_attribute', 'sample_attribute',
