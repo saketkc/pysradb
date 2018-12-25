@@ -2,6 +2,23 @@
 History
 #######
 
+*******************
+0.6.0 (12-25-2018)
+*******************
+
+Bugfix
+======
+
+* Fixed bugs introduced in 0.5.0 with API changes where
+  multiple redundant columns were output in `sra-metadata`
+
+
+New methods/functionality
+=========================
+* `download` now allows piped inputs
+
+
+
 
 *******************
 0.5.0 (12-24-2018)

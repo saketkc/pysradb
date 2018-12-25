@@ -168,8 +168,8 @@ class SRAdb(BASEdb):
                 'library_name', 'bases', 'spots', 'adapter_spec'
             ]
         if assay:
-            if 'library_layout' not in output_columns:
-                output_columns += ['library_strategy', 'library_layout']
+            if 'library_strategy' not in output_columns:
+                output_columns += ['library_strategy']
         if sample_attribute:
             if 'sample_attribute' not in output_columns:
                 output_columns += ['sample_attribute']
