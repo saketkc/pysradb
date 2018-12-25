@@ -7,6 +7,7 @@ Welcome to pysradb's documentation!
 
    readme
    installation
+   cmdline
    usage
    modules
    contributing
