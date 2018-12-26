@@ -190,8 +190,10 @@ class SRAdb(BASEdb):
         if 'taxon_id' in df.columns:
             df['taxon_id'] = df['taxon_id'].fillna(0).astype(int)
             df = df.sort_values(by=['taxon_id'])
-        if len(df.index):
+        if 'experiment_accession' in df.columns and 'run_accession' in df.columns:
             df = df.sort_values(by=['experiment_accession', 'run_accession'])
+        if 'sample_accession' in df.columns:
+            df = df.sort_values(by=['sample_accession'])
         if output_read_lengths and 'avg_read_length' in df.columns:
             output_columns = output_columns + ['avg_read_length']
         metadata_df = df.reset_index(drop=True)
@@ -201,7 +203,7 @@ class SRAdb(BASEdb):
                 metadata_df = expand_sample_attribute_columns(metadata_df)
         return metadata_df
 
-    def srp_to_srx(self, srp, sample_attribute=False):
+    def srp_to_srx(self, srp, sample_attribute=False, detailed=False):
         """Convert SRP to SRX/SRR.
 
         Parameters
@@ -214,12 +216,113 @@ class SRAdb(BASEdb):
         srp_to_srx_df: DataFrame
                        DataFrame with two columns for SRX/SRR
         """
-        out_type = ['experiment_accession', 'run_accession']
+        out_type = ['experiment_accession']
+        if detailed:
+            out_type += ['sample_accession', 'run_accession']
         if sample_attribute:
             out_type += ['sample_attribute']
         return self.sra_metadata(acc=srp, out_type=out_type)
 
-    def srr_to_srx(self, srrs, sample_attribute=False):
+    def srp_to_srs(self, srp, sample_attribute=False, detailed=False):
+        """Convert SRP to SRS.
+
+        Parameters
+        ----------
+        srp: string
+             SRP ID
+
+        Returns
+        -------
+        srp_to_srs_df: DataFrame
+                       DataFrame with two columns for SRS
+        """
+        out_type = ['study_accession', 'sample_accession']
+        if detailed:
+            out_type += ['experiment_accession', 'run_accession']
+        if sample_attribute:
+            out_type += ['sample_attribute']
+        return self.sra_metadata(acc=srp, out_type=out_type)
+
+    def srp_to_srr(self, srp, sample_attribute=False, detailed=False):
+        """Convert SRP to SRR.
+
+        Parameters
+        ----------
+        srp: string
+             SRP ID
+
+        Returns
+        -------
+        srp_to_srr_df: DataFrame
+        """
+        out_type = ['study_accession', 'run_accession']
+        if detailed:
+            out_type += ['experiment_accession', 'sample_accession']
+        if sample_attribute:
+            out_type += ['sample_attribute']
+        return self.sra_metadata(acc=srp, out_type=out_type)
+
+    def srx_to_srs(self, srxs, sample_attribute=False, detailed=False):
+        """Convert SRX to SRS.
+
+        Parameters
+        ----------
+        srx: string
+             SRX ID
+
+        Returns
+        -------
+        srp_to_srs_df: DataFrame
+        """
+        if PY3:
+            if isinstance(srxs, str):
+                srxs = [srxs]
+        else:
+            if isinstance(srxs, basestring):
+                srxs = [srxs]
+        out_type = ['experiment_accession', 'sample_accession']
+        if detailed:
+            out_type += ['run_accession', 'study_accession']
+        if sample_attribute:
+            out_type += ['sample_attribute']
+        select_type_sql = (',').join(out_type)
+        sql = "SELECT DISTINCT " + select_type_sql + \
+              " FROM sra_ft WHERE sra_ft MATCH '" + ' OR '.join(srxs) + "';"
+        df = self.query(sql)
+        df = df[out_type]
+        return df
+
+    def srs_to_srx(self, srss, sample_attribute=False, detailed=False):
+        """Convert SRS to SRX.
+
+        Parameters
+        ----------
+        srx: string
+             SRX ID
+
+        Returns
+        -------
+        srs_to_srx_df: DataFrame
+        """
+        if PY3:
+            if isinstance(srss, str):
+                srss = [srss]
+        else:
+            if isinstance(srss, basestring):
+                srss = [srss]
+        out_type = ['sample_accession', 'experiment_accession']
+        if detailed:
+            out_type += ['run_accession', 'study_accession']
+        if sample_attribute:
+            out_type += ['sample_attribute']
+        select_type_sql = (',').join(out_type)
+        sql = "SELECT DISTINCT " + select_type_sql + \
+              " FROM sra_ft WHERE sra_ft MATCH '" + ' OR '.join(srss) + "';"
+        df = self.query(sql)
+        df = df[out_type]
+        return df
+
+    def srr_to_srx(self, srrs, sample_attribute=False, detailed=False):
         """Convert SRR to SRX/SRP.
 
         Parameters
@@ -242,7 +345,9 @@ class SRAdb(BASEdb):
             if isinstance(srrs, basestring):
                 srrs = [srrs]
 
-        out_type = ['run_accession', 'study_accession', 'experiment_accession']
+        out_type = ['run_accession', 'experiment_accession']
+        if detailed:
+            out_type += ['sample_accession', 'study_accession']
         if sample_attribute:
             out_type += ['sample_attribute']
         select_type_sql = (',').join(out_type)
@@ -252,7 +357,7 @@ class SRAdb(BASEdb):
         df = df[out_type]
         return df
 
-    def srx_to_srr(self, srxs, sample_attribute=False):
+    def srx_to_srr(self, srxs, sample_attribute=False, detailed=False):
         """Convert SRXs to SRR/SRP.
 
         Parameters
@@ -275,7 +380,10 @@ class SRAdb(BASEdb):
             if isinstance(srxs, basestring):
                 srxs = [srxs]
 
-        out_type = ['experiment_accession', 'run_accession', 'study_accession']
+        out_type = ['experiment_accession', 'run_accession']
+        if detailed:
+            out_type += ['sample_accession', 'study_accession']
+
         if sample_attribute:
             out_type += ['sample_attribute']
         select_type_sql = (',').join(out_type)

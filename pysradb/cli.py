@@ -175,11 +175,144 @@ def cmd_sra_metadata(srp_id, db, assay, desc, detailed, expand, saveto):
     help='Path to SRAmetadb.sqlite file',
     type=click.Path(exists=True, dir_okay=False))
 @click.option('--saveto', help='Save output to file')
+@click.option(
+    '--detailed',
+    is_flag=True,
+    help='Output additional columns: [sample_accession, run_accession]',
+    default=False)
 @click.argument('srp_id', required=True)
-def cmd_srp_to_srx(srp_id, db, saveto):
+def cmd_srp_to_srx(srp_id, db, saveto, detailed):
     db = _check_sradb_file(db)
     sradb = SRAdb(db)
-    df = sradb.srp_to_srx(srp=srp_id)
+    df = sradb.srp_to_srx(srp=srp_id, detailed=detailed)
+    if saveto:
+        df.to_csv(saveto, index=False, header=True, sep='\t')
+    else:
+        if len(df.index):
+            if PY3:
+                pd.set_option('display.max_colwidth', -1)
+                print(df.to_string(index=False, justify='left', col_space=0))
+            else:
+                print(
+                    df.to_string(index=False, justify='left',
+                                 col_space=0).encode('utf-8'))
+    sradb.close()
+
+@cli.command(
+    'srp-to-srs',
+    context_settings=CONTEXT_SETTINGS,
+    help='Get SRS for a SRP')
+@click.option(
+    '--db',
+    help='Path to SRAmetadb.sqlite file',
+    type=click.Path(exists=True, dir_okay=False))
+@click.option('--saveto', help='Save output to file')
+@click.option(
+    '--detailed',
+    is_flag=True,
+    help='Output additional columns: [experiment_accession, run_accession]',
+    default=False)
+@click.argument('srp_id', required=True)
+def cmd_srp_to_srs(srp_id, db, saveto, detailed):
+    db = _check_sradb_file(db)
+    sradb = SRAdb(db)
+    df = sradb.srp_to_srs(srp=srp_id, detailed=detailed)
+    if saveto:
+        df.to_csv(saveto, index=False, header=True, sep='\t')
+    else:
+        if len(df.index):
+            if PY3:
+                pd.set_option('display.max_colwidth', -1)
+                print(df.to_string(index=False, justify='left', col_space=0))
+            else:
+                print(
+                    df.to_string(index=False, justify='left',
+                                 col_space=0).encode('utf-8'))
+    sradb.close()
+
+@cli.command(
+    'srp-to-srr',
+    context_settings=CONTEXT_SETTINGS,
+    help='Get SRR for a SRP')
+@click.option(
+    '--db',
+    help='Path to SRAmetadb.sqlite file',
+    type=click.Path(exists=True, dir_okay=False))
+@click.option('--saveto', help='Save output to file')
+@click.option(
+    '--detailed',
+    is_flag=True,
+    help='Output additional columns: [sample_accession, run_accession]',
+    default=False)
+@click.argument('srp_id', required=True)
+def cmd_srp_to_srr(srp_id, db, saveto, detailed):
+    db = _check_sradb_file(db)
+    sradb = SRAdb(db)
+    df = sradb.srp_to_srr(srp=srp_id, detailed=detailed)
+    if saveto:
+        df.to_csv(saveto, index=False, header=True, sep='\t')
+    else:
+        if len(df.index):
+            if PY3:
+                pd.set_option('display.max_colwidth', -1)
+                print(df.to_string(index=False, justify='left', col_space=0))
+            else:
+                print(
+                    df.to_string(index=False, justify='left',
+                                 col_space=0).encode('utf-8'))
+    sradb.close()
+
+@cli.command(
+    'srx-to-srs',
+    context_settings=CONTEXT_SETTINGS,
+    help='Get SRS for a SRX')
+@click.option(
+    '--db',
+    help='Path to SRAmetadb.sqlite file',
+    type=click.Path(exists=True, dir_okay=False))
+@click.option('--saveto', help='Save output to file')
+@click.option(
+    '--detailed',
+    is_flag=True,
+    help='Output additional columns: [run_accession, study_accession]',
+    default=False)
+@click.argument('srx_ids', nargs=-1, required=True)
+def cmd_srx_to_srs(srx_ids, db, saveto, detailed):
+    db = _check_sradb_file(db)
+    sradb = SRAdb(db)
+    df = sradb.srx_to_srs(srxs=srx_ids, detailed=detailed)
+    if saveto:
+        df.to_csv(saveto, index=False, header=True, sep='\t')
+    else:
+        if len(df.index):
+            if PY3:
+                pd.set_option('display.max_colwidth', -1)
+                print(df.to_string(index=False, justify='left', col_space=0))
+            else:
+                print(
+                    df.to_string(index=False, justify='left',
+                                 col_space=0).encode('utf-8'))
+    sradb.close()
+
+@cli.command(
+    'srs-to-srx',
+    context_settings=CONTEXT_SETTINGS,
+    help='Get SRX for a SRS')
+@click.option(
+    '--db',
+    help='Path to SRAmetadb.sqlite file',
+    type=click.Path(exists=True, dir_okay=False))
+@click.option('--saveto', help='Save output to file')
+@click.option(
+    '--detailed',
+    is_flag=True,
+    help='Output additional columns: [run_accession, study_accession]',
+    default=False)
+@click.argument('srs_ids', nargs=-1, required=True)
+def cmd_srs_to_srx(srs_ids, db, saveto, detailed):
+    db = _check_sradb_file(db)
+    sradb = SRAdb(db)
+    df = sradb.srs_to_srx(srss=srs_ids, detailed=detailed)
     if saveto:
         df.to_csv(saveto, index=False, header=True, sep='\t')
     else:
@@ -203,16 +336,21 @@ def cmd_srp_to_srx(srp_id, db, saveto):
     help='Path to SRAmetadb.sqlite file',
     type=click.Path(exists=True, dir_okay=False))
 @click.option(
+    '--detailed',
+    is_flag=True,
+    help='Output additional columns: [sample_accession, study_accession]',
+    default=False)
+@click.option(
     '--desc',
     is_flag=True,
     help='Should sample_attribute be included',
     default=False)
 @click.option('--saveto', help='Save output to file')
 @click.argument('srr_ids', nargs=-1, required=True)
-def cmd_srp_to_srx(srr_ids, desc, db, saveto):
+def cmd_srr_to_srx(srr_ids, desc, db, saveto, detailed):
     db = _check_sradb_file(db)
     sradb = SRAdb(db)
-    df = sradb.srr_to_srx(srrs=srr_ids, sample_attribute=desc)
+    df = sradb.srr_to_srx(srrs=srr_ids, sample_attribute=desc, detailed=detailed)
     if saveto:
         df.to_csv(saveto, index=False, header=True, sep='\t')
     else:
@@ -240,12 +378,17 @@ def cmd_srp_to_srx(srr_ids, desc, db, saveto):
     is_flag=True,
     help='Should sample_attribute be included',
     default=False)
+@click.option(
+    '--detailed',
+    is_flag=True,
+    help='Output additional columns: [sample_accession, study_accession]',
+    default=False)
 @click.option('--saveto', help='Save output to file')
 @click.argument('srx_ids', nargs=-1, required=True)
-def cmd_srp_to_srx(srx_ids, desc, db, saveto):
+def cmd_srp_to_srx(srx_ids, desc, db, saveto, detailed):
     db = _check_sradb_file(db)
     sradb = SRAdb(db)
-    df = sradb.srx_to_srr(srxs=srx_ids, sample_attribute=desc)
+    df = sradb.srx_to_srr(srxs=srx_ids, sample_attribute=desc, detailed=detailed)
     if saveto:
         df.to_csv(saveto, index=False, header=True, sep='\t')
     else:
