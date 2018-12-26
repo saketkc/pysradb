@@ -102,9 +102,9 @@ Getting SRR for SRX:
 
 .. code-block:: bash
 
-   $ pysradb srx-to-srr --db data/SRAmetadb.sqlite SRX217956  SRX2536403 --desc                                                                    
-   experiment_accession run_accession study_accession sample_attribute                                                                                                                
-   SRX217956            SRR649752     SRP017942       source_name: 3T3 cells || treatment: control || cell line: 3T3 cells || assay type: Riboseq                                    
+   $ pysradb srx-to-srr --db data/SRAmetadb.sqlite SRX217956  SRX2536403 --desc
+   experiment_accession run_accession study_accession sample_attribute
+   SRX217956            SRR649752     SRP017942       source_name: 3T3 cells || treatment: control || cell line: 3T3 cells || assay type: Riboseq
    SRX2536403           SRR5227288    SRP098789       source_name: Huh7_1.5 Ã‚ÂµM PF-067446846_10 min_ribo-seq || cell line: Huh7 || treatment time: 10 min || library type: ribo-seq
 
 
@@ -112,7 +112,15 @@ Get SRX for SRR:
 
 .. code-block:: bash
 
-   $ pysradb srr-to-srx --db data/SRAmetadb.sqlite SRR5227288 SRR649752 --desc                                                                     
-   run_accession study_accession experiment_accession sample_attribute                                                                                                                
-   SRR649752     SRP017942       SRX217956            source_name: 3T3 cells || treatment: control || cell line: 3T3 cells || assay type: Riboseq                                    
+   $ pysradb srr-to-srx --db data/SRAmetadb.sqlite SRR5227288 SRR649752 --desc
+   run_accession study_accession experiment_accession sample_attribute
+   SRR649752     SRP017942       SRX217956            source_name: 3T3 cells || treatment: control || cell line: 3T3 cells || assay type: Riboseq
    SRR5227288    SRP098789       SRX2536403           source_name: Huh7_1.5 Ã‚ÂµM PF-067446846_10 min_ribo-seq || cell line: Huh7 || treatment time: 10 min || library type: ribo-seq
+
+
+Piped downloads:
+
+.. code-block:: bash
+
+   $ pysradb sra-metadata --db data/SRAmetadb.sqlite --assay SRP098789 | pysradb download --db data/SRAmetadb.sqlite
+
