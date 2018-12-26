@@ -56,8 +56,7 @@ def test_sra_metadata(sradb_connection):
 
 def test_sra_metadata2(sradb_connection):
     df = sradb_connection.sra_metadata(
-        'SRP017942', detailed=True,
-        expand_sample_attributes=True)
+        'SRP017942', detailed=True, expand_sample_attributes=True)
     assert '3xflag-gfp' in df['transfected_with'].tolist()
 
 

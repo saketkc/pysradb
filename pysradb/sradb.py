@@ -21,6 +21,7 @@ from .utils import copyfileobj
 from .utils import mkdir_p
 from .utils import order_dataframe
 from .utils import run_command
+from .utils import unique
 
 PY3 = True
 if sys.version_info[0] < 3:
@@ -131,6 +132,7 @@ class SRAdb(BASEdb):
                      out_type=[
                          'study_accession',
                          'experiment_accession',
+                         'sample_accession',
                          'run_accession',
                      ],
                      assay=False,
@@ -174,6 +176,7 @@ class SRAdb(BASEdb):
             if 'sample_attribute' not in output_columns:
                 output_columns += ['sample_attribute']
         output_columns = [x for x in output_columns if x != in_type]
+        output_columns = unique(output_columns)
         select_type = [in_type + '_accession'] + output_columns
         select_type_sql = (',').join(select_type)
         sql = "SELECT DISTINCT " + select_type_sql + \
@@ -201,6 +204,7 @@ class SRAdb(BASEdb):
         if expand_sample_attributes:
             if 'sample_attribute' in metadata_df.columns.tolist():
                 metadata_df = expand_sample_attribute_columns(metadata_df)
+                metadata_df = metadata_df.drop(columns=['sample_attribute'])
         return metadata_df
 
     def srp_to_srx(self, srp, sample_attribute=False, detailed=False):

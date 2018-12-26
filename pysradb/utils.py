@@ -12,6 +12,22 @@ if sys.version_info[0] < 3:
     PY3 = False
 
 
+def unique(sequence):
+    """Get unique elements from a list maintaining the order.
+
+    Parameters
+    ----------
+    input_list: list
+
+    Returns
+    -------
+    unique_list: list
+                 List with unique elements maintaining the order
+    """
+    visited = set()
+    return [x for x in sequence if not (x in visited or visited.add(x))]
+
+
 class TqdmUpTo(tqdm):
     """Alternative Class-based version of the above.
     Provides `update_to(n)` which uses `tqdm.update(delta_n)`.

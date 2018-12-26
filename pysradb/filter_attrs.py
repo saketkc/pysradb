@@ -32,10 +32,10 @@ def _get_sample_attr_keys(sample_attribute):
         print('sample_attribute: {}'.format(sample_attribute))
         raise
     sample_attribute_keys = list(
-        map(lambda x: x.lstrip(' ').replace(' ', '_').lower(),
+        map(lambda x: re.sub('\s+', ' ', x.lstrip(' ').replace(' ', '_').lower()),
             list(sample_attribute_dict.keys())))
     sample_attribute_values = list(
-        map(lambda x: x.lower().replace(' ', '').replace(',', '__'),
+        map(lambda x: re.sub('\s+', ' ', x.lower().strip().replace(',', '__')),
             list(sample_attribute_dict.values())))
     return sample_attribute_keys, sample_attribute_values
 
@@ -115,19 +115,20 @@ def guess_cell_type(sample_attribute):
     cell_type = None
     if 'cell line:' in sample_attribute:
         x = re.search(r'cell line: \w+', sample_attribute)
-        cell_type = x.group(0).lstrip('cell line:').replace(' ', '').lower()
+        cell_type = re.sub('\s+', ' ', x.group(0).lstrip('cell line:').lower())
     if 'cell_line:' in sample_attribute:
         x = re.search(r'cell_line: \w+', sample_attribute)
-        cell_type = x.group(0).lstrip('cell_line:').replace(' ', '').lower()
+        cell_type = re.sub('\s+', ' ', x.group(0).lstrip('cell_line:').lower())
     if 'cell-line:' in sample_attribute:
         x = re.search(r'cell-line: \w+', sample_attribute)
-        cell_type = x.group(0).lstrip('cell-line:').replace(' ', '').lower()
+        cell_type = re.sub('\s+', ' ', x.group(0).lstrip('cell-line:').lower())
     if 'cell_type:' in sample_attribute:
         x = re.search(r'cell_type: \w+', sample_attribute)
-        return x.group(0).lstrip('cell_type:').replace(' ', '').lower()
+        return re.sub('\s+', ' ', x.group(0).lstrip('cell_type:').lower())
     if 'source_name:' in sample_attribute:
         x = re.search(r'source_name: \w+', sample_attribute)
-        cell_type = x.group(0).lstrip('source_name:').replace(' ', '').lower()
+        cell_type = re.sub('\s+', ' ',
+                           x.group(0).lstrip('source_name:').lower())
     else:
         warnings.warn(
             'Couldn\'t parse {} for cell line'.format(sample_attribute),
@@ -153,7 +154,7 @@ def guess_tissue_type(sample_attribute):
     tissue_type = None
     if 'tissue: ' in sample_attribute:
         x = re.search(r'tissue: \w+', sample_attribute)
-        tissue_type = x.group(0).lstrip('tissue:').replace(' ', '').lower()
+        tissue_type = re.sub('\s+', ' ', x.group(0).lstrip('tissue:').lower())
     else:
         warnings.warn('Couldn\'t parse {} for tissue'.format(sample_attribute),
                       UserWarning)
@@ -178,7 +179,7 @@ def guess_strain_type(sample_attribute):
     strain_type = None
     if 'strain: ' in sample_attribute:
         x = re.search(r'strain: \w+', sample_attribute)
-        strain_type = x.group(0).lstrip('strain:').replace(' ', '').lower()
+        strain_type = re.sub('\s+', ' ', x.group(0).lstrip('strain:').lower())
     else:
         warnings.warn('Couldn\'t parse {} for strain'.format(sample_attribute),
                       UserWarning)

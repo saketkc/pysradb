@@ -28,6 +28,7 @@ if PY3:
 else:
     from StringIO import StringIO
 
+
 def _check_sradb_file(db):
     if db is None:
         db = os.path.join(os.getcwd(), 'SRAmetadb.sqlite')
@@ -97,12 +98,13 @@ def cmd_download_sra(out_dir, db, srx, srp):
         out_dir = os.path.join(os.getcwd(), 'pysradb_downloads')
     sradb = SRAdb(db)
     if not srp:
-        stdin_text = click.get_text_stream('stdin').read()#.replace('\t', '  ')#.strip()
+        stdin_text = click.get_text_stream(
+            'stdin').read()  #.replace('\t', '  ')#.strip()
         text = ''
         for line in stdin_text.split('\n'):
             line = line.strip()
             line = line.lstrip(' ')
-            line = re.sub( '\s+', ' ', line).strip()
+            line = re.sub('\s+', ' ', line).strip()
             text += '{}\n'.format(line)
         df = pd.read_csv(StringIO(text), sep=' ')
         sradb.download(df=df, out_dir=out_dir, filter_by_srx=srx)
@@ -198,10 +200,9 @@ def cmd_srp_to_srx(srp_id, db, saveto, detailed):
                                  col_space=0).encode('utf-8'))
     sradb.close()
 
+
 @cli.command(
-    'srp-to-srs',
-    context_settings=CONTEXT_SETTINGS,
-    help='Get SRS for a SRP')
+    'srp-to-srs', context_settings=CONTEXT_SETTINGS, help='Get SRS for a SRP')
 @click.option(
     '--db',
     help='Path to SRAmetadb.sqlite file',
@@ -230,10 +231,9 @@ def cmd_srp_to_srs(srp_id, db, saveto, detailed):
                                  col_space=0).encode('utf-8'))
     sradb.close()
 
+
 @cli.command(
-    'srp-to-srr',
-    context_settings=CONTEXT_SETTINGS,
-    help='Get SRR for a SRP')
+    'srp-to-srr', context_settings=CONTEXT_SETTINGS, help='Get SRR for a SRP')
 @click.option(
     '--db',
     help='Path to SRAmetadb.sqlite file',
@@ -262,10 +262,9 @@ def cmd_srp_to_srr(srp_id, db, saveto, detailed):
                                  col_space=0).encode('utf-8'))
     sradb.close()
 
+
 @cli.command(
-    'srx-to-srs',
-    context_settings=CONTEXT_SETTINGS,
-    help='Get SRS for a SRX')
+    'srx-to-srs', context_settings=CONTEXT_SETTINGS, help='Get SRS for a SRX')
 @click.option(
     '--db',
     help='Path to SRAmetadb.sqlite file',
@@ -294,10 +293,9 @@ def cmd_srx_to_srs(srx_ids, db, saveto, detailed):
                                  col_space=0).encode('utf-8'))
     sradb.close()
 
+
 @cli.command(
-    'srs-to-srx',
-    context_settings=CONTEXT_SETTINGS,
-    help='Get SRX for a SRS')
+    'srs-to-srx', context_settings=CONTEXT_SETTINGS, help='Get SRX for a SRS')
 @click.option(
     '--db',
     help='Path to SRAmetadb.sqlite file',
@@ -350,7 +348,8 @@ def cmd_srs_to_srx(srs_ids, db, saveto, detailed):
 def cmd_srr_to_srx(srr_ids, desc, db, saveto, detailed):
     db = _check_sradb_file(db)
     sradb = SRAdb(db)
-    df = sradb.srr_to_srx(srrs=srr_ids, sample_attribute=desc, detailed=detailed)
+    df = sradb.srr_to_srx(
+        srrs=srr_ids, sample_attribute=desc, detailed=detailed)
     if saveto:
         df.to_csv(saveto, index=False, header=True, sep='\t')
     else:
@@ -388,7 +387,8 @@ def cmd_srr_to_srx(srr_ids, desc, db, saveto, detailed):
 def cmd_srp_to_srx(srx_ids, desc, db, saveto, detailed):
     db = _check_sradb_file(db)
     sradb = SRAdb(db)
-    df = sradb.srx_to_srr(srxs=srx_ids, sample_attribute=desc, detailed=detailed)
+    df = sradb.srx_to_srr(
+        srxs=srx_ids, sample_attribute=desc, detailed=detailed)
     if saveto:
         df.to_csv(saveto, index=False, header=True, sep='\t')
     else:
