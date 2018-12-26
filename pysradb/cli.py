@@ -104,12 +104,10 @@ def cmd_download_sra(out_dir, db, srx, srp):
             line = line.lstrip(' ')
             line = re.sub( '\s+', ' ', line).strip()
             text += '{}\n'.format(line)
-        print(text)
         df = pd.read_csv(StringIO(text), sep=' ')
-        print(df)
         sradb.download(df=df, out_dir=out_dir, filter_by_srx=srx)
     else:
-        for srp_x in sorted(unique(srp)):
+        for srp_x in sorted(set(srp)):
             sradb.download(srp=srp_x, out_dir=out_dir, filter_by_srx=srx)
     sradb.close()
 

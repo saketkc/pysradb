@@ -40,6 +40,7 @@ def test_all_row_counts_sra(sradb_connection):
 def test_download(runner):
     result = runner.invoke(sradbcli.cmd_download_sra, [
         '--db', 'data/SRAmetadb.sqlite', '--out_dir', 'srp_downloads',
+        '-p',
         'SRP063852'
     ])
     assert os.path.getsize('srp_downloads/SRP063852/SRX1254413/SRR2433794.sra')
