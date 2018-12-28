@@ -124,3 +124,33 @@ Piped downloads:
 
    $ pysradb sra-metadata --db data/SRAmetadb.sqlite --assay SRP098789 | pysradb download --db data/SRAmetadb.sqlite
 
+
+Conversions
+-----------
+
+SRP to GSE:
+
+.. code-block:: bash
+
+   $ pysradb srp-to-gse SRP090415
+   study_accession study_alias
+   SRP090415       GSE87328
+
+But not all SRPs will have an associated GEO id (GSE):
+
+.. code-block:: bash
+
+   $ pysradb srp-to-gse SRP029589
+   study_accession study_alias
+   SRP029589       PRJNA218051
+
+
+GSE to SRP:
+
+.. code-block:: bash
+
+    $ pysradb gse-to-srp GSE87328
+    study_alias study_accession
+    GSE87328    SRP090415
+
+
