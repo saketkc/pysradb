@@ -32,7 +32,10 @@ else:
 def _check_sradb_file(db):
     if db is None:
         db = os.path.join(os.getcwd(), 'SRAmetadb.sqlite')
+        if os.path.isfile(db):
+            return db
         download_sradb_file()
+
     if not os.path.isfile(db):
         raise RuntimeError('{} does not exist'.format(db))
     return db
@@ -249,6 +252,68 @@ def cmd_srp_to_srr(srp_id, db, saveto, detailed):
     db = _check_sradb_file(db)
     sradb = SRAdb(db)
     df = sradb.srp_to_srr(srp=srp_id, detailed=detailed)
+    if saveto:
+        df.to_csv(saveto, index=False, header=True, sep='\t')
+    else:
+        if len(df.index):
+            if PY3:
+                pd.set_option('display.max_colwidth', -1)
+                print(df.to_string(index=False, justify='left', col_space=0))
+            else:
+                print(
+                    df.to_string(index=False, justify='left',
+                                 col_space=0).encode('utf-8'))
+    sradb.close()
+
+
+@cli.command(
+    'srp-to-gse', context_settings=CONTEXT_SETTINGS, help='Get GSE for a SRP')
+@click.option(
+    '--db',
+    help='Path to SRAmetadb.sqlite file',
+    type=click.Path(exists=True, dir_okay=False))
+@click.option('--saveto', help='Save output to file')
+@click.option(
+    '--detailed',
+    is_flag=True,
+    help='Output additional columns: [sample_accession, run_accession]',
+    default=False)
+@click.argument('srp_id', required=True)
+def cmd_srp_to_gse(srp_id, db, saveto, detailed):
+    db = _check_sradb_file(db)
+    sradb = SRAdb(db)
+    df = sradb.srp_to_gse(srp=srp_id, detailed=detailed)
+    if saveto:
+        df.to_csv(saveto, index=False, header=True, sep='\t')
+    else:
+        if len(df.index):
+            if PY3:
+                pd.set_option('display.max_colwidth', -1)
+                print(df.to_string(index=False, justify='left', col_space=0))
+            else:
+                print(
+                    df.to_string(index=False, justify='left',
+                                 col_space=0).encode('utf-8'))
+    sradb.close()
+
+
+@cli.command(
+    'gse-to-srp', context_settings=CONTEXT_SETTINGS, help='Get SRP for a GSE')
+@click.option(
+    '--db',
+    help='Path to SRAmetadb.sqlite file',
+    type=click.Path(exists=True, dir_okay=False))
+@click.option('--saveto', help='Save output to file')
+@click.option(
+    '--detailed',
+    is_flag=True,
+    help='Output additional columns: [sample_accession, run_accession]',
+    default=False)
+@click.argument('gse_ids', nargs=-1, required=True)
+def cmd_srp_to_gse(gse_ids, db, saveto, detailed):
+    db = _check_sradb_file(db)
+    sradb = SRAdb(db)
+    df = sradb.gse_to_srp(gses=gse_ids, detailed=detailed)
     if saveto:
         df.to_csv(saveto, index=False, header=True, sep='\t')
     else:

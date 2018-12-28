@@ -1,4 +1,5 @@
 import sqlite3
+import warnings
 
 import pandas as pd
 
@@ -100,7 +101,10 @@ class BASEdb(object):
         results = self.cursor.execute(sql_query).fetchall()
         column_names = list(map(lambda x: x[0], self.cursor.description))
         results = [dict(zip(column_names, result)) for result in results]
-        return pd.DataFrame(results)
+        df = pd.DataFrame(results)
+        if not results:
+            warnings.warn('Found no matching results for query.', RuntimeWarning)
+        return df
 
     def get_row_count(self, table):
         """Get row counts for a table.
