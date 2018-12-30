@@ -227,8 +227,8 @@ class SRAdb(BASEdb):
         out_type = ['experiment_accession']
         if detailed:
             out_type += [
-                'sample_accession', 'run_accession', 'sample_alias',
-                'experiment_alias', 'run_alias'
+                'sample_accession', 'run_accession', 'experiment_alias',
+                'sample_alias', 'run_alias'
             ]
         if sample_attribute:
             out_type += ['sample_attribute']
@@ -254,8 +254,8 @@ class SRAdb(BASEdb):
         out_type = ['study_accession', 'sample_accession']
         if detailed:
             out_type += [
-                'experiment_accession', 'run_accession', 'sample_alias',
-                'experiment_alias', 'run_alias'
+                'experiment_accession', 'run_accession', 'study_alias',
+                'sample_alias', 'experiment_alias', 'run_alias'
             ]
         if sample_attribute:
             out_type += ['sample_attribute']
@@ -275,7 +275,10 @@ class SRAdb(BASEdb):
         """
         out_type = ['study_accession', 'run_accession']
         if detailed:
-            out_type += ['experiment_accession', 'sample_accession', 'sample_alias', 'experiment_alias', 'run_alias']
+            out_type += [
+                'experiment_accession', 'sample_accession', 'study_alias',
+                'experiment_alias', 'sample_alias', 'run_alias'
+            ]
         if sample_attribute:
             out_type += ['sample_attribute']
         return self.sra_metadata(acc=srp, out_type=out_type)
@@ -294,7 +297,10 @@ class SRAdb(BASEdb):
         """
         out_type = ['study_accession', 'study_alias']
         if detailed:
-            out_type += ['experiment_accession', 'sample_accession']
+            out_type += [
+                'experiment_accession', 'sample_accession', 'experiment_alias',
+                'sample_alias'
+            ]
         if sample_attribute:
             out_type += ['sample_attribute']
         return self.sra_metadata(acc=srp, out_type=out_type)
@@ -319,7 +325,10 @@ class SRAdb(BASEdb):
                 gses = [gses]
         out_type = ['study_alias', 'study_accession']
         if detailed:
-            out_type += ['experiment_accession', 'sample_accession']
+            out_type += [
+                'experiment_accession', 'sample_accession', 'experiment_alias',
+                'sample_alias'
+            ]
         if sample_attribute:
             out_type += ['sample_attribute']
         select_type_sql = (',').join(out_type)
@@ -350,12 +359,10 @@ class SRAdb(BASEdb):
                 gses = [gses]
         out_type = ['study_alias', 'experiment_alias']
         if detailed:
-            out_type += ['experiment_accession',
-                         'sample_accession',
-                         'run_accession',
-                         'experiment_alias',
-                         'sample_alias',
-                         'run_alias']
+            out_type += [
+                'experiment_accession', 'sample_accession', 'run_accession',
+                'experiment_alias', 'sample_alias', 'run_alias'
+            ]
         if sample_attribute:
             out_type += ['sample_attribute']
         select_type_sql = (',').join(out_type)
@@ -365,7 +372,6 @@ class SRAdb(BASEdb):
         if len(df.index):
             df = df[out_type]
         return df
-
 
     def srx_to_srs(self, srxs, sample_attribute=False, detailed=False):
         """Convert SRX to SRS.
@@ -387,7 +393,10 @@ class SRAdb(BASEdb):
                 srxs = [srxs]
         out_type = ['experiment_accession', 'sample_accession']
         if detailed:
-            out_type += ['run_accession', 'study_accession']
+            out_type += [
+                'run_accession', 'study_accession', 'experiment_alias',
+                'sample_alias', 'run_alias', 'study_alias'
+            ]
         if sample_attribute:
             out_type += ['sample_attribute']
         select_type_sql = (',').join(out_type)
@@ -418,7 +427,10 @@ class SRAdb(BASEdb):
                 srss = [srss]
         out_type = ['sample_accession', 'experiment_accession']
         if detailed:
-            out_type += ['run_accession', 'study_accession']
+            out_type += [
+                'run_accession', 'study_accession', 'sample_alias',
+                'experiment_alias', 'run_alias', 'study_alias'
+            ]
         if sample_attribute:
             out_type += ['sample_attribute']
         select_type_sql = (',').join(out_type)
@@ -454,7 +466,11 @@ class SRAdb(BASEdb):
 
         out_type = ['run_accession', 'experiment_accession']
         if detailed:
-            out_type += ['sample_accession', 'study_accession']
+            out_type += [
+                'sample_accession', 'study_accession', 'run_alias',
+                'experiment_alias', 'sample_alias', 'study_accession',
+                'study_alias'
+            ]
         if sample_attribute:
             out_type += ['sample_attribute']
         select_type_sql = (',').join(out_type)
@@ -490,7 +506,10 @@ class SRAdb(BASEdb):
 
         out_type = ['experiment_accession', 'run_accession']
         if detailed:
-            out_type += ['sample_accession', 'study_accession']
+            out_type += [
+                'sample_accession', 'study_accession', 'experiment_alias',
+                'run_alias', 'sample_alias', 'study_alias'
+            ]
 
         if sample_attribute:
             out_type += ['sample_attribute']
