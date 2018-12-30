@@ -103,7 +103,8 @@ class BASEdb(object):
         results = [dict(zip(column_names, result)) for result in results]
         df = pd.DataFrame(results)
         if not results:
-            warnings.warn('Found no matching results for query.', RuntimeWarning)
+            warnings.warn('Found no matching results for query.',
+                          RuntimeWarning)
         return df
 
     def get_row_count(self, table):

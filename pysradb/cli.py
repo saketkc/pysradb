@@ -327,6 +327,7 @@ def cmd_srp_to_gse(gse_ids, db, saveto, detailed):
                                  col_space=0).encode('utf-8'))
     sradb.close()
 
+
 @cli.command(
     'gse-to-gsm', context_settings=CONTEXT_SETTINGS, help='Get SRP for a GSE')
 @click.option(
@@ -555,7 +556,9 @@ def cmd_gsm_metadata(gsm_id, db, saveto):
 
 
 @cli.command(
-    'ggse-to-gsm', context_settings=CONTEXT_SETTINGS, help='Get GSM(s) for GSE')
+    'ggse-to-gsm',
+    context_settings=CONTEXT_SETTINGS,
+    help='Get GSM(s) for GSE')
 @click.option('--saveto', help='Save metadata dataframe to file')
 @click.option(
     '--db',
