@@ -2,39 +2,60 @@
 CLI usage
 #########
 
-Getting metadata for a SRP id:
+All the operations in `pysradb` rely on the SQLite file `SRAmetadb.sqlite` provided
+by the SRAdb project. We can download it using `pysradb`:
+
+.. code-block:: bash
+
+   $ pysradb srametadb
+
+This will download and extract `SRAmetadb.sqlite.gz` in the current directory.
+you can also specify an output directory using `--out_dir` option.
 
 
 .. code-block:: bash
 
-   $ pysradb sra-metadata --db data/SRAmetadb.sqlite SRP098789
-   study_accession experiment_accession run_accession
-   SRP098789       SRX2536403           SRR5227288
-   SRP098789       SRX2536404           SRR5227289
-   SRP098789       SRX2536405           SRR5227290
-   SRP098789       SRX2536406           SRR5227291
-   SRP098789       SRX2536407           SRR5227292
-   SRP098789       SRX2536408           SRR5227293
-   SRP098789       SRX2536409           SRR5227294
-   SRP098789       SRX2536410           SRR5227295
-   SRP098789       SRX2536411           SRR5227296
-   SRP098789       SRX2536412           SRR5227297
-   SRP098789       SRX2536413           SRR5227298
-   SRP098789       SRX2536414           SRR5227299
-   SRP098789       SRX2536415           SRR5227300
-   SRP098789       SRX2536416           SRR5227301
-   SRP098789       SRX2536417           SRR5227302
-   SRP098789       SRX2536418           SRR5227303
-   SRP098789       SRX2536419           SRR5227304
-   SRP098789       SRX2536420           SRR5227305
-   SRP098789       SRX2536421           SRR5227306
-   SRP098789       SRX2536422           SRR5227307
-   SRP098789       SRX2536423           SRR5227308
-   SRP098789       SRX2536424           SRR5227309
-   SRP098789       SRX2536425           SRR5227310
-   SRP098789       SRX2536426           SRR5227311
-   SRP098789       SRX2536427           SRR5227312
-   SRP098789       SRX2536428           SRR5227313
+  $ pysradb srametadb -h
+
+    Usage: pysradb srametadb [OPTIONS]
+
+      Download SRAmetadb.sqlite
+
+    Options:
+      --out_dir TEXT       Output directory location
+      --overwrite BOOLEAN  Overwrite existing file
+      -h, --help           Show this message and exit.
+
+    You can also spec
+
+    Getting metadata for a SRP id:
+
+
+Having obtained the SQLite file, we can now perform all our data/metadata seach
+operations. For the rest of this walkthrough we will assume the
+sqlite directory exists in the current working directory, so that
+we do not need to specify the path to `pysradb`.
+
+
+Gettng metadata for a SRA project(SRP)
+======================================
+
+The most basic information associated with any SRA project is its list of experiments
+and run accessions.
+
+
+.. code-block:: bash
+
+   $ pysradb sra-metadata SRP098789
+    study_accession experiment_accession sample_accession run_accession
+    SRP098789       SRX2536403           SRS1956353       SRR5227288
+    SRP098789       SRX2536404           SRS1956354       SRR5227289
+    SRP098789       SRX2536405           SRS1956355       SRR5227290
+    SRP098789       SRX2536406           SRS1956356       SRR5227291
+    SRP098789       SRX2536407           SRS1956357       SRR5227292
+    SRP098789       SRX2536408           SRS1956358       SRR5227293
+    SRP098789       SRX2536409           SRS1956359       SRR5227294
+
 
 
 Listing SRX and SRRs for a SRP is often not useful. We might
@@ -43,35 +64,15 @@ the samples:
 
 .. code-block:: bash
 
-   $  pysradb sra-metadata --db data/SRAmetadb.sqlite SRP098789 --desc
-   study_accession experiment_accession run_accession sample_attribute
-   SRP098789       SRX2536403           SRR5227288    source_name: Huh7_1.5 Ã‚ÂµM PF-067446846_10 min_ribo-seq || cell line: Huh7 || treatment time: 10 min || library type: ribo-seq
-   SRP098789       SRX2536404           SRR5227289    source_name: Huh7_1.5 Ã‚ÂµM PF-067446846_10 min_ribo-seq || cell line: Huh7 || treatment time: 10 min || library type: ribo-seq
-   SRP098789       SRX2536405           SRR5227290    source_name: Huh7_1.5 Ã‚ÂµM PF-067446846_10 min_ribo-seq || cell line: Huh7 || treatment time: 10 min || library type: ribo-seq
-   SRP098789       SRX2536406           SRR5227291    source_name: Huh7_0.3 Ã‚ÂµM PF-067446846_10 min_ribo-seq || cell line: Huh7 || treatment time: 10 min || library type: ribo-seq
-   SRP098789       SRX2536407           SRR5227292    source_name: Huh7_0.3 Ã‚ÂµM PF-067446846_10 min_ribo-seq || cell line: Huh7 || treatment time: 10 min || library type: ribo-seq
-   SRP098789       SRX2536408           SRR5227293    source_name: Huh7_0.3 Ã‚ÂµM PF-067446846_10 min_ribo-seq || cell line: Huh7 || treatment time: 10 min || library type: ribo-seq
-   SRP098789       SRX2536409           SRR5227294    source_name: Huh7_vehicle_10 min_ribo-seq || cell line: Huh7 || treatment time: 10 min || library type: ribo-seq
-   SRP098789       SRX2536410           SRR5227295    source_name: Huh7_vehicle_10 min_ribo-seq || cell line: Huh7 || treatment time: 10 min || library type: ribo-seq
-   SRP098789       SRX2536411           SRR5227296    source_name: Huh7_vehicle_10 min_ribo-seq || cell line: Huh7 || treatment time: 10 min || library type: ribo-seq
-   SRP098789       SRX2536412           SRR5227297    source_name: Huh7_1.5 Ã‚ÂµM PF-067446846_60 min_ribo-seq || cell line: Huh7 || treatment time: 60 min || library type: ribo-seq
-   SRP098789       SRX2536413           SRR5227298    source_name: Huh7_1.5 Ã‚ÂµM PF-067446846_60 min_ribo-seq || cell line: Huh7 || treatment time: 60 min || library type: ribo-seq
-   SRP098789       SRX2536414           SRR5227299    source_name: Huh7_1.5 Ã‚ÂµM PF-067446846_60 min_ribo-seq || cell line: Huh7 || treatment time: 60 min || library type: ribo-seq
-   SRP098789       SRX2536415           SRR5227300    source_name: Huh7_0.3 Ã‚ÂµM PF-067446846_60 min_ribo-seq || cell line: Huh7 || treatment time: 60 min || library type: ribo-seq
-   SRP098789       SRX2536416           SRR5227301    source_name: Huh7_0.3 Ã‚ÂµM PF-067446846_60 min_ribo-seq || cell line: Huh7 || treatment time: 60 min || library type: ribo-seq
-   SRP098789       SRX2536417           SRR5227302    source_name: Huh7_0.3 Ã‚ÂµM PF-067446846_60 min_ribo-seq || cell line: Huh7 || treatment time: 60 min || library type: ribo-seq
-   SRP098789       SRX2536418           SRR5227303    source_name: Huh7_vehicle_60 min_ribo-seq || cell line: Huh7 || treatment time: 60 min || library type: ribo-seq
-   SRP098789       SRX2536419           SRR5227304    source_name: Huh7_vehicle_60 min_ribo-seq || cell line: Huh7 || treatment time: 60 min || library type: ribo-seq
-   SRP098789       SRX2536420           SRR5227305    source_name: Huh7_vehicle_60 min_ribo-seq || cell line: Huh7 || treatment time: 60 min || library type: ribo-seq
-   SRP098789       SRX2536421           SRR5227306    source_name: Huh7_1.5 Ã‚ÂµM PF-067446846_60 min_ribo-seq || cell line: Huh7 || treatment time: 60 min || library type: ribo-seq
-   SRP098789       SRX2536422           SRR5227307    source_name: Huh7_1.5 Ã‚ÂµM PF-067446846_60 min_RNA-seq || cell line: Huh7 || treatment time: 60 min || library type: polyA-seq
-   SRP098789       SRX2536423           SRR5227308    source_name: Huh7_1.5 Ã‚ÂµM PF-067446846_60 min_ribo-seq || cell line: Huh7 || treatment time: 60 min || library type: ribo-seq
-   SRP098789       SRX2536424           SRR5227309    source_name: Huh7_1.5 Ã‚ÂµM PF-067446846_60 min_RNA-seq || cell line: Huh7 || treatment time: 60 min || library type: polyA-seq
-   SRP098789       SRX2536425           SRR5227310    source_name: Huh7_vehicle_60 min_ribo-seq || cell line: Huh7 || treatment time: 60 min || library type: ribo-seq
-   SRP098789       SRX2536426           SRR5227311    source_name: Huh7_vehicle_60 min_RNA-seq || cell line: Huh7 || treatment time: 60 min || library type: polyA-seq
-   SRP098789       SRX2536427           SRR5227312    source_name: Huh7_vehicle_60 min_ribo-seq || cell line: Huh7 || treatment time: 60 min || library type: ribo-seq
-   SRP098789       SRX2536428           SRR5227313    source_name: Huh7_vehicle_60 min_RNA-seq || cell line: Huh7 || treatment time: 60 min || library type: polyA-seq
+   $  pysradb sra-metadata SRP098789 --desc
 
+    study_accession experiment_accession sample_accession run_accession sample_attribute
+    SRP098789       SRX2536403           SRS1956353       SRR5227288    source_name: Huh7_1.5 Ã‚ÂµM PF-067446846_10 min_ribo-seq || cell line: Huh7 || treatment time: 10 min || library type: ribo-seq
+    SRP098789       SRX2536404           SRS1956354       SRR5227289    source_name: Huh7_1.5 Ã‚ÂµM PF-067446846_10 min_ribo-seq || cell line: Huh7 || treatment time: 10 min || library type: ribo-seq
+    SRP098789       SRX2536405           SRS1956355       SRR5227290    source_name: Huh7_1.5 Ã‚ÂµM PF-067446846_10 min_ribo-seq || cell line: Huh7 || treatment time: 10 min || library type: ribo-seq
+    SRP098789       SRX2536406           SRS1956356       SRR5227291    source_name: Huh7_0.3 Ã‚ÂµM PF-067446846_10 min_ribo-seq || cell line: Huh7 || treatment time: 10 min || library type: ribo-seq
+    SRP098789       SRX2536407           SRS1956357       SRR5227292    source_name: Huh7_0.3 Ã‚ÂµM PF-067446846_10 min_ribo-seq || cell line: Huh7 || treatment time: 10 min || library type: ribo-seq
+    SRP098789       SRX2536408           SRS1956358       SRR5227293    source_name: Huh7_0.3 Ã‚ÂµM PF-067446846_10 min_ribo-seq || cell line: Huh7 || treatment time: 10 min || library type: ribo-seq
 
 The example here came from a Ribosome profiling study and consists of a collection of
 both Ribo-seq and RNA-seq samples. In order to filter out only the RNA-seq samples,
@@ -79,7 +80,7 @@ we could pass it an extra flag of `--assay` and then filter RNA-seq samples.
 
 .. code-block:: bash
 
-   $ pysradb sra-metadata --db data/SRAmetadb.sqlite SRP098789 --assay | grep RNA-Seq
+   $ pysradb sra-metadata SRP098789 --assay | grep 'study|RNA-Seq'
    SRP098789       SRX2536422           SRR5227307    RNA-Seq          SINGLE -
    SRP098789       SRX2536424           SRR5227309    RNA-Seq          SINGLE -
    SRP098789       SRX2536426           SRR5227311    RNA-Seq          SINGLE -
@@ -98,17 +99,25 @@ A more complicated example will consist of multiple assays. For example `SRP0009
     28 WGS
 
 
-Getting SRR for SRX:
+
+Get run accessions for experiments (SRX => SRR)
+===============================================
+
+Another frequently encountered task involves fetching the run accessions (SRR)
+for a particular experiment (SRX). Consider experiments `SRX217956` and
+`SRX2536403`. We want to be able to resolve the run accessions for these
+experiments:
 
 .. code-block:: bash
 
-   $ pysradb srx-to-srr --db data/SRAmetadb.sqlite SRX217956  SRX2536403 --desc
+   $ pysradb srx-to-srr SRX217956  SRX2536403 --desc
    experiment_accession run_accession study_accession sample_attribute
    SRX217956            SRR649752     SRP017942       source_name: 3T3 cells || treatment: control || cell line: 3T3 cells || assay type: Riboseq
    SRX2536403           SRR5227288    SRP098789       source_name: Huh7_1.5 Ã‚ÂµM PF-067446846_10 min_ribo-seq || cell line: Huh7 || treatment time: 10 min || library type: ribo-seq
 
 
-Get SRX for SRR:
+Get experiment accessions for runs (SRR => SRR)
+===============================================
 
 .. code-block:: bash
 

@@ -327,6 +327,36 @@ def cmd_srp_to_gse(gse_ids, db, saveto, detailed):
                                  col_space=0).encode('utf-8'))
     sradb.close()
 
+@cli.command(
+    'gse-to-gsm', context_settings=CONTEXT_SETTINGS, help='Get SRP for a GSE')
+@click.option(
+    '--db',
+    help='Path to SRAmetadb.sqlite file',
+    type=click.Path(exists=True, dir_okay=False))
+@click.option('--saveto', help='Save output to file')
+@click.option(
+    '--detailed',
+    is_flag=True,
+    help='Output additional columns: [sample_accession, run_accession]',
+    default=False)
+@click.argument('gse_ids', nargs=-1, required=True)
+def cmd_srp_to_gse(gse_ids, db, saveto, detailed):
+    db = _check_sradb_file(db)
+    sradb = SRAdb(db)
+    df = sradb.gse_to_gsm(gses=gse_ids, detailed=detailed)
+    if saveto:
+        df.to_csv(saveto, index=False, header=True, sep='\t')
+    else:
+        if len(df.index):
+            if PY3:
+                pd.set_option('display.max_colwidth', -1)
+                print(df.to_string(index=False, justify='left', col_space=0))
+            else:
+                print(
+                    df.to_string(index=False, justify='left',
+                                 col_space=0).encode('utf-8'))
+    sradb.close()
+
 
 @cli.command(
     'srx-to-srs', context_settings=CONTEXT_SETTINGS, help='Get SRS for a SRX')
@@ -525,7 +555,7 @@ def cmd_gsm_metadata(gsm_id, db, saveto):
 
 
 @cli.command(
-    'gse-to-gsm', context_settings=CONTEXT_SETTINGS, help='Get GSM(s) for GSE')
+    'ggse-to-gsm', context_settings=CONTEXT_SETTINGS, help='Get GSM(s) for GSE')
 @click.option('--saveto', help='Save metadata dataframe to file')
 @click.option(
     '--db',

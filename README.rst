@@ -286,7 +286,7 @@ Citation
 
 Zenodo archive: https://zenodo.org/badge/latestdoi/159590788
 
-DOI: 10.5281/zenodo.2306881 
+DOI: 10.5281/zenodo.2306881
 
 A lot of functionality in `pysradb` is based on ideas from the original `SRAdb package <https://bioconductor.org/packages/release/bioc/html/SRAdb.html>`_. Please cite the original SRAdb publication:
 

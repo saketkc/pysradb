@@ -304,12 +304,12 @@ class SRAdb(BASEdb):
 
         Parameters
         ----------
-        srp: string
-             SRP ID
+        gses: string or list
+              List of GSE ID
 
         Returns
         -------
-        srp_to_srr_df: DataFrame
+        gse_to_srp_df: DataFrame
         """
         if PY3:
             if isinstance(gses, str):
@@ -329,6 +329,43 @@ class SRAdb(BASEdb):
         if len(df.index):
             df = df[out_type]
         return df
+
+    def gse_to_gsm(self, gses, sample_attribute=False, detailed=False):
+        """Convert SRP to GSE
+
+        Parameters
+        ----------
+        gses: string or list
+              List of GSE ID
+
+        Returns
+        -------
+        gse_to_gsm_df: DataFrame
+        """
+        if PY3:
+            if isinstance(gses, str):
+                gses = [gses]
+        else:
+            if isinstance(gses, basestring):
+                gses = [gses]
+        out_type = ['study_alias', 'experiment_alias']
+        if detailed:
+            out_type += ['experiment_accession',
+                         'sample_accession',
+                         'run_accession',
+                         'experiment_alias',
+                         'sample_alias',
+                         'run_alias']
+        if sample_attribute:
+            out_type += ['sample_attribute']
+        select_type_sql = (',').join(out_type)
+        sql = "SELECT DISTINCT " + select_type_sql + \
+              " FROM sra_ft WHERE sra_ft MATCH '" + ' OR '.join(gses) + "';"
+        df = self.query(sql)
+        if len(df.index):
+            df = df[out_type]
+        return df
+
 
     def srx_to_srs(self, srxs, sample_attribute=False, detailed=False):
         """Convert SRX to SRS.
