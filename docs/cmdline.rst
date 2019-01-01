@@ -26,9 +26,6 @@ you can also specify an output directory using `--out_dir` option.
       --overwrite BOOLEAN  Overwrite existing file
       -h, --help           Show this message and exit.
 
-    You can also spec
-
-    Getting metadata for a SRP id:
 
 
 Having obtained the SQLite file, we can now perform all our data/metadata seach
@@ -37,8 +34,8 @@ sqlite directory exists in the current working directory, so that
 we do not need to specify the path to `pysradb`.
 
 
-Gettng metadata for a SRA project(SRP)
-======================================
+Gettng metadata for a SRA project (SRP)
+=======================================
 
 The most basic information associated with any SRA project is its list of experiments
 and run accessions.
@@ -99,6 +96,20 @@ A more complicated example will consist of multiple assays. For example `SRP0009
     28 WGS
 
 
+Get experiment accesions for a project (SRP => SRX)
+===================================================
+
+A frequently encountered task involves getting all the
+experiments (SRX) for a particular study accession (SRP).
+Consider project `SRP048759`:
+
+.. code-block:: bash
+
+   $ pysradb srp-to-srx SRP048759
+
+Get sample accesions for a project (SRP => SRS)
+
+
 
 Get run accessions for experiments (SRX => SRR)
 ===============================================
@@ -116,8 +127,11 @@ experiments:
    SRX2536403           SRR5227288    SRP098789       source_name: Huh7_1.5 Ã‚ÂµM PF-067446846_10 min_ribo-seq || cell line: Huh7 || treatment time: 10 min || library type: ribo-seq
 
 
-Get experiment accessions for runs (SRR => SRR)
+Get experiment accessions for runs (SRR => SRX)
 ===============================================
+
+For fetching experiment accessions (SRX) for one or multiple
+run accessions (SRR):
 
 .. code-block:: bash
 
@@ -127,7 +141,6 @@ Get experiment accessions for runs (SRR => SRR)
    SRR5227288    SRP098789       SRX2536403           source_name: Huh7_1.5 Ã‚ÂµM PF-067446846_10 min_ribo-seq || cell line: Huh7 || treatment time: 10 min || library type: ribo-seq
 
 
-Piped downloads:
 
 .. code-block:: bash
 
