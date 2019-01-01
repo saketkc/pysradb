@@ -70,6 +70,23 @@ the samples:
     SRP098789       SRX2536406           SRS1956356       SRR5227291    source_name: Huh7_0.3 Ã‚ÂµM PF-067446846_10 min_ribo-seq || cell line: Huh7 || treatment time: 10 min || library type: ribo-seq
     SRP098789       SRX2536407           SRS1956357       SRR5227292    source_name: Huh7_0.3 Ã‚ÂµM PF-067446846_10 min_ribo-seq || cell line: Huh7 || treatment time: 10 min || library type: ribo-seq
     SRP098789       SRX2536408           SRS1956358       SRR5227293    source_name: Huh7_0.3 Ã‚ÂµM PF-067446846_10 min_ribo-seq || cell line: Huh7 || treatment time: 10 min || library type: ribo-seq
+    
+
+Better still, we might need to separate out the information in `source_name` column to multiple
+columns. For example, in the above example, we might need the `cell line` information in
+a separate column. This is achieved by `--expand` flag:
+
+.. code-block:: bash
+  
+   $  pysradb sra-metadata SRP098789 --desc --expand
+ 
+    study_accession experiment_accession sample_accession run_accession cell_line library_type source_name                                  treatment_time
+    SRP098789       SRX2536403           SRS1956353       SRR5227288    huh7      ribo-seq     huh7_1.5 ã‚âµm pf-067446846_10 min_ribo-seq  10 min       
+    SRP098789       SRX2536404           SRS1956354       SRR5227289    huh7      ribo-seq     huh7_1.5 ã‚âµm pf-067446846_10 min_ribo-seq  10 min       
+    SRP098789       SRX2536405           SRS1956355       SRR5227290    huh7      ribo-seq     huh7_1.5 ã‚âµm pf-067446846_10 min_ribo-seq  10 min       
+    SRP098789       SRX2536406           SRS1956356       SRR5227291    huh7      ribo-seq     huh7_0.3 ã‚âµm pf-067446846_10 min_ribo-seq  10 min       
+    SRP098789       SRX2536407           SRS1956357       SRR5227292    huh7      ribo-seq     huh7_0.3 ã‚âµm pf-067446846_10 min_ribo-seq  10 min       
+
 
 The example here came from a Ribosome profiling study and consists of a collection of
 both Ribo-seq and RNA-seq samples. In order to filter out only the RNA-seq samples,
@@ -108,6 +125,40 @@ Consider project `SRP048759`:
    $ pysradb srp-to-srx SRP048759
 
 Get sample accesions for a project (SRP => SRS)
+===============================================
+
+Each experiment involves one or multiple biological samples (SRS),
+that are put through different experiments (SRX). 
+
+
+.. code-block:: bash
+   $ pysradb srp-to-srs --detailed SRP048759 
+   
+   study_accession sample_accession
+   SRP048759       SRS718878
+   SRP048759       SRS718879
+   SRP048759       SRS718880
+   SRP048759       SRS718881
+   SRP048759       SRS718882
+   SRP048759       SRS718883
+   SRP048759       SRS718884
+   SRP048759       SRS718885
+   SRP048759       SRS718886
+
+This is very limited information. It can again be detailed out 
+using the `--detailed' flag:
+
+.. code-block:: bash
+   
+   $ pysradb srp-to-srs --detailed SRP048759 
+   
+   study_accession sample_accession        experiment_accession    run_accession   study_alias     sample_alias    experiment_alias        run_alias
+SRP048759       SRS718878       SRX729552       SRR1608490      GSE62190        GSM1521543      GSM1521543      GSM1521543_r1
+SRP048759       SRS718878       SRX729552       SRR1608491      GSE62190        GSM1521543      GSM1521543      GSM1521543_r2
+SRP048759       SRS718878       SRX729552       SRR1608492      GSE62190        GSM1521543      GSM1521543      GSM1521543_r3
+SRP048759       SRS718878       SRX729552       SRR1608493      GSE62190        GSM1521543      GSM1521543      GSM1521543_r4
+SRP048759       SRS718879       SRX729553       SRR1608494      GSE62190        GSM1521544      GSM1521544      GSM1521544_r1
+SRP048759       SRS718879       SRX729553       SRR1608495      GSE62190        GSM1521544      GSM1521544      GSM1521544_r2
 
 
 
