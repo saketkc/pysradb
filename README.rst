@@ -174,7 +174,7 @@ Installing pysradb in development mode
 
 
 ********************
-Interacting with SRA
+Using the Python API
 ********************
 
 Use Case 1: Fetch the metadata table (SRA-runtable)
