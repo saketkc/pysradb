@@ -29,7 +29,7 @@ CLI Usage
 *********
 
 `pysradb` now supports command line usage (as seen in the demo cinema above). The documentation
-is in progress. See _`cmdline.rst <https://github.com/saketkc/pysradb/blob/master/docs/cmdline.rst>`_ for 
+is in progress. See  `cmdline.rst <https://github.com/saketkc/pysradb/blob/master/docs/cmdline.rst>`_ for 
 some quick usage instructions.
 
 
