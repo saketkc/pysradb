@@ -22,6 +22,16 @@ Python package for interacting with SRAdb and downloading datasets from SRA.
 .. raw:: html
 
     <a href="https://asciinema.org/a/0C3SjYmPTkkemldprUpdVhiKx?speed=5&autoplay=1" target="_blank"><img src="https://asciinema.org/a/0C3SjYmPTkkemldprUpdVhiKx.svg" /></a>
+    
+    
+*********
+CLI Usage
+*********
+
+`pysradb` now supports command line usage (as seen in the demo cinema above). The documentation
+is in progress. See _`cmdline.rst <https://github.com/saketkc/pysradb/blob/master/docs/cmdline.rst>`_ for 
+some quick usage instructions.
+
 
 **************
 Demo Notebooks
