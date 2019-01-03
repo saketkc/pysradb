@@ -185,11 +185,25 @@ def cmd_sra_metadata(srp_id, db, assay, desc, detailed, expand, saveto):
     is_flag=True,
     help='Output additional columns: [sample_accession, run_accession]',
     default=False)
+@click.option(
+    '--desc',
+    is_flag=True,
+    help='Should sample_attribute be included',
+    default=False)
+@click.option(
+    '--expand',
+    is_flag=True,
+    help='Should sample_attribute be expanded',
+    default=False)
 @click.argument('srp_id', required=True)
-def cmd_srp_to_srx(srp_id, db, saveto, detailed):
+def cmd_srp_to_srx(srp_id, db, saveto, detailed, desc, expand):
     db = _check_sradb_file(db)
     sradb = SRAdb(db)
-    df = sradb.srp_to_srx(srp=srp_id, detailed=detailed)
+    df = sradb.srp_to_srx(
+        srp=srp_id,
+        detailed=detailed,
+        sample_attribute=desc,
+        expand_sample_attributes=expand)
     if saveto:
         df.to_csv(saveto, index=False, header=True, sep='\t')
     else:
@@ -216,11 +230,20 @@ def cmd_srp_to_srx(srp_id, db, saveto, detailed):
     is_flag=True,
     help='Output additional columns: [experiment_accession, run_accession]',
     default=False)
+@click.option(
+    '--desc',
+    is_flag=True,
+    help='Should sample_attribute be included',
+    default=False)
 @click.argument('srp_id', required=True)
-def cmd_srp_to_srs(srp_id, db, saveto, detailed):
+def cmd_srp_to_srs(srp_id, db, saveto, detailed, desc, expand):
     db = _check_sradb_file(db)
     sradb = SRAdb(db)
-    df = sradb.srp_to_srs(srp=srp_id, detailed=detailed)
+    df = sradb.srp_to_srs(
+        srp=srp_id,
+        detailed=detailed,
+        sample_attribute=desc,
+        expand_sample_attributes=expand)
     if saveto:
         df.to_csv(saveto, index=False, header=True, sep='\t')
     else:
@@ -247,11 +270,20 @@ def cmd_srp_to_srs(srp_id, db, saveto, detailed):
     is_flag=True,
     help='Output additional columns: [sample_accession, run_accession]',
     default=False)
+@click.option(
+    '--desc',
+    is_flag=True,
+    help='Should sample_attribute be included',
+    default=False)
 @click.argument('srp_id', required=True)
-def cmd_srp_to_srr(srp_id, db, saveto, detailed):
+def cmd_srp_to_srr(srp_id, db, saveto, detailed, desc, expand):
     db = _check_sradb_file(db)
     sradb = SRAdb(db)
-    df = sradb.srp_to_srr(srp=srp_id, detailed=detailed)
+    df = sradb.srp_to_srr(
+        srp=srp_id,
+        detailed=detailed,
+        sample_attribute=desc,
+        expand_sample_attributes=expand)
     if saveto:
         df.to_csv(saveto, index=False, header=True, sep='\t')
     else:
@@ -278,11 +310,20 @@ def cmd_srp_to_srr(srp_id, db, saveto, detailed):
     is_flag=True,
     help='Output additional columns: [sample_accession, run_accession]',
     default=False)
+@click.option(
+    '--desc',
+    is_flag=True,
+    help='Should sample_attribute be included',
+    default=False)
 @click.argument('srp_id', required=True)
-def cmd_srp_to_gse(srp_id, db, saveto, detailed):
+def cmd_srp_to_gse(srp_id, db, saveto, detailed, desc, expand):
     db = _check_sradb_file(db)
     sradb = SRAdb(db)
-    df = sradb.srp_to_gse(srp=srp_id, detailed=detailed)
+    df = sradb.srp_to_gse(
+        srp=srp_id,
+        detailed=detailed,
+        sample_attribute=desc,
+        expand_sample_attributes=expand)
     if saveto:
         df.to_csv(saveto, index=False, header=True, sep='\t')
     else:
@@ -309,11 +350,20 @@ def cmd_srp_to_gse(srp_id, db, saveto, detailed):
     is_flag=True,
     help='Output additional columns: [sample_accession, run_accession]',
     default=False)
+@click.option(
+    '--desc',
+    is_flag=True,
+    help='Should sample_attribute be included',
+    default=False)
 @click.argument('gse_ids', nargs=-1, required=True)
-def cmd_srp_to_gse(gse_ids, db, saveto, detailed):
+def cmd_srp_to_gse(gse_ids, db, saveto, detailed, desc, expand):
     db = _check_sradb_file(db)
     sradb = SRAdb(db)
-    df = sradb.gse_to_srp(gses=gse_ids, detailed=detailed)
+    df = sradb.gse_to_srp(
+        gses=gse_ids,
+        detailed=detailed,
+        sample_attribute=desc,
+        expand_sample_attributes=expand)
     if saveto:
         df.to_csv(saveto, index=False, header=True, sep='\t')
     else:
@@ -340,11 +390,20 @@ def cmd_srp_to_gse(gse_ids, db, saveto, detailed):
     is_flag=True,
     help='Output additional columns: [sample_accession, run_accession]',
     default=False)
+@click.option(
+    '--desc',
+    is_flag=True,
+    help='Should sample_attribute be included',
+    default=False)
 @click.argument('gse_ids', nargs=-1, required=True)
-def cmd_srp_to_gse(gse_ids, db, saveto, detailed):
+def cmd_srp_to_gse(gse_ids, db, saveto, detailed, desc, expand):
     db = _check_sradb_file(db)
     sradb = SRAdb(db)
-    df = sradb.gse_to_gsm(gses=gse_ids, detailed=detailed)
+    df = sradb.gse_to_gsm(
+        gses=gse_ids,
+        detailed=detailed,
+        sample_attribute=desc,
+        expand_sample_attributes=expand)
     if saveto:
         df.to_csv(saveto, index=False, header=True, sep='\t')
     else:
@@ -371,11 +430,20 @@ def cmd_srp_to_gse(gse_ids, db, saveto, detailed):
     is_flag=True,
     help='Output additional columns: [run_accession, study_accession]',
     default=False)
+@click.option(
+    '--desc',
+    is_flag=True,
+    help='Should sample_attribute be included',
+    default=False)
 @click.argument('srx_ids', nargs=-1, required=True)
-def cmd_srx_to_srs(srx_ids, db, saveto, detailed):
+def cmd_srx_to_srs(srx_ids, db, saveto, detailed, desc, expand):
     db = _check_sradb_file(db)
     sradb = SRAdb(db)
-    df = sradb.srx_to_srs(srxs=srx_ids, detailed=detailed)
+    df = sradb.srx_to_srs(
+        srxs=srx_ids,
+        detailed=detailed,
+        sample_attribute=desc,
+        expand_sample_attributes=expand)
     if saveto:
         df.to_csv(saveto, index=False, header=True, sep='\t')
     else:
@@ -402,11 +470,20 @@ def cmd_srx_to_srs(srx_ids, db, saveto, detailed):
     is_flag=True,
     help='Output additional columns: [run_accession, study_accession]',
     default=False)
+@click.option(
+    '--desc',
+    is_flag=True,
+    help='Should sample_attribute be included',
+    default=False)
 @click.argument('srs_ids', nargs=-1, required=True)
-def cmd_srs_to_srx(srs_ids, db, saveto, detailed):
+def cmd_srs_to_srx(srs_ids, db, saveto, detailed, desc, expand):
     db = _check_sradb_file(db)
     sradb = SRAdb(db)
-    df = sradb.srs_to_srx(srss=srs_ids, detailed=detailed)
+    df = sradb.srs_to_srx(
+        srss=srs_ids,
+        detailed=detailed,
+        sample_attribute=desc,
+        expand_sample_attributes=expand)
     if saveto:
         df.to_csv(saveto, index=False, header=True, sep='\t')
     else:
@@ -441,11 +518,14 @@ def cmd_srs_to_srx(srs_ids, db, saveto, detailed):
     default=False)
 @click.option('--saveto', help='Save output to file')
 @click.argument('srr_ids', nargs=-1, required=True)
-def cmd_srr_to_srx(srr_ids, desc, db, saveto, detailed):
+def cmd_srr_to_srx(srr_ids, db, saveto, detailed, desc, expand):
     db = _check_sradb_file(db)
     sradb = SRAdb(db)
     df = sradb.srr_to_srx(
-        srrs=srr_ids, sample_attribute=desc, detailed=detailed)
+        srrs=srr_ids,
+        detailed=detailed,
+        sample_attribute=desc,
+        expand_sample_attributes=expand)
     if saveto:
         df.to_csv(saveto, index=False, header=True, sep='\t')
     else:
@@ -480,11 +560,14 @@ def cmd_srr_to_srx(srr_ids, desc, db, saveto, detailed):
     default=False)
 @click.option('--saveto', help='Save output to file')
 @click.argument('srx_ids', nargs=-1, required=True)
-def cmd_srp_to_srx(srx_ids, desc, db, saveto, detailed):
+def cmd_srp_to_srx(srx_ids, db, saveto, detailed, desc, expand):
     db = _check_sradb_file(db)
     sradb = SRAdb(db)
     df = sradb.srx_to_srr(
-        srxs=srx_ids, sample_attribute=desc, detailed=detailed)
+        srxs=srx_ids,
+        detailed=detailed,
+        sample_attribute=desc,
+        expand_sample_attributes=expand)
     if saveto:
         df.to_csv(saveto, index=False, header=True, sep='\t')
     else:
