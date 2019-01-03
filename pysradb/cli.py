@@ -235,6 +235,11 @@ def cmd_srp_to_srx(srp_id, db, saveto, detailed, desc, expand):
     is_flag=True,
     help='Should sample_attribute be included',
     default=False)
+@click.option(
+    '--expand',
+    is_flag=True,
+    help='Should sample_attribute be expanded',
+    default=False)
 @click.argument('srp_id', required=True)
 def cmd_srp_to_srs(srp_id, db, saveto, detailed, desc, expand):
     db = _check_sradb_file(db)
@@ -274,6 +279,11 @@ def cmd_srp_to_srs(srp_id, db, saveto, detailed, desc, expand):
     '--desc',
     is_flag=True,
     help='Should sample_attribute be included',
+    default=False)
+@click.option(
+    '--expand',
+    is_flag=True,
+    help='Should sample_attribute be expanded',
     default=False)
 @click.argument('srp_id', required=True)
 def cmd_srp_to_srr(srp_id, db, saveto, detailed, desc, expand):
@@ -315,6 +325,11 @@ def cmd_srp_to_srr(srp_id, db, saveto, detailed, desc, expand):
     is_flag=True,
     help='Should sample_attribute be included',
     default=False)
+@click.option(
+    '--expand',
+    is_flag=True,
+    help='Should sample_attribute be expanded',
+    default=False)
 @click.argument('srp_id', required=True)
 def cmd_srp_to_gse(srp_id, db, saveto, detailed, desc, expand):
     db = _check_sradb_file(db)
@@ -354,6 +369,11 @@ def cmd_srp_to_gse(srp_id, db, saveto, detailed, desc, expand):
     '--desc',
     is_flag=True,
     help='Should sample_attribute be included',
+    default=False)
+@click.option(
+    '--expand',
+    is_flag=True,
+    help='Should sample_attribute be expanded',
     default=False)
 @click.argument('gse_ids', nargs=-1, required=True)
 def cmd_srp_to_gse(gse_ids, db, saveto, detailed, desc, expand):
@@ -395,6 +415,11 @@ def cmd_srp_to_gse(gse_ids, db, saveto, detailed, desc, expand):
     is_flag=True,
     help='Should sample_attribute be included',
     default=False)
+@click.option(
+    '--expand',
+    is_flag=True,
+    help='Should sample_attribute be expanded',
+    default=False)
 @click.argument('gse_ids', nargs=-1, required=True)
 def cmd_srp_to_gse(gse_ids, db, saveto, detailed, desc, expand):
     db = _check_sradb_file(db)
@@ -435,6 +460,11 @@ def cmd_srp_to_gse(gse_ids, db, saveto, detailed, desc, expand):
     is_flag=True,
     help='Should sample_attribute be included',
     default=False)
+@click.option(
+    '--expand',
+    is_flag=True,
+    help='Should sample_attribute be expanded',
+    default=False)
 @click.argument('srx_ids', nargs=-1, required=True)
 def cmd_srx_to_srs(srx_ids, db, saveto, detailed, desc, expand):
     db = _check_sradb_file(db)
@@ -474,6 +504,11 @@ def cmd_srx_to_srs(srx_ids, db, saveto, detailed, desc, expand):
     '--desc',
     is_flag=True,
     help='Should sample_attribute be included',
+    default=False)
+@click.option(
+    '--expand',
+    is_flag=True,
+    help='Should sample_attribute be expanded',
     default=False)
 @click.argument('srs_ids', nargs=-1, required=True)
 def cmd_srs_to_srx(srs_ids, db, saveto, detailed, desc, expand):
@@ -516,6 +551,11 @@ def cmd_srs_to_srx(srs_ids, db, saveto, detailed, desc, expand):
     is_flag=True,
     help='Should sample_attribute be included',
     default=False)
+@click.option(
+    '--expand',
+    is_flag=True,
+    help='Should sample_attribute be expanded',
+    default=False)
 @click.option('--saveto', help='Save output to file')
 @click.argument('srr_ids', nargs=-1, required=True)
 def cmd_srr_to_srx(srr_ids, db, saveto, detailed, desc, expand):
@@ -557,6 +597,11 @@ def cmd_srr_to_srx(srr_ids, db, saveto, detailed, desc, expand):
     '--detailed',
     is_flag=True,
     help='Output additional columns: [sample_accession, study_accession]',
+    default=False)
+@click.option(
+    '--expand',
+    is_flag=True,
+    help='Should sample_attribute be expanded',
     default=False)
 @click.option('--saveto', help='Save output to file')
 @click.argument('srx_ids', nargs=-1, required=True)
