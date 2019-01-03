@@ -33,7 +33,7 @@ is in progress. See  `cmdline.rst <https://github.com/saketkc/pysradb/blob/maste
 some quick usage instructions.
 
 
-.. code-block:: bash
+.. code-block:: console
 
    $ pysradb
      Usage: pysradb [OPTIONS] COMMAND [ARGS]...
