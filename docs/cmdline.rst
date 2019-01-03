@@ -132,6 +132,7 @@ that are put through different experiments (SRX).
 
 
 .. code-block:: bash
+
    $ pysradb srp-to-srs --detailed SRP048759 
    
    study_accession sample_accession
