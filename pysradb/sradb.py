@@ -39,6 +39,13 @@ SRADB_URL = [
 ASCP_CMD_PREFIX = 'ascp -k 1 -QT -l 2000m -i'
 
 
+def _expand_sample_attrs(metadata_df):
+    if 'sample_attribute' in metadata_df.columns.tolist():
+        metadata_df = expand_sample_attribute_columns(metadata_df)
+        metadata_df = metadata_df.drop(columns=['sample_attribute'])
+    return metadata_df
+
+
 def download_sradb_file(download_dir=os.getcwd(), overwrite=True):
     """Download SRAdb.sqlite file.
 
@@ -238,7 +245,11 @@ class SRAdb(BASEdb):
             sample_attribute=sample_attribute,
             expand_sample_attributes=expand_sample_attributes)
 
-    def srp_to_srs(self, srp, sample_attribute=False, detailed=False):
+    def srp_to_srs(self,
+                   srp,
+                   sample_attribute=False,
+                   detailed=False,
+                   expand_sample_attributes=False):
         """Convert SRP to SRS.
 
         Parameters
@@ -259,9 +270,17 @@ class SRAdb(BASEdb):
             ]
         if sample_attribute:
             out_type += ['sample_attribute']
-        return self.sra_metadata(acc=srp, out_type=out_type)
+        df = self.sra_metadata(
+            acc=srp,
+            out_type=out_type,
+            expand_sample_attributes=expand_sample_attributes)
+        return df
 
-    def srp_to_srr(self, srp, sample_attribute=False, detailed=False):
+    def srp_to_srr(self,
+                   srp,
+                   sample_attribute=False,
+                   detailed=False,
+                   expand_sample_attributes=False):
         """Convert SRP to SRR.
 
         Parameters
@@ -281,9 +300,17 @@ class SRAdb(BASEdb):
             ]
         if sample_attribute:
             out_type += ['sample_attribute']
-        return self.sra_metadata(acc=srp, out_type=out_type)
+        df = self.sra_metadata(
+            acc=srp,
+            out_type=out_type,
+            expand_sample_attributes=expand_sample_attributes)
+        return df
 
-    def srp_to_gse(self, srp, sample_attribute=False, detailed=False):
+    def srp_to_gse(self,
+                   srp,
+                   sample_attribute=False,
+                   detailed=False,
+                   expand_sample_attributes=False):
         """Convert SRP to GSE
 
         Parameters
@@ -303,9 +330,16 @@ class SRAdb(BASEdb):
             ]
         if sample_attribute:
             out_type += ['sample_attribute']
-        return self.sra_metadata(acc=srp, out_type=out_type)
+        return self.sra_metadata(
+            acc=srp,
+            out_type=out_type,
+            expand_sample_attributes=expand_sample_attributes)
 
-    def gse_to_srp(self, gses, sample_attribute=False, detailed=False):
+    def gse_to_srp(self,
+                   gses,
+                   sample_attribute=False,
+                   detailed=False,
+                   expand_sample_attributes=False):
         """Convert SRP to GSE
 
         Parameters
@@ -337,9 +371,15 @@ class SRAdb(BASEdb):
         df = self.query(sql)
         if len(df.index):
             df = df[out_type]
+        if expand_sample_attributes:
+            df = _expand_sample_attrs(df)
         return df
 
-    def gse_to_gsm(self, gses, sample_attribute=False, detailed=False):
+    def gse_to_gsm(self,
+                   gses,
+                   sample_attribute=False,
+                   detailed=False,
+                   expand_sample_attributes=False):
         """Convert SRP to GSE
 
         Parameters
@@ -371,9 +411,15 @@ class SRAdb(BASEdb):
         df = self.query(sql)
         if len(df.index):
             df = df[out_type]
+        if expand_sample_attributes:
+            df = _expand_sample_attrs(df)
         return df
 
-    def srx_to_srs(self, srxs, sample_attribute=False, detailed=False):
+    def srx_to_srs(self,
+                   srxs,
+                   sample_attribute=False,
+                   detailed=False,
+                   expand_sample_attributes=False):
         """Convert SRX to SRS.
 
         Parameters
@@ -405,9 +451,15 @@ class SRAdb(BASEdb):
         df = self.query(sql)
         if len(df.index):
             df = df[out_type]
+        if expand_sample_attributes:
+            df = _expand_sample_attrs(df)
         return df
 
-    def srs_to_srx(self, srss, sample_attribute=False, detailed=False):
+    def srs_to_srx(self,
+                   srss,
+                   sample_attribute=False,
+                   detailed=False,
+                   expand_sample_attributes=False):
         """Convert SRS to SRX.
 
         Parameters
@@ -439,9 +491,15 @@ class SRAdb(BASEdb):
         df = self.query(sql)
         if len(df.index):
             df = df[out_type]
+        if expand_sample_attributes:
+            df = _expand_sample_attrs(df)
         return df
 
-    def srr_to_srx(self, srrs, sample_attribute=False, detailed=False):
+    def srr_to_srx(self,
+                   srrs,
+                   sample_attribute=False,
+                   detailed=False,
+                   expand_sample_attributes=False):
         """Convert SRR to SRX/SRP.
 
         Parameters
@@ -479,9 +537,17 @@ class SRAdb(BASEdb):
         df = self.query(sql)
         if len(df.index):
             df = df[out_type]
+        if expand_sample_attributes:
+            df = _expand_sample_attrs(df)
+        if expand_sample_attributes:
+            df = _expand_sample_attrs(df)
         return df
 
-    def srx_to_srr(self, srxs, sample_attribute=False, detailed=False):
+    def srx_to_srr(self,
+                   srxs,
+                   sample_attribute=False,
+                   detailed=False,
+                   expand_sample_attributes=False):
         """Convert SRXs to SRR/SRP.
 
         Parameters
@@ -519,6 +585,8 @@ class SRAdb(BASEdb):
         df = self.query(sql)
         if len(df.index):
             df = df[out_type]
+        if expand_sample_attributes:
+            df = _expand_sample_attrs(df)
         return df
 
     def search_sra(
