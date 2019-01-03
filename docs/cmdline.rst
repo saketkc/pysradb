@@ -181,19 +181,19 @@ that are put through different experiments (SRX).
    SRP048759       SRS718886
 
 This is very limited information. It can again be detailed out 
-using the `--detailed' flag:
+using the `--detailed` flag:
 
 .. code-block:: bash
    
    $ pysradb srp-to-srs --detailed SRP048759 
    
    study_accession sample_accession        experiment_accession    run_accession   study_alias     sample_alias    experiment_alias        run_alias
-SRP048759       SRS718878       SRX729552       SRR1608490      GSE62190        GSM1521543      GSM1521543      GSM1521543_r1
-SRP048759       SRS718878       SRX729552       SRR1608491      GSE62190        GSM1521543      GSM1521543      GSM1521543_r2
-SRP048759       SRS718878       SRX729552       SRR1608492      GSE62190        GSM1521543      GSM1521543      GSM1521543_r3
-SRP048759       SRS718878       SRX729552       SRR1608493      GSE62190        GSM1521543      GSM1521543      GSM1521543_r4
-SRP048759       SRS718879       SRX729553       SRR1608494      GSE62190        GSM1521544      GSM1521544      GSM1521544_r1
-SRP048759       SRS718879       SRX729553       SRR1608495      GSE62190        GSM1521544      GSM1521544      GSM1521544_r2
+   SRP048759       SRS718878       SRX729552       SRR1608490      GSE62190        GSM1521543      GSM1521543      GSM1521543_r1
+    SRP048759       SRS718878       SRX729552       SRR1608491      GSE62190        GSM1521543      GSM1521543      GSM1521543_r2
+    SRP048759       SRS718878       SRX729552       SRR1608492      GSE62190        GSM1521543      GSM1521543      GSM1521543_r3
+    SRP048759       SRS718878       SRX729552       SRR1608493      GSE62190        GSM1521543      GSM1521543      GSM1521543_r4
+    SRP048759       SRS718879       SRX729553       SRR1608494      GSE62190        GSM1521544      GSM1521544      GSM1521544_r1
+    SRP048759       SRS718879       SRX729553       SRR1608495      GSE62190        GSM1521544      GSM1521544      GSM1521544_r2
 
 
 
