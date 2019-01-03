@@ -202,7 +202,11 @@ class SRAdb(BASEdb):
             df = df.sort_values(by=['taxon_id'])
         if 'experiment_accession' in df.columns and 'run_accession' in df.columns:
             df = df.sort_values(by=['experiment_accession', 'run_accession'])
-        if 'sample_accession' in df.columns:
+        elif 'experiment_accession' in df.columns:
+            df = df.sort_values(by=['experiment_accession'])
+        elif 'run_accession' in df.columns:
+            df = df.sort_values(by=['run_accession'])
+        elif 'sample_accession' in df.columns:
             df = df.sort_values(by=['sample_accession'])
         if output_read_lengths and 'avg_read_length' in df.columns:
             output_columns = output_columns + ['avg_read_length']
@@ -370,7 +374,7 @@ class SRAdb(BASEdb):
               " FROM sra_ft WHERE sra_ft MATCH '" + ' OR '.join(gses) + "';"
         df = self.query(sql)
         if len(df.index):
-            df = df[out_type]
+            df = df[out_type].sort_values(by=out_type)
         if expand_sample_attributes:
             df = _expand_sample_attrs(df)
         return df
@@ -410,7 +414,7 @@ class SRAdb(BASEdb):
               " FROM sra_ft WHERE sra_ft MATCH '" + ' OR '.join(gses) + "';"
         df = self.query(sql)
         if len(df.index):
-            df = df[out_type]
+            df = df[out_type].sort_values(by=out_type)
         if expand_sample_attributes:
             df = _expand_sample_attrs(df)
         return df
@@ -450,7 +454,7 @@ class SRAdb(BASEdb):
               " FROM sra_ft WHERE sra_ft MATCH '" + ' OR '.join(srxs) + "';"
         df = self.query(sql)
         if len(df.index):
-            df = df[out_type]
+            df = df[out_type].sort_values(by=out_type)
         if expand_sample_attributes:
             df = _expand_sample_attrs(df)
         return df
@@ -490,7 +494,7 @@ class SRAdb(BASEdb):
               " FROM sra_ft WHERE sra_ft MATCH '" + ' OR '.join(srss) + "';"
         df = self.query(sql)
         if len(df.index):
-            df = df[out_type]
+            df = df[out_type].sort_values(by=out_type)
         if expand_sample_attributes:
             df = _expand_sample_attrs(df)
         return df
@@ -536,9 +540,7 @@ class SRAdb(BASEdb):
               " FROM sra_ft WHERE sra_ft MATCH '" + ' OR '.join(srrs) + "';"
         df = self.query(sql)
         if len(df.index):
-            df = df[out_type]
-        if expand_sample_attributes:
-            df = _expand_sample_attrs(df)
+            df = df[out_type].sort_values(by=out_type)
         if expand_sample_attributes:
             df = _expand_sample_attrs(df)
         return df
@@ -584,7 +586,7 @@ class SRAdb(BASEdb):
               " FROM sra_ft WHERE sra_ft MATCH '" + ' OR '.join(srxs) + "';"
         df = self.query(sql)
         if len(df.index):
-            df = df[out_type]
+            df = df[out_type].sort_values(by=out_type)
         if expand_sample_attributes:
             df = _expand_sample_attrs(df)
         return df
