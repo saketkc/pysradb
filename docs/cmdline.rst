@@ -2,6 +2,41 @@
 CLI usage
 #########
 
+.. code-block:: bash
+
+   $ pysradb
+    Usage: pysradb [OPTIONS] COMMAND [ARGS]...
+
+      pysradb: Query NGS metadata and data from NCBI Sequence Read Archive.
+
+      Citation: Pending.
+
+    Options:
+      --version   Show the version and exit.
+      -h, --help  Show this message and exit.
+
+    Commands:
+      download      Download SRA project (SRPnnnn)
+      geometadb     Download GEOmetadb.sqlite
+      ggse-to-gsm   Get GSM(s) for GSE
+      gse-metadata  Fetch metadata for GEO ID (GSEnnnn)
+      gse-to-gsm    Get SRP for a GSE
+      gse-to-srp    Get SRP for a GSE
+      gsm-metadata  Fetch metadata for GSM ID (GSMnnnn)
+      sra-metadata  Fetch metadata for SRA project (SRPnnnn)
+      srametadb     Download SRAmetadb.sqlite
+      srp-to-gse    Get GSE for a SRP
+      srp-to-srr    Get SRR for a SRP
+      srp-to-srs    Get SRS for a SRP
+      srp-to-srx    Get SRX/SRR for a SRP
+      srr-to-srx    Get SRP/SRX for a SRR
+      srs-to-srx    Get SRX for a SRS
+      srx-to-srr    Get SRR/SRP for a SRX
+      srx-to-srs    Get SRS for a SRX
+   
+
+
+
 All the operations in `pysradb` rely on the SQLite file `SRAmetadb.sqlite` provided
 by the SRAdb project. We can download it using `pysradb`:
 
@@ -15,7 +50,7 @@ you can also specify an output directory using `--out_dir` option.
 
 .. code-block:: bash
 
-  $ pysradb srametadb -h
+   $ pysradb srametadb -h
 
     Usage: pysradb srametadb [OPTIONS]
 
