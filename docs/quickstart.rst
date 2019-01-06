@@ -43,6 +43,6 @@ The full list of possible `pysradb` operations
 .. toctree::
    :maxdepth: 1
 
+   commands/gse-to-gsm
    commands/gse-to-srp
    commands/sra-metadata
-
