@@ -28,9 +28,9 @@ Usage and options
       -h, --help     Show this message and exit.
 
 
-===========================================================
-Convert GEO accesion ID (GSE)  to SRA study accession (SRP)
-===========================================================
+==========================================================
+Convert GEO accesion ID (GSE) to SRA study accession (SRP)
+==========================================================
 
 Gene Expression Omnibus or GEO hosts processed sequencing datasets.
 The raw data is available through SRA and hence we often need to
@@ -130,4 +130,4 @@ using the ``saveto`` argument:
 
 ::
 
-    $ pysradb sra-metadata --detailed --expand --saveto SRP098789_metadata.tsv SRP098789
+    $ pysradb gse-to-srp --detailed --expand --saveto SRP098789_metadata.tsv SRP098789

@@ -405,7 +405,7 @@ class SRAdb(BASEdb):
         if detailed:
             out_type += [
                 'experiment_accession', 'sample_accession', 'run_accession',
-                'experiment_alias', 'sample_alias', 'run_alias'
+                'sample_alias', 'run_alias'
             ]
         if sample_attribute:
             out_type += ['sample_attribute']
