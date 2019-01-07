@@ -46,3 +46,8 @@ The full list of possible `pysradb` operations
    commands/gse-to-gsm
    commands/gse-to-srp
    commands/sra-metadata
+   commands/srametadb
+   commands/srp-to-gse
+   commands/srp-to-srr
+   commands/srp-to-srs
+
