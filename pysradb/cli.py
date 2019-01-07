@@ -174,7 +174,7 @@ def cmd_sra_metadata(srp_id, db, assay, desc, detailed, expand, saveto):
 @cli.command(
     'srp-to-srx',
     context_settings=CONTEXT_SETTINGS,
-    help='Get SRX/SRR for a SRP')
+    help='Get SRX for a SRP')
 @click.option(
     '--db',
     help='Path to SRAmetadb.sqlite file',
@@ -610,7 +610,7 @@ def cmd_srr_to_srx(srr_ids, db, saveto, detailed, desc, expand):
 @cli.command(
     'srr-to-srx',
     context_settings=CONTEXT_SETTINGS,
-    help='Get SRP/SRX for a SRR')
+    help='Get SRX for a SRR')
 @click.option(
     '--db',
     help='Path to SRAmetadb.sqlite file',
@@ -662,7 +662,7 @@ def cmd_srr_to_srx(srr_ids, db, saveto, detailed, desc, expand):
 @cli.command(
     'srx-to-srr',
     context_settings=CONTEXT_SETTINGS,
-    help='Get SRR/SRP for a SRX')
+    help='Get SRR for a SRX')
 @click.option(
     '--db',
     help='Path to SRAmetadb.sqlite file',
