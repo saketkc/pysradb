@@ -50,4 +50,5 @@ The full list of possible `pysradb` operations
    commands/srp-to-gse
    commands/srp-to-srr
    commands/srp-to-srs
+   commands/srp-to-srx
 

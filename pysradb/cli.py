@@ -183,7 +183,12 @@ def cmd_sra_metadata(srp_id, db, assay, desc, detailed, expand, saveto):
 @click.option(
     '--detailed',
     is_flag=True,
-    help='Output additional columns: [sample_accession, run_accession]',
+    help='''Output additional columns: [sample_accession (SRS),
+                                        run_accession (SRR),
+                                        experiment_alias (GSM),
+                                        sample_alias (GSM_),
+                                        run_alias (GSM_r)',
+                                        study_alias (GSE)]''',
     default=False)
 @click.option(
     '--desc',
