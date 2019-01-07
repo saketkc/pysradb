@@ -228,7 +228,12 @@ def cmd_srp_to_srx(srp_id, db, saveto, detailed, desc, expand):
 @click.option(
     '--detailed',
     is_flag=True,
-    help='Output additional columns: [experiment_accession, run_accession]',
+    help='''Output additional columns: [run_accession (SRR),
+                                        study_accession (SRP),
+                                        experiment_alias (GSM),
+                                        sample_alias (GSM_),
+                                        run_alias (GSM_r),
+                                        study_alias (GSE)]''',
     default=False)
 @click.option(
     '--desc',
@@ -273,7 +278,12 @@ def cmd_srp_to_srs(srp_id, db, saveto, detailed, desc, expand):
 @click.option(
     '--detailed',
     is_flag=True,
-    help='Output additional columns: [sample_accession, run_accession]',
+    help='''Output additional columns: [experiment_accession (SRX),
+                                        sample_accession (SRS),
+                                        study_alias (GSE),
+                                        experiment_alias (GSM),
+                                        sample_alias (GSM_),
+                                        run_alias (GSM_r)]''',
     default=False)
 @click.option(
     '--desc',
@@ -363,7 +373,13 @@ def cmd_srp_to_gse(srp_id, db, saveto, detailed, desc, expand):
 @click.option(
     '--detailed',
     is_flag=True,
-    help='Output additional columns: [sample_accession, run_accession]',
+    help='''Output additional columns: [experiment_accession (SRX),
+                                       run_accession (SRR),
+                                       sample_accession (SRS),
+                                       experiment_alias (GSM_),
+                                       run_alias (GSM_r),
+                                       sample_alias (GSM)]
+                                       ''',
     default=False)
 @click.option(
     '--desc',
@@ -408,7 +424,10 @@ def cmd_srp_to_gse(gse_ids, db, saveto, detailed, desc, expand):
 @click.option(
     '--detailed',
     is_flag=True,
-    help='Output additional columns: [sample_accession, run_accession]',
+    help='''Output additional columns: [sample_accession (SRS),
+                                     run_accession (SRR),
+                                     sample_alias (GSM),
+                                     run_alias (GSM_r)]''',
     default=False)
 @click.option(
     '--desc',

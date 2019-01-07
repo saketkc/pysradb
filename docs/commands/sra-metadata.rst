@@ -287,7 +287,7 @@ Saving metadata to a file
 
 ``pysradb`` follows a consistent pattern for providing
 an option to save output of any of its subcommands to a file
-using the ``saveto`` argument:
+using the ``--saveto`` argument:
 
 ::
 

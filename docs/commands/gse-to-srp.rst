@@ -22,7 +22,10 @@ Usage and options
     Options:
       --db FILE      Path to SRAmetadb.sqlite file
       --saveto TEXT  Save output to file
-      --detailed     Output additional columns: [sample_accession, run_accession]
+      --detailed     Output additional columns: [experiment_accession (SRX),
+                                                 sample_accession (SRS),
+                                                 experiment_alias (GSM_),
+                                                 sample_alias (GSM)]
       --desc         Should sample_attribute be included
       --expand       Should sample_attribute be expanded
       -h, --help     Show this message and exit.
@@ -41,10 +44,10 @@ its corresponding SRA study accession of the form ``SRPmmmmm``:
 
 ::
 
-    $ pysradb gse-to-sra GSE41637
+    $ pysradb gse-to-srp GSE41637
 
     study_alias study_accession
-    GSE41637    SRP016501i
+    GSE41637    SRP016501
 
 =========================
 Getting sample attributes
@@ -126,8 +129,8 @@ Saving metadata to a file
 
 ``pysradb`` follows a consistent pattern for providing
 an option to save output of any of its subcommands to a file
-using the ``saveto`` argument:
+using the ``--saveto`` argument:
 
 ::
 
-    $ pysradb gse-to-srp --detailed --expand --saveto SRP098789_metadata.tsv SRP098789
+    $ pysradb gse-to-srp --detailed --expand --saveto GSE41637_metadata.tsv GSE41637
