@@ -8,7 +8,7 @@ install:
 - pip install -U sphinx ipython travis-sphinx
 - pip install -U numpydoc sphinxcontrib-fulltoc guzzle_sphinx_theme
 - pip install git+https://github.com/leokoppel/sphinxcontrib-versioning.git
-- pip install pytest coverage pytest-cov codecov
+- pip install -U pytest coverage pytest-cov codecov
 - wget -c https://download.asperasoft.com/download/sw/connect/3.8.1/ibm-aspera-connect-3.8.1.161274-linux-g2.12-64.tar.gz && tar -zxvf ibm-aspera-connect-3.8.1.161274-linux-g2.12-64.tar.gz && bash ibm-aspera-connect-3.8.1.161274-linux-g2.12-64.sh
 script:
 - make install
