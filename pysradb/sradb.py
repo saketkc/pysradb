@@ -419,6 +419,46 @@ class SRAdb(BASEdb):
             df = _expand_sample_attrs(df)
         return df
 
+    def srr_to_srs(self,
+                   srrs,
+                   sample_attribute=False,
+                   detailed=False,
+                   expand_sample_attributes=False):
+        """Convert SRR to SRS.
+
+        Parameters
+        ----------
+        srr: list of string
+             List of SRR IDs
+
+        Returns
+        -------
+        srp_to_srs_df: DataFrame
+        """
+        if PY3:
+            if isinstance(srrs, str):
+                srrs = [srrs]
+        else:
+            if isinstance(srrs, basestring):
+                srrs = [srrs]
+        out_type = ['run_accession', 'sample_accession']
+        if detailed:
+            out_type += [
+                'experiment_accession', 'study_accession', 'run_alias',
+                'sample_alias', 'experiment_alias', 'study_alias'
+            ]
+        if sample_attribute:
+            out_type += ['sample_attribute']
+        select_type_sql = (',').join(out_type)
+        sql = "SELECT DISTINCT " + select_type_sql + \
+              " FROM sra_ft WHERE sra_ft MATCH '" + ' OR '.join(srrs) + "';"
+        df = self.query(sql)
+        if len(df.index):
+            df = df[out_type].sort_values(by=out_type)
+        if expand_sample_attributes:
+            df = _expand_sample_attrs(df)
+        return df
+
     def srx_to_srs(self,
                    srxs,
                    sample_attribute=False,
@@ -530,8 +570,7 @@ class SRAdb(BASEdb):
         if detailed:
             out_type += [
                 'sample_accession', 'study_accession', 'run_alias',
-                'experiment_alias', 'sample_alias', 'study_accession',
-                'study_alias'
+                'experiment_alias', 'sample_alias', 'study_alias'
             ]
         if sample_attribute:
             out_type += ['sample_attribute']

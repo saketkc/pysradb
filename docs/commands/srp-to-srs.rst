@@ -32,9 +32,9 @@ Usage and options
       -h, --help     Show this message and exit.
 
 
-===========================================================
-Convert SRA study accession (SRP) to SRA run accesion (SRR)
-===========================================================
+==============================================================
+Convert SRA study accession (SRP) to SRA sample accesion (SRS)
+==============================================================
 
 To convert a SRA study accession of the form ``SRPmmmmm`` to its
 corresponding SRA run accesions of the form ``SRRnnnn``:
