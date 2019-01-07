@@ -1,3 +1,5 @@
+.. _quickstart:
+
 ##########
 Quickstart
 ##########
@@ -81,4 +83,5 @@ The full list of possible `pysradb` operations
    commands/srp-to-srs
    commands/srp-to-srx
    commands/srr-to-srs
+   commands/srr-to-srx
 

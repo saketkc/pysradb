@@ -1,7 +1,10 @@
-=====
-Usage
-=====
+.. _apiusage:
 
+################
+Python API Usage
+################
+
+===================================================
 Use Case 1: Fetch the metadata table (SRA-runtable)
 ===================================================
 
@@ -33,6 +36,7 @@ See an `example <https://www.ncbi.nlm.nih.gov/Traces/study/?acc=SRP098789>`_ of 
 The metadata is returned as a `pandas` dataframe and hence allows you to perform
 all regular select/query operations available through `pandas`.
 
+==================================================================
 Use Case 2: Downloading an entire project arranged experiment wise
 ==================================================================
 
@@ -54,6 +58,7 @@ We strongly recommend installing `aspera-client` which uses UDP and is `designed
    df = db.sra_metadata('SRP017942')
    db.download(df)
 
+===============================================
 Use Case 3: Downloading a subset of experiments
 ===============================================
 
@@ -78,6 +83,7 @@ pandas.
    db.download(df=df_rna, out_dir='/pysradb_downloads')()
 
 
+==========================================================================
 Use Case 4: Getting cell-type/treatment information from sample_attributes
 ==========================================================================
 
@@ -104,6 +110,7 @@ which can be expanded:
     ===============  ====================  =====================================================================  =========================  ========================================================================================================================================================  =============  ========  =================  ==============  ================  ==============  ============  ==========  =========  ============  ===============  ==========  ==========  ===========  ================  ===============================
 
 
+==================================
 Use Case 5: Searching for datasets
 ==================================
 
@@ -134,20 +141,3 @@ in the description:
 Again, the results are available as a `pandas` dataframe and hence
 you can perform all subset operations post your query. Your query doesn't need
 to be exact.
-
-****
-Demo
-****
-
-https://nbviewer.jupyter.org/github/saketkc/pysradb/blob/master/notebooks/demo.ipynb
-
-
-********
-Citation
-********
-
-Pending.
-
-A lot of functionality in `pysradb` is based on ideas from the original `SRAdb package <https://bioconductor.org/packages/release/bioc/html/SRAdb.html>`_. Please cite the original SRAdb publication:
-
-    Zhu, Yuelin, Robert M. Stephens, Paul S. Meltzer, and Sean R. Davis. "SRAdb: query and use public next-generation sequencing data from within R." BMC bioinformatics 14, no. 1 (2013): 19.
