@@ -73,18 +73,6 @@ def cmd_download_sra(out_dir, overwrite):
 
 
 @cli.command(
-    'geometadb',
-    context_settings=CONTEXT_SETTINGS,
-    help='Download GEOmetadb.sqlite')
-@click.option('--out_dir', type=str, help='Output directory location')
-@click.option('--overwrite', type=bool, help='Overwrite existing file')
-def cmd_download_geo(out_dir, overwrite):
-    if out_dir is None:
-        out_dir = os.getcwd()
-    download_geodb_file(out_dir, overwrite)
-
-
-@cli.command(
     'download',
     context_settings=CONTEXT_SETTINGS,
     help='Download SRA project (SRPnnnn)')
@@ -172,9 +160,7 @@ def cmd_sra_metadata(srp_id, db, assay, desc, detailed, expand, saveto):
 
 
 @cli.command(
-    'srp-to-srx',
-    context_settings=CONTEXT_SETTINGS,
-    help='Get SRX for a SRP')
+    'srp-to-srx', context_settings=CONTEXT_SETTINGS, help='Get SRX for a SRP')
 @click.option(
     '--db',
     help='Path to SRAmetadb.sqlite file',
@@ -608,9 +594,7 @@ def cmd_srr_to_srx(srr_ids, db, saveto, detailed, desc, expand):
 
 
 @cli.command(
-    'srr-to-srx',
-    context_settings=CONTEXT_SETTINGS,
-    help='Get SRX for a SRR')
+    'srr-to-srx', context_settings=CONTEXT_SETTINGS, help='Get SRX for a SRR')
 @click.option(
     '--db',
     help='Path to SRAmetadb.sqlite file',
@@ -660,9 +644,7 @@ def cmd_srr_to_srx(srr_ids, db, saveto, detailed, desc, expand):
 
 
 @cli.command(
-    'srx-to-srr',
-    context_settings=CONTEXT_SETTINGS,
-    help='Get SRR for a SRX')
+    'srx-to-srr', context_settings=CONTEXT_SETTINGS, help='Get SRR for a SRX')
 @click.option(
     '--db',
     help='Path to SRAmetadb.sqlite file',
@@ -704,6 +686,21 @@ def cmd_srp_to_srx(srx_ids, db, saveto, detailed, desc, expand):
                     df.to_string(index=False, justify='left',
                                  col_space=0).encode('utf-8'))
     sradb.close()
+
+
+"""
+
+@cli.command(
+    'geometadb',
+    context_settings=CONTEXT_SETTINGS,
+    help='Download GEOmetadb.sqlite')
+@click.option('--out_dir', type=str, help='Output directory location')
+@click.option('--overwrite', type=bool, help='Overwrite existing file')
+def cmd_download_geo(out_dir, overwrite):
+    if out_dir is None:
+        out_dir = os.getcwd()
+    download_geodb_file(out_dir, overwrite)
+
 
 
 @cli.command(
@@ -761,7 +758,6 @@ def cmd_gsm_metadata(gsm_id, db, saveto):
                                  col_space=0).encode('utf-8'))
     geodb.close()
 
-
 @cli.command(
     'ggse-to-gsm',
     context_settings=CONTEXT_SETTINGS,
@@ -788,3 +784,4 @@ def cmd_gse_to_gsm(gse_id, db, saveto):
                     df.to_string(index=False, justify='left',
                                  col_space=0).encode('utf-8'))
     geodb.close()
+"""
