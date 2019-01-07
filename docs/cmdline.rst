@@ -1,6 +1,8 @@
-#########
-CLI usage
-#########
+.. _clitutorial:
+
+############
+CLI Tutorial
+############
 
 ::
 

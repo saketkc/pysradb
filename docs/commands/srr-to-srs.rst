@@ -5,7 +5,7 @@ srr-to-srs
 ##########
 
 ``srr-to-srs`` converts a SRA run accesion (SRR) to corresponding
-SRA sample accession(s) (SRS).
+SRA sample accession (SRS).
 
 =================
 Usage and options
@@ -38,11 +38,11 @@ Convert SRA run accession (SRR) to SRA sample accesion (SRS)
 ==============================================================
 
 To convert a SRA run accession of the form ``SRRmmmmm`` to its
-corresponding SRA sample accesion(s) of the form ``SRSnnnn``:
+corresponding SRA sample accession of the form ``SRSnnnn``:
 
 ::
 
-    $ pysradb srr-to-srs SRP048759
+    $ pysradb srr-to-srs SRR1608490
 
     run_accession sample_accession
     SRR1608490    SRS718878
@@ -62,7 +62,7 @@ tag if you want the sample/run/experiment accesions.
 
 ::
 
-    $ pysradb srr-to-srs --desc SRP048759
+    $ pysradb srr-to-srs --desc SRR1608490
 
     run_accession sample_accession sample_attribute
     SRR1608490    SRS718878        source_name: acute myeloid leukemia || tissue: Bone marrow || cell type: acute myeloid leukemia
@@ -73,7 +73,7 @@ is not so useful. In order to obtain detailed metadata:
 
 ::
 
-    $ pysradb srr-to-srs --detailed --desc SRP048759
+    $ pysradb srr-to-srs --detailed --desc SRR1608490
 
     run_accession sample_accession cell_type               source_name             tissue
     SRR1608490    SRS718878        acute myeloid leukemia  acute myeloid leukemia  bone marrow
@@ -90,10 +90,10 @@ using the ``--expand`` flag.
 
 ::
 
-    $ pysradb srr-to-srs --detailed --desc --expand SRP048759
+    $ pysradb srr-to-srs --detailed --desc --expand SRR1608490
 
     run_accession sample_accession experiment_accession study_accession run_alias      sample_alias experiment_alias study_alias cell_type               source_name             tissue
-    SRR1608490    SRS718878        SRX729552            SRP048759       GSM1521543_r1  GSM1521543   GSM1521543       GSE62190    acute myeloid leukemia  acute myeloid leukemia  bone marrow
+    SRR1608490    SRS718878        SRX729552            SRR1608490       GSM1521543_r1  GSM1521543   GSM1521543       GSE62190    acute myeloid leukemia  acute myeloid leukemia  bone marrow
 
 =========================
 Saving metadata to a file
@@ -105,5 +105,5 @@ using the ``--saveto`` argument:
 
 ::
 
-    $ pysradb srr-to-srs --detailed --expand --saveto SRP048759_metadata.tsv SRP048759
+    $ pysradb srr-to-srs --detailed --expand --saveto SRR1608490_metadata.tsv SRR1608490
 
