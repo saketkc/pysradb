@@ -28,11 +28,11 @@ Usage and options
       -h, --help     Show this message and exit.
 
 
-==================================================================
-Convert SRA study accession (SRP) to SRA experiment accesion (SRX)
-==================================================================
+===================================================================
+Convert SRA sample accession (SRS) to SRA experiment accesion (SRX)
+===================================================================
 
-To convert a SRA study accession of the form ``SRPmmmmm`` to its
+To convert a SRA sample accession of the form ``SRSmmmmm`` to its
 corresponding SRA experiment accesion(s) of the form ``SRXnnnn``:
 
 ::
