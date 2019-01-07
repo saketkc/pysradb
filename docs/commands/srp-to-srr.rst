@@ -81,9 +81,8 @@ Often, the most useful information is in the ``sample_attribute``
 column of ``SRAmetadb``. For example, what cell` types do
 different experiments correspond to? What treatments have been
 applied to them? This can be listed by using the ``-desc``
-tag. Note however that, this will not however any accesions
-related to the experiment or run. You will need the ``--detailed``
-tag if you want the sample/run/experiment accesions.
+tag. If you also need the sample and experiment accesions,
+SRS and SRX respectively, please use ``--detailed`` tag.
 
 
 ::
