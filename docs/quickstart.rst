@@ -85,4 +85,7 @@ The full list of possible `pysradb` operations
    commands/srr-to-srs
    commands/srr-to-srx
    commands/srs-to-srx
+   commands/srx-to-srr
+   commands/srx-to-srs
+
 
