@@ -234,8 +234,8 @@ run accessions (SRR):
    $ pysradb sra-metadata --db data/SRAmetadb.sqlite --assay SRP098789 | pysradb download --db data/SRAmetadb.sqlite
 
 
-Conversions
------------
+Get GEO accessions for studies (SRP => GSE)
+===========================================
 
 **SRP to GSE:**
 
@@ -256,7 +256,8 @@ Conversions
    SRP029589       PRJNA218051
 
 
-**GSE to SRP:**
+Get SRA accessions for GEO studies (GSE => SRP)
+===============================================
 
 ::
 
@@ -264,3 +265,5 @@ Conversions
 
     study_alias study_accession
     GSE87328    SRP090415
+
+Please see `quickstart <https://www.saket-choudhary.me/pysradb/quickstart.html#the-full-list-of-possible-pysradb-operations>`_ for all possible operations available through ``pysradb``.
