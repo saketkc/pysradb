@@ -160,6 +160,60 @@ def cmd_sra_metadata(srp_id, db, assay, desc, detailed, expand, saveto):
 
 
 @cli.command(
+    'sra-search',
+    context_settings=CONTEXT_SETTINGS,
+    help='Search SRA for matching text')
+@click.option('--saveto', help='Save metadata dataframe to file')
+@click.option(
+    '--db',
+    help='Path to SRAmetadb.sqlite file',
+    type=click.Path(exists=True, dir_okay=False))
+@click.option(
+    '--assay',
+    is_flag=True,
+    help='Include assay type in output',
+    default=False)
+@click.option(
+    '--desc',
+    is_flag=True,
+    help='Should sample_attribute be included',
+    default=False)
+@click.option(
+    '--detailed',
+    is_flag=True,
+    help='Display detailed metadata table',
+    default=False)
+@click.option(
+    '--expand',
+    is_flag=True,
+    help='Should sample_attribute be expanded',
+    default=False)
+@click.argument('search_text', required=True)
+def cmd_sra_search(search_text, db, assay, desc, detailed, expand, saveto):
+    db = _check_sradb_file(db)
+    sradb = SRAdb(db)
+    df = sradb.search_sra(
+        search_text,
+        assay=assay,
+        detailed=detailed,
+        sample_attribute=desc,
+        expand_sample_attributes=expand)
+    if saveto:
+        df.to_csv(saveto, index=False, header=True, sep='\t')
+    else:
+        if len(df.index):
+            if PY3:
+                pd.set_option('display.max_colwidth', -1)
+                print(df.to_string(index=False, justify='left', col_space=0))
+            else:
+                print(
+                    df.to_string(index=False, justify='left',
+                                 col_space=0).encode('utf-8'))
+
+    sradb.close()
+
+
+@cli.command(
     'srp-to-srx', context_settings=CONTEXT_SETTINGS, help='Get SRX for a SRP')
 @click.option(
     '--db',
