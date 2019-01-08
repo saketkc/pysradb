@@ -146,7 +146,8 @@ class SRAdb(BASEdb):
                      sample_attribute=False,
                      detailed=False,
                      expand_sample_attributes=False,
-                     output_read_lengths=False):
+                     output_read_lengths=False,
+                     acc_is_searchstr=False):
         """Get metadata for the provided SRA accession.
 
         Parameters
@@ -155,8 +156,19 @@ class SRAdb(BASEdb):
              SRA accession ID
         out_type: list
                   List of columns to output
+        assay: bool
+               True if assay should be outputted
+        sample_attribute: bool
+                          True if sample_attribute should be outputted
+        detailed: bool
+                  True if full metadata tables should be outputted
         expand_sample_attributes: bool
                                   Should sample_attribute column be expanded?
+        output_read_lengths: bool
+                             True if read lengths should be calculated
+        acc_is_searchstr: bool
+                          True if acc is a search string
+
 
         Returns
         -------
@@ -164,10 +176,12 @@ class SRAdb(BASEdb):
                      A dataframe with all relevant columns
         """
         in_acc_type = re.sub('\\d+$', '', acc).upper()
-        if in_acc_type not in self.valid_in_acc_type:
+        if in_acc_type not in self.valid_in_acc_type and not acc_is_searchstr:
             raise ValueError('{} not a valid input type'.format(in_acc_type))
-
-        in_type = self.valid_in_type[in_acc_type]
+        if acc_is_searchstr:
+            in_type = 'study'
+        else:
+            in_type = self.valid_in_type[in_acc_type]
         output_columns = out_type[:]
         if detailed:
             output_columns += [
@@ -630,16 +644,19 @@ class SRAdb(BASEdb):
             df = _expand_sample_attrs(df)
         return df
 
-    def search_sra(
-            self,
-            search_str,
-            out_type=[
-                'study_accession', 'experiment_accession', 'experiment_title',
-                'experiment_attribute', 'sample_attribute', 'run_accession',
-                'taxon_id', 'library_selection', 'library_layout',
-                'library_strategy', 'library_source', 'library_name', 'bases',
-                'spots'
-            ]):
+    def search_sra(self,
+                   search_str,
+                   out_type=[
+                       'study_accession',
+                       'experiment_accession',
+                       'sample_accession',
+                       'run_accession',
+                   ],
+                   assay=False,
+                   sample_attribute=False,
+                   detailed=False,
+                   expand_sample_attributes=False,
+                   output_read_lengths=False):
         """Search SRA for any search term.
 
         Parameters
@@ -649,20 +666,21 @@ class SRAdb(BASEdb):
                     SQL like text => For example,
                     terms in quotes "" enforce an exact search.
 
+
         Returns
         -------
         query_df: DataFrame
                   Dataframe with relevant query results
         """
-
-        select_type = out_type
-        select_type_sql = (',').join(select_type)
-        sql = "SELECT DISTINCT " + select_type_sql +\
-              " FROM sra_ft WHERE sra_ft MATCH '" + search_str + "';"
-        df = self.query(sql)
-        if len(df.index) > 0:
-            return order_dataframe(df, out_type)
-        return None
+        return self.sra_metadata(
+            search_str,
+            out_type=out_type,
+            assay=assay,
+            sample_attribute=sample_attribute,
+            detailed=detailed,
+            expand_sample_attributes=expand_sample_attributes,
+            output_read_lengths=output_read_lengths,
+            acc_is_searchstr=True)
 
     def search_by_expt_id(self, srx):
         """Search for a SRX/GSM id in the experiments.
