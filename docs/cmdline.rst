@@ -266,4 +266,16 @@ Get SRA accessions for GEO studies (GSE => SRP)
     study_alias study_accession
     GSE87328    SRP090415
 
+Searching SRA
+=============
+
+::
+
+    $ pysradb sra-search 'cycloheximide heatshock'
+
+    study_accession experiment_accession sample_accession run_accession
+    SRP044649       SRX657376            SRS662567        SRR1520327
+    SRP044649       SRX657377            SRS662568        SRR1520328
+
+
 Please see `quickstart <https://www.saket-choudhary.me/pysradb/quickstart.html#the-full-list-of-possible-pysradb-operations>`_ for all possible operations available through ``pysradb``.
