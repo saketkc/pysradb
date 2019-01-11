@@ -7,6 +7,7 @@ import sys
 import struct
 import subprocess
 from tqdm import tqdm
+
 PY3 = True
 if sys.version_info[0] < 3:
     PY3 = False
@@ -71,9 +72,10 @@ def _find_aspera_keypath(aspera_dir=None):
                     Location to aspera key
     """
     if aspera_dir is None:
-        aspera_dir = os.path.join(os.path.expanduser('~'), '.aspera')
-    aspera_keypath = os.path.join(aspera_dir, 'connect', 'etc',
-                                  'asperaweb_id_dsa.openssh')
+        aspera_dir = os.path.join(os.path.expanduser("~"), ".aspera")
+    aspera_keypath = os.path.join(
+        aspera_dir, "connect", "etc", "asperaweb_id_dsa.openssh"
+    )
     if os.path.isfile(aspera_keypath):
         return aspera_keypath
 
@@ -129,17 +131,15 @@ def _get_url(url, download_to, show_progress=True):
         import urllib.request as urllib_request
     else:
         import urllib as urllib_request
-    desc_file = 'Downloading {}'.format(url.split('/')[-1])
+    desc_file = "Downloading {}".format(url.split("/")[-1])
     mkdir_p(os.path.dirname(download_to))
     if show_progress:
         with TqdmUpTo(
-                unit='B',
-                unit_scale=True,
-                unit_divisor=1024,
-                miniters=1,
-                desc=desc_file) as t:
+            unit="B", unit_scale=True, unit_divisor=1024, miniters=1, desc=desc_file
+        ) as t:
             urllib_request.urlretrieve(
-                url, download_to, reporthook=t.update_to, data=None)
+                url, download_to, reporthook=t.update_to, data=None
+            )
     else:
         urllib_request.urlretrieve(url, download_to)
 
@@ -147,15 +147,16 @@ def _get_url(url, download_to, show_progress=True):
 def run_command(command, verbose=False):
     """Run a shell command"""
     process = subprocess.Popen(
-        shlex.split(command), stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+        shlex.split(command), stdout=subprocess.PIPE, stderr=subprocess.STDOUT
+    )
 
     while True:
         output = process.stdout.readline().strip()
         if not PY3:
             output = output.encode().decode()
         else:
-            output = output.decode('utf-8')
-        if output == u'' and process.poll() is not None:
+            output = output.decode("utf-8")
+        if output == u"" and process.poll() is not None:
             break
         if output:
             if verbose:
@@ -178,19 +179,19 @@ def get_gzip_uncompressed_size(filepath):
               Uncompressed file size
     """
     if PY3:
-        with gzip.open(filepath, 'rb') as file_obj:
+        with gzip.open(filepath, "rb") as file_obj:
             return file_obj.seek(0, io.SEEK_END)
     # For python2, there is a bug
     # since the compression ratios for files>2GB
     # will be negative. This causes the progress
     # bar to end earlier than it should.
     # No fixes known
-    with open(filepath, 'rb') as f:
+    with open(filepath, "rb") as f:
         f.seek(-4, 2)
-        return struct.unpack('I', f.read(4))[0]
+        return struct.unpack("I", f.read(4))[0]
 
 
-def copyfileobj(fsrc, fdst, bufsize=16384, filesize=None, desc=''):
+def copyfileobj(fsrc, fdst, bufsize=16384, filesize=None, desc=""):
     """Copy file object with a progress bar.
 
     Parameters
@@ -207,12 +208,13 @@ def copyfileobj(fsrc, fdst, bufsize=16384, filesize=None, desc=''):
           Description for tqdm status
     """
     with tqdm(
-            total=filesize,
-            unit='B',
-            unit_scale=True,
-            miniters=1,
-            unit_divisor=1024,
-            desc=desc) as pbar:
+        total=filesize,
+        unit="B",
+        unit_scale=True,
+        miniters=1,
+        unit_divisor=1024,
+        desc=desc,
+    ) as pbar:
         while True:
             buf = fsrc.read(bufsize)
             if not buf:
