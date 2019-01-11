@@ -1,7 +1,6 @@
 """Tests for cli.py
 """
-from __future__ import (absolute_import, division, print_function,
-                        unicode_literals)
+from __future__ import absolute_import, division, print_function, unicode_literals
 import os
 from pysradb import cli as sradbcli
 from pysradb import GEOdb, SRAdb
@@ -30,59 +29,72 @@ def runner():
 
 
 def test_all_row_counts_geo(geodb_connection):
-    assert geodb_connection.all_row_counts().loc['metaInfo', 'count'] == 2
+    assert geodb_connection.all_row_counts().loc["metaInfo", "count"] == 2
 
 
 def test_all_row_counts_sra(sradb_connection):
-    assert sradb_connection.all_row_counts().loc['metaInfo', 'count'] == 2
+    assert sradb_connection.all_row_counts().loc["metaInfo", "count"] == 2
 
 
 def test_download(runner):
-    result = runner.invoke(sradbcli.cmd_download_sra, [
-        '--db', 'data/SRAmetadb.sqlite', '--out_dir', 'srp_downloads', '-p',
-        'SRP063852'
-    ])
-    assert os.path.getsize('srp_downloads/SRP063852/SRX1254413/SRR2433794.sra')
+    result = runner.invoke(
+        sradbcli.cmd_download_sra,
+        [
+            "--db",
+            "data/SRAmetadb.sqlite",
+            "--out_dir",
+            "srp_downloads",
+            "-p",
+            "SRP063852",
+        ],
+    )
+    assert os.path.getsize("srp_downloads/SRP063852/SRX1254413/SRR2433794.sra")
 
 
 def test_sra_metadata(runner):
-    result = runner.invoke(sradbcli.cmd_sra_metadata,
-                           ['SRP098789', '--db', 'data/SRAmetadb.sqlite'])
-    assert 'SRX2536403' in result.output
+    result = runner.invoke(
+        sradbcli.cmd_sra_metadata, ["SRP098789", "--db", "data/SRAmetadb.sqlite"]
+    )
+    assert "SRX2536403" in result.output
 
 
 def test_sra_metadata(runner):
-    result = runner.invoke(sradbcli.cmd_sra_metadata, [
-        'SRP098789', '--db', 'data/SRAmetadb.sqlite', '--detailed', '--expand'
-    ])
-    assert 'treatment_time' in result.output
+    result = runner.invoke(
+        sradbcli.cmd_sra_metadata,
+        ["SRP098789", "--db", "data/SRAmetadb.sqlite", "--detailed", "--expand"],
+    )
+    assert "treatment_time" in result.output
 
 
 def test_srp_to_srx(runner):
-    result = runner.invoke(sradbcli.cmd_srp_to_srx,
-                           ['SRP098789', '--db', 'data/SRAmetadb.sqlite'])
-    assert 'SRX2536403' in result.output
+    result = runner.invoke(
+        sradbcli.cmd_srp_to_srx, ["SRP098789", "--db", "data/SRAmetadb.sqlite"]
+    )
+    assert "SRX2536403" in result.output
 
 
 def test_srp_assay(runner):
     result = runner.invoke(
         sradbcli.cmd_sra_metadata,
-        ['SRP098789', '--db', 'data/SRAmetadb.sqlite', '--assay'])
-    assert 'RNA-Seq' in result.output
+        ["SRP098789", "--db", "data/SRAmetadb.sqlite", "--assay"],
+    )
+    assert "RNA-Seq" in result.output
 
 
 def srr_to_srx(runner):
     result = runner.invoke(
         sradbcli.cmd_srr_to_srx,
-        ['--db', 'data/SRAmetadb.sqlite', 'SRR5227288', 'SRR649752', '--desc'])
-    assert '3T3 cells' in result.output
+        ["--db", "data/SRAmetadb.sqlite", "SRR5227288", "SRR649752", "--desc"],
+    )
+    assert "3T3 cells" in result.output
 
 
 def srx_to_srr(runner):
     result = runner.invoke(
         sradbcli.cmd_srr_to_srx,
-        ['--db', 'data/SRAmetadb.sqlite', 'SRX217956', 'SRX2536403', '--desc'])
-    assert '3T3 cells' in result.output
+        ["--db", "data/SRAmetadb.sqlite", "SRX217956", "SRX2536403", "--desc"],
+    )
+    assert "3T3 cells" in result.output
 
 
 """
