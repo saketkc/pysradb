@@ -1,6 +1,5 @@
 """Methods to interact with SRA"""
-from __future__ import (absolute_import, division, print_function,
-                        unicode_literals)
+from __future__ import absolute_import, division, print_function, unicode_literals
 import gzip
 import os
 import re
@@ -15,7 +14,7 @@ PY3 = True
 if sys.version_info[0] < 3:
     PY3 = False
 
-GEOmetadb_URL = 'http://starbuck1.s3.amazonaws.com/sradb/GEOmetadb.sqlite.gz'
+GEOmetadb_URL = "http://starbuck1.s3.amazonaws.com/sradb/GEOmetadb.sqlite.gz"
 
 
 def download_geodb_file(download_dir=os.getcwd(), overwrite=True):
@@ -30,37 +29,43 @@ def download_geodb_file(download_dir=os.getcwd(), overwrite=True):
                Set to True by default.
 
     """
-    download_location = os.path.join(download_dir, 'GEOmetadb.sqlite.gz')
-    download_location_unzip = download_location.rstrip('.gz')
+    download_location = os.path.join(download_dir, "GEOmetadb.sqlite.gz")
+    download_location_unzip = download_location.rstrip(".gz")
 
     if os.path.isfile(download_location) and overwrite is False:
         raise RuntimeError(
-            '{} already exists! Set `overwrite=True` to redownload.'.forma(
-                download_location))
+            "{} already exists! Set `overwrite=True` to redownload.".forma(
+                download_location
+            )
+        )
     if os.path.isfile(download_location_unzip) and overwrite is False:
         raise RuntimeError(
-            '{} already exists! Set `overwrite=True` to redownload.'.format(
-                download_location_unzip))
+            "{} already exists! Set `overwrite=True` to redownload.".format(
+                download_location_unzip
+            )
+        )
 
     try:
         _get_url(GEOmetadb_URL, download_location)
     except Exception as e:
-        raise RuntimeError('Could not use {}.\nException: {}.\n'.format(
-            GEOmetadb_URL, e))
-    print('Extracting {} ...'.format(download_location))
+        raise RuntimeError(
+            "Could not use {}.\nException: {}.\n".format(GEOmetadb_URL, e)
+        )
+    print("Extracting {} ...".format(download_location))
     filesize = get_gzip_uncompressed_size(download_location)
-    with gzip.open(download_location, 'rb') as fh_in:
-        with open(download_location_unzip, 'wb') as fh_out:
+    with gzip.open(download_location, "rb") as fh_in:
+        with open(download_location_unzip, "wb") as fh_out:
             copyfileobj(
                 fh_in,
                 fh_out,
                 filesize=filesize,
-                desc='Extracting {}'.format('GEOmetadb.sqlite.gz'))
-    print('Done!')
+                desc="Extracting {}".format("GEOmetadb.sqlite.gz"),
+            )
+    print("Done!")
     db = GEOdb(download_location_unzip)
-    metadata = db.query('SELECT * FROM metaInfo')
+    metadata = db.query("SELECT * FROM metaInfo")
     db.close()
-    print('Metadata associated with {}:'.format(download_location_unzip))
+    print("Metadata associated with {}:".format(download_location_unzip))
     print(metadata)
 
 
@@ -77,8 +82,8 @@ class GEOdb(BASEdb):
 
         """
         super(GEOdb, self).__init__(sqlite_file)
-        self._db_type = 'GEO'
-        self.valid_in_type = ['GSE', 'GPL', 'GSM', 'GDS']
+        self._db_type = "GEO"
+        self.valid_in_type = ["GSE", "GPL", "GSM", "GDS"]
 
     def gse_metadata(self, gse):
         """Get metadata for GSE ID.
@@ -124,7 +129,8 @@ class GEOdb(BASEdb):
                     A dataframe with relevant mappings
         """
         return self.query(
-            "SELECT * FROM geoConvert WHERE from_acc='{}';".format(from_acc))
+            "SELECT * FROM geoConvert WHERE from_acc='{}';".format(from_acc)
+        )
 
     def gse_to_gsm(self, gse):
         """Fetch GSMs for a GSE.
@@ -154,9 +160,8 @@ class GEOdb(BASEdb):
         mapping_df: DataFrame
                     A dataframe with relevant mappings
         """
-        mapping_df = self.query(
-            "SELECT * FROM gse_gsm WHERE gsm='{}'".format(gsm))
-        return mapping_df.loc[:, ['gsm', 'gse']]
+        mapping_df = self.query("SELECT * FROM gse_gsm WHERE gsm='{}'".format(gsm))
+        return mapping_df.loc[:, ["gsm", "gse"]]
 
     def guess_srp_from_gse(self, gse):
         """Convert GSE to SRP id.
@@ -173,12 +178,12 @@ class GEOdb(BASEdb):
         """
         results = self.query('SELECT * FROM gse WHERE gse = "' + gse + '"')
         if results.shape[0] == 1:
-            supp_file = results['supplementary_file'][0]
+            supp_file = results["supplementary_file"][0]
             if supp_file:
-                splitted = supp_file.split(';')
+                splitted = supp_file.split(";")
                 if len(splitted):
-                    match = re.findall('SRP.*', splitted[-1])
+                    match = re.findall("SRP.*", splitted[-1])
                     if len(match):
-                        srp = match[0].split('/')[-1]
+                        srp = match[0].split("/")[-1]
                         return srp
         return None

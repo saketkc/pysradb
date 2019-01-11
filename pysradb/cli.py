@@ -1,7 +1,6 @@
 """Command line interface for pysradb
 """
-from __future__ import (absolute_import, division, print_function,
-                        unicode_literals)
+from __future__ import absolute_import, division, print_function, unicode_literals
 
 import os
 import re
@@ -17,7 +16,7 @@ import click
 import pandas as pd
 
 click.disable_unicode_literals_warning = True
-CONTEXT_SETTINGS = dict(help_option_names=['-h', '--help'])
+CONTEXT_SETTINGS = dict(help_option_names=["-h", "--help"])
 
 PY3 = True
 if sys.version_info[0] < 3:
@@ -31,22 +30,22 @@ else:
 
 def _check_sradb_file(db):
     if db is None:
-        db = os.path.join(os.getcwd(), 'SRAmetadb.sqlite')
+        db = os.path.join(os.getcwd(), "SRAmetadb.sqlite")
         if os.path.isfile(db):
             return db
         download_sradb_file()
 
     if not os.path.isfile(db):
-        raise RuntimeError('{} does not exist'.format(db))
+        raise RuntimeError("{} does not exist".format(db))
     return db
 
 
 def _check_geodb_file(db):
     if db is None:
-        db = os.path.join(os.getcwd(), 'GEOmetadb.sqlite')
+        db = os.path.join(os.getcwd(), "GEOmetadb.sqlite")
         download_geodb_file()
     if not os.path.isfile(db):
-        raise RuntimeError('{} does not exist'.format(db))
+        raise RuntimeError("{} does not exist".format(db))
     return db
 
 
@@ -61,11 +60,10 @@ def cli():
 
 
 @cli.command(
-    'srametadb',
-    context_settings=CONTEXT_SETTINGS,
-    help='Download SRAmetadb.sqlite')
-@click.option('--out_dir', type=str, help='Output directory location')
-@click.option('--overwrite', type=bool, help='Overwrite existing file')
+    "srametadb", context_settings=CONTEXT_SETTINGS, help="Download SRAmetadb.sqlite"
+)
+@click.option("--out_dir", type=str, help="Output directory location")
+@click.option("--overwrite", type=bool, help="Overwrite existing file")
 def cmd_download_sra(out_dir, overwrite):
     if out_dir is None:
         out_dir = os.getcwd()
@@ -73,31 +71,32 @@ def cmd_download_sra(out_dir, overwrite):
 
 
 @cli.command(
-    'download',
-    context_settings=CONTEXT_SETTINGS,
-    help='Download SRA project (SRPnnnn)')
-@click.option('--out_dir', help='Output directory root')
+    "download", context_settings=CONTEXT_SETTINGS, help="Download SRA project (SRPnnnn)"
+)
+@click.option("--out_dir", help="Output directory root")
 @click.option(
-    '--db',
-    help='Path to SRAmetadb.sqlite file',
-    type=click.Path(exists=True, dir_okay=False))
-@click.option('--srx', '-x', help='Download only these SRX(s)', multiple=True)
-@click.option('--srp', '-p', help='SRP ID', multiple=True)
+    "--db",
+    help="Path to SRAmetadb.sqlite file",
+    type=click.Path(exists=True, dir_okay=False),
+)
+@click.option("--srx", "-x", help="Download only these SRX(s)", multiple=True)
+@click.option("--srp", "-p", help="SRP ID", multiple=True)
 def cmd_download_sra(out_dir, db, srx, srp):
     db = _check_sradb_file(db)
     if out_dir is None:
-        out_dir = os.path.join(os.getcwd(), 'pysradb_downloads')
+        out_dir = os.path.join(os.getcwd(), "pysradb_downloads")
     sradb = SRAdb(db)
     if not srp:
         stdin_text = click.get_text_stream(
-            'stdin').read()  #.replace('\t', '  ')#.strip()
-        text = ''
-        for line in stdin_text.split('\n'):
+            "stdin"
+        ).read()  # .replace('\t', '  ')#.strip()
+        text = ""
+        for line in stdin_text.split("\n"):
             line = line.strip()
-            line = line.lstrip(' ')
-            line = re.sub('\s+', ' ', line).strip()
-            text += '{}\n'.format(line)
-        df = pd.read_csv(StringIO(text), sep=' ')
+            line = line.lstrip(" ")
+            line = re.sub("\s+", " ", line).strip()
+            text += "{}\n".format(line)
+        df = pd.read_csv(StringIO(text), sep=" ")
         sradb.download(df=df, out_dir=out_dir, filter_by_srx=srx)
     else:
         for srp_x in sorted(set(srp)):
@@ -106,35 +105,29 @@ def cmd_download_sra(out_dir, db, srx, srp):
 
 
 @cli.command(
-    'sra-metadata',
+    "sra-metadata",
     context_settings=CONTEXT_SETTINGS,
-    help='Fetch metadata for SRA project (SRPnnnn)')
-@click.option('--saveto', help='Save metadata dataframe to file')
+    help="Fetch metadata for SRA project (SRPnnnn)",
+)
+@click.option("--saveto", help="Save metadata dataframe to file")
 @click.option(
-    '--db',
-    help='Path to SRAmetadb.sqlite file',
-    type=click.Path(exists=True, dir_okay=False))
+    "--db",
+    help="Path to SRAmetadb.sqlite file",
+    type=click.Path(exists=True, dir_okay=False),
+)
 @click.option(
-    '--assay',
-    is_flag=True,
-    help='Include assay type in output',
-    default=False)
+    "--assay", is_flag=True, help="Include assay type in output", default=False
+)
 @click.option(
-    '--desc',
-    is_flag=True,
-    help='Should sample_attribute be included',
-    default=False)
+    "--desc", is_flag=True, help="Should sample_attribute be included", default=False
+)
 @click.option(
-    '--detailed',
-    is_flag=True,
-    help='Display detailed metadata table',
-    default=False)
+    "--detailed", is_flag=True, help="Display detailed metadata table", default=False
+)
 @click.option(
-    '--expand',
-    is_flag=True,
-    help='Should sample_attribute be expanded',
-    default=False)
-@click.argument('srp_id', required=True)
+    "--expand", is_flag=True, help="Should sample_attribute be expanded", default=False
+)
+@click.argument("srp_id", required=True)
 def cmd_sra_metadata(srp_id, db, assay, desc, detailed, expand, saveto):
     db = _check_sradb_file(db)
     sradb = SRAdb(db)
@@ -143,52 +136,47 @@ def cmd_sra_metadata(srp_id, db, assay, desc, detailed, expand, saveto):
         assay=assay,
         detailed=detailed,
         sample_attribute=desc,
-        expand_sample_attributes=expand)
+        expand_sample_attributes=expand,
+    )
     if saveto:
-        df.to_csv(saveto, index=False, header=True, sep='\t')
+        df.to_csv(saveto, index=False, header=True, sep="\t")
     else:
         if len(df.index):
             if PY3:
-                pd.set_option('display.max_colwidth', -1)
-                print(df.to_string(index=False, justify='left', col_space=0))
+                pd.set_option("display.max_colwidth", -1)
+                print(df.to_string(index=False, justify="left", col_space=0))
             else:
                 print(
-                    df.to_string(index=False, justify='left',
-                                 col_space=0).encode('utf-8'))
+                    df.to_string(index=False, justify="left", col_space=0).encode(
+                        "utf-8"
+                    )
+                )
 
     sradb.close()
 
 
 @cli.command(
-    'sra-search',
-    context_settings=CONTEXT_SETTINGS,
-    help='Search SRA for matching text')
-@click.option('--saveto', help='Save metadata dataframe to file')
+    "sra-search", context_settings=CONTEXT_SETTINGS, help="Search SRA for matching text"
+)
+@click.option("--saveto", help="Save metadata dataframe to file")
 @click.option(
-    '--db',
-    help='Path to SRAmetadb.sqlite file',
-    type=click.Path(exists=True, dir_okay=False))
+    "--db",
+    help="Path to SRAmetadb.sqlite file",
+    type=click.Path(exists=True, dir_okay=False),
+)
 @click.option(
-    '--assay',
-    is_flag=True,
-    help='Include assay type in output',
-    default=False)
+    "--assay", is_flag=True, help="Include assay type in output", default=False
+)
 @click.option(
-    '--desc',
-    is_flag=True,
-    help='Should sample_attribute be included',
-    default=False)
+    "--desc", is_flag=True, help="Should sample_attribute be included", default=False
+)
 @click.option(
-    '--detailed',
-    is_flag=True,
-    help='Display detailed metadata table',
-    default=False)
+    "--detailed", is_flag=True, help="Display detailed metadata table", default=False
+)
 @click.option(
-    '--expand',
-    is_flag=True,
-    help='Should sample_attribute be expanded',
-    default=False)
-@click.argument('search_text', required=True)
+    "--expand", is_flag=True, help="Should sample_attribute be expanded", default=False
+)
+@click.argument("search_text", required=True)
 def cmd_sra_search(search_text, db, assay, desc, detailed, expand, saveto):
     db = _check_sradb_file(db)
     sradb = SRAdb(db)
@@ -197,50 +185,50 @@ def cmd_sra_search(search_text, db, assay, desc, detailed, expand, saveto):
         assay=assay,
         detailed=detailed,
         sample_attribute=desc,
-        expand_sample_attributes=expand)
+        expand_sample_attributes=expand,
+    )
     if saveto:
-        df.to_csv(saveto, index=False, header=True, sep='\t')
+        df.to_csv(saveto, index=False, header=True, sep="\t")
     else:
         if len(df.index):
             if PY3:
-                pd.set_option('display.max_colwidth', -1)
-                print(df.to_string(index=False, justify='left', col_space=0))
+                pd.set_option("display.max_colwidth", -1)
+                print(df.to_string(index=False, justify="left", col_space=0))
             else:
                 print(
-                    df.to_string(index=False, justify='left',
-                                 col_space=0).encode('utf-8'))
+                    df.to_string(index=False, justify="left", col_space=0).encode(
+                        "utf-8"
+                    )
+                )
 
     sradb.close()
 
 
-@cli.command(
-    'srp-to-srx', context_settings=CONTEXT_SETTINGS, help='Get SRX for a SRP')
+@cli.command("srp-to-srx", context_settings=CONTEXT_SETTINGS, help="Get SRX for a SRP")
 @click.option(
-    '--db',
-    help='Path to SRAmetadb.sqlite file',
-    type=click.Path(exists=True, dir_okay=False))
-@click.option('--saveto', help='Save output to file')
+    "--db",
+    help="Path to SRAmetadb.sqlite file",
+    type=click.Path(exists=True, dir_okay=False),
+)
+@click.option("--saveto", help="Save output to file")
 @click.option(
-    '--detailed',
+    "--detailed",
     is_flag=True,
-    help='''Output additional columns: [sample_accession (SRS),
+    help="""Output additional columns: [sample_accession (SRS),
                                         run_accession (SRR),
                                         experiment_alias (GSM),
                                         sample_alias (GSM_),
                                         run_alias (GSM_r)',
-                                        study_alias (GSE)]''',
-    default=False)
+                                        study_alias (GSE)]""",
+    default=False,
+)
 @click.option(
-    '--desc',
-    is_flag=True,
-    help='Should sample_attribute be included',
-    default=False)
+    "--desc", is_flag=True, help="Should sample_attribute be included", default=False
+)
 @click.option(
-    '--expand',
-    is_flag=True,
-    help='Should sample_attribute be expanded',
-    default=False)
-@click.argument('srp_id', required=True)
+    "--expand", is_flag=True, help="Should sample_attribute be expanded", default=False
+)
+@click.argument("srp_id", required=True)
 def cmd_srp_to_srx(srp_id, db, saveto, detailed, desc, expand):
     db = _check_sradb_file(db)
     sradb = SRAdb(db)
@@ -248,49 +236,49 @@ def cmd_srp_to_srx(srp_id, db, saveto, detailed, desc, expand):
         srp=srp_id,
         detailed=detailed,
         sample_attribute=desc,
-        expand_sample_attributes=expand)
+        expand_sample_attributes=expand,
+    )
     if saveto:
-        df.to_csv(saveto, index=False, header=True, sep='\t')
+        df.to_csv(saveto, index=False, header=True, sep="\t")
     else:
         if len(df.index):
             if PY3:
-                pd.set_option('display.max_colwidth', -1)
-                print(df.to_string(index=False, justify='left', col_space=0))
+                pd.set_option("display.max_colwidth", -1)
+                print(df.to_string(index=False, justify="left", col_space=0))
             else:
                 print(
-                    df.to_string(index=False, justify='left',
-                                 col_space=0).encode('utf-8'))
+                    df.to_string(index=False, justify="left", col_space=0).encode(
+                        "utf-8"
+                    )
+                )
     sradb.close()
 
 
-@cli.command(
-    'srp-to-srs', context_settings=CONTEXT_SETTINGS, help='Get SRS for a SRP')
+@cli.command("srp-to-srs", context_settings=CONTEXT_SETTINGS, help="Get SRS for a SRP")
 @click.option(
-    '--db',
-    help='Path to SRAmetadb.sqlite file',
-    type=click.Path(exists=True, dir_okay=False))
-@click.option('--saveto', help='Save output to file')
+    "--db",
+    help="Path to SRAmetadb.sqlite file",
+    type=click.Path(exists=True, dir_okay=False),
+)
+@click.option("--saveto", help="Save output to file")
 @click.option(
-    '--detailed',
+    "--detailed",
     is_flag=True,
-    help='''Output additional columns: [run_accession (SRR),
+    help="""Output additional columns: [run_accession (SRR),
                                         study_accession (SRP),
                                         experiment_alias (GSM),
                                         sample_alias (GSM_),
                                         run_alias (GSM_r),
-                                        study_alias (GSE)]''',
-    default=False)
+                                        study_alias (GSE)]""",
+    default=False,
+)
 @click.option(
-    '--desc',
-    is_flag=True,
-    help='Should sample_attribute be included',
-    default=False)
+    "--desc", is_flag=True, help="Should sample_attribute be included", default=False
+)
 @click.option(
-    '--expand',
-    is_flag=True,
-    help='Should sample_attribute be expanded',
-    default=False)
-@click.argument('srp_id', required=True)
+    "--expand", is_flag=True, help="Should sample_attribute be expanded", default=False
+)
+@click.argument("srp_id", required=True)
 def cmd_srp_to_srs(srp_id, db, saveto, detailed, desc, expand):
     db = _check_sradb_file(db)
     sradb = SRAdb(db)
@@ -298,49 +286,49 @@ def cmd_srp_to_srs(srp_id, db, saveto, detailed, desc, expand):
         srp=srp_id,
         detailed=detailed,
         sample_attribute=desc,
-        expand_sample_attributes=expand)
+        expand_sample_attributes=expand,
+    )
     if saveto:
-        df.to_csv(saveto, index=False, header=True, sep='\t')
+        df.to_csv(saveto, index=False, header=True, sep="\t")
     else:
         if len(df.index):
             if PY3:
-                pd.set_option('display.max_colwidth', -1)
-                print(df.to_string(index=False, justify='left', col_space=0))
+                pd.set_option("display.max_colwidth", -1)
+                print(df.to_string(index=False, justify="left", col_space=0))
             else:
                 print(
-                    df.to_string(index=False, justify='left',
-                                 col_space=0).encode('utf-8'))
+                    df.to_string(index=False, justify="left", col_space=0).encode(
+                        "utf-8"
+                    )
+                )
     sradb.close()
 
 
-@cli.command(
-    'srp-to-srr', context_settings=CONTEXT_SETTINGS, help='Get SRR for a SRP')
+@cli.command("srp-to-srr", context_settings=CONTEXT_SETTINGS, help="Get SRR for a SRP")
 @click.option(
-    '--db',
-    help='Path to SRAmetadb.sqlite file',
-    type=click.Path(exists=True, dir_okay=False))
-@click.option('--saveto', help='Save output to file')
+    "--db",
+    help="Path to SRAmetadb.sqlite file",
+    type=click.Path(exists=True, dir_okay=False),
+)
+@click.option("--saveto", help="Save output to file")
 @click.option(
-    '--detailed',
+    "--detailed",
     is_flag=True,
-    help='''Output additional columns: [experiment_accession (SRX),
+    help="""Output additional columns: [experiment_accession (SRX),
                                         sample_accession (SRS),
                                         study_alias (GSE),
                                         experiment_alias (GSM),
                                         sample_alias (GSM_),
-                                        run_alias (GSM_r)]''',
-    default=False)
+                                        run_alias (GSM_r)]""",
+    default=False,
+)
 @click.option(
-    '--desc',
-    is_flag=True,
-    help='Should sample_attribute be included',
-    default=False)
+    "--desc", is_flag=True, help="Should sample_attribute be included", default=False
+)
 @click.option(
-    '--expand',
-    is_flag=True,
-    help='Should sample_attribute be expanded',
-    default=False)
-@click.argument('srp_id', required=True)
+    "--expand", is_flag=True, help="Should sample_attribute be expanded", default=False
+)
+@click.argument("srp_id", required=True)
 def cmd_srp_to_srr(srp_id, db, saveto, detailed, desc, expand):
     db = _check_sradb_file(db)
     sradb = SRAdb(db)
@@ -348,44 +336,44 @@ def cmd_srp_to_srr(srp_id, db, saveto, detailed, desc, expand):
         srp=srp_id,
         detailed=detailed,
         sample_attribute=desc,
-        expand_sample_attributes=expand)
+        expand_sample_attributes=expand,
+    )
     if saveto:
-        df.to_csv(saveto, index=False, header=True, sep='\t')
+        df.to_csv(saveto, index=False, header=True, sep="\t")
     else:
         if len(df.index):
             if PY3:
-                pd.set_option('display.max_colwidth', -1)
-                print(df.to_string(index=False, justify='left', col_space=0))
+                pd.set_option("display.max_colwidth", -1)
+                print(df.to_string(index=False, justify="left", col_space=0))
             else:
                 print(
-                    df.to_string(index=False, justify='left',
-                                 col_space=0).encode('utf-8'))
+                    df.to_string(index=False, justify="left", col_space=0).encode(
+                        "utf-8"
+                    )
+                )
     sradb.close()
 
 
-@cli.command(
-    'srp-to-gse', context_settings=CONTEXT_SETTINGS, help='Get GSE for a SRP')
+@cli.command("srp-to-gse", context_settings=CONTEXT_SETTINGS, help="Get GSE for a SRP")
 @click.option(
-    '--db',
-    help='Path to SRAmetadb.sqlite file',
-    type=click.Path(exists=True, dir_okay=False))
-@click.option('--saveto', help='Save output to file')
+    "--db",
+    help="Path to SRAmetadb.sqlite file",
+    type=click.Path(exists=True, dir_okay=False),
+)
+@click.option("--saveto", help="Save output to file")
 @click.option(
-    '--detailed',
+    "--detailed",
     is_flag=True,
-    help='Output additional columns: [sample_accession, run_accession]',
-    default=False)
+    help="Output additional columns: [sample_accession, run_accession]",
+    default=False,
+)
 @click.option(
-    '--desc',
-    is_flag=True,
-    help='Should sample_attribute be included',
-    default=False)
+    "--desc", is_flag=True, help="Should sample_attribute be included", default=False
+)
 @click.option(
-    '--expand',
-    is_flag=True,
-    help='Should sample_attribute be expanded',
-    default=False)
-@click.argument('srp_id', required=True)
+    "--expand", is_flag=True, help="Should sample_attribute be expanded", default=False
+)
+@click.argument("srp_id", required=True)
 def cmd_srp_to_gse(srp_id, db, saveto, detailed, desc, expand):
     db = _check_sradb_file(db)
     sradb = SRAdb(db)
@@ -393,50 +381,50 @@ def cmd_srp_to_gse(srp_id, db, saveto, detailed, desc, expand):
         srp=srp_id,
         detailed=detailed,
         sample_attribute=desc,
-        expand_sample_attributes=expand)
+        expand_sample_attributes=expand,
+    )
     if saveto:
-        df.to_csv(saveto, index=False, header=True, sep='\t')
+        df.to_csv(saveto, index=False, header=True, sep="\t")
     else:
         if len(df.index):
             if PY3:
-                pd.set_option('display.max_colwidth', -1)
-                print(df.to_string(index=False, justify='left', col_space=0))
+                pd.set_option("display.max_colwidth", -1)
+                print(df.to_string(index=False, justify="left", col_space=0))
             else:
                 print(
-                    df.to_string(index=False, justify='left',
-                                 col_space=0).encode('utf-8'))
+                    df.to_string(index=False, justify="left", col_space=0).encode(
+                        "utf-8"
+                    )
+                )
     sradb.close()
 
 
-@cli.command(
-    'gse-to-srp', context_settings=CONTEXT_SETTINGS, help='Get SRP for a GSE')
+@cli.command("gse-to-srp", context_settings=CONTEXT_SETTINGS, help="Get SRP for a GSE")
 @click.option(
-    '--db',
-    help='Path to SRAmetadb.sqlite file',
-    type=click.Path(exists=True, dir_okay=False))
-@click.option('--saveto', help='Save output to file')
+    "--db",
+    help="Path to SRAmetadb.sqlite file",
+    type=click.Path(exists=True, dir_okay=False),
+)
+@click.option("--saveto", help="Save output to file")
 @click.option(
-    '--detailed',
+    "--detailed",
     is_flag=True,
-    help='''Output additional columns: [experiment_accession (SRX),
+    help="""Output additional columns: [experiment_accession (SRX),
                                        run_accession (SRR),
                                        sample_accession (SRS),
                                        experiment_alias (GSM_),
                                        run_alias (GSM_r),
                                        sample_alias (GSM)]
-                                       ''',
-    default=False)
+                                       """,
+    default=False,
+)
 @click.option(
-    '--desc',
-    is_flag=True,
-    help='Should sample_attribute be included',
-    default=False)
+    "--desc", is_flag=True, help="Should sample_attribute be included", default=False
+)
 @click.option(
-    '--expand',
-    is_flag=True,
-    help='Should sample_attribute be expanded',
-    default=False)
-@click.argument('gse_ids', nargs=-1, required=True)
+    "--expand", is_flag=True, help="Should sample_attribute be expanded", default=False
+)
+@click.argument("gse_ids", nargs=-1, required=True)
 def cmd_srp_to_gse(gse_ids, db, saveto, detailed, desc, expand):
     db = _check_sradb_file(db)
     sradb = SRAdb(db)
@@ -444,47 +432,47 @@ def cmd_srp_to_gse(gse_ids, db, saveto, detailed, desc, expand):
         gses=gse_ids,
         detailed=detailed,
         sample_attribute=desc,
-        expand_sample_attributes=expand)
+        expand_sample_attributes=expand,
+    )
     if saveto:
-        df.to_csv(saveto, index=False, header=True, sep='\t')
+        df.to_csv(saveto, index=False, header=True, sep="\t")
     else:
         if len(df.index):
             if PY3:
-                pd.set_option('display.max_colwidth', -1)
-                print(df.to_string(index=False, justify='left', col_space=0))
+                pd.set_option("display.max_colwidth", -1)
+                print(df.to_string(index=False, justify="left", col_space=0))
             else:
                 print(
-                    df.to_string(index=False, justify='left',
-                                 col_space=0).encode('utf-8'))
+                    df.to_string(index=False, justify="left", col_space=0).encode(
+                        "utf-8"
+                    )
+                )
     sradb.close()
 
 
-@cli.command(
-    'gse-to-gsm', context_settings=CONTEXT_SETTINGS, help='Get SRP for a GSE')
+@cli.command("gse-to-gsm", context_settings=CONTEXT_SETTINGS, help="Get SRP for a GSE")
 @click.option(
-    '--db',
-    help='Path to SRAmetadb.sqlite file',
-    type=click.Path(exists=True, dir_okay=False))
-@click.option('--saveto', help='Save output to file')
+    "--db",
+    help="Path to SRAmetadb.sqlite file",
+    type=click.Path(exists=True, dir_okay=False),
+)
+@click.option("--saveto", help="Save output to file")
 @click.option(
-    '--detailed',
+    "--detailed",
     is_flag=True,
-    help='''Output additional columns: [sample_accession (SRS),
+    help="""Output additional columns: [sample_accession (SRS),
                                      run_accession (SRR),
                                      sample_alias (GSM),
-                                     run_alias (GSM_r)]''',
-    default=False)
+                                     run_alias (GSM_r)]""",
+    default=False,
+)
 @click.option(
-    '--desc',
-    is_flag=True,
-    help='Should sample_attribute be included',
-    default=False)
+    "--desc", is_flag=True, help="Should sample_attribute be included", default=False
+)
 @click.option(
-    '--expand',
-    is_flag=True,
-    help='Should sample_attribute be expanded',
-    default=False)
-@click.argument('gse_ids', nargs=-1, required=True)
+    "--expand", is_flag=True, help="Should sample_attribute be expanded", default=False
+)
+@click.argument("gse_ids", nargs=-1, required=True)
 def cmd_srp_to_gse(gse_ids, db, saveto, detailed, desc, expand):
     db = _check_sradb_file(db)
     sradb = SRAdb(db)
@@ -492,44 +480,44 @@ def cmd_srp_to_gse(gse_ids, db, saveto, detailed, desc, expand):
         gses=gse_ids,
         detailed=detailed,
         sample_attribute=desc,
-        expand_sample_attributes=expand)
+        expand_sample_attributes=expand,
+    )
     if saveto:
-        df.to_csv(saveto, index=False, header=True, sep='\t')
+        df.to_csv(saveto, index=False, header=True, sep="\t")
     else:
         if len(df.index):
             if PY3:
-                pd.set_option('display.max_colwidth', -1)
-                print(df.to_string(index=False, justify='left', col_space=0))
+                pd.set_option("display.max_colwidth", -1)
+                print(df.to_string(index=False, justify="left", col_space=0))
             else:
                 print(
-                    df.to_string(index=False, justify='left',
-                                 col_space=0).encode('utf-8'))
+                    df.to_string(index=False, justify="left", col_space=0).encode(
+                        "utf-8"
+                    )
+                )
     sradb.close()
 
 
-@cli.command(
-    'srx-to-srs', context_settings=CONTEXT_SETTINGS, help='Get SRS for a SRX')
+@cli.command("srx-to-srs", context_settings=CONTEXT_SETTINGS, help="Get SRS for a SRX")
 @click.option(
-    '--db',
-    help='Path to SRAmetadb.sqlite file',
-    type=click.Path(exists=True, dir_okay=False))
-@click.option('--saveto', help='Save output to file')
+    "--db",
+    help="Path to SRAmetadb.sqlite file",
+    type=click.Path(exists=True, dir_okay=False),
+)
+@click.option("--saveto", help="Save output to file")
 @click.option(
-    '--detailed',
+    "--detailed",
     is_flag=True,
-    help='Output additional columns: [run_accession, study_accession]',
-    default=False)
+    help="Output additional columns: [run_accession, study_accession]",
+    default=False,
+)
 @click.option(
-    '--desc',
-    is_flag=True,
-    help='Should sample_attribute be included',
-    default=False)
+    "--desc", is_flag=True, help="Should sample_attribute be included", default=False
+)
 @click.option(
-    '--expand',
-    is_flag=True,
-    help='Should sample_attribute be expanded',
-    default=False)
-@click.argument('srx_ids', nargs=-1, required=True)
+    "--expand", is_flag=True, help="Should sample_attribute be expanded", default=False
+)
+@click.argument("srx_ids", nargs=-1, required=True)
 def cmd_srx_to_srs(srx_ids, db, saveto, detailed, desc, expand):
     db = _check_sradb_file(db)
     sradb = SRAdb(db)
@@ -537,44 +525,44 @@ def cmd_srx_to_srs(srx_ids, db, saveto, detailed, desc, expand):
         srxs=srx_ids,
         detailed=detailed,
         sample_attribute=desc,
-        expand_sample_attributes=expand)
+        expand_sample_attributes=expand,
+    )
     if saveto:
-        df.to_csv(saveto, index=False, header=True, sep='\t')
+        df.to_csv(saveto, index=False, header=True, sep="\t")
     else:
         if len(df.index):
             if PY3:
-                pd.set_option('display.max_colwidth', -1)
-                print(df.to_string(index=False, justify='left', col_space=0))
+                pd.set_option("display.max_colwidth", -1)
+                print(df.to_string(index=False, justify="left", col_space=0))
             else:
                 print(
-                    df.to_string(index=False, justify='left',
-                                 col_space=0).encode('utf-8'))
+                    df.to_string(index=False, justify="left", col_space=0).encode(
+                        "utf-8"
+                    )
+                )
     sradb.close()
 
 
-@cli.command(
-    'srs-to-srx', context_settings=CONTEXT_SETTINGS, help='Get SRX for a SRS')
+@cli.command("srs-to-srx", context_settings=CONTEXT_SETTINGS, help="Get SRX for a SRS")
 @click.option(
-    '--db',
-    help='Path to SRAmetadb.sqlite file',
-    type=click.Path(exists=True, dir_okay=False))
-@click.option('--saveto', help='Save output to file')
+    "--db",
+    help="Path to SRAmetadb.sqlite file",
+    type=click.Path(exists=True, dir_okay=False),
+)
+@click.option("--saveto", help="Save output to file")
 @click.option(
-    '--detailed',
+    "--detailed",
     is_flag=True,
-    help='Output additional columns: [run_accession, study_accession]',
-    default=False)
+    help="Output additional columns: [run_accession, study_accession]",
+    default=False,
+)
 @click.option(
-    '--desc',
-    is_flag=True,
-    help='Should sample_attribute be included',
-    default=False)
+    "--desc", is_flag=True, help="Should sample_attribute be included", default=False
+)
 @click.option(
-    '--expand',
-    is_flag=True,
-    help='Should sample_attribute be expanded',
-    default=False)
-@click.argument('srs_ids', nargs=-1, required=True)
+    "--expand", is_flag=True, help="Should sample_attribute be expanded", default=False
+)
+@click.argument("srs_ids", nargs=-1, required=True)
 def cmd_srs_to_srx(srs_ids, db, saveto, detailed, desc, expand):
     db = _check_sradb_file(db)
     sradb = SRAdb(db)
@@ -582,49 +570,49 @@ def cmd_srs_to_srx(srs_ids, db, saveto, detailed, desc, expand):
         srss=srs_ids,
         detailed=detailed,
         sample_attribute=desc,
-        expand_sample_attributes=expand)
+        expand_sample_attributes=expand,
+    )
     if saveto:
-        df.to_csv(saveto, index=False, header=True, sep='\t')
+        df.to_csv(saveto, index=False, header=True, sep="\t")
     else:
         if len(df.index):
             if PY3:
-                pd.set_option('display.max_colwidth', -1)
-                print(df.to_string(index=False, justify='left', col_space=0))
+                pd.set_option("display.max_colwidth", -1)
+                print(df.to_string(index=False, justify="left", col_space=0))
             else:
                 print(
-                    df.to_string(index=False, justify='left',
-                                 col_space=0).encode('utf-8'))
+                    df.to_string(index=False, justify="left", col_space=0).encode(
+                        "utf-8"
+                    )
+                )
     sradb.close()
 
 
-@cli.command(
-    'srr-to-srs', context_settings=CONTEXT_SETTINGS, help='Get SRS for a SRR')
+@cli.command("srr-to-srs", context_settings=CONTEXT_SETTINGS, help="Get SRS for a SRR")
 @click.option(
-    '--db',
-    help='Path to SRAmetadb.sqlite file',
-    type=click.Path(exists=True, dir_okay=False))
+    "--db",
+    help="Path to SRAmetadb.sqlite file",
+    type=click.Path(exists=True, dir_okay=False),
+)
 @click.option(
-    '--detailed',
+    "--detailed",
     is_flag=True,
-    help=''''Output additional columns: [experiment_accession (SRX),
+    help="""'Output additional columns: [experiment_accession (SRX),
                                          study_accession (SRP),
                                          run_alias (GSM_r),
                                          sample_alias (GSM_),
                                          experiment_alias (GSM),
-                                         study_alias (GSE)]''',
-    default=False)
+                                         study_alias (GSE)]""",
+    default=False,
+)
 @click.option(
-    '--desc',
-    is_flag=True,
-    help='Should sample_attribute be included',
-    default=False)
+    "--desc", is_flag=True, help="Should sample_attribute be included", default=False
+)
 @click.option(
-    '--expand',
-    is_flag=True,
-    help='Should sample_attribute be expanded',
-    default=False)
-@click.option('--saveto', help='Save output to file')
-@click.argument('srr_ids', nargs=-1, required=True)
+    "--expand", is_flag=True, help="Should sample_attribute be expanded", default=False
+)
+@click.option("--saveto", help="Save output to file")
+@click.argument("srr_ids", nargs=-1, required=True)
 def cmd_srr_to_srx(srr_ids, db, saveto, detailed, desc, expand):
     db = _check_sradb_file(db)
     sradb = SRAdb(db)
@@ -632,49 +620,49 @@ def cmd_srr_to_srx(srr_ids, db, saveto, detailed, desc, expand):
         srrs=srr_ids,
         detailed=detailed,
         sample_attribute=desc,
-        expand_sample_attributes=expand)
+        expand_sample_attributes=expand,
+    )
     if saveto:
-        df.to_csv(saveto, index=False, header=True, sep='\t')
+        df.to_csv(saveto, index=False, header=True, sep="\t")
     else:
         if len(df.index):
             if PY3:
-                pd.set_option('display.max_colwidth', -1)
-                print(df.to_string(index=False, justify='left', col_space=0))
+                pd.set_option("display.max_colwidth", -1)
+                print(df.to_string(index=False, justify="left", col_space=0))
             else:
                 print(
-                    df.to_string(index=False, justify='left',
-                                 col_space=0).encode('utf-8'))
+                    df.to_string(index=False, justify="left", col_space=0).encode(
+                        "utf-8"
+                    )
+                )
     sradb.close()
 
 
-@cli.command(
-    'srr-to-srx', context_settings=CONTEXT_SETTINGS, help='Get SRX for a SRR')
+@cli.command("srr-to-srx", context_settings=CONTEXT_SETTINGS, help="Get SRX for a SRR")
 @click.option(
-    '--db',
-    help='Path to SRAmetadb.sqlite file',
-    type=click.Path(exists=True, dir_okay=False))
+    "--db",
+    help="Path to SRAmetadb.sqlite file",
+    type=click.Path(exists=True, dir_okay=False),
+)
 @click.option(
-    '--detailed',
+    "--detailed",
     is_flag=True,
-    help='''Output additional columns: [sample_accession (SRS),
+    help="""Output additional columns: [sample_accession (SRS),
                                         study_accession (SRP),
                                         run_alias (GSM_r),
                                         experiment_alias (GSM),
                                         sample_alias (GSM_),
-                                        study_alias (GSE)]''',
-    default=False)
+                                        study_alias (GSE)]""",
+    default=False,
+)
 @click.option(
-    '--desc',
-    is_flag=True,
-    help='Should sample_attribute be included',
-    default=False)
+    "--desc", is_flag=True, help="Should sample_attribute be included", default=False
+)
 @click.option(
-    '--expand',
-    is_flag=True,
-    help='Should sample_attribute be expanded',
-    default=False)
-@click.option('--saveto', help='Save output to file')
-@click.argument('srr_ids', nargs=-1, required=True)
+    "--expand", is_flag=True, help="Should sample_attribute be expanded", default=False
+)
+@click.option("--saveto", help="Save output to file")
+@click.argument("srr_ids", nargs=-1, required=True)
 def cmd_srr_to_srx(srr_ids, db, saveto, detailed, desc, expand):
     db = _check_sradb_file(db)
     sradb = SRAdb(db)
@@ -682,44 +670,44 @@ def cmd_srr_to_srx(srr_ids, db, saveto, detailed, desc, expand):
         srrs=srr_ids,
         detailed=detailed,
         sample_attribute=desc,
-        expand_sample_attributes=expand)
+        expand_sample_attributes=expand,
+    )
     if saveto:
-        df.to_csv(saveto, index=False, header=True, sep='\t')
+        df.to_csv(saveto, index=False, header=True, sep="\t")
     else:
         if len(df.index):
             if PY3:
-                pd.set_option('display.max_colwidth', -1)
-                print(df.to_string(index=False, justify='left', col_space=0))
+                pd.set_option("display.max_colwidth", -1)
+                print(df.to_string(index=False, justify="left", col_space=0))
             else:
                 print(
-                    df.to_string(index=False, justify='left',
-                                 col_space=0).encode('utf-8'))
+                    df.to_string(index=False, justify="left", col_space=0).encode(
+                        "utf-8"
+                    )
+                )
     sradb.close()
 
 
-@cli.command(
-    'srx-to-srr', context_settings=CONTEXT_SETTINGS, help='Get SRR for a SRX')
+@cli.command("srx-to-srr", context_settings=CONTEXT_SETTINGS, help="Get SRR for a SRX")
 @click.option(
-    '--db',
-    help='Path to SRAmetadb.sqlite file',
-    type=click.Path(exists=True, dir_okay=False))
+    "--db",
+    help="Path to SRAmetadb.sqlite file",
+    type=click.Path(exists=True, dir_okay=False),
+)
 @click.option(
-    '--desc',
+    "--desc", is_flag=True, help="Should sample_attribute be included", default=False
+)
+@click.option(
+    "--detailed",
     is_flag=True,
-    help='Should sample_attribute be included',
-    default=False)
+    help="Output additional columns: [sample_accession, study_accession]",
+    default=False,
+)
 @click.option(
-    '--detailed',
-    is_flag=True,
-    help='Output additional columns: [sample_accession, study_accession]',
-    default=False)
-@click.option(
-    '--expand',
-    is_flag=True,
-    help='Should sample_attribute be expanded',
-    default=False)
-@click.option('--saveto', help='Save output to file')
-@click.argument('srx_ids', nargs=-1, required=True)
+    "--expand", is_flag=True, help="Should sample_attribute be expanded", default=False
+)
+@click.option("--saveto", help="Save output to file")
+@click.argument("srx_ids", nargs=-1, required=True)
 def cmd_srp_to_srx(srx_ids, db, saveto, detailed, desc, expand):
     db = _check_sradb_file(db)
     sradb = SRAdb(db)
@@ -727,18 +715,21 @@ def cmd_srp_to_srx(srx_ids, db, saveto, detailed, desc, expand):
         srxs=srx_ids,
         detailed=detailed,
         sample_attribute=desc,
-        expand_sample_attributes=expand)
+        expand_sample_attributes=expand,
+    )
     if saveto:
-        df.to_csv(saveto, index=False, header=True, sep='\t')
+        df.to_csv(saveto, index=False, header=True, sep="\t")
     else:
         if len(df.index):
             if PY3:
-                pd.set_option('display.max_colwidth', -1)
-                print(df.to_string(index=False, justify='left', col_space=0))
+                pd.set_option("display.max_colwidth", -1)
+                print(df.to_string(index=False, justify="left", col_space=0))
             else:
                 print(
-                    df.to_string(index=False, justify='left',
-                                 col_space=0).encode('utf-8'))
+                    df.to_string(index=False, justify="left", col_space=0).encode(
+                        "utf-8"
+                    )
+                )
     sradb.close()
 
 
