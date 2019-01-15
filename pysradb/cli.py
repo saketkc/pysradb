@@ -498,6 +498,57 @@ def cmd_srp_to_gse(gse_ids, db, saveto, detailed, desc, expand):
     sradb.close()
 
 
+@cli.command("gsm-to-srp", context_settings=CONTEXT_SETTINGS, help="Get SRP for a GSM")
+@click.option(
+    "--db",
+    help="Path to SRAmetadb.sqlite file",
+    type=click.Path(exists=True, dir_okay=False),
+)
+@click.option(
+    "--desc", is_flag=True, help="Should sample_attribute be included", default=False
+)
+@click.option(
+    "--detailed",
+    is_flag=True,
+    help="""Output additional columns: [experiment_accession (SRX),
+                                        sample_accession (SRS),
+                                        run_accession (SRR),
+                                        experiment_alias (GSM),
+                                        sample_alias (GSM),
+                                        run_alias (GSM_r),
+                                        study_alias (GSE)]""",
+    default=False,
+)
+@click.option(
+    "--expand", is_flag=True, help="Should sample_attribute be expanded", default=False
+)
+@click.option("--saveto", help="Save output to file")
+@click.argument("gsm_ids", nargs=-1, required=True)
+def cmd_gsm_to_srp(gsm_ids, db, saveto, detailed, desc, expand):
+    db = _check_sradb_file(db)
+    sradb = SRAdb(db)
+    df = sradb.srx_to_srp(
+        gsms=gsm_ids,
+        detailed=detailed,
+        sample_attribute=desc,
+        expand_sample_attributes=expand,
+    )
+    if saveto:
+        df.to_csv(saveto, index=False, header=True, sep="\t")
+    else:
+        if len(df.index):
+            if PY3:
+                pd.set_option("display.max_colwidth", -1)
+                print(df.to_string(index=False, justify="left", col_space=0))
+            else:
+                print(
+                    df.to_string(index=False, justify="left", col_space=0).encode(
+                        "utf-8"
+                    )
+                )
+    sradb.close()
+
+
 @cli.command("srx-to-srs", context_settings=CONTEXT_SETTINGS, help="Get SRS for a SRX")
 @click.option(
     "--db",
@@ -568,6 +619,56 @@ def cmd_srs_to_srx(srs_ids, db, saveto, detailed, desc, expand):
     sradb = SRAdb(db)
     df = sradb.srs_to_srx(
         srss=srs_ids,
+        detailed=detailed,
+        sample_attribute=desc,
+        expand_sample_attributes=expand,
+    )
+    if saveto:
+        df.to_csv(saveto, index=False, header=True, sep="\t")
+    else:
+        if len(df.index):
+            if PY3:
+                pd.set_option("display.max_colwidth", -1)
+                print(df.to_string(index=False, justify="left", col_space=0))
+            else:
+                print(
+                    df.to_string(index=False, justify="left", col_space=0).encode(
+                        "utf-8"
+                    )
+                )
+    sradb.close()
+
+
+@cli.command("srr-to-srp", context_settings=CONTEXT_SETTINGS, help="Get SRP for a SRR")
+@click.option(
+    "--db",
+    help="Path to SRAmetadb.sqlite file",
+    type=click.Path(exists=True, dir_okay=False),
+)
+@click.option(
+    "--detailed",
+    is_flag=True,
+    help="""'Output additional columns: [experiment_accession (SRX),
+                                         sample_accession (SRS),
+                                         run_alias (GSM_r),
+                                         experiment_alias (GSM),
+                                         sample_alias (GSM_),
+                                         study_alias (GSE)]""",
+    default=False,
+)
+@click.option(
+    "--desc", is_flag=True, help="Should sample_attribute be included", default=False
+)
+@click.option(
+    "--expand", is_flag=True, help="Should sample_attribute be expanded", default=False
+)
+@click.option("--saveto", help="Save output to file")
+@click.argument("srr_ids", nargs=-1, required=True)
+def cmd_srr_to_srp(srr_ids, db, saveto, detailed, desc, expand):
+    db = _check_sradb_file(db)
+    sradb = SRAdb(db)
+    df = sradb.srr_to_srp(
+        srrs=srr_ids,
         detailed=detailed,
         sample_attribute=desc,
         expand_sample_attributes=expand,
@@ -668,6 +769,56 @@ def cmd_srr_to_srx(srr_ids, db, saveto, detailed, desc, expand):
     sradb = SRAdb(db)
     df = sradb.srr_to_srx(
         srrs=srr_ids,
+        detailed=detailed,
+        sample_attribute=desc,
+        expand_sample_attributes=expand,
+    )
+    if saveto:
+        df.to_csv(saveto, index=False, header=True, sep="\t")
+    else:
+        if len(df.index):
+            if PY3:
+                pd.set_option("display.max_colwidth", -1)
+                print(df.to_string(index=False, justify="left", col_space=0))
+            else:
+                print(
+                    df.to_string(index=False, justify="left", col_space=0).encode(
+                        "utf-8"
+                    )
+                )
+    sradb.close()
+
+
+@cli.command("srx-to-srp", context_settings=CONTEXT_SETTINGS, help="Get SRP for a SRX")
+@click.option(
+    "--db",
+    help="Path to SRAmetadb.sqlite file",
+    type=click.Path(exists=True, dir_okay=False),
+)
+@click.option(
+    "--desc", is_flag=True, help="Should sample_attribute be included", default=False
+)
+@click.option(
+    "--detailed",
+    is_flag=True,
+    help="""Output additional columns: [run_accession (SRR),
+                                        sample_accession (SRS),
+                                        experiment_alias (GSM),
+                                        run_alias (GSM_r),
+                                        sample_alias (GSM),
+                                        study_alias (GSE)]""",
+    default=False,
+)
+@click.option(
+    "--expand", is_flag=True, help="Should sample_attribute be expanded", default=False
+)
+@click.option("--saveto", help="Save output to file")
+@click.argument("srx_ids", nargs=-1, required=True)
+def cmd_srp_to_srx(srx_ids, db, saveto, detailed, desc, expand):
+    db = _check_sradb_file(db)
+    sradb = SRAdb(db)
+    df = sradb.srx_to_srp(
+        srxs=srx_ids,
         detailed=detailed,
         sample_attribute=desc,
         expand_sample_attributes=expand,
