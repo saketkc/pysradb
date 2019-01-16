@@ -4,7 +4,7 @@
 srs-to-srx
 ##########
 
-``srs-to-srx`` converts a SRA sample accesion (SRS) to corresponding
+``srs-to-srx`` converts a SRA sample accession (SRS) to corresponding
 SRA experiment accession (SRX).
 
 =================
@@ -29,11 +29,11 @@ Usage and options
 
 
 ===================================================================
-Convert SRA sample accession (SRS) to SRA experiment accesion (SRX)
+Convert SRA sample accession (SRS) to SRA experiment accession (SRX)
 ===================================================================
 
 To convert a SRA sample accession of the form ``SRSmmmmm`` to its
-corresponding SRA experiment accesion(s) of the form ``SRXnnnn``:
+corresponding SRA experiment accession(s) of the form ``SRXnnnn``:
 
 ::
 
@@ -50,9 +50,9 @@ Often, the most useful information is in the ``sample_attribute``
 column of ``SRAmetadb``. For example, what cell` types do
 different experiments correspond to? What treatments have been
 applied to them? This can be listed by using the ``-desc``
-tag. Note however that, this will not however any accesions
+tag. Note however that, this will not however any accessions
 related to the experiment or run. You will need the ``--detailed``
-tag if you want the sample/run/experiment accesions.
+tag if you want the sample/run/experiment accessions.
 
 
 ::

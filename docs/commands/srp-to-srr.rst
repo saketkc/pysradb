@@ -4,8 +4,8 @@
 srp-to-srr
 ##########
 
-``srp-to-srr`` converts a SRA study accesion (SRP) to corresponding
-SRA run accesion(s) (SRR).
+``srp-to-srr`` converts a SRA study accession (SRP) to corresponding
+SRA run accession(s) (SRR).
 
 =================
 Usage and options
@@ -39,7 +39,7 @@ Convert SRA study accession (SRP) to SRA run accession(s) (SRR)
 ===============================================================
 
 To convert a SRA study accession of the form ``SRPmmmmm`` to its
-corresponding SRA run accesions of the form ``SRRnnnn``:
+corresponding SRA run accessions of the form ``SRRnnnn``:
 
 ::
 
@@ -81,7 +81,7 @@ Often, the most useful information is in the ``sample_attribute``
 column of ``SRAmetadb``. For example, what cell` types do
 different experiments correspond to? What treatments have been
 applied to them? This can be listed by using the ``-desc``
-tag. If you also need the sample and experiment accesions,
+tag. If you also need the sample and experiment accessions,
 SRS and SRX respectively, please use ``--detailed`` tag.
 
 
