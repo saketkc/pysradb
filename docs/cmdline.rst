@@ -148,7 +148,7 @@ A more complicated example will consist of multiple assays. For example `SRP0009
     28 WGS
 
 
-Get experiment accesions for a project (SRP => SRX)
+Get experiment accessions for a project (SRP => SRX)
 ===================================================
 
 A frequently encountered task involves getting all the
@@ -159,7 +159,7 @@ Consider project `SRP048759`:
 
    $ pysradb srp-to-srx SRP048759
 
-Get sample accesions for a project (SRP => SRS)
+Get sample accessions for a project (SRP => SRS)
 ===============================================
 
 Each experiment involves one or multiple biological samples (SRS),

@@ -33,7 +33,7 @@ Usage and options
 
 
 ==============================================================
-Convert GEO accesion ID (GSE) to GEO expriment accession (GSM)
+Convert GEO accession ID (GSE) to GEO expriment accession (GSM)
 ==============================================================
 
 Getting GSMs from GSE is straight forward:
@@ -63,9 +63,9 @@ Often, the most useful information is in the ``sample_attribute``
 column of ``SRAmetadb``. For example, what cell` types do
 different experiments correspond to? What treatments have been
 applied to them? This can be listed by using the ``-desc``
-tag. Note however that, this will not however any accesions
+tag. Note however that, this will not however any accessions
 related to the experiment or run. You will need the ``--detailed``
-tag if you want the sample/run/experiment accesions.
+tag if you want the sample/run/experiment accessions.
 
 
 ::

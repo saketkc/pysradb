@@ -4,7 +4,7 @@
 srp-to-gse
 ##########
 
-``srp-to-gse`` converts a SRA study accession ID (SRP) to GEO accesion ID (GSE).
+``srp-to-gse`` converts a SRA study accession ID (SRP) to GEO accession ID (GSE).
 
 =================
 Usage and options
@@ -27,7 +27,7 @@ Usage and options
 
 
 ==========================================================
-Convert SRA study accession (SRP) to GEO accesion ID (GSE)
+Convert SRA study accession (SRP) to GEO accession ID (GSE)
 ==========================================================
 
 Gene Expression Omnibus or GEO hosts processed sequencing datasets.
@@ -52,9 +52,9 @@ Often, the most useful information is in the ``sample_attribute``
 column of ``SRAmetadb``. For example, what cell` types do
 different experiments correspond to? What treatments have been
 applied to them? This can be listed by using the ``-desc``
-tag. Note however that, this will not however any accesions
+tag. Note however that, this will not however any accessions
 related to the experiment or run. You will need the ``--detailed``
-tag if you want the sample/run/experiment accesions.
+tag if you want the sample/run/experiment accessions.
 
 
 ::
