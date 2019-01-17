@@ -28,9 +28,9 @@ Usage and options
       -h, --help     Show this message and exit.
 
 
-===================================================================
+====================================================================
 Convert SRA sample accession (SRS) to SRA experiment accession (SRX)
-===================================================================
+====================================================================
 
 To convert a SRA sample accession of the form ``SRSmmmmm`` to its
 corresponding SRA experiment accession(s) of the form ``SRXnnnn``:

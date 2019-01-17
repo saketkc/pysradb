@@ -34,9 +34,9 @@ Usage and options
       -h, --help     Show this message and exit.
 
 
-==================================================================
+===================================================================
 Convert SRA study accession (SRP) to SRA experiment accession (SRX)
-==================================================================
+===================================================================
 
 To convert a SRA study accession of the form ``SRPmmmmm`` to its
 corresponding SRA experiment accession(s) of the form ``SRXnnnn``:
