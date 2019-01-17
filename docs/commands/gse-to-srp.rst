@@ -31,9 +31,9 @@ Usage and options
       -h, --help     Show this message and exit.
 
 
-==========================================================
+===========================================================
 Convert GEO accession ID (GSE) to SRA study accession (SRP)
-==========================================================
+===========================================================
 
 Gene Expression Omnibus or GEO hosts processed sequencing datasets.
 The raw data is available through SRA and hence we often need to

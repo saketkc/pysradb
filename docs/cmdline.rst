@@ -67,8 +67,9 @@ sqlite directory exists in the current working directory, so that
 we do not need to specify the path to `pysradb`.
 
 
-Gettng metadata for a SRA project (SRP)
-=======================================
+========================================
+Getting metadata for a SRA project (SRP)
+========================================
 
 The most basic information associated with any SRA project is its list of experiments
 and run accessions.
@@ -148,8 +149,9 @@ A more complicated example will consist of multiple assays. For example `SRP0009
     28 WGS
 
 
+====================================================
 Get experiment accessions for a project (SRP => SRX)
-===================================================
+====================================================
 
 A frequently encountered task involves getting all the
 experiments (SRX) for a particular study accession (SRP).
@@ -159,8 +161,9 @@ Consider project `SRP048759`:
 
    $ pysradb srp-to-srx SRP048759
 
+================================================
 Get sample accessions for a project (SRP => SRS)
-===============================================
+================================================
 
 Each experiment involves one or multiple biological samples (SRS),
 that are put through different experiments (SRX).
@@ -197,6 +200,7 @@ using the `--detailed` flag:
 
 
 
+===============================================
 Get run accessions for experiments (SRX => SRR)
 ===============================================
 
@@ -214,6 +218,7 @@ experiments:
    SRX2536403           SRR5227288    SRP098789       source_name: Huh7_1.5 Ã‚ÂµM PF-067446846_10 min_ribo-seq || cell line: Huh7 || treatment time: 10 min || library type: ribo-seq
 
 
+===============================================
 Get experiment accessions for runs (SRR => SRX)
 ===============================================
 
@@ -234,6 +239,7 @@ run accessions (SRR):
    $ pysradb sra-metadata --db data/SRAmetadb.sqlite --assay SRP098789 | pysradb download --db data/SRAmetadb.sqlite
 
 
+===========================================
 Get GEO accessions for studies (SRP => GSE)
 ===========================================
 
@@ -256,6 +262,7 @@ Get GEO accessions for studies (SRP => GSE)
    SRP029589       PRJNA218051
 
 
+===============================================
 Get SRA accessions for GEO studies (GSE => SRP)
 ===============================================
 
@@ -266,6 +273,7 @@ Get SRA accessions for GEO studies (GSE => SRP)
     study_alias study_accession
     GSE87328    SRP090415
 
+=============
 Searching SRA
 =============
 
