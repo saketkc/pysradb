@@ -140,7 +140,7 @@ A more complicated example will consist of multiple assays. For example `SRP0009
 
 ::
 
-   $ pysradb sra-metadata --db data/SRAmetadb.sqlite SRP000941 --assay  | tr -s '  ' | cut -f4 -d ' ' | sort | uniq -c
+   $ pysradb sra-metadata --db data/SRAmetadb.sqlite SRP000941 --assay  | tr -s '  ' | cut -f5 -d ' ' | sort | uniq -c
    999 Bisulfite-Seq
    768 ChIP-Seq
      1 library_strategy
