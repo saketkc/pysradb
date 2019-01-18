@@ -91,12 +91,24 @@ def cmd_download_sra(out_dir, db, srx, srp):
             "stdin"
         ).read()  # .replace('\t', '  ')#.strip()
         text = ""
-        for line in stdin_text.split("\n"):
+        for index, line in enumerate(stdin_text.split("\n")):
             line = line.strip()
             line = line.lstrip(" ")
-            line = re.sub("\s+", " ", line).strip()
+            # pandas has different paddings to indent,
+            # we cannot replace all sapces at once since the description column
+            # can have text with space
+            line = re.sub("\s\s\s", "\t", line)
+            line = re.sub("\s\s", "\t", line)
+            line = re.sub("\t+", "\t", line)
+            line = re.sub("\s\t", "\t", line)
+            line = re.sub("\t\s", "\t", line)
+
+            if index == 0:
+                # For first line which is the header, allow substituting spaces with tab at once
+                line = re.sub("\s+", "\t", line)
+
             text += "{}\n".format(line)
-        df = pd.read_csv(StringIO(text), sep=" ")
+        df = pd.read_csv(StringIO(text), sep="\t")
         sradb.download(df=df, out_dir=out_dir, filter_by_srx=srx)
     else:
         for srp_x in sorted(set(srp)):
