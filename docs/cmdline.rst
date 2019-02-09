@@ -42,8 +42,8 @@ by the SRAdb project. We can download it using `pysradb`:
 
    $ pysradb srametadb
 
-This will download and extract `SRAmetadb.sqlite.gz` in the current directory.
-you can also specify an output directory using `--out_dir` option.
+This will download and extract ``SRAmetadb.sqlite.gz`` in the current directory.
+you can also specify an output directory using ``--out_dir`` option.
 
 
 ::
