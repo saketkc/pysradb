@@ -518,6 +518,115 @@ class SRAdb(BASEdb):
             df = _expand_sample_attrs(df)
         return df
 
+    def gsm_to_srr(
+        self,
+        gsms,
+        sample_attribute=False,
+        detailed=False,
+        expand_sample_attributes=False,
+    ):
+        """Convert GSMs to SRR.
+
+        Parameters
+        ----------
+        gsms: string or list
+              List of GSM id
+        sample_attribute: bool
+                          Include `sample_attribute` column
+
+
+        Returns
+        -------
+        gsm_to_srr_df: DataFrame
+                       DataFrame with two columns for GSM/SRR
+        """
+        if PY3:
+            if isinstance(gsms, str):
+                gsms = [gsms]
+        else:
+            if isinstance(gsms, basestring):
+                gsms = [gsms]
+
+        out_type = ["experiment_alias", "run_accession"]
+        if detailed:
+            out_type += [
+                "experiment_accession",
+                "sample_accession",
+                "study_accession",
+                "run_alias",
+                "sample_alias",
+                "study_alias",
+            ]
+
+        if sample_attribute:
+            out_type += ["sample_attribute"]
+        select_type_sql = (",").join(out_type)
+        sql = (
+            "SELECT DISTINCT "
+            + select_type_sql
+            + " FROM sra_ft WHERE sra_ft MATCH '"
+            + " OR ".join(gsms)
+            + "';"
+        )
+        df = self.query(sql)
+        if len(df.index):
+            df = df[out_type].sort_values(by=out_type)
+        if expand_sample_attributes:
+            df = _expand_sample_attrs(df)
+        return df
+
+    def gsm_to_srx(
+        self,
+        gsms,
+        sample_attribute=False,
+        detailed=False,
+        expand_sample_attributes=False,
+    ):
+        """Convert GSM to SRX.
+
+        Parameters
+        ----------
+        srx: string
+             SRX ID
+
+        Returns
+        -------
+        srs_to_srx_df: DataFrame
+        """
+        if PY3:
+            if isinstance(gsms, str):
+                gsms = [gsms]
+        else:
+            if isinstance(gsms, basestring):
+                gsms = [gsms]
+        out_type = ["experiment_alias", "experiment_accession"]
+        if detailed:
+            out_type += [
+                "sample_accession",
+                "run_accession",
+                "study_accession",
+                "sample_alias",
+                "experiment_alias",
+                "run_alias",
+                "study_alias",
+            ]
+        if sample_attribute:
+            out_type += ["sample_attribute"]
+        select_type_sql = (",").join(out_type)
+        sql = (
+            "SELECT DISTINCT "
+            + select_type_sql
+            + " FROM sra_ft WHERE sra_ft MATCH '"
+            + " OR ".join(gsms)
+            + "';"
+        )
+        df = self.query(sql)
+        if len(df.index):
+            df = df[out_type].sort_values(by=out_type)
+        if expand_sample_attributes:
+            df = _expand_sample_attrs(df)
+        return df
+
     def gse_to_gsm(
         self,
         gses,
@@ -525,7 +634,7 @@ class SRAdb(BASEdb):
         detailed=False,
         expand_sample_attributes=False,
     ):
-        """Convert SRP to GSE
+        """Convert GSE to GSM
 
         Parameters
         ----------
@@ -566,6 +675,57 @@ class SRAdb(BASEdb):
             df = df[out_type].sort_values(by=out_type)
         if expand_sample_attributes:
             df = _expand_sample_attrs(df)
+        return df
+
+    def gsm_to_gse(
+        self,
+        gsms,
+        sample_attribute=False,
+        detailed=False,
+        expand_sample_attributes=False,
+    ):
+        """Convert GSM to GSE
+
+        Parameters
+        ----------
+        gsms: string or list
+              List of GSM ID
+
+        Returns
+        -------
+        gsm_to_gse_df: DataFrame
+        """
+        if PY3:
+            if isinstance(gsms, str):
+                gsms = [gsms]
+        else:
+            if isinstance(gsms, basestring):
+                gsms = [gsms]
+        out_type = ["experiment_alias", "study_alias"]
+        if detailed:
+            out_type += [
+                "experiment_accession",
+                "sample_accession",
+                "run_accession",
+                "sample_alias",
+                "run_alias",
+            ]
+        if sample_attribute:
+            out_type += ["sample_attribute"]
+        select_type_sql = (",").join(out_type)
+        sql = (
+            "SELECT DISTINCT "
+            + select_type_sql
+            + " FROM sra_ft WHERE sra_ft MATCH '"
+            + " OR ".join(gsms)
+            + "';"
+        )
+        df = self.query(sql)
+        if len(df.index):
+            df = df[out_type].sort_values(by=out_type)
+        if expand_sample_attributes:
+            df = _expand_sample_attrs(df)
+        return df
 
     def srr_to_srp(
         self,
