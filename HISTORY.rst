@@ -3,6 +3,30 @@ History
 #######
 
 *******************
+0.7.0 (02--2019)
+*******************
+
+New methods/functionality
+=========================
+* `gsm-to-srr`: convert GSM to SRR
+* `gsm-to-srx`: convert GSM to SRX
+* `gsm-to-gse`: convert GSM to GSE
+
+
+Renamed methods
+===============
+
+The following commad line options have been renamed
+and the changes are not compatible with 0.6.0
+release:
+
+* `sra-metadata` -> `metadata`.
+* `sra-search` -> `search`.
+* `srametadb` -> `metadb`.
+
+
+
+*******************
 0.6.0 (12-25-2018)
 *******************
 

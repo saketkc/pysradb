@@ -60,7 +60,7 @@ def cli():
 
 
 @cli.command(
-    "srametadb", context_settings=CONTEXT_SETTINGS, help="Download SRAmetadb.sqlite"
+    "metadb", context_settings=CONTEXT_SETTINGS, help="Download SRAmetadb.sqlite"
 )
 @click.option("--out_dir", type=str, help="Output directory location")
 @click.option("--overwrite", type=bool, help="Overwrite existing file")
@@ -117,7 +117,7 @@ def cmd_download_sra(out_dir, db, srx, srp):
 
 
 @cli.command(
-    "sra-metadata",
+    "metadata",
     context_settings=CONTEXT_SETTINGS,
     help="Fetch metadata for SRA project (SRPnnnn)",
 )
@@ -168,7 +168,7 @@ def cmd_sra_metadata(srp_id, db, assay, desc, detailed, expand, saveto):
 
 
 @cli.command(
-    "sra-search", context_settings=CONTEXT_SETTINGS, help="Search SRA for matching text"
+    "search", context_settings=CONTEXT_SETTINGS, help="Search SRA for matching text"
 )
 @click.option("--saveto", help="Save metadata dataframe to file")
 @click.option(
@@ -462,7 +462,7 @@ def cmd_srp_to_gse(gse_ids, db, saveto, detailed, desc, expand):
     sradb.close()
 
 
-@cli.command("gse-to-gsm", context_settings=CONTEXT_SETTINGS, help="Get SRP for a GSE")
+@cli.command("gse-to-gsm", context_settings=CONTEXT_SETTINGS, help="Get GSM for a GSE")
 @click.option(
     "--db",
     help="Path to SRAmetadb.sqlite file",
@@ -485,11 +485,59 @@ def cmd_srp_to_gse(gse_ids, db, saveto, detailed, desc, expand):
     "--expand", is_flag=True, help="Should sample_attribute be expanded", default=False
 )
 @click.argument("gse_ids", nargs=-1, required=True)
-def cmd_srp_to_gse(gse_ids, db, saveto, detailed, desc, expand):
+def cmd_gse_to_gsm(gse_ids, db, saveto, detailed, desc, expand):
     db = _check_sradb_file(db)
     sradb = SRAdb(db)
     df = sradb.gse_to_gsm(
         gses=gse_ids,
+        detailed=detailed,
+        sample_attribute=desc,
+        expand_sample_attributes=expand,
+    )
+    if saveto:
+        df.to_csv(saveto, index=False, header=True, sep="\t")
+    else:
+        if len(df.index):
+            if PY3:
+                pd.set_option("display.max_colwidth", -1)
+                print(df.to_string(index=False, justify="left", col_space=0))
+            else:
+                print(
+                    df.to_string(index=False, justify="left", col_space=0).encode(
+                        "utf-8"
+                    )
+                )
+    sradb.close()
+
+
+@cli.command("gsm-to-gse", context_settings=CONTEXT_SETTINGS, help="Get GSE for a GSM")
+@click.option(
+    "--db",
+    help="Path to SRAmetadb.sqlite file",
+    type=click.Path(exists=True, dir_okay=False),
+)
+@click.option("--saveto", help="Save output to file")
+@click.option(
+    "--detailed",
+    is_flag=True,
+    help="""Output additional columns: [sample_accession (SRS),
+                                        run_accession (SRR),
+                                        sample_alias (GSM),
+                                        run_alias (GSM_r)]""",
+    default=False,
+)
+@click.option(
+    "--desc", is_flag=True, help="Should sample_attribute be included", default=False
+)
+@click.option(
+    "--expand", is_flag=True, help="Should sample_attribute be expanded", default=False
+)
+@click.argument("gsm_ids", nargs=-1, required=True)
+def cmd_gsm_to_gse(gsm_ids, db, saveto, detailed, desc, expand):
+    db = _check_sradb_file(db)
+    sradb = SRAdb(db)
+    df = sradb.gsm_to_gse(
+        gsms=gsm_ids,
         detailed=detailed,
         sample_attribute=desc,
         expand_sample_attributes=expand,
@@ -539,7 +587,108 @@ def cmd_srp_to_gse(gse_ids, db, saveto, detailed, desc, expand):
 def cmd_gsm_to_srp(gsm_ids, db, saveto, detailed, desc, expand):
     db = _check_sradb_file(db)
     sradb = SRAdb(db)
-    df = sradb.srx_to_srp(
+    df = sradb.gsm_to_srp(
+        gsms=gsm_ids,
+        detailed=detailed,
+        sample_attribute=desc,
+        expand_sample_attributes=expand,
+    )
+    if saveto:
+        df.to_csv(saveto, index=False, header=True, sep="\t")
+    else:
+        if len(df.index):
+            if PY3:
+                pd.set_option("display.max_colwidth", -1)
+                print(df.to_string(index=False, justify="left", col_space=0))
+            else:
+                print(
+                    df.to_string(index=False, justify="left", col_space=0).encode(
+                        "utf-8"
+                    )
+                )
+    sradb.close()
+
+
+@cli.command("gsm-to-srr", context_settings=CONTEXT_SETTINGS, help="Get SRR for a GSM")
+@click.option(
+    "--db",
+    help="Path to SRAmetadb.sqlite file",
+    type=click.Path(exists=True, dir_okay=False),
+)
+@click.option(
+    "--desc", is_flag=True, help="Should sample_attribute be included", default=False
+)
+@click.option(
+    "--detailed",
+    is_flag=True,
+    help="""Output additional columns: [experiment_accession (SRX),
+                                        sample_accession (SRS),
+                                        study_accession (SRS),
+                                        run_alias (GSM_r),
+                                        sample_alias (GSM),
+                                        study_alias (GSE)]""",
+    default=False,
+)
+@click.option(
+    "--expand", is_flag=True, help="Should sample_attribute be expanded", default=False
+)
+@click.option("--saveto", help="Save output to file")
+@click.argument("gsm_ids", nargs=-1, required=True)
+def cmd_gsm_to_srr(gsm_ids, db, saveto, detailed, desc, expand):
+    db = _check_sradb_file(db)
+    sradb = SRAdb(db)
+    df = sradb.gsm_to_srr(
+        gsms=gsm_ids,
+        detailed=detailed,
+        sample_attribute=desc,
+        expand_sample_attributes=expand,
+    )
+    if saveto:
+        df.to_csv(saveto, index=False, header=True, sep="\t")
+    else:
+        if len(df.index):
+            if PY3:
+                pd.set_option("display.max_colwidth", -1)
+                print(df.to_string(index=False, justify="left", col_space=0))
+            else:
+                print(
+                    df.to_string(index=False, justify="left", col_space=0).encode(
+                        "utf-8"
+                    )
+                )
+    sradb.close()
+
+
+@cli.command("gsm-to-srx", context_settings=CONTEXT_SETTINGS, help="Get SRX for a GSM")
+@click.option(
+    "--db",
+    help="Path to SRAmetadb.sqlite file",
+    type=click.Path(exists=True, dir_okay=False),
+)
+@click.option(
+    "--desc", is_flag=True, help="Should sample_attribute be included", default=False
+)
+@click.option(
+    "--detailed",
+    is_flag=True,
+    help="""Output additional columns: [experiment_accession (SRX),
+                                        sample_accession (SRS),
+                                        run_accession (SRR),
+                                        experiment_alias (GSM),
+                                        sample_alias (GSM),
+                                        run_alias (GSM_r),
+                                        study_alias (GSE)]""",
+    default=False,
+)
+@click.option(
+    "--expand", is_flag=True, help="Should sample_attribute be expanded", default=False
+)
+@click.option("--saveto", help="Save output to file")
+@click.argument("gsm_ids", nargs=-1, required=True)
+def cmd_gsm_to_srx(gsm_ids, db, saveto, detailed, desc, expand):
+    db = _check_sradb_file(db)
+    sradb = SRAdb(db)
+    df = sradb.gsm_to_srx(
         gsms=gsm_ids,
         detailed=detailed,
         sample_attribute=desc,
@@ -871,7 +1020,7 @@ def cmd_srp_to_srx(srx_ids, db, saveto, detailed, desc, expand):
 )
 @click.option("--saveto", help="Save output to file")
 @click.argument("srx_ids", nargs=-1, required=True)
-def cmd_srp_to_srx(srx_ids, db, saveto, detailed, desc, expand):
+def cmd_srp_to_srr(srx_ids, db, saveto, detailed, desc, expand):
     db = _check_sradb_file(db)
     sradb = SRAdb(db)
     df = sradb.srx_to_srr(

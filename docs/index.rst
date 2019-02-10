@@ -10,6 +10,7 @@ Welcome to pysradb's documentation!
    quickstart
    cmdline
    usage
+   usage_scenarios
    modules
    contributing
    authors
