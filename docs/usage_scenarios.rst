@@ -194,6 +194,7 @@ Alternatively, it can also use ``wget``.
 Downloading an entire project is easy:
 
 ::
+
     $ pysradb download -p SRP000941
 
 Downloads are organized by ``SRP/SRX/SRR`` mimicking the hiererachy of SRA projects.
