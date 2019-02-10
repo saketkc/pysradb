@@ -7,7 +7,6 @@ CLI Tutorial
 ::
 
    $ pysradb
-
     Usage: pysradb [OPTIONS] COMMAND [ARGS]...
 
       pysradb: Query NGS metadata and data from NCBI Sequence Read Archive.
@@ -19,20 +18,27 @@ CLI Tutorial
       -h, --help  Show this message and exit.
 
     Commands:
-      download      Download SRA project (SRPnnnn)
-      gse-to-gsm    Get SRP for a GSE
-      gse-to-srp    Get SRP for a GSE
-      sra-metadata  Fetch metadata for SRA project (SRPnnnn)
-      srametadb     Download SRAmetadb.sqlite
-      srp-to-gse    Get GSE for a SRP
-      srp-to-srr    Get SRR for a SRP
-      srp-to-srs    Get SRS for a SRP
-      srp-to-srx    Get SRX for a SRP
-      srr-to-srs    Get SRS for a SRR
-      srr-to-srx    Get SRX for a SRR
-      srs-to-srx    Get SRX for a SRS
-      srx-to-srr    Get SRR for a SRX
-      srx-to-srs    Get SRS for a SRX
+      download    Download SRA project (SRPnnnn)
+      gse-to-gsm  Get GSM for a GSE
+      gse-to-srp  Get SRP for a GSE
+      gsm-to-gse  Get GSE for a GSM
+      gsm-to-srp  Get SRP for a GSM
+      gsm-to-srr  Get SRR for a GSM
+      gsm-to-srx  Get SRX for a GSM
+      metadata    Fetch metadata for SRA project (SRPnnnn)
+      metadb      Download SRAmetadb.sqlite
+      search      Search SRA for matching text
+      srp-to-gse  Get GSE for a SRP
+      srp-to-srr  Get SRR for a SRP
+      srp-to-srs  Get SRS for a SRP
+      srp-to-srx  Get SRX for a SRP
+      srr-to-srp  Get SRP for a SRR
+      srr-to-srs  Get SRS for a SRR
+      srr-to-srx  Get SRX for a SRR
+      srs-to-srx  Get SRX for a SRS
+      srx-to-srp  Get SRP for a SRX
+      srx-to-srr  Get SRR for a SRX
+      srx-to-srs  Get SRS for a SRX
 
 
 All the operations in `pysradb` rely on the SQLite file `SRAmetadb.sqlite` provided
@@ -77,7 +83,7 @@ and run accessions.
 
 ::
 
-   $ pysradb sra-metadata SRP098789
+   $ pysradb metadata SRP098789
 
     study_accession experiment_accession sample_accession run_accession
     SRP098789       SRX2536403           SRS1956353       SRR5227288
@@ -96,7 +102,7 @@ the samples:
 
 ::
 
-   $ pysradb sra-metadata SRP098789 --desc
+   $ pysradb metadata SRP098789 --desc
 
     study_accession experiment_accession sample_accession run_accession sample_attribute
     SRP098789       SRX2536403           SRS1956353       SRR5227288    source_name: Huh7_1.5 Ã‚ÂµM PF-067446846_10 min_ribo-seq || cell line: Huh7 || treatment time: 10 min || library type: ribo-seq
@@ -113,7 +119,7 @@ a separate column. This is achieved by `--expand` flag:
 
 ::
 
-   $ pysradb sra-metadata SRP098789 --desc --expand
+   $ pysradb metadata SRP098789 --desc --expand
 
    study_accession experiment_accession sample_accession run_accession cell_line library_type source_name                                  treatment_time
    SRP098789       SRX2536403           SRS1956353       SRR5227288    huh7      ribo-seq     huh7_1.5 ã‚âµm pf-067446846_10 min_ribo-seq  10 min
@@ -129,7 +135,7 @@ we could pass it an extra flag of `--assay` and then filter RNA-seq samples.
 
 ::
 
-   $ pysradb sra-metadata SRP098789 --assay | grep 'study|RNA-Seq'
+   $ pysradb metadata SRP098789 --assay | grep 'study|RNA-Seq'
 
    SRP098789       SRX2536422           SRR5227307    RNA-Seq          SINGLE -
    SRP098789       SRX2536424           SRR5227309    RNA-Seq          SINGLE -
@@ -140,7 +146,7 @@ A more complicated example will consist of multiple assays. For example `SRP0009
 
 ::
 
-   $ pysradb sra-metadata --db data/SRAmetadb.sqlite SRP000941 --assay  | tr -s '  ' | cut -f5 -d ' ' | sort | uniq -c
+   $ pysradb metadata --db data/SRAmetadb.sqlite SRP000941 --assay  | tr -s '  ' | cut -f5 -d ' ' | sort | uniq -c
    999 Bisulfite-Seq
    768 ChIP-Seq
      1 library_strategy
@@ -236,7 +242,7 @@ run accessions (SRR):
 
 ::
 
-   $ pysradb sra-metadata --db data/SRAmetadb.sqlite --assay SRP098789 | pysradb download --db data/SRAmetadb.sqlite
+   $ pysradb metadata --db data/SRAmetadb.sqlite --assay SRP098789 | pysradb download --db data/SRAmetadb.sqlite
 
 
 ===========================================
@@ -279,7 +285,7 @@ Searching SRA
 
 ::
 
-    $ pysradb sra-search 'cycloheximide heatshock'
+    $ pysradb search 'cycloheximide heatshock'
 
     study_accession experiment_accession sample_accession run_accession
     SRP044649       SRX657376            SRS662567        SRR1520327

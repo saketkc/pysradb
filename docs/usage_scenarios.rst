@@ -185,7 +185,7 @@ We want to however only download ``RNA-seq`` samples:
 
 ::
 
-    $ pysradb sra-metadata SRP000941 --assay | grep 'study\|RNA-Seq' | pysradb download
+    $ pysradb metadata SRP000941 --assay | grep 'study\|RNA-Seq' | pysradb download
 
 This will download all ``RNA-seq`` samples coming from this project using ``aspera-client``, if available.
 Alternatively, it can also use ``wget``.

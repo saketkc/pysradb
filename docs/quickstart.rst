@@ -56,27 +56,35 @@ The full list of possible `pysradb` operations
       -h, --help  Show this message and exit.
 
     Commands:
-      download      Download SRA project (SRPnnnn)
-      gse-to-gsm    Get SRP for a GSE
-      gse-to-srp    Get SRP for a GSE
-      sra-metadata  Fetch metadata for SRA project (SRPnnnn)
-      srametadb     Download SRAmetadb.sqlite
-      srp-to-gse    Get GSE for a SRP
-      srp-to-srr    Get SRR for a SRP
-      srp-to-srs    Get SRS for a SRP
-      srp-to-srx    Get SRX for a SRP
-      srr-to-srs    Get SRS for a SRR
-      srr-to-srx    Get SRX for a SRR
-      srs-to-srx    Get SRX for a SRS
-      srx-to-srr    Get SRR for a SRX
-      srx-to-srs    Get SRS for a SRX
+      download    Download SRA project (SRPnnnn)
+      gse-to-gsm  Get GSM for a GSE
+      gse-to-srp  Get SRP for a GSE
+      gsm-to-gse  Get GSE for a GSM
+      gsm-to-srp  Get SRP for a GSM
+      gsm-to-srr  Get SRR for a GSM
+      gsm-to-srx  Get SRX for a GSM
+      metadata    Fetch metadata for SRA project (SRPnnnn)
+      metadb      Download SRAmetadb.sqlite
+      search      Search SRA for matching text
+      srp-to-gse  Get GSE for a SRP
+      srp-to-srr  Get SRR for a SRP
+      srp-to-srs  Get SRS for a SRP
+      srp-to-srx  Get SRX for a SRP
+      srr-to-srp  Get SRP for a SRR
+      srr-to-srs  Get SRS for a SRR
+      srr-to-srx  Get SRX for a SRR
+      srs-to-srx  Get SRX for a SRS
+      srx-to-srp  Get SRP for a SRX
+      srx-to-srr  Get SRR for a SRX
+      srx-to-srs  Get SRS for a SRX
+
 
 .. toctree::
    :maxdepth: 1
 
    commands/gse-to-gsm
    commands/gse-to-srp
-   commands/sra-metadata
+   commands/metadata
    commands/srametadb
    commands/srp-to-gse
    commands/srp-to-srr

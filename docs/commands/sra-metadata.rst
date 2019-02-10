@@ -1,10 +1,10 @@
 .. _srametadata:
 
 ############
-sra-metadata
+metadata
 ############
 
-``sra-metadata`` outputs a metatable for a SRA study accession (SRP).
+``metadata`` outputs a metatable for a SRA study accession (SRP).
 
 =================
 Usage and options
@@ -12,9 +12,9 @@ Usage and options
 
 ::
 
-    $ pysrab sra-metadata -h
+    $ pysrab metadata -h
 
-    Usage: pysradb sra-metadata [OPTIONS] SRP_ID
+    Usage: pysradb metadata [OPTIONS] SRP_ID
 
       Fetch metadata for SRA project (SRPnnnn)
 
@@ -33,7 +33,7 @@ Obtaining  metadata for SRA study accession (SRP metadata)
 ==========================================================
 
 
-To obtain concise metadata for a SRP ID, we can use ``sra-metadata``.
+To obtain concise metadata for a SRP ID, we can use ``metadata``.
 The default metadata returned includes:
 
 - experiment accession (SRX)
@@ -42,7 +42,7 @@ The default metadata returned includes:
 
 ::
 
-    $ pysradb sra-metadata SRP026005
+    $ pysradb metadata SRP026005
 
     study_accession experiment_accession sample_accession run_accession
     SRP026005       SRX305245            SRS444476        SRR900108
@@ -73,7 +73,7 @@ specifying ``--assay`` flag.
 
 ::
 
-    $ pysradb sra-metadata SRP098789 --assay | grep 'study|RNA-Seq'
+    $ pysradb metadata SRP098789 --assay | grep 'study|RNA-Seq'
 
     study_accession experiment_accession sample_accession run_accession library_strategy
     SRP098789       SRX2536403           SRS1956353       SRR5227288    OTHER
@@ -108,7 +108,7 @@ In order to subset only ``RNA-seq`` experiments, you can do this simple operatio
 
 ::
 
-    $ pysradb sra-metadata SRP098789 --assay | grep 'study|RNA-Seq'
+    $ pysradb metadata SRP098789 --assay | grep 'study|RNA-Seq'
 
 
 ========================================
@@ -125,7 +125,7 @@ table, we need the ``--desc`` tag:
 
 ::
 
-    $ pysradb sra-metadata --desc SRP098789
+    $ pysradb metadata --desc SRP098789
 
     study_accession experiment_accession sample_accession run_accession sample_attribute
     SRP098789       SRX2536403           SRS1956353       SRR5227288    source_name: Huh7_1.5 Ã‚ÂµM PF-067446846_10 min_ribo-seq || cell line: Huh7 || treatment time: 10 min || library type: ribo-seq
@@ -167,7 +167,7 @@ using the ``--expand`` flag.
 
 ::
 
-    $ pysradb sra-metadata --desc --expand SRP098789
+    $ pysradb metadata --desc --expand SRP098789
 
     study_accession experiment_accession sample_accession run_accession cell_line library_type source_name                                  treatment_time
     SRP098789       SRX2536403           SRS1956353       SRR5227288    huh7      ribo-seq     huh7_1.5 ã‚âµm pf-067446846_10 min_ribo-seq  10 min
@@ -213,7 +213,7 @@ flag:
 
 ::
 
-    $ pysradb sra-metadata SRP098789 --detailed
+    $ pysradb metadata SRP098789 --detailed
 
     study_accession experiment_accession sample_accession run_accession experiment_title                                                                  experiment_attribute       sample_attribute                                                                                                                  taxon_id library_selection library_layout library_strategy library_source  library_name  bases       spots    adapter_spec  avg_read_length
     SRP098789       SRX2536403           SRS1956353       SRR5227288    GSM2475997: 1.5 Ã‚ÂµM PF-067446846, 10 min, rep 1; Homo sapiens; OTHER            GEO Accession: GSM2475997  source_name: Huh7_1.5 Ã‚ÂµM PF-067446846_10 min_ribo-seq || cell line: Huh7 || treatment time: 10 min || library type: ribo-seq  9606      other             SINGLE -       OTHER            TRANSCRIPTOMIC  None         2104142750  42082855  None         50.0
@@ -250,7 +250,7 @@ we can make use of the ``--expand`` tag:
 
 ::
 
-    $ pysradb sra-metadata --detailed --expand SRP098789
+    $ pysradb metadata --detailed --expand SRP098789
 
     study_accession experiment_accession sample_accession run_accession experiment_title                                                                  experiment_attribute        taxon_id library_selection library_layout library_strategy library_source  library_name  bases       spots    adapter_spec  avg_read_length cell_line library_type source_name                                  treatment_time
     SRP098789       SRX2536403           SRS1956353       SRR5227288    GSM2475997: 1.5 Ã‚ÂµM PF-067446846, 10 min, rep 1; Homo sapiens; OTHER            GEO Accession: GSM2475997  9606      other             SINGLE -       OTHER            TRANSCRIPTOMIC  None         2104142750  42082855  None         50.0             huh7      ribo-seq     huh7_1.5 ã‚âµm pf-067446846_10 min_ribo-seq  10 min
@@ -291,4 +291,4 @@ using the ``--saveto`` argument:
 
 ::
 
-    $ pysradb sra-metadata --detailed --expand --saveto SRP098789_metadata.tsv SRP098789
+    $ pysradb metadata --detailed --expand --saveto SRP098789_metadata.tsv SRP098789
