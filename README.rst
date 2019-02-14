@@ -18,6 +18,7 @@ pysradb
         :target: https://codecov.io/gh/saketkc/pysradb
 
 Python package for interacting with SRAdb and downloading datasets from SRA.
+(python3 only!)
 
 .. raw:: html
 
