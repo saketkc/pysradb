@@ -2,6 +2,21 @@
 History
 #######
 
+
+*******************
+0.7.1 (02-18-2019)
+*******************
+
+Important: Python2 is no longer supported.
+Please consider moving to Python3.
+
+Bugfix
+======
+
+* Included docs in the index whihch were missed
+  out in the previous release
+
+
 *******************
 0.7.0 (02-08-2019)
 *******************
