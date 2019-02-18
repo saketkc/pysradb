@@ -3,7 +3,7 @@
 
 __author__ = """Saket Choudhary"""
 __email__ = "saketkc@gmail.com"
-__version__ = "__version__ = '0.7.0'"
+__version__ = "0.7.0"
 
 from .sradb import download_sradb_file
 from .sradb import SRAdb
