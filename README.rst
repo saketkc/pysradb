@@ -3,19 +3,19 @@ pysradb
 #######
 
 .. image:: https://zenodo.org/badge/159590788.svg
-   :target: https://zenodo.org/badge/latestdoi/159590788
+    :target: https://zenodo.org/badge/latestdoi/159590788
 
 .. image:: https://img.shields.io/pypi/v/pysradb.svg?style=flat-square
-        :target: https://pypi.python.org/pypi/pysradb
+    :target: https://pypi.python.org/pypi/pysradb
 
-.. image:: https://img.shields.io/travis-ci/saketkc/pysradb.svg?style=flat-square
-        :target: https://travis-ci.com/saketkc/pysradb
+.. image:: https://img.shields.io/travis/saketkc/pysradb.svg?style=flat-square
+    :target: https://travis-ci.com/saketkc/pysradb
 
 .. image:: https://img.shields.io/badge/install%20with-bioconda-brightgreen.svg?style=flat-square
-        :target: http://bioconda.github.io/recipes/pysradb/README.html
+    :target: http://bioconda.github.io/recipes/pysradb/README.html
 
 .. image:: https://codecov.io/gh/saketkc/pysradb/branch/master/graph/badge.svg?style=flat-square
-        :target: https://codecov.io/gh/saketkc/pysradb
+    :target: https://codecov.io/gh/saketkc/pysradb
 
 Python package for interacting with SRAdb and downloading datasets from SRA.
 (python3 only!)
@@ -29,7 +29,7 @@ Python package for interacting with SRAdb and downloading datasets from SRA.
 CLI Usage
 *********
 
-`pysradb` now supports command line usage (as seen in the demo cinema above). The documentation
+``pysradb`` supports command line ussage. The documentation
 is in progress. See  `cmdline <https://github.com/saketkc/pysradb/blob/master/docs/cmdline.rst>`_ for
 some quick usage instructions. See `quickstart <https://www.saket-choudhary.me/pysradb/quickstart.html#the-full-list-of-possible-pysradb-operations>`_ for
 a list of instructions for each sub-command.
@@ -130,12 +130,9 @@ SRAmetadb can be downloaded using:
 Alternatively, you can also download it using `pysradb`:
 
 
-.. code-block:: python
+::
 
-   from pysradb import download_sradb_file
-   download_sradb_file()
-
-   SRAmetadb.sqlite.gz: 2.44GB [01:10, 36.9MB/s]
+    $ pysradb metadb
 
 
 .. _aspera-client:
@@ -144,15 +141,15 @@ Alternatively, you can also download it using `pysradb`:
 aspera-client
 =============
 
-We strongly recommend using `aspera-client` (which uses UDP) since it `warrants faster downloads <http://www.skullbox.net/tcpudp.php>`_ as compared to `ftp/http` based downloads.
+We strongly recommend using ``aspera-client`` (which uses UDP) since it `warrants faster downloads <http://www.skullbox.net/tcpudp.php>`_ as compared to ``ftp/http`` based downloads.
 
 PDF intructions are available on IBM's `website <https://downloads.asperasoft.com/connect2/>`_.
 
 Direct download links:
 
-- Linux: https://download.asperasoft.com/download/sw/connect/3.8.1/ibm-aspera-connect-3.8.1.161274-linux-g2.12-64.tar.gz
-- MacOS: https://download.asperasoft.com/download/sw/connect/3.8.1/IBMAsperaConnectInstaller-3.8.1.161274.dmg
-- Windows: https://download.asperasoft.com/download/sw/connect/3.8.1/IBMAsperaConnect-ML-3.8.1.161274.msi
+- `Linux <https://download.asperasoft.com/download/sw/connect/3.8.1/ibm-aspera-connect-3.8.1.161274-linux-g2.12-64.tar.gz>`_
+- `MacOS <https://download.asperasoft.com/download/sw/connect/3.8.1/IBMAsperaConnectInstaller-3.8.1.161274.dmg>`_
+- `Windows: <https://download.asperasoft.com/download/sw/connect/3.8.1/IBMAsperaConnect-ML-3.8.1.161274.msi>`_
 
 Once you download the tar relevant to your OS, say linux, follow these steps to install aspera:
 
@@ -177,156 +174,153 @@ Installing pysradb in development mode
 
 
 
+*************
+Using pysradb
+*************
 
-********************
-Using the Python API
-********************
-
-Use Case 1: Fetch the metadata table (SRA-runtable)
-===================================================
-
-The simplest use case of `pysradb` is when you apriopri know the SRA project ID (SRP)
-and would simply want to fetch the metadata associated with it. This is generally
-reflected in the `SraRunTable.txt` that you get from NCBI's website.
-See an `example <https://www.ncbi.nlm.nih.gov/Traces/study/?acc=SRP098789>`_ of a SraRunTable.
+Please see `usage_scenarios <https://saket-choudhary.me/pysradb/usage_scenarios.html>`_ for a few usage scenarios.
+Here are few hand-picked examples.
 
 
-.. code-block:: python
+Getting SRA metadata
+====================
 
-   from pysradb import SRAdb
-   db = SRAdb('SRAmetadb.sqlite')
-   df = db.sra_metadata('SRP098789')
-   df.head()
+::
 
-.. table::
+    $ pysradb metadata SRP000941 --assay --desc --expand | head
 
-    ===============  ====================  ======================================================================  =============  ========  =================  ==============  ================  ==============  ============  ==========  ========  ============  ===============
-    study_accession  experiment_accession                             experiment_title                             run_accession  taxon_id  library_selection  library_layout  library_strategy  library_source  library_name    bases      spots    adapter_spec  avg_read_length
-    ===============  ====================  ======================================================================  =============  ========  =================  ==============  ================  ==============  ============  ==========  ========  ============  ===============
-    SRP098789        SRX2536403            GSM2475997: 1.5 Ã‚ÂµM PF-067446846, 10 min, rep 1; Homo sapiens; OTHER  SRR5227288         9606  other              SINGLE -        OTHER             TRANSCRIPTOMIC                2104142750  42082855                             50
-    SRP098789        SRX2536404            GSM2475998: 1.5 Ã‚ÂµM PF-067446846, 10 min, rep 2; Homo sapiens; OTHER  SRR5227289         9606  other              SINGLE -        OTHER             TRANSCRIPTOMIC                2082873050  41657461                             50
-    SRP098789        SRX2536405            GSM2475999: 1.5 Ã‚ÂµM PF-067446846, 10 min, rep 3; Homo sapiens; OTHER  SRR5227290         9606  other              SINGLE -        OTHER             TRANSCRIPTOMIC                2023148650  40462973                             50
-    SRP098789        SRX2536406            GSM2476000: 0.3 Ã‚ÂµM PF-067446846, 10 min, rep 1; Homo sapiens; OTHER  SRR5227291         9606  other              SINGLE -        OTHER             TRANSCRIPTOMIC                2057165950  41143319                             50
-    SRP098789        SRX2536407            GSM2476001: 0.3 Ã‚ÂµM PF-067446846, 10 min, rep 2; Homo sapiens; OTHER  SRR5227292         9606  other              SINGLE -        OTHER             TRANSCRIPTOMIC                3027621850  60552437                             50
-    ===============  ====================  ======================================================================  =============  ========  =================  ==============  ================  ==============  ============  ==========  ========  ============  ===============
-
-The metadata is returned as a `pandas` dataframe and hence allows you to perform
-all regular select/query operations available through `pandas`.
+    study_accession experiment_accession sample_accession run_accession library_strategy batch         biomaterial_provider             biomaterial_type cell_type    collection_method differentiation_method                                                                                                                     differentiation_stage                                                                disease                                                          donor_age donor_ethnicity                 donor_health_status                                                                                 donor_id donor_sex line          lineage                                                               medium                                                                                                                                                                                                   molecule     passage                             sample_term_id  sex     source_name              tissue                   tissue_depot tissue_type
+    SRP000941       SRX006235            SRS004118        SRR018454     ChIP-Seq         NaN           cellular dynamics international  cell line        NaN          NaN               none                                                                                                                                       none                                                                                 none                                                             NaN       NaN                             NaN                                                                                                 NaN      NaN       h1            embryonic stem cell                                                   mteser                                                                                                                                                                                                   genomic dna  between 30 and 50                   efo_0003042     male    NaN                      NaN                      NaN          NaN
+    SRP000941       SRX006236            SRS004118        SRR018456     ChIP-Seq         NaN           cellular dynamics international  cell line        NaN          NaN               none                                                                                                                                       none                                                                                 none                                                             NaN       NaN                             NaN                                                                                                 NaN      NaN       h1            embryonic stem cell                                                   mteser                                                                                                                                                                                                   genomic dna  between 30 and 50                   efo_0003042     male    NaN                      NaN                      NaN          NaN
+    SRP000941       SRX006237            SRS004118        SRR018455     ChIP-Seq         NaN           cellular dynamics international  cell line        NaN          NaN               none                                                                                                                                       none                                                                                 none                                                             NaN       NaN                             NaN                                                                                                 NaN      NaN       h1            embryonic stem cell                                                   mteser                                                                                                                                                                                                   genomic dna  between 30 and 50                   efo_0003042     male    NaN                      NaN                      NaN          NaN
+    SRP000941       SRX006239            SRS004213        SRR019072     Bisulfite-Seq    #2            thomson laboratory               cell line        NaN          NaN               na                                                                                                                                         embryonic stem cell                                                                  none                                                             NaN       NaN                             NaN                                                                                                 NaN      NaN       h1            na                                                                    tesr                                                                                                                                                                                                     genomic dna  27                                  efo_0003042     male    NaN                      NaN                      NaN          NaN
+    SRP000941       SRX006239            SRS004213        SRR019080     Bisulfite-Seq    #2            thomson laboratory               cell line        NaN          NaN               na                                                                                                                                         embryonic stem cell                                                                  none                                                             NaN       NaN                             NaN                                                                                                 NaN      NaN       h1            na                                                                    tesr                                                                                                                                                                                                     genomic dna  27                                  efo_0003042     male    NaN                      NaN                      NaN          NaN
+    SRP000941       SRX006239            SRS004213        SRR019081     Bisulfite-Seq    #2            thomson laboratory               cell line        NaN          NaN               na                                                                                                                                         embryonic stem cell                                                                  none                                                             NaN       NaN                             NaN                                                                                                 NaN      NaN       h1            na                                                                    tesr                                                                                                                                                                                                     genomic dna  27                                  efo_0003042     male    NaN                      NaN                      NaN          NaN
+    SRP000941       SRX006239            SRS004213        SRR019082     Bisulfite-Seq    #2            thomson laboratory               cell line        NaN          NaN               na                                                                                                                                         embryonic stem cell                                                                  none                                                             NaN       NaN                             NaN                                                                                                 NaN      NaN       h1            na                                                                    tesr                                                                                                                                                                                                     genomic dna  27                                  efo_0003042     male    NaN                      NaN                      NaN          NaN
+    SRP000941       SRX006239            SRS004213        SRR019083     Bisulfite-Seq    #2            thomson laboratory               cell line        NaN          NaN               na                                                                                                                                         embryonic stem cell                                                                  none                                                             NaN       NaN                             NaN                                                                                                 NaN      NaN       h1            na                                                                    tesr                                                                                                                                                                                                     genomic dna  27                                  efo_0003042     male    NaN                      NaN                      NaN          NaN
+    SRP000941       SRX006239            SRS004213        SRR019084     Bisulfite-Seq    #2            thomson laboratory               cell line        NaN          NaN               na                                                                                                                                         embryonic stem cell                                                                  none                                                             NaN       NaN                             NaN                                                                                                 NaN      NaN       h1            na                                                                    tesr                                                                                                                                                                                                     genomic dna  27                                  efo_0003042     male    NaN                      NaN                      NaN          NaN
 
 
+Getting detailed SRA metadata
+=============================
 
-Use Case 2: Downloading an entire project arranged experiment wise
-==================================================================
+::
+   $ pysradb metadata SRP075720 --detailed --expand | head
 
-Once you have fetched the metadata and made sure, this is the project
-you were looking for, you would want to download everything at once.
-NCBI follows this hiererachy: `SRP => SRX => SRR`. Each `SRP` (project) has multiple
-`SRX` (experiments) and each `SRX` in turn has multiple `SRR` (runs) inside it.
-We want to mimick this hiereachy in our downloads. The reason to do that is simple:
-in most cases you care about `SRX` the most, and would want to "merge" your SRRs
-in one way or the other. Having this hierearchy ensures your downstream code
-can handle such cases easily, without worrying about which runs (SRR) need to be merged.
-
-We strongly recommend installing `aspera-client` which uses UDP and is `designed to be faster <http://www.skullbox.net/tcpudp.php>`_.
-
-.. code-block:: python
-
-   from pysradb import SRAdb
-   db = SRAdb('SRAmetadb.sqlite')
-   df = db.sra_metadata('SRP017942')
-   db.download(df)
-
-The default download location is `pysradb_downloads/` created inside your current working directory.
-You can specify a location by:
-
-.. code-block:: python
-
-   db.download(df=df, out_dir='/pysradb_downloads')
+    study_accession experiment_accession sample_accession run_accession experiment_title                                  experiment_attribute        taxon_id library_selection library_layout library_strategy library_source  library_name  bases      spots   adapter_spec  avg_read_length developmental_stage retina_id source_name                tissue
+    SRP075720       SRX1800089           SRS1467259       SRR3587529    GSM2177186: Kcng4_1Ra_A10; Mus musculus; RNA-Seq  GEO Accession: GSM2177186  10090     cDNA              SINGLE -       RNA-Seq          TRANSCRIPTOMIC  None         79101650   1582033  None         50.0             p17                 1ra       mus musculus retina p17  retina
+    SRP075720       SRX1800090           SRS1467260       SRR3587530    GSM2177187: Kcng4_1Ra_A11; Mus musculus; RNA-Seq  GEO Accession: GSM2177187  10090     cDNA              SINGLE -       RNA-Seq          TRANSCRIPTOMIC  None         84573650   1691473  None         50.0             p17                 1ra       mus musculus retina p17  retina
+    SRP075720       SRX1800091           SRS1467261       SRR3587531    GSM2177188: Kcng4_1Ra_A12; Mus musculus; RNA-Seq  GEO Accession: GSM2177188  10090     cDNA              SINGLE -       RNA-Seq          TRANSCRIPTOMIC  None         77835550   1556711  None         50.0             p17                 1ra       mus musculus retina p17  retina
+    SRP075720       SRX1800092           SRS1467262       SRR3587532    GSM2177189: Kcng4_1Ra_A1; Mus musculus; RNA-Seq   GEO Accession: GSM2177189  10090     cDNA              SINGLE -       RNA-Seq          TRANSCRIPTOMIC  None         73905150   1478103  None         50.0             p17                 1ra       mus musculus retina p17  retina
+    SRP075720       SRX1800093           SRS1467263       SRR3587533    GSM2177190: Kcng4_1Ra_A2; Mus musculus; RNA-Seq   GEO Accession: GSM2177190  10090     cDNA              SINGLE -       RNA-Seq          TRANSCRIPTOMIC  None         77193150   1543863  None         50.0             p17                 1ra       mus musculus retina p17  retina
+    SRP075720       SRX1800094           SRS1467264       SRR3587534    GSM2177191: Kcng4_1Ra_A3; Mus musculus; RNA-Seq   GEO Accession: GSM2177191  10090     cDNA              SINGLE -       RNA-Seq          TRANSCRIPTOMIC  None         59205550   1184111  None         50.0             p17                 1ra       mus musculus retina p17  retina
+    SRP075720       SRX1800095           SRS1467265       SRR3587535    GSM2177192: Kcng4_1Ra_A4; Mus musculus; RNA-Seq   GEO Accession: GSM2177192  10090     cDNA              SINGLE -       RNA-Seq          TRANSCRIPTOMIC  None         61794700   1235894  None         50.0             p17                 1ra       mus musculus retina p17  retina
+    SRP075720       SRX1800096           SRS1467266       SRR3587536    GSM2177193: Kcng4_1Ra_A5; Mus musculus; RNA-Seq   GEO Accession: GSM2177193  10090     cDNA              SINGLE -       RNA-Seq          TRANSCRIPTOMIC  None         78437650   1568753  None         50.0             p17                 1ra       mus musculus retina p17  retina
+    SRP075720       SRX1800097           SRS1467267       SRR3587537    GSM2177194: Kcng4_1Ra_A6; Mus musculus; RNA-Seq   GEO Accession: GSM2177194  10090     cDNA              SINGLE -       RNA-Seq          TRANSCRIPTOMIC  None         77392700   1547854  None         50.0             p17                 1ra       mus musculus retina p17  retina
 
 
+Converting SRP to GSE
+=====================
 
-Use Case 3: Downloading a subset of experiments
-===============================================
+::
 
-Often, you need to process only a smaller set of samples from a project (SRP).
-Consider this project which has data spanning four assays.
+    $ pysradb srp-to-gse SRP075720
 
-.. code-block:: python
-
-   df = db.sra_metadata('SRP000941')
-   print(df.library_strategy.unique())
-   ['ChIP-Seq' 'Bisulfite-Seq' 'RNA-Seq' 'WGS' 'OTHER']
+    study_accession study_alias
+    SRP075720       GSE81903
 
 
-But, you might be only interested in analyzing the `RNA-seq` samples and would just want to download that subset.
-This is simple using `pysradb` since the metadata can be subset just as you would subset a dataframe in
-pandas.
+Converting GSM to SRP
+=====================
+
+::
+
+    $ pysradb gsm-to-srp GSM2177186
+
+    experiment_alias study_accession
+    GSM2177186       SRP075720
 
 
-.. code-block:: python
+Converting GSM to GSE
+=====================
 
-   df_rna = df[df.library_strategy == 'RNA-Seq']
-   db.download(df=df_rna, out_dir='/pysradb_downloads')
+::
 
+    $ pysradb gsm-to-gse GSM2177186
 
-Use Case 4: Getting cell-type/treatment information from sample_attributes
-==========================================================================
-
-Cell type/tissue informations is usually hidden in the `sample_attributes` column,
-which can be expanded:
-
-.. code-block:: python
-
-   from pysradb.filter_attrs import expand_sample_attribute_columns
-   df = db.sra_metadata('SRP017942')
-   expand_sample_attribute_columns(df).head()
+    experiment_alias study_alias
+    GSM2177186       GSE81903
 
 
-.. table::
+Converting GSM to SRX
+=====================
 
-    ===============  ====================  =====================================================================  =========================  ========================================================================================================================================================  =============  ========  =================  ==============  ================  ==============  ============  ==========  =========  ============  ===============  ==========  ==========  ===========  ================  ===============================
-    study_accession  experiment_accession                            experiment_title                               experiment_attribute                                                                         sample_attribute                                                                      run_accession  taxon_id  library_selection  library_layout  library_strategy  library_source  library_name    bases       spots    adapter_spec  avg_read_length  assay_type  cell_line   source_name  transfected_with             treatment
-    ===============  ====================  =====================================================================  =========================  ========================================================================================================================================================  =============  ========  =================  ==============  ================  ==============  ============  ==========  =========  ============  ===============  ==========  ==========  ===========  ================  ===============================
-    SRP017942        SRX217028             GSM1063575: 293T_GFP; Homo sapiens; RNA-Seq                            GEO Accession: GSM1063575  source_name: 293T cells || cell line: 293T cells || transfected with: 3XFLAG-GFP || assay type: Riboseq                                                   SRR648667          9606  other              SINGLE -        RNA-Seq           TRANSCRIPTOMIC                1806641316   50184481                             36  riboseq     293t cells  293t cells   3xflag-gfp        NaN
-    SRP017942        SRX217029             GSM1063576: 293T_GFP_2hrs_severe_Heat_Shock; Homo sapiens; RNA-Seq     GEO Accession: GSM1063576  source_name: 293T cells || cell line: 293T cells || transfected with: 3XFLAG-GFP || treatment: severe heat shock (44C 2 hours) || assay type: Riboseq     SRR648668          9606  other              SINGLE -        RNA-Seq           TRANSCRIPTOMIC                3436984836   95471801                             36  riboseq     293t cells  293t cells   3xflag-gfp        severe heat shock (44c 2 hours)
-    SRP017942        SRX217030             GSM1063577: 293T_Hspa1a; Homo sapiens; RNA-Seq                         GEO Accession: GSM1063577  source_name: 293T cells || cell line: 293T cells || transfected with: 3XFLAG-Hspa1a || assay type: Riboseq                                                SRR648669          9606  other              SINGLE -        RNA-Seq           TRANSCRIPTOMIC                3330909216   92525256                             36  riboseq     293t cells  293t cells   3xflag-hspa1a     NaN
-    SRP017942        SRX217031             GSM1063578: 293T_Hspa1a_2hrs_severe_Heat_Shock; Homo sapiens; RNA-Seq  GEO Accession: GSM1063578  source_name: 293T cells || cell line: 293T cells || transfected with: 3XFLAG-Hspa1a || treatment: severe heat shock (44C 2 hours) || assay type: Riboseq  SRR648670          9606  other              SINGLE -        RNA-Seq           TRANSCRIPTOMIC                3622123512  100614542                             36  riboseq     293t cells  293t cells   3xflag-hspa1a     severe heat shock (44c 2 hours)
-    SRP017942        SRX217956             GSM794854: 3T3-Control-Riboseq; Mus musculus; RNA-Seq                  GEO Accession: GSM794854   source_name: 3T3 cells || treatment: control || cell line: 3T3 cells || assay type: Riboseq                                                               SRR649752         10090  cDNA               SINGLE -        RNA-Seq           TRANSCRIPTOMIC                 594945396   16526261                             36  riboseq     3t3 cells   3t3 cells    NaN               control
-    ===============  ====================  =====================================================================  =========================  ========================================================================================================================================================  =============  ========  =================  ==============  ================  ==============  ============  ==========  =========  ============  ===============  ==========  ==========  ===========  ================  ===============================
+::
+
+    $ pysradb gsm-to-srx GSM2177186
+
+    experiment_alias experiment_accession
+    GSM2177186       SRX1800089
 
 
-Use Case 5: Searching for datasets
-==================================
+Converting GSM to SRR
+=====================
 
-Another common operation that we do on SRA is seach, plain text search.
+::
 
+    $ pysradb gsm-to-srr GSM2177186
 
-If you want to look up for all projects where `ribosome profiling` appears somewhere
-in the description:
-
-.. code-block:: python
-
-
-   df = db.search_sra(search_str='"ribosome profiling"')
-   df.head()
-
-.. table::
-
-    ===============  ====================  =======================================================  =============  ========  =================  ==============  ================  ==============  ============  ==========  ========
-    study_accession  experiment_accession                     experiment_title                      run_accession  taxon_id  library_selection  library_layout  library_strategy  library_source  library_name    bases      spots
-    ===============  ====================  =======================================================  =============  ========  =================  ==============  ================  ==============  ============  ==========  ========
-    DRP003075        DRX019536             Illumina Genome Analyzer IIx sequencing of SAMD00018584  DRR021383         83333  other              SINGLE -        OTHER             TRANSCRIPTOMIC  GAII05_3       978776480  12234706
-    DRP003075        DRX019537             Illumina Genome Analyzer IIx sequencing of SAMD00018585  DRR021384         83333  other              SINGLE -        OTHER             TRANSCRIPTOMIC  GAII05_4       894201680  11177521
-    DRP003075        DRX019538             Illumina Genome Analyzer IIx sequencing of SAMD00018586  DRR021385         83333  other              SINGLE -        OTHER             TRANSCRIPTOMIC  GAII05_5       931536720  11644209
-    DRP003075        DRX019540             Illumina Genome Analyzer IIx sequencing of SAMD00018588  DRR021387         83333  other              SINGLE -        OTHER             TRANSCRIPTOMIC  GAII07_4      2759398700  27593987
-    DRP003075        DRX019541             Illumina Genome Analyzer IIx sequencing of SAMD00018589  DRR021388         83333  other              SINGLE -        OTHER             TRANSCRIPTOMIC  GAII07_5      2386196500  23861965
-    ===============  ====================  =======================================================  =============  ========  =================  ==============  ================  ==============  ============  ==========  ========
-
-Again, the results are available as a `pandas` dataframe and hence
-you can perform all subset operations post your query. Your query doesn't need
-to be exact.
+    experiment_alias run_accession
+    GSM2177186       SRR3587529
 
 
+Complete Metadata for any record
+================================
+
+Use the ``--detailed`` flag:
+
+::
+
+    $ pysradb gsm-to-srr GSM2177186 --detailed --desc --expand
+
+    experiment_alias run_accession experiment_accession sample_accession study_accession run_alias      sample_alias study_alias developmental_stage retina_id source_name                tissue
+    GSM2177186       SRR3587529    SRX1800089           SRS1467259       SRP075720       GSM2177186_r1  GSM2177186   GSE81903    p17                 1ra       mus musculus retina__ p17  retina
+
+
+Getting only the assay type
+===========================
+
+::
+
+    $ pysradb metadata SRP000941 --assay  | tr -s '  ' | cut -f5 -d ' ' | sort | uniq -c
+
+    999 Bisulfite-Seq
+    768 ChIP-Seq
+      1 library_strategy
+    121 OTHER
+    353 RNA-Seq
+     28 WGS
+
+
+Downloading entire project
+==========================
+
+::
+
+    $ pysradb download -p SRP000941
+
+Downloads are organized by ``SRP/SRX/SRR`` mimicking the hiererachy of SRA projects.
+
+
+Downloading only certain samples of interest
+============================================
+
+::
+
+    $ pysradb metadata SRP000941 --assay | grep 'study\|RNA-Seq' | pysradb download
+
+This will download all ``RNA-seq`` samples coming from this project using ``aspera-client``, if available.
+Alternatively, it can also use ``wget``.
 
 
 ********
@@ -337,14 +331,10 @@ Zenodo archive: https://zenodo.org/badge/latestdoi/159590788
 
 DOI: 10.5281/zenodo.2306881
 
-A lot of functionality in `pysradb` is based on ideas from the original `SRAdb package <https://bioconductor.org/packages/release/bioc/html/SRAdb.html>`_. Please cite the original SRAdb publication:
+A lot of functionality in ``pysradb`` is based on ideas from the original `SRAdb package <https://bioconductor.org/packages/release/bioc/html/SRAdb.html>`_. Please cite the original SRAdb publication:
 
     Zhu, Yuelin, Robert M. Stephens, Paul S. Meltzer, and Sean R. Davis. "SRAdb: query and use public next-generation sequencing data from within R." BMC bioinformatics 14, no. 1 (2013): 19.
 
 
-
-
-
 * Free software: BSD license
 * Documentation: https://saketkc.github.io/pysradb
-
