@@ -9,7 +9,7 @@ Welcome to pysradb's documentation!
    installation
    quickstart
    cmdline
-   usage
+   python-api-usage
    usage_scenarios
    modules
    contributing
