@@ -131,13 +131,15 @@ SRAmetadb can be downloaded using:
 
    wget -c https://starbuck1.s3.amazonaws.com/sradb/SRAmetadb.sqlite.gz && gunzip SRAmetadb.sqlite.gz
 
-Alternatively, you can also download it using `pysradb`:
+Alternatively, you can also download it using ``pysradb``, which by default downloads it into your
+current working directory:
 
 
 ::
 
     $ pysradb metadb
 
+You can also specify an alternate directory for download by supplying the ``--out_dir <OUT_DIR>`` argument.
 
 .. _aspera-client:
 
