@@ -40,6 +40,7 @@ def test_download(runner):
     result = runner.invoke(
         sradbcli.cmd_download_sra,
         [
+            "-y",
             "--db",
             "data/SRAmetadb.sqlite",
             "--out-dir",
