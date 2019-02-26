@@ -42,7 +42,7 @@ def test_download(runner):
         [
             "--db",
             "data/SRAmetadb.sqlite",
-            "--out_dir",
+            "--out-dir",
             "srp_downloads",
             "-p",
             "SRP063852",

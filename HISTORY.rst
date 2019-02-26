@@ -2,6 +2,26 @@
 History
 #######
 
+*******************
+0.8.0 (02-26-2019)
+*******************
+
+New methods/functionality
+=========================
+* `srr-to-gsm`: convert SRR to GSM
+* SRAmetadb.sqlite.gz file is deleted by default after extraction
+* When SRAmetadb is not found a confirmation is seeked before downloading
+* Confirmation option before SRA downloads
+
+Bugfix
+======
+* download() works with wget
+
+Others
+======
+
+* `--out_dir` is now `out-dir`
+
 
 *******************
 0.7.1 (02-18-2019)

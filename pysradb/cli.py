@@ -72,18 +72,19 @@ def cli():
 @cli.command(
     "metadb", context_settings=CONTEXT_SETTINGS, help="Download SRAmetadb.sqlite"
 )
-@click.option("--out_dir", type=str, help="Output directory location")
-@click.option("--overwrite", type=bool, help="Overwrite existing file")
-def cmd_download_sra(out_dir, overwrite):
+@click.option("--out-dir", type=str, help="Output directory location")
+@click.option("--overwrite", is_flag=True, help="Overwrite existing file")
+@click.option("--keep-gz", is_flag=True, help="Overwrite existing file")
+def cmd_download_sradb(out_dir, overwrite, keep_gz):
     if out_dir is None:
         out_dir = os.getcwd()
-    download_sradb_file(out_dir, overwrite)
+    download_sradb_file(out_dir, overwrite, keep_gz)
 
 
 @cli.command(
     "download", context_settings=CONTEXT_SETTINGS, help="Download SRA project (SRPnnnn)"
 )
-@click.option("--out_dir", help="Output directory root")
+@click.option("--out-dir", help="Output directory root")
 @click.option(
     "--db",
     help="Path to SRAmetadb.sqlite file",
@@ -91,7 +92,13 @@ def cmd_download_sra(out_dir, overwrite):
 )
 @click.option("--srx", "-x", help="Download only these SRX(s)", multiple=True)
 @click.option("--srp", "-p", help="SRP ID", multiple=True)
-def cmd_download_sra(out_dir, db, srx, srp):
+@click.option("--skip-confirmation", "-y", is_flag=True, help="Skip confirmation")
+@click.option("--use-wget", "-w", is_flag=True, help="Use wget instead of aspera")
+def cmd_download_sra(out_dir, db, srx, srp, skip_confirmation, use_wget):
+    if use_wget:
+        protocol = "ftp"
+    else:
+        protocol = "fasp"
     db = _check_sradb_file(db)
     if out_dir is None:
         out_dir = os.path.join(os.getcwd(), "pysradb_downloads")
@@ -119,10 +126,21 @@ def cmd_download_sra(out_dir, db, srx, srp):
 
             text += "{}\n".format(line)
         df = pd.read_csv(StringIO(text), sep="\t")
-        sradb.download(df=df, out_dir=out_dir, filter_by_srx=srx)
+        sradb.download(
+            df=df,
+            out_dir=out_dir,
+            filter_by_srx=srx,
+            skip_confirmation=skip_confirmation,
+            protocol=protocol,
+        )
     else:
         for srp_x in sorted(set(srp)):
-            sradb.download(srp=srp_x, out_dir=out_dir, filter_by_srx=srx)
+            sradb.download(
+                srp=srp_x,
+                out_dir=out_dir,
+                filter_by_srx=srx,
+                skip_confirmation=skip_confirmation,
+            )
     sradb.close()
 
 
