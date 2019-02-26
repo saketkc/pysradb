@@ -130,7 +130,7 @@ current working directory:
 
     $ pysradb metadb
 
-You can also specify an alternate directory for download by supplying the ``--out_dir <OUT_DIR>`` argument.
+You can also specify an alternate directory for download by supplying the ``--out-dir <OUT_DIR>`` argument.
 
 .. _aspera-client:
 
@@ -307,7 +307,7 @@ Downloading entire project
 
 ::
 
-    $ pysradb download --db ./SRAmetadb.sqlite --out_dir ./pysradb_downloads -p SRP063852
+    $ pysradb download --db ./SRAmetadb.sqlite --out-dir ./pysradb_downloads -p SRP063852
 
 Downloads are organized by ``SRP/SRX/SRR`` mimicking the hiererachy of SRA projects.
 

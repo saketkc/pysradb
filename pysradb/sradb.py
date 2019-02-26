@@ -69,7 +69,7 @@ def _prettify_df(df, out_type, expand_sample_attributes):
     return df
 
 
-def download_sradb_file(download_dir=os.getcwd(), overwrite=True):
+def download_sradb_file(download_dir=os.getcwd(), overwrite=True, keep_gz=False):
     """Download SRAdb.sqlite file.
 
     Parameters
@@ -79,6 +79,8 @@ def download_sradb_file(download_dir=os.getcwd(), overwrite=True):
     overwrite: bool
                overwrite existing file(s).
                Set to True by default.
+    keep_gz: bool
+             Delete .gz file after extraction is complete
 
     """
     download_location = os.path.join(download_dir, "SRAmetadb.sqlite.gz")
@@ -121,6 +123,9 @@ def download_sradb_file(download_dir=os.getcwd(), overwrite=True):
                 filesize=filesize,
                 desc="Extracting {}".format("SRAmetadb.sqlite.gz"),
             )
+    if not keep_gz:
+        if os.path.isfile(download_location):
+            os.remove(download_location)
     print("Done!")
     db = SRAdb(download_location_unzip)
     metadata = db.query("SELECT * FROM metaInfo")
@@ -1110,14 +1115,14 @@ class SRAdb(BASEdb):
             if ascp_dir is None:
                 ascp_dir = os.path.join(os.path.expanduser("~"), ".aspera")
             if not os.path.exists(ascp_dir):
-                warnings.warn(
-                    """Count not find aspera at: {}\n
-                    Install aspera-client following instructions
-                    in the README.rst for faster downloads. Continuing with wget ...\n""".format(
-                        ascp_dir
-                    )
+                sys.stderr.write(
+                    "Count not find aspera at: {}\n".format(ascp_dir)
+                    + "Install aspera-client following instructions"
+                    + "at https://github.com/saketkc/pysradb/README.rst for faster downloads.\n"
+                    + "You can supress this message by using `--use-wget` flag\n"
+                    + "Continuing with wget ...\n\n"
                 )
-                protocol = "fasp"
+                protocol = "ftp"
             else:
                 ascp_bin = os.path.join(ascp_dir, "connect", "bin", "ascp")
         df = df.copy()
