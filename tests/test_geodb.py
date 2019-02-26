@@ -4,6 +4,7 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import pytest
 from pysradb import GEOdb
 
+"""
 
 @pytest.fixture(scope="module")
 def geodb_connection(conf_download_geodb_file):
@@ -34,3 +35,4 @@ def test_geo_convert(geodb_connection):
 def test_guess_srp_form_gse(geodb_connection):
     srp = geodb_connection.guess_srp_from_gse("GSE73136")
     assert srp == "SRP063852"
+"""

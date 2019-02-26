@@ -5,6 +5,7 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import os
 import re
 import sys
+from textwrap import dedent
 
 from . import __version__
 from .sradb import download_sradb_file
@@ -18,14 +19,16 @@ import pandas as pd
 click.disable_unicode_literals_warning = True
 CONTEXT_SETTINGS = dict(help_option_names=["-h", "--help"])
 
-PY3 = True
-if sys.version_info[0] < 3:
-    PY3 = False
+from io import StringIO
 
-if PY3:
-    from io import StringIO
-else:
-    from StringIO import StringIO
+
+def _print_save_df(df, saveto=None):
+    if saveto:
+        df.to_csv(saveto, index=False, header=True, sep="\t")
+    else:
+        if len(df.index):
+            pd.set_option("display.max_colwidth", -1)
+            print(df.to_string(index=False, justify="left", col_space=0))
 
 
 def _check_sradb_file(db):
@@ -33,7 +36,14 @@ def _check_sradb_file(db):
         db = os.path.join(os.getcwd(), "SRAmetadb.sqlite")
         if os.path.isfile(db):
             return db
-        download_sradb_file()
+        if click.confirm(
+            "SRAmetadb.sqlite file was not found in the current directory. Please quit and specify the path using `--db <DB_PATH>`"
+            + os.linesep
+            + "Otherwise, should I download SRAmetadb.sqlite in the current directory?"
+        ):
+            download_sradb_file()
+        else:
+            sys.exit(1)
 
     if not os.path.isfile(db):
         raise RuntimeError("{} does not exist".format(db))
@@ -150,20 +160,7 @@ def cmd_sra_metadata(srp_id, db, assay, desc, detailed, expand, saveto):
         sample_attribute=desc,
         expand_sample_attributes=expand,
     )
-    if saveto:
-        df.to_csv(saveto, index=False, header=True, sep="\t")
-    else:
-        if len(df.index):
-            if PY3:
-                pd.set_option("display.max_colwidth", -1)
-                print(df.to_string(index=False, justify="left", col_space=0))
-            else:
-                print(
-                    df.to_string(index=False, justify="left", col_space=0).encode(
-                        "utf-8"
-                    )
-                )
-
+    _print_save_df(df, saveto)
     sradb.close()
 
 
@@ -199,20 +196,7 @@ def cmd_sra_search(search_text, db, assay, desc, detailed, expand, saveto):
         sample_attribute=desc,
         expand_sample_attributes=expand,
     )
-    if saveto:
-        df.to_csv(saveto, index=False, header=True, sep="\t")
-    else:
-        if len(df.index):
-            if PY3:
-                pd.set_option("display.max_colwidth", -1)
-                print(df.to_string(index=False, justify="left", col_space=0))
-            else:
-                print(
-                    df.to_string(index=False, justify="left", col_space=0).encode(
-                        "utf-8"
-                    )
-                )
-
+    _print_save_df(df, saveto)
     sradb.close()
 
 
@@ -250,19 +234,7 @@ def cmd_srp_to_srx(srp_id, db, saveto, detailed, desc, expand):
         sample_attribute=desc,
         expand_sample_attributes=expand,
     )
-    if saveto:
-        df.to_csv(saveto, index=False, header=True, sep="\t")
-    else:
-        if len(df.index):
-            if PY3:
-                pd.set_option("display.max_colwidth", -1)
-                print(df.to_string(index=False, justify="left", col_space=0))
-            else:
-                print(
-                    df.to_string(index=False, justify="left", col_space=0).encode(
-                        "utf-8"
-                    )
-                )
+    _print_save_df(df, saveto)
     sradb.close()
 
 
@@ -300,19 +272,7 @@ def cmd_srp_to_srs(srp_id, db, saveto, detailed, desc, expand):
         sample_attribute=desc,
         expand_sample_attributes=expand,
     )
-    if saveto:
-        df.to_csv(saveto, index=False, header=True, sep="\t")
-    else:
-        if len(df.index):
-            if PY3:
-                pd.set_option("display.max_colwidth", -1)
-                print(df.to_string(index=False, justify="left", col_space=0))
-            else:
-                print(
-                    df.to_string(index=False, justify="left", col_space=0).encode(
-                        "utf-8"
-                    )
-                )
+    _print_save_df(df, saveto)
     sradb.close()
 
 
@@ -350,19 +310,7 @@ def cmd_srp_to_srr(srp_id, db, saveto, detailed, desc, expand):
         sample_attribute=desc,
         expand_sample_attributes=expand,
     )
-    if saveto:
-        df.to_csv(saveto, index=False, header=True, sep="\t")
-    else:
-        if len(df.index):
-            if PY3:
-                pd.set_option("display.max_colwidth", -1)
-                print(df.to_string(index=False, justify="left", col_space=0))
-            else:
-                print(
-                    df.to_string(index=False, justify="left", col_space=0).encode(
-                        "utf-8"
-                    )
-                )
+    _print_save_df(df, saveto)
     sradb.close()
 
 
@@ -395,19 +343,7 @@ def cmd_srp_to_gse(srp_id, db, saveto, detailed, desc, expand):
         sample_attribute=desc,
         expand_sample_attributes=expand,
     )
-    if saveto:
-        df.to_csv(saveto, index=False, header=True, sep="\t")
-    else:
-        if len(df.index):
-            if PY3:
-                pd.set_option("display.max_colwidth", -1)
-                print(df.to_string(index=False, justify="left", col_space=0))
-            else:
-                print(
-                    df.to_string(index=False, justify="left", col_space=0).encode(
-                        "utf-8"
-                    )
-                )
+    _print_save_df(df, saveto)
     sradb.close()
 
 
@@ -446,19 +382,7 @@ def cmd_srp_to_gse(gse_ids, db, saveto, detailed, desc, expand):
         sample_attribute=desc,
         expand_sample_attributes=expand,
     )
-    if saveto:
-        df.to_csv(saveto, index=False, header=True, sep="\t")
-    else:
-        if len(df.index):
-            if PY3:
-                pd.set_option("display.max_colwidth", -1)
-                print(df.to_string(index=False, justify="left", col_space=0))
-            else:
-                print(
-                    df.to_string(index=False, justify="left", col_space=0).encode(
-                        "utf-8"
-                    )
-                )
+    _print_save_df(df, saveto)
     sradb.close()
 
 
@@ -494,19 +418,7 @@ def cmd_gse_to_gsm(gse_ids, db, saveto, detailed, desc, expand):
         sample_attribute=desc,
         expand_sample_attributes=expand,
     )
-    if saveto:
-        df.to_csv(saveto, index=False, header=True, sep="\t")
-    else:
-        if len(df.index):
-            if PY3:
-                pd.set_option("display.max_colwidth", -1)
-                print(df.to_string(index=False, justify="left", col_space=0))
-            else:
-                print(
-                    df.to_string(index=False, justify="left", col_space=0).encode(
-                        "utf-8"
-                    )
-                )
+    _print_save_df(df, saveto)
     sradb.close()
 
 
@@ -542,19 +454,7 @@ def cmd_gsm_to_gse(gsm_ids, db, saveto, detailed, desc, expand):
         sample_attribute=desc,
         expand_sample_attributes=expand,
     )
-    if saveto:
-        df.to_csv(saveto, index=False, header=True, sep="\t")
-    else:
-        if len(df.index):
-            if PY3:
-                pd.set_option("display.max_colwidth", -1)
-                print(df.to_string(index=False, justify="left", col_space=0))
-            else:
-                print(
-                    df.to_string(index=False, justify="left", col_space=0).encode(
-                        "utf-8"
-                    )
-                )
+    _print_save_df(df, saveto)
     sradb.close()
 
 
@@ -593,19 +493,7 @@ def cmd_gsm_to_srp(gsm_ids, db, saveto, detailed, desc, expand):
         sample_attribute=desc,
         expand_sample_attributes=expand,
     )
-    if saveto:
-        df.to_csv(saveto, index=False, header=True, sep="\t")
-    else:
-        if len(df.index):
-            if PY3:
-                pd.set_option("display.max_colwidth", -1)
-                print(df.to_string(index=False, justify="left", col_space=0))
-            else:
-                print(
-                    df.to_string(index=False, justify="left", col_space=0).encode(
-                        "utf-8"
-                    )
-                )
+    _print_save_df(df, saveto)
     sradb.close()
 
 
@@ -643,19 +531,7 @@ def cmd_gsm_to_srr(gsm_ids, db, saveto, detailed, desc, expand):
         sample_attribute=desc,
         expand_sample_attributes=expand,
     )
-    if saveto:
-        df.to_csv(saveto, index=False, header=True, sep="\t")
-    else:
-        if len(df.index):
-            if PY3:
-                pd.set_option("display.max_colwidth", -1)
-                print(df.to_string(index=False, justify="left", col_space=0))
-            else:
-                print(
-                    df.to_string(index=False, justify="left", col_space=0).encode(
-                        "utf-8"
-                    )
-                )
+    _print_save_df(df, saveto)
     sradb.close()
 
 
@@ -694,19 +570,7 @@ def cmd_gsm_to_srx(gsm_ids, db, saveto, detailed, desc, expand):
         sample_attribute=desc,
         expand_sample_attributes=expand,
     )
-    if saveto:
-        df.to_csv(saveto, index=False, header=True, sep="\t")
-    else:
-        if len(df.index):
-            if PY3:
-                pd.set_option("display.max_colwidth", -1)
-                print(df.to_string(index=False, justify="left", col_space=0))
-            else:
-                print(
-                    df.to_string(index=False, justify="left", col_space=0).encode(
-                        "utf-8"
-                    )
-                )
+    _print_save_df(df, saveto)
     sradb.close()
 
 
@@ -739,19 +603,7 @@ def cmd_srx_to_srs(srx_ids, db, saveto, detailed, desc, expand):
         sample_attribute=desc,
         expand_sample_attributes=expand,
     )
-    if saveto:
-        df.to_csv(saveto, index=False, header=True, sep="\t")
-    else:
-        if len(df.index):
-            if PY3:
-                pd.set_option("display.max_colwidth", -1)
-                print(df.to_string(index=False, justify="left", col_space=0))
-            else:
-                print(
-                    df.to_string(index=False, justify="left", col_space=0).encode(
-                        "utf-8"
-                    )
-                )
+    _print_save_df(df, saveto)
     sradb.close()
 
 
@@ -784,19 +636,7 @@ def cmd_srs_to_srx(srs_ids, db, saveto, detailed, desc, expand):
         sample_attribute=desc,
         expand_sample_attributes=expand,
     )
-    if saveto:
-        df.to_csv(saveto, index=False, header=True, sep="\t")
-    else:
-        if len(df.index):
-            if PY3:
-                pd.set_option("display.max_colwidth", -1)
-                print(df.to_string(index=False, justify="left", col_space=0))
-            else:
-                print(
-                    df.to_string(index=False, justify="left", col_space=0).encode(
-                        "utf-8"
-                    )
-                )
+    _print_save_df(df, saveto)
     sradb.close()
 
 
@@ -834,19 +674,45 @@ def cmd_srr_to_srp(srr_ids, db, saveto, detailed, desc, expand):
         sample_attribute=desc,
         expand_sample_attributes=expand,
     )
-    if saveto:
-        df.to_csv(saveto, index=False, header=True, sep="\t")
-    else:
-        if len(df.index):
-            if PY3:
-                pd.set_option("display.max_colwidth", -1)
-                print(df.to_string(index=False, justify="left", col_space=0))
-            else:
-                print(
-                    df.to_string(index=False, justify="left", col_space=0).encode(
-                        "utf-8"
-                    )
-                )
+    _print_save_df(df, saveto)
+    sradb.close()
+
+
+@cli.command("srr-to-gsm", context_settings=CONTEXT_SETTINGS, help="Get GSM for a SRR")
+@click.option(
+    "--db",
+    help="Path to SRAmetadb.sqlite file",
+    type=click.Path(exists=True, dir_okay=False),
+)
+@click.option(
+    "--detailed",
+    is_flag=True,
+    help="""'Output additional columns: [experiment_accession (SRX),
+                                         study_accession (SRP),
+                                         run_alias (GSM_r),
+                                         sample_alias (GSM_),
+                                         experiment_alias (GSM),
+                                         study_alias (GSE)]""",
+    default=False,
+)
+@click.option(
+    "--desc", is_flag=True, help="Should sample_attribute be included", default=False
+)
+@click.option(
+    "--expand", is_flag=True, help="Should sample_attribute be expanded", default=False
+)
+@click.option("--saveto", help="Save output to file")
+@click.argument("srr_ids", nargs=-1, required=True)
+def cmd_srr_to_gsm(srr_ids, db, saveto, detailed, desc, expand):
+    db = _check_sradb_file(db)
+    sradb = SRAdb(db)
+    df = sradb.srr_to_gsm(
+        srrs=srr_ids,
+        detailed=detailed,
+        sample_attribute=desc,
+        expand_sample_attributes=expand,
+    )
+    _print_save_df(df, saveto)
     sradb.close()
 
 
@@ -875,7 +741,7 @@ def cmd_srr_to_srp(srr_ids, db, saveto, detailed, desc, expand):
 )
 @click.option("--saveto", help="Save output to file")
 @click.argument("srr_ids", nargs=-1, required=True)
-def cmd_srr_to_srx(srr_ids, db, saveto, detailed, desc, expand):
+def cmd_srr_to_srs(srr_ids, db, saveto, detailed, desc, expand):
     db = _check_sradb_file(db)
     sradb = SRAdb(db)
     df = sradb.srr_to_srs(
@@ -884,19 +750,7 @@ def cmd_srr_to_srx(srr_ids, db, saveto, detailed, desc, expand):
         sample_attribute=desc,
         expand_sample_attributes=expand,
     )
-    if saveto:
-        df.to_csv(saveto, index=False, header=True, sep="\t")
-    else:
-        if len(df.index):
-            if PY3:
-                pd.set_option("display.max_colwidth", -1)
-                print(df.to_string(index=False, justify="left", col_space=0))
-            else:
-                print(
-                    df.to_string(index=False, justify="left", col_space=0).encode(
-                        "utf-8"
-                    )
-                )
+    _print_save_df(df, saveto)
     sradb.close()
 
 
@@ -934,19 +788,7 @@ def cmd_srr_to_srx(srr_ids, db, saveto, detailed, desc, expand):
         sample_attribute=desc,
         expand_sample_attributes=expand,
     )
-    if saveto:
-        df.to_csv(saveto, index=False, header=True, sep="\t")
-    else:
-        if len(df.index):
-            if PY3:
-                pd.set_option("display.max_colwidth", -1)
-                print(df.to_string(index=False, justify="left", col_space=0))
-            else:
-                print(
-                    df.to_string(index=False, justify="left", col_space=0).encode(
-                        "utf-8"
-                    )
-                )
+    _print_save_df(df, saveto)
     sradb.close()
 
 
@@ -984,19 +826,7 @@ def cmd_srp_to_srx(srx_ids, db, saveto, detailed, desc, expand):
         sample_attribute=desc,
         expand_sample_attributes=expand,
     )
-    if saveto:
-        df.to_csv(saveto, index=False, header=True, sep="\t")
-    else:
-        if len(df.index):
-            if PY3:
-                pd.set_option("display.max_colwidth", -1)
-                print(df.to_string(index=False, justify="left", col_space=0))
-            else:
-                print(
-                    df.to_string(index=False, justify="left", col_space=0).encode(
-                        "utf-8"
-                    )
-                )
+    _print_save_df(df, saveto)
     sradb.close()
 
 
@@ -1029,116 +859,5 @@ def cmd_srp_to_srr(srx_ids, db, saveto, detailed, desc, expand):
         sample_attribute=desc,
         expand_sample_attributes=expand,
     )
-    if saveto:
-        df.to_csv(saveto, index=False, header=True, sep="\t")
-    else:
-        if len(df.index):
-            if PY3:
-                pd.set_option("display.max_colwidth", -1)
-                print(df.to_string(index=False, justify="left", col_space=0))
-            else:
-                print(
-                    df.to_string(index=False, justify="left", col_space=0).encode(
-                        "utf-8"
-                    )
-                )
+    _print_save_df(df, saveto)
     sradb.close()
-
-
-"""
-
-@cli.command(
-    'geometadb',
-    context_settings=CONTEXT_SETTINGS,
-    help='Download GEOmetadb.sqlite')
-@click.option('--out_dir', type=str, help='Output directory location')
-@click.option('--overwrite', type=bool, help='Overwrite existing file')
-def cmd_download_geo(out_dir, overwrite):
-    if out_dir is None:
-        out_dir = os.getcwd()
-    download_geodb_file(out_dir, overwrite)
-
-
-
-@cli.command(
-    'gse-metadata',
-    context_settings=CONTEXT_SETTINGS,
-    help='Fetch metadata for GEO ID (GSEnnnn)')
-@click.option('--saveto', help='Save metadata dataframe to file')
-@click.option(
-    '--db',
-    help='Path to GEOmetadb.sqlite file',
-    type=click.Path(exists=True, dir_okay=False))
-@click.argument('gse_id', required=True)
-def cmd_gse_metadata(gse_id, db, saveto):
-    db = _check_geodb_file(db)
-    geodb = GEOdb(db)
-    df = geodb.gse_metadata(gse=gse_id)
-    if saveto:
-        df.to_csv(saveto, index=False, header=True, sep='\t')
-    else:
-        if len(df.index):
-            if PY3:
-                pd.set_option('display.max_colwidth', -1)
-                print(df.to_string(index=False, justify='left', col_space=0))
-            else:
-                print(
-                    df.to_string(index=False, justify='left',
-                                 col_space=0).encode('utf-8'))
-    geodb.close()
-
-
-@cli.command(
-    'gsm-metadata',
-    context_settings=CONTEXT_SETTINGS,
-    help='Fetch metadata for GSM ID (GSMnnnn)')
-@click.option('--saveto', help='Save metadata dataframe to file')
-@click.option(
-    '--db',
-    help='Path to GEOmetadb.sqlite file',
-    type=click.Path(exists=True, dir_okay=False))
-@click.argument('gsm_id', required=True)
-def cmd_gsm_metadata(gsm_id, db, saveto):
-    db = _check_geodb_file(db)
-    geodb = GEOdb(db)
-    df = geodb.gsm_metadata(gsm=gsm_id)
-    if saveto:
-        df.to_csv(saveto, index=False, header=True, sep='\t')
-    else:
-        if len(df.index):
-            if PY3:
-                pd.set_option('display.max_colwidth', -1)
-                print(df.to_string(index=False, justify='left', col_space=0))
-            else:
-                print(
-                    df.to_string(index=False, justify='left',
-                                 col_space=0).encode('utf-8'))
-    geodb.close()
-
-@cli.command(
-    'ggse-to-gsm',
-    context_settings=CONTEXT_SETTINGS,
-    help='Get GSM(s) for GSE')
-@click.option('--saveto', help='Save metadata dataframe to file')
-@click.option(
-    '--db',
-    help='Path to GEOmetadb.sqlite file',
-    type=click.Path(exists=True, dir_okay=False))
-@click.argument('gse_id', required=True)
-def cmd_gse_to_gsm(gse_id, db, saveto):
-    db = _check_geodb_file(db)
-    geodb = GEOdb(db)
-    df = geodb.gse_to_gsm(gse=gse_id)
-    if saveto:
-        df.to_csv(saveto, index=False, header=True, sep='\t')
-    else:
-        if len(df.index):
-            if PY3:
-                pd.set_option('display.max_colwidth', -1)
-                print(df.to_string(index=False, justify='left', col_space=0))
-            else:
-                print(
-                    df.to_string(index=False, justify='left',
-                                 col_space=0).encode('utf-8'))
-    geodb.close()
-"""

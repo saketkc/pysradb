@@ -63,6 +63,7 @@ a list of instructions for each sub-command.
       srp-to-gse  Get GSE for a SRP
       srp-to-srr  Get SRR for a SRP
       srp-to-srs  Get SRS for a SRP
+      srr-to-gsm  Get GSM for a SRR
       srp-to-srx  Get SRX for a SRP
       srr-to-srp  Get SRP for a SRR
       srr-to-srs  Get SRS for a SRR
@@ -71,15 +72,6 @@ a list of instructions for each sub-command.
       srx-to-srp  Get SRP for a SRX
       srx-to-srr  Get SRR for a SRX
       srx-to-srs  Get SRS for a SRX
-
-**************
-Demo Notebooks
-**************
-
-These notebooks document all the possible features of `pysradb`:
-
-1. `Python API usage <https://nbviewer.jupyter.org/github/saketkc/pysradb/blob/master/notebooks/01.SRAdb-demo.ipynb>`_
-2. `Command line usage <https://nbviewer.jupyter.org/github/saketkc/pysradb/blob/master/notebooks/03.CommandLine-demo.ipynb>`_
 
 
 ************
@@ -104,8 +96,8 @@ If you have an existing environment with a lot of pre-installed packages, conda 
 Please consider creating a new enviroment for ``pysradb``:
 
 .. code-block:: bash
-    
-   conda create -c bioconda -n pysradb PYTHON=3 pysradb 
+
+   conda create -c bioconda -n pysradb PYTHON=3 pysradb
 
 Dependecies
 ===========
@@ -192,7 +184,7 @@ Getting SRA metadata
 
 ::
 
-    $ pysradb metadata SRP000941 --assay --desc --expand | head
+    $ pysradb metadata --db ./SRAmetadb.sqlite SRP000941 --assay --desc --expand | head
 
     study_accession experiment_accession sample_accession run_accession library_strategy batch         biomaterial_provider             biomaterial_type cell_type    collection_method differentiation_method                                                                                                                     differentiation_stage                                                                disease                                                          donor_age donor_ethnicity                 donor_health_status                                                                                 donor_id donor_sex line          lineage                                                               medium                                                                                                                                                                                                   molecule     passage                             sample_term_id  sex     source_name              tissue                   tissue_depot tissue_type
     SRP000941       SRX006235            SRS004118        SRR018454     ChIP-Seq         NaN           cellular dynamics international  cell line        NaN          NaN               none                                                                                                                                       none                                                                                 none                                                             NaN       NaN                             NaN                                                                                                 NaN      NaN       h1            embryonic stem cell                                                   mteser                                                                                                                                                                                                   genomic dna  between 30 and 50                   efo_0003042     male    NaN                      NaN                      NaN          NaN
@@ -211,7 +203,7 @@ Getting detailed SRA metadata
 
 ::
 
-    $ pysradb metadata SRP075720 --detailed --expand | head
+    $ pysradb metadata --db ./SRAmetadb.sqlite SRP075720 --detailed --expand | head
 
     study_accession experiment_accession sample_accession run_accession experiment_title                                  experiment_attribute        taxon_id library_selection library_layout library_strategy library_source  library_name  bases      spots   adapter_spec  avg_read_length developmental_stage retina_id source_name                tissue
     SRP075720       SRX1800089           SRS1467259       SRR3587529    GSM2177186: Kcng4_1Ra_A10; Mus musculus; RNA-Seq  GEO Accession: GSM2177186  10090     cDNA              SINGLE -       RNA-Seq          TRANSCRIPTOMIC  None         79101650   1582033  None         50.0             p17                 1ra       mus musculus retina__ p17  retina
@@ -230,7 +222,7 @@ Converting SRP to GSE
 
 ::
 
-    $ pysradb srp-to-gse SRP075720
+    $ pysradb srp-to-gse --db ./SRAmetadb.sqlite SRP075720
 
     study_accession study_alias
     SRP075720       GSE81903
@@ -241,7 +233,7 @@ Converting GSM to SRP
 
 ::
 
-    $ pysradb gsm-to-srp GSM2177186
+    $ pysradb gsm-to-srp --db ./SRAmetadb.sqlite GSM2177186
 
     experiment_alias study_accession
     GSM2177186       SRP075720
@@ -252,7 +244,7 @@ Converting GSM to GSE
 
 ::
 
-    $ pysradb gsm-to-gse GSM2177186
+    $ pysradb gsm-to-gse --db ./SRAmetadb.sqlite GSM2177186
 
     experiment_alias study_alias
     GSM2177186       GSE81903
@@ -263,7 +255,7 @@ Converting GSM to SRX
 
 ::
 
-    $ pysradb gsm-to-srx GSM2177186
+    $ pysradb gsm-to-srx --db ./SRAmetadb.sqlite GSM2177186
 
     experiment_alias experiment_accession
     GSM2177186       SRX1800089
@@ -274,7 +266,7 @@ Converting GSM to SRR
 
 ::
 
-    $ pysradb gsm-to-srr GSM2177186
+    $ pysradb gsm-to-srr --db ./SRAmetadb.sqlite GSM2177186
 
     experiment_alias run_accession
     GSM2177186       SRR3587529
@@ -287,7 +279,7 @@ Use the ``--detailed`` flag:
 
 ::
 
-    $ pysradb gsm-to-srr GSM2177186 --detailed --desc --expand
+    $ pysradb gsm-to-srr --db ./SRAmetadb.sqlite GSM2177186 --detailed --desc --expand
 
     experiment_alias run_accession experiment_accession sample_accession study_accession run_alias      sample_alias study_alias developmental_stage retina_id source_name                tissue
     GSM2177186       SRR3587529    SRX1800089           SRS1467259       SRP075720       GSM2177186_r1  GSM2177186   GSE81903    p17                 1ra       mus musculus retina__ p17  retina
@@ -298,7 +290,7 @@ Getting only the assay type
 
 ::
 
-    $ pysradb metadata SRP000941 --assay  | tr -s '  ' | cut -f5 -d ' ' | sort | uniq -c
+    $ pysradb metadata SRP000941 --db ./SRAmetadb.sqlite --assay  | tr -s '  ' | cut -f5 -d ' ' | sort | uniq -c
 
     999 Bisulfite-Seq
     768 ChIP-Seq
@@ -311,9 +303,11 @@ Getting only the assay type
 Downloading entire project
 ==========================
 
+``pysradb`` makes it super easy to download datasets from SRA.
+
 ::
 
-    $ pysradb download -p SRP000941
+    $ pysradb download --db ./SRAmetadb.sqlite --out_dir ./pysradb_downloads -p SRP063852
 
 Downloads are organized by ``SRP/SRX/SRR`` mimicking the hiererachy of SRA projects.
 
@@ -327,6 +321,16 @@ Downloading only certain samples of interest
 
 This will download all ``RNA-seq`` samples coming from this project using ``aspera-client``, if available.
 Alternatively, it can also use ``wget``.
+
+**************
+Demo Notebooks
+**************
+
+These notebooks document all the possible features of `pysradb`:
+
+1. `Python API usage <https://nbviewer.jupyter.org/github/saketkc/pysradb/blob/master/notebooks/01.SRAdb-demo.ipynb>`_
+2. `Command line usage <https://nbviewer.jupyter.org/github/saketkc/pysradb/blob/master/notebooks/03.CommandLine-demo.ipynb>`_
+
 
 
 ********
