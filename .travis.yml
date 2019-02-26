@@ -18,7 +18,7 @@ script:
 - make coverage
 - codecov
 - travis-sphinx build --source=$TRAVIS_BUILD_DIR/docs
-- sphinx-versioning build $TRAVIS_BUILD_DIR/docs/ $TRAVIS_BUILD_DIR/docs/_build/html/
+  #- sphinx-versioning build $TRAVIS_BUILD_DIR/docs/ $TRAVIS_BUILD_DIR/docs/_build/html/
 after_success:
 - travis-sphinx deploy
 deploy:

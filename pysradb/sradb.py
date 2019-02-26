@@ -3,11 +3,13 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import gzip
 import os
 import re
+import sqlite3
 import sys
 import warnings
 
 import pandas as pd
 from tqdm import tqdm
+import click
 
 from .basedb import BASEdb
 
@@ -22,10 +24,6 @@ from .utils import order_dataframe
 from .utils import run_command
 from .utils import unique
 
-PY3 = True
-if sys.version_info[0] < 3:
-    PY3 = False
-
 FTP_PREFIX = {
     "fasp": "anonftp@ftp-trace.ncbi.nlm.nih.gov:",
     "ftp": "ftp://ftp-trace.ncbi.nlm.nih.gov",
@@ -38,11 +36,37 @@ SRADB_URL = [
 ASCP_CMD_PREFIX = "ascp -k 1 -QT -l 2000m -i"
 
 
+def _create_query(select_type_sql, gses):
+    sql = (
+        "SELECT DISTINCT "
+        + select_type_sql
+        + " FROM sra_ft WHERE sra_ft MATCH '"
+        + " OR ".join(gses)
+        + "';"
+    )
+    return sql
+
+
 def _expand_sample_attrs(metadata_df):
     if "sample_attribute" in metadata_df.columns.tolist():
         metadata_df = expand_sample_attribute_columns(metadata_df)
         metadata_df = metadata_df.drop(columns=["sample_attribute"])
     return metadata_df
+
+
+def _listify(ids):
+    """convert string to list of unit length"""
+    if isinstance(ids, str):
+        ids = [ids]
+    return ids
+
+
+def _prettify_df(df, out_type, expand_sample_attributes):
+    if len(df.index):
+        df = df[out_type].sort_values(by=out_type)
+    if expand_sample_attributes:
+        df = _expand_sample_attrs(df)
+    return df
 
 
 def download_sradb_file(download_dir=os.getcwd(), overwrite=True):
@@ -105,6 +129,28 @@ def download_sradb_file(download_dir=os.getcwd(), overwrite=True):
     print(metadata)
 
 
+def _verify_srametadb(filepath):
+    """Check if supplied SQLite is valid"""
+    try:
+        db = BASEdb(filepath)
+    except:
+        print(
+            "{} not a valid SRAmetadb.sqlite file. Please download one using `pysradb metadb`.".format(
+                filepath
+            )
+        )
+        sys.exit(1)
+    metadata = db.query("SELECT * FROM metaInfo")
+    db.close()
+    if list(metadata.iloc[0].values) != ["schema version", "1.0"]:
+        print(
+            "{} not a valid SRAmetadb.sqlite file. Please download one using `pysradb metadb`.".format(
+                filepath
+            )
+        )
+        sys.exit(1)
+
+
 class SRAdb(BASEdb):
     def __init__(self, sqlite_file):
         """Initialize SRAdb.
@@ -118,6 +164,7 @@ class SRAdb(BASEdb):
 
         """
         super(SRAdb, self).__init__(sqlite_file)
+        _verify_srametadb(sqlite_file)
         self._db_type = "SRA"
         self.valid_in_acc_type = [
             "SRA",
@@ -435,12 +482,7 @@ class SRAdb(BASEdb):
         -------
         gse_to_srp_df: DataFrame
         """
-        if PY3:
-            if isinstance(gses, str):
-                gses = [gses]
-        else:
-            if isinstance(gses, basestring):
-                gses = [gses]
+        gses = _listify(gses)
         out_type = ["study_alias", "study_accession"]
         if detailed:
             out_type += [
@@ -452,18 +494,9 @@ class SRAdb(BASEdb):
         if sample_attribute:
             out_type += ["sample_attribute"]
         select_type_sql = (",").join(out_type)
-        sql = (
-            "SELECT DISTINCT "
-            + select_type_sql
-            + " FROM sra_ft WHERE sra_ft MATCH '"
-            + " OR ".join(gses)
-            + "';"
-        )
+        sql = _create_query(select_type_sql, gses)
         df = self.query(sql)
-        if len(df.index):
-            df = df[out_type].sort_values(by=out_type)
-        if expand_sample_attributes:
-            df = _expand_sample_attrs(df)
+        df = _prettify_df(df, out_type, expand_sample_attributes)
         return df
 
     def gsm_to_srp(
@@ -484,12 +517,7 @@ class SRAdb(BASEdb):
         -------
         gsm_to_srp_df: DataFrame
         """
-        if PY3:
-            if isinstance(gsms, str):
-                gsms = [gsms]
-        else:
-            if isinstance(gsms, basestring):
-                gsms = [gsms]
+        gsms = _listify(gsms)
         out_type = ["experiment_alias", "study_accession"]
         if detailed:
             out_type += [
@@ -504,18 +532,9 @@ class SRAdb(BASEdb):
         if sample_attribute:
             out_type += ["sample_attribute"]
         select_type_sql = (",").join(out_type)
-        sql = (
-            "SELECT DISTINCT "
-            + select_type_sql
-            + " FROM sra_ft WHERE sra_ft MATCH '"
-            + " OR ".join(gsms)
-            + "';"
-        )
+        sql = _create_query(select_type_sql, gsms)
         df = self.query(sql)
-        if len(df.index):
-            df = df[out_type].sort_values(by=out_type)
-        if expand_sample_attributes:
-            df = _expand_sample_attrs(df)
+        df = _prettify_df(df, out_type, expand_sample_attributes)
         return df
 
     def gsm_to_srr(
@@ -540,12 +559,7 @@ class SRAdb(BASEdb):
         gsm_to_srr_df: DataFrame
                        DataFrame with two columns for GSM/SRR
         """
-        if PY3:
-            if isinstance(gsms, str):
-                gsms = [gsms]
-        else:
-            if isinstance(gsms, basestring):
-                gsms = [gsms]
+        gsms = _listify(gsms)
 
         out_type = ["experiment_alias", "run_accession"]
         if detailed:
@@ -561,18 +575,9 @@ class SRAdb(BASEdb):
         if sample_attribute:
             out_type += ["sample_attribute"]
         select_type_sql = (",").join(out_type)
-        sql = (
-            "SELECT DISTINCT "
-            + select_type_sql
-            + " FROM sra_ft WHERE sra_ft MATCH '"
-            + " OR ".join(gsms)
-            + "';"
-        )
+        sql = _create_query(select_type_sql, gsms)
         df = self.query(sql)
-        if len(df.index):
-            df = df[out_type].sort_values(by=out_type)
-        if expand_sample_attributes:
-            df = _expand_sample_attrs(df)
+        df = _prettify_df(df, out_type, expand_sample_attributes)
         return df
 
     def gsm_to_srx(
@@ -593,12 +598,7 @@ class SRAdb(BASEdb):
         -------
         srs_to_srx_df: DataFrame
         """
-        if PY3:
-            if isinstance(gsms, str):
-                gsms = [gsms]
-        else:
-            if isinstance(gsms, basestring):
-                gsms = [gsms]
+        gsms = _listify(gsms)
         out_type = ["experiment_alias", "experiment_accession"]
         if detailed:
             out_type += [
@@ -613,18 +613,9 @@ class SRAdb(BASEdb):
         if sample_attribute:
             out_type += ["sample_attribute"]
         select_type_sql = (",").join(out_type)
-        sql = (
-            "SELECT DISTINCT "
-            + select_type_sql
-            + " FROM sra_ft WHERE sra_ft MATCH '"
-            + " OR ".join(gsms)
-            + "';"
-        )
+        sql = _create_query(select_type_sql, gsms)
         df = self.query(sql)
-        if len(df.index):
-            df = df[out_type].sort_values(by=out_type)
-        if expand_sample_attributes:
-            df = _expand_sample_attrs(df)
+        df = _prettify_df(df, out_type, expand_sample_attributes)
         return df
 
     def gse_to_gsm(
@@ -645,12 +636,7 @@ class SRAdb(BASEdb):
         -------
         gse_to_gsm_df: DataFrame
         """
-        if PY3:
-            if isinstance(gses, str):
-                gses = [gses]
-        else:
-            if isinstance(gses, basestring):
-                gses = [gses]
+        gses = _listify(gses)
         out_type = ["study_alias", "experiment_alias"]
         if detailed:
             out_type += [
@@ -663,18 +649,9 @@ class SRAdb(BASEdb):
         if sample_attribute:
             out_type += ["sample_attribute"]
         select_type_sql = (",").join(out_type)
-        sql = (
-            "SELECT DISTINCT "
-            + select_type_sql
-            + " FROM sra_ft WHERE sra_ft MATCH '"
-            + " OR ".join(gses)
-            + "';"
-        )
+        sql = _create_query(select_type_sql, gses)
         df = self.query(sql)
-        if len(df.index):
-            df = df[out_type].sort_values(by=out_type)
-        if expand_sample_attributes:
-            df = _expand_sample_attrs(df)
+        df = _prettify_df(df, out_type, expand_sample_attributes)
         return df
 
     def gsm_to_gse(
@@ -695,12 +672,7 @@ class SRAdb(BASEdb):
         -------
         gsm_to_gse_df: DataFrame
         """
-        if PY3:
-            if isinstance(gsms, str):
-                gsms = [gsms]
-        else:
-            if isinstance(gsms, basestring):
-                gsms = [gsms]
+        gsms = _listify(gsms)
         out_type = ["experiment_alias", "study_alias"]
         if detailed:
             out_type += [
@@ -713,18 +685,9 @@ class SRAdb(BASEdb):
         if sample_attribute:
             out_type += ["sample_attribute"]
         select_type_sql = (",").join(out_type)
-        sql = (
-            "SELECT DISTINCT "
-            + select_type_sql
-            + " FROM sra_ft WHERE sra_ft MATCH '"
-            + " OR ".join(gsms)
-            + "';"
-        )
+        sql = _create_query(select_type_sql, gses)
         df = self.query(sql)
-        if len(df.index):
-            df = df[out_type].sort_values(by=out_type)
-        if expand_sample_attributes:
-            df = _expand_sample_attrs(df)
+        df = _prettify_df(df, out_type, expand_sample_attributes)
         return df
 
     def srr_to_srp(
@@ -745,12 +708,7 @@ class SRAdb(BASEdb):
         -------
         srr_to_srp_df: DataFrame
         """
-        if PY3:
-            if isinstance(srrs, str):
-                srrs = [srrs]
-        else:
-            if isinstance(srrs, basestring):
-                srrs = [srrs]
+        srrs = _listify(srrs)
         out_type = ["run_accession", "study_accession"]
         if detailed:
             out_type += [
@@ -765,19 +723,9 @@ class SRAdb(BASEdb):
         if sample_attribute:
             out_type += ["sample_attribute"]
         select_type_sql = (",").join(out_type)
-        sql = (
-            "SELECT DISTINCT "
-            + select_type_sql
-            + " FROM sra_ft WHERE sra_ft MATCH '"
-            + " OR ".join(srrs)
-            + "';"
-        )
+        sql = _create_query(select_type_sql, srrs)
         df = self.query(sql)
-        if len(df.index):
-            df = df[out_type].sort_values(by=out_type)
-        if expand_sample_attributes:
-            df = _expand_sample_attrs(df)
-        return df
+        df = _prettify_df(df, out_type, expand_sample_attributes)
         return df
 
     def srr_to_srs(
@@ -798,12 +746,7 @@ class SRAdb(BASEdb):
         -------
         srp_to_srs_df: DataFrame
         """
-        if PY3:
-            if isinstance(srrs, str):
-                srrs = [srrs]
-        else:
-            if isinstance(srrs, basestring):
-                srrs = [srrs]
+        srrs = _listify(srrs)
         out_type = ["run_accession", "sample_accession"]
         if detailed:
             out_type += [
@@ -817,18 +760,9 @@ class SRAdb(BASEdb):
         if sample_attribute:
             out_type += ["sample_attribute"]
         select_type_sql = (",").join(out_type)
-        sql = (
-            "SELECT DISTINCT "
-            + select_type_sql
-            + " FROM sra_ft WHERE sra_ft MATCH '"
-            + " OR ".join(srrs)
-            + "';"
-        )
+        sql = _create_query(select_type_sql, srrs)
         df = self.query(sql)
-        if len(df.index):
-            df = df[out_type].sort_values(by=out_type)
-        if expand_sample_attributes:
-            df = _expand_sample_attrs(df)
+        df = _prettify_df(df, out_type, expand_sample_attributes)
         return df
 
     def srx_to_srs(
@@ -849,12 +783,7 @@ class SRAdb(BASEdb):
         -------
         srp_to_srs_df: DataFrame
         """
-        if PY3:
-            if isinstance(srxs, str):
-                srxs = [srxs]
-        else:
-            if isinstance(srxs, basestring):
-                srxs = [srxs]
+        srxs = _listify(srxs)
         out_type = ["experiment_accession", "sample_accession"]
         if detailed:
             out_type += [
@@ -868,18 +797,9 @@ class SRAdb(BASEdb):
         if sample_attribute:
             out_type += ["sample_attribute"]
         select_type_sql = (",").join(out_type)
-        sql = (
-            "SELECT DISTINCT "
-            + select_type_sql
-            + " FROM sra_ft WHERE sra_ft MATCH '"
-            + " OR ".join(srxs)
-            + "';"
-        )
+        sql = _create_query(select_type_sql, srxs)
         df = self.query(sql)
-        if len(df.index):
-            df = df[out_type].sort_values(by=out_type)
-        if expand_sample_attributes:
-            df = _expand_sample_attrs(df)
+        df = _prettify_df(df, out_type, expand_sample_attributes)
         return df
 
     def srs_to_srx(
@@ -900,12 +820,7 @@ class SRAdb(BASEdb):
         -------
         srs_to_srx_df: DataFrame
         """
-        if PY3:
-            if isinstance(srss, str):
-                srss = [srss]
-        else:
-            if isinstance(srss, basestring):
-                srss = [srss]
+        srss = _listify(srss)
         out_type = ["sample_accession", "experiment_accession"]
         if detailed:
             out_type += [
@@ -919,18 +834,9 @@ class SRAdb(BASEdb):
         if sample_attribute:
             out_type += ["sample_attribute"]
         select_type_sql = (",").join(out_type)
-        sql = (
-            "SELECT DISTINCT "
-            + select_type_sql
-            + " FROM sra_ft WHERE sra_ft MATCH '"
-            + " OR ".join(srss)
-            + "';"
-        )
+        sql = _create_query(select_type_sql, srxs)
         df = self.query(sql)
-        if len(df.index):
-            df = df[out_type].sort_values(by=out_type)
-        if expand_sample_attributes:
-            df = _expand_sample_attrs(df)
+        df = _prettify_df(df, out_type, expand_sample_attributes)
         return df
 
     def srr_to_srx(
@@ -955,12 +861,7 @@ class SRAdb(BASEdb):
         srr_to_srx_df: DataFrame
                        DataFrame with two columns for SRX/SRR
         """
-        if PY3:
-            if isinstance(srrs, str):
-                srrs = [srrs]
-        else:
-            if isinstance(srrs, basestring):
-                srrs = [srrs]
+        srrs = _listify(srrs)
 
         out_type = ["run_accession", "experiment_accession"]
         if detailed:
@@ -975,18 +876,9 @@ class SRAdb(BASEdb):
         if sample_attribute:
             out_type += ["sample_attribute"]
         select_type_sql = (",").join(out_type)
-        sql = (
-            "SELECT DISTINCT "
-            + select_type_sql
-            + " FROM sra_ft WHERE sra_ft MATCH '"
-            + " OR ".join(srrs)
-            + "';"
-        )
+        sql = _create_query(select_type_sql, srss)
         df = self.query(sql)
-        if len(df.index):
-            df = df[out_type].sort_values(by=out_type)
-        if expand_sample_attributes:
-            df = _expand_sample_attrs(df)
+        df = _prettify_df(df, out_type, expand_sample_attributes)
         return df
 
     def srx_to_srp(
@@ -1011,13 +903,7 @@ class SRAdb(BASEdb):
         srx_to_srp_df: DataFrame
                        DataFrame with two columns for SRX
         """
-        if PY3:
-            if isinstance(srxs, str):
-                srxs = [srxs]
-        else:
-            if isinstance(srxs, basestring):
-                srxs = [srxs]
-
+        srxs = _listify(srxs)
         out_type = ["experiment_accession", "study_accession"]
         if detailed:
             out_type += [
@@ -1032,18 +918,45 @@ class SRAdb(BASEdb):
         if sample_attribute:
             out_type += ["sample_attribute"]
         select_type_sql = (",").join(out_type)
-        sql = (
-            "SELECT DISTINCT "
-            + select_type_sql
-            + " FROM sra_ft WHERE sra_ft MATCH '"
-            + " OR ".join(srxs)
-            + "';"
-        )
+        sql = _create_query(select_type_sql, srxs)
         df = self.query(sql)
-        if len(df.index):
-            df = df[out_type].sort_values(by=out_type)
-        if expand_sample_attributes:
-            df = _expand_sample_attrs(df)
+        df = _prettify_df(df, out_type, expand_sample_attributes)
+        return df
+
+    def srr_to_gsm(
+        self,
+        srrs,
+        sample_attribute=False,
+        detailed=False,
+        expand_sample_attributes=False,
+    ):
+        """Convert SRR to GSM
+
+        Parameters
+        ----------
+        gses: string or list
+              List of SRR
+
+        Returns
+        -------
+        srr_to_gsm_df: DataFrame
+        """
+        srrs = _listify(srrs)
+        out_type = ["run_alias", "experiment_alias"]
+        if detailed:
+            out_type += [
+                "run_accession",
+                "experiment_accession",
+                "study_accession",
+                "sample_accession",
+                "study_alias" "sample_alias",
+            ]
+        if sample_attribute:
+            out_type += ["sample_attribute"]
+        select_type_sql = (",").join(out_type)
+        sql = _create_query(select_type_sql, srrs)
+        df = self.query(sql)
+        df = _prettify_df(df, out_type, expand_sample_attributes)
         return df
 
     def srx_to_srr(
@@ -1068,13 +981,7 @@ class SRAdb(BASEdb):
         srx_to_srp_df: DataFrame
                        DataFrame with two columns for SRX/SRR
         """
-        if PY3:
-            if isinstance(srxs, str):
-                srxs = [srxs]
-        else:
-            if isinstance(srxs, basestring):
-                srxs = [srxs]
-
+        srxs = _listify(srxs)
         out_type = ["experiment_accession", "run_accession"]
         if detailed:
             out_type += [
@@ -1089,18 +996,9 @@ class SRAdb(BASEdb):
         if sample_attribute:
             out_type += ["sample_attribute"]
         select_type_sql = (",").join(out_type)
-        sql = (
-            "SELECT DISTINCT "
-            + select_type_sql
-            + " FROM sra_ft WHERE sra_ft MATCH '"
-            + " OR ".join(srxs)
-            + "';"
-        )
+        sql = _create_query(select_type_sql, srrs)
         df = self.query(sql)
-        if len(df.index):
-            df = df[out_type].sort_values(by=out_type)
-        if expand_sample_attributes:
-            df = _expand_sample_attrs(df)
+        df = _prettify_df(df, out_type, expand_sample_attributes)
         return df
 
     def search_sra(
@@ -1179,6 +1077,7 @@ class SRAdb(BASEdb):
         filter_by_srx=[],
         protocol="fasp",
         ascp_dir=None,
+        skip_confirmation=False,
     ):
         """Download SRA files.
 
@@ -1211,14 +1110,16 @@ class SRAdb(BASEdb):
             if ascp_dir is None:
                 ascp_dir = os.path.join(os.path.expanduser("~"), ".aspera")
             if not os.path.exists(ascp_dir):
-                raise RuntimeError(
+                warnings.warn(
                     """Count not find aspera at: {}\n
                     Install aspera-client following instructions
-                    in the README.rst OR set `protocol`=ftp.\n""".format(
+                    in the README.rst for faster downloads. Continuing with wget ...\n""".format(
                         ascp_dir
                     )
                 )
-            ascp_bin = os.path.join(ascp_dir, "connect", "bin", "ascp")
+                protocol = "fasp"
+            else:
+                ascp_bin = os.path.join(ascp_dir, "connect", "bin", "ascp")
         df = df.copy()
         if filter_by_srx:
             if isinstance(filter_by_srx, str):
@@ -1240,6 +1141,13 @@ class SRAdb(BASEdb):
         download_list = df[
             ["study_accession", "experiment_accession", "run_accession", "download_url"]
         ].values
+        print("The following files will be downloaded: \n")
+        if len(df.index):
+            pd.set_option("display.max_colwidth", -1)
+            print(df.to_string(index=False, justify="left", col_space=0))
+        if not skip_confirmation:
+            if not click.confirm("Start download?"):
+                sys.exit(0)
         with tqdm(total=download_list.shape[0]) as pbar:
             for srp, srx, srr, url in download_list:
                 pbar.set_description("{}/{}/{}".format(srp, srx, srr))

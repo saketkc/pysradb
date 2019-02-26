@@ -26,8 +26,14 @@ Alternatively, if you use conda:
 
    conda install -c bioconda pysradb
 
-This step will install all the dependencies except aspera-client, which is not required, but highly recommended.
-Both Python 2 and Python 3 are supported.
+This step will install all the dependencies except aspera-client (which is not required, but highly recommended).
+If you have an existing environment with a lot of pre-installed packages, conda might be `slow <https://github.com/bioconda/bioconda-recipes/issues/13774>`_.
+Please consider creating a new enviroment for ``pysradb``:
+
+.. code-block:: bash
+
+   conda create -c bioconda -n pysradb PYTHON=3 pysradb
+
 
 .. _pip: https://pip.pypa.io
 .. _Python installation guide: http://docs.python-guide.org/en/latest/starting/installation/

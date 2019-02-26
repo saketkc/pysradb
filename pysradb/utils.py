@@ -7,10 +7,7 @@ import sys
 import struct
 import subprocess
 from tqdm import tqdm
-
-PY3 = True
-if sys.version_info[0] < 3:
-    PY3 = False
+import urllib.request as urllib_request
 
 
 def unique(sequence):
@@ -127,10 +124,6 @@ def _get_url(url, download_to, show_progress=True):
     show_progress: bool
                    Set to True by default to print progress bar
     """
-    if PY3:
-        import urllib.request as urllib_request
-    else:
-        import urllib as urllib_request
     desc_file = "Downloading {}".format(url.split("/")[-1])
     mkdir_p(os.path.dirname(download_to))
     if show_progress:
@@ -152,10 +145,7 @@ def run_command(command, verbose=False):
 
     while True:
         output = process.stdout.readline().strip()
-        if not PY3:
-            output = output.encode().decode()
-        else:
-            output = output.decode("utf-8")
+        output = output.decode("utf-8")
         if output == u"" and process.poll() is not None:
             break
         if output:
@@ -178,17 +168,8 @@ def get_gzip_uncompressed_size(filepath):
     filesize: int
               Uncompressed file size
     """
-    if PY3:
-        with gzip.open(filepath, "rb") as file_obj:
-            return file_obj.seek(0, io.SEEK_END)
-    # For python2, there is a bug
-    # since the compression ratios for files>2GB
-    # will be negative. This causes the progress
-    # bar to end earlier than it should.
-    # No fixes known
-    with open(filepath, "rb") as f:
-        f.seek(-4, 2)
-        return struct.unpack("I", f.read(4))[0]
+    with gzip.open(filepath, "rb") as file_obj:
+        return file_obj.seek(0, io.SEEK_END)
 
 
 def copyfileobj(fsrc, fdst, bufsize=16384, filesize=None, desc=""):
