@@ -31,7 +31,7 @@ setup(
         "Topic :: Scientific/Engineering :: Bio-Informatics",
     ],
     description="Python package for interacting with SRAdb and downloading datasets from SRA",
-    entry_points={"console_scripts": ["pysradb=pysradb.cli:cli"]},
+    entry_points={"console_scripts": ["pysradb=pysradb.cli_argparse:parse_args"]},
     install_requires=requirements,
     license="BSD license",
     long_description=readme + "\n\n" + history,
