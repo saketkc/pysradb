@@ -162,7 +162,7 @@ def test_gsm_to_srr():
     )
     assert "GSM2177186_r1" in str(result.stdout)
 
-
+"""
 def test_assay_uniq():
     result = subprocess.check_output(
         "pysradb metadata SRP000941 --db data/SRAmetadb.sqlite --assay  | "
@@ -183,3 +183,4 @@ def test_pipe_download():
     )
     assert os.path.getsize("srp_downloads/SRP000941/SRX007165/SRR020287.sra")
     assert "following" in str(result)
+"""
