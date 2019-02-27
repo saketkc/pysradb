@@ -5,6 +5,7 @@ import os
 from pysradb import SRAdb
 
 import pytest
+from shlex import split
 import subprocess
 
 
@@ -31,17 +32,19 @@ def test_download():
             "srp_downloads",
             "-p",
             "SRP063852",
-        ]
+        ],
+        capture_output=True,
     )
-    assert "SRP063852" in result.output
+    assert "SRP063852" in str(result.stdout)
     assert os.path.getsize("srp_downloads/SRP063852/SRX1254413/SRR2433794.sra")
 
 
 def test_sra_metadata():
     result = subprocess.run(
-        ["pysradb", "metadata", "SRP098789", "--db", "data/SRAmetadb.sqlite"]
+        ["pysradb", "metadata", "SRP098789", "--db", "data/SRAmetadb.sqlite"],
+        capture_output=True,
     )
-    assert "SRX2536403" in result.output
+    assert "SRX2536403" in str(result.stdout)
 
 
 def test_sra_metadata():
@@ -54,23 +57,33 @@ def test_sra_metadata():
             "data/SRAmetadb.sqlite",
             "--detailed",
             "--expand",
-        ]
+        ],
+        capture_output=True,
     )
-    assert "treatment_time" in result.output
+    assert "treatment_time" in str(result.stdout)
 
 
 def test_srp_to_srx():
     result = subprocess.run(
-        ["pysradb", "srp-to-srx", "SRP098789", "--db", "data/SRAmetadb.sqlite"]
+        ["pysradb", "srp-to-srx", "SRP098789", "--db", "data/SRAmetadb.sqlite"],
+        capture_output=True,
     )
-    assert "SRX2536403" in result.output
+    assert "SRX2536403" in str(result.stdout)
 
 
 def test_srp_assay():
     result = subprocess.run(
-        ["pysradb", "metadata", "SRP098789", "--db", "data/SRAmetadb.sqlite", "--assay"]
+        [
+            "pysradb",
+            "metadata",
+            "SRP098789",
+            "--db",
+            "data/SRAmetadb.sqlite",
+            "--assay",
+        ],
+        capture_output=True,
     )
-    assert "RNA-Seq" in result.output
+    assert "RNA-Seq" in str(result.stdout)
 
 
 def srr_to_srx():
@@ -83,9 +96,10 @@ def srr_to_srx():
             "SRR5227288",
             "SRR649752",
             "--desc",
-        ]
+        ],
+        capture_output=True,
     )
-    assert "3T3 cells" in result.output
+    assert "3T3 cells" in str(result.stdout)
 
 
 def srx_to_srr():
@@ -98,6 +112,72 @@ def srx_to_srr():
             "SRX217956",
             "SRX2536403",
             "--desc",
-        ]
+        ],
+        capture_output=True,
     )
-    assert "3T3 cells" in result.output
+    assert "3T3 cells" in str(result.stdout)
+
+
+def test_sra_metadata_detail():
+    result = subprocess.run(
+        split(
+            "pysradb metadata --db data/SRAmetadb.sqlite SRP075720 --detailed --expand"
+        ),
+        capture_output=True,
+    )
+    assert "retina" in str(result.stdout)
+
+
+def test_srp_to_gse():
+    result = subprocess.run(
+        split("pysradb srp-to-gse --db data/SRAmetadb.sqlite SRP075720"),
+        capture_output=True,
+    )
+    assert "GSE81903" in str(result.stdout)
+
+
+def test_gsm_to_srp():
+    result = subprocess.run(
+        split("pysradb gsm-to-srp --db data/SRAmetadb.sqlite GSM2177186"),
+        capture_output=True,
+    )
+    assert "SRP075720" in str(result.stdout)
+
+
+def test_gsm_to_gse():
+    result = subprocess.run(
+        split("pysradb gsm-to-gse --db data/SRAmetadb.sqlite GSM2177186"),
+        capture_output=True,
+    )
+    assert "GSE81903" in str(result.stdout)
+
+
+def test_gsm_to_srr():
+    result = subprocess.run(
+        split(
+            "ipysradb gsm-to-srr --db data/SRAmetadb.sqlite GSM2177186 --detailed --desc --expand"
+        ),
+        capture_output=True,
+    )
+    assert "GSM2177186_r1" in str(result.stdout)
+
+
+def test_assay_uniq():
+    result = subprocess.run(
+        split(
+            "pysradb metadata SRP000941 --db data/SRAmetadb.sqlite --assay  | tr -s '  ' | cut -f5 -d ' ' | sort | uniq -c"
+        ),
+        capture_output=True,
+    )
+    assert "Bisulfite-Seq" in str(result.stdout)
+
+
+def test_pipe_download():
+    result = subprocess.run(
+        split(
+            "pysradb metadata SRP000941 --assay | grep 'study\|RNA-Seq'  | head -2 | pysradb download"
+        ),
+        capture_output=True,
+    )
+    assert os.path.getsize("srp_downloads/SRP000941/SRX007165/SRR020287.sra")
+    assert "following" in str(result.stdout)

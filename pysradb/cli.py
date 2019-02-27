@@ -57,15 +57,6 @@ def _check_sradb_file(db):
     return db
 
 
-def _check_geodb_file(db):
-    if db is None:
-        db = os.path.join(os.getcwd(), "GEOmetadb.sqlite")
-        download_geodb_file()
-    if not os.path.isfile(db):
-        raise RuntimeError("{} does not exist".format(db))
-    return db
-
-
 ################### metadb #########################
 def metadb(out_dir, overwrite, keep_gz):
     if out_dir is None:
@@ -76,10 +67,26 @@ def metadb(out_dir, overwrite, keep_gz):
 #####################################################
 
 
+###################### metadata ##############################
+def metadata(srp_id, db, assay, desc, detailed, expand, saveto):
+    db = _check_sradb_file(db)
+    sradb = SRAdb(db)
+    df = sradb.sra_metadata(
+        acc=srp_id,
+        assay=assay,
+        detailed=detailed,
+        sample_attribute=desc,
+        expand_sample_attributes=expand,
+    )
+    _print_save_df(df, saveto)
+    sradb.close()
+
+
+################################################################
+
+
 ################# donwload ##########################
-
-
-def download(out_dir, db, srx, srp, skip_confirmation, use_wget):
+def download(out_dir, db, srx, srp, skip_confirmation, use_wget=False):
     if use_wget:
         protocol = "ftp"
     else:
@@ -89,6 +96,7 @@ def download(out_dir, db, srx, srp, skip_confirmation, use_wget):
         out_dir = os.path.join(os.getcwd(), "pysradb_downloads")
     sradb = SRAdb(db)
     if not srp:
+        text = ""
         for index, line in enumerate(sys.stdin):
             line = line.strip()
             line = line.lstrip(" ")
@@ -111,7 +119,7 @@ def download(out_dir, db, srx, srp, skip_confirmation, use_wget):
             df=df,
             out_dir=out_dir,
             filter_by_srx=srx,
-            skip_confirmation=skip_confirmation,
+            skip_confirmation=True,
             protocol=protocol,
         )
     else:
@@ -161,6 +169,7 @@ def gse_to_gsm(gse_ids, db, saveto, detailed, desc, expand):
 
 
 ####################################################################
+
 
 ######################## gse-to-srp ################################
 def gse_to_srp(gse_ids, db, saveto, detailed, desc, expand):
@@ -228,6 +237,7 @@ def gsm_to_srr(gsm_ids, db, saveto, detailed, desc, expand):
 
 
 ########################################################################
+
 
 ############################# gsm-to-srx ###############################
 def gsm_to_srx(gsm_ids, db, saveto, detailed, desc, expand):
@@ -481,6 +491,26 @@ def parse_args(args=None):
         help="Should keep SRAmetadb.sqlite.gz post decompression",
     )
     subparser.set_defaults(func=metadb)
+
+    subparser = subparsers.add_parser(
+        "metadata", help="Fetch metadata for SRA project (SRPnnnn)"
+    )
+    subparser.add_argument("--saveto", help="Save metadata dataframe to file")
+    subparser.add_argument("--db", help="Path to SRAmetadb.sqlite file", type=str)
+    subparser.add_argument(
+        "--assay", action="store_true", help="Include assay type in output"
+    )
+    subparser.add_argument(
+        "--desc", action="store_true", help="Should sample_attribute be included"
+    )
+    subparser.add_argument(
+        "--detailed", action="store_true", help="Display detailed metadata table"
+    )
+    subparser.add_argument(
+        "--expand", action="store_true", help="Should sample_attribute be expanded"
+    )
+    subparser.add_argument("srp_id")
+    subparser.set_defaults(func=metadata)
 
     subparser = subparsers.add_parser("download", help="Download SRA project (SRPnnnn)")
     subparser.add_argument("--out-dir", help="Output directory root")
@@ -888,11 +918,21 @@ def parse_args(args=None):
     subparser.add_argument("srx_ids", nargs="+")
     subparser.set_defaults(func=srx_to_srs)
 
-    args = parser.parse_args(args=None if args else ["--help"])
+    args = parser.parse_args(args=None if sys.argv[1:] else ["--help"])
     if args.command == "metadb":
         metadb(args.out_dir, args.overwrite, args.keep_gz)
+    elif args.command == "metadata":
+        metadata(
+            args.srp_id,
+            args.db,
+            args.assay,
+            args.desc,
+            args.detailed,
+            args.expand,
+            args.saveto,
+        )
     elif args.command == "download":
-        metadb(args.out_dir, args.overwrite, args.keep_gz)
+        download(args.out_dir, args.db, args.srx, args.srp, args.skip_confirmation)
     elif args.command == "search":
         search(
             args.search_text,
@@ -975,8 +1015,7 @@ def parse_args(args=None):
         srx_to_srs(
             args.srx_ids, args.db, args.saveto, args.detailed, args.desc, args.expand
         )
-    return args
 
 
-def process(a=None):
-    pass
+if __name__ == "__main__":
+    parse_args(sys.argv[1:])
