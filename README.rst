@@ -106,7 +106,6 @@ Dependecies
 
    pandas>=0.23.4
    tqdm>=4.28
-   click>=7.0
    aspera-client
    SRAmetadb.sqlite
 

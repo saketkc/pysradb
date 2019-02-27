@@ -9,12 +9,12 @@ import warnings
 
 import pandas as pd
 from tqdm import tqdm
-import click
 
 from .basedb import BASEdb
 
 from .filter_attrs import expand_sample_attribute_columns
 
+from .utils import confirm
 from .utils import _find_aspera_keypath
 from .utils import _get_url
 from .utils import get_gzip_uncompressed_size
@@ -1151,7 +1151,7 @@ class SRAdb(BASEdb):
             pd.set_option("display.max_colwidth", -1)
             print(df.to_string(index=False, justify="left", col_space=0))
         if not skip_confirmation:
-            if not click.confirm("Start download?"):
+            if not confirm("Start download?"):
                 sys.exit(0)
         with tqdm(total=download_list.shape[0]) as pbar:
             for srp, srx, srr, url in download_list:

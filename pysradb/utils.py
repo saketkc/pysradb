@@ -171,6 +171,27 @@ def get_gzip_uncompressed_size(filepath):
     with gzip.open(filepath, "rb") as file_obj:
         return file_obj.seek(0, io.SEEK_END)
 
+def confirm(preceeding_text):
+    """Confirm user input.
+
+    Parameters
+    ----------
+    preceeding_text: str
+                     Text to print
+
+    Returns
+    -------
+    response: bool
+    """
+    notification_str = "Please respond with 'y' or 'n'"
+    while True:
+        choice = input("{} [Y/n]: ".format(preceeding_text)).lower()
+        if choice in "yes" or not choice:
+            return True
+        if choice in "no":
+            return False
+        print(notification_str)
+
 
 def copyfileobj(fsrc, fdst, bufsize=16384, filesize=None, desc=""):
     """Copy file object with a progress bar.
