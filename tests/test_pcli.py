@@ -15,10 +15,6 @@ def sradb_connection(conf_download_sradb_file):
     return db
 
 
-def test_all_row_counts_geo(geodb_connection):
-    assert geodb_connection.all_row_counts().loc["metaInfo", "count"] == 2
-
-
 def test_all_row_counts_sra(sradb_connection):
     assert sradb_connection.all_row_counts().loc["metaInfo", "count"] == 2
 
