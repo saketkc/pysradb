@@ -5,6 +5,7 @@ import os
 from pysradb import SRAdb
 
 import pytest
+from shlex import quote
 from shlex import split
 import subprocess
 
@@ -155,7 +156,7 @@ def test_gsm_to_gse():
 def test_gsm_to_srr():
     result = subprocess.run(
         split(
-            "ipysradb gsm-to-srr --db data/SRAmetadb.sqlite GSM2177186 --detailed --desc --expand"
+            "pysradb gsm-to-srr --db data/SRAmetadb.sqlite GSM2177186 --detailed --desc --expand"
         ),
         capture_output=True,
     )
@@ -163,21 +164,22 @@ def test_gsm_to_srr():
 
 
 def test_assay_uniq():
-    result = subprocess.run(
-        split(
-            "pysradb metadata SRP000941 --db data/SRAmetadb.sqlite --assay  | tr -s '  ' | cut -f5 -d ' ' | sort | uniq -c"
-        ),
-        capture_output=True,
+    result = subprocess.check_output(
+        "pysradb metadata SRP000941 --db data/SRAmetadb.sqlite --assay  | "
+        + " tr -s {}".format(quote("  "))
+        + " | cut -f5 -d {}".format(quote(" "))
+        + " | sort | uniq -c",
+        shell=True,
     )
-    assert "Bisulfite-Seq" in str(result.stdout)
+    assert "Bisulfite-Seq" in str(result)
 
 
 def test_pipe_download():
-    result = subprocess.run(
-        split(
-            "pysradb metadata SRP000941 --assay | grep 'study\|RNA-Seq'  | head -2 | pysradb download"
-        ),
-        capture_output=True,
+    result = subprocess.check_output(
+        "pysradb metadata SRP000941 --assay | "
+        + " grep {}".format(quote("study\|RNA-Seq"))
+        + " | head -2 | pysradb download --out-dir srp_downloads",
+        shell=True,
     )
     assert os.path.getsize("srp_downloads/SRP000941/SRX007165/SRR020287.sra")
-    assert "following" in str(result.stdout)
+    assert "following" in str(result)
