@@ -171,6 +171,7 @@ def get_gzip_uncompressed_size(filepath):
     with gzip.open(filepath, "rb") as file_obj:
         return file_obj.seek(0, io.SEEK_END)
 
+
 def confirm(preceeding_text):
     """Confirm user input.
 
