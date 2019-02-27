@@ -1,5 +1,5 @@
 """Methods to interact with SRA"""
-from __future__ import absolute_import, division, print_function, unicode_literals
+
 import gzip
 import os
 import re
@@ -1070,8 +1070,8 @@ class SRAdb(BASEdb):
             ).fetchall()
         assert len(results) == 1, "Got multiple hits"
         results = results[0]
-        column_names = list(map(lambda x: x[0], self.cursor.description))
-        results = dict(zip(column_names, results))
+        column_names = list([x[0] for x in self.cursor.description])
+        results = dict(list(zip(column_names, results)))
         return pd.DataFrame.from_dict(results, orient="index").T
 
     def download(

@@ -146,11 +146,11 @@ def run_command(command, verbose=False):
     while True:
         output = process.stdout.readline().strip()
         output = output.decode("utf-8")
-        if output == u"" and process.poll() is not None:
+        if output == "" and process.poll() is not None:
             break
         if output:
             if verbose:
-                print(str(output.strip()))
+                print((str(output.strip())))
     rc = process.poll()
     return rc
 

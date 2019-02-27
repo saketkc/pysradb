@@ -82,7 +82,7 @@ class BASEdb(object):
         columns = ["cid", "name", "dtype", "notnull", "dflt_value", "pk"]
         data = []
         for result in results:
-            data.append(list(map(lambda x: str(x), result)))
+            data.append(list([str(x) for x in result]))
         table_desc = pd.DataFrame(data, columns=columns)
         return table_desc
 
@@ -101,8 +101,8 @@ class BASEdb(object):
 
         """
         results = self.cursor.execute(sql_query).fetchall()
-        column_names = list(map(lambda x: x[0], self.cursor.description))
-        results = [dict(zip(column_names, result)) for result in results]
+        column_names = list([x[0] for x in self.cursor.description])
+        results = [dict(list(zip(column_names, result))) for result in results]
         df = pd.DataFrame(results)
         if not results:
             warnings.warn("Found no matching results for query.", RuntimeWarning)
