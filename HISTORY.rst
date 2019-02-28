@@ -9,10 +9,8 @@ History
 Others
 ======
 
-* This release completely changes the command line
-interface replacing click with argparse (https://github.com/saketkc/pysradb/pull/3)
+* This release completely changes the command line interface replacing click with argparse (https://github.com/saketkc/pysradb/pull/3)
 * Removed Python 2 comptaible stale code
-
 
 *******************
 0.8.0 (02-26-2019)
