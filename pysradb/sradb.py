@@ -1,20 +1,19 @@
 """Methods to interact with SRA"""
-from __future__ import absolute_import, division, print_function, unicode_literals
+
 import gzip
 import os
 import re
-import sqlite3
 import sys
 import warnings
 
 import pandas as pd
 from tqdm import tqdm
-import click
 
 from .basedb import BASEdb
 
 from .filter_attrs import expand_sample_attribute_columns
 
+from .utils import confirm
 from .utils import _find_aspera_keypath
 from .utils import _get_url
 from .utils import get_gzip_uncompressed_size
@@ -140,18 +139,16 @@ def _verify_srametadb(filepath):
         db = BASEdb(filepath)
     except:
         print(
-            "{} not a valid SRAmetadb.sqlite file. Please download one using `pysradb metadb`.".format(
-                filepath
-            )
+            "{} not a valid SRAmetadb.sqlite file.\n".format(filepath)
+            + "Please download one using `pysradb metadb`."
         )
         sys.exit(1)
     metadata = db.query("SELECT * FROM metaInfo")
     db.close()
     if list(metadata.iloc[0].values) != ["schema version", "1.0"]:
         print(
-            "{} not a valid SRAmetadb.sqlite file. Please download one using `pysradb metadb`.".format(
-                filepath
-            )
+            "{} not a valid SRAmetadb.sqlite file.\n".format(filepath)
+            + "Please download one using `pysradb metadb`."
         )
         sys.exit(1)
 
@@ -690,7 +687,7 @@ class SRAdb(BASEdb):
         if sample_attribute:
             out_type += ["sample_attribute"]
         select_type_sql = (",").join(out_type)
-        sql = _create_query(select_type_sql, gses)
+        sql = _create_query(select_type_sql, gsms)
         df = self.query(sql)
         df = _prettify_df(df, out_type, expand_sample_attributes)
         return df
@@ -839,7 +836,7 @@ class SRAdb(BASEdb):
         if sample_attribute:
             out_type += ["sample_attribute"]
         select_type_sql = (",").join(out_type)
-        sql = _create_query(select_type_sql, srxs)
+        sql = _create_query(select_type_sql, srss)
         df = self.query(sql)
         df = _prettify_df(df, out_type, expand_sample_attributes)
         return df
@@ -881,7 +878,7 @@ class SRAdb(BASEdb):
         if sample_attribute:
             out_type += ["sample_attribute"]
         select_type_sql = (",").join(out_type)
-        sql = _create_query(select_type_sql, srss)
+        sql = _create_query(select_type_sql, srrs)
         df = self.query(sql)
         df = _prettify_df(df, out_type, expand_sample_attributes)
         return df
@@ -1001,7 +998,7 @@ class SRAdb(BASEdb):
         if sample_attribute:
             out_type += ["sample_attribute"]
         select_type_sql = (",").join(out_type)
-        sql = _create_query(select_type_sql, srrs)
+        sql = _create_query(select_type_sql, srxs)
         df = self.query(sql)
         df = _prettify_df(df, out_type, expand_sample_attributes)
         return df
@@ -1070,8 +1067,8 @@ class SRAdb(BASEdb):
             ).fetchall()
         assert len(results) == 1, "Got multiple hits"
         results = results[0]
-        column_names = list(map(lambda x: x[0], self.cursor.description))
-        results = dict(zip(column_names, results))
+        column_names = list([x[0] for x in self.cursor.description])
+        results = dict(list(zip(column_names, results)))
         return pd.DataFrame.from_dict(results, orient="index").T
 
     def download(
@@ -1150,8 +1147,9 @@ class SRAdb(BASEdb):
         if len(df.index):
             pd.set_option("display.max_colwidth", -1)
             print(df.to_string(index=False, justify="left", col_space=0))
+            print("\n\n")
         if not skip_confirmation:
-            if not click.confirm("Start download?"):
+            if not confirm("Start download?"):
                 sys.exit(0)
         with tqdm(total=download_list.shape[0]) as pbar:
             for srp, srx, srr, url in download_list:

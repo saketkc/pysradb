@@ -10,7 +10,7 @@ with open("README.rst") as readme_file:
 with open("HISTORY.rst") as history_file:
     history = history_file.read()
 
-requirements = ["pandas>=0.23.4", "tqdm>=4.28", "click>=7.0"]
+requirements = ["pandas>=0.23.4", "tqdm>=4.28"]
 test_requirements = ["pytest"]
 
 setup(
@@ -31,7 +31,7 @@ setup(
         "Topic :: Scientific/Engineering :: Bio-Informatics",
     ],
     description="Python package for interacting with SRAdb and downloading datasets from SRA",
-    entry_points={"console_scripts": ["pysradb=pysradb.cli:cli"]},
+    entry_points={"console_scripts": ["pysradb=pysradb.cli:parse_args"]},
     install_requires=requirements,
     license="BSD license",
     long_description=readme + "\n\n" + history,

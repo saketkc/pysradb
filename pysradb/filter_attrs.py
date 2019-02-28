@@ -27,7 +27,7 @@ def _get_sample_attr_keys(sample_attribute):
         sample_attribute_dict = dict(split_by_colon)
     except ValueError:
         print("This is most likely a bug, please report it upstream.")
-        print("sample_attribute: {}".format(sample_attribute))
+        print(("sample_attribute: {}".format(sample_attribute)))
         raise
     sample_attribute_keys = list(
         map(
