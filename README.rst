@@ -177,6 +177,27 @@ Using pysradb
 Please see `usage_scenarios <https://saket-choudhary.me/pysradb/usage_scenarios.html>`_ for a few usage scenarios.
 Here are few hand-picked examples.
 
+Search
+======
+
+Search for all projects containing "ribosome profiling":
+
+::
+
+   $  pysradb search "ribosome profiling" | head
+
+    study_accession experiment_accession sample_accession run_accession
+    DRP000927       DRX002899            DRS002983        DRR003575
+    DRP000927       DRX002900            DRS002992        DRR003576
+    DRP000927       DRX002901            DRS003001        DRR003577
+    DRP000927       DRX002902            DRS003010        DRR003578
+    DRP000927       DRX002903            DRS003019        DRR003579
+    DRP000927       DRX002904            DRS003028        DRR003580
+    DRP000927       DRX002905            DRS003037        DRR003581
+    DRP000927       DRX002906            DRS003038        DRR003582
+    DRP003075       DRX019536            DRS026974        DRR021383
+
+
 
 Getting SRA metadata
 ====================
