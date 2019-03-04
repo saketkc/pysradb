@@ -39,7 +39,7 @@ setup(
     keywords="pysradb",
     name="pysradb",
     packages=["pysradb"],
-    python_requires='>=3',
+    python_requires=">=3",
     setup_requires=requirements,
     test_suite="tests",
     tests_require=test_requirements,
