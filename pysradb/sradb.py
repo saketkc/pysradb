@@ -4,7 +4,7 @@ import gzip
 import os
 import re
 import sys
-import warnings
+from textwrap import dedent
 
 import pandas as pd
 from tqdm import tqdm
@@ -105,12 +105,7 @@ def download_sradb_file(download_dir=os.getcwd(), overwrite=True, keep_gz=False)
         _get_url(SRADB_URL[0], download_location)
     except Exception as e:
         # Try other URL
-        warnings.warn(
-            "Could not use {}.\nException: {}.\nTrying alternate url ...\n".format(
-                SRADB_URL[0], e
-            ),
-            RuntimeWarning,
-        )
+        sys.stderr.write("Could not use {}.\nException: {}.\nTrying alternate url ...\n".format(SRADB_URL[0], e))
         _get_url(SRADB_URL[1], download_location)
     print("Extracting {} ...".format(download_location))
     filesize = get_gzip_uncompressed_size(download_location)
@@ -287,9 +282,10 @@ class SRAdb(BASEdb):
             + acc
             + "';"
         )
+        print('SQL: {}'.format(sql))
         df = self.query(sql)
         if not len(df.index):
-            warnings.warn("Empty results", UserWarning)
+            sys.stderr.write("Empty results")
             return df
         if "bases" in df.columns:
             if "spots" in df.columns:
@@ -1103,11 +1099,9 @@ class SRAdb(BASEdb):
         if srp:
             df = self.sra_metadata(srp)
         if protocol == "ftp":
-            warnings.warn(
-                """Using `ftp` protocol leads to slower downloads.\n
-                Consider using `fasp` after installing aspera-client.""",
-                UserWarning,
-            )
+            sys.stderr.write(dedent("""\
+            Using `ftp` protocol leads to slower downloads.\n
+            Consider using `fasp` after installing aspera-client.\n"""))
         if protocol == "fasp":
             if ascp_dir is None:
                 ascp_dir = os.path.join(os.path.expanduser("~"), ".aspera")
