@@ -282,7 +282,6 @@ class SRAdb(BASEdb):
             + acc
             + "';"
         )
-        print('SQL: {}'.format(sql))
         df = self.query(sql)
         if not len(df.index):
             sys.stderr.write("Empty results")
