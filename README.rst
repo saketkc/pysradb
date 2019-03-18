@@ -357,7 +357,9 @@ These notebooks document all the possible features of `pysradb`:
 Citation
 ********
 
-S. Choudhary, “pysradb: A Python package to query next-generation sequencing metadata and data from NCBI Sequence Read Archive.” Cold Spring Harbor Laboratory, 16-Mar-2019 [Online]. Available: http://dx.doi.org/10.1101/578500
+
+Choudhary, S. (2019, March 16). pysradb: A Python package to query next-generation sequencing metadata and data from NCBI Sequence Read Archive. Cold Spring Harbor Laboratory. Retrieved from http://dx.doi.org/10.1101/578500
+
 
 
 ::
