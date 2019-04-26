@@ -357,9 +357,27 @@ These notebooks document all the possible features of `pysradb`:
 Citation
 ********
 
+Choudhary S. pysradb: A Python package to query next-generation sequencing metadata and data from NCBI Sequence Read Archive [version 1; peer review: awaiting peer review]. F1000Research 2019, 8:532
+(https://doi.org/10.12688/f1000research.18676.1)
+
+
+::
+
+    @article{Choudhary2019,
+    author = {Saket Choudhary},
+    title = {pysradb: A Python package to query next-generation sequencing metadata and data from NCBI Sequence Read Archive [version 1; peer review: awaiting peer review]
+    },
+    journal = {F1000Research},
+    volume = {8},
+    year = {2019},
+    number = {532},
+    doi = {10.12688/f1000research.18676.1}
+    }    
+
+
 Zenodo archive: https://zenodo.org/badge/latestdoi/159590788
 
-DOI: 10.5281/zenodo.2306881
+Zenodo DOI: 10.5281/zenodo.2306881
 
 A lot of functionality in ``pysradb`` is based on ideas from the original `SRAdb package <https://bioconductor.org/packages/release/bioc/html/SRAdb.html>`_. Please cite the original SRAdb publication:
 
