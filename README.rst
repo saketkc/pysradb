@@ -357,22 +357,22 @@ These notebooks document all the possible features of `pysradb`:
 Citation
 ********
 
-Choudhary S. pysradb: A Python package to query next-generation sequencing metadata and data from NCBI Sequence Read Archive [version 1; peer review: awaiting peer review]. F1000Research 2019, 8:532
-(https://doi.org/10.12688/f1000research.18676.1)
-
+Choudhary, Saket. "pysradb: A Python Package to Query next-Generation Sequencing Metadata and Data from NCBI Sequence Read Archive." F1000Research, vol. 8, F1000 (Faculty of 1000 Ltd), Apr. 2019, p. 532 [Online](https://f1000research.com/articles/8-532/v1)
 
 ::
 
     @article{Choudhary2019,
-    author = {Saket Choudhary},
-    title = {pysradb: A Python package to query next-generation sequencing metadata and data from NCBI Sequence Read Archive [version 1; peer review: awaiting peer review]
-    },
-    journal = {F1000Research},
-    volume = {8},
+    doi = {10.12688/f1000research.18676.1},
+    url = {https://doi.org/10.12688/f1000research.18676.1},
     year = {2019},
-    number = {532},
-    doi = {10.12688/f1000research.18676.1}
-    }    
+    month = apr,
+    publisher = {F1000 (Faculty of 1000 Ltd)},
+    volume = {8},
+    pages = {532},
+    author = {Saket Choudhary},
+    title = {pysradb: A Python package to query next-generation sequencing metadata and data from {NCBI} Sequence Read Archive},
+    journal = {F1000Research}
+    }
 
 
 Zenodo archive: https://zenodo.org/badge/latestdoi/159590788
