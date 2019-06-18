@@ -8,7 +8,9 @@ def _get_sample_attr_keys(sample_attribute):
     if sample_attribute is None:
         return None, None
     sample_attribute_splitted = sample_attribute.split("||")
-    split_by_colon = [str(attr).split(": ") for attr in sample_attribute_splitted]
+    split_by_colon = [
+        str(attr).split(": ") for attr in sample_attribute_splitted
+    ]
     # Iterate once more to consider first one as the key
     # and remaining as the value
     # This is because of bad annotations like in this example
@@ -31,16 +33,16 @@ def _get_sample_attr_keys(sample_attribute):
         raise
     sample_attribute_keys = list(
         map(
-            lambda x: re.sub("\s+", " ", x.strip().replace(" ", "_").lower()),
+            lambda x: re.sub("\s+", " ",
+                             x.strip().replace(" ", "_").lower()),
             list(sample_attribute_dict.keys()),
-        )
-    )
+        ))
     sample_attribute_values = list(
         map(
-            lambda x: re.sub("\s+", " ", x.strip().lower().strip().replace(",", "__")),
+            lambda x: re.sub("\s+", " ",
+                             x.strip().lower().strip().replace(",", "__")),
             list(sample_attribute_dict.values()),
-        )
-    )
+        ))
     return sample_attribute_keys, sample_attribute_values
 
 
@@ -80,28 +82,26 @@ def expand_sample_attribute_columns(metadata_df):
     # call the additional column  as *_expanded
     additional_columns = list(
         map(
-            lambda x: x if x not in metadata_df.columns.tolist() else x + "_expanded",
+            lambda x: x
+            if x not in metadata_df.columns.tolist() else x + "_expanded",
             additional_columns,
-        )
-    )
+        ))
     additional_columns = list(sorted(additional_columns))
     empty_df = pd.DataFrame(columns=additional_columns)
     metadata_df_expanded = pd.concat([metadata_df, empty_df], axis=1)
     for idx, row in metadata_df_expanded.iterrows():
         sample_attribute = row["sample_attribute"]
         sample_attribute_keys, sample_attribute_values = _get_sample_attr_keys(
-            sample_attribute
-        )
+            sample_attribute)
         if sample_attribute_keys:
             sample_attribute_keys = list(
                 map(
-                    lambda x: x
-                    if x not in metadata_df.columns.tolist()
-                    else x + "_expanded",
+                    lambda x: x if x not in metadata_df.columns.tolist() else x
+                    + "_expanded",
                     sample_attribute_keys,
-                )
-            )
-        metadata_df_expanded.loc[idx, sample_attribute_keys] = sample_attribute_values
+                ))
+        metadata_df_expanded.loc[
+            idx, sample_attribute_keys] = sample_attribute_values
     if np.nan in metadata_df_expanded.columns.tolist():
         del metadata_df_expanded[np.nan]
     return metadata_df_expanded
@@ -125,25 +125,28 @@ def guess_cell_type(sample_attribute):
     cell_type = None
     if "cell line:" in sample_attribute:
         x = re.search(r"cell line: \w+", sample_attribute)
-        cell_type = re.sub("\s+", " ", x.group(0).lstrip("cell line:").lower().strip())
+        cell_type = re.sub("\s+", " ",
+                           x.group(0).lstrip("cell line:").lower().strip())
     if "cell_line:" in sample_attribute:
         x = re.search(r"cell_line: \w+", sample_attribute)
-        cell_type = re.sub("\s+", " ", x.group(0).lstrip("cell_line:").lower().strip())
+        cell_type = re.sub("\s+", " ",
+                           x.group(0).lstrip("cell_line:").lower().strip())
     if "cell-line:" in sample_attribute:
         x = re.search(r"cell-line: \w+", sample_attribute)
-        cell_type = re.sub("\s+", " ", x.group(0).lstrip("cell-line:").lower().strip())
+        cell_type = re.sub("\s+", " ",
+                           x.group(0).lstrip("cell-line:").lower().strip())
     if "cell_type:" in sample_attribute:
         x = re.search(r"cell_type: \w+", sample_attribute)
-        return re.sub("\s+", " ", x.group(0).lstrip("cell_type:").lower().strip())
+        return re.sub("\s+", " ",
+                      x.group(0).lstrip("cell_type:").lower().strip())
     if "source_name:" in sample_attribute:
         x = re.search(r"source_name: \w+", sample_attribute)
-        cell_type = re.sub(
-            "\s+", " ", x.group(0).lstrip("source_name:").lower().strip()
-        )
+        cell_type = re.sub("\s+", " ",
+                           x.group(0).lstrip("source_name:").lower().strip())
     else:
         warnings.warn(
-            "Couldn't parse {} for cell line".format(sample_attribute), UserWarning
-        )
+            "Couldn't parse {} for cell line".format(sample_attribute),
+            UserWarning)
     return cell_type
 
 
@@ -165,11 +168,11 @@ def guess_tissue_type(sample_attribute):
     tissue_type = None
     if "tissue: " in sample_attribute:
         x = re.search(r"tissue: \w+", sample_attribute)
-        tissue_type = re.sub("\s+", " ", x.group(0).lstrip("tissue:").lower().strip())
+        tissue_type = re.sub("\s+", " ",
+                             x.group(0).lstrip("tissue:").lower().strip())
     else:
-        warnings.warn(
-            "Couldn't parse {} for tissue".format(sample_attribute), UserWarning
-        )
+        warnings.warn("Couldn't parse {} for tissue".format(sample_attribute),
+                      UserWarning)
     return tissue_type
 
 
@@ -191,9 +194,9 @@ def guess_strain_type(sample_attribute):
     strain_type = None
     if "strain: " in sample_attribute:
         x = re.search(r"strain: \w+", sample_attribute)
-        strain_type = re.sub("\s+", " ", x.group(0).lstrip("strain:").lower().strip())
+        strain_type = re.sub("\s+", " ",
+                             x.group(0).lstrip("strain:").lower().strip())
     else:
-        warnings.warn(
-            "Couldn't parse {} for strain".format(sample_attribute), UserWarning
-        )
+        warnings.warn("Couldn't parse {} for strain".format(sample_attribute),
+                      UserWarning)
     return strain_type

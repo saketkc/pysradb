@@ -36,13 +36,8 @@ ASCP_CMD_PREFIX = "ascp -k 1 -QT -l 2000m -i"
 
 
 def _create_query(select_type_sql, gses):
-    sql = (
-        "SELECT DISTINCT "
-        + select_type_sql
-        + " FROM sra_ft WHERE sra_ft MATCH '"
-        + " OR ".join(gses)
-        + "';"
-    )
+    sql = ("SELECT DISTINCT " + select_type_sql +
+           " FROM sra_ft WHERE sra_ft MATCH '" + " OR ".join(gses) + "';")
     return sql
 
 
@@ -68,7 +63,9 @@ def _prettify_df(df, out_type, expand_sample_attributes):
     return df
 
 
-def download_sradb_file(download_dir=os.getcwd(), overwrite=True, keep_gz=False):
+def download_sradb_file(download_dir=os.getcwd(),
+                        overwrite=True,
+                        keep_gz=False):
     """Download SRAdb.sqlite file.
 
     Parameters
@@ -88,15 +85,11 @@ def download_sradb_file(download_dir=os.getcwd(), overwrite=True, keep_gz=False)
     if os.path.isfile(download_location) and overwrite is False:
         raise RuntimeError(
             "{} already exists! Set `overwrite=True` to redownload.".format(
-                download_location
-            )
-        )
+                download_location))
     if os.path.isfile(download_location_unzip) and overwrite is False:
         raise RuntimeError(
             "{} already exists! Set `overwrite=True` to redownload.".format(
-                download_location_unzip
-            )
-        )
+                download_location_unzip))
     if os.path.isfile(download_location_unzip):
         os.remove(download_location_unzip)
     if os.path.isfile(download_location):
@@ -105,7 +98,9 @@ def download_sradb_file(download_dir=os.getcwd(), overwrite=True, keep_gz=False)
         _get_url(SRADB_URL[0], download_location)
     except Exception as e:
         # Try other URL
-        sys.stderr.write("Could not use {}.\nException: {}.\nTrying alternate url ...\n".format(SRADB_URL[0], e))
+        sys.stderr.write(
+            "Could not use {}.\nException: {}.\nTrying alternate url ...\n".
+            format(SRADB_URL[0], e))
         _get_url(SRADB_URL[1], download_location)
     print("Extracting {} ...".format(download_location))
     filesize = get_gzip_uncompressed_size(download_location)
@@ -133,18 +128,14 @@ def _verify_srametadb(filepath):
     try:
         db = BASEdb(filepath)
     except:
-        print(
-            "{} not a valid SRAmetadb.sqlite file.\n".format(filepath)
-            + "Please download one using `pysradb metadb`."
-        )
+        print("{} not a valid SRAmetadb.sqlite file.\n".format(filepath) +
+              "Please download one using `pysradb metadb`.")
         sys.exit(1)
     metadata = db.query("SELECT * FROM metaInfo")
     db.close()
     if list(metadata.iloc[0].values) != ["schema version", "1.0"]:
-        print(
-            "{} not a valid SRAmetadb.sqlite file.\n".format(filepath)
-            + "Please download one using `pysradb metadb`."
-        )
+        print("{} not a valid SRAmetadb.sqlite file.\n".format(filepath) +
+              "Please download one using `pysradb metadb`.")
         sys.exit(1)
 
 
@@ -199,20 +190,20 @@ class SRAdb(BASEdb):
         }
 
     def sra_metadata(
-        self,
-        acc,
-        out_type=[
-            "study_accession",
-            "experiment_accession",
-            "sample_accession",
-            "run_accession",
-        ],
-        assay=False,
-        sample_attribute=False,
-        detailed=False,
-        expand_sample_attributes=False,
-        output_read_lengths=False,
-        acc_is_searchstr=False,
+            self,
+            acc,
+            out_type=[
+                "study_accession",
+                "experiment_accession",
+                "sample_accession",
+                "run_accession",
+            ],
+            assay=False,
+            sample_attribute=False,
+            detailed=False,
+            expand_sample_attributes=False,
+            output_read_lengths=False,
+            acc_is_searchstr=False,
     ):
         """Get metadata for the provided SRA accession.
 
@@ -275,13 +266,8 @@ class SRAdb(BASEdb):
         output_columns = unique(output_columns)
         select_type = [in_type + "_accession"] + output_columns
         select_type_sql = (",").join(select_type)
-        sql = (
-            "SELECT DISTINCT "
-            + select_type_sql
-            + " FROM sra_ft WHERE sra_ft MATCH '"
-            + acc
-            + "';"
-        )
+        sql = ("SELECT DISTINCT " + select_type_sql +
+               " FROM sra_ft WHERE sra_ft MATCH '" + acc + "';")
         df = self.query(sql)
         if not len(df.index):
             sys.stderr.write("Empty results")
@@ -313,11 +299,11 @@ class SRAdb(BASEdb):
         return metadata_df
 
     def srp_to_srx(
-        self,
-        srp,
-        sample_attribute=False,
-        detailed=False,
-        expand_sample_attributes=False,
+            self,
+            srp,
+            sample_attribute=False,
+            detailed=False,
+            expand_sample_attributes=False,
     ):
         """Convert SRP to SRX/SRR.
 
@@ -351,11 +337,11 @@ class SRAdb(BASEdb):
         )
 
     def srp_to_srs(
-        self,
-        srp,
-        sample_attribute=False,
-        detailed=False,
-        expand_sample_attributes=False,
+            self,
+            srp,
+            sample_attribute=False,
+            detailed=False,
+            expand_sample_attributes=False,
     ):
         """Convert SRP to SRS.
 
@@ -389,11 +375,11 @@ class SRAdb(BASEdb):
         return df
 
     def srp_to_srr(
-        self,
-        srp,
-        sample_attribute=False,
-        detailed=False,
-        expand_sample_attributes=False,
+            self,
+            srp,
+            sample_attribute=False,
+            detailed=False,
+            expand_sample_attributes=False,
     ):
         """Convert SRP to SRR.
 
@@ -426,11 +412,11 @@ class SRAdb(BASEdb):
         return df
 
     def srp_to_gse(
-        self,
-        srp,
-        sample_attribute=False,
-        detailed=False,
-        expand_sample_attributes=False,
+            self,
+            srp,
+            sample_attribute=False,
+            detailed=False,
+            expand_sample_attributes=False,
     ):
         """Convert SRP to GSE
 
@@ -462,11 +448,11 @@ class SRAdb(BASEdb):
         )
 
     def gse_to_srp(
-        self,
-        gses,
-        sample_attribute=False,
-        detailed=False,
-        expand_sample_attributes=False,
+            self,
+            gses,
+            sample_attribute=False,
+            detailed=False,
+            expand_sample_attributes=False,
     ):
         """Convert SRP to GSE
 
@@ -497,11 +483,11 @@ class SRAdb(BASEdb):
         return df
 
     def gsm_to_srp(
-        self,
-        gsms,
-        sample_attribute=False,
-        detailed=False,
-        expand_sample_attributes=False,
+            self,
+            gsms,
+            sample_attribute=False,
+            detailed=False,
+            expand_sample_attributes=False,
     ):
         """Convert GSM to SRP.
 
@@ -535,11 +521,11 @@ class SRAdb(BASEdb):
         return df
 
     def gsm_to_srr(
-        self,
-        gsms,
-        sample_attribute=False,
-        detailed=False,
-        expand_sample_attributes=False,
+            self,
+            gsms,
+            sample_attribute=False,
+            detailed=False,
+            expand_sample_attributes=False,
     ):
         """Convert GSMs to SRR.
 
@@ -578,11 +564,11 @@ class SRAdb(BASEdb):
         return df
 
     def gsm_to_srx(
-        self,
-        gsms,
-        sample_attribute=False,
-        detailed=False,
-        expand_sample_attributes=False,
+            self,
+            gsms,
+            sample_attribute=False,
+            detailed=False,
+            expand_sample_attributes=False,
     ):
         """Convert GSM to SRX.
 
@@ -616,11 +602,11 @@ class SRAdb(BASEdb):
         return df
 
     def gse_to_gsm(
-        self,
-        gses,
-        sample_attribute=False,
-        detailed=False,
-        expand_sample_attributes=False,
+            self,
+            gses,
+            sample_attribute=False,
+            detailed=False,
+            expand_sample_attributes=False,
     ):
         """Convert GSE to GSM
 
@@ -652,11 +638,11 @@ class SRAdb(BASEdb):
         return df
 
     def gsm_to_gse(
-        self,
-        gsms,
-        sample_attribute=False,
-        detailed=False,
-        expand_sample_attributes=False,
+            self,
+            gsms,
+            sample_attribute=False,
+            detailed=False,
+            expand_sample_attributes=False,
     ):
         """Convert GSM to GSE
 
@@ -688,11 +674,11 @@ class SRAdb(BASEdb):
         return df
 
     def srr_to_srp(
-        self,
-        srrs,
-        sample_attribute=False,
-        detailed=False,
-        expand_sample_attributes=False,
+            self,
+            srrs,
+            sample_attribute=False,
+            detailed=False,
+            expand_sample_attributes=False,
     ):
         """Convert SRR to SRP.
 
@@ -726,11 +712,11 @@ class SRAdb(BASEdb):
         return df
 
     def srr_to_srs(
-        self,
-        srrs,
-        sample_attribute=False,
-        detailed=False,
-        expand_sample_attributes=False,
+            self,
+            srrs,
+            sample_attribute=False,
+            detailed=False,
+            expand_sample_attributes=False,
     ):
         """Convert SRR to SRS.
 
@@ -763,11 +749,11 @@ class SRAdb(BASEdb):
         return df
 
     def srx_to_srs(
-        self,
-        srxs,
-        sample_attribute=False,
-        detailed=False,
-        expand_sample_attributes=False,
+            self,
+            srxs,
+            sample_attribute=False,
+            detailed=False,
+            expand_sample_attributes=False,
     ):
         """Convert SRX to SRS.
 
@@ -800,11 +786,11 @@ class SRAdb(BASEdb):
         return df
 
     def srs_to_srx(
-        self,
-        srss,
-        sample_attribute=False,
-        detailed=False,
-        expand_sample_attributes=False,
+            self,
+            srss,
+            sample_attribute=False,
+            detailed=False,
+            expand_sample_attributes=False,
     ):
         """Convert SRS to SRX.
 
@@ -837,11 +823,11 @@ class SRAdb(BASEdb):
         return df
 
     def srr_to_srx(
-        self,
-        srrs,
-        sample_attribute=False,
-        detailed=False,
-        expand_sample_attributes=False,
+            self,
+            srrs,
+            sample_attribute=False,
+            detailed=False,
+            expand_sample_attributes=False,
     ):
         """Convert SRR to SRX.
 
@@ -879,11 +865,11 @@ class SRAdb(BASEdb):
         return df
 
     def srx_to_srp(
-        self,
-        srxs,
-        sample_attribute=False,
-        detailed=False,
-        expand_sample_attributes=False,
+            self,
+            srxs,
+            sample_attribute=False,
+            detailed=False,
+            expand_sample_attributes=False,
     ):
         """Convert SRXs to SRP.
 
@@ -921,11 +907,11 @@ class SRAdb(BASEdb):
         return df
 
     def srr_to_gsm(
-        self,
-        srrs,
-        sample_attribute=False,
-        detailed=False,
-        expand_sample_attributes=False,
+            self,
+            srrs,
+            sample_attribute=False,
+            detailed=False,
+            expand_sample_attributes=False,
     ):
         """Convert SRR to GSM
 
@@ -946,7 +932,8 @@ class SRAdb(BASEdb):
                 "experiment_accession",
                 "study_accession",
                 "sample_accession",
-                "study_alias" "sample_alias",
+                "study_alias"
+                "sample_alias",
             ]
         if sample_attribute:
             out_type += ["sample_attribute"]
@@ -957,11 +944,11 @@ class SRAdb(BASEdb):
         return df
 
     def srx_to_srr(
-        self,
-        srxs,
-        sample_attribute=False,
-        detailed=False,
-        expand_sample_attributes=False,
+            self,
+            srxs,
+            sample_attribute=False,
+            detailed=False,
+            expand_sample_attributes=False,
     ):
         """Convert SRXs to SRR/SRP.
 
@@ -999,19 +986,19 @@ class SRAdb(BASEdb):
         return df
 
     def search_sra(
-        self,
-        search_str,
-        out_type=[
-            "study_accession",
-            "experiment_accession",
-            "sample_accession",
-            "run_accession",
-        ],
-        assay=False,
-        sample_attribute=False,
-        detailed=False,
-        expand_sample_attributes=False,
-        output_read_lengths=False,
+            self,
+            search_str,
+            out_type=[
+                "study_accession",
+                "experiment_accession",
+                "sample_accession",
+                "run_accession",
+            ],
+            assay=False,
+            sample_attribute=False,
+            detailed=False,
+            expand_sample_attributes=False,
+            output_read_lengths=False,
     ):
         """Search SRA for any search term.
 
@@ -1054,12 +1041,12 @@ class SRAdb(BASEdb):
         """
         if "GSM" in srx:
             results = self.cursor.execute(
-                'select * from EXPERIMENT where experiment_alias = "{}"'.format(srx)
-            ).fetchall()
+                'select * from EXPERIMENT where experiment_alias = "{}"'.
+                format(srx)).fetchall()
         else:
             results = self.cursor.execute(
-                'select * from EXPERIMENT where experiment_accession = "{}"'.format(srx)
-            ).fetchall()
+                'select * from EXPERIMENT where experiment_accession = "{}"'.
+                format(srx)).fetchall()
         assert len(results) == 1, "Got multiple hits"
         results = results[0]
         column_names = list([x[0] for x in self.cursor.description])
@@ -1067,14 +1054,14 @@ class SRAdb(BASEdb):
         return pd.DataFrame.from_dict(results, orient="index").T
 
     def download(
-        self,
-        srp=None,
-        df=None,
-        out_dir=None,
-        filter_by_srx=[],
-        protocol="fasp",
-        ascp_dir=None,
-        skip_confirmation=False,
+            self,
+            srp=None,
+            df=None,
+            out_dir=None,
+            filter_by_srx=[],
+            protocol="fasp",
+            ascp_dir=None,
+            skip_confirmation=False,
     ):
         """Download SRA files.
 
@@ -1098,7 +1085,8 @@ class SRAdb(BASEdb):
         if srp:
             df = self.sra_metadata(srp)
         if protocol == "ftp":
-            sys.stderr.write(dedent("""\
+            sys.stderr.write(
+                dedent("""\
             Using `ftp` protocol leads to slower downloads.\n
             Consider using `fasp` after installing aspera-client.\n"""))
         if protocol == "fasp":
@@ -1106,12 +1094,12 @@ class SRAdb(BASEdb):
                 ascp_dir = os.path.join(os.path.expanduser("~"), ".aspera")
             if not os.path.exists(ascp_dir):
                 sys.stderr.write(
-                    "Count not find aspera at: {}\n".format(ascp_dir)
-                    + "Install aspera-client following instructions"
-                    + "at https://github.com/saketkc/pysradb/README.rst for faster downloads.\n"
-                    + "You can supress this message by using `--use-wget` flag\n"
-                    + "Continuing with wget ...\n\n"
-                )
+                    "Count not find aspera at: {}\n".format(ascp_dir) +
+                    "Install aspera-client following instructions" +
+                    "at https://github.com/saketkc/pysradb/README.rst for faster downloads.\n"
+                    +
+                    "You can supress this message by using `--use-wget` flag\n"
+                    + "Continuing with wget ...\n\n")
                 protocol = "ftp"
             else:
                 ascp_bin = os.path.join(ascp_dir, "connect", "bin", "ascp")
@@ -1121,21 +1109,16 @@ class SRAdb(BASEdb):
                 filter_by_srx = [filter_by_srx]
         if filter_by_srx:
             df = df[df.experiment_accession.isin(filter_by_srx)]
-        df.loc[:, "download_url"] = (
-            FTP_PREFIX[protocol]
-            + "/sra/sra-instant/reads/ByRun/sra/"
-            + df["run_accession"].str[:3]
-            + "/"
-            + df["run_accession"].str[:6]
-            + "/"
-            + df["run_accession"]
-            + "/"
-            + df["run_accession"]
-            + ".sra"
-        )
-        download_list = df[
-            ["study_accession", "experiment_accession", "run_accession", "download_url"]
-        ].values
+        df.loc[:, "download_url"] = (FTP_PREFIX[protocol] +
+                                     "/sra/sra-instant/reads/ByRun/sra/" +
+                                     df["run_accession"].str[:3] + "/" +
+                                     df["run_accession"].str[:6] + "/" +
+                                     df["run_accession"] + "/" +
+                                     df["run_accession"] + ".sra")
+        download_list = df[[
+            "study_accession", "experiment_accession", "run_accession",
+            "download_url"
+        ]].values
         print("The following files will be downloaded: \n")
         if len(df.index):
             pd.set_option("display.max_colwidth", -1)
@@ -1153,9 +1136,9 @@ class SRAdb(BASEdb):
                 mkdir_p(srx_dir)
                 if protocol == "fasp":
                     cmd = ASCP_CMD_PREFIX.replace("ascp", ascp_bin)
-                    cmd = "{} {} {} {}".format(
-                        cmd, _find_aspera_keypath(ascp_dir), url, srx_dir
-                    )
+                    cmd = "{} {} {} {}".format(cmd,
+                                               _find_aspera_keypath(ascp_dir),
+                                               url, srx_dir)
                     run_command(cmd, verbose=False)
                 else:
                     _get_url(url, srr_location, show_progress=False)

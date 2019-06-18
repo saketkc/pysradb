@@ -70,9 +70,8 @@ def _find_aspera_keypath(aspera_dir=None):
     """
     if aspera_dir is None:
         aspera_dir = os.path.join(os.path.expanduser("~"), ".aspera")
-    aspera_keypath = os.path.join(
-        aspera_dir, "connect", "etc", "asperaweb_id_dsa.openssh"
-    )
+    aspera_keypath = os.path.join(aspera_dir, "connect", "etc",
+                                  "asperaweb_id_dsa.openssh")
     if os.path.isfile(aspera_keypath):
         return aspera_keypath
 
@@ -127,21 +126,24 @@ def _get_url(url, download_to, show_progress=True):
     desc_file = "Downloading {}".format(url.split("/")[-1])
     mkdir_p(os.path.dirname(download_to))
     if show_progress:
-        with TqdmUpTo(
-            unit="B", unit_scale=True, unit_divisor=1024, miniters=1, desc=desc_file
-        ) as t:
-            urllib_request.urlretrieve(
-                url, download_to, reporthook=t.update_to, data=None
-            )
+        with TqdmUpTo(unit="B",
+                      unit_scale=True,
+                      unit_divisor=1024,
+                      miniters=1,
+                      desc=desc_file) as t:
+            urllib_request.urlretrieve(url,
+                                       download_to,
+                                       reporthook=t.update_to,
+                                       data=None)
     else:
         urllib_request.urlretrieve(url, download_to)
 
 
 def run_command(command, verbose=False):
     """Run a shell command"""
-    process = subprocess.Popen(
-        shlex.split(command), stdout=subprocess.PIPE, stderr=subprocess.STDOUT
-    )
+    process = subprocess.Popen(shlex.split(command),
+                               stdout=subprocess.PIPE,
+                               stderr=subprocess.STDOUT)
 
     while True:
         output = process.stdout.readline().strip()
@@ -211,12 +213,12 @@ def copyfileobj(fsrc, fdst, bufsize=16384, filesize=None, desc=""):
           Description for tqdm status
     """
     with tqdm(
-        total=filesize,
-        unit="B",
-        unit_scale=True,
-        miniters=1,
-        unit_divisor=1024,
-        desc=desc,
+            total=filesize,
+            unit="B",
+            unit_scale=True,
+            miniters=1,
+            unit_divisor=1024,
+            desc=desc,
     ) as pbar:
         while True:
             buf = fsrc.read(bufsize)
