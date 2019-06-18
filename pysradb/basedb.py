@@ -40,8 +40,7 @@ class BASEdb(object):
                     List of all table names
         """
         results = self.cursor.execute(
-            'SELECT name FROM sqlite_master WHERE type="table";'
-        ).fetchall()
+            'SELECT name FROM sqlite_master WHERE type="table";').fetchall()
         return _extract_first_field(results)
 
     def list_fields(self, table):
@@ -77,8 +76,7 @@ class BASEdb(object):
                     schema description
         """
         results = self.cursor.execute(
-            'PRAGMA table_info("{}")'.format(table)
-        ).fetchall()
+            'PRAGMA table_info("{}")'.format(table)).fetchall()
         columns = ["cid", "name", "dtype", "notnull", "dflt_value", "pk"]
         data = []
         for result in results:
@@ -124,8 +122,7 @@ class BASEdb(object):
                    Number of rows in table
         """
         return self.cursor.execute(
-            "SELECT max(rowid) FROM {}".format(table)
-        ).fetchone()[0]
+            "SELECT max(rowid) FROM {}".format(table)).fetchone()[0]
 
     def all_row_counts(self):
         """Get row counts of all tables in the db file.
@@ -138,5 +135,8 @@ class BASEdb(object):
 
         """
         tables = self.list_tables()
-        results = dict([(table, self.get_row_count(table)) for table in tables])
-        return pd.DataFrame.from_dict(results, orient="index", columns=["count"])
+        results = dict([(table, self.get_row_count(table))
+                        for table in tables])
+        return pd.DataFrame.from_dict(results,
+                                      orient="index",
+                                      columns=["count"])
