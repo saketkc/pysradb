@@ -1115,13 +1115,14 @@ class SRAdb(BASEdb):
             if ascp_dir is None:
                 ascp_dir = os.path.join(os.path.expanduser("~"), ".aspera")
             if not os.path.exists(ascp_dir):
-                sys.stderr.write(
-                    "Count not find aspera at: {}\n".format(ascp_dir) +
-                    "Install aspera-client following instructions" +
-                    "at https://github.com/saketkc/pysradb/README.rst for faster downloads.\n"
-                    +
-                    "You can supress this message by using `--use-wget` flag\n"
-                    + "Continuing with wget ...\n\n")
+
+                #sys.stderr.write(
+                #    "Count not find aspera at: {}\n".format(ascp_dir) +
+                #    "Install aspera-client following instructions" +
+                #    "at https://github.com/saketkc/pysradb/README.rst for faster downloads.\n"
+                #    +
+                #    "You can supress this message by using `--use-wget` flag\n"
+                #    + "Continuing with wget ...\n\n")
                 protocol = "ftp"
             else:
                 ascp_bin = os.path.join(ascp_dir, "connect", "bin", "ascp")
@@ -1170,7 +1171,6 @@ class SRAdb(BASEdb):
                     cmd = "{} {} {} {}".format(cmd,
                                                _find_aspera_keypath(ascp_dir),
                                                url, srx_dir)
-                    print(cmd)
                     run_command(cmd, verbose=False)
                 else:
                     _get_url(url, srr_location, show_progress=False)
