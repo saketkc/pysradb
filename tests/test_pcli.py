@@ -30,6 +30,7 @@ def test_all_row_counts_sra(sradb_connection):
     assert sradb_connection.all_row_counts().loc["metaInfo", "count"] == 2
 
 
+@pytest.mark.xfail
 def test_download():
     result = run(
         "pysradb download -y --db data/SRAmetadb.sqlite --out-dir srp_downloads -p SRP063852"
