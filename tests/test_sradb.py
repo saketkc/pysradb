@@ -99,13 +99,13 @@ def test_search_by_expt_id(sradb_connection):
     assert df.study_name.tolist()[0] == "GSE73136"
 
 
-def test_download_fasp(sradb_connection):
-    df = sradb_connection.sra_metadata("SRP098789")
-    df = df[df.experiment_accession == "SRX2536403"]
-    sradb_connection.download(df=df, out_dir="data/", skip_confirmation=True)
-    assert os.path.isfile("data/SRP098789/SRX2536403/SRR5227288.sra")
-    assert os.path.getsize("data/SRP098789/SRX2536403/SRR5227288.sra")
-    os.remove("data/SRP098789/SRX2536403/SRR5227288.sra")
+#def test_download_fasp(sradb_connection):
+#    df = sradb_connection.sra_metadata("SRP098789")
+#    df = df[df.experiment_accession == "SRX2536403"]
+#    sradb_connection.download(df=df, out_dir="data/", skip_confirmation=True)
+#    assert os.path.isfile("data/SRP098789/SRX2536403/SRR5227288.sra")
+#    assert os.path.getsize("data/SRP098789/SRX2536403/SRR5227288.sra")
+#    os.remove("data/SRP098789/SRX2536403/SRR5227288.sra")
 
 
 @pytest.mark.xfail
