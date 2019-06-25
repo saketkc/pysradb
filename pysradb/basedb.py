@@ -103,7 +103,7 @@ class BASEdb(object):
         results = [dict(list(zip(column_names, result))) for result in results]
         df = pd.DataFrame(results)
         if not results:
-            #sys.stderr.write("Found no matching results for query: {}".format(sql_query))
+            # sys.stderr.write("Found no matching results for query: {}".format(sql_query))
             sys.stderr.write("Found no matching results for query.\n")
         return df
 

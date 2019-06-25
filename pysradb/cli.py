@@ -122,7 +122,7 @@ def download(out_dir, db, srx, srp, skip_confirmation, use_wget=False):
             protocol=protocol,
         )
     else:
-        for srp_x in sorted(set(srp)):
+        for srp_x in sorted(set(srp), key=srp.index):
             sradb.download(
                 srp=srp_x,
                 out_dir=out_dir,

@@ -3,6 +3,7 @@
 import gzip
 import os
 import re
+import subprocess
 import sys
 from textwrap import dedent
 
@@ -1053,13 +1054,34 @@ class SRAdb(BASEdb):
         results = dict(list(zip(column_names, results)))
         return pd.DataFrame.from_dict(results, orient="index").T
 
+    @staticmethod
+    def _srapath_url(srp):
+        """Get srapath URL for a SRP.
+
+        Parameters
+        ----------
+        srp: string
+
+
+        Returns
+        -------
+        srr_paths: dict
+                   A dict of URLS with keys as SRR
+        """
+        proc = subprocess.run(["srapath", srp], capture_output=True)
+        stdout = str(proc.stdout.strip().decode("utf-8"))
+        urls = stdout.split("\n")
+        urls = list(map(str, urls))
+        srrs = [str(url.strip().split("/")[-1].split(".")[0]) for url in urls]
+        return dict(zip(srrs, urls))
+
     def download(
             self,
             srp=None,
             df=None,
             out_dir=None,
             filter_by_srx=[],
-            protocol="fasp",
+            protocol="ftp",
             ascp_dir=None,
             skip_confirmation=False,
     ):
@@ -1115,9 +1137,18 @@ class SRAdb(BASEdb):
                                      df["run_accession"].str[:6] + "/" +
                                      df["run_accession"] + "/" +
                                      df["run_accession"] + ".sra")
+
+        srapaths = self._srapath_url(df.study_accession.unique()[0])
+        srapaths_df = pd.DataFrame.from_dict(srapaths,
+                                             orient="index").reset_index()
+        srapaths_df.columns = ["run_accession", "srapath_url"]
+        df = df.merge(srapaths_df, on="run_accession")
         download_list = df[[
-            "study_accession", "experiment_accession", "run_accession",
-            "download_url"
+            "study_accession",
+            "experiment_accession",
+            "run_accession",
+            "download_url",
+            "srapath_url",
         ]].values
         print("The following files will be downloaded: \n")
         if len(df.index):
@@ -1128,7 +1159,7 @@ class SRAdb(BASEdb):
             if not confirm("Start download?"):
                 sys.exit(0)
         with tqdm(total=download_list.shape[0]) as pbar:
-            for srp, srx, srr, url in download_list:
+            for srp, srx, srr, _, url in download_list:
                 pbar.set_description("{}/{}/{}".format(srp, srx, srr))
                 srp_dir = os.path.join(out_dir, srp)
                 srx_dir = os.path.join(srp_dir, srx)
@@ -1139,6 +1170,7 @@ class SRAdb(BASEdb):
                     cmd = "{} {} {} {}".format(cmd,
                                                _find_aspera_keypath(ascp_dir),
                                                url, srx_dir)
+                    print(cmd)
                     run_command(cmd, verbose=False)
                 else:
                     _get_url(url, srr_location, show_progress=False)
