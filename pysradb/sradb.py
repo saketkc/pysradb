@@ -564,6 +564,45 @@ class SRAdb(BASEdb):
         df = _prettify_df(df, out_type, expand_sample_attributes)
         return df
 
+    def gsm_to_srs(
+            self,
+            gsms,
+            sample_attribute=False,
+            detailed=False,
+            expand_sample_attributes=False,
+    ):
+        """Convert GSM to SRS.
+
+        Parameters
+        ----------
+        gsms: list or string
+              List of gsms
+
+        Returns
+        -------
+        gsm_to_srs_df: DataFrame
+        """
+        gsms = _listify(gsms)
+        out_type = ["sample_alias", "sample_accession"]
+        if detailed:
+            out_type += [
+                "sample_accession",
+                "experiment_accession",
+                "run_accession",
+                "study_accession",
+                "sample_alias",
+                "experiment_alias",
+                "run_alias",
+                "study_alias",
+            ]
+        if sample_attribute:
+            out_type += ["sample_attribute"]
+        select_type_sql = (",").join(out_type)
+        sql = _create_query(select_type_sql, gsms)
+        df = self.query(sql)
+        df = _prettify_df(df, out_type, expand_sample_attributes)
+        return df
+
     def gsm_to_srx(
             self,
             gsms,
@@ -782,6 +821,43 @@ class SRAdb(BASEdb):
             out_type += ["sample_attribute"]
         select_type_sql = (",").join(out_type)
         sql = _create_query(select_type_sql, srxs)
+        df = self.query(sql)
+        df = _prettify_df(df, out_type, expand_sample_attributes)
+        return df
+
+    def srs_to_gsm(
+            self,
+            srss,
+            sample_attribute=False,
+            detailed=False,
+            expand_sample_attributes=False,
+    ):
+        """Convert SRS to GSM.
+
+        Parameters
+        ----------
+        srss: list or string
+              List of SRS ID
+
+        Returns
+        -------
+        srs_to_gsm_df: DataFrame
+        """
+        srss = _listify(srss)
+        out_type = ["sample_accession", "sample_alias"]
+        if detailed:
+            out_type += [
+                "experiment_accession",
+                "run_accession",
+                "study_accession",
+                "experiment_alias",
+                "run_alias",
+                "study_alias",
+            ]
+        if sample_attribute:
+            out_type += ["sample_attribute"]
+        select_type_sql = (",").join(out_type)
+        sql = _create_query(select_type_sql, srss)
         df = self.query(sql)
         df = _prettify_df(df, out_type, expand_sample_attributes)
         return df
