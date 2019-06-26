@@ -24,6 +24,8 @@ from .utils import order_dataframe
 from .utils import run_command
 from .utils import unique
 
+from .download import download_file
+
 FTP_PREFIX = {
     "fasp": "anonftp@ftp-trace.ncbi.nlm.nih.gov:",
     "ftp": "ftp://ftp-trace.ncbi.nlm.nih.gov",
@@ -1182,23 +1184,23 @@ class SRAdb(BASEdb):
             out_dir = os.path.join(os.getcwd(), "pysradb_downloads")
         if srp:
             df = self.sra_metadata(srp)
-        if protocol == "ftp":
-            sys.stderr.write(
-                dedent("""\
-            Using `ftp` protocol leads to slower downloads.\n
-            Consider using `fasp` after installing aspera-client.\n"""))
+        #if protocol == "ftp":
+        #    sys.stderr.write(
+        #        dedent("""\
+        #    Using `ftp` protocol leads to slower downloads.\n
+        #    Consider using `fasp` after installing aspera-client.\n"""))
         if protocol == "fasp":
             if ascp_dir is None:
                 ascp_dir = os.path.join(os.path.expanduser("~"), ".aspera")
             if not os.path.exists(ascp_dir):
 
-                #sys.stderr.write(
-                #    "Count not find aspera at: {}\n".format(ascp_dir) +
-                #    "Install aspera-client following instructions" +
-                #    "at https://github.com/saketkc/pysradb/README.rst for faster downloads.\n"
-                #    +
-                #    "You can supress this message by using `--use-wget` flag\n"
-                #    + "Continuing with wget ...\n\n")
+                sys.stderr.write(
+                    "Count not find aspera at: {}\n".format(ascp_dir) +
+                    "Install aspera-client following instructions" +
+                    "at https://github.com/saketkc/pysradb/README.rst for faster downloads.\n"
+                    +
+                    "You can supress this message by using `--use-wget` flag\n"
+                    + "Continuing with wget ...\n\n")
                 protocol = "ftp"
             else:
                 ascp_bin = os.path.join(ascp_dir, "connect", "bin", "ascp")
@@ -1249,6 +1251,6 @@ class SRAdb(BASEdb):
                                                url, srx_dir)
                     run_command(cmd, verbose=False)
                 else:
-                    _get_url(url, srr_location, show_progress=False)
+                    download_file(url, srr_location)
                 pbar.update()
         return df

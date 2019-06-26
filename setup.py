@@ -10,20 +10,18 @@ with open("README.rst") as readme_file:
 with open("HISTORY.rst") as history_file:
     history = history_file.read()
 
-requirements = ["pandas>=0.23.4", "tqdm>=4.28"]
+requirements = ["pandas>=0.23.4", "tqdm>=4.28", "requests>=2.22.0"]
 test_requirements = ["pytest"]
 
 setup(
     author="Saket Choudhary",
     author_email="saketkc@gmail.com",
     classifiers=[
-        "Development Status :: 4 - Beta",
+        "Development Status :: 5 - Production/Stable",
         "Intended Audience :: Science/Research",
         "Intended Audience :: Healthcare Industry",
         "License :: OSI Approved :: BSD License",
         "Natural Language :: English",
-        "Programming Language :: Python :: 2",
-        "Programming Language :: Python :: 2.7",
         "Programming Language :: Python :: 3",
         "Programming Language :: Python :: 3.5",
         "Programming Language :: Python :: 3.6",
