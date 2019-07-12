@@ -35,17 +35,22 @@ def download_geodb_file(download_dir=os.getcwd(), overwrite=True):
     if os.path.isfile(download_location) and overwrite is False:
         raise RuntimeError(
             "{} already exists! Set `overwrite=True` to redownload.".forma(
-                download_location))
+                download_location
+            )
+        )
     if os.path.isfile(download_location_unzip) and overwrite is False:
         raise RuntimeError(
             "{} already exists! Set `overwrite=True` to redownload.".format(
-                download_location_unzip))
+                download_location_unzip
+            )
+        )
 
     try:
         _get_url(GEOmetadb_URL, download_location)
     except Exception as e:
-        raise RuntimeError("Could not use {}.\nException: {}.\n".format(
-            GEOmetadb_URL, e))
+        raise RuntimeError(
+            "Could not use {}.\nException: {}.\n".format(GEOmetadb_URL, e)
+        )
     print("Extracting {} ...".format(download_location))
     filesize = get_gzip_uncompressed_size(download_location)
     with gzip.open(download_location, "rb") as fh_in:
@@ -124,7 +129,8 @@ class GEOdb(BASEdb):
                     A dataframe with relevant mappings
         """
         return self.query(
-            "SELECT * FROM geoConvert WHERE from_acc='{}';".format(from_acc))
+            "SELECT * FROM geoConvert WHERE from_acc='{}';".format(from_acc)
+        )
 
     def gse_to_gsm(self, gse):
         """Fetch GSMs for a GSE.
@@ -154,8 +160,7 @@ class GEOdb(BASEdb):
         mapping_df: DataFrame
                     A dataframe with relevant mappings
         """
-        mapping_df = self.query(
-            "SELECT * FROM gse_gsm WHERE gsm='{}'".format(gsm))
+        mapping_df = self.query("SELECT * FROM gse_gsm WHERE gsm='{}'".format(gsm))
         return mapping_df.loc[:, ["gsm", "gse"]]
 
     def guess_srp_from_gse(self, gse):

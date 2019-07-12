@@ -16,8 +16,9 @@ from .sradb import SRAdb
 import pandas as pd
 
 
-class CustomFormatterArgP(argparse.ArgumentDefaultsHelpFormatter,
-                          argparse.RawDescriptionHelpFormatter):
+class CustomFormatterArgP(
+    argparse.ArgumentDefaultsHelpFormatter, argparse.RawDescriptionHelpFormatter
+):
     pass
 
 
@@ -43,9 +44,9 @@ def _check_sradb_file(db):
         if os.path.isfile(db):
             return db
         if confirm(
-                "SRAmetadb.sqlite file was not found in the current directory. Please quit and specify the path using `--db <DB_PATH>`"
-                + os.linesep +
-                "Otherwise, should I download SRAmetadb.sqlite in the current directory?"
+            "SRAmetadb.sqlite file was not found in the current directory. Please quit and specify the path using `--db <DB_PATH>`"
+            + os.linesep
+            + "Otherwise, should I download SRAmetadb.sqlite in the current directory?"
         ):
             download_sradb_file()
         else:
@@ -496,10 +497,14 @@ def srx_to_srs(srx_ids, db, saveto, detailed, desc, expand):
 def parse_args(args=None):
     """Argument parser"""
     parser = ArgParser(
-        description=dedent("""\
+        description=dedent(
+            """\
     pysradb: Query NGS metadata and data from NCBI Sequence Read Archive.
     version: {}.
-    Citation: Pending.""".format(__version__)),
+    Citation: 10.12688/f1000research.18676.1""".format(
+                __version__
+            )
+        ),
         formatter_class=CustomFormatterArgP,
     )
     subparsers = parser.add_subparsers(title="subcommands", dest="command")
@@ -509,14 +514,11 @@ def parse_args(args=None):
         version="%(prog)s {version}".format(version=__version__),
     )
 
-    subparser = subparsers.add_parser("metadb",
-                                      help="Download SRAmetadb.sqlite")
-    subparser.add_argument("--out-dir",
-                           type=str,
-                           help="Output directory location")
-    subparser.add_argument("--overwrite",
-                           action="store_true",
-                           help="Overwrite existing file")
+    subparser = subparsers.add_parser("metadb", help="Download SRAmetadb.sqlite")
+    subparser.add_argument("--out-dir", type=str, help="Output directory location")
+    subparser.add_argument(
+        "--overwrite", action="store_true", help="Overwrite existing file"
+    )
     subparser.add_argument(
         "--keep-gz",
         action="store_true",
@@ -525,72 +527,58 @@ def parse_args(args=None):
     subparser.set_defaults(func=metadb)
 
     subparser = subparsers.add_parser(
-        "metadata", help="Fetch metadata for SRA project (SRPnnnn)")
+        "metadata", help="Fetch metadata for SRA project (SRPnnnn)"
+    )
     subparser.add_argument("--saveto", help="Save metadata dataframe to file")
-    subparser.add_argument("--db",
-                           help="Path to SRAmetadb.sqlite file",
-                           type=str)
-    subparser.add_argument("--assay",
-                           action="store_true",
-                           help="Include assay type in output")
-    subparser.add_argument("--desc",
-                           action="store_true",
-                           help="Should sample_attribute be included")
-    subparser.add_argument("--detailed",
-                           action="store_true",
-                           help="Display detailed metadata table")
-    subparser.add_argument("--expand",
-                           action="store_true",
-                           help="Should sample_attribute be expanded")
+    subparser.add_argument("--db", help="Path to SRAmetadb.sqlite file", type=str)
+    subparser.add_argument(
+        "--assay", action="store_true", help="Include assay type in output"
+    )
+    subparser.add_argument(
+        "--desc", action="store_true", help="Should sample_attribute be included"
+    )
+    subparser.add_argument(
+        "--detailed", action="store_true", help="Display detailed metadata table"
+    )
+    subparser.add_argument(
+        "--expand", action="store_true", help="Should sample_attribute be expanded"
+    )
     subparser.add_argument("srp_id")
     subparser.set_defaults(func=metadata)
 
-    subparser = subparsers.add_parser("download",
-                                      help="Download SRA project (SRPnnnn)")
+    subparser = subparsers.add_parser("download", help="Download SRA project (SRPnnnn)")
     subparser.add_argument("--out-dir", help="Output directory root")
-    subparser.add_argument("--db",
-                           help="Path to SRAmetadb.sqlite file",
-                           type=str)
-    subparser.add_argument("--srx",
-                           "-x",
-                           help="Download only these SRX(s)",
-                           nargs="+")
+    subparser.add_argument("--db", help="Path to SRAmetadb.sqlite file", type=str)
+    subparser.add_argument("--srx", "-x", help="Download only these SRX(s)", nargs="+")
     subparser.add_argument("--srp", "-p", help="SRP ID", nargs="+")
-    subparser.add_argument("--skip-confirmation",
-                           "-y",
-                           action="store_true",
-                           help="Skip confirmation")
-    subparser.add_argument("--use-wget",
-                           "-w",
-                           action="store_true",
-                           help="Use wget instead of aspera")
+    subparser.add_argument(
+        "--skip-confirmation", "-y", action="store_true", help="Skip confirmation"
+    )
+    subparser.add_argument(
+        "--use-wget", "-w", action="store_true", help="Use wget instead of aspera"
+    )
     subparser.set_defaults(func=download)
 
-    subparser = subparsers.add_parser("search",
-                                      help="Search SRA for matching text")
+    subparser = subparsers.add_parser("search", help="Search SRA for matching text")
     subparser.add_argument("--saveto", help="Save metadata dataframe to file")
-    subparser.add_argument("--db",
-                           help="Path to SRAmetadb.sqlite file",
-                           type=str)
-    subparser.add_argument("--assay",
-                           action="store_true",
-                           help="Include assay type in output")
-    subparser.add_argument("--desc",
-                           action="store_true",
-                           help="Should sample_attribute be included")
-    subparser.add_argument("--detailed",
-                           action="store_true",
-                           help="Display detailed metadata table")
-    subparser.add_argument("--expand",
-                           action="store_true",
-                           help="Should sample_attribute be expanded")
+    subparser.add_argument("--db", help="Path to SRAmetadb.sqlite file", type=str)
+    subparser.add_argument(
+        "--assay", action="store_true", help="Include assay type in output"
+    )
+    subparser.add_argument(
+        "--desc", action="store_true", help="Should sample_attribute be included"
+    )
+    subparser.add_argument(
+        "--detailed", action="store_true", help="Display detailed metadata table"
+    )
+    subparser.add_argument(
+        "--expand", action="store_true", help="Should sample_attribute be expanded"
+    )
     subparser.add_argument("search_text", type=str)
     subparser.set_defaults(func=search)
 
     subparser = subparsers.add_parser("gse-to-gsm", help="Get GSM for a GSE")
-    subparser.add_argument("--db",
-                           help="Path to SRAmetadb.sqlite file",
-                           type=str)
+    subparser.add_argument("--db", help="Path to SRAmetadb.sqlite file", type=str)
     subparser.add_argument("--saveto", help="Save output to file")
     subparser.add_argument(
         "--detailed",
@@ -600,19 +588,17 @@ def parse_args(args=None):
                                          sample_alias (GSM),
                                          run_alias (GSM_r)]""",
     )
-    subparser.add_argument("--desc",
-                           action="store_true",
-                           help="Should sample_attribute be included")
-    subparser.add_argument("--expand",
-                           action="store_true",
-                           help="Should sample_attribute be expanded")
+    subparser.add_argument(
+        "--desc", action="store_true", help="Should sample_attribute be included"
+    )
+    subparser.add_argument(
+        "--expand", action="store_true", help="Should sample_attribute be expanded"
+    )
     subparser.add_argument("gse_ids", nargs="+")
     subparser.set_defaults(func=gse_to_gsm)
 
     subparser = subparsers.add_parser("gse-to-srp", help="Get SRP for a GSE")
-    subparser.add_argument("--db",
-                           help="Path to SRAmetadb.sqlite file",
-                           type=str)
+    subparser.add_argument("--db", help="Path to SRAmetadb.sqlite file", type=str)
     subparser.add_argument("--saveto", help="Save output to file")
     subparser.add_argument(
         "--detailed",
@@ -625,19 +611,17 @@ def parse_args(args=None):
                                            sample_alias (GSM)]
                                            """,
     )
-    subparser.add_argument("--desc",
-                           action="store_true",
-                           help="Should sample_attribute be included")
-    subparser.add_argument("--expand",
-                           action="store_true",
-                           help="Should sample_attribute be expanded")
+    subparser.add_argument(
+        "--desc", action="store_true", help="Should sample_attribute be included"
+    )
+    subparser.add_argument(
+        "--expand", action="store_true", help="Should sample_attribute be expanded"
+    )
     subparser.add_argument("gse_ids", nargs="+")
     subparser.set_defaults(func=gse_to_gsm)
 
     subparser = subparsers.add_parser("gsm-to-gse", help="Get GSE for a GSM")
-    subparser.add_argument("--db",
-                           help="Path to SRAmetadb.sqlite file",
-                           type=str)
+    subparser.add_argument("--db", help="Path to SRAmetadb.sqlite file", type=str)
     subparser.add_argument("--saveto", help="Save output to file")
     subparser.add_argument(
         "--detailed",
@@ -647,22 +631,20 @@ def parse_args(args=None):
                                             sample_alias (GSM),
                                             run_alias (GSM_r)]""",
     )
-    subparser.add_argument("--desc",
-                           action="store_true",
-                           help="Should sample_attribute be included")
-    subparser.add_argument("--expand",
-                           action="store_true",
-                           help="Should sample_attribute be expanded")
+    subparser.add_argument(
+        "--desc", action="store_true", help="Should sample_attribute be included"
+    )
+    subparser.add_argument(
+        "--expand", action="store_true", help="Should sample_attribute be expanded"
+    )
     subparser.add_argument("gsm_ids", nargs="+")
     subparser.set_defaults(func=gsm_to_gse)
 
     subparser = subparsers.add_parser("gsm-to-srp", help="Get SRP for a GSM")
-    subparser.add_argument("--db",
-                           help="Path to SRAmetadb.sqlite file",
-                           type=str)
-    subparser.add_argument("--desc",
-                           action="store_true",
-                           help="Should sample_attribute be included")
+    subparser.add_argument("--db", help="Path to SRAmetadb.sqlite file", type=str)
+    subparser.add_argument(
+        "--desc", action="store_true", help="Should sample_attribute be included"
+    )
     subparser.add_argument(
         "--detailed",
         action="store_true",
@@ -674,20 +656,18 @@ def parse_args(args=None):
                                             run_alias (GSM_r),
                                             study_alias (GSE)]""",
     )
-    subparser.add_argument("--expand",
-                           action="store_true",
-                           help="Should sample_attribute be expanded")
+    subparser.add_argument(
+        "--expand", action="store_true", help="Should sample_attribute be expanded"
+    )
     subparser.add_argument("--saveto", help="Save output to file")
     subparser.add_argument("gsm_ids", nargs="+")
     subparser.set_defaults(func=gsm_to_srp)
 
     subparser = subparsers.add_parser("gsm-to-srr", help="Get SRR for a GSM")
-    subparser.add_argument("--db",
-                           help="Path to SRAmetadb.sqlite file",
-                           type=str)
-    subparser.add_argument("--desc",
-                           action="store_true",
-                           help="Should sample_attribute be included")
+    subparser.add_argument("--db", help="Path to SRAmetadb.sqlite file", type=str)
+    subparser.add_argument(
+        "--desc", action="store_true", help="Should sample_attribute be included"
+    )
     subparser.add_argument(
         "--detailed",
         action="store_true",
@@ -698,20 +678,18 @@ def parse_args(args=None):
                                             sample_alias (GSM),
                                             study_alias (GSE)]""",
     )
-    subparser.add_argument("--expand",
-                           action="store_true",
-                           help="Should sample_attribute be expanded")
+    subparser.add_argument(
+        "--expand", action="store_true", help="Should sample_attribute be expanded"
+    )
     subparser.add_argument("--saveto", help="Save output to file")
     subparser.add_argument("gsm_ids", nargs="+")
     subparser.set_defaults(func=gsm_to_srr)
 
     subparser = subparsers.add_parser("gsm-to-srs", help="Get SRS for a GSM")
-    subparser.add_argument("--db",
-                           help="Path to SRAmetadb.sqlite file",
-                           type=str)
-    subparser.add_argument("--desc",
-                           action="store_true",
-                           help="Should sample_attribute be included")
+    subparser.add_argument("--db", help="Path to SRAmetadb.sqlite file", type=str)
+    subparser.add_argument(
+        "--desc", action="store_true", help="Should sample_attribute be included"
+    )
     subparser.add_argument(
         "--detailed",
         action="store_true",
@@ -722,20 +700,18 @@ def parse_args(args=None):
                                             experiment_alias (GSM),
                                             study_alias (GSE)]""",
     )
-    subparser.add_argument("--expand",
-                           action="store_true",
-                           help="Should sample_attribute be expanded")
+    subparser.add_argument(
+        "--expand", action="store_true", help="Should sample_attribute be expanded"
+    )
     subparser.add_argument("--saveto", help="Save output to file")
     subparser.add_argument("gsm_ids", nargs="+")
     subparser.set_defaults(func=gsm_to_srs)
 
     subparser = subparsers.add_parser("gsm-to-srx", help="Get SRX for a GSM")
-    subparser.add_argument("--db",
-                           help="Path to SRAmetadb.sqlite file",
-                           type=str)
-    subparser.add_argument("--desc",
-                           action="store_true",
-                           help="Should sample_attribute be included")
+    subparser.add_argument("--db", help="Path to SRAmetadb.sqlite file", type=str)
+    subparser.add_argument(
+        "--desc", action="store_true", help="Should sample_attribute be included"
+    )
     subparser.add_argument(
         "--detailed",
         action="store_true",
@@ -747,36 +723,32 @@ def parse_args(args=None):
                                             run_alias (GSM_r),
                                             study_alias (GSE)]""",
     )
-    subparser.add_argument("--expand",
-                           action="store_true",
-                           help="Should sample_attribute be expanded")
+    subparser.add_argument(
+        "--expand", action="store_true", help="Should sample_attribute be expanded"
+    )
     subparser.add_argument("--saveto", help="Save output to file")
     subparser.add_argument("gsm_ids", nargs="+")
     subparser.set_defaults(func=gsm_to_srx)
 
     subparser = subparsers.add_parser("srp-to-gse", help="Get GSE for a SRP")
-    subparser.add_argument("--db",
-                           help="Path to SRAmetadb.sqlite file",
-                           type=str)
+    subparser.add_argument("--db", help="Path to SRAmetadb.sqlite file", type=str)
     subparser.add_argument("--saveto", help="Save output to file")
     subparser.add_argument(
         "--detailed",
         action="store_true",
         help="Output additional columns: [sample_accession, run_accession]",
     )
-    subparser.add_argument("--desc",
-                           action="store_true",
-                           help="Should sample_attribute be included")
-    subparser.add_argument("--expand",
-                           action="store_true",
-                           help="Should sample_attribute be expanded")
+    subparser.add_argument(
+        "--desc", action="store_true", help="Should sample_attribute be included"
+    )
+    subparser.add_argument(
+        "--expand", action="store_true", help="Should sample_attribute be expanded"
+    )
     subparser.add_argument("srp_id")
     subparser.set_defaults(func=srp_to_gse)
 
     subparser = subparsers.add_parser("srp-to-srr", help="Get SRR for a SRP")
-    subparser.add_argument("--db",
-                           help="Path to SRAmetadb.sqlite file",
-                           type=str)
+    subparser.add_argument("--db", help="Path to SRAmetadb.sqlite file", type=str)
     subparser.add_argument("--saveto", help="Save output to file")
     subparser.add_argument(
         "--detailed",
@@ -788,19 +760,17 @@ def parse_args(args=None):
                                             sample_alias (GSM_),
                                             run_alias (GSM_r)]""",
     )
-    subparser.add_argument("--desc",
-                           action="store_true",
-                           help="Should sample_attribute be included")
-    subparser.add_argument("--expand",
-                           action="store_true",
-                           help="Should sample_attribute be expanded")
+    subparser.add_argument(
+        "--desc", action="store_true", help="Should sample_attribute be included"
+    )
+    subparser.add_argument(
+        "--expand", action="store_true", help="Should sample_attribute be expanded"
+    )
     subparser.add_argument("srp_id")
     subparser.set_defaults(func=srp_to_srr)
 
     subparser = subparsers.add_parser("srp-to-srs", help="Get SRS for a SRP")
-    subparser.add_argument("--db",
-                           help="Path to SRAmetadb.sqlite file",
-                           type=str)
+    subparser.add_argument("--db", help="Path to SRAmetadb.sqlite file", type=str)
     subparser.add_argument("--saveto", help="Save output to file")
     subparser.add_argument(
         "--detailed",
@@ -812,19 +782,17 @@ def parse_args(args=None):
                                             run_alias (GSM_r),
                                             study_alias (GSE)]""",
     )
-    subparser.add_argument("--desc",
-                           action="store_true",
-                           help="Should sample_attribute be included")
-    subparser.add_argument("--expand",
-                           action="store_true",
-                           help="Should sample_attribute be expanded")
+    subparser.add_argument(
+        "--desc", action="store_true", help="Should sample_attribute be included"
+    )
+    subparser.add_argument(
+        "--expand", action="store_true", help="Should sample_attribute be expanded"
+    )
     subparser.add_argument("srp_id")
     subparser.set_defaults(func=srp_to_srs)
 
     subparser = subparsers.add_parser("srp-to-srx", help="Get SRX for a SRP")
-    subparser.add_argument("--db",
-                           help="Path to SRAmetadb.sqlite file",
-                           type=str)
+    subparser.add_argument("--db", help="Path to SRAmetadb.sqlite file", type=str)
     subparser.add_argument("--saveto", help="Save output to file")
     subparser.add_argument(
         "--detailed",
@@ -836,19 +804,17 @@ def parse_args(args=None):
                                             run_alias (GSM_r)',
                                             study_alias (GSE)]""",
     )
-    subparser.add_argument("--desc",
-                           action="store_true",
-                           help="Should sample_attribute be included")
-    subparser.add_argument("--expand",
-                           action="store_true",
-                           help="Should sample_attribute be expanded")
+    subparser.add_argument(
+        "--desc", action="store_true", help="Should sample_attribute be included"
+    )
+    subparser.add_argument(
+        "--expand", action="store_true", help="Should sample_attribute be expanded"
+    )
     subparser.add_argument("srp_id")
     subparser.set_defaults(func=srp_to_srx)
 
     subparser = subparsers.add_parser("srr-to-gsm", help="Get GSM for a SRR")
-    subparser.add_argument("--db",
-                           help="Path to SRAmetadb.sqlite file",
-                           type=str)
+    subparser.add_argument("--db", help="Path to SRAmetadb.sqlite file", type=str)
     subparser.add_argument(
         "--detailed",
         action="store_true",
@@ -859,20 +825,18 @@ def parse_args(args=None):
                                              experiment_alias (GSM),
                                              study_alias (GSE)]""",
     )
-    subparser.add_argument("--desc",
-                           action="store_true",
-                           help="Should sample_attribute be included")
-    subparser.add_argument("--expand",
-                           action="store_true",
-                           help="Should sample_attribute be expanded")
+    subparser.add_argument(
+        "--desc", action="store_true", help="Should sample_attribute be included"
+    )
+    subparser.add_argument(
+        "--expand", action="store_true", help="Should sample_attribute be expanded"
+    )
     subparser.add_argument("--saveto", help="Save output to file")
     subparser.add_argument("srr_ids", nargs="+")
     subparser.set_defaults(func=srr_to_gsm)
 
     subparser = subparsers.add_parser("srr-to-srp", help="Get SRP for a SRR")
-    subparser.add_argument("--db",
-                           help="Path to SRAmetadb.sqlite file",
-                           type=str)
+    subparser.add_argument("--db", help="Path to SRAmetadb.sqlite file", type=str)
     subparser.add_argument(
         "--detailed",
         action="store_true",
@@ -883,20 +847,18 @@ def parse_args(args=None):
                                              sample_alias (GSM_),
                                              study_alias (GSE)]""",
     )
-    subparser.add_argument("--desc",
-                           action="store_true",
-                           help="Should sample_attribute be included")
-    subparser.add_argument("--expand",
-                           action="store_true",
-                           help="Should sample_attribute be expanded")
+    subparser.add_argument(
+        "--desc", action="store_true", help="Should sample_attribute be included"
+    )
+    subparser.add_argument(
+        "--expand", action="store_true", help="Should sample_attribute be expanded"
+    )
     subparser.add_argument("--saveto", help="Save output to file")
     subparser.add_argument("srr_ids", nargs="+")
     subparser.set_defaults(func=srr_to_srp)
 
     subparser = subparsers.add_parser("srr-to-srs", help="Get SRS for a SRR")
-    subparser.add_argument("--db",
-                           help="Path to SRAmetadb.sqlite file",
-                           type=str)
+    subparser.add_argument("--db", help="Path to SRAmetadb.sqlite file", type=str)
     subparser.add_argument(
         "--detailed",
         action="store_true",
@@ -907,20 +869,18 @@ def parse_args(args=None):
                                              experiment_alias (GSM),
                                              study_alias (GSE)]""",
     )
-    subparser.add_argument("--desc",
-                           action="store_true",
-                           help="Should sample_attribute be included")
-    subparser.add_argument("--expand",
-                           action="store_true",
-                           help="Should sample_attribute be expanded")
+    subparser.add_argument(
+        "--desc", action="store_true", help="Should sample_attribute be included"
+    )
+    subparser.add_argument(
+        "--expand", action="store_true", help="Should sample_attribute be expanded"
+    )
     subparser.add_argument("--saveto", help="Save output to file")
     subparser.add_argument("srr_ids", nargs="+")
     subparser.set_defaults(func=srr_to_srs)
 
     subparser = subparsers.add_parser("srr-to-srx", help="Get SRX for a SRR")
-    subparser.add_argument("--db",
-                           help="Path to SRAmetadb.sqlite file",
-                           type=str)
+    subparser.add_argument("--db", help="Path to SRAmetadb.sqlite file", type=str)
     subparser.add_argument(
         "--detailed",
         action="store_true",
@@ -931,61 +891,55 @@ def parse_args(args=None):
                                             sample_alias (GSM_),
                                             study_alias (GSE)]""",
     )
-    subparser.add_argument("--desc",
-                           action="store_true",
-                           help="Should sample_attribute be included")
-    subparser.add_argument("--expand",
-                           action="store_true",
-                           help="Should sample_attribute be expanded")
+    subparser.add_argument(
+        "--desc", action="store_true", help="Should sample_attribute be included"
+    )
+    subparser.add_argument(
+        "--expand", action="store_true", help="Should sample_attribute be expanded"
+    )
     subparser.add_argument("--saveto", help="Save output to file")
     subparser.add_argument("srr_ids", nargs="+")
     subparser.set_defaults(func=srr_to_srx)
 
     subparser = subparsers.add_parser("srs-to-gsm", help="Get GSM for a SRS")
-    subparser.add_argument("--db",
-                           help="Path to SRAmetadb.sqlite file",
-                           type=str)
+    subparser.add_argument("--db", help="Path to SRAmetadb.sqlite file", type=str)
     subparser.add_argument("--saveto", help="Save output to file")
     subparser.add_argument(
         "--detailed",
         action="store_true",
         help="Output additional columns: [run_accession, study_accession]",
     )
-    subparser.add_argument("--desc",
-                           action="store_true",
-                           help="Should sample_attribute be included")
-    subparser.add_argument("--expand",
-                           action="store_true",
-                           help="Should sample_attribute be expanded")
+    subparser.add_argument(
+        "--desc", action="store_true", help="Should sample_attribute be included"
+    )
+    subparser.add_argument(
+        "--expand", action="store_true", help="Should sample_attribute be expanded"
+    )
     subparser.add_argument("srs_ids", nargs="+")
     subparser.set_defaults(func=srs_to_gsm)
 
     subparser = subparsers.add_parser("srs-to-srx", help="Get SRX for a SRS")
-    subparser.add_argument("--db",
-                           help="Path to SRAmetadb.sqlite file",
-                           type=str)
+    subparser.add_argument("--db", help="Path to SRAmetadb.sqlite file", type=str)
     subparser.add_argument("--saveto", help="Save output to file")
     subparser.add_argument(
         "--detailed",
         action="store_true",
         help="Output additional columns: [run_accession, study_accession]",
     )
-    subparser.add_argument("--desc",
-                           action="store_true",
-                           help="Should sample_attribute be included")
-    subparser.add_argument("--expand",
-                           action="store_true",
-                           help="Should sample_attribute be expanded")
+    subparser.add_argument(
+        "--desc", action="store_true", help="Should sample_attribute be included"
+    )
+    subparser.add_argument(
+        "--expand", action="store_true", help="Should sample_attribute be expanded"
+    )
     subparser.add_argument("srs_ids", nargs="+")
     subparser.set_defaults(func=srs_to_srx)
 
     subparser = subparsers.add_parser("srx-to-srp", help="Get SRP for a SRX")
-    subparser.add_argument("--db",
-                           help="Path to SRAmetadb.sqlite file",
-                           type=str)
-    subparser.add_argument("--desc",
-                           action="store_true",
-                           help="Should sample_attribute be included")
+    subparser.add_argument("--db", help="Path to SRAmetadb.sqlite file", type=str)
+    subparser.add_argument(
+        "--desc", action="store_true", help="Should sample_attribute be included"
+    )
     subparser.add_argument(
         "--detailed",
         action="store_true",
@@ -996,48 +950,44 @@ def parse_args(args=None):
                                             sample_alias (GSM),
                                             study_alias (GSE)]""",
     )
-    subparser.add_argument("--expand",
-                           action="store_true",
-                           help="Should sample_attribute be expanded")
+    subparser.add_argument(
+        "--expand", action="store_true", help="Should sample_attribute be expanded"
+    )
     subparser.add_argument("--saveto", help="Save output to file")
     subparser.add_argument("srx_ids", nargs="+")
     subparser.set_defaults(func=srx_to_srp)
 
     subparser = subparsers.add_parser("srx-to-srr", help="Get SRR for a SRX")
-    subparser.add_argument("--db",
-                           help="Path to SRAmetadb.sqlite file",
-                           type=str)
-    subparser.add_argument("--desc",
-                           action="store_true",
-                           help="Should sample_attribute be included")
+    subparser.add_argument("--db", help="Path to SRAmetadb.sqlite file", type=str)
+    subparser.add_argument(
+        "--desc", action="store_true", help="Should sample_attribute be included"
+    )
     subparser.add_argument(
         "--detailed",
         action="store_true",
         help="Output additional columns: [sample_accession, study_accession]",
     )
-    subparser.add_argument("--expand",
-                           action="store_true",
-                           help="Should sample_attribute be expanded")
+    subparser.add_argument(
+        "--expand", action="store_true", help="Should sample_attribute be expanded"
+    )
     subparser.add_argument("--saveto", help="Save output to file")
     subparser.add_argument("srx_ids", nargs="+")
     subparser.set_defaults(func=srx_to_srr)
 
     subparser = subparsers.add_parser("srx-to-srs", help="Get SRS for a SRX")
-    subparser.add_argument("--db",
-                           help="Path to SRAmetadb.sqlite file",
-                           type=str)
+    subparser.add_argument("--db", help="Path to SRAmetadb.sqlite file", type=str)
     subparser.add_argument("--saveto", help="Save output to file")
     subparser.add_argument(
         "--detailed",
         action="store_true",
         help="Output additional columns: [run_accession, study_accession]",
     )
-    subparser.add_argument("--desc",
-                           action="store_true",
-                           help="Should sample_attribute be included")
-    subparser.add_argument("--expand",
-                           action="store_true",
-                           help="Should sample_attribute be expanded")
+    subparser.add_argument(
+        "--desc", action="store_true", help="Should sample_attribute be included"
+    )
+    subparser.add_argument(
+        "--expand", action="store_true", help="Should sample_attribute be expanded"
+    )
     subparser.add_argument("srx_ids", nargs="+")
     subparser.set_defaults(func=srx_to_srs)
 
@@ -1055,8 +1005,7 @@ def parse_args(args=None):
             args.saveto,
         )
     elif args.command == "download":
-        download(args.out_dir, args.db, args.srx, args.srp,
-                 args.skip_confirmation)
+        download(args.out_dir, args.db, args.srx, args.srp, args.skip_confirmation)
     elif args.command == "search":
         search(
             args.search_text,
@@ -1068,65 +1017,85 @@ def parse_args(args=None):
             args.saveto,
         )
     elif args.command == "gse-to-gsm":
-        gse_to_gsm(args.gse_ids, args.db, args.saveto, args.detailed,
-                   args.desc, args.expand)
+        gse_to_gsm(
+            args.gse_ids, args.db, args.saveto, args.detailed, args.desc, args.expand
+        )
     elif args.command == "gse-to-srp":
-        gse_to_srp(args.gse_ids, args.db, args.saveto, args.detailed,
-                   args.desc, args.expand)
+        gse_to_srp(
+            args.gse_ids, args.db, args.saveto, args.detailed, args.desc, args.expand
+        )
     elif args.command == "gsm-to-gse":
-        gsm_to_gse(args.gsm_ids, args.db, args.saveto, args.detailed,
-                   args.desc, args.expand)
+        gsm_to_gse(
+            args.gsm_ids, args.db, args.saveto, args.detailed, args.desc, args.expand
+        )
     elif args.command == "gsm-to-srp":
-        gsm_to_srp(args.gsm_ids, args.db, args.saveto, args.detailed,
-                   args.desc, args.expand)
+        gsm_to_srp(
+            args.gsm_ids, args.db, args.saveto, args.detailed, args.desc, args.expand
+        )
     elif args.command == "gsm-to-srr":
-        gsm_to_srr(args.gsm_ids, args.db, args.saveto, args.detailed,
-                   args.desc, args.expand)
+        gsm_to_srr(
+            args.gsm_ids, args.db, args.saveto, args.detailed, args.desc, args.expand
+        )
     elif args.command == "gsm-to-srs":
-        gsm_to_srs(args.gsm_ids, args.db, args.saveto, args.detailed,
-                   args.desc, args.expand)
+        gsm_to_srs(
+            args.gsm_ids, args.db, args.saveto, args.detailed, args.desc, args.expand
+        )
     elif args.command == "gsm-to-srx":
-        gsm_to_srx(args.gsm_ids, args.db, args.saveto, args.detailed,
-                   args.desc, args.expand)
+        gsm_to_srx(
+            args.gsm_ids, args.db, args.saveto, args.detailed, args.desc, args.expand
+        )
     elif args.command == "srp-to-gse":
-        srp_to_gse(args.srp_id, args.db, args.saveto, args.detailed, args.desc,
-                   args.expand)
+        srp_to_gse(
+            args.srp_id, args.db, args.saveto, args.detailed, args.desc, args.expand
+        )
     elif args.command == "srp-to-srr":
-        srp_to_srr(args.srp_id, args.db, args.saveto, args.detailed, args.desc,
-                   args.expand)
+        srp_to_srr(
+            args.srp_id, args.db, args.saveto, args.detailed, args.desc, args.expand
+        )
     elif args.command == "srp-to-srs":
-        srp_to_srs(args.srp_id, args.db, args.saveto, args.detailed, args.desc,
-                   args.expand)
+        srp_to_srs(
+            args.srp_id, args.db, args.saveto, args.detailed, args.desc, args.expand
+        )
     elif args.command == "srp-to-srx":
-        srp_to_srx(args.srp_id, args.db, args.saveto, args.detailed, args.desc,
-                   args.expand)
+        srp_to_srx(
+            args.srp_id, args.db, args.saveto, args.detailed, args.desc, args.expand
+        )
     elif args.command == "srr-to-gsm":
-        srr_to_gsm(args.srr_ids, args.db, args.saveto, args.detailed,
-                   args.desc, args.expand)
+        srr_to_gsm(
+            args.srr_ids, args.db, args.saveto, args.detailed, args.desc, args.expand
+        )
     elif args.command == "srr-to-srp":
-        srr_to_srp(args.srr_ids, args.db, args.saveto, args.detailed,
-                   args.desc, args.expand)
+        srr_to_srp(
+            args.srr_ids, args.db, args.saveto, args.detailed, args.desc, args.expand
+        )
     elif args.command == "srr-to-srs":
-        srr_to_srs(args.srr_ids, args.db, args.saveto, args.detailed,
-                   args.desc, args.expand)
+        srr_to_srs(
+            args.srr_ids, args.db, args.saveto, args.detailed, args.desc, args.expand
+        )
     elif args.command == "srr-to-srx":
-        srr_to_srx(args.srr_ids, args.db, args.saveto, args.detailed,
-                   args.desc, args.expand)
+        srr_to_srx(
+            args.srr_ids, args.db, args.saveto, args.detailed, args.desc, args.expand
+        )
     elif args.command == "srs-to-gsm":
-        srs_to_gsm(args.srs_ids, args.db, args.saveto, args.detailed,
-                   args.desc, args.expand)
+        srs_to_gsm(
+            args.srs_ids, args.db, args.saveto, args.detailed, args.desc, args.expand
+        )
     elif args.command == "srs-to-srx":
-        srs_to_srx(args.srs_ids, args.db, args.saveto, args.detailed,
-                   args.desc, args.expand)
+        srs_to_srx(
+            args.srs_ids, args.db, args.saveto, args.detailed, args.desc, args.expand
+        )
     elif args.command == "srx-to-srp":
-        srx_to_srp(args.srx_ids, args.db, args.saveto, args.detailed,
-                   args.desc, args.expand)
+        srx_to_srp(
+            args.srx_ids, args.db, args.saveto, args.detailed, args.desc, args.expand
+        )
     elif args.command == "srx-to-srr":
-        srx_to_srr(args.srx_ids, args.db, args.saveto, args.detailed,
-                   args.desc, args.expand)
+        srx_to_srr(
+            args.srx_ids, args.db, args.saveto, args.detailed, args.desc, args.expand
+        )
     elif args.command == "srx-to-srs":
-        srx_to_srs(args.srx_ids, args.db, args.saveto, args.detailed,
-                   args.desc, args.expand)
+        srx_to_srs(
+            args.srx_ids, args.db, args.saveto, args.detailed, args.desc, args.expand
+        )
 
 
 if __name__ == "__main__":
