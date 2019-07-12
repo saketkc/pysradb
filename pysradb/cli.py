@@ -517,7 +517,8 @@ def parse_args(args=None):
     parser.add_argument(
         "--citation",
         action="version",
-        version=dedent("""
+        version=dedent(
+            """
         Choudhary, Saket. "pysradb: A Python Package to Query next-Generation Sequencing Metadata and Data from NCBI Sequence Read Archive." F1000Research, vol. 8, F1000 (Faculty of 1000 Ltd), Apr. 2019, p. 532 (https://f1000research.com/articles/8-532/v1)
 
         @article{Choudhary2019,
@@ -532,8 +533,9 @@ def parse_args(args=None):
         title = {pysradb: A Python package to query next-generation sequencing metadata and data from {NCBI} Sequence Read Archive},
         journal = {F1000Research}
         }
-        """),
-        help="how to cite"
+        """
+        ),
+        help="how to cite",
     )
 
     subparser = subparsers.add_parser("metadb", help="Download SRAmetadb.sqlite")
