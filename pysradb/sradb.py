@@ -1262,15 +1262,16 @@ class SRAdb(BASEdb):
         if not len(df.index):
             print("Could not locate {} in db".format(srp))
             sys.exit(0)
-        if len(df.index):
-            print("The following files will be downloaded: \n")
-            pd.set_option("display.max_colwidth", -1)
-            print(df.to_string(index=False, justify="left", col_space=0))
-            print("\n\n")
         file_sizes = df.srapath_url.apply(get_file_size)
         total_file_size = millify(np.sum(file_sizes))
+        print("The following files will be downloaded: \n")
+        pd.set_option("display.max_colwidth", -1)
+        print(df.to_string(index=False, justify="left", col_space=0))
+        print(os.linesep)
+        print("Total size: {}".format(total_file_size))
+        print(os.linesep)
         if not skip_confirmation:
-            if not confirm("Total size: {} | Start download? ".format(total_file_size)):
+            if not confirm("Start download? "):
                 sys.exit(0)
         with tqdm(total=download_list.shape[0]) as pbar:
             for srp, srx, srr, _, url in download_list:
