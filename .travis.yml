@@ -14,7 +14,7 @@ install:
 script:
 - make install
 - pysradb
-- make test
+#- make test
 - make coverage
 - codecov
 - travis-sphinx build --source=$TRAVIS_BUILD_DIR/docs
