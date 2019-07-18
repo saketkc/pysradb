@@ -253,8 +253,6 @@ class SRAweb(object):
 
     def gse_to_gsm(self, gse, **kwargs):
         gse_df = self.fetch_gds_results(gse)
-        gse_df["project_alias"] = gse
-        gse_df = gse_df[gse_df.entrytype == "GSM"]
         gse_df = gse_df.rename(
             columns={
                 "accession": "experiment_alias",
@@ -263,6 +261,10 @@ class SRAweb(object):
                 "summary": "sample_attribute",
             }
         )
+        # TODO: Fix for multiple GSEs?
+        gses = gse_df[gse_df.entrytype == 'GSE'].experiment_alias.tolist() [0]
+        gse_df = gse_df[gse_df.entrytype == "GSM"]
+        gse_df['project_alias'] = gses
         return gse_df[["project_alias", "experiment_alias", "experiment_accession"]]
 
     def gse_to_srp(self, gse, **kwargs):
