@@ -33,11 +33,11 @@ class SRAweb(object):
     @staticmethod
     def format_xml(string):
         """Create a fake root to make 'string' a valid xml
-        
+
         Parameters
         ----------
         string: str
-        
+
         Returns
         --------
         xml: str
@@ -48,12 +48,12 @@ class SRAweb(object):
     @staticmethod
     def xml_to_json(xml):
         """Convert xml to json.
-        
+
         Parameters
         ----------
         xml: str
              Input XML
-             
+
         Returns
         -------
         xml_dict: dict
@@ -78,6 +78,8 @@ class SRAweb(object):
         assert db in ["sra", "geo"]
 
         payload = self.esearch_params[db].copy()
+        if isinstance(term, list):
+            term = " OR ".join(term)
         payload += [("term", term)]
 
         request = requests.get(self.base_url["esearch"], params=OrderedDict(payload))
@@ -108,6 +110,7 @@ class SRAweb(object):
         detailed=False,
         expand_sample_attributes=False,
         output_read_lengths=False,
+        **kwargs
     ):
 
         esummary_result = self.get_esummary_reponse("sra", srp)
@@ -207,7 +210,7 @@ class SRAweb(object):
                 sra_record.append(experiment_record)
         return pd.DataFrame(sra_record)
 
-    def srp_to_gse(self, srp):
+    def srp_to_gse(self, srp, **kwargs):
         esummary_result = self.get_esummary_reponse("geo", srp)
         if not esummary_result:
             return
@@ -227,7 +230,7 @@ class SRAweb(object):
 
         return pd.DataFrame(gse_records)
 
-    def fetch_gds_results(self, gse):
+    def fetch_gds_results(self, gse, **kwargs):
         result = self.get_esummary_reponse("geo", gse)
         uids = result["uids"]
         gse_records = []
@@ -248,7 +251,7 @@ class SRAweb(object):
                 gse_records.append(record)
         return pd.DataFrame(gse_records)
 
-    def gse_to_gsm(self, gse):
+    def gse_to_gsm(self, gse, **kwargs):
         gse_df = self.fetch_gds_results(gse)
         gse_df["project_alias"] = gse
         gse_df = gse_df[gse_df.entrytype == "GSM"]
@@ -262,7 +265,7 @@ class SRAweb(object):
         )
         return gse_df[["project_alias", "experiment_alias", "experiment_accession"]]
 
-    def gse_to_srp(self, gse):
+    def gse_to_srp(self, gse, **kwargs):
         gse_df = self.fetch_gds_results(gse)
         gse_df = gse_df[gse_df.entrytype == "GSE"]
         gse_df = gse_df.rename(
@@ -270,7 +273,7 @@ class SRAweb(object):
         )
         return gse_df[["project_alias", "project_accession"]]
 
-    def gsm_to_srp(self, gsm):
+    def gsm_to_srp(self, gsm, **kwargs):
         gsm_df = self.fetch_gds_results(gsm)
         gsm_df = gsm_df[gsm_df.entrytype == "GSE"]
         gsm_df = gsm_df.rename(
@@ -278,13 +281,13 @@ class SRAweb(object):
         )
         return gsm_df[["experiment_alias", "project_accession"]]
 
-    def gsm_to_srr(self, gsm):
+    def gsm_to_srr(self, gsm, **kwargs):
         gsm_df = self.fetch_gds_results(gsm)
         gsm_df = gsm_df[gsm_df.entrytype == "GSM"]
         srr_df = self.srx_to_srr(gsm_df.SRA.tolist()[0])
         return gsm_df[["experiment_alias", "run_accession"]]
 
-    def gsm_to_srs(self, gsm):
+    def gsm_to_srs(self, gsm, **kwargs):
         """Get SRS for a GSM"""
         gsm_df = self.fetch_gds_results(gsm)
         gsm_df = gsm_df[gsm_df.entrytype == "GSM"].rename(
@@ -298,7 +301,7 @@ class SRAweb(object):
         ]
         return gsm_df
 
-    def gsm_to_srx(self, gsm):
+    def gsm_to_srx(self, gsm, **kwargs):
         """Get SRX for a GSM"""
         gsm_df = self.fetch_gds_results(gsm)
         gsm_df = gsm_df[gsm_df.entrytype == "GSM"].rename(
@@ -307,80 +310,87 @@ class SRAweb(object):
         # srx_df = self.srx_to_srr(gsm_df.SRA.tolist()[0])
         return gsm_df[["experiment_alias", "experiment_accession"]]
 
-    def srp_to_gse(self, srp):
+    def srp_to_gse(self, srp, **kwargs):
         """Get GSE for a SRP"""
         srp_df = self.fetch_gds_results(gsm)
         srp_df["project_accesssion"] = srp
         return srp_df
 
-    def srp_to_srr(self, srp):
+    def srp_to_srr(self, srp, **kwargs):
         """Get SRR for a SRP"""
         srp_df = self.sra_metadata(srp)
         return srp_df[["project_accession", "run_accession"]]
 
-    def srp_to_srs(self, srp):
+    def srp_to_srs(self, srp, **kwargs):
         """Get SRS for a SRP"""
         srp_df = self.sra_metadata(srp)
         return srp_df[["project_accession", "sample_accession"]]
 
-    def srp_to_srx(self, srp):
+    def srp_to_srx(self, srp, **kwargs):
         """Get SRX for a SRP"""
         srp_df = self.sra_metadata(srp)
         srp_df["project_accesssion"] = srp
         return srp_df[["project_accession", "experiment_accession"]]
 
-    def srr_to_gsm(self, srr):
+    def srr_to_gsm(self, srr, **kwargs):
         """Get GSM for a SRR"""
         srr_df = self.sra_metadata(srr)
         return srr_df[["run_accession", "experiment_alias"]]
 
-    def srr_to_srp(self, srr):
+    def srr_to_srp(self, srr, **kwargs):
         """Get SRP for a SRR"""
         srr_df = self.sra_metadata(srr)
         return srr_df[["run_accession", "project_accession"]]
 
-    def srr_to_srs(self, srr):
+    def srr_to_srs(self, srr, **kwargs):
         """Get SRS for a SRR"""
         srr_df = self.sra_metadata(srr)
         return srr_df[["run_accession", "sample_accession"]]
 
-    def srr_to_srx(self, srr):
+    def srr_to_srx(self, srr, **kwargs):
         """Get SRX for a SRR"""
         srr_df = self.sra_metadata(srr)
         return srr_df[["run_accession", "experiment_accession"]]
 
-    def srs_to_gsm(self, srs):
+    def srs_to_gsm(self, srs, **kwargs):
         """Get GSM for a SRS"""
         srx_df = self.srs_to_srx(srs)
         time.sleep(0.5)
         gsm_df = self.srx_to_gsm(srx_df.experiment_accession.tolist()[0])
         srs_df = srx_df.merge(gsm_df, on="experiment_accession")
-
         return srs_df[["sample_accession", "experiment_alias"]]
 
-    def srx_to_gsm(self, srx):
+    def srx_to_gsm(self, srx, **kwargs):
         gsm_df = self.fetch_gds_results(srx)
         gsm_df = gsm_df[gsm_df.entrytype == "GSM"].rename(
             columns={"SRA": "experiment_accession", "accession": "experiment_alias"}
         )
         return gsm_df[["experiment_accession", "experiment_alias"]]
 
-    def srs_to_srx(self, srs):
+    def srs_to_srx(self, srs, **kwargs):
         """Get SRX for a SRS"""
         srs_df = self.sra_metadata(srs)
         return srs_df[["sample_accession", "experiment_accession"]]
 
-    def srx_to_srp(self, srx):
+    def srx_to_srp(self, srx, **kwargs):
         """Get SRP for a SRX"""
         srx_df = self.sra_metadata(srx)
         return srx_df[["experiment_accession", "project_accession"]]
 
-    def srx_to_srr(self, srx):
+    def srx_to_srr(self, srx, **kwargs):
         """Get SRR for a SRX"""
         srx_df = self.sra_metadata(srx)
         return srx_df[["experiment_accession", "run_accession"]]
 
-    def srx_to_srs(self, srx):
+    def srx_to_srs(self, srx, **kwargs):
         """Get SRS for a SRX"""
         srx_df = self.sra_metadata(srx)
         return srx_df[["experiment_accession", "sample_accession"]]
+
+    def search(self, *args, **kwargs):
+        raise NotImplementedError("Search not yet implemented for Web")
+
+    def close(self):
+        # Dummy method to mimick SRAdb() object
+        # TODO: fix this
+        pass
