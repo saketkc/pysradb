@@ -8,7 +8,10 @@ def _get_sample_attr_keys(sample_attribute):
     if sample_attribute is None:
         return None, None
     sample_attribute_splitted = sample_attribute.split("||")
-    split_by_colon = [str(attr).split(": ") for attr in sample_attribute_splitted]
+    split_by_colon = [
+        str(attr).strip().split(": ") for attr in sample_attribute_splitted
+    ]
+
     # Iterate once more to consider first one as the key
     # and remaining as the value
     # This is because of bad annotations like in this example
@@ -16,11 +19,20 @@ def _get_sample_attr_keys(sample_attribute):
     # infect: MHV-A59 || time point: 5: hour || compound: cycloheximide ||\
     # sequencing protocol: RiboSeq || biological repeat: long read sequencing
     # Notice the `time: 5: hour`
+    # sample_attribute: investigation type: metagenome || project name: Landsort Depth 20090415 transect ||
+    # sequencing method: 454 || collection date: 2009-04-15 || ammonium: 8.7: Ã‚ÂµM || chlorophyll: 0: Ã‚Âµg/L ||
+    # dissolved oxygen: -1.33: Ã‚Âµmol/kg || nitrate: 0.02: Ã‚ÂµM || nitrogen: 0: Ã‚ÂµM ||
+    # environmental package: water || geographic location (latitude): 58.6: DD ||
+    # geographic location (longitude): 18.2: DD || geographic location (country and/or sea,region): Baltic Sea ||
+    # environment (biome): 00002150 || environment (feature): 00002150 || environment (material): 00002150 ||
+    # depth: 400: m || Phosphate:  || Total phosphorous:  || Silicon:
+    # Handle empty cases as above
+    split_by_colon = [attr for attr in split_by_colon if len(attr) >= 2]
 
     for index, element in enumerate(split_by_colon):
         if len(element) > 2:
-            key = element[0]
-            value = ":".join(element[1:])
+            key = element[0].strip()
+            value = ":".join(element[1:]).strip()
             split_by_colon[index] = [key, value]
 
     try:
