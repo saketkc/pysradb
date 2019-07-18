@@ -4,17 +4,17 @@
 
 
 
-.. image:: https://zenodo.org/badge/159590788.svg
-    :target: https://zenodo.org/badge/latestdoi/159590788
-
 .. image:: https://img.shields.io/pypi/v/pysradb.svg?style=flat-square
     :target: https://pypi.python.org/pypi/pysradb
 
 .. image:: https://img.shields.io/badge/install%20with-bioconda-brightgreen.svg?style=flat-square
     :target: http://bioconda.github.io/recipes/pysradb/README.html
-
-.. image:: https://codecov.io/gh/saketkc/pysradb/branch/master/graph/badge.svg?style=flat-square
-    :target: https://codecov.io/gh/saketkc/pysradb
+    
+.. image:: https://zenodo.org/badge/159590788.svg
+    :target: https://zenodo.org/badge/latestdoi/159590788
+    
+.. image:: https://img.shields.io/travis/saketkc/pysradb.svg?style=flat-square
+    :target: https://travis-ci.com/saketkc/pysradb
 
 Python package for interacting with SRAdb and downloading datasets from SRA.
 (python3 only!)
