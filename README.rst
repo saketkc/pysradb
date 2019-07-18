@@ -2,14 +2,13 @@
 
     <a href="https://raw.githubusercontent.com/saketkc/pysradb/master/docs/_static/pysradb_v3.png" target="_blank"><img src="https://raw.githubusercontent.com/saketkc/pysradb/master/docs/_static/pysradb_v3.png" /></a>
 
+
+
 .. image:: https://zenodo.org/badge/159590788.svg
     :target: https://zenodo.org/badge/latestdoi/159590788
 
 .. image:: https://img.shields.io/pypi/v/pysradb.svg?style=flat-square
     :target: https://pypi.python.org/pypi/pysradb
-
-.. image:: https://img.shields.io/travis/saketkc/pysradb.svg?style=flat-square
-    :target: https://travis-ci.com/saketkc/pysradb
 
 .. image:: https://img.shields.io/badge/install%20with-bioconda-brightgreen.svg?style=flat-square
     :target: http://bioconda.github.io/recipes/pysradb/README.html
