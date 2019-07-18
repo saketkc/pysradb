@@ -262,9 +262,15 @@ class SRAweb(object):
             }
         )
         # TODO: Fix for multiple GSEs?
-        gses = gse_df[gse_df.entrytype == 'GSE'].experiment_alias.tolist() [0]
+        gse_df["project_alias"] = ""
+        for index, row in gse_df.iterrows():
+            if row.entrytype == "GSE":
+                project_alias = row["experiment_accession"]
+            # If GSM is ecnountered, apply it the
+            # previously encountered GSE
+            elif row.entrytype == "GSM":
+                gse_df.loc[index, "project_alias"] = project_alias
         gse_df = gse_df[gse_df.entrytype == "GSM"]
-        gse_df['project_alias'] = gses
         return gse_df[["project_alias", "experiment_alias", "experiment_accession"]]
 
     def gse_to_srp(self, gse, **kwargs):
@@ -285,8 +291,17 @@ class SRAweb(object):
 
     def gsm_to_srr(self, gsm, **kwargs):
         gsm_df = self.fetch_gds_results(gsm)
+        gsm_df = gsm_df.rename(
+            columns={
+                "accession": "experiment_alias",
+                "SRA": "experiment_accession",
+                "title": "experiment_title",
+                "summary": "sample_attribute",
+            }
+        )
         gsm_df = gsm_df[gsm_df.entrytype == "GSM"]
-        srr_df = self.srx_to_srr(gsm_df.SRA.tolist()[0])
+        srr_df = self.srx_to_srr(gsm_df.experiment_accession.tolist())
+        gsm_df = gsm_df.merge(srr_df, on="experiment_accession")
         return gsm_df[["experiment_alias", "run_accession"]]
 
     def gsm_to_srs(self, gsm, **kwargs):
@@ -295,7 +310,7 @@ class SRAweb(object):
         gsm_df = gsm_df[gsm_df.entrytype == "GSM"].rename(
             columns={"SRA": "experiment_accession", "accession": "experiment_alias"}
         )
-        srx = gsm_df.experiment_accession.tolist()[0]
+        srx = gsm_df.experiment_accession.tolist()
         time.sleep(0.3)
         srs_df = self.srx_to_srs(srx)
         gsm_df = srs_df.merge(gsm_df, on="experiment_accession")[
@@ -309,7 +324,6 @@ class SRAweb(object):
         gsm_df = gsm_df[gsm_df.entrytype == "GSM"].rename(
             columns={"SRA": "experiment_accession", "accession": "experiment_alias"}
         )
-        # srx_df = self.srx_to_srr(gsm_df.SRA.tolist()[0])
         return gsm_df[["experiment_alias", "experiment_accession"]]
 
     def srp_to_gse(self, srp, **kwargs):
@@ -358,7 +372,7 @@ class SRAweb(object):
         """Get GSM for a SRS"""
         srx_df = self.srs_to_srx(srs)
         time.sleep(0.5)
-        gsm_df = self.srx_to_gsm(srx_df.experiment_accession.tolist()[0])
+        gsm_df = self.srx_to_gsm(srx_df.experiment_accession.tolist())
         srs_df = srx_df.merge(gsm_df, on="experiment_accession")
         return srs_df[["sample_accession", "experiment_alias"]]
 

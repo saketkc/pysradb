@@ -83,7 +83,7 @@ def metadata(srp_id, db, assay, desc, detailed, expand, saveto):
     db = _check_sradb_file(db)
     sradb = get_sra_object(db)
     df = sradb.sra_metadata(
-        acc=srp_id,
+        srp_id,
         assay=assay,
         detailed=detailed,
         sample_attribute=desc,
