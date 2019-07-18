@@ -1,6 +1,7 @@
 ..  raw:: html
 
     <a href="https://raw.githubusercontent.com/saketkc/pysradb/master/docs/_static/pysradb_v3.png" target="_blank"><img src="https://raw.githubusercontent.com/saketkc/pysradb/master/docs/_static/pysradb_v3.png" /></a>
+    <hr>
 
 
 
