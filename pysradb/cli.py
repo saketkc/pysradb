@@ -12,6 +12,7 @@ from . import __version__
 from .utils import confirm
 from .sradb import download_sradb_file
 from .sradb import SRAdb
+from .sraweb import SRAweb
 
 import pandas as pd
 
@@ -43,6 +44,7 @@ def _check_sradb_file(db):
         db = os.path.join(os.getcwd(), "SRAmetadb.sqlite")
         if os.path.isfile(db):
             return db
+        """
         if confirm(
             "SRAmetadb.sqlite file was not found in the current directory. Please quit and specify the path using `--db <DB_PATH>`"
             + os.linesep
@@ -51,10 +53,19 @@ def _check_sradb_file(db):
             download_sradb_file()
         else:
             sys.exit(1)
+        """
+        # Use the web version
+        return "web"
 
     if not os.path.isfile(db):
         raise RuntimeError("{} does not exist".format(db))
     return db
+
+
+def get_sra_object(db="web"):
+    if db is "web":
+        return SRAweb()
+    return SRAdb(db)
 
 
 ################### metadb #########################
@@ -70,7 +81,7 @@ def metadb(out_dir, overwrite, keep_gz):
 ###################### metadata ##############################
 def metadata(srp_id, db, assay, desc, detailed, expand, saveto):
     db = _check_sradb_file(db)
-    sradb = SRAdb(db)
+    sradb = get_sra_object(db)
     df = sradb.sra_metadata(
         acc=srp_id,
         assay=assay,
@@ -94,7 +105,7 @@ def download(out_dir, db, srx, srp, skip_confirmation, use_wget=False):
     db = _check_sradb_file(db)
     if out_dir is None:
         out_dir = os.path.join(os.getcwd(), "pysradb_downloads")
-    sradb = SRAdb(db)
+    sradb = get_sra_object(db)
     if not srp:
         text = ""
         for index, line in enumerate(sys.stdin):
@@ -125,7 +136,7 @@ def download(out_dir, db, srx, srp, skip_confirmation, use_wget=False):
     else:
         for srp_x in sorted(set(srp), key=srp.index):
             sradb.download(
-                srp=srp_x,
+                srp_x,
                 out_dir=out_dir,
                 filter_by_srx=srx,
                 skip_confirmation=skip_confirmation,
@@ -139,7 +150,7 @@ def download(out_dir, db, srx, srp, skip_confirmation, use_wget=False):
 ######################### search #################################
 def search(search_text, db, assay, desc, detailed, expand, saveto):
     db = _check_sradb_file(db)
-    sradb = SRAdb(db)
+    sradb = get_sra_object(db)
     df = sradb.search_sra(
         search_text,
         assay=assay,
@@ -157,9 +168,9 @@ def search(search_text, db, assay, desc, detailed, expand, saveto):
 ######################### gse-to-gsm ###############################
 def gse_to_gsm(gse_ids, db, saveto, detailed, desc, expand):
     db = _check_sradb_file(db)
-    sradb = SRAdb(db)
+    sradb = get_sra_object(db)
     df = sradb.gse_to_gsm(
-        gses=gse_ids,
+        gse_ids,
         detailed=detailed,
         sample_attribute=desc,
         expand_sample_attributes=expand,
@@ -174,9 +185,9 @@ def gse_to_gsm(gse_ids, db, saveto, detailed, desc, expand):
 ######################## gse-to-srp ################################
 def gse_to_srp(gse_ids, db, saveto, detailed, desc, expand):
     db = _check_sradb_file(db)
-    sradb = SRAdb(db)
+    sradb = get_sra_object(db)
     df = sradb.gse_to_srp(
-        gses=gse_ids,
+        gse_ids,
         detailed=detailed,
         sample_attribute=desc,
         expand_sample_attributes=expand,
@@ -191,9 +202,9 @@ def gse_to_srp(gse_ids, db, saveto, detailed, desc, expand):
 ######################### gsm-to-gse #################################
 def gsm_to_gse(gsm_ids, db, saveto, detailed, desc, expand):
     db = _check_sradb_file(db)
-    sradb = SRAdb(db)
+    sradb = get_sra_object(db)
     df = sradb.gsm_to_gse(
-        gsms=gsm_ids,
+        gsm_ids,
         detailed=detailed,
         sample_attribute=desc,
         expand_sample_attributes=expand,
@@ -208,9 +219,9 @@ def gsm_to_gse(gsm_ids, db, saveto, detailed, desc, expand):
 ############################ gsm-to-srp ################################
 def gsm_to_srp(gsm_ids, db, saveto, detailed, desc, expand):
     db = _check_sradb_file(db)
-    sradb = SRAdb(db)
+    sradb = get_sra_object(db)
     df = sradb.gsm_to_srp(
-        gsms=gsm_ids,
+        gsm_ids,
         detailed=detailed,
         sample_attribute=desc,
         expand_sample_attributes=expand,
@@ -225,9 +236,9 @@ def gsm_to_srp(gsm_ids, db, saveto, detailed, desc, expand):
 ############################ gsm-to-srr ################################
 def gsm_to_srr(gsm_ids, db, saveto, detailed, desc, expand):
     db = _check_sradb_file(db)
-    sradb = SRAdb(db)
+    sradb = get_sra_object(db)
     df = sradb.gsm_to_srr(
-        gsms=gsm_ids,
+        gsm_ids,
         detailed=detailed,
         sample_attribute=desc,
         expand_sample_attributes=expand,
@@ -242,9 +253,9 @@ def gsm_to_srr(gsm_ids, db, saveto, detailed, desc, expand):
 ############################ gsm-to-srs ################################
 def gsm_to_srs(gsm_ids, db, saveto, detailed, desc, expand):
     db = _check_sradb_file(db)
-    sradb = SRAdb(db)
+    sradb = get_sra_object(db)
     df = sradb.gsm_to_srs(
-        gsms=gsm_ids,
+        gsm_ids,
         detailed=detailed,
         sample_attribute=desc,
         expand_sample_attributes=expand,
@@ -259,9 +270,9 @@ def gsm_to_srs(gsm_ids, db, saveto, detailed, desc, expand):
 ############################# gsm-to-srx ###############################
 def gsm_to_srx(gsm_ids, db, saveto, detailed, desc, expand):
     db = _check_sradb_file(db)
-    sradb = SRAdb(db)
+    sradb = get_sra_object(db)
     df = sradb.gsm_to_srx(
-        gsms=gsm_ids,
+        gsm_ids,
         detailed=detailed,
         sample_attribute=desc,
         expand_sample_attributes=expand,
@@ -276,9 +287,9 @@ def gsm_to_srx(gsm_ids, db, saveto, detailed, desc, expand):
 ########################### srp-to-gse ##################################
 def srp_to_gse(srp_id, db, saveto, detailed, desc, expand):
     db = _check_sradb_file(db)
-    sradb = SRAdb(db)
+    sradb = get_sra_object(db)
     df = sradb.srp_to_gse(
-        srp=srp_id,
+        srp_id,
         detailed=detailed,
         sample_attribute=desc,
         expand_sample_attributes=expand,
@@ -293,9 +304,9 @@ def srp_to_gse(srp_id, db, saveto, detailed, desc, expand):
 ########################### srp-to-srr ##################################
 def srp_to_srr(srp_id, db, saveto, detailed, desc, expand):
     db = _check_sradb_file(db)
-    sradb = SRAdb(db)
+    sradb = get_sra_object(db)
     df = sradb.srp_to_srr(
-        srp=srp_id,
+        srp_id,
         detailed=detailed,
         sample_attribute=desc,
         expand_sample_attributes=expand,
@@ -310,9 +321,9 @@ def srp_to_srr(srp_id, db, saveto, detailed, desc, expand):
 ########################### srp-to-srs ##################################
 def srp_to_srs(srp_id, db, saveto, detailed, desc, expand):
     db = _check_sradb_file(db)
-    sradb = SRAdb(db)
+    sradb = get_sra_object(db)
     df = sradb.srp_to_srs(
-        srp=srp_id,
+        srp_id,
         detailed=detailed,
         sample_attribute=desc,
         expand_sample_attributes=expand,
@@ -327,9 +338,9 @@ def srp_to_srs(srp_id, db, saveto, detailed, desc, expand):
 ########################### srp-to-srx ##################################
 def srp_to_srx(srp_id, db, saveto, detailed, desc, expand):
     db = _check_sradb_file(db)
-    sradb = SRAdb(db)
+    sradb = get_sra_object(db)
     df = sradb.srp_to_srx(
-        srp=srp_id,
+        srp_id,
         detailed=detailed,
         sample_attribute=desc,
         expand_sample_attributes=expand,
@@ -344,9 +355,9 @@ def srp_to_srx(srp_id, db, saveto, detailed, desc, expand):
 ########################### srr-to-gsm ##################################
 def srr_to_gsm(srr_ids, db, saveto, detailed, desc, expand):
     db = _check_sradb_file(db)
-    sradb = SRAdb(db)
+    sradb = get_sra_object(db)
     df = sradb.srr_to_gsm(
-        srrs=srr_ids,
+        srr_ids,
         detailed=detailed,
         sample_attribute=desc,
         expand_sample_attributes=expand,
@@ -361,9 +372,9 @@ def srr_to_gsm(srr_ids, db, saveto, detailed, desc, expand):
 ########################### srr-to-srp ##################################
 def srr_to_srp(srr_ids, db, saveto, detailed, desc, expand):
     db = _check_sradb_file(db)
-    sradb = SRAdb(db)
+    sradb = get_sra_object(db)
     df = sradb.srr_to_srp(
-        srrs=srr_ids,
+        srr_ids,
         detailed=detailed,
         sample_attribute=desc,
         expand_sample_attributes=expand,
@@ -378,9 +389,9 @@ def srr_to_srp(srr_ids, db, saveto, detailed, desc, expand):
 ########################### srr-to-srs ##################################
 def srr_to_srs(srr_ids, db, saveto, detailed, desc, expand):
     db = _check_sradb_file(db)
-    sradb = SRAdb(db)
+    sradb = get_sra_object(db)
     df = sradb.srr_to_srs(
-        srrs=srr_ids,
+        srr_ids,
         detailed=detailed,
         sample_attribute=desc,
         expand_sample_attributes=expand,
@@ -395,9 +406,9 @@ def srr_to_srs(srr_ids, db, saveto, detailed, desc, expand):
 ########################### srr-to-srx ##################################
 def srr_to_srx(srr_ids, db, saveto, detailed, desc, expand):
     db = _check_sradb_file(db)
-    sradb = SRAdb(db)
+    sradb = get_sra_object(db)
     df = sradb.srr_to_srx(
-        srrs=srr_ids,
+        srr_ids,
         detailed=detailed,
         sample_attribute=desc,
         expand_sample_attributes=expand,
@@ -412,9 +423,9 @@ def srr_to_srx(srr_ids, db, saveto, detailed, desc, expand):
 ########################### srs-to-gsm ##################################
 def srs_to_gsm(srs_ids, db, saveto, detailed, desc, expand):
     db = _check_sradb_file(db)
-    sradb = SRAdb(db)
+    sradb = get_sra_object(db)
     df = sradb.srs_to_gsm(
-        srss=srs_ids,
+        srs_ids,
         detailed=detailed,
         sample_attribute=desc,
         expand_sample_attributes=expand,
@@ -429,9 +440,9 @@ def srs_to_gsm(srs_ids, db, saveto, detailed, desc, expand):
 ########################### srs-to-srx ##################################
 def srs_to_srx(srs_ids, db, saveto, detailed, desc, expand):
     db = _check_sradb_file(db)
-    sradb = SRAdb(db)
+    sradb = get_sra_object(db)
     df = sradb.srs_to_srx(
-        srss=srs_ids,
+        srs_ids,
         detailed=detailed,
         sample_attribute=desc,
         expand_sample_attributes=expand,
@@ -446,9 +457,9 @@ def srs_to_srx(srs_ids, db, saveto, detailed, desc, expand):
 ########################### srx-to-srp ##################################
 def srx_to_srp(srx_ids, db, saveto, detailed, desc, expand):
     db = _check_sradb_file(db)
-    sradb = SRAdb(db)
+    sradb = get_sra_object(db)
     df = sradb.srx_to_srp(
-        srxs=srx_ids,
+        srx_ids,
         detailed=detailed,
         sample_attribute=desc,
         expand_sample_attributes=expand,
@@ -463,9 +474,9 @@ def srx_to_srp(srx_ids, db, saveto, detailed, desc, expand):
 ########################### srx-to-srr ##################################
 def srx_to_srr(srx_ids, db, saveto, detailed, desc, expand):
     db = _check_sradb_file(db)
-    sradb = SRAdb(db)
+    sradb = get_sra_object(db)
     df = sradb.srx_to_srr(
-        srxs=srx_ids,
+        srx_ids,
         detailed=detailed,
         sample_attribute=desc,
         expand_sample_attributes=expand,
@@ -480,9 +491,9 @@ def srx_to_srr(srx_ids, db, saveto, detailed, desc, expand):
 ########################### srx-to-srs ##################################
 def srx_to_srs(srx_ids, db, saveto, detailed, desc, expand):
     db = _check_sradb_file(db)
-    sradb = SRAdb(db)
+    sradb = get_sra_object(db)
     df = sradb.srx_to_srs(
-        srxs=srx_ids,
+        srx_ids,
         detailed=detailed,
         sample_attribute=desc,
         expand_sample_attributes=expand,
