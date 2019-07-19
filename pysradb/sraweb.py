@@ -3,6 +3,7 @@ from html import unescape
 
 import pandas as pd
 import re
+import sys
 import time
 
 import requests
@@ -112,7 +113,6 @@ class SRAweb(SRAdb):
             payload += self.create_esummary_params(esearch_response["esearchresult"])
             payload = OrderedDict(payload)
             payload["retstart"] = retstart
-            print(retstart)
             request = requests.get(
                 self.base_url["esummary"], params=OrderedDict(payload)
             )
@@ -243,29 +243,14 @@ class SRAweb(SRAdb):
                 sra_record.append(experiment_record)
         return pd.DataFrame(sra_record)
 
-    def srp_to_gse(self, srp, **kwargs):
-        esummary_result = self.get_esummary_response("geo", srp)
-        if not esummary_result:
-            return
-
-        gse_records = []
-        uids = esummary_result["uids"]
-        for uid in uids:
-            accession = esummary_result[uid]["accession"]
-            title = esummary_result[uid]["title"]
-            gse_records.append(
-                {
-                    "experiment_accession": accession,
-                    "experiment_title": title,
-                    "study_accession": srp,
-                }
-            )
-
-        return pd.DataFrame(gse_records)
-
     def fetch_gds_results(self, gse, **kwargs):
         result = self.get_esummary_response("geo", gse)
-        uids = result["uids"]
+
+        try:
+            uids = result["uids"]
+        except KeyError:
+            print("No results found for {}".format(gse))
+            sys.exit(1)
         gse_records = []
         for uid in uids:
             record = result[uid]
@@ -361,9 +346,12 @@ class SRAweb(SRAdb):
 
     def srp_to_gse(self, srp, **kwargs):
         """Get GSE for a SRP"""
-        srp_df = self.fetch_gds_results(gsm)
-        srp_df["study_accesssion"] = srp
-        return srp_df
+        srp_df = self.fetch_gds_results(srp)
+        srp_df = srp_df[srp_df.entrytype == "GSE"]
+        srp_df = srp_df.rename(
+            columns={"accession": "study_alias", "SRA": "study_accession"}
+        )
+        return srp_df[["study_accession", "study_alias"]]
 
     def srp_to_srr(self, srp, **kwargs):
         """Get SRR for a SRP"""
