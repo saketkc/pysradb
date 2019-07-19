@@ -172,6 +172,15 @@ Using pysradb
 Please see `usage_scenarios <https://saket-choudhary.me/pysradb/usage_scenarios.html>`_ for a few usage scenarios.
 Here are few hand-picked examples.
 
+
+Mode: SRAmetadb or SRAWeb
+=========================
+
+``pysradb``'s initial versions were completely dependent on the ``SRAmnetadb.sqlite`` file made available by the ``SRAdb`` project, we refer to this as the ``SRAmetadb`` mode. However, with ```pysradb 0.9.5``, the depedence on the SQLite file has been made optional. In the abseence of the SQLite file, the operations are performed usiNCBi's ``esrarch`` and ``esummary`` interface, a mode which we refer to as the ``SRAweb`` mode.  All the operations
+with the exception of ``search`` can be performed withoudownloading the SQLite file. 
+NOTE: The additional flags such as ``--desc``, ``-detailed`` and ``-expand`` are currently not fully supported in the ``SRAweb`` mode and will be supported in a future release. However, all the basic funcuionality of interconverting one ID to another is available in both ``SRAweb`` and ``SRAmetadb`` mode.
+
+
 Search
 ======
 
