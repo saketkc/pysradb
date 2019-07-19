@@ -147,7 +147,11 @@ class SRAweb(SRAdb):
     ):
 
         esummary_result = self.get_esummary_response("sra", srp)
-        uids = esummary_result["uids"]
+        try:
+            uids = esummary_result["uids"]
+        except KeyError:
+            print("No results found for {}".format(srp))
+            sys.exit(1)
         exps_xml = OrderedDict()
         runs_xml = OrderedDict()
 
@@ -267,6 +271,9 @@ class SRAweb(SRAdb):
                     record[extrelation["relationtype"]] = extrelation["targetobject"]
                 del record["extrelations"]
                 gse_records.append(record)
+        if not len(gse_records):
+            print("No results found for {}".format(gse))
+            sys.exit(1)
         return pd.DataFrame(gse_records)
 
     def gse_to_gsm(self, gse, **kwargs):
@@ -289,7 +296,9 @@ class SRAweb(SRAdb):
             elif row.entrytype == "GSM":
                 gse_df.loc[index, "study_alias"] = study_alias
         gse_df = gse_df[gse_df.entrytype == "GSM"]
-        return gse_df[["study_alias", "experiment_alias", "experiment_accession"]]
+        if kwargs['detailed'] == True:
+            return gse_df
+        return gse_df[["study_alias", "experiment_alias", "experiment_accession"]].drop_duplicates()
 
     def gse_to_srp(self, gse, **kwargs):
         gse_df = self.fetch_gds_results(gse)
@@ -297,7 +306,7 @@ class SRAweb(SRAdb):
         gse_df = gse_df.rename(
             columns={"accession": "study_alias", "SRA": "study_accession"}
         )
-        return gse_df[["study_alias", "study_accession"]]
+        return gse_df[["study_alias", "study_accession"]].drop_duplicates()
 
     def gsm_to_srp(self, gsm, **kwargs):
         gsm_df = self.fetch_gds_results(gsm)
@@ -305,7 +314,7 @@ class SRAweb(SRAdb):
         gsm_df = gsm_df.rename(
             columns={"accession": "experiment_alias", "SRA": "study_accession"}
         )
-        return gsm_df[["experiment_alias", "study_accession"]]
+        return gsm_df[["experiment_alias", "study_accession"]].drop_duplicates()
 
     def gsm_to_srr(self, gsm, **kwargs):
         gsm_df = self.fetch_gds_results(gsm)
@@ -334,7 +343,7 @@ class SRAweb(SRAdb):
         gsm_df = srs_df.merge(gsm_df, on="experiment_accession")[
             ["experiment_alias", "sample_accession"]
         ]
-        return gsm_df
+        return gsm_df.drop_duplicates()
 
     def gsm_to_srx(self, gsm, **kwargs):
         """Get SRX for a GSM"""
@@ -342,7 +351,8 @@ class SRAweb(SRAdb):
         gsm_df = gsm_df[gsm_df.entrytype == "GSM"].rename(
             columns={"SRA": "experiment_accession", "accession": "experiment_alias"}
         )
-        return gsm_df[["experiment_alias", "experiment_accession"]]
+        return gsm_df[["experiment_alias", "experiment_accession"]].drop_duplicates()
+
 
     def srp_to_gse(self, srp, **kwargs):
         """Get GSE for a SRP"""
@@ -351,43 +361,52 @@ class SRAweb(SRAdb):
         srp_df = srp_df.rename(
             columns={"accession": "study_alias", "SRA": "study_accession"}
         )
-        return srp_df[["study_accession", "study_alias"]]
+        return srp_df[["study_accession", "study_alias"]].drop_duplicates()
 
     def srp_to_srr(self, srp, **kwargs):
         """Get SRR for a SRP"""
         srp_df = self.sra_metadata(srp)
-        return srp_df[["study_accession", "run_accession"]]
+        return srp_df[["study_accession", "run_accession"]].drop_duplicates()
 
     def srp_to_srs(self, srp, **kwargs):
         """Get SRS for a SRP"""
         srp_df = self.sra_metadata(srp)
-        return srp_df[["study_accession", "sample_accession"]]
+        return srp_df[["study_accession", "sample_accession"]].drop_duplicates()
 
     def srp_to_srx(self, srp, **kwargs):
         """Get SRX for a SRP"""
         srp_df = self.sra_metadata(srp)
         srp_df["study_accesssion"] = srp
-        return srp_df[["study_accession", "experiment_accession"]]
+        return srp_df[["study_accession", "experiment_accession"]].drop_duplicates()
 
     def srr_to_gsm(self, srr, **kwargs):
         """Get GSM for a SRR"""
-        srr_df = self.sra_metadata(srr)
-        return srr_df[["run_accession", "experiment_alias"]]
+        srr_df = self.srr_to_srp(srr, detailed=True)
+        srp = srr_df.study_accession.tolist()
+        gse_df = self.fetch_gds_results(srp)
+        gse_df = gse_df[gse_df.entrytype == "GSE"].rename(
+            columns={"SRA": "project_accession", "accession": "project_alias"}
+        )
+        gsm_df = self.gse_to_gsm(gse_df.project_alias.tolist(), detailed=True)
+        joined_df = gsm_df.merge(srr_df, on='experiment_accession')
+        return joined_df[["run_accession", "experiment_alias"]].drop_duplicates()
 
     def srr_to_srp(self, srr, **kwargs):
         """Get SRP for a SRR"""
         srr_df = self.sra_metadata(srr)
-        return srr_df[["run_accession", "study_accession"]]
+        if kwargs['detailed'] == True:
+            return srr_df
+        return srr_df[["run_accession", "study_accession"]].drop_duplicates()
 
     def srr_to_srs(self, srr, **kwargs):
         """Get SRS for a SRR"""
         srr_df = self.sra_metadata(srr)
-        return srr_df[["run_accession", "sample_accession"]]
+        return srr_df[["run_accession", "sample_accession"]].drop_duplicates()
 
     def srr_to_srx(self, srr, **kwargs):
         """Get SRX for a SRR"""
         srr_df = self.sra_metadata(srr)
-        return srr_df[["run_accession", "experiment_accession"]]
+        return srr_df[["run_accession", "experiment_accession"]].drop_duplicates()
 
     def srs_to_gsm(self, srs, **kwargs):
         """Get GSM for a SRS"""
