@@ -10,10 +10,10 @@
 
 .. image:: https://img.shields.io/badge/install%20with-bioconda-brightgreen.svg?style=flat-square
     :target: http://bioconda.github.io/recipes/pysradb/README.html
-    
+
 .. image:: https://zenodo.org/badge/159590788.svg
     :target: https://zenodo.org/badge/latestdoi/159590788
-    
+
 .. image:: https://img.shields.io/travis/saketkc/pysradb.svg?style=flat-square
     :target: https://travis-ci.com/saketkc/pysradb
 
@@ -97,7 +97,7 @@ Alternatively, if you use conda:
 
    conda install -c bioconda pysradb
 
-This step will install all the dependencies except aspera-client_ (which is not required, but highly recommended).
+This step will install all the dependencies.
 If you have an existing environment with a lot of pre-installed packages, conda might be `slow <https://github.com/bioconda/bioconda-recipes/issues/13774>`_.
 Please consider creating a new enviroment for ``pysradb``:
 
@@ -112,14 +112,29 @@ Dependecies
 
    pandas>=0.23.4
    tqdm>=4.28
-   aspera-client
-   SRAmetadb.sqlite
+   requests>=2.22.0
+   xmltodict>-0.12.0i
+   sra-tools
+   SRAmetadb.sqlite (optional)
 
-Downloading SRAmetadb
-=====================
 
-We need a SQLite database file that has preprocessed metadata made available by the
+Installing sratools
+===================
+
+NCBI has slowly transitioned towards using Google cloud for storing SRA files. As such
+the ftp links are slowly getting obsolete. With release ``0.9.5``, ``pysradb`` has
+moved to utilizing ``srapath``  available through NCBI's ``sra-tools`` for getting
+the SRA location. Thus ``aspera-client`` is no longer required. But, ``sra-tools``
+is now a requirement and can be installed through bioconda.
+
+Downloading SRAmetadb (optional)
+=================================
+
+``pysradb`` can utilize a SQLite database file that has preprocessed metadata made available by the
 `SRAdb <https://bmcbioinformatics.biomedcentral.com/articles/10.1186/1471-2105-14-19>`_ project.
+Though, with the release ``0.9.5``, this database file is not a hard requirement for any of the operations.
+
+
 
 SRAmetadb can be downloaded using:
 
@@ -137,39 +152,13 @@ current working directory:
 
 You can also specify an alternate directory for download by supplying the ``--out-dir <OUT_DIR>`` argument.
 
-.. _aspera-client:
-
-
-aspera-client
-=============
-
-We strongly recommend using ``aspera-client`` (which uses UDP) since it `warrants faster downloads <http://www.skullbox.net/tcpudp.php>`_ as compared to ``ftp/http`` based downloads.
-
-PDF intructions are available on IBM's `website <https://downloads.asperasoft.com/connect2/>`_.
-
-Direct download links:
-
-- `Linux <https://download.asperasoft.com/download/sw/connect/3.8.1/ibm-aspera-connect-3.8.1.161274-linux-g2.12-64.tar.gz>`_
-- `MacOS <https://download.asperasoft.com/download/sw/connect/3.8.1/IBMAsperaConnectInstaller-3.8.1.161274.dmg>`_
-- `Windows: <https://download.asperasoft.com/download/sw/connect/3.8.1/IBMAsperaConnect-ML-3.8.1.161274.msi>`_
-
-Once you download the tar relevant to your OS, say linux, follow these steps to install aspera:
-
-.. code-block:: bash
-
-   tar -zxvf ibm-aspera-connect-3.8.1.161274-linux-g2.12-64.tar.gz
-   bash ibm-aspera-connect-3.8.1.161274-linux-g2.12-64.sh
-   Installing IBM Aspera Connect
-   Deploying IBM Aspera Connect (/home/saket/.aspera/connect) for the current user only.
-   Install complete.
-
 
 Installing pysradb in development mode
 ======================================
 
 .. code-block:: bash
 
-   pip install -U pandas tqdm
+   pip install -U pandas tqdm requests xmltodict
    git clone https://github.com/saketkc/pysradb.git
    cd pysradb
    pip install -e .
