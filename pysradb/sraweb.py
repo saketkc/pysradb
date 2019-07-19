@@ -296,9 +296,11 @@ class SRAweb(SRAdb):
             elif row.entrytype == "GSM":
                 gse_df.loc[index, "study_alias"] = study_alias
         gse_df = gse_df[gse_df.entrytype == "GSM"]
-        if kwargs['detailed'] == True:
+        if kwargs["detailed"] == True:
             return gse_df
-        return gse_df[["study_alias", "experiment_alias", "experiment_accession"]].drop_duplicates()
+        return gse_df[
+            ["study_alias", "experiment_alias", "experiment_accession"]
+        ].drop_duplicates()
 
     def gse_to_srp(self, gse, **kwargs):
         gse_df = self.fetch_gds_results(gse)
@@ -353,7 +355,6 @@ class SRAweb(SRAdb):
         )
         return gsm_df[["experiment_alias", "experiment_accession"]].drop_duplicates()
 
-
     def srp_to_gse(self, srp, **kwargs):
         """Get GSE for a SRP"""
         srp_df = self.fetch_gds_results(srp)
@@ -388,13 +389,13 @@ class SRAweb(SRAdb):
             columns={"SRA": "project_accession", "accession": "project_alias"}
         )
         gsm_df = self.gse_to_gsm(gse_df.project_alias.tolist(), detailed=True)
-        joined_df = gsm_df.merge(srr_df, on='experiment_accession')
+        joined_df = gsm_df.merge(srr_df, on="experiment_accession")
         return joined_df[["run_accession", "experiment_alias"]].drop_duplicates()
 
     def srr_to_srp(self, srr, **kwargs):
         """Get SRP for a SRR"""
         srr_df = self.sra_metadata(srr)
-        if kwargs['detailed'] == True:
+        if kwargs["detailed"] == True:
             return srr_df
         return srr_df[["run_accession", "study_accession"]].drop_duplicates()
 
