@@ -8,8 +8,16 @@ import time
 import requests
 import xmltodict
 
+from .sradb import SRAdb
 
-class SRAweb(object):
+
+def get_retmax(n_records, retmax=500):
+    """Get retstart and retmax till n_records are exhausted"""
+    for i in range(0, n_records, retmax):
+        yield i
+
+
+class SRAweb(SRAdb):
     def __init__(self):
         self.base_url = {}
         self.base_url[
@@ -65,7 +73,13 @@ class SRAweb(object):
         query_key = esearchresult["querykey"]
         webenv = esearchresult["webenv"]
         retstart = esearchresult["retstart"]
-        retmax = esearchresult["retmax"]
+
+        # TODO this should be adaptive to build
+        # upon using the 'count' result in esearch result,
+        # Currently only supports a max of 500 records.
+        # retmax = esearchresult["retmax"]
+        retmax = 500
+
         return [
             ("query_key", query_key),
             ("WebEnv", webenv),
@@ -73,7 +87,7 @@ class SRAweb(object):
             ("retmax", retmax),
         ]
 
-    def get_esummary_reponse(self, db, term, usehistory="y"):
+    def get_esummary_response(self, db, term, usehistory="y"):
 
         assert db in ["sra", "geo"]
 
@@ -83,18 +97,37 @@ class SRAweb(object):
         payload += [("term", term)]
 
         request = requests.get(self.base_url["esearch"], params=OrderedDict(payload))
-        response = request.json()
-
+        esearch_response = request.json()
         # print(response)
-        if "esummaryresult" in response:
+        if "esummaryresult" in esearch_response:
             print("No result found")
             return
 
-        payload = self.esearch_params[db].copy()
-        payload += self.create_esummary_params(response["esearchresult"])
+        n_records = int(esearch_response["esearchresult"]["count"])
 
-        request = requests.get(self.base_url["esummary"], params=OrderedDict(payload))
-        response = request.json()
+        results = {}
+        for retstart in get_retmax(n_records):
+
+            payload = self.esearch_params[db].copy()
+            payload += self.create_esummary_params(esearch_response["esearchresult"])
+            payload = OrderedDict(payload)
+            payload["retstart"] = retstart
+            print(retstart)
+            request = requests.get(
+                self.base_url["esummary"], params=OrderedDict(payload)
+            )
+            response = request.json()
+            if retstart == 0:
+                results = response["result"]
+            else:
+                result = response["result"]
+                for key, value in result.items():
+                    if key in list(results.keys()):
+                        results[key] += value
+                    else:
+                        results[key] = value
+            time.sleep(0.1)
+        return results
 
         # print(response)
         if "esummaryresult" in list(response.keys()):
@@ -113,7 +146,7 @@ class SRAweb(object):
         **kwargs
     ):
 
-        esummary_result = self.get_esummary_reponse("sra", srp)
+        esummary_result = self.get_esummary_response("sra", srp)
         uids = esummary_result["uids"]
         exps_xml = OrderedDict()
         runs_xml = OrderedDict()
@@ -196,7 +229,7 @@ class SRAweb(object):
             experiment_record["sample_accession"] = exp_sample_ID
             experiment_record["sample_title"] = exp_sample_name
 
-            experiment_record["project_accession"] = exp_json["Study"]["@acc"]
+            experiment_record["study_accession"] = exp_json["Study"]["@acc"]
 
             for run_record in runs:
                 run_accession = run_record["@acc"]
@@ -211,7 +244,7 @@ class SRAweb(object):
         return pd.DataFrame(sra_record)
 
     def srp_to_gse(self, srp, **kwargs):
-        esummary_result = self.get_esummary_reponse("geo", srp)
+        esummary_result = self.get_esummary_response("geo", srp)
         if not esummary_result:
             return
 
@@ -224,14 +257,14 @@ class SRAweb(object):
                 {
                     "experiment_accession": accession,
                     "experiment_title": title,
-                    "project_accession": srp,
+                    "study_accession": srp,
                 }
             )
 
         return pd.DataFrame(gse_records)
 
     def fetch_gds_results(self, gse, **kwargs):
-        result = self.get_esummary_reponse("geo", gse)
+        result = self.get_esummary_response("geo", gse)
         uids = result["uids"]
         gse_records = []
         for uid in uids:
@@ -262,32 +295,32 @@ class SRAweb(object):
             }
         )
         # TODO: Fix for multiple GSEs?
-        gse_df["project_alias"] = ""
+        gse_df["study_alias"] = ""
         for index, row in gse_df.iterrows():
             if row.entrytype == "GSE":
-                project_alias = row["experiment_accession"]
+                study_alias = row["experiment_accession"]
             # If GSM is ecnountered, apply it the
             # previously encountered GSE
             elif row.entrytype == "GSM":
-                gse_df.loc[index, "project_alias"] = project_alias
+                gse_df.loc[index, "study_alias"] = study_alias
         gse_df = gse_df[gse_df.entrytype == "GSM"]
-        return gse_df[["project_alias", "experiment_alias", "experiment_accession"]]
+        return gse_df[["study_alias", "experiment_alias", "experiment_accession"]]
 
     def gse_to_srp(self, gse, **kwargs):
         gse_df = self.fetch_gds_results(gse)
         gse_df = gse_df[gse_df.entrytype == "GSE"]
         gse_df = gse_df.rename(
-            columns={"accession": "project_alias", "SRA": "project_accession"}
+            columns={"accession": "study_alias", "SRA": "study_accession"}
         )
-        return gse_df[["project_alias", "project_accession"]]
+        return gse_df[["study_alias", "study_accession"]]
 
     def gsm_to_srp(self, gsm, **kwargs):
         gsm_df = self.fetch_gds_results(gsm)
         gsm_df = gsm_df[gsm_df.entrytype == "GSE"]
         gsm_df = gsm_df.rename(
-            columns={"accession": "experiment_alias", "SRA": "project_accession"}
+            columns={"accession": "experiment_alias", "SRA": "study_accession"}
         )
-        return gsm_df[["experiment_alias", "project_accession"]]
+        return gsm_df[["experiment_alias", "study_accession"]]
 
     def gsm_to_srr(self, gsm, **kwargs):
         gsm_df = self.fetch_gds_results(gsm)
@@ -329,24 +362,24 @@ class SRAweb(object):
     def srp_to_gse(self, srp, **kwargs):
         """Get GSE for a SRP"""
         srp_df = self.fetch_gds_results(gsm)
-        srp_df["project_accesssion"] = srp
+        srp_df["study_accesssion"] = srp
         return srp_df
 
     def srp_to_srr(self, srp, **kwargs):
         """Get SRR for a SRP"""
         srp_df = self.sra_metadata(srp)
-        return srp_df[["project_accession", "run_accession"]]
+        return srp_df[["study_accession", "run_accession"]]
 
     def srp_to_srs(self, srp, **kwargs):
         """Get SRS for a SRP"""
         srp_df = self.sra_metadata(srp)
-        return srp_df[["project_accession", "sample_accession"]]
+        return srp_df[["study_accession", "sample_accession"]]
 
     def srp_to_srx(self, srp, **kwargs):
         """Get SRX for a SRP"""
         srp_df = self.sra_metadata(srp)
-        srp_df["project_accesssion"] = srp
-        return srp_df[["project_accession", "experiment_accession"]]
+        srp_df["study_accesssion"] = srp
+        return srp_df[["study_accession", "experiment_accession"]]
 
     def srr_to_gsm(self, srr, **kwargs):
         """Get GSM for a SRR"""
@@ -356,7 +389,7 @@ class SRAweb(object):
     def srr_to_srp(self, srr, **kwargs):
         """Get SRP for a SRR"""
         srr_df = self.sra_metadata(srr)
-        return srr_df[["run_accession", "project_accession"]]
+        return srr_df[["run_accession", "study_accession"]]
 
     def srr_to_srs(self, srr, **kwargs):
         """Get SRS for a SRR"""
@@ -391,7 +424,7 @@ class SRAweb(object):
     def srx_to_srp(self, srx, **kwargs):
         """Get SRP for a SRX"""
         srx_df = self.sra_metadata(srx)
-        return srx_df[["experiment_accession", "project_accession"]]
+        return srx_df[["experiment_accession", "study_accession"]]
 
     def srx_to_srr(self, srx, **kwargs):
         """Get SRR for a SRX"""

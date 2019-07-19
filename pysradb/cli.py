@@ -134,9 +134,10 @@ def download(out_dir, db, srx, srp, skip_confirmation, use_wget=False):
             protocol=protocol,
         )
     else:
-        for srp_x in sorted(set(srp), key=srp.index):
+        for srp_x in srp:
+            metadata = sradb.sra_metadata(srp_x)
             sradb.download(
-                srp_x,
+                df=metadata,
                 out_dir=out_dir,
                 filter_by_srx=srx,
                 skip_confirmation=skip_confirmation,
