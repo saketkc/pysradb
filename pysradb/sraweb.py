@@ -30,12 +30,12 @@ class SRAweb(SRAdb):
         self.esearch_params = {}
         self.esearch_params["sra"] = [
             ("db", "sra"),
-            ("usehistory", "n"),
+            ("usehistory", "y"),
             ("retmode", "json"),
         ]
         self.esearch_params["geo"] = [
             ("db", "gds"),
-            ("usehistory", "n"),
+            ("usehistory", "y"),
             ("retmode", "json"),
         ]
 
