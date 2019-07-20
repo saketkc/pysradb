@@ -20,6 +20,7 @@
 #
 import os
 import sys
+autodoc_mock_imports = ["xmltodict", "numpy", "pandas", "requests", "tqdm"]
 
 sys.path.insert(0, os.path.abspath(".."))
 
