@@ -42,6 +42,6 @@ setup(
     test_suite="tests",
     tests_require=test_requirements,
     url="https://github.com/saketkc/pysradb",
-    version="0.9.6-dev0",
+    version="0.9.6",
     zip_safe=False,
 )
