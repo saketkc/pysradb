@@ -5,12 +5,8 @@ pysradb
 Python package for interacting with SRAdb and downloading datasets from SRA.
 (python3 only!)
 
-..  raw:: html
-
-    <a href="https://raw.githubusercontent.com/saketkc/pysradb/master/docs/_static/pysradb_v3.png" target="_blank"><img src="https://raw.githubusercontent.com/saketkc/pysradb/master/docs/_static/pysradb_v3.png" /></a>
-    <hr>
-
-
+.. image:: https://raw.githubusercontent.com/saketkc/pysradb/master/docs/_static/pysradb_v3.png"
+    :target: https://raw.githubusercontent.com/saketkc/pysradb/master/docs/_static/pysradb_v3.png"
 
 .. image:: https://img.shields.io/pypi/v/pysradb.svg?style=flat-square
     :target: https://pypi.python.org/pypi/pysradb
@@ -25,9 +21,8 @@ Python package for interacting with SRAdb and downloading datasets from SRA.
     :target: https://travis-ci.com/saketkc/pysradb
 
 
-.. raw:: html
-
-    <a href="https://asciinema.org/a/0C3SjYmPTkkemldprUpdVhiKx?speed=5&autoplay=1" target="_blank"><img src="https://asciinema.org/a/0C3SjYmPTkkemldprUpdVhiKx.svg" /></a>
+.. image:: https://asciinema.org/a/0C3SjYmPTkkemldprUpdVhiKx.svg
+    :target: https://asciinema.org/a/0C3SjYmPTkkemldprUpdVhiKx?speed=5&autoplay=1
 
 
 *********
