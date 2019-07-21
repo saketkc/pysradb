@@ -8,6 +8,7 @@ Python package for interacting with SRAdb and downloading datasets from SRA.
 .. image:: https://raw.githubusercontent.com/saketkc/pysradb/master/docs/_static/pysradb_v3.png
     :target: https://raw.githubusercontent.com/saketkc/pysradb/master/docs/_static/pysradb_v3.png
 
+
 .. image:: https://img.shields.io/pypi/v/pysradb.svg?style=flat-square
     :target: https://pypi.python.org/pypi/pysradb
 
