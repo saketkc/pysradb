@@ -28,6 +28,8 @@ from .download import download_file
 from .download import get_file_size
 from .download import millify
 
+from .taxid2name import TAXID_TO_NAME
+
 FTP_PREFIX = {
     "fasp": "anonftp@ftp-trace.ncbi.nlm.nih.gov:",
     "ftp": "ftp://ftp-trace.ncbi.nlm.nih.gov",
@@ -303,6 +305,10 @@ class SRAdb(BASEdb):
         if "taxon_id" in df.columns:
             df["taxon_id"] = df["taxon_id"].fillna(0).astype(int)
             df = df.sort_values(by=["taxon_id"])
+            df["organism_name"] = df["taxon_id"].apply(
+                lambda taxid: TAXID_TO_NAME[taxid]
+            )
+            output_columns += ["organism_name"]
         if "experiment_accession" in df.columns and "run_accession" in df.columns:
             df = df.sort_values(by=["experiment_accession", "run_accession"])
         elif "experiment_accession" in df.columns:
