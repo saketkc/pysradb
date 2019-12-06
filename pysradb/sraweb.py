@@ -129,13 +129,6 @@ class SRAweb(SRAdb):
             time.sleep(0.1)
         return results
 
-        # print(response)
-        if "esummaryresult" in list(response.keys()):
-            print("No result found")
-            return
-
-        return response["result"]
-
     def sra_metadata(
         self,
         srp,
@@ -245,7 +238,7 @@ class SRAweb(SRAdb):
                 experiment_record["run_total_bases"] = run_total_bases
 
                 sra_record.append(experiment_record)
-        return pd.DataFrame(sra_record)
+        return pd.DataFrame(sra_record).drop_duplicates()
 
     def fetch_gds_results(self, gse, **kwargs):
         result = self.get_esummary_response("geo", gse)
