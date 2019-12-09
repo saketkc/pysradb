@@ -375,7 +375,7 @@ Choudhary, Saket. "pysradb: A Python Package to Query next-Generation Sequencing
     volume = {8},
     pages = {532},
     author = {Saket Choudhary},
-    title = {pysradb: A Python package to query next-generation sequencing metadata and data from {NCBI} Sequence Read Archive},
+    title = {pysradb: A {P}ython package to query next-generation sequencing metadata and data from {NCBI} {S}equence {R}ead {A}rchive},
     journal = {F1000Research}
     }
 
