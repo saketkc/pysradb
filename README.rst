@@ -3,7 +3,7 @@ pysradb
 #######
 
 Python package for interacting with SRAdb and downloading datasets from SRA.
-(python3 only!)
+
 
 .. image:: https://raw.githubusercontent.com/saketkc/pysradb/master/docs/_static/pysradb_v3.png
     :target: https://raw.githubusercontent.com/saketkc/pysradb/master/docs/_static/pysradb_v3.png
@@ -24,7 +24,13 @@ Python package for interacting with SRAdb and downloading datasets from SRA.
 
 .. image:: https://asciinema.org/a/0C3SjYmPTkkemldprUpdVhiKx.svg
     :target: https://asciinema.org/a/0C3SjYmPTkkemldprUpdVhiKx?speed=5&autoplay=1
+    
+***********
+Publication
+***********
 
+ `pysradb: A Python package to query next-generation sequencing metadata and data from NCBI Sequence Read Archive <https://f1000research.com/articles/8-532/v1>`_ 
+ 
 
 *********
 CLI Usage
