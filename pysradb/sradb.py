@@ -1176,7 +1176,8 @@ class SRAdb(BASEdb):
         urls = stdout.split("\n")
         # TODO: Improve this
         if not urls[0]:
-            raise Exception("Unable to run srapath.")
+            sys.stderr.write("Unable to run srapath.\n")
+            return None
         urls = list(map(str, urls))
         srrs = [str(url.strip().split("/")[-1].split(".")[0]) for url in urls]
         return dict(zip(srrs, urls))
@@ -1252,9 +1253,12 @@ class SRAdb(BASEdb):
         )
 
         srapaths = self._srapath_url(df.study_accession.unique()[0])
-        srapaths_df = pd.DataFrame.from_dict(srapaths, orient="index").reset_index()
-        srapaths_df.columns = ["run_accession", "srapath_url"]
-        df = df.merge(srapaths_df, on="run_accession")
+        if srapaths is not None:
+            srapaths_df = pd.dataframe.from_dict(srapaths, orient="index").reset_index()
+            srapaths_df.columns = ["run_accession", "srapath_url"]
+            df = df.merge(srapaths_df, on="run_accession")
+        else:
+            df["srapath_url"] = None
         download_list = df[
             [
                 "study_accession",
@@ -1267,7 +1271,7 @@ class SRAdb(BASEdb):
         if not len(df.index):
             print("Could not locate {} in db".format(srp))
             sys.exit(0)
-        file_sizes = df.srapath_url.apply(get_file_size)
+        file_sizes = df.apply(get_file_size, axis=1)
         total_file_size = millify(np.sum(file_sizes))
         print("The following files will be downloaded: \n")
         pd.set_option("display.max_colwidth", -1)
@@ -1279,7 +1283,7 @@ class SRAdb(BASEdb):
             if not confirm("Start download? "):
                 sys.exit(0)
         with tqdm(total=download_list.shape[0]) as pbar:
-            for srp, srx, srr, _, url in download_list:
+            for srp, srx, srr, download_url, srapath_url in download_list:
                 pbar.set_description("{}/{}/{}".format(srp, srx, srr))
                 srp_dir = os.path.join(out_dir, srp)
                 srx_dir = os.path.join(srp_dir, srx)
@@ -1292,6 +1296,9 @@ class SRAdb(BASEdb):
                     )
                     run_command(cmd, verbose=False)
                 else:
-                    download_file(url, srr_location)
+                    if srapath_url is not None:
+                        download_file(srapath_url, srr_location)
+                    else:
+                        download_file(download_url, srr_location)
                 pbar.update()
         return df
