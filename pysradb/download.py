@@ -34,17 +34,21 @@ def millify(n):
     return "{:.1f}{}".format(n / 10 ** (3 * millidx), millnames[millidx])
 
 
-def get_file_size(url):
+def get_file_size(row):
     """Get size of file to be downloaded.
 
     Parameters
     ----------
-    url: string
+    row: pd.DataFrame row
 
     Returns
     -------
     content_length: int
     """
+    if row.srapath_url is not None:
+        url = row.srapath_url
+    else:
+        url = row.download_url
     return float(requests.head(url).headers["content-length"])
 
 
