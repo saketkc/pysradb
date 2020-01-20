@@ -168,8 +168,8 @@ class SRAweb(SRAdb):
             exp_title = exp_json["Summary"]["Title"]
             exp_platform = exp_json["Summary"]["Platform"]
             exp_total_runs = exp_json["Summary"]["Statistics"]["@total_runs"]
-            exp_total_total_spots = exp_json["Summary"]["Statistics"]["@total_spots"]
-            exp_total_total_size = exp_json["Summary"]["Statistics"]["@total_size"]
+            exp_total_spots = exp_json["Summary"]["Statistics"]["@total_spots"]
+            exp_total_size = exp_json["Summary"]["Statistics"]["@total_size"]
 
             # experiment_accession
             exp_ID = exp_json["Experiment"]["@acc"]
@@ -182,6 +182,8 @@ class SRAweb(SRAdb):
                 exp_organism_name = exp_organism["@ScientificName"]
             except:
                 exp_organism_name = ""
+
+            exp_instrument = list(exp_json["Instrument"].values())[0]
 
             # taxid
             exp_taxid = exp_organism["@taxid"]
@@ -222,7 +224,9 @@ class SRAweb(SRAdb):
             experiment_record["library_source"] = exp_library_source
             experiment_record["library_selection"] = exp_library_selection
             experiment_record["library_source"] = exp_library_source
-
+            experiment_record["instrument"] = exp_instrument
+            experiment_record["total_spots"] = exp_total_spots
+            experiment_record["total_size"] = exp_total_size
             experiment_record["sample_accession"] = exp_sample_ID
             experiment_record["sample_title"] = exp_sample_name
 
