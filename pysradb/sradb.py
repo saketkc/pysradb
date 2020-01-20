@@ -1158,8 +1158,8 @@ class SRAdb(BASEdb):
         return pd.DataFrame.from_dict(results, orient="index").T
 
     @staticmethod
-    def _srapath_url(srp):
-        """Get srapath URL for a SRP.
+    def _srapath_url(sacc):
+        """Get srapath URL for a SRP/SRR.
 
         Parameters
         ----------
@@ -1171,7 +1171,7 @@ class SRAdb(BASEdb):
         srr_paths: dict
                    A dict of URLS with keys as SRR
         """
-        proc = subprocess.run(["srapath", srp], capture_output=True)
+        proc = subprocess.run(["srapath", sacc], capture_output=True)
         stdout = str(proc.stdout.strip().decode("utf-8"))
         urls = stdout.split("\n")
         # TODO: Improve this
@@ -1181,6 +1181,29 @@ class SRAdb(BASEdb):
         urls = list(map(str, urls))
         srrs = [str(url.strip().split("/")[-1].split(".")[0]) for url in urls]
         return dict(zip(srrs, urls))
+
+    @staticmethod
+    def _srapath_url_srr(srr):
+        """Get srapath URL for a SRR.
+
+        Parameters
+        ----------
+        srp: string
+
+
+        Returns
+        -------
+        srr_paths: dict
+                   A dict of URLS with keys as SRR
+        """
+        proc = subprocess.run(["srapath", srr], capture_output=True)
+        stdout = str(proc.stdout.strip().decode("utf-8"))
+        urls = stdout.split("\n")
+        # TODO: Improve this
+        if not urls[0]:
+            sys.stderr.write("Unable to run srapath.\n")
+            return None
+        return str(urls[0])
 
     def download(
         self,
@@ -1252,13 +1275,7 @@ class SRAdb(BASEdb):
             + ".sra"
         )
 
-        srapaths = self._srapath_url(df.study_accession.unique()[0])
-        if srapaths is not None:
-            srapaths_df = pd.dataframe.from_dict(srapaths, orient="index").reset_index()
-            srapaths_df.columns = ["run_accession", "srapath_url"]
-            df = df.merge(srapaths_df, on="run_accession")
-        else:
-            df["srapath_url"] = None
+        df["srapath_url"] = [self._srapath_url_srr(srr) for srr in df["run_accession"]]
         download_list = df[
             [
                 "study_accession",
@@ -1292,7 +1309,7 @@ class SRAdb(BASEdb):
                 if protocol == "fasp":
                     cmd = ASCP_CMD_PREFIX.replace("ascp", ascp_bin)
                     cmd = "{} {} {} {}".format(
-                        cmd, _find_aspera_keypath(ascp_dir), url, srx_dir
+                        cmd, _find_aspera_keypath(ascp_dir), download_url, srx_dir
                     )
                     run_command(cmd, verbose=False)
                 else:
