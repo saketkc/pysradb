@@ -3,6 +3,19 @@ History
 #######
 
 ******************
+0.9.7 (01-20-2020)
+******************
+
+* Feature: instrument, run size and total spots are now printed in the metadata by default (SRAweb mode only)
+* Issue: Fixed an issue with srapath failing on SRP. srapath is now run on individual SRRs.
+
+******************
+0.9.6 (07-20-2019)
+******************
+
+* Introduced `SRAweb` to perform queries over the web if the SQLite is missing or does not contain the relevant record.
+
+******************
 0.9.0 (02-27-2019)
 ******************
 
