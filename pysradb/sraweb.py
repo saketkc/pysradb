@@ -8,7 +8,6 @@ import time
 
 import requests
 import xmltodict
-from xml.etree import ElementTree
 
 from .sradb import SRAdb
 
@@ -110,7 +109,6 @@ class SRAweb(SRAdb):
 
         request = requests.get(self.base_url["esearch"], params=OrderedDict(payload))
         esearch_response = request.json()
-        # print(response)
         if "esummaryresult" in esearch_response:
             print("No result found")
             return
@@ -151,7 +149,6 @@ class SRAweb(SRAdb):
 
         request = requests.get(self.base_url["esearch"], params=OrderedDict(payload))
         esearch_response = request.json()
-        # print(response)
         if "esummaryresult" in esearch_response:
             print("No result found")
             return
@@ -166,9 +163,6 @@ class SRAweb(SRAdb):
             payload = OrderedDict(payload)
             payload["retstart"] = retstart
             request = requests.get(self.base_url["efetch"], params=OrderedDict(payload))
-            # print(request.url)
-            # print(request.content)
-            # response = self.format_xml(request.content) #json()
             response = xmltodict.parse(request.content.strip())[
                 "EXPERIMENT_PACKAGE_SET"
             ]["EXPERIMENT_PACKAGE"]
