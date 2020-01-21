@@ -8,6 +8,7 @@ import time
 
 import requests
 import xmltodict
+from xml.etree import ElementTree
 
 from .sradb import SRAdb
 
@@ -27,16 +28,26 @@ class SRAweb(SRAdb):
         self.base_url[
             "esearch"
         ] = "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi"
+        self.base_url[
+            "efetch"
+        ] = "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi"
+
         self.esearch_params = {}
         self.esearch_params["sra"] = [
             ("db", "sra"),
-            ("usehistory", "y"),
+            ("usehistory", "n"),
             ("retmode", "json"),
         ]
         self.esearch_params["geo"] = [
             ("db", "gds"),
-            ("usehistory", "y"),
+            ("usehistory", "n"),
             ("retmode", "json"),
+        ]
+
+        self.efetch_params = [
+            ("db", "sra"),
+            ("usehistory", "n"),
+            ("retmode", "runinfo"),
         ]
 
     @staticmethod
@@ -129,6 +140,47 @@ class SRAweb(SRAdb):
             time.sleep(0.1)
         return results
 
+    def get_efetch_response(self, db, term, usehistory="y"):
+
+        assert db in ["sra", "geo"]
+
+        payload = self.esearch_params[db].copy()
+        if isinstance(term, list):
+            term = " OR ".join(term)
+        payload += [("term", term)]
+
+        request = requests.get(self.base_url["esearch"], params=OrderedDict(payload))
+        esearch_response = request.json()
+        # print(response)
+        if "esummaryresult" in esearch_response:
+            print("No result found")
+            return
+
+        n_records = int(esearch_response["esearchresult"]["count"])
+
+        results = {}
+        for retstart in get_retmax(n_records):
+
+            payload = self.efetch_params.copy()
+            payload += self.create_esummary_params(esearch_response["esearchresult"])
+            payload = OrderedDict(payload)
+            payload["retstart"] = retstart
+            request = requests.get(self.base_url["efetch"], params=OrderedDict(payload))
+            # print(request.url)
+            # print(request.content)
+            # response = self.format_xml(request.content) #json()
+            response = xmltodict.parse(request.content.strip())[
+                "EXPERIMENT_PACKAGE_SET"
+            ]["EXPERIMENT_PACKAGE"]
+            if retstart == 0:
+                results = response
+            else:
+                result = response
+                for value in result:
+                    results.append(value)
+            time.sleep(0.1)
+        return results
+
     def sra_metadata(
         self,
         srp,
@@ -142,9 +194,10 @@ class SRAweb(SRAdb):
         esummary_result = self.get_esummary_response("sra", srp)
         try:
             uids = esummary_result["uids"]
-        except KeyError:
-            print("No results found for {}".format(srp))
+        except keyerror:
+            print("no results found for {}".format(srp))
             sys.exit(1)
+
         exps_xml = OrderedDict()
         runs_xml = OrderedDict()
 
@@ -242,7 +295,26 @@ class SRAweb(SRAdb):
                 experiment_record["run_total_bases"] = run_total_bases
 
                 sra_record.append(experiment_record)
-        return pd.DataFrame(sra_record).drop_duplicates()
+        metadata_df = pd.DataFrame(sra_record).drop_duplicates()
+        if not detailed:
+            return metadata_df
+
+        efetch_result = self.get_efetch_response("sra", srp)
+        detailed_records = []
+        for record in efetch_result:
+            detailed_record = OrderedDict()
+            sample_attributes = record["SAMPLE"]["SAMPLE_ATTRIBUTES"][
+                "SAMPLE_ATTRIBUTE"
+            ]
+            run_set = record["RUN_SET"]["RUN"]
+            detailed_record["run_accession"] = run_set["@accession"]
+            for sample_attribute in sample_attributes:
+                dict_values = list(sample_attribute.values())
+                detailed_record[dict_values[0]] = dict_values[1]
+            detailed_records.append(detailed_record)
+        detailed_record_df = pd.DataFrame(detailed_records)
+        metadata_df = metadata_df.merge(detailed_record_df, on="run_accession")
+        return metadata_df
 
     def fetch_gds_results(self, gse, **kwargs):
         result = self.get_esummary_response("geo", gse)
