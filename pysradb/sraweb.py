@@ -188,8 +188,8 @@ class SRAweb(SRAdb):
         esummary_result = self.get_esummary_response("sra", srp)
         try:
             uids = esummary_result["uids"]
-        except keyerror:
-            print("no results found for {}".format(srp))
+        except KeyError:
+            print("No results found for {}".format(srp))
             sys.exit(1)
 
         exps_xml = OrderedDict()
