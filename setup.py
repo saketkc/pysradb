@@ -10,7 +10,12 @@ with open("README.rst") as readme_file:
 with open("HISTORY.rst") as history_file:
     history = history_file.read()
 
-requirements = ["pandas>=0.23.4", "tqdm>=4.28", "requests>=2.22.0", "xmltodict>=0.12.0"]
+requirements = [
+    "pandas==0.25.3",
+    "tqdm==4.41.1",
+    "requests==2.22.0",
+    "xmltodict==0.12.0",
+]
 test_requirements = ["pytest"]
 
 setup(
