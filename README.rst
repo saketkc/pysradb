@@ -86,6 +86,11 @@ a list of instructions for each sub-command.
         srx-to-srs          Get SRS for a SRX
 
 
+**********
+Quickstart
+**********
+
+A Google Colaboratory version of most used commands are available in this `Colab Notebook <https://colab.research.google.com/drive/1C60V-jkcNZiaCra_V5iEyFs318jgVoUR>`_ . Note that this does not require you to download the heavy SQLite file and uses the `SRAWeb` mode (explained below).
 
 ************
 Installation
@@ -117,13 +122,11 @@ Dependecies
 
 .. code-block:: bash
 
-   pandas>=0.23.4
-   tqdm>=4.28
-   requests>=2.22.0
-   xmltodict>-0.12.0i
-   sra-tools
-   SRAmetadb.sqlite (optional)
-
+   pandas==0.25.3
+   tqdm==4.41.1
+   requests==2.22.0
+   xmltodict=0.12.0
+   sra-tools (required only if you want to also download)
 
 Installing sratools
 ===================
@@ -132,7 +135,8 @@ NCBI has slowly transitioned towards using Google cloud for storing SRA files. A
 the ftp links are slowly getting obsolete. With release ``0.9.5``, ``pysradb`` has
 moved to utilizing ``srapath``  available through NCBI's ``sra-tools`` for getting
 the SRA location. Thus ``aspera-client`` is no longer required. But, ``sra-tools``
-is now a requirement and can be installed through bioconda.
+is now a requirement and can be installed through bioconda. We are in the process of
+doing away with this requirement completely soon.
 
 Downloading SRAmetadb (optional)
 =================================
@@ -186,6 +190,7 @@ Mode: SRAmetadb or SRAWeb
 ``pysradb``'s initial versions were completely dependent on the ``SRAmnetadb.sqlite`` file made available by the ``SRAdb`` project, we refer to this as the ``SRAmetadb`` mode. However, with ```pysradb 0.9.5``, the depedence on the SQLite file has been made optional. In the abseence of the SQLite file, the operations are performed usiNCBi's ``esrarch`` and ``esummary`` interface, a mode which we refer to as the ``SRAweb`` mode.  All the operations
 with the exception of ``search`` can be performed withoudownloading the SQLite file.
 NOTE: The additional flags such as ``--desc``, ``-detailed`` and ``-expand`` are currently not fully supported in the ``SRAweb`` mode and will be supported in a future release. However, all the basic funcuionality of interconverting one ID to another is available in both ``SRAweb`` and ``SRAmetadb`` mode.
+
 
 
 Search
