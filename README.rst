@@ -253,7 +253,7 @@ Converting SRP to GSE
 
 ::
 
-    $ pysradb srp-to-gse --db ./SRAmetadb.sqlite SRP075720
+    $ pysradb srp-to-gse SRP075720
 
     study_accession study_alias
     SRP075720       GSE81903
@@ -264,7 +264,7 @@ Converting GSM to SRP
 
 ::
 
-    $ pysradb gsm-to-srp --db ./SRAmetadb.sqlite GSM2177186
+    $ pysradb gsm-to-srp GSM2177186
 
     experiment_alias study_accession
     GSM2177186       SRP075720
@@ -275,7 +275,7 @@ Converting GSM to GSE
 
 ::
 
-    $ pysradb gsm-to-gse --db ./SRAmetadb.sqlite GSM2177186
+    $ pysradb gsm-to-gse GSM2177186
 
     experiment_alias study_alias
     GSM2177186       GSE81903
@@ -286,7 +286,7 @@ Converting GSM to SRX
 
 ::
 
-    $ pysradb gsm-to-srx --db ./SRAmetadb.sqlite GSM2177186
+    $ pysradb gsm-to-srx GSM2177186
 
     experiment_alias experiment_accession
     GSM2177186       SRX1800089
@@ -297,7 +297,7 @@ Converting GSM to SRR
 
 ::
 
-    $ pysradb gsm-to-srr --db ./SRAmetadb.sqlite GSM2177186
+    $ pysradb gsm-to-srr GSM2177186
 
     experiment_alias run_accession
     GSM2177186       SRR3587529
@@ -338,7 +338,7 @@ Downloading entire project
 
 ::
 
-    $ pysradb download --db ./SRAmetadb.sqlite --out-dir ./pysradb_downloads -p SRP063852
+    $ pysradb download --out-dir ./pysradb_downloads -p SRP063852
 
 Downloads are organized by ``SRP/SRX/SRR`` mimicking the hiererachy of SRA projects.
 
