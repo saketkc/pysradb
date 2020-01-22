@@ -1,11 +1,11 @@
 .. image:: https://raw.githubusercontent.com/saketkc/pysradb/master/docs/_static/pysradb_v3.png
     :target: https://raw.githubusercontent.com/saketkc/pysradb/master/docs/_static/pysradb_v3.png
 
-#######
-pysradb
-#######
+#####################################################################################
+pysradb: Python package for interacting with SRAdb and downloading datasets from SRA.
+#####################################################################################
 
-Python package for interacting with SRAdb and downloading datasets from SRA.
+
 
 
 
