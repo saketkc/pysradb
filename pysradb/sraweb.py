@@ -288,6 +288,9 @@ class SRAweb(SRAdb):
                 experiment_record["run_total_bases"] = run_total_bases
 
                 sra_record.append(experiment_record)
+
+        # TODO: the detailed call below does redundant operations
+        # the code above this can be completeley done away with
         metadata_df = pd.DataFrame(sra_record).drop_duplicates()
         if not detailed:
             return metadata_df
@@ -321,6 +324,16 @@ class SRAweb(SRAdb):
                 pool_record = record["Pool"]["Member"]
                 detailed_record["run_accession"] = run_set["@accession"]
                 detailed_record["run_alias"] = run_set["@alias"]
+                sra_files = run_set["SRAFiles"]["SRAFile"]
+                if isinstance(sra_files, OrderedDict):
+                    detailed_record["sra_url"] = sra_files["@url"]
+                else:
+                    for sra_file in sra_files:
+                        # Multiple download URLs
+                        # Use the one where the download filename corresponds to the SRR
+                        if sra_file["@filename"] == run_set["@accession"]:
+                            detailed_record["sra_url"] = sra_file["@url"]
+                            break
                 expt_ref = run_set["EXPERIMENT_REF"]
                 detailed_record["experiment_alias"] = expt_ref.get("@refname", "")
                 # detailed_record["run_total_bases"] = run_set["@total_bases"]
