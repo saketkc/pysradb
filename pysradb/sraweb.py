@@ -163,6 +163,7 @@ class SRAweb(SRAdb):
             payload = OrderedDict(payload)
             payload["retstart"] = retstart
             request = requests.get(self.base_url["efetch"], params=OrderedDict(payload))
+
             response = xmltodict.parse(request.content.strip())[
                 "EXPERIMENT_PACKAGE_SET"
             ]["EXPERIMENT_PACKAGE"]
@@ -259,27 +260,25 @@ class SRAweb(SRAdb):
                 0
             ]
 
-            experiment_record = OrderedDict()
-            experiment_record["experiment_accession"] = exp_ID
-            experiment_record["experiment_title"] = exp_name
-            experiment_record["experiment_desc"] = exp_title
-
-            experiment_record["organism_taxid "] = exp_taxid
-            experiment_record["organism_name"] = exp_organism_name
-
-            experiment_record["library_strategy"] = exp_library_strategy
-            experiment_record["library_source"] = exp_library_source
-            experiment_record["library_selection"] = exp_library_selection
-            experiment_record["library_source"] = exp_library_source
-            experiment_record["instrument"] = exp_instrument
-            experiment_record["total_spots"] = exp_total_spots
-            experiment_record["total_size"] = exp_total_size
-            experiment_record["sample_accession"] = exp_sample_ID
-            experiment_record["sample_title"] = exp_sample_name
-
-            experiment_record["study_accession"] = exp_json["Study"]["@acc"]
-
             for run_record in runs:
+                experiment_record = OrderedDict()
+                experiment_record["study_accession"] = exp_json["Study"]["@acc"]
+                experiment_record["experiment_accession"] = exp_ID
+                experiment_record["experiment_title"] = exp_name
+                experiment_record["experiment_desc"] = exp_title
+
+                experiment_record["organism_taxid "] = exp_taxid
+                experiment_record["organism_name"] = exp_organism_name
+
+                experiment_record["library_strategy"] = exp_library_strategy
+                experiment_record["library_source"] = exp_library_source
+                experiment_record["library_selection"] = exp_library_selection
+                experiment_record["library_source"] = exp_library_source
+                experiment_record["sample_accession"] = exp_sample_ID
+                experiment_record["sample_title"] = exp_sample_name
+                experiment_record["instrument"] = exp_instrument
+                experiment_record["total_spots"] = exp_total_spots
+                experiment_record["total_size"] = exp_total_size
                 run_accession = run_record["@acc"]
                 run_total_spots = run_record["@total_spots"]
                 run_total_bases = run_record["@total_bases"]
@@ -296,19 +295,46 @@ class SRAweb(SRAdb):
         efetch_result = self.get_efetch_response("sra", srp)
         detailed_records = []
         for record in efetch_result:
-            detailed_record = OrderedDict()
             sample_attributes = record["SAMPLE"]["SAMPLE_ATTRIBUTES"][
                 "SAMPLE_ATTRIBUTE"
             ]
-            run_set = record["RUN_SET"]["RUN"]
-            detailed_record["run_accession"] = run_set["@accession"]
-            for sample_attribute in sample_attributes:
-                dict_values = list(sample_attribute.values())
-                detailed_record[dict_values[0]] = dict_values[1]
-            detailed_records.append(detailed_record)
-        detailed_record_df = pd.DataFrame(detailed_records)
-        metadata_df = metadata_df.merge(detailed_record_df, on="run_accession")
-        return metadata_df
+            exp_record = record["EXPERIMENT"]
+            run_sets = record["RUN_SET"]["RUN"]
+
+            if not isinstance(run_sets, list):
+                run_sets = [run_sets]
+
+            for run_set in run_sets:
+                detailed_record = OrderedDict()
+                # detailed_record["experiment_accession"] = exp_record["@accession"]
+                # detailed_record["experiment_title"] = exp_record["TITLE"]
+
+                lib_record = exp_record["DESIGN"]["LIBRARY_DESCRIPTOR"]
+                for key, value in lib_record.items():
+                    key = key.lower()
+                    if key == "library_layout":
+                        value = list(value.keys())[0]
+                    elif key == "library_construction_protocol":
+                        continue
+                    # detailed_record[key] = value
+
+                pool_record = record["Pool"]["Member"]
+                detailed_record["run_accession"] = run_set["@accession"]
+                detailed_record["run_alias"] = run_set["@alias"]
+                expt_ref = run_set["EXPERIMENT_REF"]
+                print(expt_ref)
+                detailed_record["experiment_alias"] = expt_ref.get("@refname", "")
+                # detailed_record["run_total_bases"] = run_set["@total_bases"]
+                # detailed_record["run_total_spots"] = run_set["@total_spots"]
+                for sample_attribute in sample_attributes:
+                    dict_values = list(sample_attribute.values())
+                    detailed_record[dict_values[0]] = dict_values[1]
+                    detailed_records.append(detailed_record)
+        detailed_record_df = pd.DataFrame(detailed_records).drop_duplicates()
+        metadata_df = metadata_df.merge(
+            detailed_record_df, on="run_accession", how="outer"
+        )
+        return metadata_df.drop_duplicates()
 
     def fetch_gds_results(self, gse, **kwargs):
         result = self.get_esummary_response("geo", gse)
