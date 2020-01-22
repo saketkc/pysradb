@@ -1235,7 +1235,7 @@ class SRAdb(BASEdb):
         if out_dir is None:
             out_dir = os.path.join(os.getcwd(), "pysradb_downloads")
         if srp:
-            df = self.sra_metadata(srp)
+            df = self.sra_metadata(srp, detailed=True)
         # if protocol == "ftp":
         #    sys.stderr.write(
         #        dedent("""\
@@ -1275,7 +1275,12 @@ class SRAdb(BASEdb):
             + ".sra"
         )
 
-        df["srapath_url"] = [self._srapath_url_srr(srr) for srr in df["run_accession"]]
+        if "sra_url" in df.columns.tolist():
+            df = df.rename(columns={"sra_url": "srapath_url"})
+        else:
+            df["srapath_url"] = [
+                self._srapath_url_srr(srr) for srr in df["run_accession"]
+            ]
         download_list = df[
             [
                 "study_accession",

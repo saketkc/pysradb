@@ -135,7 +135,7 @@ def download(out_dir, db, srx, srp, skip_confirmation, use_wget=False):
         )
     else:
         for srp_x in srp:
-            metadata = sradb.sra_metadata(srp_x)
+            metadata = sradb.sra_metadata(srp_x, detailed=True)
             sradb.download(
                 df=metadata,
                 out_dir=out_dir,
