@@ -322,7 +322,6 @@ class SRAweb(SRAdb):
                 detailed_record["run_accession"] = run_set["@accession"]
                 detailed_record["run_alias"] = run_set["@alias"]
                 expt_ref = run_set["EXPERIMENT_REF"]
-                print(expt_ref)
                 detailed_record["experiment_alias"] = expt_ref.get("@refname", "")
                 # detailed_record["run_total_bases"] = run_set["@total_bases"]
                 # detailed_record["run_total_spots"] = run_set["@total_spots"]
