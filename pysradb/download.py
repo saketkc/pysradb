@@ -104,7 +104,7 @@ def download_file(
     show_progress: bool
                    Show progress bar
     """
-    if os.path.exists(file_path):
+    if os.path.exists(file_path) and os.path.getsize(file_path):
         return
     tmp_file_path = file_path + ".part"
     first_byte = os.path.getsize(tmp_file_path) if os.path.exists(tmp_file_path) else 0

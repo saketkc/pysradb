@@ -104,7 +104,7 @@ def metadata(srp_id, db, assay, desc, detailed, expand, saveto):
 
 
 ################# download ##########################
-def download(out_dir, db, srx, srp, skip_confirmation, use_wget=False):
+def download(out_dir, db, srx, srp, skip_confirmation, use_wget=True):
     if use_wget:
         protocol = "ftp"
     else:
@@ -133,7 +133,6 @@ def download(out_dir, db, srx, srp, skip_confirmation, use_wget=False):
 
             text += "{}\n".format(line)
         df = pd.read_csv(StringIO(text), sep="\t")
-        df.to_csv("xx.tsv", index=False, sep="\t")
         sradb.download(
             df=df,
             out_dir=out_dir,
