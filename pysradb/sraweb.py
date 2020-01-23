@@ -6,6 +6,7 @@ import re
 import sys
 import time
 
+import numpy as np
 import requests
 import xmltodict
 
@@ -346,7 +347,11 @@ class SRAweb(SRAdb):
         metadata_df = metadata_df.merge(
             detailed_record_df, on="run_accession", how="outer"
         )
-        return metadata_df.drop_duplicates()
+        metadata_df = metadata_df[metadata_df.columns.dropna()]
+        metadata_df = metadata_df.drop_duplicates()
+        metadata_df = metadata_df.replace(r"^\s*$", np.nan, regex=True)
+        metadata_df = metadata_df.fillna("N/A")
+        return metadata_df
 
     def fetch_gds_results(self, gse, **kwargs):
         result = self.get_esummary_response("geo", gse)

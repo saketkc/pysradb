@@ -1262,18 +1262,21 @@ class SRAdb(BASEdb):
                 filter_by_srx = [filter_by_srx]
         if filter_by_srx:
             df = df[df.experiment_accession.isin(filter_by_srx)]
-        df.loc[:, "download_url"] = (
-            FTP_PREFIX[protocol]
-            + "/sra/sra-instant/reads/ByRun/sra/"
-            + df["run_accession"].str[:3]
-            + "/"
-            + df["run_accession"].str[:6]
-            + "/"
-            + df["run_accession"]
-            + "/"
-            + df["run_accession"]
-            + ".sra"
-        )
+        if "sra_url" in df.columns.tolist() or "srapath_url" in df.columns.tolist():
+            df["download_url"] = ""
+        else:
+            df.loc[:, "download_url"] = (
+                FTP_PREFIX[protocol]
+                + "/sra/sra-instant/reads/ByRun/sra/"
+                + df["run_accession"].str[:3]
+                + "/"
+                + df["run_accession"].str[:6]
+                + "/"
+                + df["run_accession"]
+                + "/"
+                + df["run_accession"]
+                + ".sra"
+            )
 
         if "sra_url" in df.columns.tolist():
             df = df.rename(columns={"sra_url": "srapath_url"})
