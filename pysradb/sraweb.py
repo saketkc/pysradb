@@ -13,6 +13,11 @@ import xmltodict
 from .sradb import SRAdb
 
 
+def _order_first(df, column_order_list):
+    columns = df.columns.tolist()
+    columns = column_order_list + [col for col in columns if col not in column_order_list]
+    return df[columns].drop_duplicates()
+
 def get_retmax(n_records, retmax=500):
     """Get retstart and retmax till n_records are exhausted"""
     for i in range(0, n_records, retmax):
@@ -472,19 +477,19 @@ class SRAweb(SRAdb):
 
     def srp_to_srr(self, srp, **kwargs):
         """Get SRR for a SRP"""
-        srp_df = self.sra_metadata(srp)
-        return srp_df[["study_accession", "run_accession"]].drop_duplicates()
+        srp_df = self.sra_metadata(srp, **kwargs)
+        return _order_first(srp_df, ["study_accession", "run_accession"])
 
     def srp_to_srs(self, srp, **kwargs):
         """Get SRS for a SRP"""
-        srp_df = self.sra_metadata(srp)
-        return srp_df[["study_accession", "sample_accession"]].drop_duplicates()
+        srp_df = self.sra_metadata(srp, **kwargs)
+        return _order_first(srp_df, ["study_accession", "sample_accession"])
 
     def srp_to_srx(self, srp, **kwargs):
         """Get SRX for a SRP"""
-        srp_df = self.sra_metadata(srp)
+        srp_df = self.sra_metadata(srp, **kwargs)
         srp_df["study_accesssion"] = srp
-        return srp_df[["study_accession", "experiment_accession"]].drop_duplicates()
+        return _order_first(srp_df, ["study_accession", "experiment_accession"])
 
     def srr_to_gsm(self, srr, **kwargs):
         """Get GSM for a SRR"""
@@ -496,32 +501,32 @@ class SRAweb(SRAdb):
         )
         gsm_df = self.gse_to_gsm(gse_df.project_alias.tolist(), detailed=True)
         joined_df = gsm_df.merge(srr_df, on="experiment_accession")
-        return joined_df[["run_accession", "experiment_alias"]].drop_duplicates()
+        return _order_first(joined_df, ["run_accession", "experiment_alias"])
 
     def srr_to_srp(self, srr, **kwargs):
         """Get SRP for a SRR"""
-        srr_df = self.sra_metadata(srr)
+        srr_df = self.sra_metadata(srr, **kwargs)
         if kwargs["detailed"] == True:
             return srr_df
-        return srr_df[["run_accession", "study_accession"]].drop_duplicates()
+        return _order_first(srr_df, ["run_accession", "study_accession"])
 
     def srr_to_srs(self, srr, **kwargs):
         """Get SRS for a SRR"""
-        srr_df = self.sra_metadata(srr)
-        return srr_df[["run_accession", "sample_accession"]].drop_duplicates()
+        srr_df = self.sra_metadata(srr, **kwargs)
+        return _order_first(srr_df, ["run_accession", "sample_accession"])
 
     def srr_to_srx(self, srr, **kwargs):
         """Get SRX for a SRR"""
         srr_df = self.sra_metadata(srr)
-        return srr_df[["run_accession", "experiment_accession"]].drop_duplicates()
+        return _order_first(srr_df, ["run_accession", "experiment_accession"])
 
     def srs_to_gsm(self, srs, **kwargs):
         """Get GSM for a SRS"""
         srx_df = self.srs_to_srx(srs)
         time.sleep(0.5)
-        gsm_df = self.srx_to_gsm(srx_df.experiment_accession.tolist())
+        gsm_df = self.srx_to_gsm(srx_df.experiment_accession.tolist(), **kwargs)
         srs_df = srx_df.merge(gsm_df, on="experiment_accession")
-        return srs_df[["sample_accession", "experiment_alias"]]
+        return _order_first(srs_df, ["sample_accession", "experiment_alias"])
 
     def srx_to_gsm(self, srx, **kwargs):
         gsm_df = self.fetch_gds_results(srx)
@@ -532,23 +537,23 @@ class SRAweb(SRAdb):
 
     def srs_to_srx(self, srs, **kwargs):
         """Get SRX for a SRS"""
-        srs_df = self.sra_metadata(srs)
-        return srs_df[["sample_accession", "experiment_accession"]]
+        srs_df = self.sra_metadata(srs, **kwargs)
+        return _order_first(srs_df, ["sample_accession", "experiment_accession"])
 
     def srx_to_srp(self, srx, **kwargs):
         """Get SRP for a SRX"""
-        srx_df = self.sra_metadata(srx)
-        return srx_df[["experiment_accession", "study_accession"]]
+        srx_df = self.sra_metadata(srx, **kwargs)
+        return _order_first(srx_df, ["experiment_accession", "study_accession"])
 
     def srx_to_srr(self, srx, **kwargs):
         """Get SRR for a SRX"""
-        srx_df = self.sra_metadata(srx)
-        return srx_df[["experiment_accession", "run_accession"]]
+        srx_df = self.sra_metadata(srx, **kwargs)
+        return _order_first(srx_df, ["experiment_accession", "run_accession"])
 
     def srx_to_srs(self, srx, **kwargs):
         """Get SRS for a SRX"""
-        srx_df = self.sra_metadata(srx)
-        return srx_df[["experiment_accession", "sample_accession"]]
+        srx_df = self.sra_metadata(srx, **kwargs)
+        return _order_first(srx_df, ["experiment_accession", "sample_accession"])
 
     def search(self, *args, **kwargs):
         raise NotImplementedError("Search not yet implemented for Web")
