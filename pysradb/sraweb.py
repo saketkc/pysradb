@@ -2,7 +2,6 @@ from collections import OrderedDict
 from html import unescape
 
 import pandas as pd
-import re
 import sys
 import time
 
@@ -305,6 +304,8 @@ class SRAweb(SRAdb):
             return metadata_df
 
         efetch_result = self.get_efetch_response("sra", srp)
+        if not isinstance(efetch_result, list):
+            efetch_result = [efetch_result]
         detailed_records = []
         for record in efetch_result:
             sample_attributes = record["SAMPLE"]["SAMPLE_ATTRIBUTES"][
