@@ -15,8 +15,11 @@ from .sradb import SRAdb
 
 def _order_first(df, column_order_list):
     columns = df.columns.tolist()
-    columns = column_order_list + [col for col in columns if col not in column_order_list]
+    columns = column_order_list + [
+        col for col in columns if col not in column_order_list
+    ]
     return df[columns].drop_duplicates()
+
 
 def get_retmax(n_records, retmax=500):
     """Get retstart and retmax till n_records are exhausted"""
