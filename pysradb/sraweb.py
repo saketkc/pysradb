@@ -176,10 +176,13 @@ class SRAweb(SRAdb):
             payload = OrderedDict(payload)
             payload["retstart"] = retstart
             request = requests.get(self.base_url["efetch"], params=OrderedDict(payload))
-
-            response = xmltodict.parse(request.text.strip())["EXPERIMENT_PACKAGE_SET"][
-                "EXPERIMENT_PACKAGE"
-            ]
+            request_text = request.text.strip()
+            try:
+                response = xmltodict.parse(request_text)["EXPERIMENT_PACKAGE_SET"][
+                        "EXPERIMENT_PACKAGE"
+                        ]
+            except ExpatError:
+                raise RuntimeError("Unable to parse xml: {}".format(request_text))
             if retstart == 0:
                 results = response
             else:
