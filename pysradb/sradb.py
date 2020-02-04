@@ -6,6 +6,8 @@ import re
 import subprocess
 import sys
 
+from subprocess import PIPE
+
 import numpy as np
 import pandas as pd
 from tqdm import tqdm
@@ -40,6 +42,7 @@ SRADB_URL = [
 ]
 
 ASCP_CMD_PREFIX = "ascp -k 1 -QT -l 2000m -i"
+PY3_VERSION = sys.version_info.minor
 
 
 def _create_query(select_type_sql, gses):
@@ -1171,8 +1174,12 @@ class SRAdb(BASEdb):
         srr_paths: dict
                    A dict of URLS with keys as SRR
         """
-        proc = subprocess.run(["srapath", sacc], capture_output=True)
+        if PY3_VERSION >= 7:
+            proc = subprocess.run(["srapath", sacc], capture_output=True)
+        else:
+            proc = subprocess.run(["srapath", sacc], stdout=PIPE, stderr=PIPE)
         stdout = str(proc.stdout.strip().decode("utf-8"))
+
         urls = stdout.split("\n")
         # TODO: Improve this
         if not urls[0]:
@@ -1196,7 +1203,10 @@ class SRAdb(BASEdb):
         srr_paths: dict
                    A dict of URLS with keys as SRR
         """
-        proc = subprocess.run(["srapath", srr], capture_output=True)
+        if PY3_VERSION >= 7:
+            proc = subprocess.run(["srapath", srr], capture_output=True)
+        else:
+            proc = subprocess.run(["srapath", srr], stdout=PIPE, stderr=PIPE)
         stdout = str(proc.stdout.strip().decode("utf-8"))
         urls = stdout.split("\n")
         # TODO: Improve this
