@@ -8,6 +8,7 @@ import time
 import numpy as np
 import requests
 import xmltodict
+from xml.parsers.expat import ExpatError
 
 from .sradb import SRAdb
 
@@ -86,7 +87,11 @@ class SRAweb(SRAdb):
         xml_dict: dict
                   Parsed xml as dict
         """
-        return xmltodict.parse(xml)["root"]
+        try:
+            json = xmltodict.parse(xml)["root"]
+        except ExpatError:
+            raise RuntimeError("Unable to parse xml: {}".format(xml))
+        return json
 
     def create_esummary_params(self, esearchresult, db="sra"):
         query_key = esearchresult["querykey"]
@@ -172,9 +177,9 @@ class SRAweb(SRAdb):
             payload["retstart"] = retstart
             request = requests.get(self.base_url["efetch"], params=OrderedDict(payload))
 
-            response = xmltodict.parse(request.content.strip())[
-                "EXPERIMENT_PACKAGE_SET"
-            ]["EXPERIMENT_PACKAGE"]
+            response = xmltodict.parse(request.text.strip())["EXPERIMENT_PACKAGE_SET"][
+                "EXPERIMENT_PACKAGE"
+            ]
             if retstart == 0:
                 results = response
             else:
