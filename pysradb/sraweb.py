@@ -374,17 +374,21 @@ class SRAweb(SRAdb):
                             if sra_file["@filename"] == run_set["@accession"]:
                                 detailed_record["sra_url"] = sra_file["@url"]
                                 break
-                        elif "Alternatives" in sra_file:
+                        if "Alternatives" in sra_file:
                             # Example: SRP184142
-                            if isinstance(sra_file, OrderedDict):
-                                alternatives = sra_file["Alternatives"]
+                            alternatives = sra_file["Alternatives"]
+                            if isinstance(alternatives, OrderedDict):
+                                detailed_record["sra_url_alt"] = alternatives["@url"]
+                            elif isinstance(alternatives, list):
                                 for alt_index, alternative in enumerate(alternatives):
                                     detailed_record[
                                         "sra_url_alt{}".format(alt_index + 1)
                                     ] = alternative["@url"]
                             else:
-                                sys.sterr.write(
-                                    "Unable to determine sra_url. This is a bug. Please report upstream.\n"
+                                sys.stderr.write(
+                                    "Unable to determine sra_url. This is a bug. Please report upstream.\n {}".format(
+                                        alternatives
+                                    )
                                 )
                 expt_ref = run_set["EXPERIMENT_REF"]
                 detailed_record["experiment_alias"] = expt_ref.get("@refname", "")
