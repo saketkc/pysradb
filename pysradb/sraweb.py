@@ -177,7 +177,11 @@ class SRAweb(SRAdb):
             payload["retstart"] = retstart
             request = requests.get(self.base_url["efetch"], params=OrderedDict(payload))
             request_text = request.text.strip()
-            request_json = request.json()
+            try:
+                request_json = request.json()
+            except:
+                request_json = eval(request_text)
+
             if "error"  in request_json:
                 print("Encountered: {}".format(request_json))
                 print("Headers: {}".format(request.headers))
