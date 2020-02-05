@@ -180,21 +180,24 @@ class SRAweb(SRAdb):
             try:
                 request_json = request.json()
             except:
-                request_json = {}#eval(request_text)
+                request_json = {}  # eval(request_text)
 
-            if "error"  in request_json:
-                print("Encountered: {}".format(request_json))
-                print("Headers: {}".format(request.headers))
-                retry_after = request.headers['Retry-After']
+            if "error" in request_json:
+                # print("Encountered: {}".format(request_json))
+                # print("Headers: {}".format(request.headers))
+                # Handle API-rate limit exceeding
+                retry_after = request.headers["Retry-After"]
                 time.sleep(int(retry_after))
                 # try again
-                request = requests.get(self.base_url["efetch"], params=OrderedDict(payload))
+                request = requests.get(
+                    self.base_url["efetch"], params=OrderedDict(payload)
+                )
                 request_text = request.text.strip()
 
             try:
                 response = xmltodict.parse(request_text)["EXPERIMENT_PACKAGE_SET"][
-                        "EXPERIMENT_PACKAGE"
-                        ]
+                    "EXPERIMENT_PACKAGE"
+                ]
             except ExpatError:
                 raise RuntimeError("Unable to parse xml: {}".format(request_text))
             if retstart == 0:
@@ -364,13 +367,23 @@ class SRAweb(SRAdb):
                     for sra_file in sra_files:
                         # Multiple download URLs
                         # Use the one where the download filename corresponds to the SRR
-                        if "@filename" not in sra_file:
-                            print("record keys: {}".format(sra_file.keys()))
-                            print("record : {}".format(sra_file))
-                        else:
+                        # if "@filename" not in sra_file:
+                        #    print("record keys: {}".format(sra_file.keys()))
+                        #    print("record : {}".format(sra_file))
+                        if "@filename" in sra_file:
                             if sra_file["@filename"] == run_set["@accession"]:
                                 detailed_record["sra_url"] = sra_file["@url"]
                                 break
+                        elif "Alternatives" in sra_file:
+                            # Example: SRP184142
+                            if isinstance(sra_file, OrderedDict):
+                                detailed_record["sra_url"] = sra_file["Alternatives"][
+                                    "@url"
+                                ]
+                            else:
+                                sys.sterr.write(
+                                    "Unable to determine sra_url. This is a bug. Please report upstream.\n"
+                                )
                 expt_ref = run_set["EXPERIMENT_REF"]
                 detailed_record["experiment_alias"] = expt_ref.get("@refname", "")
                 # detailed_record["run_total_bases"] = run_set["@total_bases"]
