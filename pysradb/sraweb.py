@@ -180,7 +180,7 @@ class SRAweb(SRAdb):
             try:
                 request_json = request.json()
             except:
-                request_json = eval(request_text)
+                request_json = {}#eval(request_text)
 
             if "error"  in request_json:
                 print("Encountered: {}".format(request_json))
