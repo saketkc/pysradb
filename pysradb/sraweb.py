@@ -177,6 +177,15 @@ class SRAweb(SRAdb):
             payload["retstart"] = retstart
             request = requests.get(self.base_url["efetch"], params=OrderedDict(payload))
             request_text = request.text.strip()
+            request_json = request.json()
+            if "error"  in request_json:
+                print("Encountered: {}".format(request_json))
+                print("Headers: {}".format(request.headers))
+                time.sleep(0.5)
+                # try again
+                request = requests.get(self.base_url["efetch"], params=OrderedDict(payload))
+                request_text = request.text.strip()
+
             try:
                 response = xmltodict.parse(request_text)["EXPERIMENT_PACKAGE_SET"][
                         "EXPERIMENT_PACKAGE"
@@ -189,7 +198,7 @@ class SRAweb(SRAdb):
                 result = response
                 for value in result:
                     results.append(value)
-            time.sleep(0.1)
+            time.sleep(0.3)
         return results
 
     def sra_metadata(
@@ -311,6 +320,7 @@ class SRAweb(SRAdb):
         if not detailed:
             return metadata_df
 
+        time.sleep(0.5)
         efetch_result = self.get_efetch_response("sra", srp)
         if not isinstance(efetch_result, list):
             efetch_result = [efetch_result]
