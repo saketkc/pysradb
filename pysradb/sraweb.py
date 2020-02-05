@@ -185,7 +185,8 @@ class SRAweb(SRAdb):
             if "error"  in request_json:
                 print("Encountered: {}".format(request_json))
                 print("Headers: {}".format(request.headers))
-                time.sleep(0.5)
+                retry_after = request.headers['Retry-After']
+                time.sleep(int(retry_after))
                 # try again
                 request = requests.get(self.base_url["efetch"], params=OrderedDict(payload))
                 request_text = request.text.strip()
@@ -363,9 +364,13 @@ class SRAweb(SRAdb):
                     for sra_file in sra_files:
                         # Multiple download URLs
                         # Use the one where the download filename corresponds to the SRR
-                        if sra_file["@filename"] == run_set["@accession"]:
-                            detailed_record["sra_url"] = sra_file["@url"]
-                            break
+                        if "@filename" not in sra_file:
+                            print("record keys: {}".format(sra_file.keys()))
+                            print("record : {}".format(sra_file))
+                        else:
+                            if sra_file["@filename"] == run_set["@accession"]:
+                                detailed_record["sra_url"] = sra_file["@url"]
+                                break
                 expt_ref = run_set["EXPERIMENT_REF"]
                 detailed_record["experiment_alias"] = expt_ref.get("@refname", "")
                 # detailed_record["run_total_bases"] = run_set["@total_bases"]
