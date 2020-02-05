@@ -2,6 +2,35 @@
 History
 #######
 
+
+*******************
+0.10.2 (02-05-2020)
+*******************
+
+* Bug fix: Handle API-rate limit exceeding => Retries
+* Enhancement: 'Alternatives' URLs are now part of `--detailed`
+
+*******************
+0.10.1 (02-04-2020)
+*******************
+
+* Bug fix: Handle Python3.6 for capture_output in subprocess.run
+
+*******************
+0.10.0 (01-31-2020)
+*******************
+
+* All the subcommands (srx-to-srr, srx-to-srs) will now print additional columns where the first two columns represent the relevant conversion
+* Fixed a bug where for fetching entries with single efetch record
+
+*******************
+0.9.9 (01-15-2020)
+*******************
+
+* Major fix: some SRRs would go missing as the experiment dict was being created only once per SRR (See #15)
+* Features: More detailed metadata by default in the SRAweb mode
+* See notebook: https://colab.research.google.com/drive/1C60V-
+
 ******************
 0.9.7 (01-20-2020)
 ******************
