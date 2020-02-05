@@ -377,9 +377,11 @@ class SRAweb(SRAdb):
                         elif "Alternatives" in sra_file:
                             # Example: SRP184142
                             if isinstance(sra_file, OrderedDict):
-                                detailed_record["sra_url"] = sra_file["Alternatives"][
-                                    "@url"
-                                ]
+                                alternatives = sra_file["Alternatives"]
+                                for alt_index, alternative in enumerate(alternatives):
+                                    detailed_record[
+                                        "sra_url_alt{}".format(alt_index + 1)
+                                    ] = alternative["@url"]
                             else:
                                 sys.sterr.write(
                                     "Unable to determine sra_url. This is a bug. Please report upstream.\n"
