@@ -340,6 +340,8 @@ class SRAweb(SRAdb):
                 ]
             else:
                 sample_attributes = []
+            if isinstance(sample_attributes, OrderedDict):
+                sample_attributes = [sample_attributes]
             exp_record = record["EXPERIMENT"]
             run_sets = record["RUN_SET"]["RUN"]
 
@@ -399,11 +401,7 @@ class SRAweb(SRAdb):
                 # detailed_record["run_total_bases"] = run_set["@total_bases"]
                 # detailed_record["run_total_spots"] = run_set["@total_spots"]
                 for sample_attribute in sample_attributes:
-                    try:
-                        dict_values = list(sample_attribute.values())
-                    except:
-                        print(sample_attribute)
-                        print()
+                    dict_values = list(sample_attribute.values())
                     detailed_record[dict_values[0]] = dict_values[1]
                     detailed_records.append(detailed_record)
         detailed_record_df = pd.DataFrame(detailed_records).drop_duplicates()
