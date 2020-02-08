@@ -399,7 +399,11 @@ class SRAweb(SRAdb):
                 # detailed_record["run_total_bases"] = run_set["@total_bases"]
                 # detailed_record["run_total_spots"] = run_set["@total_spots"]
                 for sample_attribute in sample_attributes:
-                    dict_values = list(sample_attribute.values())
+                    try:
+                        dict_values = list(sample_attribute.values())
+                    except:
+                        print(sample_attribute)
+                        print()
                     detailed_record[dict_values[0]] = dict_values[1]
                     detailed_records.append(detailed_record)
         detailed_record_df = pd.DataFrame(detailed_records).drop_duplicates()
