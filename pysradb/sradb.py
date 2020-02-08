@@ -1219,6 +1219,7 @@ class SRAdb(BASEdb):
         self,
         srp=None,
         df=None,
+        url_col="sra_url",
         out_dir=None,
         filter_by_srx=[],
         protocol="ftp",
@@ -1233,6 +1234,8 @@ class SRAdb(BASEdb):
              SRP ID (optional)
         df: Dataframe
             A dataframe as obtained from `sra_metadata`
+        url_col: string
+                Column of df to use for downloading
         out_dir: string
                  Directory location for download
         filter_by_srx: list
@@ -1288,7 +1291,7 @@ class SRAdb(BASEdb):
                 + ".sra"
             )
 
-        if "sra_url" in df.columns.tolist():
+        if url_col in df.columns.tolist():
             df = df.rename(columns={"sra_url": "srapath_url"})
         else:
             df["srapath_url"] = [
