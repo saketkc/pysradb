@@ -334,9 +334,12 @@ class SRAweb(SRAdb):
             efetch_result = [efetch_result]
         detailed_records = []
         for record in efetch_result:
-            sample_attributes = record["SAMPLE"]["SAMPLE_ATTRIBUTES"][
-                "SAMPLE_ATTRIBUTE"
-            ]
+            if "SAMPLE_ATTRIBUTES" in record["SAMPLE"]:
+                sample_attributes = record["SAMPLE"]["SAMPLE_ATTRIBUTES"][
+                    "SAMPLE_ATTRIBUTE"
+                ]
+            else:
+                sample_attributes = []
             exp_record = record["EXPERIMENT"]
             run_sets = record["RUN_SET"]["RUN"]
 
@@ -344,6 +347,7 @@ class SRAweb(SRAdb):
                 run_sets = [run_sets]
 
             for run_set in run_sets:
+                # print(run_set)
                 detailed_record = OrderedDict()
                 # detailed_record["experiment_accession"] = exp_record["@accession"]
                 # detailed_record["experiment_title"] = exp_record["TITLE"]
