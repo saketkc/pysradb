@@ -1292,7 +1292,7 @@ class SRAdb(BASEdb):
             )
 
         if url_col in df.columns.tolist():
-            df = df.rename(columns={"sra_url": "srapath_url"})
+            df = df.rename(columns={url_col: "srapath_url"})
         else:
             df["srapath_url"] = [
                 self._srapath_url_srr(srr) for srr in df["run_accession"]
