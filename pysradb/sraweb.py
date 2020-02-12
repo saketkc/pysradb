@@ -243,6 +243,8 @@ class SRAweb(SRAdb):
         sra_record = []
         for uid, run_json in runs_json.items():
             exp_json = exps_json[uid]
+            if not run_json:
+                continue
             runs = run_json["Run"]
             if not isinstance(runs, list):
                 runs = [runs]
