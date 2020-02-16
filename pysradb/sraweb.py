@@ -405,7 +405,8 @@ class SRAweb(SRAdb):
                 for sample_attribute in sample_attributes:
                     dict_values = list(sample_attribute.values())
                     detailed_record[dict_values[0]] = dict_values[1]
-                    detailed_records.append(detailed_record)
+                detailed_records.append(detailed_record)
+                # print(detailed_record)
         detailed_record_df = pd.DataFrame(detailed_records).drop_duplicates()
         metadata_df = metadata_df.merge(
             detailed_record_df, on="run_accession", how="outer"
