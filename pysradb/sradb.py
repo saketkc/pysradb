@@ -31,6 +31,7 @@ from .download import get_file_size
 from .download import millify
 
 from .taxid2name import TAXID_TO_NAME
+from .utils import path_leaf
 
 FTP_PREFIX = {
     "fasp": "anonftp@ftp-trace.ncbi.nlm.nih.gov:",
@@ -1325,9 +1326,14 @@ class SRAdb(BASEdb):
                 pbar.set_description("{}/{}/{}".format(srp, srx, srr))
                 srp_dir = os.path.join(out_dir, srp)
                 srx_dir = os.path.join(srp_dir, srx)
-                srr_location = os.path.join(srx_dir, srr + ".sra")
+                download_filename = path_leaf(download_url)
+                if ".fastq.gz" not in download_filename:
+                    srr_location = os.path.join(srx_dir, srr + ".sra")
+                else:
+                    srr_location = os.path.join(srx_dir, download_filename)
                 mkdir_p(srx_dir)
                 if protocol == "fasp":
+
                     cmd = ASCP_CMD_PREFIX.replace("ascp", ascp_bin)
                     cmd = "{} {} {} {}".format(
                         cmd, _find_aspera_keypath(ascp_dir), download_url, srx_dir
