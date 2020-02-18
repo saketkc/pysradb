@@ -7,6 +7,7 @@ import sys
 
 import numpy as np
 from tqdm.autonotebook import tqdm
+
 tqdm.pandas()
 
 

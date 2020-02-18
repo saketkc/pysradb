@@ -11,6 +11,7 @@ from subprocess import PIPE
 import numpy as np
 import pandas as pd
 from tqdm.autonotebook import tqdm
+
 tqdm.pandas()
 
 from .basedb import BASEdb
