@@ -8,6 +8,7 @@ import sys
 import struct
 import subprocess
 from tqdm.autonotebook import tqdm
+
 tqdm.pandas()
 import urllib.request as urllib_request
 
