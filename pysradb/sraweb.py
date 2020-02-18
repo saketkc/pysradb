@@ -133,6 +133,7 @@ class SRAweb(SRAdb):
                 srr = srr.split("_")[0]
                 if ";" in url1:
                     url1_1, url1_2 = url1.split(";")
+                    url1_2 = "http://{}".format(url1_2)
                     url2_1, url2_2 = url2.split(";")
                 else:
                     url1_1 = url1
