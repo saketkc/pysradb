@@ -7,7 +7,8 @@ import shlex
 import sys
 import struct
 import subprocess
-from tqdm import tqdm
+from tqdm.autonotebook import tqdm
+tqdm.pandas()
 import urllib.request as urllib_request
 
 
