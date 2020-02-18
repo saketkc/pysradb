@@ -1341,6 +1341,11 @@ class SRAdb(BASEdb):
                     run_command(cmd, verbose=False)
                 else:
                     if srapath_url is not None:
+                        download_filename = path_leaf(srapath_url)
+                        if ".fastq.gz" not in download_filename:
+                            srr_location = os.path.join(srx_dir, srr + ".sra")
+                        else:
+                            srr_location = os.path.join(srx_dir, download_filename)
                         download_file(srapath_url, srr_location)
                     else:
                         download_file(download_url, srr_location)
