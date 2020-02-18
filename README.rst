@@ -25,14 +25,14 @@ pysradb: Python package for interacting with SRAdb and downloading datasets from
 
 .. image:: https://asciinema.org/a/0C3SjYmPTkkemldprUpdVhiKx.svg
     :target: https://asciinema.org/a/0C3SjYmPTkkemldprUpdVhiKx?speed=5&autoplay=1
-    
+
 ***********
 Publication
 ***********
 
- `pysradb: A Python package to query next-generation sequencing metadata and data from NCBI Sequence Read Archive <https://f1000research.com/articles/8-532/v1>`_ 
- 
- 
+ `pysradb: A Python package to query next-generation sequencing metadata and data from NCBI Sequence Read Archive <https://f1000research.com/articles/8-532/v1>`_
+
+
  Presentation slides from BOSC (ISMB-ECCB) 2019: https://f1000research.com/slides/8-1183
 
 *********
@@ -94,6 +94,7 @@ Quickstart
 **********
 
 A Google Colaboratory version of most used commands are available in this `Colab Notebook <https://colab.research.google.com/drive/1C60V-jkcNZiaCra_V5iEyFs318jgVoUR>`_ . Note that this does not require you to download the heavy SQLite file and uses the `SRAWeb` mode (explained below).
+A list of notebooks demonstrating the command line and API use cases are available in the `notebooks directory <https://github.com/saketkc/pysradb/tree/master/notebooks>`_.
 
 ************
 Installation
