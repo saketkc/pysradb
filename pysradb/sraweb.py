@@ -11,6 +11,7 @@ import xmltodict
 from xml.parsers.expat import ExpatError
 
 from .sradb import SRAdb
+from .utils import path_leaf
 
 
 def _order_first(df, column_order_list):
@@ -39,6 +40,11 @@ class SRAweb(SRAdb):
         self.base_url[
             "efetch"
         ] = "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi"
+
+        self.ena_fastq_search_url = (
+            "https://www.ebi.ac.uk/ena/data/warehouse/filereport"
+        )
+        self.ena_params = [("result", "read_run"), ("fields", "fastq_ftp")]
 
         self.esearch_params = {}
         self.esearch_params["sra"] = [
@@ -92,6 +98,62 @@ class SRAweb(SRAdb):
         except ExpatError:
             raise RuntimeError("Unable to parse xml: {}".format(xml))
         return json
+
+    def fetch_ena_fastq(self, srp):
+        """Fetch FASTQ records from ENA (EXPERIMENTAL)
+
+        Parameters
+        ----------
+        srp: string
+             Srudy accession
+
+        Returns
+        -------
+        srr_url: list
+                 List of SRR fastq urls
+        """
+        payload = self.ena_params.copy()
+        payload += [("accession", srp)]
+        request = requests.get(self.ena_fastq_search_url, params=OrderedDict(payload))
+        request_text = request.text.strip()
+        # TODO: forcing this to be http protocol instead of ftp
+        urls = [
+            (
+                path_leaf(url).replace(".fastq.gz", ""),
+                "http://{}".format(url),
+                url.replace("ftp.sra.ebi.ac.uk/", "era-fasp@fasp.sra.ebi.ac.uk:"),
+            )
+            for url in request_text.split("\n")
+        ]
+        # Paired end case
+        if ";" in request_text:
+            urls_expanded = []
+            for srr, url1, url2 in urls:
+                # strip _1, _2
+                srr = srr.split("_")[0]
+                if ";" in url1:
+                    url1_1, url1_2 = url1.split(";")
+                    url2_1, url2_2 = url2.split(";")
+                else:
+                    url1_1 = url1
+                    url2_1 = url2
+                    url1_2 = ""
+                    url2_2 = ""
+                urls_expanded.append((srr, url1_1, url2_1, url1_2, url2_2))
+            return pd.DataFrame(
+                urls_expanded,
+                columns=[
+                    "run_accession",
+                    "ena_fastq_url_1",
+                    "ena_fastq_url_2",
+                    "ena_fastq_ftp_1",
+                    "ena_fastq_ftp_2",
+                ],
+            )
+        else:
+            return pd.DataFrame(
+                urls, columns=["run_accession", "ena_fastq_url", "ena_fastq_ftp"]
+            )
 
     def create_esummary_params(self, esearchresult, db="sra"):
         query_key = esearchresult["querykey"]
@@ -414,6 +476,9 @@ class SRAweb(SRAdb):
         metadata_df = metadata_df[metadata_df.columns.dropna()]
         metadata_df = metadata_df.drop_duplicates()
         metadata_df = metadata_df.replace(r"^\s*$", np.nan, regex=True)
+        ena_results = self.fetch_ena_fastq(srp)
+        if ena_results.shape[0]:
+            metadata_df = metadata_df.merge(ena_results, on="run_accession")
         metadata_df = metadata_df.fillna("N/A")
         return metadata_df
 

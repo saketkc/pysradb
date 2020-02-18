@@ -2,12 +2,30 @@ import errno
 import io
 import gzip
 import os
+import ntpath
 import shlex
 import sys
 import struct
 import subprocess
 from tqdm import tqdm
 import urllib.request as urllib_request
+
+
+def path_leaf(path):
+    """Get path's tail from a filepath.
+
+    Parameters
+    ----------
+    path: string
+          Filepath
+
+    Returns
+    -------
+    tail: string
+          Filename
+    """
+    head, tail = ntpath.split(path)
+    return tail or ntpath.basename(head)
 
 
 def unique(sequence):
