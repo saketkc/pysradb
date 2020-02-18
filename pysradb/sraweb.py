@@ -139,7 +139,7 @@ class SRAweb(SRAdb):
                     url2_1 = url2
                     url1_2 = ""
                     url2_2 = ""
-                urls_expanded.append((srr, url1_1, url2_1, url1_2, url2_2))
+                urls_expanded.append((srr, url1_1, url1_2, url2_1, url2_2))
             return pd.DataFrame(
                 urls_expanded,
                 columns=[
