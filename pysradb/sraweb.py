@@ -123,7 +123,7 @@ class SRAweb(SRAdb):
                 "http://{}".format(url),
                 url.replace("ftp.sra.ebi.ac.uk/", "era-fasp@fasp.sra.ebi.ac.uk:"),
             )
-            for url in request_text.split("\n")
+            for url in request_text.split("\n") if "fastq_ftp" not in url
         ]
         # Paired end case
         if ";" in request_text:
