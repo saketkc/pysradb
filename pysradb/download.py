@@ -6,7 +6,8 @@ import shutil
 import sys
 
 import numpy as np
-from tqdm import tqdm
+from tqdm.autonotebook import tqdm
+tqdm.pandas()
 
 
 def millify(n):
