@@ -1,9 +1,9 @@
 dist: xenial
 language: python
 python:
+- "3.8"
 - "3.7"
 - "3.6"
-- "3.5"
 install:
 - pip install -U pandas click tqdm
 - pip install -U sphinx ipython travis-sphinx

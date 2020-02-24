@@ -70,7 +70,7 @@ def _check_sradb_file(db):
 
 
 def get_sra_object(db="web"):
-    if db is "web":
+    if db == "web":
         return SRAweb()
     return SRAdb(db)
 
