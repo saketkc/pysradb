@@ -64,7 +64,7 @@ Ready to contribute? Here's how to set up `pysradb` for local development.
 
     $ git clone git@github.com:your_name_here/pysradb.git
 
-3. Install your local copy into a virtualenv. Assuming you have virtualenvwrapper installed, this is how you set up your fork for local development::
+3. Install your local copy into a virtualenv. Assuming you have virtualenvwrapper installed, this is how you set up your fork for local development (If python --version is less than 3.0, run `$ mkvirtualenv pysradb --python=py3` instead)::
 
     $ mkvirtualenv pysradb
     $ cd pysradb/
