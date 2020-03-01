@@ -560,7 +560,7 @@ class SRAweb(SRAdb):
             elif row.entrytype == "GSM":
                 gse_df.loc[index, "study_alias"] = study_alias
         gse_df = gse_df[gse_df.entrytype == "GSM"]
-        if kwargs["detailed"] == True:
+        if kwargs and kwargs["detailed"] == True:
             return gse_df
         return gse_df[
             ["study_alias", "experiment_alias", "experiment_accession"]
@@ -659,7 +659,7 @@ class SRAweb(SRAdb):
     def srr_to_srp(self, srr, **kwargs):
         """Get SRP for a SRR"""
         srr_df = self.sra_metadata(srr, **kwargs)
-        if kwargs["detailed"] == True:
+        if kwargs and kwargs["detailed"] == True:
             return srr_df
         return _order_first(srr_df, ["run_accession", "study_accession"])
 
