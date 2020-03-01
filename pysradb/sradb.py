@@ -177,7 +177,14 @@ class SRAdb(BASEdb):
 
 
         """
-        super(SRAdb, self).__init__(sqlite_file)
+        try:
+            super(SRAdb, self).__init__(sqlite_file)
+        except:
+            print(
+            "{} not a valid SRAmetadb.sqlite file.\n".format(sqlite_file)
+            + "Please download one using `pysradb metadb`."
+            )
+            sys.exit(1)
         _verify_srametadb(sqlite_file)
         self._db_type = "SRA"
         self.valid_in_acc_type = [
