@@ -204,7 +204,19 @@ class SRAweb(SRAdb):
             )
             response = request.json()
             if retstart == 0:
-                results = response["result"]
+                try:
+                    results = response["result"]
+                except KeyError:
+                    sys.stderr.write("Obtained response: {}\n".format(response))
+                    # wait and try again
+                    time.sleep(1)
+                    response = request.json()
+                    try:
+                        results = response["result"]
+                    except KeyError:
+                        sys.stderr.write("Obtained response: {}\n".format(response))
+                        raise RuntimeError
+
             else:
                 result = response["result"]
                 for key, value in result.items():
