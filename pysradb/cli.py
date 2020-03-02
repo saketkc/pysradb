@@ -43,8 +43,6 @@ def _print_save_df(df, saveto=None):
             to_print = []
             for line in to_print_split:
                 to_print.append(line.lstrip())
-            print("sajgndsfsdfdsfsdfdfasfadsfasdfsdfsdfsdfsgsgdasljgnasflnsa")
-            print(sys.getsizeof(to_print_split))
             print(("{}".format(os.linesep)).join(to_print))
 
 
