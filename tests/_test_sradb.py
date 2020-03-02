@@ -76,6 +76,9 @@ def test_desc_table(sradb_connection):
 def test_all_row_counts(sradb_connection):
     assert sradb_connection.all_row_counts().loc["metaInfo", "count"] == 2
 
+def test_all_row_counts2(sradb_connection):
+    assert len(sradb_connection.all_row_counts()) == 13
+
 
 def test_sra_metadata(sradb_connection):
     df = sradb_connection.sra_metadata("SRP017942")
@@ -148,3 +151,77 @@ def test_strain_type(sradb_connection):
         "s288c",
         "s288c",
     ]
+
+def test_srp_to_srx(sradb_connection):
+    assert len(sradb_connection.srp_to_srx("SRP082570")) == 14
+
+
+def test_srp_to_srr(sradb_connection):
+    df = sradb_connection.srp_to_srr("SRP091987")
+    assert sorted(list(df["run_accession"])[:3]) == [
+        'SRR4447104',
+        'SRR4447105',
+        'SRR4447106'
+    ]
+
+
+def test_srp_to_gse(sradb_connection):
+    gse_id = sradb_connection.srp_to_gse("SRP050443").iloc[0,1]
+    df = sradb_connection.gse_to_gsm(gse_id)
+    assert("GSM1557451" in df["experiment_alias"].to_list())
+
+
+def test_gsm_to_gse(sradb_connection):
+    df = sradb_connection.gsm_to_gse(["GSM1020651","GSM1020664","GSM1020771"])
+    assert set(list(df["study_alias"])) == {"GSE41637"}
+
+
+@pytest.mark.xfail(raises=ValueError)
+def test_wrong_input_metadata(sradb_connection):
+    df = sradb_connection.sra_metadata("should_throw_error")
+
+
+def test_search_by_expt_id(sradb_connection):
+    srx_id = "SRX116363"
+    df_expt = sradb_connection.search_by_expt_id(srx_id)
+    sra_id = df_expt["submission_accession"].loc[0]
+    df = sradb_connection.sra_metadata(sra_id)
+    connected_srp = sradb_connection.srx_to_srp("SRX116363").iloc[0,1]
+    assert(srx_id in df["experiment_accession"].to_list()) and (connected_srp == "SRP010374")
+
+
+def test_changed_paths():    
+    wrong_filename = "SRAmet?adb.?sql?ite"
+    path = os.path.join(os.getcwd(), "data", "{}".format(wrong_filename))
+    wrong_path = os.path.join(os.getcwd(), "data", "SRAmet")
+    try:
+        db = SRAdb(path)
+    except:
+        pass
+    assert os.path.isfile(wrong_path) == False
+
+
+def test_changed_paths2():    
+    wrong_filename = "SRAme'tadb2.sql.ite"
+    path = os.path.join(os.getcwd(), "data", "{}".format(wrong_filename))
+    try:
+        db = SRAdb(path)
+    except:
+        pass
+    assert os.path.isfile(path) == False
+
+
+def test_wrong_path_exists():
+    wrong_filename = "wrongdb.sqlite"
+    path = os.path.join(os.getcwd(), "data")
+    wrongfile_path = os.path.join(path, wrong_filename)
+    with open(wrongfile_path, 'w') as f: 
+        pass
+    try:
+        db = SRAdb(wrongfile_path)
+        assert False
+    except Exception as e:
+        assert True
+    finally:
+        os.remove(wrongfile_path)
+

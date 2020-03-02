@@ -25,9 +25,9 @@ class BASEdb(object):
 
     def open(self):
         """Open sqlite connection."""
-        sqlite_file_path = os.getcwd()
-        check_file = "{}/{}".format(sqlite_file_path, self.sqlite_file)  # str(sqlite_file_path)+"/"+str(self.sqlite_file)
-        self.db = sqlite3.connect('file:{}?mode=rw'.format(check_file), uri=True)
+        # Originally sqlite3.connect(self.sqlite_file)
+        self.sqlite_file = self.sqlite_file.replace('?','')
+        self.db = sqlite3.connect('file:{}?mode=rw'.format(self.sqlite_file), uri=True)
         self.db.text_factory = str
 
     def close(self):
