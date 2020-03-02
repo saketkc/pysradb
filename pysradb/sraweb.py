@@ -242,7 +242,11 @@ class SRAweb(SRAdb):
             print("No result found")
             return
 
-        n_records = int(esearch_response["esearchresult"]["count"])
+        try:
+            n_records = int(esearch_response["esearchresult"]["count"])
+        except KeyError:
+            sys.stderr.write('Obtained esearch response: {}\n'.format(esearch_response))
+            raise RuntimeError
 
         results = {}
         for retstart in get_retmax(n_records):
