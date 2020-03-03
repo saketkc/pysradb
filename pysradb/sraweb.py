@@ -22,6 +22,23 @@ def _order_first(df, column_order_list):
     return df[columns].drop_duplicates()
 
 
+def _retry_response(base_url, payload, key, max_retries=10):
+    """Rerty fetching esummary if API rate limit exceeeds"""
+    for index, _ in enumerate(range(max_retries)):
+        try:
+            request = requests.get(
+                    base_url, params=OrderedDict(payload)
+                    )
+            response = request.json()
+            results = response[key]
+            return response
+        except KeyError:
+            # sleep for increasing times
+            time.sleep(index+1)
+            continue
+    raise RuntimeError("Failed to fetch esummary. API rate limit exceeded.")
+
+
 def get_retmax(n_records, retmax=500):
     """Get retstart and retmax till n_records are exhausted"""
     for i in range(0, n_records, retmax):
@@ -203,20 +220,11 @@ class SRAweb(SRAdb):
                 self.base_url["esummary"], params=OrderedDict(payload)
             )
             response = request.json()
+            if "error" in response:
+                # API rate limite exceeded
+                response = _retry_response(self.base_url["esummary"], payload, "result")
             if retstart == 0:
-                try:
-                    results = response["result"]
-                except KeyError:
-                    sys.stderr.write("Obtained response: {}\n".format(response))
-                    # wait and try again
-                    time.sleep(1)
-                    response = request.json()
-                    try:
-                        results = response["result"]
-                    except KeyError:
-                        sys.stderr.write("Obtained response: {}\n".format(response))
-                        raise RuntimeError
-
+                results = response["result"]
             else:
                 result = response["result"]
                 for key, value in result.items():
