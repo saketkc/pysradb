@@ -26,15 +26,13 @@ def _retry_response(base_url, payload, key, max_retries=10):
     """Rerty fetching esummary if API rate limit exceeeds"""
     for index, _ in enumerate(range(max_retries)):
         try:
-            request = requests.get(
-                    base_url, params=OrderedDict(payload)
-                    )
+            request = requests.get(base_url, params=OrderedDict(payload))
             response = request.json()
             results = response[key]
             return response
         except KeyError:
             # sleep for increasing times
-            time.sleep(index+1)
+            time.sleep(index + 1)
             continue
     raise RuntimeError("Failed to fetch esummary. API rate limit exceeded.")
 
@@ -253,7 +251,7 @@ class SRAweb(SRAdb):
         try:
             n_records = int(esearch_response["esearchresult"]["count"])
         except KeyError:
-            sys.stderr.write('Obtained esearch response: {}\n'.format(esearch_response))
+            sys.stderr.write("Obtained esearch response: {}\n".format(esearch_response))
             raise RuntimeError
 
         results = {}
