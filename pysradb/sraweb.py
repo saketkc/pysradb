@@ -204,12 +204,13 @@ class SRAweb(SRAdb):
         if "esummaryresult" in esearch_response:
             print("No result found")
             return
+        if "error" in esearch_response:
+            # API rate limite exceeded
+            esearch_response = _retry_response(
+                self.base_url["esearch"], payload, "esearchresult"
+            )
 
-        try:
-            n_records = int(esearch_response["esearchresult"]["count"])
-        except KeyError:
-            sys.stderr.write("obtained esearch response: {}\n".format(esearch_response))
-            raise RuntimeError
+        n_records = int(esearch_response["esearchresult"]["count"])
 
         results = {}
         for retstart in get_retmax(n_records):
