@@ -290,7 +290,10 @@ class SRAdb(BASEdb):
                 output_columns += ["sample_attribute"]
         output_columns = [x for x in output_columns if x != in_type]
         output_columns = unique(output_columns)
+        print(in_type)
+        print(output_columns)
         select_type = [in_type + "_accession"] + output_columns
+        print(select_type)
         select_type_sql = (",").join(select_type)
         sql = (
             "SELECT DISTINCT "

@@ -5,6 +5,7 @@ import os
 import pytest
 from pysradb import SRAdb
 from pysradb.filter_attrs import guess_cell_type, guess_tissue_type, guess_strain_type
+from sqlite3 import OperationalError
 
 
 @pytest.fixture(scope="module")
@@ -96,11 +97,22 @@ def test_search(sradb_connection):
     df = sradb_connection.search_sra(search_str="breast cancer")
     assert len(df.index)
 
+def test_search2(sradb_connection):
+    df = sradb_connection.search_sra('"salivary microbiome" AND "diabetes mellitus"', detailed=True)
+    assert "SRP241848" in df["study_accession"].to_list()
+
 
 def test_search_by_expt_id(sradb_connection):
     df = sradb_connection.search_by_expt_id("SRX1254413")
     assert df.study_name.tolist()[0] == "GSE73136"
 
+def test_search_by_expt_id2(sradb_connection):
+    srx_id = "SRX116363"
+    df_expt = sradb_connection.search_by_expt_id(srx_id)
+    sra_id = df_expt["submission_accession"].loc[0]
+    df = sradb_connection.sra_metadata(sra_id)
+    connected_srp = sradb_connection.srx_to_srp("SRX116363").iloc[0,1]
+    assert(srx_id in df["experiment_accession"].to_list()) and (connected_srp == "SRP010374")
 
 # def test_download_fasp(sradb_connection):
 #    df = sradb_connection.sra_metadata("SRP098789")
@@ -176,52 +188,23 @@ def test_gsm_to_gse(sradb_connection):
     assert set(list(df["study_alias"])) == {"GSE41637"}
 
 
+def test_srs_to_gsm(sradb_connection):
+    df = sradb_connection.srs_to_gsm("SRS1757470")
+    assert "GSM2358940" == df.iloc[0,1]
+
+
 @pytest.mark.xfail(raises=ValueError)
 def test_wrong_input_metadata(sradb_connection):
     df = sradb_connection.sra_metadata("should_throw_error")
 
 
-def test_search_by_expt_id(sradb_connection):
-    srx_id = "SRX116363"
-    df_expt = sradb_connection.search_by_expt_id(srx_id)
-    sra_id = df_expt["submission_accession"].loc[0]
-    df = sradb_connection.sra_metadata(sra_id)
-    connected_srp = sradb_connection.srx_to_srp("SRX116363").iloc[0,1]
-    assert(srx_id in df["experiment_accession"].to_list()) and (connected_srp == "SRP010374")
-
-
-def test_changed_paths():    
-    wrong_filename = "SRAmet?adb.?sql?ite"
-    path = os.path.join(os.getcwd(), "data", "{}".format(wrong_filename))
-    wrong_path = os.path.join(os.getcwd(), "data", "SRAmet")
+def test_file_creation():
+    """Test to check creation of file if it isn't available"""
+    path = 'SRAmetadb.sqlite'
     try:
         db = SRAdb(path)
-    except:
+    except OperationalError:
         pass
-    assert os.path.isfile(wrong_path) == False
+    assert os.path.isfile(path) == False   
 
-
-def test_changed_paths2():    
-    wrong_filename = "SRAme'tadb2.sql.ite"
-    path = os.path.join(os.getcwd(), "data", "{}".format(wrong_filename))
-    try:
-        db = SRAdb(path)
-    except:
-        pass
-    assert os.path.isfile(path) == False
-
-
-def test_wrong_path_exists():
-    wrong_filename = "wrongdb.sqlite"
-    path = os.path.join(os.getcwd(), "data")
-    wrongfile_path = os.path.join(path, wrong_filename)
-    with open(wrongfile_path, 'w') as f: 
-        pass
-    try:
-        db = SRAdb(wrongfile_path)
-        assert False
-    except Exception as e:
-        assert True
-    finally:
-        os.remove(wrongfile_path)
 
