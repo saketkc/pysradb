@@ -83,6 +83,15 @@ def test_gse_to_gsm(sraweb_connection):
     assert df.shape[0] == 96
 
 
+def test_gse_to_gsm1(sraweb_connection):
+    """Test if gse_to_gsm works without passing `detailed` parameter"""
+    df = sraweb_connection.gse_to_gsm("GSE63858")
+    assert list(df["experiment_alias"]) == [
+        "GSM1558531",
+        "GSM1558530",
+    ]
+
+
 def test_gse_to_srp(sraweb_connection):
     """Test if gse is converted to srp correctly"""
     df = sraweb_connection.gse_to_srp("GSE63858")
@@ -121,6 +130,12 @@ def test_srr_to_srp(sraweb_connection):
     """Test if srr is converted to srp correctly"""
     df = sraweb_connection.srr_to_srp("SRR057511", detailed=False)
     assert list(df["study_accession"]) == ["SRP002605"] * 2
+
+
+def test_srr_to_srp1(sraweb_connection):
+    """Test if srr_to_srp works without passing the `detailed` parameter"""
+    df = sraweb_connection.srr_to_srp("SRR057515")
+    assert list(df["study_accession"]) == ["SRP002605"] * 3
 
 
 def test_srr_to_srs(sraweb_connection):
