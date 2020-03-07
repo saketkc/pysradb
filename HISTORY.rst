@@ -11,7 +11,7 @@ History
 
 Contributors
 
-* Dibya Gautam `<h
+* Dibya Gautam 
 
 *******************
 0.10.2 (02-05-2020)
