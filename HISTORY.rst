@@ -2,6 +2,16 @@
 History
 #######
 
+*******************
+0.10.3 (03--2020)
+*******************
+* Added test cases for SRAweb
+* API limit exceeding errors are automagically handled
+* Bug fixes for GSE <=> SRR
+
+Contributors
+
+* Dibya Gautam `<h
 
 *******************
 0.10.2 (02-05-2020)
