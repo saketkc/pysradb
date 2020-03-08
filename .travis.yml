@@ -16,8 +16,8 @@ script:
 - pysradb
 - flake8
 - black --check .
-- pytest -s -v tests
-- make test
+  #- pytest -s -v tests
+  #- make test
 - make coverage
 - codecov
 - travis-sphinx build --source=$TRAVIS_BUILD_DIR/docs
