@@ -9,15 +9,17 @@ install:
 - pip install -U sphinx ipython travis-sphinx
 - pip install -U numpydoc sphinxcontrib-fulltoc guzzle_sphinx_theme
 - pip install git+https://github.com/leokoppel/sphinxcontrib-versioning.git
-- pip install -U pytest coverage pytest-cov codecov
+- pip install -U pytest coverage pytest-cov codecov black flake8
 - wget -c https://download.asperasoft.com/download/sw/connect/3.8.1/ibm-aspera-connect-3.8.1.161274-linux-g2.12-64.tar.gz && tar -zxvf ibm-aspera-connect-3.8.1.161274-linux-g2.12-64.tar.gz && bash ibm-aspera-connect-3.8.1.161274-linux-g2.12-64.sh
-script:
 - make install
+script:
 - pysradb
+- flake8
+- black --check .
 - pytest -s -v tests
-#- make test
-#- make coverage
-#- codecov
+- make test
+- make coverage
+- codecov
 - travis-sphinx build --source=$TRAVIS_BUILD_DIR/docs
   #- sphinx-versioning build $TRAVIS_BUILD_DIR/docs/ $TRAVIS_BUILD_DIR/docs/_build/html/
 after_success:
