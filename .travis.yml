@@ -14,7 +14,7 @@ install:
 - make install
 script:
 - pysradb
-- flake8
+  #- flake8
 - black --check .
   #- pytest -s -v tests
   #- make test
