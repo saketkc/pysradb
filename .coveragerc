@@ -1,0 +1,8 @@
+[run]
+omit =
+    pysradb/filter_attrs.py
+    pysradb/geodb.py
+    pysradb/sradb.py
+    pysradb/taxid2name.py
+    pysradb/utils.py
+
