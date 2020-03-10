@@ -13,7 +13,6 @@ def test_not_valid_file():
     path = 'SRAmetadb.sqlite' 
     try:
         db = SRAdb(path)
-        assert False
     except SystemExit:
         assert os.path.isfile(path) == False
     except OperationalError:
