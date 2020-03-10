@@ -26,7 +26,7 @@ class BASEdb(object):
     def open(self):
         """Open sqlite connection."""
         # Originally sqlite3.connect(self.sqlite_file)
-        self.db = sqlite3.connect('file:{}?mode=ro'.format(self.sqlite_file), uri=True)
+        self.db = sqlite3.connect("file:{}?mode=ro".format(self.sqlite_file), uri=True)
         self.db.text_factory = str
 
     def close(self):
