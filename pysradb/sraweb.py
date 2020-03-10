@@ -198,7 +198,6 @@ class SRAweb(SRAdb):
         if isinstance(term, list):
             term = " OR ".join(term)
         payload += [("term", term)]
-
         request = requests.get(self.base_url["esearch"], params=OrderedDict(payload))
         esearch_response = request.json()
         if "esummaryresult" in esearch_response:
