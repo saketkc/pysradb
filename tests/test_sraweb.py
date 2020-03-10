@@ -122,8 +122,9 @@ def test_gsm_to_srx(sraweb_connection):
     assert list(df["experiment_accession"]) == ["SRX522468"]
 
 
-# def test_srr_to_gsm(sraweb_connection):
-#     df = sraweb_connection.srr_to_gsm("SRR057515")
+def test_srr_to_gsm(sraweb_connection):
+    df = sraweb_connection.srr_to_gsm("SRR057515")
+    assert df["experiment_alias"].tolist()[0] == "GSM546921"
 
 
 def test_srr_to_srp(sraweb_connection):

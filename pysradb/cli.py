@@ -35,7 +35,7 @@ def _print_save_df(df, saveto=None):
         df.to_csv(saveto, index=False, header=True, sep="\t")
     else:
         if len(df.index):
-            pd.set_option("display.max_colwidth", -1)
+            pd.set_option("display.max_colwidth", None)
             # Bug in pandas 0.25.3: https://github.com/pandas-dev/pandas/issues/24980
             # causes extra leading spaces
             to_print = df.to_string(index=False, justify="left", col_space=0).lstrip()
@@ -43,8 +43,7 @@ def _print_save_df(df, saveto=None):
             to_print = []
             for line in to_print_split:
                 to_print.append(line.lstrip())
-            sys.stdout.write(("{}".format(os.linesep)).join(to_print))
-            # print(("{}".format(os.linesep)).join(to_print))
+            print(("{}".format(os.linesep)).join(to_print))
 
 
 def _check_sradb_file(db):

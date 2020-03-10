@@ -15,11 +15,13 @@ from .utils import path_leaf
 
 
 def _order_first(df, column_order_list):
-    columns = df.columns.tolist()
     columns = column_order_list + [
-        col for col in columns if col not in column_order_list
+        col for col in df.columns.tolist() if col not in column_order_list
     ]
-    return df[columns].drop_duplicates()
+    df = df[columns]
+    if df.shape[0] > 1:
+        df = df.drop_duplicates()
+    return df
 
 
 def _retry_response(base_url, payload, key, max_retries=10):
@@ -653,7 +655,10 @@ class SRAweb(SRAdb):
             columns={"SRA": "project_accession", "accession": "project_alias"}
         )
         gsm_df = self.gse_to_gsm(gse_df.project_alias.tolist(), detailed=True)
-        joined_df = gsm_df.merge(srr_df, on="experiment_accession")
+        srr_cols = list(
+            set(srr_df.columns.tolist()).difference(gsm_df.columns.tolist())
+        ) + ["experiment_accession"]
+        joined_df = gsm_df.merge(srr_df[srr_cols], on="experiment_accession")
         return _order_first(joined_df, ["run_accession", "experiment_alias"])
 
     def srr_to_srp(self, srr, **kwargs):
