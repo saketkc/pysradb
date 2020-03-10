@@ -43,7 +43,8 @@ def _print_save_df(df, saveto=None):
             to_print = []
             for line in to_print_split:
                 to_print.append(line.lstrip())
-            print(("{}".format(os.linesep)).join(to_print))
+            sys.stdout.write(("{}".format(os.linesep)).join(to_print))
+            #print(("{}".format(os.linesep)).join(to_print))
 
 
 def _check_sradb_file(db):
