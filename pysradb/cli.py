@@ -586,7 +586,7 @@ def parse_args(args=None):
     subparser.add_argument(
         "--expand", action="store_true", help="Should sample_attribute be expanded"
     )
-    subparser.add_argument("srp_id", nargs='+')
+    subparser.add_argument("srp_id", nargs="+")
     subparser.set_defaults(func=metadata)
 
     subparser = subparsers.add_parser("download", help="Download SRA project (SRPnnnn)")
