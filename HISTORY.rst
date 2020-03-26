@@ -3,15 +3,17 @@ History
 #######
 
 *******************
-0.10.3 (03--2020)
+0.10.3 (03-26-2020)
 *******************
 * Added test cases for SRAweb
 * API limit exceeding errors are automagically handled
 * Bug fixes for GSE <=> SRR
+* Bug fix for metadata - supports multiple SRPs
 
 Contributors
 
-* Dibya Gautam 
+* Dibya Gautam
+* Marius van den Beek
 
 *******************
 0.10.2 (02-05-2020)
