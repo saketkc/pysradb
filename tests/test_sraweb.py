@@ -1,6 +1,5 @@
 """Tests for SRAweb"""
 
-import os
 import pytest
 from pysradb.sraweb import SRAweb
 import time
@@ -17,6 +16,16 @@ def test_sra_metadata(sraweb_connection):
     """Test if metadata has right number of entries"""
     df = sraweb_connection.sra_metadata("SRP016501")
     assert df.shape[0] == 134
+
+
+def test_sra_metadata_multiple(sraweb_connection):
+    """Test if metadata has right number of entries"""
+    df = sraweb_connection.sra_metadata(["SRP016501", "SRP096025", "SRP103009"])
+    assert list(sorted(df.study_accession.unique())) == [
+        "SRP016501",
+        "SRP096025",
+        "SRP103009",
+    ]
 
 
 def test_tissue_column(sraweb_connection):
