@@ -18,9 +18,7 @@ def _order_first(df, column_order_list):
     columns = column_order_list + [
         col for col in df.columns.tolist() if col not in column_order_list
     ]
-    df = df[columns]
-    if df.shape[0] > 1:
-        df = df.drop_duplicates()
+    df = df.loc[:, columns]
     return df
 
 
@@ -509,7 +507,9 @@ class SRAweb(SRAdb):
         metadata_df = metadata_df.replace(r"^\s*$", np.nan, regex=True)
         ena_results = self.fetch_ena_fastq(srp)
         if ena_results.shape[0]:
-            metadata_df = metadata_df.merge(ena_results, on="run_accession")
+            metadata_df = metadata_df.merge(
+                ena_results, on="run_accession", how="outer"
+            )
         metadata_df = metadata_df.fillna("N/A")
         return metadata_df
 
