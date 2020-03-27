@@ -28,6 +28,13 @@ def test_sra_metadata_multiple(sraweb_connection):
     ]
 
 
+def test_sra_metadata_multiple_detailed(sraweb_connection):
+    """Test if metadata has right number of entries"""
+    df = sraweb_connection.sra_metadata(["SRP002605", "SRP098789"], detailed=True)
+    columns = ["treatment time", "library type", "transfection", "time"]
+    assert len(set(columns).intersection(set(df.columns))) == 4
+
+
 def test_tissue_column(sraweb_connection):
     """Test if tissue column exists"""
     df = sraweb_connection.sra_metadata("SRP096025", detailed="True")
