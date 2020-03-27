@@ -509,7 +509,9 @@ class SRAweb(SRAdb):
         metadata_df = metadata_df.replace(r"^\s*$", np.nan, regex=True)
         ena_results = self.fetch_ena_fastq(srp)
         if ena_results.shape[0]:
-            metadata_df = metadata_df.merge(ena_results, on="run_accession")
+            metadata_df = metadata_df.merge(
+                ena_results, on="run_accession", how="outer"
+            )
         metadata_df = metadata_df.fillna("N/A")
         return metadata_df
 
