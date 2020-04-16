@@ -126,10 +126,10 @@ Dependecies
 
 .. code-block:: bash
 
-   pandas==0.25.3
-   tqdm==4.41.1
-   requests==2.22.0
-   xmltodict=0.12.0
+   pandas==1.0.1
+   requests==2.23.0
+   tqdm==4.43.0
+   xmltodict==0.12.0
    sra-tools (required only if you want to also download)
 
 Installing sratools
@@ -148,7 +148,6 @@ Downloading SRAmetadb (optional)
 ``pysradb`` can utilize a SQLite database file that has preprocessed metadata made available by the
 `SRAdb <https://bmcbioinformatics.biomedcentral.com/articles/10.1186/1471-2105-14-19>`_ project.
 Though, with the release ``0.9.5``, this database file is not a hard requirement for any of the operations.
-
 
 
 SRAmetadb can be downloaded using:
@@ -368,8 +367,11 @@ Demo Notebooks
 
 These notebooks document all the possible features of `pysradb`:
 
-1. `Python API usage <https://nbviewer.jupyter.org/github/saketkc/pysradb/blob/master/notebooks/01.SRAdb-demo.ipynb>`_
-2. `Command line usage <https://nbviewer.jupyter.org/github/saketkc/pysradb/blob/master/notebooks/03.CommandLine-demo.ipynb>`_
+1. `Python API <https://colab.research.google.com/github/saketkc/pysradb/blob/master/01.Python-API_demo.ipynb>`_
+2. `Downloading datasets from SRA - command line <https://colab.research.google.com/github/saketkc/pysradb/blob/master/notebooks/02.Commandline_download.ipynb>`_
+3. `Parallely download multiple datasets - Python API <https://colab.research.google.com/github/saketkc/pysradb/blob/master/notebooks/03.ParallelDownload.ipynb>`_
+4. `Converting SRA-to-fastq - command line (requires conda) <https://colab.research.google.com/github/saketkc/pysradb/blob/master/notebooks/04.SRA_to_fastq_conda.ipynb>`_
+5. `Downloading subsets of a project - Python API <https://colab.research.google.com/github/saketkc/pysradb/blob/master/notebooks/05.Downloading_subsets_of_a_project.ipynb>`_
 
 
 
