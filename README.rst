@@ -367,7 +367,7 @@ Demo Notebooks
 
 These notebooks document all the possible features of `pysradb`:
 
-1. `Python API <https://colab.research.google.com/github/saketkc/pysradb/blob/master/01.Python-API_demo.ipynb>`_
+1. `Python API <https://colab.research.google.com/github/saketkc/pysradb/blob/master/notebooks/01.Python-API_demo.ipynb>`_
 2. `Downloading datasets from SRA - command line <https://colab.research.google.com/github/saketkc/pysradb/blob/master/notebooks/02.Commandline_download.ipynb>`_
 3. `Parallely download multiple datasets - Python API <https://colab.research.google.com/github/saketkc/pysradb/blob/master/notebooks/03.ParallelDownload.ipynb>`_
 4. `Converting SRA-to-fastq - command line (requires conda) <https://colab.research.google.com/github/saketkc/pysradb/blob/master/notebooks/04.SRA_to_fastq_conda.ipynb>`_
@@ -400,10 +400,6 @@ Choudhary, Saket. "pysradb: A Python Package to Query next-Generation Sequencing
 Zenodo archive: https://zenodo.org/badge/latestdoi/159590788
 
 Zenodo DOI: 10.5281/zenodo.2306881
-
-A lot of functionality in ``pysradb`` is based on ideas from the original `SRAdb package <https://bioconductor.org/packages/release/bioc/html/SRAdb.html>`_. Please cite the original SRAdb publication:
-
-    Zhu, Yuelin, Robert M. Stephens, Paul S. Meltzer, and Sean R. Davis. "SRAdb: query and use public next-generation sequencing data from within R." BMC bioinformatics 14, no. 1 (2013): 19.
 
 
 * Free software: BSD license
