@@ -1,5 +1,8 @@
 """Command line interface for pysradb
 """
+import warnings
+
+warnings.simplefilter(action="ignore", category=FutureWarning)
 
 import argparse
 from io import StringIO

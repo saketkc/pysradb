@@ -1,3 +1,10 @@
+"""Utility function to download data"""
+
+import warnings
+
+warnings.simplefilter(action="ignore", category=FutureWarning)
+
+
 import math
 import os
 import hashlib
