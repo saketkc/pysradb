@@ -196,14 +196,14 @@ NOTE: The additional flags such as ``--desc``, ``-detailed`` and ``-expand`` are
 
 
 
-Search
-======
+Search [Requires SRAmetadb]
+===========================
 
 Search for all projects containing "ribosome profiling":
 
 ::
 
-   $  pysradb search "ribosome profiling" | head
+   $  pysradb search "ribosome profiling" --db SRAmetadb.sqlite | head
 
     study_accession experiment_accession sample_accession run_accession
     DRP000927       DRX002899            DRS002983        DRR003575
@@ -223,7 +223,7 @@ Getting SRA metadata
 
 ::
 
-    $ pysradb metadata --db ./SRAmetadb.sqlite SRP000941 --assay --desc --expand | head
+    $ pysradb metadata SRP000941 | head
 
     study_accession experiment_accession experiment_title                                                                                                                 experiment_desc                                                                                                                  organism_taxid  organism_name library_strategy library_source  library_selection sample_accession sample_title instrument                    total_spots total_size    run_accession run_total_spots run_total_bases
     SRP000941       SRX056722                                                                         Reference Epigenome: ChIP-Seq Analysis of H3K27ac in hESC H1 Cells                                                               Reference Epigenome: ChIP-Seq Analysis of H3K27ac in hESC H1 Cells  9606            Homo sapiens       ChIP-Seq           GENOMIC    ChIP            SRS184466                              Illumina HiSeq 2000    26900401     531654480   SRR179707     26900401         807012030
