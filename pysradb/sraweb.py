@@ -1,3 +1,9 @@
+"""Utilities to interact with SRA online"""
+
+import warnings
+
+warnings.simplefilter(action="ignore", category=FutureWarning)
+
 from collections import OrderedDict
 from html import unescape
 
@@ -543,7 +549,7 @@ class SRAweb(SRAdb):
         return pd.DataFrame(gse_records)
 
     def gse_to_gsm(self, gse, **kwargs):
-        gse_df = self.fetch_gds_results(gse)
+        gse_df = self.fetch_gds_results(gse, **kwargs)
         gse_df = gse_df.rename(
             columns={
                 "accession": "experiment_alias",
@@ -569,7 +575,7 @@ class SRAweb(SRAdb):
         ].drop_duplicates()
 
     def gse_to_srp(self, gse, **kwargs):
-        gse_df = self.fetch_gds_results(gse)
+        gse_df = self.fetch_gds_results(gse, **kwargs)
         gse_df = gse_df[gse_df.entrytype == "GSE"]
         gse_df = gse_df.rename(
             columns={"accession": "study_alias", "SRA": "study_accession"}
@@ -577,7 +583,7 @@ class SRAweb(SRAdb):
         return gse_df[["study_alias", "study_accession"]].drop_duplicates()
 
     def gsm_to_srp(self, gsm, **kwargs):
-        gsm_df = self.fetch_gds_results(gsm)
+        gsm_df = self.fetch_gds_results(gsm, **kwargs)
         gsm_df = gsm_df[gsm_df.entrytype == "GSE"]
         gsm_df = gsm_df.rename(
             columns={"accession": "experiment_alias", "SRA": "study_accession"}
@@ -585,7 +591,7 @@ class SRAweb(SRAdb):
         return gsm_df[["experiment_alias", "study_accession"]].drop_duplicates()
 
     def gsm_to_srr(self, gsm, **kwargs):
-        gsm_df = self.fetch_gds_results(gsm)
+        gsm_df = self.fetch_gds_results(gsm, **kwargs)
         gsm_df = gsm_df.rename(
             columns={
                 "accession": "experiment_alias",
@@ -601,7 +607,7 @@ class SRAweb(SRAdb):
 
     def gsm_to_srs(self, gsm, **kwargs):
         """Get SRS for a GSM"""
-        gsm_df = self.fetch_gds_results(gsm)
+        gsm_df = self.fetch_gds_results(gsm, **kwargs)
         gsm_df = gsm_df[gsm_df.entrytype == "GSM"].rename(
             columns={"SRA": "experiment_accession", "accession": "experiment_alias"}
         )
@@ -615,7 +621,7 @@ class SRAweb(SRAdb):
 
     def gsm_to_srx(self, gsm, **kwargs):
         """Get SRX for a GSM"""
-        gsm_df = self.fetch_gds_results(gsm)
+        gsm_df = self.fetch_gds_results(gsm, **kwargs)
         gsm_df = gsm_df[gsm_df.entrytype == "GSM"].rename(
             columns={"SRA": "experiment_accession", "accession": "experiment_alias"}
         )
@@ -623,7 +629,7 @@ class SRAweb(SRAdb):
 
     def srp_to_gse(self, srp, **kwargs):
         """Get GSE for a SRP"""
-        srp_df = self.fetch_gds_results(srp)
+        srp_df = self.fetch_gds_results(srp, **kwargs)
         srp_df = srp_df[srp_df.entrytype == "GSE"]
         srp_df = srp_df.rename(
             columns={"accession": "study_alias", "SRA": "study_accession"}
@@ -650,7 +656,7 @@ class SRAweb(SRAdb):
         """Get GSM for a SRR"""
         srr_df = self.srr_to_srp(srr, detailed=True)
         srp = srr_df.study_accession.tolist()
-        gse_df = self.fetch_gds_results(srp)
+        gse_df = self.fetch_gds_results(srp, **kwargs)
         gse_df = gse_df[gse_df.entrytype == "GSE"].rename(
             columns={"SRA": "project_accession", "accession": "project_alias"}
         )
@@ -687,7 +693,7 @@ class SRAweb(SRAdb):
         return _order_first(srs_df, ["sample_accession", "experiment_alias"])
 
     def srx_to_gsm(self, srx, **kwargs):
-        gsm_df = self.fetch_gds_results(srx)
+        gsm_df = self.fetch_gds_results(srx, **kwargs)
         gsm_df = gsm_df[gsm_df.entrytype == "GSM"].rename(
             columns={"SRA": "experiment_accession", "accession": "experiment_alias"}
         )

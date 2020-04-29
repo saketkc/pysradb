@@ -1,5 +1,9 @@
 """Methods to interact with SRA"""
 
+import warnings
+
+warnings.simplefilter(action="ignore", category=FutureWarning)
+
 import gzip
 import os
 import re
