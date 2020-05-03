@@ -130,41 +130,6 @@ Dependecies
    requests==2.23.0
    tqdm==4.43.0
    xmltodict==0.12.0
-   sra-tools (required only if you want to also download)
-
-Installing sratools
-===================
-
-NCBI has slowly transitioned towards using Google cloud for storing SRA files. As such
-the ftp links are slowly getting obsolete. With release ``0.9.5``, ``pysradb`` has
-moved to utilizing ``srapath``  available through NCBI's ``sra-tools`` for getting
-the SRA location. Thus ``aspera-client`` is no longer required. But, ``sra-tools``
-is now a requirement and can be installed through bioconda. We are in the process of
-doing away with this requirement completely soon.
-
-Downloading SRAmetadb (optional)
-=================================
-
-``pysradb`` can utilize a SQLite database file that has preprocessed metadata made available by the
-`SRAdb <https://bmcbioinformatics.biomedcentral.com/articles/10.1186/1471-2105-14-19>`_ project.
-Though, with the release ``0.9.5``, this database file is not a hard requirement for any of the operations.
-
-
-SRAmetadb can be downloaded using:
-
-.. code-block:: bash
-
-   wget -c https://starbuck1.s3.amazonaws.com/sradb/SRAmetadb.sqlite.gz && gunzip SRAmetadb.sqlite.gz
-
-Alternatively, you can also download it using ``pysradb``, which by default downloads it into your
-current working directory:
-
-
-::
-
-    $ pysradb metadb
-
-You can also specify an alternate directory for download by supplying the ``--out-dir <OUT_DIR>`` argument.
 
 
 Installing pysradb in development mode
@@ -193,29 +158,6 @@ Mode: SRAmetadb or SRAWeb
 ``pysradb``'s initial versions were completely dependent on the ``SRAmnetadb.sqlite`` file made available by the ``SRAdb`` project, we refer to this as the ``SRAmetadb`` mode. However, with ```pysradb 0.9.5``, the depedence on the SQLite file has been made optional. In the abseence of the SQLite file, the operations are performed usiNCBi's ``esrarch`` and ``esummary`` interface, a mode which we refer to as the ``SRAweb`` mode.  All the operations
 with the exception of ``search`` can be performed withoudownloading the SQLite file.
 NOTE: The additional flags such as ``--desc``, ``-detailed`` and ``-expand`` are currently not fully supported in the ``SRAweb`` mode and will be supported in a future release. However, all the basic funcuionality of interconverting one ID to another is available in both ``SRAweb`` and ``SRAmetadb`` mode.
-
-
-
-Search [Requires SRAmetadb]
-===========================
-
-Search for all projects containing "ribosome profiling":
-
-::
-
-   $  pysradb search "ribosome profiling" --db SRAmetadb.sqlite | head
-
-    study_accession experiment_accession sample_accession run_accession
-    DRP000927       DRX002899            DRS002983        DRR003575
-    DRP000927       DRX002900            DRS002992        DRR003576
-    DRP000927       DRX002901            DRS003001        DRR003577
-    DRP000927       DRX002902            DRS003010        DRR003578
-    DRP000927       DRX002903            DRS003019        DRR003579
-    DRP000927       DRX002904            DRS003028        DRR003580
-    DRP000927       DRX002905            DRS003037        DRR003581
-    DRP000927       DRX002906            DRS003038        DRR003582
-    DRP003075       DRX019536            DRS026974        DRR021383
-
 
 
 Getting SRA metadata
@@ -333,6 +275,54 @@ Downloading only certain samples of interest
     $ pysradb metadata SRP000941 --detailed | grep 'study\|RNA-Seq' | pysradb download
 
 This will download all ``RNA-seq`` samples coming from this project.
+
+
+Downloading SRAmetadb (optional)
+=================================
+
+``pysradb`` can utilize a SQLite database file that has preprocessed metadata made available by the
+`SRAdb <https://bmcbioinformatics.biomedcentral.com/articles/10.1186/1471-2105-14-19>`_ project.
+Though, with the release ``0.9.5``, this database file is not a hard requirement for any of the operations.
+
+
+SRAmetadb can be downloaded using:
+
+.. code-block:: bash
+
+   wget -c https://starbuck1.s3.amazonaws.com/sradb/SRAmetadb.sqlite.gz && gunzip SRAmetadb.sqlite.gz
+
+Alternatively, you can also download it using ``pysradb``, which by default downloads it into your
+current working directory:
+
+
+::
+
+    $ pysradb metadb
+
+You can also specify an alternate directory for download by supplying the ``--out-dir <OUT_DIR>`` argument.
+
+
+Search [Requires SRAmetadb]
+===========================
+
+Search for all projects containing "ribosome profiling":
+
+::
+
+   $  pysradb search "ribosome profiling" --db SRAmetadb.sqlite | head
+
+    study_accession experiment_accession sample_accession run_accession
+    DRP000927       DRX002899            DRS002983        DRR003575
+    DRP000927       DRX002900            DRS002992        DRR003576
+    DRP000927       DRX002901            DRS003001        DRR003577
+    DRP000927       DRX002902            DRS003010        DRR003578
+    DRP000927       DRX002903            DRS003019        DRR003579
+    DRP000927       DRX002904            DRS003028        DRR003580
+    DRP000927       DRX002905            DRS003037        DRR003581
+    DRP000927       DRX002906            DRS003038        DRR003582
+    DRP003075       DRX019536            DRS026974        DRR021383
+
+
 
 **************
 Demo Notebooks
