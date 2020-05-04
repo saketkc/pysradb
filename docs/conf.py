@@ -21,11 +21,13 @@
 import os
 import sys
 
+import guzzle_sphinx_theme
+import pysradb
+
 autodoc_mock_imports = ["xmltodict", "numpy", "pandas", "requests", "tqdm"]
 
 sys.path.insert(0, os.path.abspath(".."))
 
-import pysradb
 
 # -- General configuration ---------------------------------------------
 
@@ -169,7 +171,6 @@ texinfo_documents = [
 
 numpydoc_show_class_members = False
 
-import guzzle_sphinx_theme
 
 html_theme_path = guzzle_sphinx_theme.html_theme_path()
 html_theme = "guzzle_sphinx_theme"

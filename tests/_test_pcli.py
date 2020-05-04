@@ -2,13 +2,14 @@
 """
 
 import os
-from pysradb import SRAdb
-
-import pytest
-from shlex import quote
-from shlex import split
 import subprocess
 import sys
+from shlex import quote
+from shlex import split
+
+import pytest
+
+from pysradb import SRAdb
 
 
 def run(command):

@@ -1,23 +1,21 @@
 """Utilities to interact with SRA online"""
 
-import warnings
-
-warnings.simplefilter(action="ignore", category=FutureWarning)
-
-from collections import OrderedDict
-from html import unescape
-
-import pandas as pd
 import sys
 import time
+import warnings
+from collections import OrderedDict
+from html import unescape
+from xml.parsers.expat import ExpatError
 
 import numpy as np
+import pandas as pd
 import requests
 import xmltodict
-from xml.parsers.expat import ExpatError
 
 from .sradb import SRAdb
 from .utils import path_leaf
+
+warnings.simplefilter(action="ignore", category=FutureWarning)
 
 
 def _order_first(df, column_order_list):

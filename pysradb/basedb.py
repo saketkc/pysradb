@@ -1,14 +1,13 @@
-import warnings
-
-warnings.simplefilter(action="ignore", category=FutureWarning)
-
+import os
 import sqlite3
 import sys
+import warnings
 
 import pandas as pd
-import os
 
 from .utils import _extract_first_field
+
+warnings.simplefilter(action="ignore", category=FutureWarning)
 
 
 class BASEdb(object):

@@ -1,43 +1,39 @@
 """Methods to interact with SRA"""
 
-import warnings
-
-warnings.simplefilter(action="ignore", category=FutureWarning)
-
 import gzip
 import os
 import re
 import subprocess
 import sys
-
+import warnings
 from subprocess import PIPE
 
 import numpy as np
 import pandas as pd
 from tqdm.autonotebook import tqdm
 
-tqdm.pandas()
-
 from .basedb import BASEdb
-
-from .filter_attrs import expand_sample_attribute_columns
-
-from .utils import confirm
-from .utils import _find_aspera_keypath
-from .utils import _get_url
-from .utils import get_gzip_uncompressed_size
-from .utils import copyfileobj
-from .utils import mkdir_p
-from .utils import order_dataframe
-from .utils import run_command
-from .utils import unique
-
 from .download import download_file
 from .download import get_file_size
 from .download import millify
-
+from .filter_attrs import expand_sample_attribute_columns
 from .taxid2name import TAXID_TO_NAME
+from .utils import _find_aspera_keypath
+from .utils import _get_url
+from .utils import confirm
+from .utils import copyfileobj
+from .utils import get_gzip_uncompressed_size
+from .utils import mkdir_p
+from .utils import order_dataframe
 from .utils import path_leaf
+from .utils import run_command
+from .utils import unique
+
+warnings.simplefilter(action="ignore", category=FutureWarning)
+
+
+tqdm.pandas()
+
 
 FTP_PREFIX = {
     "fasp": "anonftp@ftp-trace.ncbi.nlm.nih.gov:",
