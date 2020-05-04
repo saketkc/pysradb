@@ -1,20 +1,21 @@
+import errno
+import gzip
+import io
+import ntpath
+import os
+import shlex
+import struct
+import subprocess
+import sys
+import urllib.request as urllib_request
 import warnings
+
+from tqdm.autonotebook import tqdm
 
 warnings.simplefilter(action="ignore", category=FutureWarning)
 
-import errno
-import io
-import gzip
-import os
-import ntpath
-import shlex
-import sys
-import struct
-import subprocess
-from tqdm.autonotebook import tqdm
 
 tqdm.pandas()
-import urllib.request as urllib_request
 
 
 def path_leaf(path):

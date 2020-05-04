@@ -1,8 +1,10 @@
 # contents of conftest.py
 import os
+
 import pytest
-from pysradb import download_sradb_file
+
 from pysradb import download_geodb_file
+from pysradb import download_sradb_file
 
 
 @pytest.fixture(scope="session")

@@ -1,7 +1,8 @@
-import warnings
 import re
-import pandas as pd
+import warnings
+
 import numpy as np
+import pandas as pd
 
 
 def _get_sample_attr_keys(sample_attribute):

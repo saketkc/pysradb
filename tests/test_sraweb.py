@@ -1,8 +1,10 @@
 """Tests for SRAweb"""
 
-import pytest
-from pysradb.sraweb import SRAweb
 import time
+
+import pytest
+
+from pysradb.sraweb import SRAweb
 
 
 @pytest.fixture(scope="module")

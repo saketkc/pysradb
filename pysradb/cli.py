@@ -1,23 +1,22 @@
 """Command line interface for pysradb
 """
-import warnings
-
-warnings.simplefilter(action="ignore", category=FutureWarning)
-
 import argparse
-from io import StringIO
 import os
 import re
 import sys
+import warnings
+from io import StringIO
 from textwrap import dedent
 
-from . import __version__
-from .utils import confirm
-from .sradb import download_sradb_file
-from .sradb import SRAdb
-from .sraweb import SRAweb
-
 import pandas as pd
+
+from . import __version__
+from .sradb import SRAdb
+from .sradb import download_sradb_file
+from .sraweb import SRAweb
+from .utils import confirm
+
+warnings.simplefilter(action="ignore", category=FutureWarning)
 
 
 class CustomFormatterArgP(

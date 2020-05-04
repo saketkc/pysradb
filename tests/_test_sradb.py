@@ -2,10 +2,14 @@
 """
 
 import os
-import pytest
-from pysradb import SRAdb
-from pysradb.filter_attrs import guess_cell_type, guess_tissue_type, guess_strain_type
 from sqlite3 import OperationalError
+
+import pytest
+
+from pysradb import SRAdb
+from pysradb.filter_attrs import guess_cell_type
+from pysradb.filter_attrs import guess_strain_type
+from pysradb.filter_attrs import guess_tissue_type
 
 
 @pytest.fixture(scope="module")

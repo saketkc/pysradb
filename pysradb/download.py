@@ -1,19 +1,18 @@
 """Utility function to download data"""
 
+import hashlib
+import math
+import os
+import shutil
+import sys
 import warnings
+
+import numpy as np
+import requests
+from tqdm.autonotebook import tqdm
 
 warnings.simplefilter(action="ignore", category=FutureWarning)
 
-
-import math
-import os
-import hashlib
-import requests
-import shutil
-import sys
-
-import numpy as np
-from tqdm.autonotebook import tqdm
 
 tqdm.pandas()
 
