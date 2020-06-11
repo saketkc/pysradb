@@ -14,6 +14,7 @@ from . import __version__
 from .sradb import SRAdb
 from .sradb import download_sradb_file
 from .sraweb import SRAweb
+from .search import EnaSearch, SraSearch
 from .utils import confirm
 
 warnings.simplefilter(action="ignore", category=FutureWarning)
@@ -158,18 +159,13 @@ def download(out_dir, db, srx, srp, skip_confirmation, use_wget=True):
 
 
 ######################### search #################################
-def search(search_text, db, assay, desc, detailed, expand, saveto):
-    db = _check_sradb_file(db)
-    sradb = get_sra_object(db)
-    df = sradb.search_sra(
-        search_text,
-        assay=assay,
-        detailed=detailed,
-        sample_attribute=desc,
-        expand_sample_attributes=expand,
-    )
-    _print_save_df(df, saveto)
-    sradb.close()
+
+def search(search_text, verbosity, platform, saveto, db="sra"):
+    if db == "ena":
+        instance = EnaSearch(search_text, verbosity, platform)
+    else:
+        instance = SraSearch(search_text, verbosity, platform)
+    _print_save_df(instance.get_df(), saveto)
 
 
 ####################################################################
@@ -606,19 +602,27 @@ def parse_args(args=None):
 
     subparser = subparsers.add_parser("search", help="Search SRA for matching text")
     subparser.add_argument("--saveto", help="Save metadata dataframe to file")
-    subparser.add_argument("--db", help="Path to SRAmetadb.sqlite file", type=str)
     subparser.add_argument(
-        "--assay", action="store_true", help="Include assay type in output"
+        "--db", help="Select the db API to query, sra (default) or ena", type=str
     )
     subparser.add_argument(
-        "--desc", action="store_true", help="Should sample_attribute be included"
+        "--verbosity", "-v", help="Level of search result details", type=str
     )
     subparser.add_argument(
-        "--detailed", action="store_true", help="Display detailed metadata table"
+        "--platform", help="Sequencing platform used", type=str
     )
-    subparser.add_argument(
-        "--expand", action="store_true", help="Should sample_attribute be expanded"
-    )
+    # subparser.add_argument(
+    #     "--assay", action="store_true", help="Include assay type in output"
+    # )
+    # subparser.add_argument(
+    #     "--desc", action="store_true", help="Should sample_attribute be included"
+    # )
+    # subparser.add_argument(
+    #     "--detailed", action="store_true", help="Display detailed metadata table"
+    # )
+    # subparser.add_argument(
+    #     "--expand", action="store_true", help="Should sample_attribute be expanded"
+    # )
     subparser.add_argument("search_text", type=str)
     subparser.set_defaults(func=search)
 
