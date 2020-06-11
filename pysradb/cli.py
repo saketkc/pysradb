@@ -601,7 +601,7 @@ def parse_args(args=None):
     subparser.set_defaults(func=download)
 
     subparser = subparsers.add_parser("search", help="Search SRA for matching text")
-    subparser.add_argument("--saveto", help="Save metadata dataframe to file")
+    subparser.add_argument("--saveto", help="Save metadata dataframe to file", type=str)
     subparser.add_argument(
         "--db", help="Select the db API to query, sra (default) or ena", type=str
     )
@@ -1059,10 +1059,8 @@ def parse_args(args=None):
         search(
             args.search_text,
             args.db,
-            args.assay,
-            args.desc,
-            args.detailed,
-            args.expand,
+            args.verbosity,
+            args.platform,
             args.saveto,
         )
     elif args.command == "gse-to-gsm":
