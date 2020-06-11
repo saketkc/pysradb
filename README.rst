@@ -1,9 +1,9 @@
 .. image:: https://raw.githubusercontent.com/saketkc/pysradb/master/docs/_static/pysradb_v3.png
     :target: https://raw.githubusercontent.com/saketkc/pysradb/master/docs/_static/pysradb_v3.png
 
-#####################################################################################
-pysradb: Python package for interacting with SRAdb and downloading datasets from SRA.
-#####################################################################################
+########################################################################################
+pysradb: Python package for interacting with SRAdb and downloading datasets from SRA/ENA
+########################################################################################
 
 
 
@@ -26,14 +26,7 @@ pysradb: Python package for interacting with SRAdb and downloading datasets from
 .. image:: https://asciinema.org/a/0C3SjYmPTkkemldprUpdVhiKx.svg
     :target: https://asciinema.org/a/0C3SjYmPTkkemldprUpdVhiKx?speed=5&autoplay=1
 
-***********
-Publication
-***********
 
- `pysradb: A Python package to query next-generation sequencing metadata and data from NCBI Sequence Read Archive <https://f1000research.com/articles/8-532/v1>`_
-
-
- Presentation slides from BOSC (ISMB-ECCB) 2019: https://f1000research.com/slides/8-1183
 
 *********
 CLI Usage
@@ -337,7 +330,16 @@ These notebooks document all the possible features of `pysradb`:
 5. `Downloading subsets of a project - Python API <https://colab.research.google.com/github/saketkc/pysradb/blob/master/notebooks/05.Downloading_subsets_of_a_project.ipynb>`_
 
 
+***********
+Publication
+***********
 
+ `pysradb: A Python package to query next-generation sequencing metadata and data from NCBI Sequence Read Archive <https://f1000research.com/articles/8-532/v1>`_
+
+
+ Presentation slides from BOSC (ISMB-ECCB) 2019: https://f1000research.com/slides/8-1183
+ 
+ 
 ********
 Citation
 ********
