@@ -107,7 +107,7 @@ class SraSearch(QuerySearch):
             "db": "sra",
             "term": self.search_text,
             "retmode": "json",
-            "retmax": 20000  # for testing purposes
+            "retmax": 200  # for testing purposes
 
         }
         if self.platform:
@@ -116,8 +116,25 @@ class SraSearch(QuerySearch):
 
     def _format_result(self, content):
         root = Et.fromstring(content)
-        for run in root.iter("RUN"):
-            self.df = self.df.append(run.attrib, ignore_index=True)
+        if self.verbosity == 0:
+            for run in root.iter("RUN"):
+                self.df = self.df.append(run.attrib, ignore_index=True)
+            return
+        for child in root:
+            data = {}
+            for elem in child.iter():
+                for k, v in elem.attrib.items():
+                    data[elem.tag + "_" + k] = v
+            self.df = self.df.append(data, ignore_index=True)
+        # full_data = {}
+        # for elem in root.iter():
+        #     for k, v in elem.attrib.items():
+        #         k = elem.tag + "_" + k
+        #         if k in full_data:
+        #             full_data[k].append(v)
+        #         else:
+        #             full_data[k] = [v]
+        # self.df = pd.DataFrame.from_dict(full_data)
 
 
 class EnaSearch(QuerySearch):
@@ -150,6 +167,7 @@ class EnaSearch(QuerySearch):
 
         r = requests.get("https://www.ebi.ac.uk/ena/portal/api/search", params=payload, timeout=5)
         r.raise_for_status()
+        print(r.url)
         self._format_result(r.json())
 
     def _format_query(self):
@@ -162,7 +180,7 @@ class EnaSearch(QuerySearch):
                      rf'experiment_title="*{self.search_text}*") ',
             "result": "read_run",
             "format": "json",
-            "limit": 20000  # for testing purposes
+            "limit": 200  # for testing purposes
         }
 
         if self.platform:
@@ -177,3 +195,7 @@ class EnaSearch(QuerySearch):
 
     def _format_result(self, content):
         self.df = pd.DataFrame.from_dict(content)
+
+
+if __name__ == "__main__":
+    SraSearch(["escherichia coli"], 1, "ILLUMINA", ).get_df().to_csv("test_sra.csv")
