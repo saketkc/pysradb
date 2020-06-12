@@ -38,7 +38,7 @@ class QuerySearch:
     """
 
     def __init__(self, search_text, verbosity, platform):
-        self.search_text = search_text
+        self.search_text = " ".join(search_text)
         self.verbosity = verbosity
         self.platform = platform
         self.df = pd.DataFrame()
@@ -81,7 +81,8 @@ class SraSearch(QuerySearch):
         # converted to '+' by requests.
         payload = self._format_query()
 
-        r = requests.get("https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi", params=OrderedDict(payload))
+        r = requests.get("https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi",
+                         params=OrderedDict(payload), timeout=5)
         r.raise_for_status()
         uids = r.json()["esearchresult"]["idlist"]
 
@@ -96,7 +97,8 @@ class SraSearch(QuerySearch):
             "id": uids
         }
 
-        r = requests.get("https://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi", params=OrderedDict(payload2))
+        r = requests.get("https://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi",
+                         params=OrderedDict(payload2), timeout=5)
         r.raise_for_status()
         self._format_result(r.content)
 
@@ -146,7 +148,7 @@ class EnaSearch(QuerySearch):
         # converted to '+' by requests.
         payload = urllib.parse.urlencode(self._format_query(), quote_via=urllib.parse.quote)
 
-        r = requests.get("https://www.ebi.ac.uk/ena/portal/api/search", params=payload)
+        r = requests.get("https://www.ebi.ac.uk/ena/portal/api/search", params=payload, timeout=5)
         r.raise_for_status()
         self._format_result(r.json())
 
@@ -174,4 +176,4 @@ class EnaSearch(QuerySearch):
         return payload
 
     def _format_result(self, content):
-        return pd.DataFrame.from_dict(content)
+        self.df = pd.DataFrame.from_dict(content)

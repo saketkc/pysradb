@@ -159,8 +159,7 @@ def download(out_dir, db, srx, srp, skip_confirmation, use_wget=True):
 
 
 ######################### search #################################
-
-def search(search_text, verbosity, platform, saveto, db="sra"):
+def search(saveto, db, verbosity, platform, search_text):
     if db == "ena":
         instance = EnaSearch(search_text, verbosity, platform)
     else:
@@ -601,16 +600,14 @@ def parse_args(args=None):
     subparser.set_defaults(func=download)
 
     subparser = subparsers.add_parser("search", help="Search SRA for matching text")
-    subparser.add_argument("--saveto", help="Save metadata dataframe to file", type=str)
+    subparser.add_argument("--saveto", help="Save metadata dataframe to file")
     subparser.add_argument(
-        "--db", help="Select the db API to query, sra (default) or ena", type=str
+        "--db", choices=["ena", "sra"], help="Select the db API to query, sra (default) or ena"
     )
     subparser.add_argument(
-        "--verbosity", "-v", help="Level of search result details", type=str
+        "--verbosity", "-v", choices=[0, 1], help="Level of search result details", type=int
     )
-    subparser.add_argument(
-        "--platform", help="Sequencing platform used", type=str
-    )
+    subparser.add_argument("--platform", help="Sequencing platform used")
     # subparser.add_argument(
     #     "--assay", action="store_true", help="Include assay type in output"
     # )
@@ -623,7 +620,7 @@ def parse_args(args=None):
     # subparser.add_argument(
     #     "--expand", action="store_true", help="Should sample_attribute be expanded"
     # )
-    subparser.add_argument("search_text", type=str)
+    subparser.add_argument("search_text", nargs='+')
     subparser.set_defaults(func=search)
 
     subparser = subparsers.add_parser("gse-to-gsm", help="Get GSM for a GSE")
@@ -1057,11 +1054,11 @@ def parse_args(args=None):
         download(args.out_dir, args.db, args.srx, args.srp, args.skip_confirmation)
     elif args.command == "search":
         search(
-            args.search_text,
+            args.saveto,
             args.db,
             args.verbosity,
             args.platform,
-            args.saveto,
+            args.search_text
         )
     elif args.command == "gse-to-gsm":
         gse_to_gsm(
