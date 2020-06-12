@@ -107,7 +107,7 @@ class SraSearch(QuerySearch):
             "db": "sra",
             "term": self.search_text,
             "retmode": "json",
-            "retmax": 200  # for testing purposes
+            "retmax": 20000  # for testing purposes
 
         }
         if self.platform:
@@ -162,7 +162,7 @@ class EnaSearch(QuerySearch):
                      rf'experiment_title="*{self.search_text}*") ',
             "result": "read_run",
             "format": "json",
-            "limit": 200  # for testing purposes
+            "limit": 20000  # for testing purposes
         }
 
         if self.platform:

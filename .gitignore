@@ -109,3 +109,6 @@ venv.bak/
 *.sqlite
 *.sqlite.gz
 
+# Pycharm project settings
+.idea/
+
