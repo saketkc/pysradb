@@ -12,11 +12,16 @@ SRA or ENA (specifically for read runs, list of results IDs in figure 2)
 APIs. The search feature currently supports the following arguments:
 
 ![](./docs/GSoC/Week1/pysradb_search_arguments.png)
+
 *Fig. 1: Arguments currently implemented for pysradb search*
 
+&nbsp;
 
 ![](./docs/GSoC/Week1/ena_results.png)
+
 *Fig. 2: The list of results that can be queried from ENA*
+
+&nbsp;
 
 I have encapsulated the search feature in 3 classes: QuerySearch and its 2
 subclasses, EnaSearch and SraSearch. The rationale for this organisation is
@@ -93,3 +98,5 @@ Week 3 targets:
 - Enable saving search results as text, json or csv format
 
 - Add finetune parameters for the search feature
+
+---
