@@ -371,7 +371,7 @@ Zenodo DOI: 10.5281/zenodo.2306881
 Questions?
 **********
 
-Join our `Slack Channel <https://join.slack.com/t/pysradb/shared_invite/zt-f01jndpy-KflPu3Be5Aq3FzRh5wj1Ug>`_ or open an `issue<https://github.com/saketkc/pysradb/issues>`_.
+Join our `Slack Channel <https://join.slack.com/t/pysradb/shared_invite/zt-f01jndpy-KflPu3Be5Aq3FzRh5wj1Ug>`_ or open an `issue <https://github.com/saketkc/pysradb/issues>`_.
 
 * Free software: BSD license
 * Documentation: https://saketkc.github.io/pysradb
