@@ -23,9 +23,6 @@ pysradb: Python package for interacting with SRAdb and downloading datasets from
     :target: https://travis-ci.com/saketkc/pysradb
 
 
-.. image:: https://asciinema.org/a/0C3SjYmPTkkemldprUpdVhiKx.svg
-    :target: https://asciinema.org/a/0C3SjYmPTkkemldprUpdVhiKx?speed=5&autoplay=1
-
 
 
 *********
