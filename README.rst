@@ -84,7 +84,16 @@ Quickstart
 **********
 
 A Google Colaboratory version of most used commands are available in this `Colab Notebook <https://colab.research.google.com/drive/1C60V-jkcNZiaCra_V5iEyFs318jgVoUR>`_ . Note that this does not require you to download the heavy SQLite file and uses the `SRAWeb` mode (explained below).
-A list of notebooks demonstrating the command line and API use cases are available in the `notebooks directory <https://github.com/saketkc/pysradb/tree/master/notebooks>`_.
+
+The following notebooks document all the possible features of `pysradb`:
+
+1. `Python API <https://colab.research.google.com/github/saketkc/pysradb/blob/master/notebooks/01.Python-API_demo.ipynb>`_
+2. `Downloading datasets from SRA - command line <https://colab.research.google.com/github/saketkc/pysradb/blob/master/notebooks/02.Commandline_download.ipynb>`_
+3. `Parallely download multiple datasets - Python API <https://colab.research.google.com/github/saketkc/pysradb/blob/master/notebooks/03.ParallelDownload.ipynb>`_
+4. `Converting SRA-to-fastq - command line (requires conda) <https://colab.research.google.com/github/saketkc/pysradb/blob/master/notebooks/04.SRA_to_fastq_conda.ipynb>`_
+5. `Downloading subsets of a project - Python API <https://colab.research.google.com/github/saketkc/pysradb/blob/master/notebooks/05.Downloading_subsets_of_a_project.ipynb>`_
+
+
 
 ************
 Installation
@@ -313,18 +322,6 @@ Search for all projects containing "ribosome profiling":
     DRP003075       DRX019536            DRS026974        DRR021383
 
 
-
-**************
-Demo Notebooks
-**************
-
-These notebooks document all the possible features of `pysradb`:
-
-1. `Python API <https://colab.research.google.com/github/saketkc/pysradb/blob/master/notebooks/01.Python-API_demo.ipynb>`_
-2. `Downloading datasets from SRA - command line <https://colab.research.google.com/github/saketkc/pysradb/blob/master/notebooks/02.Commandline_download.ipynb>`_
-3. `Parallely download multiple datasets - Python API <https://colab.research.google.com/github/saketkc/pysradb/blob/master/notebooks/03.ParallelDownload.ipynb>`_
-4. `Converting SRA-to-fastq - command line (requires conda) <https://colab.research.google.com/github/saketkc/pysradb/blob/master/notebooks/04.SRA_to_fastq_conda.ipynb>`_
-5. `Downloading subsets of a project - Python API <https://colab.research.google.com/github/saketkc/pysradb/blob/master/notebooks/05.Downloading_subsets_of_a_project.ipynb>`_
 
 
 ***********
