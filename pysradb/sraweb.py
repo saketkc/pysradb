@@ -499,7 +499,13 @@ class SRAweb(SRAdb):
                 # detailed_record["run_total_spots"] = run_set["@total_spots"]
                 for sample_attribute in sample_attributes:
                     dict_values = list(sample_attribute.values())
-                    detailed_record[dict_values[0]] = dict_values[1]
+                    if len(dict_values) > 1:
+                        detailed_record[dict_values[0]] = dict_values[1]
+                    else:
+
+                        # TODO: Investigate why these fields have just the key
+                        # but no value
+                        pass
                 detailed_records.append(detailed_record)
                 # print(detailed_record)
         detailed_record_df = pd.DataFrame(detailed_records).drop_duplicates()
