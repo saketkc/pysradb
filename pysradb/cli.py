@@ -114,7 +114,7 @@ def metadata(srp_id, db, assay, desc, detailed, expand, saveto):
 
 
 ################# download ##########################
-def download(out_dir, db, srx, srp, skip_confirmation, use_wget=True):
+def download(out_dir, db, srx, srp, skip_confirmation, col="sra_url", use_wget=True):
     if use_wget:
         protocol = "ftp"
     else:
@@ -149,6 +149,7 @@ def download(out_dir, db, srx, srp, skip_confirmation, use_wget=True):
             filter_by_srx=srx,
             skip_confirmation=True,
             protocol=protocol,
+            url_col=col,
         )
     else:
         for srp_x in srp:
@@ -618,6 +619,7 @@ def parse_args(args=None):
     subparser.add_argument(
         "--use-wget", "-w", action="store_true", help="Use wget instead of aspera"
     )
+    subparser.add_argument("--col", help="Specify column to download")
     subparser.set_defaults(func=download)
 
     # pysradb search
@@ -1102,7 +1104,9 @@ def parse_args(args=None):
             args.saveto,
         )
     elif args.command == "download":
-        download(args.out_dir, args.db, args.srx, args.srp, args.skip_confirmation)
+        download(
+            args.out_dir, args.db, args.srx, args.srp, args.skip_confirmation, args.col
+        )
     elif args.command == "search":
         flags = vars(args)
         flags.pop("func")

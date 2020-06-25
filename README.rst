@@ -1,9 +1,9 @@
 .. image:: https://raw.githubusercontent.com/saketkc/pysradb/master/docs/_static/pysradb_v3.png
     :target: https://raw.githubusercontent.com/saketkc/pysradb/master/docs/_static/pysradb_v3.png
 
-#####################################################################################
-pysradb: Python package for interacting with SRAdb and downloading datasets from SRA.
-#####################################################################################
+########################################################################################
+pysradb: Python package for interacting with SRAdb and downloading datasets from SRA/ENA
+########################################################################################
 
 
 
@@ -23,14 +23,8 @@ pysradb: Python package for interacting with SRAdb and downloading datasets from
     :target: https://travis-ci.com/saketkc/pysradb
 
 
-.. image:: https://asciinema.org/a/0C3SjYmPTkkemldprUpdVhiKx.svg
-    :target: https://asciinema.org/a/0C3SjYmPTkkemldprUpdVhiKx?speed=5&autoplay=1
 
-*******************
-GSoC 2020 Materials
-*******************
 
-.. :doc:`WEEKLY_WRITEUP.md`
 
 ***********
 Publication
@@ -100,7 +94,16 @@ Quickstart
 **********
 
 A Google Colaboratory version of most used commands are available in this `Colab Notebook <https://colab.research.google.com/drive/1C60V-jkcNZiaCra_V5iEyFs318jgVoUR>`_ . Note that this does not require you to download the heavy SQLite file and uses the `SRAWeb` mode (explained below).
-A list of notebooks demonstrating the command line and API use cases are available in the `notebooks directory <https://github.com/saketkc/pysradb/tree/master/notebooks>`_.
+
+The following notebooks document all the possible features of `pysradb`:
+
+1. `Python API <https://colab.research.google.com/github/saketkc/pysradb/blob/master/notebooks/01.Python-API_demo.ipynb>`_
+2. `Downloading datasets from SRA - command line <https://colab.research.google.com/github/saketkc/pysradb/blob/master/notebooks/02.Commandline_download.ipynb>`_
+3. `Parallely download multiple datasets - Python API <https://colab.research.google.com/github/saketkc/pysradb/blob/master/notebooks/03.ParallelDownload.ipynb>`_
+4. `Converting SRA-to-fastq - command line (requires conda) <https://colab.research.google.com/github/saketkc/pysradb/blob/master/notebooks/04.SRA_to_fastq_conda.ipynb>`_
+5. `Downloading subsets of a project - Python API <https://colab.research.google.com/github/saketkc/pysradb/blob/master/notebooks/05.Downloading_subsets_of_a_project.ipynb>`_
+
+
 
 ************
 Installation
@@ -330,18 +333,15 @@ Search for all projects containing "ribosome profiling":
 
 
 
-**************
-Demo Notebooks
-**************
 
-These notebooks document all the possible features of `pysradb`:
+***********
+Publication
+***********
 
-1. `Python API <https://colab.research.google.com/github/saketkc/pysradb/blob/master/notebooks/01.Python-API_demo.ipynb>`_
-2. `Downloading datasets from SRA - command line <https://colab.research.google.com/github/saketkc/pysradb/blob/master/notebooks/02.Commandline_download.ipynb>`_
-3. `Parallely download multiple datasets - Python API <https://colab.research.google.com/github/saketkc/pysradb/blob/master/notebooks/03.ParallelDownload.ipynb>`_
-4. `Converting SRA-to-fastq - command line (requires conda) <https://colab.research.google.com/github/saketkc/pysradb/blob/master/notebooks/04.SRA_to_fastq_conda.ipynb>`_
-5. `Downloading subsets of a project - Python API <https://colab.research.google.com/github/saketkc/pysradb/blob/master/notebooks/05.Downloading_subsets_of_a_project.ipynb>`_
+ `pysradb: A Python package to query next-generation sequencing metadata and data from NCBI Sequence Read Archive <https://f1000research.com/articles/8-532/v1>`_
 
+
+ Presentation slides from BOSC (ISMB-ECCB) 2019: https://f1000research.com/slides/8-1183
 
 
 ********
@@ -370,6 +370,12 @@ Zenodo archive: https://zenodo.org/badge/latestdoi/159590788
 
 Zenodo DOI: 10.5281/zenodo.2306881
 
+
+**********
+Questions?
+**********
+
+Join our `Slack Channel <https://join.slack.com/t/pysradb/shared_invite/zt-f01jndpy-KflPu3Be5Aq3FzRh5wj1Ug>`_ or open an `issue <https://github.com/saketkc/pysradb/issues>`_.
 
 * Free software: BSD license
 * Documentation: https://saketkc.github.io/pysradb
