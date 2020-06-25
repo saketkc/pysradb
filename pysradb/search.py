@@ -213,7 +213,10 @@ class SraSearch(QuerySearch):
         if self.verbosity == 0:
             self.df = self.df[["run_accession"]]
         elif self.verbosity == 1:
-            self.df = self.df[["run_accession", "design_description"]]
+            if "design_description" not in self.df.columns:
+                self.df = self.df[["run_accession"]]
+            else:
+                self.df = self.df[["run_accession", "design_description"]]
         elif self.verbosity == 2:
             self.df = self.df[important_columns]
         elif self.verbosity == 3:
