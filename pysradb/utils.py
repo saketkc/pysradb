@@ -3,19 +3,49 @@ import gzip
 import io
 import ntpath
 import os
+import requests
 import shlex
-import struct
 import subprocess
-import sys
 import urllib.request as urllib_request
 import warnings
 
+from requests import HTTPError
 from tqdm.autonotebook import tqdm
+
+from .exceptions import IncorrectFieldException
 
 warnings.simplefilter(action="ignore", category=FutureWarning)
 
 
 tqdm.pandas()
+
+
+def scientific_name_to_taxid(name):
+    """Converts a scientific name to its corresponding taxonomy ID.
+
+    Parameters
+    ----------
+    name: str
+        Scientific name of interest.
+
+    Returns
+    -------
+    taxid: str
+        Taxonomy Id of the Scientific name.
+
+    Raises
+    ------
+    IncorrectFieldException
+        If the scientific name cannot be found.
+
+    """
+
+    r = requests.get("https://www.ebi.ac.uk/ena/data/taxonomy/v1/taxon/scientific-name/" + name, timeout=5)
+    try:
+        r.raise_for_status()
+    except HTTPError:
+        raise IncorrectFieldException(f"Unknown scientific name: {name}")
+    return r.json()[0]["taxId"]
 
 
 def path_leaf(path):
