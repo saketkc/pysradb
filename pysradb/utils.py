@@ -40,7 +40,10 @@ def scientific_name_to_taxid(name):
 
     """
 
-    r = requests.get("https://www.ebi.ac.uk/ena/data/taxonomy/v1/taxon/scientific-name/" + name, timeout=5)
+    r = requests.get(
+        "https://www.ebi.ac.uk/ena/data/taxonomy/v1/taxon/scientific-name/" + name,
+        timeout=5,
+    )
     try:
         r.raise_for_status()
     except HTTPError:

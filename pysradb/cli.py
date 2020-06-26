@@ -46,7 +46,9 @@ def _print_save_df(df, saveto=None):
             pd.set_option("display.max_colwidth", None)
             # Bug in pandas 0.25.3: https://github.com/pandas-dev/pandas/issues/24980
             # causes extra leading spaces
-            to_print = df.to_string(index=False, justify="left", header=False, col_space=0).lstrip()
+            to_print = df.to_string(
+                index=False, justify="left", header=False, col_space=0
+            ).lstrip()
             to_print_split = to_print.split(os.linesep)
             # Header formatting seems off when it is added via to_string()
             # method. Hence it is added to to_print separately
@@ -180,6 +182,7 @@ def search(saveto, db, verbosity, return_max, fields):
         return
 
     _print_save_df(instance.get_df(), saveto)
+
 
 ####################################################################
 
@@ -626,33 +629,52 @@ def parse_args(args=None):
     subparser = subparsers.add_parser("search", help="Search SRA/ENA for matching text")
     subparser.add_argument("--saveto", help="Save search result dataframe to file")
     subparser.add_argument(
-        "--db", choices=["ena", "sra"], default="sra", help="Select the db API (sra or ena) to query, default = sra"
+        "--db",
+        choices=["ena", "sra"],
+        default="sra",
+        help="Select the db API (sra or ena) to query, default = sra",
     )
     subparser.add_argument(
-        "-v", "--verbosity", choices=[0, 1, 2, 3], default=2,
-        help="Level of search result details (0, 1, 2 or 3), default = 2", type=int
+        "-v",
+        "--verbosity",
+        choices=[0, 1, 2, 3],
+        default=2,
+        help="Level of search result details (0, 1, 2 or 3), default = 2",
+        type=int,
     )
     subparser.add_argument(
-        "-m", "--max", default=20, help="Maximum number of entries to return, default = 20", type=int
+        "-m",
+        "--max",
+        default=20,
+        help="Maximum number of entries to return, default = 20",
+        type=int,
     )
     subparser.add_argument(
-        "-q", "--query", nargs='+', help="Main query string. Note that if no query is supplied, at least one of the "
-                                         "following flags must be present:"
+        "-q",
+        "--query",
+        nargs="+",
+        help="Main query string. Note that if no query is supplied, at least one of the "
+        "following flags must be present:",
     )
     subparser.add_argument("--accession", help="Accession number")
-    subparser.add_argument("--organism", nargs='+', help="Scientific name of the sample organism")
-    subparser.add_argument("--layout", help="Library layout")
-    subparser.add_argument("--mbases", help="Size of the sample rounded to the nearest megabase", type=int)
     subparser.add_argument(
-        "--publication-date", help="Publication date of the run in the format dd-mm-yyyy. If a date range is desired, "
-                                   "enter the start date, followed by end date, separated by a colon ':'.\n "
-                                   "Example: 01-01-2010:31-12-2010"
+        "--organism", nargs="+", help="Scientific name of the sample organism"
+    )
+    subparser.add_argument("--layout", help="Library layout")
+    subparser.add_argument(
+        "--mbases", help="Size of the sample rounded to the nearest megabase", type=int
+    )
+    subparser.add_argument(
+        "--publication-date",
+        help="Publication date of the run in the format dd-mm-yyyy. If a date range is desired, "
+        "enter the start date, followed by end date, separated by a colon ':'.\n "
+        "Example: 01-01-2010:31-12-2010",
     )
     subparser.add_argument("--platform", help="Sequencing platform")
     subparser.add_argument("--selection", help="Library selection")
     subparser.add_argument("--source", help="Library source")
     subparser.add_argument("--strategy", help="Library preparation strategy")
-    subparser.add_argument("--title", nargs='+', help="Experiment title")
+    subparser.add_argument("--title", nargs="+", help="Experiment title")
 
     subparser.set_defaults(func=search)
 
@@ -1116,7 +1138,7 @@ def parse_args(args=None):
             flags.pop("db"),
             flags.pop("verbosity"),
             flags.pop("max"),
-            flags
+            flags,
         )
     elif args.command == "gse-to-gsm":
         gse_to_gsm(

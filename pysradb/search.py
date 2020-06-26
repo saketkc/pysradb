@@ -92,35 +92,41 @@ class SraSearch(QuerySearch):
 
         payload = self._format_request()
         try:
-            r = requests.get("https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi",
-                             params=OrderedDict(payload), timeout=20)
+            r = requests.get(
+                "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi",
+                params=OrderedDict(payload),
+                timeout=20,
+            )
             r.raise_for_status()
             uids = r.json()["esearchresult"]["idlist"]
 
             # Step 2: retrieves the detailed information for each uid returned, in groups of 500.
             if not uids:
-                print(f"No results found for the following search query: \n {self.fields}")
+                print(
+                    f"No results found for the following search query: \n {self.fields}"
+                )
                 return  # If no queries found, return nothing
 
             for i in range(0, len(uids), 300):
-                current_uids = ",".join(uids[i:min(i + 300, len(uids))])
+                current_uids = ",".join(uids[i : min(i + 300, len(uids))])
 
-                payload2 = {
-                    "db": "sra",
-                    "retmode": "xml",
-                    "id": current_uids
-                }
+                payload2 = {"db": "sra", "retmode": "xml", "id": current_uids}
 
-                r = requests.get("https://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi",
-                                 params=OrderedDict(payload2), timeout=20)
+                r = requests.get(
+                    "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi",
+                    params=OrderedDict(payload2),
+                    timeout=20,
+                )
                 r.raise_for_status()
                 self._format_result(r.content)
         except requests.exceptions.Timeout:
             print(f"Connection to the server has timed out. Please retry.")
             return
         except requests.exceptions.HTTPError:
-            print(f"HTTPError: This is likely caused by an invalid search query: "
-                  f"\nURL queried: {r.url} \nUser query: {self.fields}")
+            print(
+                f"HTTPError: This is likely caused by an invalid search query: "
+                f"\nURL queried: {r.url} \nUser query: {self.fields}"
+            )
             return
 
     def _format_query_string(self):
@@ -135,12 +141,16 @@ class SraSearch(QuerySearch):
             term += self.fields["layout"] + "[Layout] AND "
         if self.fields["mbases"]:
             if type(self.fields["mbases"]) != int:
-                raise IncorrectFieldException(f"Incorrect mbases format: {self.fields['mbases']}\n"
-                                              f"--mbases must be an integer")
+                raise IncorrectFieldException(
+                    f"Incorrect mbases format: {self.fields['mbases']}\n"
+                    f"--mbases must be an integer"
+                )
             term += self.fields["mbases"] + "[Mbases] AND "
         if self.fields["publication_date"]:
             for date in self.fields["publication_date"].split(":"):
-                if not re.match("^(0[1-9]|[12][0-9]|3[01])-(0[1-9]|1[012])-(19|20)[0-9]{2}$", date):
+                if not re.match(
+                    "^(0[1-9]|[12][0-9]|3[01])-(0[1-9]|1[012])-(19|20)[0-9]{2}$", date
+                ):
                     raise IncorrectFieldException(
                         f"Incorrect publication date format: {self.fields['publication_date']}\n"
                         f"Expected format: dd-mm-yyyy or dd-mm-yyyy:dd-mm-yyyy, between 1900-2099"
@@ -163,8 +173,7 @@ class SraSearch(QuerySearch):
             "db": "sra",
             "term": self._format_query_string(),
             "retmode": "json",
-            "retmax": self.return_max
-
+            "retmax": self.return_max,
         }
         return payload
 
@@ -202,7 +211,7 @@ class SraSearch(QuerySearch):
             "run_size",
             "run_accession",
             "run_total_spots",
-            "run_total_bases"
+            "run_total_bases",
         ]
         for col in important_columns:
             if col not in columns:
@@ -253,17 +262,25 @@ class EnaSearch(QuerySearch):
     def search(self):
         # This ensures that the spaces in the query string are not
         # converted to '+' by requests.
-        payload = urllib.parse.urlencode(self._format_request(), quote_via=urllib.parse.quote)
+        payload = urllib.parse.urlencode(
+            self._format_request(), quote_via=urllib.parse.quote
+        )
         try:
-            r = requests.get("https://www.ebi.ac.uk/ena/portal/api/search", params=payload, timeout=20)
+            r = requests.get(
+                "https://www.ebi.ac.uk/ena/portal/api/search",
+                params=payload,
+                timeout=20,
+            )
             r.raise_for_status()
             self._format_result(r.json())
         except requests.exceptions.Timeout:
             print(f"Connection to the server has timed out. Please retry.")
             return
         except requests.exceptions.HTTPError:
-            print(f"HTTPError: This is likely caused by an invalid search query: "
-                  f"\nURL queried: {r.url} \nUser query: {self.fields}")
+            print(
+                f"HTTPError: This is likely caused by an invalid search query: "
+                f"\nURL queried: {r.url} \nUser query: {self.fields}"
+            )
             return
         except JSONDecodeError:
             print(f"No results found for the following search query: \n {self.fields}")
@@ -275,37 +292,46 @@ class EnaSearch(QuerySearch):
             term += rf'experiment_title="*{self.fields["query"]}*" OR '
             if not self.fields["accession"]:
                 self.fields["query"] = self.fields["query"].upper()
-                term += rf'(study_accession="{self.fields["query"]}" OR ' \
-                        rf'secondary_study_accession="{self.fields["query"]}" OR ' \
-                        rf'sample_accession="{self.fields["query"]}" OR ' \
-                        rf'secondary_sample_accession="{self.fields["query"]}" OR ' \
-                        rf'experiment_accession="{self.fields["query"]}" OR ' \
-                        rf'submission_accession="{self.fields["query"]}" OR ' \
-                        rf'run_accession="{self.fields["query"]}") AND '
+                term += (
+                    rf'(study_accession="{self.fields["query"]}" OR '
+                    rf'secondary_study_accession="{self.fields["query"]}" OR '
+                    rf'sample_accession="{self.fields["query"]}" OR '
+                    rf'secondary_sample_accession="{self.fields["query"]}" OR '
+                    rf'experiment_accession="{self.fields["query"]}" OR '
+                    rf'submission_accession="{self.fields["query"]}" OR '
+                    rf'run_accession="{self.fields["query"]}") AND '
+                )
         if self.fields["accession"]:
             self.fields["accession"] = self.fields["accession"].upper()
-            term += rf'(study_accession="{self.fields["accession"]}" OR ' \
-                    rf'secondary_study_accession="{self.fields["accession"]}" OR ' \
-                    rf'sample_accession="{self.fields["accession"]}" OR ' \
-                    rf'secondary_sample_accession="{self.fields["accession"]}" OR ' \
-                    rf'experiment_accession="{self.fields["accession"]}" OR ' \
-                    rf'submission_accession="{self.fields["accession"]}" OR ' \
-                    rf'run_accession="{self.fields["accession"]}") AND '
+            term += (
+                rf'(study_accession="{self.fields["accession"]}" OR '
+                rf'secondary_study_accession="{self.fields["accession"]}" OR '
+                rf'sample_accession="{self.fields["accession"]}" OR '
+                rf'secondary_sample_accession="{self.fields["accession"]}" OR '
+                rf'experiment_accession="{self.fields["accession"]}" OR '
+                rf'submission_accession="{self.fields["accession"]}" OR '
+                rf'run_accession="{self.fields["accession"]}") AND '
+            )
         if self.fields["organism"]:
             term += rf'tax_eq({scientific_name_to_taxid(self.fields["organism"])}) AND '
         if self.fields["layout"]:
             term += rf'library_layout="{self.fields["layout"].upper()}" AND '
         if self.fields["mbases"]:
             if type(self.fields["mbases"]) != int:
-                raise IncorrectFieldException(f"Incorrect mbases format: {self.fields['mbases']}\n"
-                                              f"--mbases must be an integer")
+                raise IncorrectFieldException(
+                    f"Incorrect mbases format: {self.fields['mbases']}\n"
+                    f"--mbases must be an integer"
+                )
             upper_limit = self.fields["mbases"] * 1000000 + 500000
             lower_limit = self.fields["mbases"] * 1000000 - 500000
-            term += rf'base_count>={lower_limit} AND base_count<{upper_limit} AND '
+            term += rf"base_count>={lower_limit} AND base_count<{upper_limit} AND "
         if self.fields["publication_date"]:
             dates = self.fields["publication_date"].split(":")
             for i in range(len(dates)):
-                if not re.match("^(0[1-9]|[12][0-9]|3[01])-(0[1-9]|1[012])-(19|20)[0-9]{2}$", dates[i]):
+                if not re.match(
+                    "^(0[1-9]|[12][0-9]|3[01])-(0[1-9]|1[012])-(19|20)[0-9]{2}$",
+                    dates[i],
+                ):
                     raise IncorrectFieldException(
                         f"Incorrect publication date format: {self.fields['publication_date']}\n"
                         f"Expected format: dd-mm-yyyy or dd-mm-yyyy:dd-mm-yyyy, between 1900-2099"
@@ -313,9 +339,9 @@ class EnaSearch(QuerySearch):
                 dates[i] = "-".join(dates[i].split("-")[::-1])
 
             if len(dates) == 1:
-                term += rf'first_created={dates[0]} AND '
+                term += rf"first_created={dates[0]} AND "
             elif len(dates) == 2:
-                term += rf'first_created>={dates[0]} AND first_created<={dates[1]} AND '
+                term += rf"first_created>={dates[0]} AND first_created<={dates[1]} AND "
             else:
                 raise IncorrectFieldException(
                     f"Incorrect publication date format: {self.fields['publication_date']}\n"
@@ -343,7 +369,7 @@ class EnaSearch(QuerySearch):
             "query": self._format_query_string(),
             "result": "read_run",
             "format": "json",
-            "limit": self.return_max
+            "limit": self.return_max,
         }
 
         # Selects the exact fields to return at different verbosity levels
@@ -352,21 +378,23 @@ class EnaSearch(QuerySearch):
         elif self.verbosity == 1:
             pass  # default, fields = "run_accession,description"
         elif self.verbosity == 2:
-            payload["fields"] = "study_accession," \
-                                "experiment_accession," \
-                                "experiment_title," \
-                                "description," \
-                                "tax_id," \
-                                "scientific_name," \
-                                "library_strategy," \
-                                "library_source," \
-                                "library_selection," \
-                                "sample_accession," \
-                                "sample_title," \
-                                "instrument_model," \
-                                "run_accession," \
-                                "read_count," \
-                                "base_count"
+            payload["fields"] = (
+                "study_accession,"
+                "experiment_accession,"
+                "experiment_title,"
+                "description,"
+                "tax_id,"
+                "scientific_name,"
+                "library_strategy,"
+                "library_source,"
+                "library_selection,"
+                "sample_accession,"
+                "sample_title,"
+                "instrument_model,"
+                "run_accession,"
+                "read_count,"
+                "base_count"
+            )
         elif self.verbosity == 3:
             payload["fields"] = "all"
 
@@ -395,6 +423,8 @@ class EnaSearch(QuerySearch):
                 "read_count",
                 "base_count",
             ]
-            columns = important_columns + sorted([col for col in columns if col not in important_columns])
+            columns = important_columns + sorted(
+                [col for col in columns if col not in important_columns]
+            )
             self.df = self.df[columns]
         self.df.dropna(how="all")
