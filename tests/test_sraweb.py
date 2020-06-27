@@ -3,7 +3,6 @@
 import time
 
 import pytest
-
 from pysradb.sraweb import SRAweb
 
 

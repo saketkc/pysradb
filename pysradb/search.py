@@ -2,14 +2,16 @@
 """
 
 import re
-import requests
 import urllib
-import pandas as pd
 import xml.etree.ElementTree as Et
 from collections import OrderedDict
 from json import JSONDecodeError
 
-from .exceptions import MissingQueryException, IncorrectFieldException
+import pandas as pd
+import requests
+
+from .exceptions import IncorrectFieldException
+from .exceptions import MissingQueryException
 from .utils import scientific_name_to_taxid
 
 

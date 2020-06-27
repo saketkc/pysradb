@@ -3,12 +3,12 @@ import gzip
 import io
 import ntpath
 import os
-import requests
 import shlex
 import subprocess
 import urllib.request as urllib_request
 import warnings
 
+import requests
 from requests import HTTPError
 from tqdm.autonotebook import tqdm
 

@@ -5,17 +5,19 @@ import os
 import re
 import sys
 import warnings
-import pandas as pd
 from io import StringIO
 from textwrap import dedent
 
+import pandas as pd
 
 from . import __version__
-from .exceptions import MissingQueryException, IncorrectFieldException
+from .exceptions import IncorrectFieldException
+from .exceptions import MissingQueryException
+from .search import EnaSearch
+from .search import SraSearch
 from .sradb import SRAdb
 from .sradb import download_sradb_file
 from .sraweb import SRAweb
-from .search import EnaSearch, SraSearch
 from .utils import confirm
 
 warnings.simplefilter(action="ignore", category=FutureWarning)
