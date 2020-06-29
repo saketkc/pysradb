@@ -12,7 +12,7 @@ import requests
 
 from .exceptions import IncorrectFieldException
 from .exceptions import MissingQueryException
-from .utils import scientific_name_to_taxid
+from .utils import scientific_name_to_taxid, requests_3_retries
 
 
 class QuerySearch:
@@ -94,7 +94,7 @@ class SraSearch(QuerySearch):
 
         payload = self._format_request()
         try:
-            r = requests.get(
+            r = requests_3_retries().get(
                 "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi",
                 params=OrderedDict(payload),
                 timeout=20,
@@ -114,7 +114,7 @@ class SraSearch(QuerySearch):
 
                 payload2 = {"db": "sra", "retmode": "xml", "id": current_uids}
 
-                r = requests.get(
+                r = requests_3_retries().get(
                     "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi",
                     params=OrderedDict(payload2),
                     timeout=20,
@@ -224,10 +224,10 @@ class SraSearch(QuerySearch):
         if self.verbosity == 0:
             self.df = self.df[["run_accession"]]
         elif self.verbosity == 1:
-            if "design_description" not in self.df.columns:
+            if "title" not in self.df.columns:
                 self.df = self.df[["run_accession"]]
             else:
-                self.df = self.df[["run_accession", "design_description"]]
+                self.df = self.df[["run_accession", "title"]]
         elif self.verbosity == 2:
             self.df = self.df[important_columns]
         elif self.verbosity == 3:
@@ -268,7 +268,7 @@ class EnaSearch(QuerySearch):
             self._format_request(), quote_via=urllib.parse.quote
         )
         try:
-            r = requests.get(
+            r = requests_3_retries().get(
                 "https://www.ebi.ac.uk/ena/portal/api/search",
                 params=payload,
                 timeout=20,

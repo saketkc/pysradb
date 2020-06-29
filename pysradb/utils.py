@@ -10,6 +10,8 @@ import warnings
 
 import requests
 from requests import HTTPError
+from requests.adapters import HTTPAdapter
+from requests.packages.urllib3.util.retry import Retry
 from tqdm.autonotebook import tqdm
 
 from .exceptions import IncorrectFieldException
@@ -49,6 +51,28 @@ def scientific_name_to_taxid(name):
     except HTTPError:
         raise IncorrectFieldException(f"Unknown scientific name: {name}")
     return r.json()[0]["taxId"]
+
+
+def requests_3_retries():
+    """Generates a requests session object that allows 3 retries.
+
+    Returns
+    -------
+    session: requests.Session
+        requests session object that allows 3 retries for server-side
+        errors, for GET and POST requests.
+    """
+    session = requests.Session()
+    retry = Retry(
+        total=3,
+        backoff_factor=0.5,
+        status_forcelist=[429, 500, 502, 503, 504],
+        method_whitelist=["POST", "GET"]
+    )
+    adapter = HTTPAdapter(max_retries=retry)
+    session.mount('http://', adapter)
+    session.mount('https://', adapter)
+    return session
 
 
 def path_leaf(path):
