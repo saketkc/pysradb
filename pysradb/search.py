@@ -48,6 +48,11 @@ class QuerySearch:
     def __init__(self, verbosity, return_max, fields):
         self.verbosity = verbosity
         self.return_max = return_max
+        allowed_fields = ["query", "accession", "organism", "layout", "mbases", "publication_date", "platform",
+                          "selection", "source", "strategy", "title"]
+        for field in allowed_fields:
+            if field not in fields:
+                fields[field] = None
         for k in fields:
             if type(fields[k]) == list:
                 fields[k] = " ".join(fields[k])
