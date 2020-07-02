@@ -460,7 +460,6 @@ class SRAweb(SRAdb):
                         continue
                     # detailed_record[key] = value
 
-                pool_record = record["Pool"]["Member"]
                 detailed_record["run_accession"] = run_set["@accession"]
                 detailed_record["run_alias"] = run_set["@alias"]
                 sra_files = run_set["SRAFiles"]["SRAFile"]
