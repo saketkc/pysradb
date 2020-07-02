@@ -76,7 +76,7 @@ class QuerySearch:
         pass
 
     def get_df(self):
-        return self.df
+        return self.df.replace(r"^\s*$", "N/A", regex=True)
 
 
 class SraSearch(QuerySearch):

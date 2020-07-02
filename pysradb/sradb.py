@@ -1281,7 +1281,15 @@ class SRAdb(BASEdb):
                 filter_by_srx = [filter_by_srx]
         if filter_by_srx:
             df = df[df.experiment_accession.isin(filter_by_srx)]
-        if "sra_url" in df.columns.tolist() or "srapath_url" in df.columns.tolist():
+        df_cols = df.columns.tolist()
+        if url_col and url_col not in df_cols:
+            sys.stderr.write(
+                "Requested column '{}' not found in metadata.{}".format(
+                    url_col, os.linsep
+                )
+            )
+            sys.exit(1)
+        if "sra_url" in df_cols or "srapath_url" in df_cols or url_col in df_cols:
             df["download_url"] = ""
         else:
             df.loc[:, "download_url"] = (
@@ -1311,7 +1319,9 @@ class SRAdb(BASEdb):
                 "download_url",
                 "srapath_url",
             ]
-        ].values
+        ]
+
+        download_list = download_list.values
         if not len(df.index):
             print("Could not locate {} in db".format(srp))
             sys.exit(0)

@@ -7,11 +7,14 @@ import shutil
 import sys
 import warnings
 
+warnings.simplefilter(action="ignore", category=FutureWarning)
+
 import numpy as np
 import requests
-from tqdm.autonotebook import tqdm
+import requests_ftp
 
-warnings.simplefilter(action="ignore", category=FutureWarning)
+requests_ftp.monkeypatch_session()
+from tqdm.autonotebook import tqdm
 
 
 tqdm.pandas()
@@ -57,7 +60,12 @@ def get_file_size(row):
         url = row.srapath_url
     else:
         url = row.download_url
-    return float(requests.head(url).headers["content-length"])
+    if url.startswith("ftp."):
+        url = "ftp://" + url
+        r = requests.Session()
+    else:
+        r = requests
+    return float(r.head(url).headers["content-length"])
 
 
 def md5_validate_file(file_path, md5_hash):
@@ -112,6 +120,11 @@ def download_file(
     show_progress: bool
                    Show progress bar
     """
+    if url.startswith("ftp."):
+        url = "ftp://" + url
+        session = requests.Session()
+    else:
+        session = requests
     if os.path.exists(file_path) and os.path.getsize(file_path):
         return
     tmp_file_path = file_path + ".part"
@@ -119,9 +132,9 @@ def download_file(
     file_mode = "ab" if first_byte else "wb"
     file_size = -1
     try:
-        file_size = int(requests.head(url).headers["Content-length"])
+        file_size = int(session.head(url).headers["Content-length"])
         headers = {"Range": "bytes=%s-" % first_byte}
-        r = requests.get(url, headers=headers, stream=True)
+        r = session.get(url, headers=headers, stream=True)
         if show_progress:
             desc = "Downloading {}".format(url.split("/")[-1])
             pbar = tqdm(
