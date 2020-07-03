@@ -146,15 +146,35 @@ class SRAweb(SRAdb):
             if "fastq_ftp" not in url
         ]
         # Paired end case
+        def _handle_url_split(url_split):
+            url1_1 = "N/A"
+            url1_2 = "N/A"
+            for url_temp in url_split:
+                if "_1.fastq.gz" in url_temp:
+                    url1_1 = url_temp
+                elif "_2.fastq.gz" in url_temp:
+                    url1_2 = url_temp
+            return url1_1, url1_2
+
         if ";" in request_text:
             urls_expanded = []
             for srr, url1, url2 in urls:
                 # strip _1, _2
                 srr = srr.split("_")[0]
                 if ";" in url1:
-                    url1_1, url1_2 = url1.split(";")
+                    url1_split = url1.split(";")
+                    if len(url1_split) == 2:
+                        url1_1, url1_2 = url1_split
+                    else:
+                        # warnings.warn('ignoring extra urls found for paired end accession')
+                        url1_1, url1_2 = _handle_url_split(url1_split)
                     url1_2 = "http://{}".format(url1_2)
-                    url2_1, url2_2 = url2.split(";")
+                    url2_split = url2.split(";")
+                    if len(url2_split) == 2:
+                        url2_1, url2_2 = url2_split
+                    else:
+                        # warnings.warn('ignoring extra urls found for paired end accession')
+                        url2_1, url2_2 = _handle_url_split(url2_split)
                 else:
                     url1_1 = url1
                     url2_1 = url2
