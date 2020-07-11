@@ -14,6 +14,7 @@ from . import __version__
 from .exceptions import IncorrectFieldException
 from .exceptions import MissingQueryException
 from .search import EnaSearch
+from .search import GeoSearch
 from .search import SraSearch
 from .sradb import SRAdb
 from .sradb import download_sradb_file
@@ -174,10 +175,19 @@ def download(out_dir, db, srx, srp, skip_confirmation, col="sra_url", use_wget=T
 def search(saveto, db, verbosity, return_max, fields):
     try:
         if db == "ena":
-            instance = EnaSearch(verbosity, return_max, fields)
+            instance = EnaSearch(verbosity, return_max, fields["query"], fields["accession"], fields["organism"],
+                                 fields["layout"], fields["mbases"], fields["publication_date"], fields["platform"],
+                                 fields["selection"], fields["source"], fields["strategy"], fields["title"])
+            instance.search()
+        elif db == "sra_geo":
+            instance = GeoSearch(verbosity, return_max, fields["query"], fields["accession"], fields["organism"],
+                                 fields["layout"], fields["mbases"], fields["publication_date"], fields["platform"],
+                                 fields["selection"], fields["source"], fields["strategy"], fields["title"])
             instance.search()
         else:
-            instance = SraSearch(verbosity, return_max, fields)
+            instance = SraSearch(verbosity, return_max, fields["query"], fields["accession"], fields["organism"],
+                                 fields["layout"], fields["mbases"], fields["publication_date"], fields["platform"],
+                                 fields["selection"], fields["source"], fields["strategy"], fields["title"])
             instance.search()
     except (MissingQueryException, IncorrectFieldException) as e:
         print(e)
@@ -632,9 +642,9 @@ def parse_args(args=None):
     subparser.add_argument("--saveto", help="Save search result dataframe to file")
     subparser.add_argument(
         "--db",
-        choices=["ena", "sra"],
+        choices=["ena", "sra_geo", "sra"],
         default="sra",
-        help="Select the db API (sra or ena) to query, default = sra",
+        help="Select the db API (sra, ena, or sra_geo) to query, default = sra",
     )
     subparser.add_argument(
         "-v",
@@ -662,7 +672,12 @@ def parse_args(args=None):
     subparser.add_argument(
         "--organism", nargs="+", help="Scientific name of the sample organism"
     )
-    subparser.add_argument("--layout", help="Library layout")
+    subparser.add_argument(
+        "--layout",
+        choices=["SINGLE", "PAIRED"],
+        help="Library layout",
+        type=str.upper
+    )
     subparser.add_argument(
         "--mbases", help="Size of the sample rounded to the nearest megabase", type=int
     )
@@ -672,10 +687,10 @@ def parse_args(args=None):
         "enter the start date, followed by end date, separated by a colon ':'.\n "
         "Example: 01-01-2010:31-12-2010",
     )
-    subparser.add_argument("--platform", help="Sequencing platform")
-    subparser.add_argument("--selection", help="Library selection")
-    subparser.add_argument("--source", help="Library source")
-    subparser.add_argument("--strategy", help="Library preparation strategy")
+    subparser.add_argument("--platform", nargs="+", help="Sequencing platform")
+    subparser.add_argument("--selection", nargs="+", help="Library selection")
+    subparser.add_argument("--source", nargs="+", help="Library source")
+    subparser.add_argument("--strategy", nargs="+", help="Library preparation strategy")
     subparser.add_argument("--title", nargs="+", help="Experiment title")
 
     subparser.set_defaults(func=search)
@@ -1133,8 +1148,6 @@ def parse_args(args=None):
         )
     elif args.command == "search":
         flags = vars(args)
-        flags.pop("func")
-        flags.pop("command")
         search(
             flags.pop("saveto"),
             flags.pop("db"),

@@ -37,47 +37,309 @@ class QuerySearch:
         The level of details of the search result.
     return_max : int
         The maximum number of entries to be returned.
-    fields : dict
-        The fields supplied for the query. If all fields are empty, raises
-        MissingQueryException.
+    query : str
+        The main query string.
+    accession : str
+        A relevant study / experiment / sample / run accession number.
+    organism  : str
+        Scientific name of the sample organism
+    layout : str
+        Library layout. Possible inputs: single, paired
+    mbases : int
+        Size of the sample of interest rounded to the nearest megabase.
+    publication_date : str
+        The publication date of the run in the format dd-mm-yyyy. If a
+        date range is desired, input should be in the format of
+        dd-mm-yyyy:dd-mm-yyyy
+    platform : str
+        Sequencing platform used for the run. Some possible inputs include:
+        illumina, ion torrent, oxford nanopore
+    selection : str
+        Library selection. Some possible inputs: cdna, chip, dnase, pcr
+    source : str
+        Library source. Some possible inputs: genomic, metagenomic,
+        transcriptomic
+    strategy : str
+        Library Preparation strategy. Some possible inputs: wgs, amplicon,
+        rna seq
+    title : str
+        Title of the experiment associated with the run
+    supress_validation: bool
+        Defaults to False. If this is set to True, the user input format
+        checks will be skipped.
+        Setting this to True may cause the program to behave in unexpected
+        ways, but allows the user to search queries that does not pass the
+        format check.
 
     Methods
     -------
     get_df()
-        Returns the dataframe storing this search result
+        Returns the dataframe storing this search result.
+    search()
+        Executes the search.
 
     """
 
-    def __init__(self, verbosity, return_max, fields):
+    def __init__(self, verbosity, return_max, query=None, accession=None, organism=None, layout=None, mbases=None,
+                 publication_date=None, platform=None, selection=None, source=None, strategy=None, title=None,
+                 supress_validation=False):
         self.verbosity = verbosity
         self.return_max = return_max
-        allowed_fields = [
-            "query",
-            "accession",
-            "organism",
-            "layout",
-            "mbases",
-            "publication_date",
-            "platform",
-            "selection",
-            "source",
-            "strategy",
-            "title",
-        ]
-        for field in allowed_fields:
-            if field not in fields:
-                fields[field] = None
-        for k in fields:
-            if type(fields[k]) == list:
-                fields[k] = " ".join(fields[k])
-        if not any(fields):
-            raise MissingQueryException()
-        self.fields = fields
+        self.fields = {
+            "query": query,
+            "accession": accession,
+            "organism": organism,
+            "layout": layout.upper(),
+            "mbases": mbases,
+            "publication_date": publication_date,
+            "platform": platform,
+            "selection": selection,
+            "source": source,
+            "strategy": strategy,
+            "title": title,
+        }
+        for k in self.fields:
+            if type(self.fields[k]) == list:
+                self.fields[k] = " ".join(self.fields[k])
         self.df = pd.DataFrame()
+        if not supress_validation:
+            self._validate_fields()
+
+    def _input_multi_regex_checker(self, regex_matcher, input_query, error_message):
+        """Checks if the user input match exactly 1 of the possible regex.
+
+        This is a helper method for _validate_fields. It takes as input a
+        dictionary of regex expression : accepted string by API pairs, and
+        an input string, and verifies that the input string matches exactly
+        one of the regex expressions.
+        Matching multiple expressions indicates the input string is
+        ambiguous, while matching none of the expressions suggests the
+        input will likely produce no results or an error.
+        Once matched, this method formats the user input so that it
+        can be accepted by the API to be queried, as ENA especially expect
+        case-sensitive exact matches for search queries.
+
+        Parameters
+        ----------
+        regex_matcher : dict
+            dictionary of regex expression : accepted string by API pairs.
+        input_query : str
+            input string for a particular query field.
+        error_message : str
+            error message to be shown if input_query does not match any of
+            the regex expressions in regex_matcher.
+
+        Returns
+        -------
+        tuple
+            tuple pair of (input_query, message).
+            message is "" if no format error has been identified, error
+            message otherwise.
+        """
+        matched_strings = []
+        for regex_expression in regex_matcher:
+            if re.match(regex_expression, input_query, re.IGNORECASE):
+                matched_strings.append(regex_matcher[regex_expression])
+        if not matched_strings:
+            return input_query, error_message
+        elif len(matched_strings) == 1:
+            return matched_strings[0], ""
+        else:
+            message = f"Multiple potential matches have been identified for {input_query}:\n" \
+                      f"{matched_strings}\n" \
+                      f"Please check your input.\n\n"
+            return input_query, message
 
     def _validate_fields(self):
-        # TODO: validate the contents of all the fields here
-        pass
+        """Verifies that user input format is correct.
+
+        Raises
+        ------
+        MissingQueryError
+            If all query fields have been left empty.
+        IncorrectFieldException
+            If the input to any query field is in the wrong format
+
+        """
+        # Verify that not all query fields are empty
+        if not any(self.fields):
+            raise MissingQueryException()
+
+        # Verify query field formats
+        message = ""
+
+        # verify layout
+        if self.fields["layout"] and self.fields["layout"] not in ["SINGLE", "PAIRED"]:
+            message += f"Incorrect layout field format: {self.fields['layout']}\n" \
+                       "--layout must be either SINGLE or PAIRED\n\n"
+
+        # verify mbases
+        if self.fields["mbases"] and type(self.fields["mbases"]) != int:
+            try:
+                self.fields["mbases"] = int(self.fields["mbases"])
+            except ValueError:
+                message += f"Incorrect mbases format: {self.fields['mbases']}\n" \
+                           f"--mbases must be an integer\n\n"
+
+        # verify publication_date
+        date_regex = "(0[1-9]|[12][0-9]|3[01])-(0[1-9]|1[012])-(19|20)[0-9]{2}"
+        if not re.match(f"^{date_regex}(:{date_regex})?$", self.fields["publication_date"]):
+            message += f"Incorrect publication date format: {self.fields['publication_date']}\n" \
+                    f"Expected --publication-date format: dd-mm-yyyy or dd-mm-yyyy:dd-mm-yyyy, between 1900-2099\n\n"
+
+        # verify platform
+        platform_matcher = {
+            "oxford|nanopore": "OXFORD_NANOPORE",
+            "illumina": "ILLUMINA",
+            "ion.*torrent": "ION_TORRENT",
+            "capillary": "CAPILLARY",
+            "pacbio|smrt": "PACBIO_SMRT",
+            "abi.*solid": "ABI_SOLID",
+            "bgi": "BGISEQ",
+            "ls454": "LS454",
+            "complete.*genomics": "COMPLETE_GENOMICS",
+            "helicos": "HELICOS",
+        }
+        if self.fields["platform"]:
+            error_message = f"Incorrect platform: {self.fields['platform']}\n" \
+                            f"--platform must be one of the following: \n" \
+                            f"OXFORD_NANOPORE, ILLUMINA, ION_TORRENT, \n" \
+                            f"CAPILLARY, PACBIO_SMRT, ABI_SOLID, \n" \
+                            f"BGISEQ, LS454, COMPLETE_GENOMICS, HELICOS\n\n"
+            output = self._input_multi_regex_checker(platform_matcher, self.fields["platform"], error_message)
+            if output[1]:
+                message += output[1]
+            else:
+                self.fields["platform"] = output[0]
+
+        # verify selection
+        selection_matcher = {
+            "methylcytidine": "5-methylcytidine antibody",
+            "cage": "CAGE",
+            r"chip\s*$": "ChIP",
+            "chip.*seq": "ChIP-Seq",
+            "dnase": "DNase",
+            "hmpr": "HMPR",
+            "hybrid": "Hybrid Selection",
+            r"inverse.*rrna\s*$": "Inverse rRNA",
+            "inverse.*rrna.*selection": "Inverse rRNA selection",
+            "mbd2.*protein.*methyl.*cpg.*binding.*domain": "MBD2 protein methyl-CpG binding domain",
+            "mda": "MDA",
+            "mf": "MF",
+            "mnase": "MNase",
+            "msll": "MSLL",
+            r"^\s*oligo.*dt": "Oligo-dT",
+            r"^\s*pcr\s*$": "PCR",
+            "polya": "PolyA",
+            "race": "RACE",
+            r"random\s*$": "RANDOM",
+            "random.*pcr": "RANDOM PCR",
+            "rt.*pcr": "RT-PCR",
+            "reduced.*representation": "Reduced Representation",
+            "restriction.*digest": "Restriction Digest",
+            r"cdna\s*$": "cDNA",
+            "cdna.*oligo.*dt": "cDNA_oligo_dT",  # ENA only
+            "cdna.*random.*priming": "cDNA_randomPriming",  # ENA only
+            "other": "other",
+            "padlock.*probes.*capture.*method": "padlock probes capture method",
+            "repeat.*fractionation": "repeat fractionation",
+            "size.*fractionation": "size fractionation",
+            "unspecified": "unspecified",
+        }
+        if self.fields["selection"]:
+            error_message = f"Incorrect selection: {self.fields['selection']}\n" \
+                            f"--selection must be one of the following: \n" \
+                            f"5-methylcytidine antibody, CAGE, ChIP, ChIP-Seq, DNase, HMPR, Hybrid Selection,  \n" \
+                            f"Inverse rRNA, Inverse rRNA selection, MBD2 protein methyl-CpG binding domain, \n" \
+                            f"MDA, MF, MNase, MSLL, Oligo-dT, PCR, PolyA, RACE, RANDOM, RANDOM PCR, RT-PCR,  \n" \
+                            f"Reduced Representation, Restriction Digest, cDNA, cDNA_oligo_dT, cDNA_randomPriming \n" \
+                            f"other, padlock probes capture method, repeat fractionation, size fractionation, \n" \
+                            f"unspecified\n\n"
+            output = self._input_multi_regex_checker(selection_matcher, self.fields["selection"], error_message)
+            if output[1]:
+                message += output[1]
+            else:
+                self.fields["selection"] = output[0]
+
+        # verify source
+        source_matcher = {
+            r"^\s*genomic\s*$": "GENOMIC",
+            "genomic.*single.*cell": "GENOMIC SINGLE CELL",
+            "metagenomic": "METAGENOMIC",
+            "metatranscriptomic": "METATRANSCRIPTOMIC",
+            "other": "OTHER",
+            "synthetic": "SYNTHETIC",
+            r"^\s*transcriptomic\s*$": "TRANSCRIPTOMIC",
+            "transcriptomic.*single.*cell": "TRANSCRIPTOMIC SINGLE CELL",
+            "viral.*rna": "VIRAL RNA",
+        }
+        if self.fields["source"]:
+            error_message = f"Incorrect source: {self.fields['source']}\n" \
+                            f"--source must be one of the following: \n" \
+                            f"GENOMIC, GENOMIC SINGLE CELL, METAGENOMIC,  \n" \
+                            f"METATRANSCRIPTOMIC, OTHER, SYNTHETIC, \n" \
+                            f"TRANSCRIPTOMIC, TRANSCRIPTOMIC SINGLE CELL, VIRAL RNA\n\n"
+            output = self._input_multi_regex_checker(source_matcher, self.fields["source"], error_message)
+            if output[1]:
+                message += output[1]
+            else:
+                self.fields["source"] = output[0]
+
+        # verify strategy
+        strategy_matcher = {
+            "amplicon": "AMPLICON",
+            "atac": "ATAC-seq",
+            "bisulfite": "Bisulfite-Seq",
+            r"^\s*clone\s*$": "CLONE",
+            "cloneend": "CLONEEND",
+            "cts": "CTS",
+            "chia|pet": "ChIA-PET",
+            "chip.*seq": "ChIP-Seq",
+            "dnase|hypersensitivity": "DNase-Hypersensitivity",
+            r"^\s*est\s*$": "EST",
+            "faire": "FAIRE-seq",
+            "finishing": "FINISHING",
+            "fl.*cdna": "FL-cDNA",
+            "hi.*c": "Hi-C",
+            "mbd": "MBD-Seq",
+            "mnase": "MNase-Seq",
+            "mre": "MRE-Seq",
+            "medip": "MeDIP-Seq",
+            "other": "OTHER",
+            "poolclone": "POOLCLONE",
+            "rad": "RAD-Seq",
+            "rip": "RIP-Seq",
+            r"^\s*rna.*seq": "RNA-Seq",
+            "selex": "SELEX",
+            "synthetic|long.*read": "Synthetic-Long-Read",
+            "targeted.*capture": "Targeted-Capture",
+            "tethered.*chromatin.*conformation.*capture|tccc": "Tethered Chromatin Conformation Capture",
+            "tn": "Tn-Seq",
+            "validation": "VALIDATION",
+            "wcs": "WCS",
+            "wga": "WGA",
+            "wgs": "WGS",
+            "wxs": "WXS",
+            "mirna": "miRNA-Seq",
+            "ncrna": "ncRNA-Seq",
+            "ssrna": "ssRNA-seq",
+            "gbs": "GBS",
+        }
+        if self.fields["strategy"]:
+            error_message = f"Incorrect strategy: {self.fields['strategy']}\n" \
+                            f"--strategy must be one of the following: \n" \
+                            f"AMPLICON, ATAC-seq, Bisulfite-Seq, CLONE, CLONEEND, CTS, ChIA-PET, ChIP-Seq, \n" \
+                            f"DNase-Hypersensitivity, EST, FAIRE-seq, FINISHING, FL-cDNA, Hi-C, MBD-Seq, MNase-Seq,\n" \
+                            f"MRE-Seq, MeDIP-Seq, OTHER, POOLCLONE, RAD-Seq, RIP-Seq, RNA-Seq, SELEX, \n" \
+                            f"Synthetic-Long-Read, Targeted-Capture, Tethered Chromatin Conformation Capture, \n" \
+                            f"Tn-Seq, VALIDATION, WCS, WGA, WGS, WXS, miRNA-Seq, ncRNA-Seq, ssRNA-seq, GBS\n\n"
+            output = self._input_multi_regex_checker(strategy_matcher, self.fields["strategy"], error_message)
+            if output[1]:
+                message += output[1]
+            else:
+                self.fields["platform"] = output[0]
+        if message:
+            raise IncorrectFieldException(message)
 
     def search(self):
         pass
@@ -114,8 +376,6 @@ class SraSearch(QuerySearch):
     def search(self):
         # Step 1: retrieves the list of uids that satisfies the input
         # search query
-        entries = {}
-        number_entries = 0
         payload = self._format_request()
         try:
             r = requests_3_retries().get(
@@ -147,12 +407,7 @@ class SraSearch(QuerySearch):
                 )
                 r.raise_for_status()
                 r.raw.decode_content = True
-                field_categories = ["EXPERIMENT", "SUBMISSION", "ORGANISATION", "STUDY", "SAMPLE", "Pool", "RUN_SET"]
-                for event, elem in Et.iterparse(r.raw):
-                    if elem.tag == "EXPERIMENT_PACKAGE":
-                        number_entries += 1
-                    elif elem.tag in field_categories:
-                        self._parse_entry(elem, entries, number_entries)
+                self._format_result(r.raw)
             pbar.close()
         except requests.exceptions.Timeout:
             sys.exit(f"Connection to the server has timed out. Please retry.")
@@ -161,12 +416,6 @@ class SraSearch(QuerySearch):
                 f"HTTPError: This is likely caused by an invalid search query: "
                 f"\nURL queried: {r.url} \nUser query: {self.fields}"
             )
-        finally:
-            for field in entries:
-                if len(entries[field]) < number_entries:
-                    entries[field] += [""] * (number_entries - len(entries[field]))
-            self.df = pd.DataFrame.from_dict(entries)
-            self._format_result()
 
     def _format_query_string(self):
         term = ""
@@ -179,21 +428,8 @@ class SraSearch(QuerySearch):
         if self.fields["layout"]:
             term += self.fields["layout"] + "[Layout] AND "
         if self.fields["mbases"]:
-            if type(self.fields["mbases"]) != int:
-                raise IncorrectFieldException(
-                    f"Incorrect mbases format: {self.fields['mbases']}\n"
-                    f"--mbases must be an integer"
-                )
             term += self.fields["mbases"] + "[Mbases] AND "
         if self.fields["publication_date"]:
-            for date in self.fields["publication_date"].split(":"):
-                if not re.match(
-                    "^(0[1-9]|[12][0-9]|3[01])-(0[1-9]|1[012])-(19|20)[0-9]{2}$", date
-                ):
-                    raise IncorrectFieldException(
-                        f"Incorrect publication date format: {self.fields['publication_date']}\n"
-                        f"Expected format: dd-mm-yyyy or dd-mm-yyyy:dd-mm-yyyy, between 1900-2099"
-                    )
             term += self.fields["publication_date"].replace("-", "/") + "[PDAT] AND "
         if self.fields["platform"]:
             term += self.fields["platform"] + "[Platform] AND "
@@ -216,7 +452,20 @@ class SraSearch(QuerySearch):
         }
         return payload
 
-    def _format_result(self):
+    def _format_result(self, content):
+        entries = {}
+        number_entries = 0
+        field_categories = ["EXPERIMENT", "SUBMISSION", "ORGANISATION", "STUDY", "SAMPLE", "Pool", "RUN_SET"]
+        for event, elem in Et.iterparse(content):
+            if elem.tag == "EXPERIMENT_PACKAGE":
+                number_entries += 1
+            elif elem.tag in field_categories:
+                self._parse_entry(elem, entries, number_entries)
+        for field in entries:
+            if len(entries[field]) < number_entries:
+                entries[field] += [""] * (number_entries - len(entries[field]))
+
+        self.df = pd.DataFrame.from_dict(entries).replace(r"^\s*$", "N/A", regex=True)
         if self.df.empty:
             return
         columns = list(self.df.columns)
@@ -623,14 +872,6 @@ class EnaSearch(QuerySearch):
         if self.fields["publication_date"]:
             dates = self.fields["publication_date"].split(":")
             for i in range(len(dates)):
-                if not re.match(
-                    "^(0[1-9]|[12][0-9]|3[01])-(0[1-9]|1[012])-(19|20)[0-9]{2}$",
-                    dates[i],
-                ):
-                    raise IncorrectFieldException(
-                        f"Incorrect publication date format: {self.fields['publication_date']}\n"
-                        f"Expected format: dd-mm-yyyy or dd-mm-yyyy:dd-mm-yyyy, between 1900-2099"
-                    )
                 dates[i] = "-".join(dates[i].split("-")[::-1])
 
             if len(dates) == 1:
@@ -698,7 +939,7 @@ class EnaSearch(QuerySearch):
     def _format_result(self, content):
         if not content:
             return
-        self.df = pd.DataFrame.from_dict(content)
+        self.df = pd.DataFrame.from_dict(content).replace(r"^\s*$", "N/A", regex=True)
         if self.verbosity == 3:
             columns = list(self.df.columns)
             important_columns = [
@@ -728,8 +969,19 @@ class EnaSearch(QuerySearch):
 class GeoSearch(SraSearch):
     # TODO: extend SraSearch by searching Geo db for uids/accessions to
     #  match first
-    def __init__(self, verbosity, return_max, fields):
-        super().__init__(verbosity, return_max, fields)
+    def __init__(
+        self, verbosity, return_max, query=None, accession=None, organism=None, layout=None, mbases=None,
+        publication_date=None, platform=None, selection=None, source=None, strategy=None, title=None, geo=None
+    ):
+        self.geo_fields = geo
+        super().__init__(verbosity, return_max, query, accession, organism, layout, mbases,
+                         publication_date, platform, selection, source, strategy, title)
+        if not any(self.geo_fields):
+            raise MissingQueryException()
+
+    def _validate_fields(self):
+        super()._validate_fields()
+        # validating geo_fields
 
     def search(self):
         super().search()
