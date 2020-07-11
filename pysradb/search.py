@@ -12,7 +12,8 @@ from tqdm import tqdm
 
 from .exceptions import IncorrectFieldException
 from .exceptions import MissingQueryException
-from .utils import scientific_name_to_taxid, requests_3_retries
+from .utils import scientific_name_to_taxid
+from .utils import requests_3_retries
 
 SEARCH_REQUEST_TIMEOUT = 20
 SRA_SEARCH_GROUP_SIZE = 300
