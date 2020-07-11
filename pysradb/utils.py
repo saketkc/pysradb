@@ -9,7 +9,6 @@ import urllib.request as urllib_request
 import warnings
 
 import requests
-from requests import HTTPError
 from requests.adapters import HTTPAdapter
 from requests.packages.urllib3.util.retry import Retry
 from tqdm.autonotebook import tqdm
@@ -46,10 +45,9 @@ def scientific_name_to_taxid(name):
         "https://www.ebi.ac.uk/ena/data/taxonomy/v1/taxon/scientific-name/" + name,
         timeout=5,
     )
-    try:
-        r.raise_for_status()
-    except HTTPError:
+    if r.status_code == 404:
         raise IncorrectFieldException(f"Unknown scientific name: {name}")
+    r.raise_for_status()
     return r.json()[0]["taxId"]
 
 
@@ -66,7 +64,7 @@ def requests_3_retries():
     retry = Retry(
         total=3,
         backoff_factor=0.5,
-        status_forcelist=[429, 500, 502, 503, 504],
+        status_forcelist=[500, 502, 503, 504],
         method_whitelist=["POST", "GET"],
     )
     adapter = HTTPAdapter(max_retries=retry)

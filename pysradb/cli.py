@@ -38,7 +38,7 @@ class ArgParser(argparse.ArgumentParser):
 
 def _print_save_df(df, saveto=None):
     if saveto:
-        if saveto.split(".")[-1].strip().lower() == "csv":
+        if saveto.lower().endswith(".csv"):
             #  if the save file format is csv
             df.to_csv(saveto, index=False, header=True)
         else:

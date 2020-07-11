@@ -2,17 +2,20 @@
 """
 
 import re
-import urllib
-import xml.etree.ElementTree as Et
-from collections import OrderedDict
-from json import JSONDecodeError
-
-import pandas as pd
 import requests
+import sys
+import urllib
+import pandas as pd
+import xml.etree.ElementTree as Et
+from json import JSONDecodeError
+from tqdm import tqdm
 
 from .exceptions import IncorrectFieldException
 from .exceptions import MissingQueryException
 from .utils import scientific_name_to_taxid, requests_3_retries
+
+SEARCH_REQUEST_TIMEOUT = 20
+SRA_SEARCH_GROUP_SIZE = 300
 
 
 class QuerySearch:
@@ -72,6 +75,10 @@ class QuerySearch:
         self.fields = fields
         self.df = pd.DataFrame()
 
+    def _validate_fields(self):
+        # TODO: validate the contents of all the fields here
+        pass
+
     def search(self):
         pass
 
@@ -107,45 +114,59 @@ class SraSearch(QuerySearch):
     def search(self):
         # Step 1: retrieves the list of uids that satisfies the input
         # search query
-
+        entries = {}
+        number_entries = 0
         payload = self._format_request()
         try:
             r = requests_3_retries().get(
                 "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi",
-                params=OrderedDict(payload),
-                timeout=20,
+                params=payload,
+                timeout=SEARCH_REQUEST_TIMEOUT,
             )
             r.raise_for_status()
             uids = r.json()["esearchresult"]["idlist"]
 
-            # Step 2: retrieves the detailed information for each uid returned, in groups of 500.
+            # Step 2: retrieves the detailed information for each uid returned, in groups of 300.
             if not uids:
                 print(
                     f"No results found for the following search query: \n {self.fields}"
                 )
                 return  # If no queries found, return nothing
 
-            for i in range(0, len(uids), 300):
-                current_uids = ",".join(uids[i : min(i + 300, len(uids))])
-
+            pbar = tqdm(total=len(uids))
+            for i in range(0, len(uids), SRA_SEARCH_GROUP_SIZE):
+                current_uids = ",".join(uids[i: min(i + SRA_SEARCH_GROUP_SIZE, len(uids))])
+                pbar.update(min(SRA_SEARCH_GROUP_SIZE, len(uids) - i))
                 payload2 = {"db": "sra", "retmode": "xml", "id": current_uids}
 
                 r = requests_3_retries().get(
                     "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi",
-                    params=OrderedDict(payload2),
-                    timeout=20,
+                    params=payload2,
+                    timeout=SEARCH_REQUEST_TIMEOUT,
+                    stream=True,
                 )
                 r.raise_for_status()
-                self._format_result(r.content)
+                r.raw.decode_content = True
+                field_categories = ["EXPERIMENT", "SUBMISSION", "ORGANISATION", "STUDY", "SAMPLE", "Pool", "RUN_SET"]
+                for event, elem in Et.iterparse(r.raw):
+                    if elem.tag == "EXPERIMENT_PACKAGE":
+                        number_entries += 1
+                    elif elem.tag in field_categories:
+                        self._parse_entry(elem, entries, number_entries)
+            pbar.close()
         except requests.exceptions.Timeout:
-            print(f"Connection to the server has timed out. Please retry.")
-            return
+            sys.exit(f"Connection to the server has timed out. Please retry.")
         except requests.exceptions.HTTPError:
-            print(
+            sys.exit(
                 f"HTTPError: This is likely caused by an invalid search query: "
                 f"\nURL queried: {r.url} \nUser query: {self.fields}"
             )
-            return
+        finally:
+            for field in entries:
+                if len(entries[field]) < number_entries:
+                    entries[field] += [""] * (number_entries - len(entries[field]))
+            self.df = pd.DataFrame.from_dict(entries)
+            self._format_result()
 
     def _format_query_string(self):
         term = ""
@@ -195,41 +216,27 @@ class SraSearch(QuerySearch):
         }
         return payload
 
-    def _format_result(self, content):
-        if not content:
-            return
-        root = Et.fromstring(content)
-
-        for entry in root:  # for each result entry
-            fields = {}
-            for child in entry.iter():
-                if child.text:
-                    fields[child.tag.lower()] = child.text
-                if child.attrib:
-                    for k, v in child.attrib.items():
-                        fields[(child.tag + "_" + k).lower()] = v
-            self.df = self.df.append(fields, ignore_index=True)
-
+    def _format_result(self):
         if self.df.empty:
             return
         columns = list(self.df.columns)
         important_columns = [
             "experiment_accession",
-            "title",
+            "experiment_title",
             "design_description",
-            "member_tax_id",
-            "member_organism",
-            "library_strategy",
-            "library_source",
-            "library_selection",
+            "sample_taxon_id",
+            "sample_scientific_name",
+            "experiment_library_strategy",
+            "experiment_library_source",
+            "experiment_library_selection",
             "sample_accession",
             "sample_alias",
-            "instrument_model",
-            "member_spots",
-            "run_size",
-            "run_accession",
-            "run_total_spots",
-            "run_total_bases",
+            "experiment_instrument_model",
+            "pool_member_spots",
+            "run_1_size",
+            "run_1_accession",
+            "run_1_total_spots",
+            "run_1_total_bases",
         ]
         for col in important_columns:
             if col not in columns:
@@ -238,17 +245,289 @@ class SraSearch(QuerySearch):
                 columns.remove(col)
 
         if self.verbosity == 0:
-            self.df = self.df[["run_accession"]]
+            self.df = self.df[["run_1_accession"]]
         elif self.verbosity == 1:
-            if "title" not in self.df.columns:
-                self.df = self.df[["run_accession"]]
+            if "experiment_title" not in self.df.columns:
+                self.df = self.df[["run_1_accession"]]
             else:
-                self.df = self.df[["run_accession", "title"]]
+                self.df = self.df[["run_1_accession", "experiment_title"]]
         elif self.verbosity == 2:
             self.df = self.df[important_columns]
         elif self.verbosity == 3:
             self.df = self.df[important_columns + sorted(columns)]
         self.df.dropna(how="all")
+
+    def _parse_entry(self, entry_root, entries, number_entries):
+        """Parses a subset of the XML tree from request stream
+
+        Parameters
+        ----------
+        entry_root: ElementTree.Element
+            root element of the xml tree from requests stream
+        entries: dict
+            python dictionary of lists, containing the entry information
+            from the search results
+        number_entries: int
+            The number of entries that has been processed. This is used
+            to pad lists in the dictionary with empty strings, for entries
+            missing certain fields
+
+        """
+        field_header = entry_root.tag.lower()
+        run_count = 0
+
+        # root element attributes
+        for k, v in entry_root.attrib.items():
+            self._update_entry(
+                entries,
+                f"{field_header}_{k}".lower(),
+                v,
+                number_entries
+            )
+
+        for child in entry_root:
+            # "*_REF" tags contain duplicate information that can be found
+            # somewhere in the xml entry and are skipped
+            if child.tag.endswith("_REF"):
+                continue
+
+            # IDENTIFIERS contain two types of children tags:
+            # PRIMARY_ID, which repeats the accession number and
+            # EXTERNAL_ID tags, each containing an alternative ID that is
+            # typically used in another database (GEO, ENA etc)
+            # IDs are numbered from 1 to differentiate between them.
+            elif child.tag == "IDENTIFIERS":
+                id_index = 1
+                for identifier in child:
+                    if identifier.tag == "EXTERNAL_ID":
+                        self._update_entry(
+                            entries,
+                            f"{field_header}_external_id_{id_index}",
+                            identifier.text,
+                            number_entries
+                        )
+                        self._update_entry(
+                            entries,
+                            f"{field_header}_external_id_{id_index}_namespace",
+                            identifier.get("namespace"),
+                            number_entries
+                        )
+
+            # "*_LINKS" tags contain 0 or more "*_LINK" children tags,
+            # each containing information (values) regarding the link
+            # Links are numbered from 1 to differentiate between multiple
+            # links.
+            elif child.tag.endswith("_LINKS"):
+                link_index = 1
+                for link in child:
+                    # Link type. Eg: URL_link, Xref_link
+                    self._update_entry(
+                        entries,
+                        f"{link.tag}_{link_index}_type".lower(),
+                        link[0].tag,
+                        number_entries
+                    )
+                    # Link values in the form of tag: value.
+                    # Eg: label: GEO sample
+                    link_value_index = 1
+                    for link_value in link[0]:
+                        self._update_entry(
+                            entries,
+                            f"{link.tag}_{link_index}_value_{link_value_index}".lower(),
+                            f"{link_value.tag}: {link_value.text}",
+                            number_entries
+                        )
+                        link_value_index += 1
+                    link_index += 1
+
+            # "*_ATTRIBUTES" tags contain tag - value pairs providing
+            # additional information for the Experiment/Sample/Study
+            # Attributes are numbered from 1 to differentiate between
+            # multiple attributes.
+            elif child.tag.endswith("_ATTRIBUTES"):
+                attribute_index = 1
+                for attribute in child:
+                    for val in attribute:
+                        self._update_entry(
+                            entries,
+                            f"{child.tag}_{attribute_index}_{val.tag}".lower(),
+                            val.text,
+                            number_entries
+                        )
+                    attribute_index += 1
+
+            # Differentiating between sample title and experiment title.
+            elif child.tag == "TITLE":
+                self._update_entry(
+                    entries,
+                    f"{field_header}_title",
+                    child.text,
+                    number_entries
+                )
+
+            # Parsing platfrom information
+            elif child.tag == "PLATFORM":
+                platform = child[0]
+                self._update_entry(
+                    entries,
+                    "experiment_platform",
+                    platform.tag,
+                    number_entries
+                )
+                self._update_entry(
+                    entries,
+                    "experiment_instrument_model",
+                    platform[0].text,
+                    number_entries
+                )
+
+            # Parsing individual run information
+            elif child.tag == "RUN":
+                run_count += 1
+                # run attributes
+                for k, v in child.attrib.items():
+                    self._update_entry(
+                        entries,
+                        f"run_{run_count}_{k}".lower(),
+                        v,
+                        number_entries
+                    )
+
+                for elem in child:
+                    if elem.tag == "SRAFiles":
+                        srafile_index = 1
+                        for srafile in elem:
+                            for k, v in srafile.attrib.items():
+                                self._update_entry(
+                                    entries,
+                                    f"run_{run_count}_srafile_{srafile_index}_{k}".lower(),
+                                    v,
+                                    number_entries
+                                )
+                            alternatives_index = 1
+                            for alternatives in srafile:
+                                for k, v in alternatives.attrib.items():
+                                    self._update_entry(
+                                        entries,
+                                        f"run_{run_count}_srafile_{srafile_index}_alternative_{alternatives_index}_{k}".lower(),
+                                        v,
+                                        number_entries
+                                    )
+                                alternatives_index += 1
+                            srafile_index += 1
+
+                    elif elem.tag == "CloudFiles":
+                        cloudfile_index = 1
+                        for cloudfile in elem:
+                            for k, v in cloudfile.attrib.items():
+                                self._update_entry(
+                                    entries,
+                                    f"run_{run_count}_cloudfile_{cloudfile_index}_{k}".lower(),
+                                    v,
+                                    number_entries
+                                )
+                            cloudfile_index += 1
+
+                    elif elem.tag == "Bases":
+                        for k, v in elem.attrib.items():
+                            self._update_entry(
+                                entries,
+                                f"run_{run_count}_total_base_{k}".lower(),
+                                v,
+                                number_entries
+                            )
+                        for base in elem:
+                            self._update_entry(
+                                entries,
+                                f"run_{run_count}_base_{base.attrib['value']}_count",
+                                base.attrib['count'],
+                                number_entries
+                            )
+
+                    elif elem.tag == "Databases":
+                        database_index = 1
+                        for database in elem:
+                            self._update_entry(
+                                entries,
+                                f"run_{run_count}_database_{database_index}".lower(),
+                                Et.tostring(database).decode(),
+                                number_entries
+                            )
+                            database_index += 1
+
+            else:
+                for elem in child.iter():
+                    # Tags to ignore to avoid confusion
+                    if elem.tag in ["PRIMARY_ID", "SINGLE", "PAIRED"]:
+                        continue
+                    elif elem.text:
+                        self._update_entry(
+                            entries,
+                            f"{field_header}_{elem.tag.lower()}",
+                            elem.text,
+                            number_entries
+                        )
+                    elif elem.attrib:
+                        for k, v in elem.attrib.items():
+                            self._update_entry(
+                                entries,
+                                f"{field_header}_{elem.tag}_{k}".lower(),
+                                v,
+                                number_entries
+                            )
+
+            # Parsing library layout (single, paired)
+            if field_header == "experiment":
+                library_layout = child.find("./DESIGN/LIBRARY_DESCRIPTOR/LIBRARY_LAYOUT")
+                if library_layout:
+                    library_layout = library_layout[0]
+                    self._update_entry(
+                        entries,
+                        f"library_layout",
+                        library_layout.tag,
+                        number_entries
+                    )
+                    # If library layout is paired, information such as nominal
+                    # standard deviation and length, etc are provided as well.
+                    if library_layout.tag == "PAIRED":
+                        for k, v in library_layout.attrib.items():
+                            self._update_entry(
+                                entries,
+                                f"library_layout_{k}".lower(),
+                                v,
+                                number_entries
+                            )
+
+    def _update_entry(self, entries, field_name, field_content, number_entries):
+        """Adds information from a field into the entries dictionary
+
+        This is a helper function that adds information parsed from the XML
+        output from SRA into a dictionary of lists, for easier conversion
+        into a Pandas dataframe later. Dictionary key is created if it
+        doesn't exist yet. For entries that does not have information
+        belonging to a field, the corresponding list will be padded with
+        empty strings.
+
+        Parameters
+        ----------
+        entries: dict
+            python dictionary of lists, containing the entry information
+            from the search results
+        field_name: str
+            Name of the field where a value belonging to an entry is to be
+            added
+        field_content: str
+            Value to be added
+        number_entries: int
+            The number of entries that has been processed. This is used
+            to pad lists in the dictionary with empty strings, for entries
+            missing certain fields
+        """
+        if field_name not in entries:
+            entries[field_name] = []
+        if len(entries[field_name]) > number_entries:
+            return
+        entries[field_name] += [""] * (number_entries - len(entries[field_name])) + [field_content]
 
 
 class EnaSearch(QuerySearch):
@@ -287,19 +566,17 @@ class EnaSearch(QuerySearch):
             r = requests_3_retries().get(
                 "https://www.ebi.ac.uk/ena/portal/api/search",
                 params=payload,
-                timeout=20,
+                timeout=SEARCH_REQUEST_TIMEOUT,
             )
             r.raise_for_status()
             self._format_result(r.json())
         except requests.exceptions.Timeout:
-            print(f"Connection to the server has timed out. Please retry.")
-            return
+            sys.exit(f"Connection to the server has timed out. Please retry.")
         except requests.exceptions.HTTPError:
-            print(
+            sys.exit(
                 f"HTTPError: This is likely caused by an invalid search query: "
                 f"\nURL queried: {r.url} \nUser query: {self.fields}"
             )
-            return
         except JSONDecodeError:
             print(f"No results found for the following search query: \n {self.fields}")
             return  # no results found
@@ -446,3 +723,13 @@ class EnaSearch(QuerySearch):
             )
             self.df = self.df[columns]
         self.df.dropna(how="all")
+
+
+class GeoSearch(SraSearch):
+    # TODO: extend SraSearch by searching Geo db for uids/accessions to
+    #  match first
+    def __init__(self, verbosity, return_max, fields):
+        super().__init__(verbosity, return_max, fields)
+
+    def search(self):
+        super().search()
