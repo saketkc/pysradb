@@ -65,7 +65,7 @@ class QuerySearch:
         rna seq
     title : str
         Title of the experiment associated with the run
-    supress_validation: bool
+    suppress_validation: bool
         Defaults to False. If this is set to True, the user input format
         checks will be skipped.
         Setting this to True may cause the program to behave in unexpected
@@ -83,7 +83,7 @@ class QuerySearch:
 
     def __init__(self, verbosity, return_max, query=None, accession=None, organism=None, layout=None, mbases=None,
                  publication_date=None, platform=None, selection=None, source=None, strategy=None, title=None,
-                 supress_validation=False):
+                 suppress_validation=False):
         self.verbosity = verbosity
         self.return_max = return_max
         self.fields = {
@@ -103,8 +103,11 @@ class QuerySearch:
             if type(self.fields[k]) == list:
                 self.fields[k] = " ".join(self.fields[k])
         self.df = pd.DataFrame()
-        if not supress_validation:
+        if not suppress_validation:
             self._validate_fields()
+        # Verify that not all query fields are empty
+        if not any(self.fields):
+            raise MissingQueryException()
 
     def _input_multi_regex_checker(self, regex_matcher, input_query, error_message):
         """Checks if the user input match exactly 1 of the possible regex.
@@ -156,17 +159,11 @@ class QuerySearch:
 
         Raises
         ------
-        MissingQueryError
-            If all query fields have been left empty.
         IncorrectFieldException
             If the input to any query field is in the wrong format
 
         """
-        # Verify that not all query fields are empty
-        if not any(self.fields):
-            raise MissingQueryException()
 
-        # Verify query field formats
         message = ""
 
         # verify layout
@@ -186,7 +183,7 @@ class QuerySearch:
         date_regex = "(0[1-9]|[12][0-9]|3[01])-(0[1-9]|1[012])-(19|20)[0-9]{2}"
         if not re.match(f"^{date_regex}(:{date_regex})?$", self.fields["publication_date"]):
             message += f"Incorrect publication date format: {self.fields['publication_date']}\n" \
-                    f"Expected --publication-date format: dd-mm-yyyy or dd-mm-yyyy:dd-mm-yyyy, between 1900-2099\n\n"
+                       f"Expected --publication-date format: dd-mm-yyyy or dd-mm-yyyy:dd-mm-yyyy, between 1900-2099\n\n"
 
         # verify platform
         platform_matcher = {
@@ -968,21 +965,136 @@ class EnaSearch(QuerySearch):
 
 
 class GeoSearch(SraSearch):
-    # TODO: extend SraSearch by searching Geo db for uids/accessions to
-    #  match first
     def __init__(
         self, verbosity, return_max, query=None, accession=None, organism=None, layout=None, mbases=None,
-        publication_date=None, platform=None, selection=None, source=None, strategy=None, title=None, geo=None
+        publication_date=None, platform=None, selection=None, source=None, strategy=None, title=None, geo_query=None,
+        geo_dataset_type=None, geo_entry_type=None, suppress_validation=False
     ):
-        self.geo_fields = geo
-        super().__init__(verbosity, return_max, query, accession, organism, layout, mbases,
-                         publication_date, platform, selection, source, strategy, title)
+        self.geo_fields = {
+            "query": geo_query,
+            "dataset_type": geo_dataset_type,
+            "entry_type": geo_entry_type,
+            "publication_date": publication_date,
+            "organism": organism
+        }
+        self.search_sra = True
+        self.search_geo = True
+        try:
+            super().__init__(verbosity, return_max, query, accession, organism, layout, mbases,
+                             publication_date, platform, selection, source, strategy, title, suppress_validation)
+        except MissingQueryException:
+            self.search_sra = False
+
         if not any(self.geo_fields):
+            self.search_geo = False
+            self.fields["query"] += " AND sra_gds[Filter]"
+
+        if not self.search_geo and not self.search_sra:
             raise MissingQueryException()
 
-    def _validate_fields(self):
-        super()._validate_fields()
-        # validating geo_fields
+    def _format_geo_query_string(self):
+        term = ""
+        if self.geo_fields["query"]:
+            term += self.fields["query"] + " AND "
+        if self.geo_fields["organism"]:
+            term += self.fields["organism"] + "[Organism] AND "
+        if self.geo_fields["publication_date"]:
+            term += self.fields["publication_date"].replace("-", "/") + "[PDAT] AND "
+        if self.fields["dataset_type"]:
+            term += self.fields["dataset_type"] + "[DataSet Type] AND "
+        if self.fields["entry_type"]:
+            term += self.fields["entry_type"] + "[Entry Type] AND "
+        return term[:-5]  # Removing trailing " AND "
+
+    def _format_geo_request(self):
+        payload = {
+            "db": "gds",
+            "term": self._format_geo_query_string(),
+            "retmode": "json",
+            "retmax": self.return_max * 5,
+            "usehistory": "y"
+        }
+        return payload
 
     def search(self):
-        super().search()
+        if not self.search_geo:
+            super().search()
+        else:
+            # Step 1: retrieves the list of uids from GEO DataSets, and use
+            # ELink to find corresponding uids in SRA
+            geo_payload = self._format_geo_request()
+            try:
+                r = requests_3_retries().get(
+                    "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi",
+                    params=geo_payload,
+                    timeout=SEARCH_REQUEST_TIMEOUT,
+                )
+                r.raise_for_status()
+                result = r.json()["esearchresult"]
+                query_key = result["querykey"]
+                web_env = result["webenv"]
+                elink_payload = {
+                    "dbfrom": "gds",
+                    "db": "sra",
+                    "query_key": query_key,
+                    "WebEnv": web_env
+                }
+                r = requests_3_retries().get(
+                    "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/elink.fcgi",
+                    params=elink_payload,
+                    timeout=SEARCH_REQUEST_TIMEOUT,
+                )
+                r.raise_for_status()
+                try:
+                    data = r.json()
+                    uids_from_geo = data["linksetdbs"][0]["links"]
+                except (JSONDecodeError, KeyError, IndexError):
+                    uids_from_geo = []
+                # Step 2: Retrieve list of uids from SRA and
+                # Find the intersection of both lists of uids
+
+                if self.search_sra:
+                    r = requests_3_retries().get(
+                        "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi",
+                        params=self._format_request(),
+                        timeout=SEARCH_REQUEST_TIMEOUT,
+                    )
+                    r.raise_for_status()
+                    uids_from_sra = r.json()["esearchresult"]["idlist"]
+                    uids = list(set(uids_from_sra).intersection(uids_from_geo))
+                else:
+                    uids = uids_from_geo
+                # Ensure that only return_max number of uids are used
+                uids = uids[:self.return_max]
+
+                # Step 3: retrieves the detailed information for each uid returned, in groups of 300.
+                if not uids:
+                    print(
+                        f"No results found for the following search query: \n "
+                        f"SRA: {self.fields}\nGEO DataSets: {self.geo_fields}"
+                    )
+                    return  # If no queries found, return nothing
+
+                pbar = tqdm(total=len(uids))
+                for i in range(0, len(uids), SRA_SEARCH_GROUP_SIZE):
+                    current_uids = ",".join(uids[i: min(i + SRA_SEARCH_GROUP_SIZE, len(uids))])
+                    pbar.update(min(SRA_SEARCH_GROUP_SIZE, len(uids) - i))
+                    payload2 = {"db": "sra", "retmode": "xml", "id": current_uids}
+
+                    r = requests_3_retries().get(
+                        "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi",
+                        params=payload2,
+                        timeout=SEARCH_REQUEST_TIMEOUT,
+                        stream=True,
+                    )
+                    r.raise_for_status()
+                    r.raw.decode_content = True
+                    self._format_result(r.raw)
+                pbar.close()
+            except requests.exceptions.Timeout:
+                sys.exit(f"Connection to the server has timed out. Please retry.")
+            except requests.exceptions.HTTPError:
+                sys.exit(
+                    f"HTTPError: This is likely caused by an invalid search query: "
+                    f"\nURL queried: {r.url} \nUser query: {self.fields}"
+                )

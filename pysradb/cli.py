@@ -182,7 +182,8 @@ def search(saveto, db, verbosity, return_max, fields):
         elif db == "sra_geo":
             instance = GeoSearch(verbosity, return_max, fields["query"], fields["accession"], fields["organism"],
                                  fields["layout"], fields["mbases"], fields["publication_date"], fields["platform"],
-                                 fields["selection"], fields["source"], fields["strategy"], fields["title"])
+                                 fields["selection"], fields["source"], fields["strategy"], fields["title"],
+                                 fields["geo_query"], fields["geo_dataset_type"], fields["geo_entry_type"])
             instance.search()
         else:
             instance = SraSearch(verbosity, return_max, fields["query"], fields["accession"], fields["organism"],
@@ -692,6 +693,19 @@ def parse_args(args=None):
     subparser.add_argument("--source", nargs="+", help="Library source")
     subparser.add_argument("--strategy", nargs="+", help="Library preparation strategy")
     subparser.add_argument("--title", nargs="+", help="Experiment title")
+
+    # The following arguments are for GEO DataSets only
+    subparser.add_argument(
+        "--geo-query",
+        nargs="+",
+        help="Main query string for GEO DataSet. This flag is only used when db is set to be sra_geo."
+    )
+    subparser.add_argument(
+        "--geo-dataset-type", nargs="+", help="GEO DataSet Type. This flag is only used when --db is set to be sra_geo."
+    )
+    subparser.add_argument(
+        "--geo-entry-type", nargs="+", help="GEO Entry Type. This flag is only used when --db is set to be sra_geo."
+    )
 
     subparser.set_defaults(func=search)
 
