@@ -90,7 +90,7 @@ class QuerySearch:
             "query": query,
             "accession": accession,
             "organism": organism,
-            "layout": layout.upper(),
+            "layout": layout,
             "mbases": mbases,
             "publication_date": publication_date,
             "platform": platform,
@@ -167,7 +167,7 @@ class QuerySearch:
         message = ""
 
         # verify layout
-        if self.fields["layout"] and self.fields["layout"] not in ["SINGLE", "PAIRED"]:
+        if self.fields["layout"] and str(self.fields["layout"]).upper() not in ["SINGLE", "PAIRED"]:
             message += f"Incorrect layout field format: {self.fields['layout']}\n" \
                        "--layout must be either SINGLE or PAIRED\n\n"
 
@@ -181,7 +181,10 @@ class QuerySearch:
 
         # verify publication_date
         date_regex = "(0[1-9]|[12][0-9]|3[01])-(0[1-9]|1[012])-(19|20)[0-9]{2}"
-        if not re.match(f"^{date_regex}(:{date_regex})?$", self.fields["publication_date"]):
+        if self.fields["publication_date"] and not re.match(
+            f"^{date_regex}(:{date_regex})?$",
+            self.fields["publication_date"]
+        ):
             message += f"Incorrect publication date format: {self.fields['publication_date']}\n" \
                        f"Expected --publication-date format: dd-mm-yyyy or dd-mm-yyyy:dd-mm-yyyy, between 1900-2099\n\n"
 
@@ -384,7 +387,8 @@ class SraSearch(QuerySearch):
             r.raise_for_status()
             uids = r.json()["esearchresult"]["idlist"]
 
-            # Step 2: retrieves the detailed information for each uid returned, in groups of 300.
+            # Step 2: retrieves the detailed information for each uid
+            # returned, in groups of SRA_SEARCH_GROUP_SIZE.
             if not uids:
                 print(
                     f"No results found for the following search query: \n {self.fields}"
@@ -977,6 +981,9 @@ class GeoSearch(SraSearch):
             "publication_date": publication_date,
             "organism": organism
         }
+        for k in self.geo_fields:
+            if type(self.geo_fields[k]) == list:
+                self.geo_fields[k] = " ".join(self.geo_fields[k])
         self.search_sra = True
         self.search_geo = True
         try:
@@ -987,23 +994,32 @@ class GeoSearch(SraSearch):
 
         if not any(self.geo_fields):
             self.search_geo = False
-            self.fields["query"] += " AND sra_gds[Filter]"
 
         if not self.search_geo and not self.search_sra:
             raise MissingQueryException()
 
+        # Narrowing down the total number of eligible uids
+        if self.fields["query"]:
+            self.fields["query"] += " AND sra gds[Filter]"
+        else:
+            self.fields["query"] = "sra gds[Filter]"
+        if self.geo_fields["query"]:
+            self.geo_fields["query"] += " AND gds sra[Filter]"
+        else:
+            self.geo_fields["query"] = "gds sra[Filter]"
+
     def _format_geo_query_string(self):
         term = ""
         if self.geo_fields["query"]:
-            term += self.fields["query"] + " AND "
+            term += self.geo_fields["query"] + " AND "
         if self.geo_fields["organism"]:
-            term += self.fields["organism"] + "[Organism] AND "
+            term += self.geo_fields["organism"] + "[Organism] AND "
         if self.geo_fields["publication_date"]:
-            term += self.fields["publication_date"].replace("-", "/") + "[PDAT] AND "
-        if self.fields["dataset_type"]:
-            term += self.fields["dataset_type"] + "[DataSet Type] AND "
-        if self.fields["entry_type"]:
-            term += self.fields["entry_type"] + "[Entry Type] AND "
+            term += self.geo_fields["publication_date"].replace("-", "/") + "[PDAT] AND "
+        if self.geo_fields["dataset_type"]:
+            term += self.geo_fields["dataset_type"] + "[DataSet Type] AND "
+        if self.geo_fields["entry_type"]:
+            term += self.geo_fields["entry_type"] + "[Entry Type] AND "
         return term[:-5]  # Removing trailing " AND "
 
     def _format_geo_request(self):
@@ -1011,8 +1027,17 @@ class GeoSearch(SraSearch):
             "db": "gds",
             "term": self._format_geo_query_string(),
             "retmode": "json",
-            "retmax": self.return_max * 5,
+            "retmax": self.return_max * 10,
             "usehistory": "y"
+        }
+        return payload
+
+    def _format_request(self):
+        payload = {
+            "db": "sra",
+            "term": self._format_query_string(),
+            "retmode": "json",
+            "retmax": self.return_max * 10,
         }
         return payload
 
@@ -1050,9 +1075,9 @@ class GeoSearch(SraSearch):
                     uids_from_geo = data["linksetdbs"][0]["links"]
                 except (JSONDecodeError, KeyError, IndexError):
                     uids_from_geo = []
+
                 # Step 2: Retrieve list of uids from SRA and
                 # Find the intersection of both lists of uids
-
                 if self.search_sra:
                     r = requests_3_retries().get(
                         "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi",
@@ -1067,7 +1092,8 @@ class GeoSearch(SraSearch):
                 # Ensure that only return_max number of uids are used
                 uids = uids[:self.return_max]
 
-                # Step 3: retrieves the detailed information for each uid returned, in groups of 300.
+                # Step 3: retrieves the detailed information for each uid
+                # returned, in groups of SRA_SEARCH_GROUP_SIZE.
                 if not uids:
                     print(
                         f"No results found for the following search query: \n "
