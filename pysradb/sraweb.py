@@ -374,17 +374,14 @@ class SRAweb(SRAdb):
             # experiment_title
             exp_name = exp_json["Experiment"]["@name"]
 
-            exp_organism = exp_json["Organism"]
-            # organism_name
-            try:
-                exp_organism_name = exp_organism["@ScientificName"]
-            except:
-                exp_organism_name = ""
+            exp_organism = exp_json.get("Organism", "N/A")
+            exp_organism_name = "N/A"
+            exp_taxid = "N/A"
+            if isinstance(exp_organism, dict):
+                exp_organism_name = exp_organism.get("@ScientificName", "N/A")
+                exp_taxid = exp_organism["@taxid"]
 
             exp_instrument = list(exp_json["Instrument"].values())[0]
-
-            # taxid
-            exp_taxid = exp_organism["@taxid"]
 
             exp_sample = exp_json["Sample"]
             # sample_accession
