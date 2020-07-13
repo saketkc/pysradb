@@ -136,9 +136,7 @@ def ena_response_json():
 
 @pytest.fixture(scope="module")
 def ena_formatted_response():
-    return pd.read_csv(
-        "./tests/data/test_search/ena_test.csv", dtype=object
-    )
+    return pd.read_csv("./tests/data/test_search/ena_test.csv", dtype=object)
 
 
 # General Tests

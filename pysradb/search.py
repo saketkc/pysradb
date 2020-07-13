@@ -81,9 +81,23 @@ class QuerySearch:
 
     """
 
-    def __init__(self, verbosity, return_max, query=None, accession=None, organism=None, layout=None, mbases=None,
-                 publication_date=None, platform=None, selection=None, source=None, strategy=None, title=None,
-                 suppress_validation=False):
+    def __init__(
+        self,
+        verbosity,
+        return_max,
+        query=None,
+        accession=None,
+        organism=None,
+        layout=None,
+        mbases=None,
+        publication_date=None,
+        platform=None,
+        selection=None,
+        source=None,
+        strategy=None,
+        title=None,
+        suppress_validation=False,
+    ):
         self.verbosity = verbosity
         self.return_max = return_max
         self.fields = {
@@ -149,9 +163,11 @@ class QuerySearch:
         elif len(matched_strings) == 1:
             return matched_strings[0], ""
         else:
-            message = f"Multiple potential matches have been identified for {input_query}:\n" \
-                      f"{matched_strings}\n" \
-                      f"Please check your input.\n\n"
+            message = (
+                f"Multiple potential matches have been identified for {input_query}:\n"
+                f"{matched_strings}\n"
+                f"Please check your input.\n\n"
+            )
             return input_query, message
 
     def _validate_fields(self):
@@ -167,26 +183,34 @@ class QuerySearch:
         message = ""
 
         # verify layout
-        if self.fields["layout"] and str(self.fields["layout"]).upper() not in ["SINGLE", "PAIRED"]:
-            message += f"Incorrect layout field format: {self.fields['layout']}\n" \
-                       "--layout must be either SINGLE or PAIRED\n\n"
+        if self.fields["layout"] and str(self.fields["layout"]).upper() not in [
+            "SINGLE",
+            "PAIRED",
+        ]:
+            message += (
+                f"Incorrect layout field format: {self.fields['layout']}\n"
+                "--layout must be either SINGLE or PAIRED\n\n"
+            )
 
         # verify mbases
         if self.fields["mbases"] and type(self.fields["mbases"]) != int:
             try:
                 self.fields["mbases"] = int(self.fields["mbases"])
             except ValueError:
-                message += f"Incorrect mbases format: {self.fields['mbases']}\n" \
-                           f"--mbases must be an integer\n\n"
+                message += (
+                    f"Incorrect mbases format: {self.fields['mbases']}\n"
+                    f"--mbases must be an integer\n\n"
+                )
 
         # verify publication_date
         date_regex = "(0[1-9]|[12][0-9]|3[01])-(0[1-9]|1[012])-(19|20)[0-9]{2}"
         if self.fields["publication_date"] and not re.match(
-            f"^{date_regex}(:{date_regex})?$",
-            self.fields["publication_date"]
+            f"^{date_regex}(:{date_regex})?$", self.fields["publication_date"]
         ):
-            message += f"Incorrect publication date format: {self.fields['publication_date']}\n" \
-                       f"Expected --publication-date format: dd-mm-yyyy or dd-mm-yyyy:dd-mm-yyyy, between 1900-2099\n\n"
+            message += (
+                f"Incorrect publication date format: {self.fields['publication_date']}\n"
+                f"Expected --publication-date format: dd-mm-yyyy or dd-mm-yyyy:dd-mm-yyyy, between 1900-2099\n\n"
+            )
 
         # verify platform
         platform_matcher = {
@@ -202,12 +226,16 @@ class QuerySearch:
             "helicos": "HELICOS",
         }
         if self.fields["platform"]:
-            error_message = f"Incorrect platform: {self.fields['platform']}\n" \
-                            f"--platform must be one of the following: \n" \
-                            f"OXFORD_NANOPORE, ILLUMINA, ION_TORRENT, \n" \
-                            f"CAPILLARY, PACBIO_SMRT, ABI_SOLID, \n" \
-                            f"BGISEQ, LS454, COMPLETE_GENOMICS, HELICOS\n\n"
-            output = self._input_multi_regex_checker(platform_matcher, self.fields["platform"], error_message)
+            error_message = (
+                f"Incorrect platform: {self.fields['platform']}\n"
+                f"--platform must be one of the following: \n"
+                f"OXFORD_NANOPORE, ILLUMINA, ION_TORRENT, \n"
+                f"CAPILLARY, PACBIO_SMRT, ABI_SOLID, \n"
+                f"BGISEQ, LS454, COMPLETE_GENOMICS, HELICOS\n\n"
+            )
+            output = self._input_multi_regex_checker(
+                platform_matcher, self.fields["platform"], error_message
+            )
             if output[1]:
                 message += output[1]
             else:
@@ -248,15 +276,19 @@ class QuerySearch:
             "unspecified": "unspecified",
         }
         if self.fields["selection"]:
-            error_message = f"Incorrect selection: {self.fields['selection']}\n" \
-                            f"--selection must be one of the following: \n" \
-                            f"5-methylcytidine antibody, CAGE, ChIP, ChIP-Seq, DNase, HMPR, Hybrid Selection,  \n" \
-                            f"Inverse rRNA, Inverse rRNA selection, MBD2 protein methyl-CpG binding domain, \n" \
-                            f"MDA, MF, MNase, MSLL, Oligo-dT, PCR, PolyA, RACE, RANDOM, RANDOM PCR, RT-PCR,  \n" \
-                            f"Reduced Representation, Restriction Digest, cDNA, cDNA_oligo_dT, cDNA_randomPriming \n" \
-                            f"other, padlock probes capture method, repeat fractionation, size fractionation, \n" \
-                            f"unspecified\n\n"
-            output = self._input_multi_regex_checker(selection_matcher, self.fields["selection"], error_message)
+            error_message = (
+                f"Incorrect selection: {self.fields['selection']}\n"
+                f"--selection must be one of the following: \n"
+                f"5-methylcytidine antibody, CAGE, ChIP, ChIP-Seq, DNase, HMPR, Hybrid Selection,  \n"
+                f"Inverse rRNA, Inverse rRNA selection, MBD2 protein methyl-CpG binding domain, \n"
+                f"MDA, MF, MNase, MSLL, Oligo-dT, PCR, PolyA, RACE, RANDOM, RANDOM PCR, RT-PCR,  \n"
+                f"Reduced Representation, Restriction Digest, cDNA, cDNA_oligo_dT, cDNA_randomPriming \n"
+                f"other, padlock probes capture method, repeat fractionation, size fractionation, \n"
+                f"unspecified\n\n"
+            )
+            output = self._input_multi_regex_checker(
+                selection_matcher, self.fields["selection"], error_message
+            )
             if output[1]:
                 message += output[1]
             else:
@@ -275,12 +307,16 @@ class QuerySearch:
             "viral.*rna": "VIRAL RNA",
         }
         if self.fields["source"]:
-            error_message = f"Incorrect source: {self.fields['source']}\n" \
-                            f"--source must be one of the following: \n" \
-                            f"GENOMIC, GENOMIC SINGLE CELL, METAGENOMIC,  \n" \
-                            f"METATRANSCRIPTOMIC, OTHER, SYNTHETIC, \n" \
-                            f"TRANSCRIPTOMIC, TRANSCRIPTOMIC SINGLE CELL, VIRAL RNA\n\n"
-            output = self._input_multi_regex_checker(source_matcher, self.fields["source"], error_message)
+            error_message = (
+                f"Incorrect source: {self.fields['source']}\n"
+                f"--source must be one of the following: \n"
+                f"GENOMIC, GENOMIC SINGLE CELL, METAGENOMIC,  \n"
+                f"METATRANSCRIPTOMIC, OTHER, SYNTHETIC, \n"
+                f"TRANSCRIPTOMIC, TRANSCRIPTOMIC SINGLE CELL, VIRAL RNA\n\n"
+            )
+            output = self._input_multi_regex_checker(
+                source_matcher, self.fields["source"], error_message
+            )
             if output[1]:
                 message += output[1]
             else:
@@ -327,14 +363,18 @@ class QuerySearch:
             "gbs": "GBS",
         }
         if self.fields["strategy"]:
-            error_message = f"Incorrect strategy: {self.fields['strategy']}\n" \
-                            f"--strategy must be one of the following: \n" \
-                            f"AMPLICON, ATAC-seq, Bisulfite-Seq, CLONE, CLONEEND, CTS, ChIA-PET, ChIP-Seq, \n" \
-                            f"DNase-Hypersensitivity, EST, FAIRE-seq, FINISHING, FL-cDNA, Hi-C, MBD-Seq, MNase-Seq,\n" \
-                            f"MRE-Seq, MeDIP-Seq, OTHER, POOLCLONE, RAD-Seq, RIP-Seq, RNA-Seq, SELEX, \n" \
-                            f"Synthetic-Long-Read, Targeted-Capture, Tethered Chromatin Conformation Capture, \n" \
-                            f"Tn-Seq, VALIDATION, WCS, WGA, WGS, WXS, miRNA-Seq, ncRNA-Seq, ssRNA-seq, GBS\n\n"
-            output = self._input_multi_regex_checker(strategy_matcher, self.fields["strategy"], error_message)
+            error_message = (
+                f"Incorrect strategy: {self.fields['strategy']}\n"
+                f"--strategy must be one of the following: \n"
+                f"AMPLICON, ATAC-seq, Bisulfite-Seq, CLONE, CLONEEND, CTS, ChIA-PET, ChIP-Seq, \n"
+                f"DNase-Hypersensitivity, EST, FAIRE-seq, FINISHING, FL-cDNA, Hi-C, MBD-Seq, MNase-Seq,\n"
+                f"MRE-Seq, MeDIP-Seq, OTHER, POOLCLONE, RAD-Seq, RIP-Seq, RNA-Seq, SELEX, \n"
+                f"Synthetic-Long-Read, Targeted-Capture, Tethered Chromatin Conformation Capture, \n"
+                f"Tn-Seq, VALIDATION, WCS, WGA, WGS, WXS, miRNA-Seq, ncRNA-Seq, ssRNA-seq, GBS\n\n"
+            )
+            output = self._input_multi_regex_checker(
+                strategy_matcher, self.fields["strategy"], error_message
+            )
             if output[1]:
                 message += output[1]
             else:
@@ -397,7 +437,9 @@ class SraSearch(QuerySearch):
 
             pbar = tqdm(total=len(uids))
             for i in range(0, len(uids), SRA_SEARCH_GROUP_SIZE):
-                current_uids = ",".join(uids[i: min(i + SRA_SEARCH_GROUP_SIZE, len(uids))])
+                current_uids = ",".join(
+                    uids[i : min(i + SRA_SEARCH_GROUP_SIZE, len(uids))]
+                )
                 pbar.update(min(SRA_SEARCH_GROUP_SIZE, len(uids) - i))
                 payload2 = {"db": "sra", "retmode": "xml", "id": current_uids}
 
@@ -457,7 +499,15 @@ class SraSearch(QuerySearch):
     def _format_result(self, content):
         entries = {}
         number_entries = 0
-        field_categories = ["EXPERIMENT", "SUBMISSION", "ORGANISATION", "STUDY", "SAMPLE", "Pool", "RUN_SET"]
+        field_categories = [
+            "EXPERIMENT",
+            "SUBMISSION",
+            "ORGANISATION",
+            "STUDY",
+            "SAMPLE",
+            "Pool",
+            "RUN_SET",
+        ]
         for event, elem in Et.iterparse(content):
             if elem.tag == "EXPERIMENT_PACKAGE":
                 number_entries += 1
@@ -530,10 +580,7 @@ class SraSearch(QuerySearch):
         # root element attributes
         for k, v in entry_root.attrib.items():
             self._update_entry(
-                entries,
-                f"{field_header}_{k}".lower(),
-                v,
-                number_entries
+                entries, f"{field_header}_{k}".lower(), v, number_entries
             )
 
         for child in entry_root:
@@ -555,13 +602,13 @@ class SraSearch(QuerySearch):
                             entries,
                             f"{field_header}_external_id_{id_index}",
                             identifier.text,
-                            number_entries
+                            number_entries,
                         )
                         self._update_entry(
                             entries,
                             f"{field_header}_external_id_{id_index}_namespace",
                             identifier.get("namespace"),
-                            number_entries
+                            number_entries,
                         )
 
             # "*_LINKS" tags contain 0 or more "*_LINK" children tags,
@@ -576,7 +623,7 @@ class SraSearch(QuerySearch):
                         entries,
                         f"{link.tag}_{link_index}_type".lower(),
                         link[0].tag,
-                        number_entries
+                        number_entries,
                     )
                     # Link values in the form of tag: value.
                     # Eg: label: GEO sample
@@ -586,7 +633,7 @@ class SraSearch(QuerySearch):
                             entries,
                             f"{link.tag}_{link_index}_value_{link_value_index}".lower(),
                             f"{link_value.tag}: {link_value.text}",
-                            number_entries
+                            number_entries,
                         )
                         link_value_index += 1
                     link_index += 1
@@ -603,33 +650,27 @@ class SraSearch(QuerySearch):
                             entries,
                             f"{child.tag}_{attribute_index}_{val.tag}".lower(),
                             val.text,
-                            number_entries
+                            number_entries,
                         )
                     attribute_index += 1
 
             # Differentiating between sample title and experiment title.
             elif child.tag == "TITLE":
                 self._update_entry(
-                    entries,
-                    f"{field_header}_title",
-                    child.text,
-                    number_entries
+                    entries, f"{field_header}_title", child.text, number_entries
                 )
 
             # Parsing platfrom information
             elif child.tag == "PLATFORM":
                 platform = child[0]
                 self._update_entry(
-                    entries,
-                    "experiment_platform",
-                    platform.tag,
-                    number_entries
+                    entries, "experiment_platform", platform.tag, number_entries
                 )
                 self._update_entry(
                     entries,
                     "experiment_instrument_model",
                     platform[0].text,
-                    number_entries
+                    number_entries,
                 )
 
             # Parsing individual run information
@@ -638,10 +679,7 @@ class SraSearch(QuerySearch):
                 # run attributes
                 for k, v in child.attrib.items():
                     self._update_entry(
-                        entries,
-                        f"run_{run_count}_{k}".lower(),
-                        v,
-                        number_entries
+                        entries, f"run_{run_count}_{k}".lower(), v, number_entries
                     )
 
                 for elem in child:
@@ -653,7 +691,7 @@ class SraSearch(QuerySearch):
                                     entries,
                                     f"run_{run_count}_srafile_{srafile_index}_{k}".lower(),
                                     v,
-                                    number_entries
+                                    number_entries,
                                 )
                             alternatives_index = 1
                             for alternatives in srafile:
@@ -662,7 +700,7 @@ class SraSearch(QuerySearch):
                                         entries,
                                         f"run_{run_count}_srafile_{srafile_index}_alternative_{alternatives_index}_{k}".lower(),
                                         v,
-                                        number_entries
+                                        number_entries,
                                     )
                                 alternatives_index += 1
                             srafile_index += 1
@@ -675,7 +713,7 @@ class SraSearch(QuerySearch):
                                     entries,
                                     f"run_{run_count}_cloudfile_{cloudfile_index}_{k}".lower(),
                                     v,
-                                    number_entries
+                                    number_entries,
                                 )
                             cloudfile_index += 1
 
@@ -685,14 +723,14 @@ class SraSearch(QuerySearch):
                                 entries,
                                 f"run_{run_count}_total_base_{k}".lower(),
                                 v,
-                                number_entries
+                                number_entries,
                             )
                         for base in elem:
                             self._update_entry(
                                 entries,
                                 f"run_{run_count}_base_{base.attrib['value']}_count",
-                                base.attrib['count'],
-                                number_entries
+                                base.attrib["count"],
+                                number_entries,
                             )
 
                     elif elem.tag == "Databases":
@@ -702,7 +740,7 @@ class SraSearch(QuerySearch):
                                 entries,
                                 f"run_{run_count}_database_{database_index}".lower(),
                                 Et.tostring(database).decode(),
-                                number_entries
+                                number_entries,
                             )
                             database_index += 1
 
@@ -716,7 +754,7 @@ class SraSearch(QuerySearch):
                             entries,
                             f"{field_header}_{elem.tag.lower()}",
                             elem.text,
-                            number_entries
+                            number_entries,
                         )
                     elif elem.attrib:
                         for k, v in elem.attrib.items():
@@ -724,19 +762,18 @@ class SraSearch(QuerySearch):
                                 entries,
                                 f"{field_header}_{elem.tag}_{k}".lower(),
                                 v,
-                                number_entries
+                                number_entries,
                             )
 
             # Parsing library layout (single, paired)
             if field_header == "experiment":
-                library_layout = child.find("./DESIGN/LIBRARY_DESCRIPTOR/LIBRARY_LAYOUT")
+                library_layout = child.find(
+                    "./DESIGN/LIBRARY_DESCRIPTOR/LIBRARY_LAYOUT"
+                )
                 if library_layout:
                     library_layout = library_layout[0]
                     self._update_entry(
-                        entries,
-                        f"library_layout",
-                        library_layout.tag,
-                        number_entries
+                        entries, f"library_layout", library_layout.tag, number_entries
                     )
                     # If library layout is paired, information such as nominal
                     # standard deviation and length, etc are provided as well.
@@ -746,7 +783,7 @@ class SraSearch(QuerySearch):
                                 entries,
                                 f"library_layout_{k}".lower(),
                                 v,
-                                number_entries
+                                number_entries,
                             )
 
     def _update_entry(self, entries, field_name, field_content, number_entries):
@@ -778,7 +815,9 @@ class SraSearch(QuerySearch):
             entries[field_name] = []
         if len(entries[field_name]) > number_entries:
             return
-        entries[field_name] += [""] * (number_entries - len(entries[field_name])) + [field_content]
+        entries[field_name] += [""] * (number_entries - len(entries[field_name])) + [
+            field_content
+        ]
 
 
 class EnaSearch(QuerySearch):
@@ -970,16 +1009,31 @@ class EnaSearch(QuerySearch):
 
 class GeoSearch(SraSearch):
     def __init__(
-        self, verbosity, return_max, query=None, accession=None, organism=None, layout=None, mbases=None,
-        publication_date=None, platform=None, selection=None, source=None, strategy=None, title=None, geo_query=None,
-        geo_dataset_type=None, geo_entry_type=None, suppress_validation=False
+        self,
+        verbosity,
+        return_max,
+        query=None,
+        accession=None,
+        organism=None,
+        layout=None,
+        mbases=None,
+        publication_date=None,
+        platform=None,
+        selection=None,
+        source=None,
+        strategy=None,
+        title=None,
+        geo_query=None,
+        geo_dataset_type=None,
+        geo_entry_type=None,
+        suppress_validation=False,
     ):
         self.geo_fields = {
             "query": geo_query,
             "dataset_type": geo_dataset_type,
             "entry_type": geo_entry_type,
             "publication_date": publication_date,
-            "organism": organism
+            "organism": organism,
         }
         for k in self.geo_fields:
             if type(self.geo_fields[k]) == list:
@@ -987,8 +1041,22 @@ class GeoSearch(SraSearch):
         self.search_sra = True
         self.search_geo = True
         try:
-            super().__init__(verbosity, return_max, query, accession, organism, layout, mbases,
-                             publication_date, platform, selection, source, strategy, title, suppress_validation)
+            super().__init__(
+                verbosity,
+                return_max,
+                query,
+                accession,
+                organism,
+                layout,
+                mbases,
+                publication_date,
+                platform,
+                selection,
+                source,
+                strategy,
+                title,
+                suppress_validation,
+            )
         except MissingQueryException:
             self.search_sra = False
 
@@ -1015,7 +1083,9 @@ class GeoSearch(SraSearch):
         if self.geo_fields["organism"]:
             term += self.geo_fields["organism"] + "[Organism] AND "
         if self.geo_fields["publication_date"]:
-            term += self.geo_fields["publication_date"].replace("-", "/") + "[PDAT] AND "
+            term += (
+                self.geo_fields["publication_date"].replace("-", "/") + "[PDAT] AND "
+            )
         if self.geo_fields["dataset_type"]:
             term += self.geo_fields["dataset_type"] + "[DataSet Type] AND "
         if self.geo_fields["entry_type"]:
@@ -1028,7 +1098,7 @@ class GeoSearch(SraSearch):
             "term": self._format_geo_query_string(),
             "retmode": "json",
             "retmax": self.return_max * 10,
-            "usehistory": "y"
+            "usehistory": "y",
         }
         return payload
 
@@ -1062,7 +1132,7 @@ class GeoSearch(SraSearch):
                     "dbfrom": "gds",
                     "db": "sra",
                     "query_key": query_key,
-                    "WebEnv": web_env
+                    "WebEnv": web_env,
                 }
                 r = requests_3_retries().get(
                     "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/elink.fcgi",
@@ -1090,7 +1160,7 @@ class GeoSearch(SraSearch):
                 else:
                     uids = uids_from_geo
                 # Ensure that only return_max number of uids are used
-                uids = uids[:self.return_max]
+                uids = uids[: self.return_max]
 
                 # Step 3: retrieves the detailed information for each uid
                 # returned, in groups of SRA_SEARCH_GROUP_SIZE.
@@ -1103,7 +1173,9 @@ class GeoSearch(SraSearch):
 
                 pbar = tqdm(total=len(uids))
                 for i in range(0, len(uids), SRA_SEARCH_GROUP_SIZE):
-                    current_uids = ",".join(uids[i: min(i + SRA_SEARCH_GROUP_SIZE, len(uids))])
+                    current_uids = ",".join(
+                        uids[i : min(i + SRA_SEARCH_GROUP_SIZE, len(uids))]
+                    )
                     pbar.update(min(SRA_SEARCH_GROUP_SIZE, len(uids) - i))
                     payload2 = {"db": "sra", "retmode": "xml", "id": current_uids}
 

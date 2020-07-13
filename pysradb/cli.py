@@ -175,20 +175,58 @@ def download(out_dir, db, srx, srp, skip_confirmation, col="sra_url", use_wget=T
 def search(saveto, db, verbosity, return_max, fields):
     try:
         if db == "ena":
-            instance = EnaSearch(verbosity, return_max, fields["query"], fields["accession"], fields["organism"],
-                                 fields["layout"], fields["mbases"], fields["publication_date"], fields["platform"],
-                                 fields["selection"], fields["source"], fields["strategy"], fields["title"])
+            instance = EnaSearch(
+                verbosity,
+                return_max,
+                fields["query"],
+                fields["accession"],
+                fields["organism"],
+                fields["layout"],
+                fields["mbases"],
+                fields["publication_date"],
+                fields["platform"],
+                fields["selection"],
+                fields["source"],
+                fields["strategy"],
+                fields["title"],
+            )
             instance.search()
         elif db == "sra_geo":
-            instance = GeoSearch(verbosity, return_max, fields["query"], fields["accession"], fields["organism"],
-                                 fields["layout"], fields["mbases"], fields["publication_date"], fields["platform"],
-                                 fields["selection"], fields["source"], fields["strategy"], fields["title"],
-                                 fields["geo_query"], fields["geo_dataset_type"], fields["geo_entry_type"])
+            instance = GeoSearch(
+                verbosity,
+                return_max,
+                fields["query"],
+                fields["accession"],
+                fields["organism"],
+                fields["layout"],
+                fields["mbases"],
+                fields["publication_date"],
+                fields["platform"],
+                fields["selection"],
+                fields["source"],
+                fields["strategy"],
+                fields["title"],
+                fields["geo_query"],
+                fields["geo_dataset_type"],
+                fields["geo_entry_type"],
+            )
             instance.search()
         else:
-            instance = SraSearch(verbosity, return_max, fields["query"], fields["accession"], fields["organism"],
-                                 fields["layout"], fields["mbases"], fields["publication_date"], fields["platform"],
-                                 fields["selection"], fields["source"], fields["strategy"], fields["title"])
+            instance = SraSearch(
+                verbosity,
+                return_max,
+                fields["query"],
+                fields["accession"],
+                fields["organism"],
+                fields["layout"],
+                fields["mbases"],
+                fields["publication_date"],
+                fields["platform"],
+                fields["selection"],
+                fields["source"],
+                fields["strategy"],
+                fields["title"],
+            )
             instance.search()
     except (MissingQueryException, IncorrectFieldException) as e:
         print(e)
@@ -674,10 +712,7 @@ def parse_args(args=None):
         "--organism", nargs="+", help="Scientific name of the sample organism"
     )
     subparser.add_argument(
-        "--layout",
-        choices=["SINGLE", "PAIRED"],
-        help="Library layout",
-        type=str.upper
+        "--layout", choices=["SINGLE", "PAIRED"], help="Library layout", type=str.upper
     )
     subparser.add_argument(
         "--mbases", help="Size of the sample rounded to the nearest megabase", type=int
@@ -698,13 +733,17 @@ def parse_args(args=None):
     subparser.add_argument(
         "--geo-query",
         nargs="+",
-        help="Main query string for GEO DataSet. This flag is only used when db is set to be sra_geo."
+        help="Main query string for GEO DataSet. This flag is only used when db is set to be sra_geo.",
     )
     subparser.add_argument(
-        "--geo-dataset-type", nargs="+", help="GEO DataSet Type. This flag is only used when --db is set to be sra_geo."
+        "--geo-dataset-type",
+        nargs="+",
+        help="GEO DataSet Type. This flag is only used when --db is set to be sra_geo.",
     )
     subparser.add_argument(
-        "--geo-entry-type", nargs="+", help="GEO Entry Type. This flag is only used when --db is set to be sra_geo."
+        "--geo-entry-type",
+        nargs="+",
+        help="GEO Entry Type. This flag is only used when --db is set to be sra_geo.",
     )
 
     subparser.set_defaults(func=search)
