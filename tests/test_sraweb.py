@@ -19,6 +19,13 @@ def test_sra_metadata(sraweb_connection):
     assert df.shape[0] == 134
 
 
+def test_sra_metadata_missing_orgname(sraweb_connection):
+    """Test if metadata has right number of entries"""
+    df = sraweb_connection.sra_metadata("ERP000171")
+    # See: https://github.com/saketkc/pysradb/issues/46#issuecomment-657268760
+    assert "N/A" in df.organism_name.tolist()
+
+
 def test_sra_metadata_multiple(sraweb_connection):
     """Test if metadata has right number of entries"""
     df = sraweb_connection.sra_metadata(["SRP016501", "SRP096025", "SRP103009"])
