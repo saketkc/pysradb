@@ -83,8 +83,8 @@ class QuerySearch:
 
     def __init__(
         self,
-        verbosity,
-        return_max,
+        verbosity=2,
+        return_max=20,
         query=None,
         accession=None,
         organism=None,
@@ -98,8 +98,26 @@ class QuerySearch:
         title=None,
         suppress_validation=False,
     ):
-        self.verbosity = verbosity
-        self.return_max = return_max
+        try:
+            int_verbosity = int(verbosity)
+            if int_verbosity not in range(4):
+                raise ValueError
+        except (TypeError, ValueError):
+            raise IncorrectFieldException(
+                f"Incorrect verbosity format: {verbosity}"
+                "Verbosity must be an integer between 0 to 3 inclusive."
+            )
+        try:
+            int_return_max = int(return_max)
+            if int_return_max <= 0:
+                raise ValueError
+        except (TypeError, ValueError):
+            raise IncorrectFieldException(
+                f"Incorrect return_max format: {return_max}"
+                "return_max must be a positive integer."
+            )
+        self.verbosity = int_verbosity
+        self.return_max = int_return_max
         self.fields = {
             "query": query,
             "accession": accession,
@@ -117,11 +135,12 @@ class QuerySearch:
             if type(self.fields[k]) == list:
                 self.fields[k] = " ".join(self.fields[k])
         self.df = pd.DataFrame()
+        # Verify that not all query fields are empty
+        if not any(self.fields.values()):
+            raise MissingQueryException()
         if not suppress_validation:
             self._validate_fields()
-        # Verify that not all query fields are empty
-        if not any(self.fields):
-            raise MissingQueryException()
+
 
     def _input_multi_regex_checker(self, regex_matcher, input_query, error_message):
         """Checks if the user input match exactly 1 of the possible regex.
@@ -1060,7 +1079,7 @@ class GeoSearch(SraSearch):
         except MissingQueryException:
             self.search_sra = False
 
-        if not any(self.geo_fields):
+        if not any(self.geo_fields.values()):
             self.search_geo = False
 
         if not self.search_geo and not self.search_sra:
@@ -1069,7 +1088,7 @@ class GeoSearch(SraSearch):
         # Narrowing down the total number of eligible uids
         if self.fields["query"]:
             self.fields["query"] += " AND sra gds[Filter]"
-        else:
+        elif self.search_sra:
             self.fields["query"] = "sra gds[Filter]"
         if self.geo_fields["query"]:
             self.geo_fields["query"] += " AND gds sra[Filter]"
@@ -1131,6 +1150,7 @@ class GeoSearch(SraSearch):
                 elink_payload = {
                     "dbfrom": "gds",
                     "db": "sra",
+                    "retmode": "json",
                     "query_key": query_key,
                     "WebEnv": web_env,
                 }
@@ -1142,7 +1162,7 @@ class GeoSearch(SraSearch):
                 r.raise_for_status()
                 try:
                     data = r.json()
-                    uids_from_geo = data["linksetdbs"][0]["links"]
+                    uids_from_geo = data["linksets"][0]["linksetdbs"][0]["links"]
                 except (JSONDecodeError, KeyError, IndexError):
                     uids_from_geo = []
 
@@ -1161,7 +1181,6 @@ class GeoSearch(SraSearch):
                     uids = uids_from_geo
                 # Ensure that only return_max number of uids are used
                 uids = uids[: self.return_max]
-
                 # Step 3: retrieves the detailed information for each uid
                 # returned, in groups of SRA_SEARCH_GROUP_SIZE.
                 if not uids:
