@@ -104,7 +104,7 @@ class QuerySearch:
                 raise ValueError
         except (TypeError, ValueError):
             raise IncorrectFieldException(
-                f"Incorrect verbosity format: {verbosity}"
+                f"Incorrect verbosity format: {verbosity}\n"
                 "Verbosity must be an integer between 0 to 3 inclusive."
             )
         try:
@@ -113,7 +113,7 @@ class QuerySearch:
                 raise ValueError
         except (TypeError, ValueError):
             raise IncorrectFieldException(
-                f"Incorrect return_max format: {return_max}"
+                f"Incorrect return_max format: {return_max}\n"
                 "return_max must be a positive integer."
             )
         self.verbosity = int_verbosity
@@ -212,13 +212,15 @@ class QuerySearch:
             )
 
         # verify mbases
-        if self.fields["mbases"] and type(self.fields["mbases"]) != int:
+        if self.fields["mbases"]:
             try:
                 self.fields["mbases"] = int(self.fields["mbases"])
-            except ValueError:
+                if self.fields["mbases"] <= 0:
+                    raise ValueError
+            except (ValueError, TypeError):
                 message += (
                     f"Incorrect mbases format: {self.fields['mbases']}\n"
-                    f"--mbases must be an integer\n\n"
+                    f"--mbases must be a positive integer\n\n"
                 )
 
         # verify publication_date
@@ -233,16 +235,16 @@ class QuerySearch:
 
         # verify platform
         platform_matcher = {
-            "oxford|nanopore": "OXFORD_NANOPORE",
-            "illumina": "ILLUMINA",
-            "ion.*torrent": "ION_TORRENT",
-            "capillary": "CAPILLARY",
-            "pacbio|smrt": "PACBIO_SMRT",
-            "abi.*solid": "ABI_SOLID",
-            "bgi": "BGISEQ",
-            "ls454": "LS454",
-            "complete.*genomics": "COMPLETE_GENOMICS",
-            "helicos": "HELICOS",
+            ".*oxford.*|.*nanopore.*": "OXFORD_NANOPORE",
+            ".*illumina.*": "ILLUMINA",
+            ".*ion.*torrent.*": "ION_TORRENT",
+            ".*capillary.*": "CAPILLARY",
+            ".*pacbio.*|.*smrt.*": "PACBIO_SMRT",
+            ".*abi.*solid.*": "ABI_SOLID",
+            ".*bgi.*": "BGISEQ",
+            ".*454.*": "LS454",
+            ".*complete.*genomics.*": "COMPLETE_GENOMICS",
+            ".*helicos.*": "HELICOS",
         }
         if self.fields["platform"]:
             error_message = (
@@ -262,37 +264,37 @@ class QuerySearch:
 
         # verify selection
         selection_matcher = {
-            "methylcytidine": "5-methylcytidine antibody",
-            "cage": "CAGE",
-            r"chip\s*$": "ChIP",
-            "chip.*seq": "ChIP-Seq",
-            "dnase": "DNase",
-            "hmpr": "HMPR",
-            "hybrid": "Hybrid Selection",
-            r"inverse.*rrna\s*$": "Inverse rRNA",
-            "inverse.*rrna.*selection": "Inverse rRNA selection",
-            "mbd2.*protein.*methyl.*cpg.*binding.*domain": "MBD2 protein methyl-CpG binding domain",
-            "mda": "MDA",
-            "mf": "MF",
-            "mnase": "MNase",
-            "msll": "MSLL",
-            r"^\s*oligo.*dt": "Oligo-dT",
+            ".*methylcytidine.*": "5-methylcytidine antibody",
+            ".*cage.*": "CAGE",
+            r".*chip\s*$": "ChIP",
+            ".*chip.*seq.*": "ChIP-Seq",
+            ".*dnase.*": "DNase",
+            ".*hmpr.*": "HMPR",
+            ".*hybrid.*": "Hybrid Selection",
+            r".*inverse.*rrna\s*$": "Inverse rRNA",
+            ".*inverse.*rrna.*selection.*": "Inverse rRNA selection",
+            ".*mbd2.*protein.*methyl.*cpg.*binding.*domain.*": "MBD2 protein methyl-CpG binding domain",
+            ".*mda.*": "MDA",
+            ".*mf.*": "MF",
+            ".*mnase.*": "MNase",
+            ".*msll.*": "MSLL",
+            r"^\s*oligo.*dt.*": "Oligo-dT",
             r"^\s*pcr\s*$": "PCR",
-            "polya": "PolyA",
-            "race": "RACE",
-            r"random\s*$": "RANDOM",
-            "random.*pcr": "RANDOM PCR",
-            "rt.*pcr": "RT-PCR",
-            "reduced.*representation": "Reduced Representation",
-            "restriction.*digest": "Restriction Digest",
-            r"cdna\s*$": "cDNA",
-            "cdna.*oligo.*dt": "cDNA_oligo_dT",  # ENA only
-            "cdna.*random.*priming": "cDNA_randomPriming",  # ENA only
-            "other": "other",
-            "padlock.*probes.*capture.*method": "padlock probes capture method",
-            "repeat.*fractionation": "repeat fractionation",
-            "size.*fractionation": "size fractionation",
-            "unspecified": "unspecified",
+            ".*poly[ -_]*a.*": "PolyA",
+            ".*race.*": "RACE",
+            r".*random\s*$": "RANDOM",
+            ".*random.*pcr.*": "RANDOM PCR",
+            ".*rt[ -_]*pcr.*": "RT-PCR",
+            ".*reduced.*representation.*": "Reduced Representation",
+            ".*restriction.*digest.*": "Restriction Digest",
+            r".*cdna\s*$": "cDNA",
+            ".*cdna.*oligo.*dt": "cDNA_oligo_dT.*",  # ENA only
+            ".*cdna.*random.*priming": "cDNA_randomPriming.*",  # ENA only
+            ".*other.*": "other",
+            ".*padlock.*probes.*capture.*method.*": "padlock probes capture method",
+            ".*repeat.*fractionation.*": "repeat fractionation",
+            ".*size.*fractionation.*": "size fractionation",
+            ".*unspecified.*": "unspecified",
         }
         if self.fields["selection"]:
             error_message = (
@@ -316,14 +318,14 @@ class QuerySearch:
         # verify source
         source_matcher = {
             r"^\s*genomic\s*$": "GENOMIC",
-            "genomic.*single.*cell": "GENOMIC SINGLE CELL",
-            "metagenomic": "METAGENOMIC",
-            "metatranscriptomic": "METATRANSCRIPTOMIC",
-            "other": "OTHER",
-            "synthetic": "SYNTHETIC",
+            ".*genomic.*single.*cell.*": "GENOMIC SINGLE CELL",
+            ".*metagenomic.*": "METAGENOMIC",
+            ".*metatranscriptomic.*": "METATRANSCRIPTOMIC",
+            ".*other.*": "OTHER",
+            ".*synthetic.*": "SYNTHETIC",
             r"^\s*transcriptomic\s*$": "TRANSCRIPTOMIC",
-            "transcriptomic.*single.*cell": "TRANSCRIPTOMIC SINGLE CELL",
-            "viral.*rna": "VIRAL RNA",
+            ".*transcriptomic.*single.*cell.*": "TRANSCRIPTOMIC SINGLE CELL",
+            ".*viral.*rna.*": "VIRAL RNA",
         }
         if self.fields["source"]:
             error_message = (
@@ -343,43 +345,43 @@ class QuerySearch:
 
         # verify strategy
         strategy_matcher = {
-            "amplicon": "AMPLICON",
-            "atac": "ATAC-seq",
-            "bisulfite": "Bisulfite-Seq",
+            ".*amplicon.*": "AMPLICON",
+            ".*atac.*": "ATAC-seq",
+            ".*bisulfite.*": "Bisulfite-Seq",
             r"^\s*clone\s*$": "CLONE",
-            "cloneend": "CLONEEND",
-            "cts": "CTS",
-            "chia|pet": "ChIA-PET",
-            "chip.*seq": "ChIP-Seq",
-            "dnase|hypersensitivity": "DNase-Hypersensitivity",
+            ".*cloneend.*": "CLONEEND",
+            ".*cts.*": "CTS",
+            ".*chia.*|.*pet.*": "ChIA-PET",
+            ".*chip.*seq.*": "ChIP-Seq",
+            ".*dnase.*|.*hypersensitivity.*": "DNase-Hypersensitivity",
             r"^\s*est\s*$": "EST",
-            "faire": "FAIRE-seq",
-            "finishing": "FINISHING",
-            "fl.*cdna": "FL-cDNA",
-            "hi.*c": "Hi-C",
-            "mbd": "MBD-Seq",
-            "mnase": "MNase-Seq",
-            "mre": "MRE-Seq",
-            "medip": "MeDIP-Seq",
-            "other": "OTHER",
-            "poolclone": "POOLCLONE",
-            "rad": "RAD-Seq",
-            "rip": "RIP-Seq",
+            ".*faire.*": "FAIRE-seq",
+            ".*finishing.*": "FINISHING",
+            ".*fl.*cdna.*": "FL-cDNA",
+            ".*hi.*c.*": "Hi-C",
+            ".*mbd.*": "MBD-Seq",
+            ".*mnase.*": "MNase-Seq",
+            ".*mre.*": "MRE-Seq",
+            ".*medip.*": "MeDIP-Seq",
+            ".*other.*": "OTHER",
+            ".*poolclone.*": "POOLCLONE",
+            ".*rad.*": "RAD-Seq",
+            ".*rip.*": "RIP-Seq",
             r"^\s*rna.*seq": "RNA-Seq",
-            "selex": "SELEX",
-            "synthetic|long.*read": "Synthetic-Long-Read",
-            "targeted.*capture": "Targeted-Capture",
-            "tethered.*chromatin.*conformation.*capture|tccc": "Tethered Chromatin Conformation Capture",
-            "tn": "Tn-Seq",
-            "validation": "VALIDATION",
-            "wcs": "WCS",
-            "wga": "WGA",
-            "wgs": "WGS",
-            "wxs": "WXS",
-            "mirna": "miRNA-Seq",
-            "ncrna": "ncRNA-Seq",
-            "ssrna": "ssRNA-seq",
-            "gbs": "GBS",
+            ".*selex.*": "SELEX",
+            ".*synthetic.*|.*long.*read.*": "Synthetic-Long-Read",
+            ".*targeted.*capture.*": "Targeted-Capture",
+            ".*tethered.*chromatin.*conformation.*capture.*|.*tccc.*": "Tethered Chromatin Conformation Capture",
+            ".*tn.*": "Tn-Seq",
+            ".*validation.*": "VALIDATION",
+            ".*wcs.*": "WCS",
+            ".*wga.*": "WGA",
+            ".*wgs.*": "WGS",
+            ".*wxs.*": "WXS",
+            ".*mirna.*": "miRNA-Seq",
+            ".*ncrna.*": "ncRNA-Seq",
+            ".*ssrna.*": "ssRNA-seq",
+            ".*gbs.*": "GBS",
         }
         if self.fields["strategy"]:
             error_message = (
@@ -397,7 +399,7 @@ class QuerySearch:
             if output[1]:
                 message += output[1]
             else:
-                self.fields["platform"] = output[0]
+                self.fields["strategy"] = output[0]
         if message:
             raise IncorrectFieldException(message)
 
@@ -491,7 +493,7 @@ class SraSearch(QuerySearch):
         if self.fields["layout"]:
             term += self.fields["layout"] + "[Layout] AND "
         if self.fields["mbases"]:
-            term += self.fields["mbases"] + "[Mbases] AND "
+            term += str(self.fields["mbases"]) + "[Mbases] AND "
         if self.fields["publication_date"]:
             term += self.fields["publication_date"].replace("-", "/") + "[PDAT] AND "
         if self.fields["platform"]:
@@ -1092,7 +1094,7 @@ class GeoSearch(SraSearch):
             self.fields["query"] = "sra gds[Filter]"
         if self.geo_fields["query"]:
             self.geo_fields["query"] += " AND gds sra[Filter]"
-        else:
+        elif self.search_geo:
             self.geo_fields["query"] = "gds sra[Filter]"
 
     def _format_geo_query_string(self):
