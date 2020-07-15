@@ -1006,8 +1006,8 @@ class EnaSearch(QuerySearch):
 class GeoSearch(SraSearch):
     def __init__(
         self,
-        verbosity,
-        return_max,
+        verbosity=2,
+        return_max=20,
         query=None,
         accession=None,
         organism=None,
