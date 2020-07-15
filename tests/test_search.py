@@ -20,23 +20,204 @@ from pysradb.search import *
 # layout, mbases, publication_date, platform, selection, source, strategy,
 # title, geo_query, geo_dataset_type, geo_entry_type, suppress_validations]
 
+
 @pytest.fixture(scope="module")
 def valid_search_inputs_1():
     """Basic search input tests for Sra and Ena (single inputs)
     """
     return [
-        [0, 20, ["covid-19"], None, None, None, None, None, None, None, None, None, None, False],  # verbosity
-        [3, 20, ["covid-19"], None, None, None, None, None, None, None, None, None, None, False],  # query
-        [2, 20, None, "SRS6898940", None, None, None, None, None, None, None, None, None, False],  # accession
-        [2, 20, None, None, "Escherichia coli", None, None, None, None, None, None, None, None, False],  # organism
-        [2, 20, None, None, None, "PAIRED", None, None, None, None, None, None, None, False],  # layout
-        [2, 20, None, None, None, None, 5, None, None, None, None, None, None, False],  # mbases
-        [2, 20, None, None, None, None, None, "01-01-2019:31-12-2019", None, None, None, None, None, False],  # pdat
-        [2, 20, None, None, None, None, None, None, "ion torrent", None, None, None, None, False],  # platform
-        [2, 20, None, None, None, None, None, None, None, "random", None, None, None, False],  # selection
-        [2, 20, None, None, None, None, None, None, None, None, "genomic", None, None, False],  # source
-        [2, 20, None, None, None, None, None, None, None, None, None, "wgs", None, False],  # strategy
-        [2, 20, None, None, None, None, None, None, None, None, None, None, "Homo sapiens; RNA-Seq", False],  # title
+        [
+            0,
+            20,
+            ["covid-19"],
+            None,
+            None,
+            None,
+            None,
+            None,
+            None,
+            None,
+            None,
+            None,
+            None,
+            False,
+        ],  # verbosity
+        [
+            3,
+            20,
+            ["covid-19"],
+            None,
+            None,
+            None,
+            None,
+            None,
+            None,
+            None,
+            None,
+            None,
+            None,
+            False,
+        ],  # query
+        [
+            2,
+            20,
+            None,
+            "SRS6898940",
+            None,
+            None,
+            None,
+            None,
+            None,
+            None,
+            None,
+            None,
+            None,
+            False,
+        ],  # accession
+        [
+            2,
+            20,
+            None,
+            None,
+            "Escherichia coli",
+            None,
+            None,
+            None,
+            None,
+            None,
+            None,
+            None,
+            None,
+            False,
+        ],  # organism
+        [
+            2,
+            20,
+            None,
+            None,
+            None,
+            "PAIRED",
+            None,
+            None,
+            None,
+            None,
+            None,
+            None,
+            None,
+            False,
+        ],  # layout
+        [
+            2,
+            20,
+            None,
+            None,
+            None,
+            None,
+            5,
+            None,
+            None,
+            None,
+            None,
+            None,
+            None,
+            False,
+        ],  # mbases
+        [
+            2,
+            20,
+            None,
+            None,
+            None,
+            None,
+            None,
+            "01-01-2019:31-12-2019",
+            None,
+            None,
+            None,
+            None,
+            None,
+            False,
+        ],  # pdat
+        [
+            2,
+            20,
+            None,
+            None,
+            None,
+            None,
+            None,
+            None,
+            "ion torrent",
+            None,
+            None,
+            None,
+            None,
+            False,
+        ],  # platform
+        [
+            2,
+            20,
+            None,
+            None,
+            None,
+            None,
+            None,
+            None,
+            None,
+            "random",
+            None,
+            None,
+            None,
+            False,
+        ],  # selection
+        [
+            2,
+            20,
+            None,
+            None,
+            None,
+            None,
+            None,
+            None,
+            None,
+            None,
+            "genomic",
+            None,
+            None,
+            False,
+        ],  # source
+        [
+            2,
+            20,
+            None,
+            None,
+            None,
+            None,
+            None,
+            None,
+            None,
+            None,
+            None,
+            "wgs",
+            None,
+            False,
+        ],  # strategy
+        [
+            2,
+            20,
+            None,
+            None,
+            None,
+            None,
+            None,
+            None,
+            None,
+            None,
+            None,
+            None,
+            "Homo sapiens; RNA-Seq",
+            False,
+        ],  # title
     ]
 
 
@@ -45,17 +226,118 @@ def valid_search_inputs_2():
     """More complex input tests for Sra and Ena
     """
     return [
-        [0, 20, None, None, None, "Triple", None, None, None, None, None, None, None, True],  # suppress_validation
-        [2, 20, ["Escherichia", "coli"], "SRS6898222", "Escherichia coli", "paired", 6, "01-01-1999:31-12-2019",
-         "ILLUMINA", "dnase", "metatranscriptomic", "mbd seq", None, False],
-        [1, 2, [], None, None, "single", "5", "31-12-2019", "Nanopore", "MBD2 protein methyl-CpG binding domain",
-         "genomic single cell", "amplicon selection", None, False],
-        [0, 200000, None, None, None, "Paired", None, None, "complete genomics", "Inverse rRNA", "TRANSCRIPTOMIC",
-         "hi-c", None, False],
-        [3, 1, None, None, None, "SINGLE", None, None, "ls454", "oligo-dt", "transcriptomic single-cell", "miRNA", None,
-         False],
-        [2, 20, None, None, None, None, None, None, "smrt", "cDNA_oligo_dT", "metagenomic", "MBD", None, False],
-        [2, 20, None, None, None, None, None, None, "Pacbio", "pcr", "others", "EST", None, False],
+        [
+            0,
+            20,
+            None,
+            None,
+            None,
+            "Triple",
+            None,
+            None,
+            None,
+            None,
+            None,
+            None,
+            None,
+            True,
+        ],  # suppress_validation
+        [
+            2,
+            20,
+            ["Escherichia", "coli"],
+            "SRS6898222",
+            "Escherichia coli",
+            "paired",
+            6,
+            "01-01-1999:31-12-2019",
+            "ILLUMINA",
+            "dnase",
+            "metatranscriptomic",
+            "mbd seq",
+            None,
+            False,
+        ],
+        [
+            1,
+            2,
+            [],
+            None,
+            None,
+            "single",
+            "5",
+            "31-12-2019",
+            "Nanopore",
+            "MBD2 protein methyl-CpG binding domain",
+            "genomic single cell",
+            "amplicon selection",
+            None,
+            False,
+        ],
+        [
+            0,
+            200000,
+            None,
+            None,
+            None,
+            "Paired",
+            None,
+            None,
+            "complete genomics",
+            "Inverse rRNA",
+            "TRANSCRIPTOMIC",
+            "hi-c",
+            None,
+            False,
+        ],
+        [
+            3,
+            1,
+            None,
+            None,
+            None,
+            "SINGLE",
+            None,
+            None,
+            "ls454",
+            "oligo-dt",
+            "transcriptomic single-cell",
+            "miRNA",
+            None,
+            False,
+        ],
+        [
+            2,
+            20,
+            None,
+            None,
+            None,
+            None,
+            None,
+            None,
+            "smrt",
+            "cDNA_oligo_dT",
+            "metagenomic",
+            "MBD",
+            None,
+            False,
+        ],
+        [
+            2,
+            20,
+            None,
+            None,
+            None,
+            None,
+            None,
+            None,
+            "Pacbio",
+            "pcr",
+            "others",
+            "EST",
+            None,
+            False,
+        ],
     ]
 
 
@@ -64,17 +346,155 @@ def valid_search_inputs_geo():
     """Basic search input tests for Geo
     """
     return [
-        [2, 20, "query", None, None, None, None, None, None, None, None, None, None, None, None, None, False],
-        [2, 20, None, None, None, None, None, None, None, None, None, None, None, "GEO query", None, None, False],
-        [2, 20, ["query"], None, None, None, None, None, None, None, None, None, None, "GEO query", None, None, False],
-        [2, 20, None, "SRS6898940", None, None, None, None, None, None, None, None, None, "GEO query", None, None,
-         False],
-        [2, 20, None, None, "Escherichia coli", None, None, None, None, None, None, None, None, None, None, None,
-         False],  # organism
-        [2, 20, None, None, None, None, None, "01-01-2019:31-12-2019", None, None, None, None, None, False],  # pdat
-        [2, 20, None, None, None, None, None, None, None, None, None, None, None, None, "GEO dataset type", None,
-         False],  # Geo dataset type
-        [2, 20, None, None, None, None, None, None, None, None, None, None, None, None, None, "GEO entry type", False],
+        [
+            2,
+            20,
+            "query",
+            None,
+            None,
+            None,
+            None,
+            None,
+            None,
+            None,
+            None,
+            None,
+            None,
+            None,
+            None,
+            None,
+            False,
+        ],
+        [
+            2,
+            20,
+            None,
+            None,
+            None,
+            None,
+            None,
+            None,
+            None,
+            None,
+            None,
+            None,
+            None,
+            "GEO query",
+            None,
+            None,
+            False,
+        ],
+        [
+            2,
+            20,
+            ["query"],
+            None,
+            None,
+            None,
+            None,
+            None,
+            None,
+            None,
+            None,
+            None,
+            None,
+            "GEO query",
+            None,
+            None,
+            False,
+        ],
+        [
+            2,
+            20,
+            None,
+            "SRS6898940",
+            None,
+            None,
+            None,
+            None,
+            None,
+            None,
+            None,
+            None,
+            None,
+            "GEO query",
+            None,
+            None,
+            False,
+        ],
+        [
+            2,
+            20,
+            None,
+            None,
+            "Escherichia coli",
+            None,
+            None,
+            None,
+            None,
+            None,
+            None,
+            None,
+            None,
+            None,
+            None,
+            None,
+            False,
+        ],  # organism
+        [
+            2,
+            20,
+            None,
+            None,
+            None,
+            None,
+            None,
+            "01-01-2019:31-12-2019",
+            None,
+            None,
+            None,
+            None,
+            None,
+            False,
+        ],  # pdat
+        [
+            2,
+            20,
+            None,
+            None,
+            None,
+            None,
+            None,
+            None,
+            None,
+            None,
+            None,
+            None,
+            None,
+            None,
+            "GEO dataset type",
+            None,
+            False,
+        ],  # Geo dataset type
+        [
+            2,
+            20,
+            None,
+            None,
+            None,
+            None,
+            None,
+            None,
+            None,
+            None,
+            None,
+            None,
+            None,
+            None,
+            None,
+            "GEO entry type",
+            False,
+        ],
     ]
 
 
@@ -82,7 +502,22 @@ def valid_search_inputs_geo():
 def empty_search_inputs():
     return [
         [],
-        [2, 20, None, None, None, None, None, None, None, None, None, None, None, False],
+        [
+            2,
+            20,
+            None,
+            None,
+            None,
+            None,
+            None,
+            None,
+            None,
+            None,
+            None,
+            None,
+            None,
+            False,
+        ],
         [2, 20, [], [], [], [], [], [], [], [], [], [], []],
     ]
 
@@ -91,7 +526,25 @@ def empty_search_inputs():
 def empty_search_inputs_geo():
     return [
         [],
-        [2, 20, None, None, None, None, None, None, None, None, None, None, None, None, None, None, False],
+        [
+            2,
+            20,
+            None,
+            None,
+            None,
+            None,
+            None,
+            None,
+            None,
+            None,
+            None,
+            None,
+            None,
+            None,
+            None,
+            None,
+            False,
+        ],
         [2, 20, [], [], [], [], [], [], [], [], [], [], []],
     ]
 
@@ -101,20 +554,230 @@ def invalid_search_inputs():
     """Invalid search input tests for QuerySearch
     """
     return [
-        [4, 20, ["covid-19"], None, None, None, None, None, None, None, None, None, None, False],  # verbosity
-        [3, 0, ["covid-19"], None, None, None, None, None, None, None, None, None, None, False],  # return_max
-        [2, 20, None, None, None, "X", None, None, None, None, None, None, None, False],  # layout
-        [2, 20, None, None, None, None, "Charmander", None, None, None, None, None, None, False],  # mbases
-        [2, 20, None, None, None, None, -1, None, None, None, None, None, None, False],  # mbases
-        [2, 20, None, None, None, None, None, "31-31-2019", None, None, None, None, None, False],  # pdat
-        [2, 20, None, None, None, None, None, None, "pacbio nanopore", None, None, None, None, False],  # platform
-        [2, 20, None, None, None, None, None, None, "no such platform", None, None, None, None, False],  # platform
-        [2, 20, None, None, None, None, None, None, None, "polyA hybrid", None, None, None, False],  # selection
-        [2, 20, None, None, None, None, None, None, None, "no such selection", None, None, None, False],  # selection
-        [2, 20, None, None, None, None, None, None, None, None, "genomic transcriptomic", None, None, False],  # source
-        [2, 20, None, None, None, None, None, None, None, None, "metagenomic viral rna ", None, None, False],  # source
-        [2, 20, None, None, None, None, None, None, None, None, None, "wgs wga", None, False],  # strategy
-        [2, 20, None, None, None, None, None, None, None, None, None, "Bulbasaur", None, False],  # strategy
+        [
+            4,
+            20,
+            ["covid-19"],
+            None,
+            None,
+            None,
+            None,
+            None,
+            None,
+            None,
+            None,
+            None,
+            None,
+            False,
+        ],  # verbosity
+        [
+            3,
+            0,
+            ["covid-19"],
+            None,
+            None,
+            None,
+            None,
+            None,
+            None,
+            None,
+            None,
+            None,
+            None,
+            False,
+        ],  # return_max
+        [
+            2,
+            20,
+            None,
+            None,
+            None,
+            "X",
+            None,
+            None,
+            None,
+            None,
+            None,
+            None,
+            None,
+            False,
+        ],  # layout
+        [
+            2,
+            20,
+            None,
+            None,
+            None,
+            None,
+            "Charmander",
+            None,
+            None,
+            None,
+            None,
+            None,
+            None,
+            False,
+        ],  # mbases
+        [
+            2,
+            20,
+            None,
+            None,
+            None,
+            None,
+            -1,
+            None,
+            None,
+            None,
+            None,
+            None,
+            None,
+            False,
+        ],  # mbases
+        [
+            2,
+            20,
+            None,
+            None,
+            None,
+            None,
+            None,
+            "31-31-2019",
+            None,
+            None,
+            None,
+            None,
+            None,
+            False,
+        ],  # pdat
+        [
+            2,
+            20,
+            None,
+            None,
+            None,
+            None,
+            None,
+            None,
+            "pacbio nanopore",
+            None,
+            None,
+            None,
+            None,
+            False,
+        ],  # platform
+        [
+            2,
+            20,
+            None,
+            None,
+            None,
+            None,
+            None,
+            None,
+            "no such platform",
+            None,
+            None,
+            None,
+            None,
+            False,
+        ],  # platform
+        [
+            2,
+            20,
+            None,
+            None,
+            None,
+            None,
+            None,
+            None,
+            None,
+            "polyA hybrid",
+            None,
+            None,
+            None,
+            False,
+        ],  # selection
+        [
+            2,
+            20,
+            None,
+            None,
+            None,
+            None,
+            None,
+            None,
+            None,
+            "no such selection",
+            None,
+            None,
+            None,
+            False,
+        ],  # selection
+        [
+            2,
+            20,
+            None,
+            None,
+            None,
+            None,
+            None,
+            None,
+            None,
+            None,
+            "genomic transcriptomic",
+            None,
+            None,
+            False,
+        ],  # source
+        [
+            2,
+            20,
+            None,
+            None,
+            None,
+            None,
+            None,
+            None,
+            None,
+            None,
+            "metagenomic viral rna ",
+            None,
+            None,
+            False,
+        ],  # source
+        [
+            2,
+            20,
+            None,
+            None,
+            None,
+            None,
+            None,
+            None,
+            None,
+            None,
+            None,
+            "wgs wga",
+            None,
+            False,
+        ],  # strategy
+        [
+            2,
+            20,
+            None,
+            None,
+            None,
+            None,
+            None,
+            None,
+            None,
+            None,
+            None,
+            "Bulbasaur",
+            None,
+            False,
+        ],  # strategy
     ]
 
 
@@ -126,10 +789,26 @@ def sra_response_xml_1():
 @pytest.fixture(scope="module")
 def sra_formatted_responses_1():
     return [
-        pd.read_csv("./tests/data/test_search/sra_test_verbosity_0.csv", dtype=object, keep_default_na=False),
-        pd.read_csv("./tests/data/test_search/sra_test_verbosity_1.csv", dtype=object, keep_default_na=False),
-        pd.read_csv("./tests/data/test_search/sra_test_verbosity_2.csv", dtype=object, keep_default_na=False),
-        pd.read_csv("./tests/data/test_search/sra_test_verbosity_3.csv", dtype=object, keep_default_na=False),
+        pd.read_csv(
+            "./tests/data/test_search/sra_test_verbosity_0.csv",
+            dtype=object,
+            keep_default_na=False,
+        ),
+        pd.read_csv(
+            "./tests/data/test_search/sra_test_verbosity_1.csv",
+            dtype=object,
+            keep_default_na=False,
+        ),
+        pd.read_csv(
+            "./tests/data/test_search/sra_test_verbosity_2.csv",
+            dtype=object,
+            keep_default_na=False,
+        ),
+        pd.read_csv(
+            "./tests/data/test_search/sra_test_verbosity_3.csv",
+            dtype=object,
+            keep_default_na=False,
+        ),
     ]
 
 
@@ -141,10 +820,26 @@ def sra_response_xml_2():
 @pytest.fixture(scope="module")
 def sra_formatted_responses_2():
     return [
-        pd.read_csv("./tests/data/test_search/sra_test_2_verbosity_0.csv", dtype=object, keep_default_na=False),
-        pd.read_csv("./tests/data/test_search/sra_test_2_verbosity_1.csv", dtype=object, keep_default_na=False),
-        pd.read_csv("./tests/data/test_search/sra_test_2_verbosity_2.csv", dtype=object, keep_default_na=False),
-        pd.read_csv("./tests/data/test_search/sra_test_2_verbosity_3.csv", dtype=object, keep_default_na=False),
+        pd.read_csv(
+            "./tests/data/test_search/sra_test_2_verbosity_0.csv",
+            dtype=object,
+            keep_default_na=False,
+        ),
+        pd.read_csv(
+            "./tests/data/test_search/sra_test_2_verbosity_1.csv",
+            dtype=object,
+            keep_default_na=False,
+        ),
+        pd.read_csv(
+            "./tests/data/test_search/sra_test_2_verbosity_2.csv",
+            dtype=object,
+            keep_default_na=False,
+        ),
+        pd.read_csv(
+            "./tests/data/test_search/sra_test_2_verbosity_3.csv",
+            dtype=object,
+            keep_default_na=False,
+        ),
     ]
 
 
@@ -160,14 +855,31 @@ def ena_responses_json():
 @pytest.fixture(scope="module")
 def ena_formatted_responses():
     return [
-        pd.read_csv("./tests/data/test_search/ena_test_verbosity_0.csv", dtype=object, keep_default_na=False),
-        pd.read_csv("./tests/data/test_search/ena_test_verbosity_1.csv", dtype=object, keep_default_na=False),
-        pd.read_csv("./tests/data/test_search/ena_test_verbosity_2.csv", dtype=object, keep_default_na=False),
-        pd.read_csv("./tests/data/test_search/ena_test_verbosity_3.csv", dtype=object, keep_default_na=False),
+        pd.read_csv(
+            "./tests/data/test_search/ena_test_verbosity_0.csv",
+            dtype=object,
+            keep_default_na=False,
+        ),
+        pd.read_csv(
+            "./tests/data/test_search/ena_test_verbosity_1.csv",
+            dtype=object,
+            keep_default_na=False,
+        ),
+        pd.read_csv(
+            "./tests/data/test_search/ena_test_verbosity_2.csv",
+            dtype=object,
+            keep_default_na=False,
+        ),
+        pd.read_csv(
+            "./tests/data/test_search/ena_test_verbosity_3.csv",
+            dtype=object,
+            keep_default_na=False,
+        ),
     ]
 
 
 # ============================= General Tests =============================
+
 
 def missing_query_test(empty_search_inputs):
     for empty_search_input in empty_search_inputs:
@@ -197,11 +909,14 @@ def test_invalid_search_query(invalid_search_inputs):
             QuerySearch(*invalid_search_inputs[i])
         assert error_messages[i] in str(e.value)
 
+
 # ======================== SraSearch component tests ======================
 
 
 def test_sra_search_1():
-    instance = SraSearch(3, 1000, query="ribosome profiling", publication_date="01-10-2012:01-01-2013")
+    instance = SraSearch(
+        3, 1000, query="ribosome profiling", publication_date="01-10-2012:01-01-2013"
+    )
     instance.search()
     found_accessions = set(instance.get_df()["experiment_accession"])
     with open("./tests/data/test_search/sra_search_test1.txt", "r") as f:
@@ -225,7 +940,10 @@ def test_valid_search_query_1_sra(valid_search_inputs_1):
         "Homo sapiens; RNA-Seq[Title]",
     ]
     for i in range(len(valid_search_inputs_1)):
-        assert SraSearch(*valid_search_inputs_1[i])._format_query_string() == expected_query[i]
+        assert (
+            SraSearch(*valid_search_inputs_1[i])._format_query_string()
+            == expected_query[i]
+        )
 
 
 def test_valid_search_query_2_sra(valid_search_inputs_2):
@@ -244,7 +962,10 @@ def test_valid_search_query_2_sra(valid_search_inputs_2):
         "PACBIO_SMRT[Platform] AND PCR[Selection] AND OTHER[Source] AND EST[Strategy]",
     ]
     for i in range(len(valid_search_inputs_2)):
-        assert SraSearch(*valid_search_inputs_2[i])._format_query_string() == expected_query[i]
+        assert (
+            SraSearch(*valid_search_inputs_2[i])._format_query_string()
+            == expected_query[i]
+        )
 
 
 def test_sra_search_format_request():
@@ -258,37 +979,55 @@ def test_sra_search_format_request():
 
 def test_sra_search_format_result_1(sra_response_xml_1, sra_formatted_responses_1):
     for i in range(4):
-        query = SraSearch(i, 1000, query="ribosome profiling", platform="illumina", organism="Caenorhabditis elegans")
+        query = SraSearch(
+            i,
+            1000,
+            query="ribosome profiling",
+            platform="illumina",
+            organism="Caenorhabditis elegans",
+        )
         query._format_result(sra_response_xml_1)
-        col0 = [c for c in query.get_df().columns if ("run" not in c.lower() and "sample" not in c.lower())]
-        col1 = [c for c in sra_formatted_responses_1[i].columns if ("run" not in c.lower() and "sample" not in c.lower())]
+        col0 = [
+            c
+            for c in query.get_df().columns
+            if ("run" not in c.lower() and "sample" not in c.lower())
+        ]
+        col1 = [
+            c
+            for c in sra_formatted_responses_1[i].columns
+            if ("run" not in c.lower() and "sample" not in c.lower())
+        ]
         expected_df = sra_formatted_responses_1[i][col1]
         actual_df = query.get_df()[col0]
-        pd.testing.assert_frame_equal(
-            expected_df, actual_df, check_dtype=False
-        )
+        pd.testing.assert_frame_equal(expected_df, actual_df, check_dtype=False)
 
 
 def test_sra_search_format_result_2(sra_response_xml_2, sra_formatted_responses_2):
     for i in range(4):
         query = SraSearch(i, 1000, accession="ERS3331676")
         query._format_result(sra_response_xml_2)
-        col0 = [c for c in query.get_df().columns if ("run" not in c.lower() and "sample" not in c.lower())]
+        col0 = [
+            c
+            for c in query.get_df().columns
+            if ("run" not in c.lower() and "sample" not in c.lower())
+        ]
         col1 = [
-            c for c in sra_formatted_responses_2[i].columns if ("run" not in c.lower() and "sample" not in c.lower())
+            c
+            for c in sra_formatted_responses_2[i].columns
+            if ("run" not in c.lower() and "sample" not in c.lower())
         ]
         expected_df = sra_formatted_responses_2[i][col1]
         actual_df = query.get_df()[col0]
-        pd.testing.assert_frame_equal(
-            expected_df, actual_df, check_dtype=False
-        )
+        pd.testing.assert_frame_equal(expected_df, actual_df, check_dtype=False)
 
 
 # ====================== EnaSearch component tests ========================
 
 
 def test_ena_search_1():
-    instance = EnaSearch(0, 1000, query="ribosome profiling", publication_date="01-10-2012:01-01-2013")
+    instance = EnaSearch(
+        0, 1000, query="ribosome profiling", publication_date="01-10-2012:01-01-2013"
+    )
     instance.search()
     df = instance.get_df()["run_accession"].to_list()
     with open("./tests/data/test_search/ena_search_test1.txt", "r") as f:
@@ -308,10 +1047,10 @@ def test_valid_search_query_1_ena(valid_search_inputs_1):
         '(study_accession="SRS6898940" OR secondary_study_accession="SRS6898940" OR sample_accession="SRS6898940" OR'
         ' secondary_sample_accession="SRS6898940" OR experiment_accession="SRS6898940" OR'
         ' submission_accession="SRS6898940" OR run_accession="SRS6898940")',
-        'tax_eq(562)',
+        "tax_eq(562)",
         'library_layout="PAIRED"',
-        'base_count>=4500000 AND base_count<5500000',
-        'first_created>=2019-01-01 AND first_created<=2019-12-31',
+        "base_count>=4500000 AND base_count<5500000",
+        "first_created>=2019-01-01 AND first_created<=2019-12-31",
         'instrument_platform="ION_TORRENT"',
         'library_selection="RANDOM"',
         'library_source="GENOMIC"',
@@ -319,7 +1058,10 @@ def test_valid_search_query_1_ena(valid_search_inputs_1):
         'experiment_title="*Homo sapiens; RNA-Seq*"',
     ]
     for i in range(len(valid_search_inputs_1)):
-        assert EnaSearch(*valid_search_inputs_1[i])._format_query_string() == expected_query[i]
+        assert (
+            EnaSearch(*valid_search_inputs_1[i])._format_query_string()
+            == expected_query[i]
+        )
 
 
 def test_valid_search_query_2_ena(valid_search_inputs_2):
@@ -329,7 +1071,7 @@ def test_valid_search_query_2_ena(valid_search_inputs_2):
         'secondary_study_accession="SRS6898222" OR sample_accession="SRS6898222" OR '
         'secondary_sample_accession="SRS6898222" OR experiment_accession="SRS6898222" OR '
         'submission_accession="SRS6898222" OR run_accession="SRS6898222") AND tax_eq(562) AND library_layout="PAIRED" '
-        'AND base_count>=5500000 AND base_count<6500000 AND first_created>=1999-01-01 AND '
+        "AND base_count>=5500000 AND base_count<6500000 AND first_created>=1999-01-01 AND "
         'first_created<=2019-12-31 AND instrument_platform="ILLUMINA" AND library_selection="DNASE" AND '
         'library_source="METATRANSCRIPTOMIC" AND library_strategy="MBD-SEQ"',
         'library_layout="SINGLE" AND base_count>=4500000 AND base_count<5500000 AND first_created=2019-12-31 AND '
@@ -346,7 +1088,10 @@ def test_valid_search_query_2_ena(valid_search_inputs_2):
     ]
 
     for i in range(len(valid_search_inputs_2)):
-        assert EnaSearch(*valid_search_inputs_2[i])._format_query_string() == expected_query[i]
+        assert (
+            EnaSearch(*valid_search_inputs_2[i])._format_query_string()
+            == expected_query[i]
+        )
 
 
 def test_ena_search_format_request():
@@ -371,13 +1116,18 @@ def test_ena_search_format_request():
 
 def test_ena_search_format_result(ena_responses_json, ena_formatted_responses):
     for i in range(4):
-        query = EnaSearch(i, 1000, query="ribosome profiling", platform="illumina", organism="Caenorhabditis elegans")
+        query = EnaSearch(
+            i,
+            1000,
+            query="ribosome profiling",
+            platform="illumina",
+            organism="Caenorhabditis elegans",
+        )
         query._format_result(ena_responses_json[i])
         expected_df = ena_formatted_responses[i]
         actual_df = query.get_df()
-        pd.testing.assert_frame_equal(
-            expected_df, actual_df, check_dtype=False
-        )
+        pd.testing.assert_frame_equal(expected_df, actual_df, check_dtype=False)
+
 
 # ====================== GeoSearch component tests ========================
 
@@ -424,4 +1174,3 @@ def test_valid_search_query_geo(valid_search_inputs_geo):
         instance = GeoSearch(*valid_search_inputs_geo[i])
         assert instance._format_query_string() == expected_sra_query[i]
         assert instance._format_geo_query_string() == expected_geo_query[i]
-

@@ -141,7 +141,6 @@ class QuerySearch:
         if not suppress_validation:
             self._validate_fields()
 
-
     def _input_multi_regex_checker(self, regex_matcher, input_query, error_message):
         """Checks if the user input match exactly 1 of the possible regex.
 
@@ -210,7 +209,6 @@ class QuerySearch:
                 f"Incorrect layout field format: {self.fields['layout']}\n"
                 "--layout must be either SINGLE or PAIRED\n\n"
             )
-
         # verify mbases
         if self.fields["mbases"]:
             try:
@@ -222,7 +220,6 @@ class QuerySearch:
                     f"Incorrect mbases format: {self.fields['mbases']}\n"
                     f"--mbases must be a positive integer\n\n"
                 )
-
         # verify publication_date
         date_regex = "(0[1-9]|[12][0-9]|3[01])-(0[1-9]|1[012])-(19|20)[0-9]{2}"
         if self.fields["publication_date"] and not re.match(
@@ -232,7 +229,6 @@ class QuerySearch:
                 f"Incorrect publication date format: {self.fields['publication_date']}\n"
                 f"Expected --publication-date format: dd-mm-yyyy or dd-mm-yyyy:dd-mm-yyyy, between 1900-2099\n\n"
             )
-
         # verify platform
         platform_matcher = {
             ".*oxford.*|.*nanopore.*": "OXFORD_NANOPORE",
@@ -261,7 +257,6 @@ class QuerySearch:
                 message += output[1]
             else:
                 self.fields["platform"] = output[0]
-
         # verify selection
         selection_matcher = {
             ".*methylcytidine.*": "5-methylcytidine antibody",
@@ -314,7 +309,6 @@ class QuerySearch:
                 message += output[1]
             else:
                 self.fields["selection"] = output[0]
-
         # verify source
         source_matcher = {
             r"^\s*genomic\s*$": "GENOMIC",
@@ -342,7 +336,6 @@ class QuerySearch:
                 message += output[1]
             else:
                 self.fields["source"] = output[0]
-
         # verify strategy
         strategy_matcher = {
             ".*amplicon.*": "AMPLICON",
@@ -455,7 +448,6 @@ class SraSearch(QuerySearch):
                     f"No results found for the following search query: \n {self.fields}"
                 )
                 return  # If no queries found, return nothing
-
             pbar = tqdm(total=len(uids))
             for i in range(0, len(uids), SRA_SEARCH_GROUP_SIZE):
                 current_uids = ",".join(
@@ -537,7 +529,6 @@ class SraSearch(QuerySearch):
         for field in entries:
             if len(entries[field]) < number_entries:
                 entries[field] += [""] * (number_entries - len(entries[field]))
-
         self.df = pd.DataFrame.from_dict(entries).replace(r"^\s*$", "N/A", regex=True)
         if self.df.empty:
             return
@@ -565,7 +556,6 @@ class SraSearch(QuerySearch):
                 important_columns.remove(col)
             else:
                 columns.remove(col)
-
         if self.verbosity == 0:
             self.df = self.df[["run_1_accession"]]
         elif self.verbosity == 1:
@@ -603,13 +593,11 @@ class SraSearch(QuerySearch):
             self._update_entry(
                 entries, f"{field_header}_{k}".lower(), v, number_entries
             )
-
         for child in entry_root:
             # "*_REF" tags contain duplicate information that can be found
             # somewhere in the xml entry and are skipped
             if child.tag.endswith("_REF"):
                 continue
-
             # IDENTIFIERS contain two types of children tags:
             # PRIMARY_ID, which repeats the accession number and
             # EXTERNAL_ID tags, each containing an alternative ID that is
@@ -631,7 +619,6 @@ class SraSearch(QuerySearch):
                             identifier.get("namespace"),
                             number_entries,
                         )
-
             # "*_LINKS" tags contain 0 or more "*_LINK" children tags,
             # each containing information (values) regarding the link
             # Links are numbered from 1 to differentiate between multiple
@@ -658,7 +645,6 @@ class SraSearch(QuerySearch):
                         )
                         link_value_index += 1
                     link_index += 1
-
             # "*_ATTRIBUTES" tags contain tag - value pairs providing
             # additional information for the Experiment/Sample/Study
             # Attributes are numbered from 1 to differentiate between
@@ -674,13 +660,11 @@ class SraSearch(QuerySearch):
                             number_entries,
                         )
                     attribute_index += 1
-
             # Differentiating between sample title and experiment title.
             elif child.tag == "TITLE":
                 self._update_entry(
                     entries, f"{field_header}_title", child.text, number_entries
                 )
-
             # Parsing platfrom information
             elif child.tag == "PLATFORM":
                 platform = child[0]
@@ -693,7 +677,6 @@ class SraSearch(QuerySearch):
                     platform[0].text,
                     number_entries,
                 )
-
             # Parsing individual run information
             elif child.tag == "RUN":
                 run_count += 1
@@ -702,7 +685,6 @@ class SraSearch(QuerySearch):
                     self._update_entry(
                         entries, f"run_{run_count}_{k}".lower(), v, number_entries
                     )
-
                 for elem in child:
                     if elem.tag == "SRAFiles":
                         srafile_index = 1
@@ -725,7 +707,6 @@ class SraSearch(QuerySearch):
                                     )
                                 alternatives_index += 1
                             srafile_index += 1
-
                     elif elem.tag == "CloudFiles":
                         cloudfile_index = 1
                         for cloudfile in elem:
@@ -737,7 +718,6 @@ class SraSearch(QuerySearch):
                                     number_entries,
                                 )
                             cloudfile_index += 1
-
                     elif elem.tag == "Bases":
                         for k, v in elem.attrib.items():
                             self._update_entry(
@@ -753,7 +733,6 @@ class SraSearch(QuerySearch):
                                 base.attrib["count"],
                                 number_entries,
                             )
-
                     elif elem.tag == "Databases":
                         database_index = 1
                         for database in elem:
@@ -764,7 +743,6 @@ class SraSearch(QuerySearch):
                                 number_entries,
                             )
                             database_index += 1
-
             else:
                 for elem in child.iter():
                     # Tags to ignore to avoid confusion
@@ -785,7 +763,6 @@ class SraSearch(QuerySearch):
                                 v,
                                 number_entries,
                             )
-
             # Parsing library layout (single, paired)
             if field_header == "experiment":
                 library_layout = child.find(
@@ -935,7 +912,6 @@ class EnaSearch(QuerySearch):
             dates = self.fields["publication_date"].split(":")
             for i in range(len(dates)):
                 dates[i] = "-".join(dates[i].split("-")[::-1])
-
             if len(dates) == 1:
                 term += rf"first_created={dates[0]} AND "
             elif len(dates) == 2:
@@ -995,7 +971,6 @@ class EnaSearch(QuerySearch):
             )
         elif self.verbosity == 3:
             payload["fields"] = "all"
-
         return payload
 
     def _format_result(self, content):
@@ -1080,13 +1055,10 @@ class GeoSearch(SraSearch):
             )
         except MissingQueryException:
             self.search_sra = False
-
         if not any(self.geo_fields.values()):
             self.search_geo = False
-
         if not self.search_geo and not self.search_sra:
             raise MissingQueryException()
-
         # Narrowing down the total number of eligible uids
         if self.fields["query"]:
             self.fields["query"] += " AND sra gds[Filter]"
@@ -1167,7 +1139,6 @@ class GeoSearch(SraSearch):
                     uids_from_geo = data["linksets"][0]["linksetdbs"][0]["links"]
                 except (JSONDecodeError, KeyError, IndexError):
                     uids_from_geo = []
-
                 # Step 2: Retrieve list of uids from SRA and
                 # Find the intersection of both lists of uids
                 if self.search_sra:
@@ -1191,7 +1162,6 @@ class GeoSearch(SraSearch):
                         f"SRA: {self.fields}\nGEO DataSets: {self.geo_fields}"
                     )
                     return  # If no queries found, return nothing
-
                 pbar = tqdm(total=len(uids))
                 for i in range(0, len(uids), SRA_SEARCH_GROUP_SIZE):
                     current_uids = ",".join(
