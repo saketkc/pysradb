@@ -673,7 +673,9 @@ def parse_args(args=None):
     subparser.add_argument(
         "--use-wget", "-w", action="store_true", help="Use wget instead of aspera"
     )
-    subparser.add_argument("--col", help="Specify column to download")
+    subparser.add_argument(
+        "--col", help="Specify column to download", default="sra_url"
+    )
     subparser.set_defaults(func=download)
 
     # pysradb search
