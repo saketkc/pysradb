@@ -682,6 +682,21 @@ def parse_args(args=None):
     subparser = subparsers.add_parser("search", help="Search SRA/ENA for matching text")
     subparser.add_argument("--saveto", help="Save search result dataframe to file")
     subparser.add_argument(
+        "-s",
+        "--stats",
+        nargs="?",
+        const="3",
+        choices=["1", "2", "3"],
+        help="Displays some useful statistics for the search results."
+    )
+    subparser.add_argument(
+        "-g",
+        "--graphs",
+        nargs="?",
+        const="all",
+        # choices=["all", "pdat", "mbases", "layout", "strategy", "source"]
+    )
+    subparser.add_argument(
         "--db",
         choices=["ena", "sra_geo", "sra"],
         default="sra",

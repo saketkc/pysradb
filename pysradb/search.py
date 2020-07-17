@@ -396,11 +396,50 @@ class QuerySearch:
         if message:
             raise IncorrectFieldException(message)
 
+    def summarise_results(self):
+        """Summarise search result statistics.
+
+        Returns
+        -------
+        stats : str
+            Compilation of relevant statistics for the search results.
+        """
+        return "stats"
+
+    def visualise_results(self, saveto="./search_plots/"):
+        """Generate graphs that visualise the search results.
+
+        This method will only work if the optional dependency, matplotlib,
+        is installed in the system.
+
+        Parameters
+        ----------
+        saveto : str
+            directory name where the generated graphs are saved. If
+            saveto=False, the graphs generated will not be saved and will
+            be shown directly.
+
+        """
+        try:
+            import matplotlib.pyplot as plt
+        except ImportError:
+            print(
+                "The optional dependency, matplotlib, is not available on the system.\n"
+                "matplotlib is required to generate graphs to visualise search results.\n"
+                "You can install matplotlib by typing \"pip install matplotlib\" on the command line.\n"
+            )
+            return
+
+        plt.plot([1,2,3], [1,2,3])
+        plt.show()
+
     def search(self):
         pass
 
     def get_df(self):
-        return self.df.replace(r"^\s*$", "N/A", regex=True)
+        """Getter for the search result dataframe.
+        """
+        return self.df
 
 
 class SraSearch(QuerySearch):
