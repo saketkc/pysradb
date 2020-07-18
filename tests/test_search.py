@@ -1036,6 +1036,21 @@ def test_ena_search_1():
         assert accession in df
 
 
+def test_ena_search_2(capsys):
+    EnaSearch(0, 1000, query="hehehuhuhaha").search()
+    out, err = capsys.readouterr()
+    assert "No results found for the following search query:" in out
+    assert err == ""
+
+
+def test_ena_search_3(capsys):
+    with pytest.raises(SystemExit) as e:
+        EnaSearch(0, 1000, selection='"Pikachu', suppress_validation=True).search()
+    assert "HTTPError: This is likely caused by an invalid search query:" in str(
+        e.value
+    )
+
+
 def test_valid_search_query_1_ena(valid_search_inputs_1):
     expected_query = [
         'experiment_title="*covid-19*" OR (study_accession="COVID-19" OR secondary_study_accession="COVID-19" OR'
@@ -1174,3 +1189,12 @@ def test_valid_search_query_geo(valid_search_inputs_geo):
         instance = GeoSearch(*valid_search_inputs_geo[i])
         assert instance._format_query_string() == expected_sra_query[i]
         assert instance._format_geo_query_string() == expected_geo_query[i]
+
+
+def test_geo_search_format_request():
+    assert GeoSearch(0, 1000, query="covid-19",)._format_request() == {
+        "db": "sra",
+        "term": "covid-19 AND sra gds[Filter]",
+        "retmode": "json",
+        "retmax": 10000,
+    }
