@@ -133,18 +133,7 @@ def download(out_dir, db, srx, srp, skip_confirmation, col="sra_url", use_wget=T
         for index, line in enumerate(sys.stdin):
             line = line.strip()
             line = line.lstrip(" ")
-            # pandas has different paddings to indent,
-            # we cannot replace all sapces at once since the description column
-            # can have text with space
-            line = re.sub("\s\s\s", "\t", line)
-            line = re.sub("\s\s", "\t", line)
-            line = re.sub("\t+", "\t", line)
-            line = re.sub("\s\t", "\t", line)
-            line = re.sub("\t\s", "\t", line)
-
-            if index == 0:
-                # For first line which is the header, allow substituting spaces with tab at once
-                line = re.sub("\s+", "\t", line)
+            line = re.sub(r"\s*\t+\s*", "\t", line)
 
             text += "{}\n".format(line)
         df = pd.read_csv(StringIO(text), sep="\t")

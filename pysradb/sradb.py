@@ -1285,7 +1285,7 @@ class SRAdb(BASEdb):
         if url_col and url_col not in df_cols:
             sys.stderr.write(
                 "Requested column '{}' not found in metadata.{}".format(
-                    url_col, os.linsep
+                    url_col, os.linesep
                 )
             )
             sys.exit(1)
