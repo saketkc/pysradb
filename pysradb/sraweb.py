@@ -479,7 +479,8 @@ class SRAweb(SRAdb):
 
                 detailed_record["run_accession"] = run_set["@accession"]
                 detailed_record["run_alias"] = run_set["@alias"]
-                sra_files = run_set["SRAFiles"]["SRAFile"]
+                sra_files = run_set.get("SRAFiles", {})
+                sra_files = sra_files.get("SRAFile", {})
                 if isinstance(sra_files, OrderedDict):
                     detailed_record["sra_url"] = sra_files["@url"]
                 else:
