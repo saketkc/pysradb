@@ -1,4 +1,4 @@
-run_1_accession,experiment_title
+run_accession,experiment_title
 SRR11217925,GSM4369051: rnaH27nsun3; Caenorhabditis elegans; RNA-Seq
 SRR11217924,GSM4369050: rnaH27nsun2; Caenorhabditis elegans; RNA-Seq
 SRR11217923,GSM4369049: rnaH27nsun1; Caenorhabditis elegans; RNA-Seq
@@ -45,13 +45,13 @@ SRR5026356,Bayesian Prediction of RNA Translation from Ribosome Profiling
 SRR3219264,unc-54(cc3389) Ribo-seq
 SRR3219253,unc-54(+) Ribo-seq
 SRR3219248,unc-54(+) Ribo-seq
-SRR1804352,GSM1611598: frac_26-34nt; Caenorhabditis elegans; OTHER
+SRR1804351,GSM1611598: frac_26-34nt; Caenorhabditis elegans; OTHER
 SRR1804349,GSM1611597: frac_28-35nt; Caenorhabditis elegans; OTHER
 SRR1804348,GSM1611596: frac_28-30nt; Caenorhabditis elegans; OTHER
-SRR1804347,GSM1611595: frac_25-30nt; Caenorhabditis elegans; OTHER
+SRR1804346,GSM1611595: frac_25-30nt; Caenorhabditis elegans; OTHER
 SRR1804345,GSM1611594: 04_N2_893_GCkit; Caenorhabditis elegans; OTHER
-SRR1804344,GSM1611593: 03_N2_893_SGkit; Caenorhabditis elegans; OTHER
-SRR1804342,GSM1611592: 02_N2_893_GCop; Caenorhabditis elegans; OTHER
+SRR1804343,GSM1611593: 03_N2_893_SGkit; Caenorhabditis elegans; OTHER
+SRR1804341,GSM1611592: 02_N2_893_GCop; Caenorhabditis elegans; OTHER
 SRR1804340,GSM1611591: 01_N2_893_SGop; Caenorhabditis elegans; OTHER
 SRR1635379,GSM1534607: RNASeq_c14_2; Caenorhabditis elegans; RNA-Seq
 SRR1635378,GSM1534606: RNASeq_c14_1; Caenorhabditis elegans; RNA-Seq
@@ -86,3 +86,8 @@ SRR522888,L1 mRNA-seq replicate 4
 SRR522011,L1 replicate 3 mRNA-seq
 SRR522010,L1 replicate 2 mRNA-seq
 SRR522009,L1 mRNA-seq replicate 1
+SRR1804352,GSM1611598: frac_26-34nt; Caenorhabditis elegans; OTHER
+SRR1804350,GSM1611597: frac_28-35nt; Caenorhabditis elegans; OTHER
+SRR1804347,GSM1611595: frac_25-30nt; Caenorhabditis elegans; OTHER
+SRR1804344,GSM1611593: 03_N2_893_SGkit; Caenorhabditis elegans; OTHER
+SRR1804342,GSM1611592: 02_N2_893_GCop; Caenorhabditis elegans; OTHER

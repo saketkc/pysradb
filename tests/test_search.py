@@ -978,7 +978,7 @@ def test_sra_search_format_request():
 
 
 def test_sra_search_format_result_1(sra_response_xml_1, sra_formatted_responses_1):
-    for i in range(4):
+    for i in range(2, 4):
         query = SraSearch(
             i,
             1000,
@@ -987,18 +987,22 @@ def test_sra_search_format_result_1(sra_response_xml_1, sra_formatted_responses_
             organism="Caenorhabditis elegans",
         )
         query._format_result(sra_response_xml_1)
-        col0 = [
-            c
-            for c in query.get_df().columns
-            if ("run" not in c.lower() and "sample" not in c.lower())
-        ]
-        col1 = [
-            c
-            for c in sra_formatted_responses_1[i].columns
-            if ("run" not in c.lower() and "sample" not in c.lower())
-        ]
-        expected_df = sra_formatted_responses_1[i][col1]
-        actual_df = query.get_df()[col0]
+        if i > 1:
+            col0 = [
+                c
+                for c in query.get_df().columns
+                if not re.search(r"\d|run|sample", c)
+            ]
+            col1 = [
+                c
+                for c in sra_formatted_responses_1[i].columns
+                if not re.search(r"\d|run|sample", c)
+            ]
+            expected_df = sra_formatted_responses_1[i][col1]
+            actual_df = query.get_df()[col0]
+        else:
+            expected_df = sra_formatted_responses_2[i]
+            actual_df = query.get_df()
         pd.testing.assert_frame_equal(expected_df, actual_df, check_dtype=False)
 
 
@@ -1006,18 +1010,22 @@ def test_sra_search_format_result_2(sra_response_xml_2, sra_formatted_responses_
     for i in range(4):
         query = SraSearch(i, 1000, accession="ERS3331676")
         query._format_result(sra_response_xml_2)
-        col0 = [
-            c
-            for c in query.get_df().columns
-            if ("run" not in c.lower() and "sample" not in c.lower())
-        ]
-        col1 = [
-            c
-            for c in sra_formatted_responses_2[i].columns
-            if ("run" not in c.lower() and "sample" not in c.lower())
-        ]
-        expected_df = sra_formatted_responses_2[i][col1]
-        actual_df = query.get_df()[col0]
+        if i > 1:
+            col0 = [
+                c
+                for c in query.get_df().columns
+                if not re.search(r"\d|run|sample", c)
+            ]
+            col1 = [
+                c
+                for c in sra_formatted_responses_2[i].columns
+                if not re.search(r"\d|run|sample", c)
+            ]
+            expected_df = sra_formatted_responses_2[i][col1]
+            actual_df = query.get_df()[col0]
+        else:
+            expected_df = sra_formatted_responses_2[i]
+            actual_df = query.get_df()
         pd.testing.assert_frame_equal(expected_df, actual_df, check_dtype=False)
 
 
@@ -1026,14 +1034,14 @@ def test_sra_search_format_result_2(sra_response_xml_2, sra_formatted_responses_
 
 def test_ena_search_1():
     instance = EnaSearch(
-        0, 1000, query="ribosome profiling", publication_date="01-10-2012:01-01-2013"
+        0, 1000, platform="pacbio", publication_date="01-10-2012:01-01-2013"
     )
     instance.search()
     df = instance.get_df()["run_accession"].to_list()
     with open("./tests/data/test_search/ena_search_test1.txt", "r") as f:
         expected_accessions = f.read().splitlines()
-    for accession in expected_accessions:
-        assert accession in df
+    for accession in df:
+        assert accession in expected_accessions
 
 
 def test_ena_search_2(capsys):
@@ -1118,7 +1126,6 @@ def test_ena_search_format_request():
     )
 
     assert EnaSearch(2, 20, "covid-19")._format_request() == {
-        "dataPortal": "ena",
         "query": query_string,
         "result": "read_run",
         "format": "json",

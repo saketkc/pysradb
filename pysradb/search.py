@@ -534,7 +534,8 @@ class SraSearch(QuerySearch):
             return
         columns = list(self.df.columns)
         important_columns = [
-            "study_accession" "experiment_accession",
+            "study_accession",
+            "experiment_accession",
             "experiment_title",
             "design_description",
             "sample_taxon_id",
@@ -557,14 +558,20 @@ class SraSearch(QuerySearch):
             else:
                 columns.remove(col)
         if self.verbosity <= 1:
-            run_dataframe = pd.DataFrame({"run_accession": [], "experiment_title": []})
+            temp_dfs = []
             for col in self.df.columns:
-                if re.match("run_[0-9]+accession", col):
-                    temp_df = self.df[[col, "experiment_title"]].rename(
-                        columns={col: "run_accession"}
+                if re.match("run_[0-9]+_accession", col):
+                    temp_df = self.df[[col, "experiment_title"]]
+                    temp_df = temp_df[temp_df[col] != "N/A"].rename(
+                        columns={
+                            col: "run_accession",
+                            "experiment_title": "experiment_title"
+                        }
                     )
-                    run_dataframe.append(temp_df, ignore_index=True)
-            self.df = run_dataframe.sort_values(by=["run_accession"])
+                    temp_dfs.append(temp_df)
+            run_dataframe = pd.concat(temp_dfs)
+            run_dataframe.sort_values(by=["run_accession"], kind="mergesort")
+            self.df = run_dataframe
         if self.verbosity == 0:
             self.df = self.df[["run_accession"]]
         elif self.verbosity == 1:
@@ -945,7 +952,6 @@ class EnaSearch(QuerySearch):
         # be matched to experiment_title (aka description),
         # or one of the accession fields
         payload = {
-            "dataPortal": "ena",
             "query": self._format_query_string(),
             "result": "read_run",
             "format": "json",
