@@ -534,7 +534,7 @@ class SraSearch(QuerySearch):
             return
         columns = list(self.df.columns)
         important_columns = [
-            "experiment_accession",
+            "study_accession" "experiment_accession",
             "experiment_title",
             "design_description",
             "sample_taxon_id",
@@ -556,13 +556,19 @@ class SraSearch(QuerySearch):
                 important_columns.remove(col)
             else:
                 columns.remove(col)
+        if self.verbosity <= 1:
+            run_dataframe = pd.DataFrame({"run_accession": [], "experiment_title": []})
+            for col in self.df.columns:
+                if re.match("run_[0-9]+accession", col):
+                    temp_df = self.df[[col, "experiment_title"]].rename(
+                        columns={col: "run_accession"}
+                    )
+                    run_dataframe.append(temp_df, ignore_index=True)
+            self.df = run_dataframe.sort_values(by=["run_accession"])
         if self.verbosity == 0:
-            self.df = self.df[["run_1_accession"]]
+            self.df = self.df[["run_accession"]]
         elif self.verbosity == 1:
-            if "experiment_title" not in self.df.columns:
-                self.df = self.df[["run_1_accession"]]
-            else:
-                self.df = self.df[["run_1_accession", "experiment_title"]]
+            pass  # df has already been formatted above
         elif self.verbosity == 2:
             self.df = self.df[important_columns]
         elif self.verbosity == 3:
