@@ -1278,7 +1278,7 @@ class SRAdb(BASEdb):
             df["download_url"] = ""
         else:
             df.loc[:, "download_url"] = (
-                FTP_PREFIX[protocol]
+                FTP_PREFIX["ftp"]
                 + "/sra/sra-instant/reads/ByRun/sra/"
                 + df["run_accession"].str[:3]
                 + "/"

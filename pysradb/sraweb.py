@@ -140,6 +140,9 @@ class SRAweb(SRAdb):
             if "fastq_ftp" in line:
                 continue
             line = line.strip()
+            line_split = line.split("\t")
+            if len(line_split) != 2:
+                continue
             srr, url = line.split("\t")
             http_url = "http://{}".format(url)
             ftp_url = url.replace("ftp.sra.ebi.ac.uk/", "era-fasp@fasp.sra.ebi.ac.uk:")
