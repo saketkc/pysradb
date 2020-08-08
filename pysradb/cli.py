@@ -106,7 +106,9 @@ def metadata(srp_id, db, assay, desc, detailed, expand, saveto):
 
 
 ################# download ##########################
-def download(out_dir, db, srx, srp, skip_confirmation, col="sra_url", use_ascp=False):
+def download(
+    out_dir, db, srx, srp, skip_confirmation, col="sra_url", use_ascp=False, threads=1
+):
     db = _check_sradb_file(db)
     if out_dir is None:
         out_dir = os.path.join(os.getcwd(), "pysradb_downloads")
@@ -138,6 +140,7 @@ def download(out_dir, db, srx, srp, skip_confirmation, col="sra_url", use_ascp=F
             skip_confirmation=True,
             use_ascp=use_ascp,
             url_col=col,
+            threads=threads,
         )
     else:
         for srp_x in srp:
@@ -148,6 +151,7 @@ def download(out_dir, db, srx, srp, skip_confirmation, col="sra_url", use_ascp=F
                 filter_by_srx=srx,
                 skip_confirmation=skip_confirmation,
                 use_ascp=use_ascp,
+                threads=threads,
             )
     sradb.close()
 
@@ -602,6 +606,9 @@ def parse_args(args=None):
     )
     subparser.add_argument(
         "--col", help="Specify column to download", default="sra_url"
+    )
+    subparser.add_argument(
+        "--threads", "-t", help="Number of threads", default=1, type=int
     )
     subparser.set_defaults(func=download)
 
@@ -1059,6 +1066,7 @@ def parse_args(args=None):
             args.skip_confirmation,
             args.col,
             args.use_ascp,
+            args.threads,
         )
     elif args.command == "search":
         search(

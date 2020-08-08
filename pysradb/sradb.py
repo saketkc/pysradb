@@ -1,6 +1,8 @@
 """Methods to interact with SRA"""
 
+from functools import partial
 import gzip
+from multiprocessing import Pool
 import os
 import re
 import subprocess
@@ -46,6 +48,47 @@ SRADB_URL = [
 
 ASCP_CMD_PREFIX = "ascp -k1 -T -l 300m -P33001 -i"
 PY3_VERSION = sys.version_info.minor
+
+
+def _handle_download(record, use_ascp=False, pbar=None, ascp_bin=None, ascp_dir=None):
+    srp = record["study_accession"]
+    srx = record["experiment_accession"]
+    srr = record["run_accession"]
+    download_url = record["download_url"]
+    srapath_url = record["srapath_url"]
+    out_dir = record["out_dir"]
+    if pbar:
+        pbar.set_description("{}/{}/{}".format(srp, srx, srr))
+    srp_dir = os.path.join(out_dir, srp)
+    srx_dir = os.path.join(srp_dir, srx)
+    download_filename = path_leaf(download_url)
+    if ".fastq.gz" not in download_filename:
+        srr_location = os.path.join(srx_dir, srr + ".sra")
+    else:
+        srr_location = os.path.join(srx_dir, download_filename)
+    mkdir_p(srx_dir)
+    if use_ascp:
+
+        cmd = ASCP_CMD_PREFIX.replace("ascp", ascp_bin)
+        ena_cols = [x for x in list(record.keys()) if "ena_fastq_ftp" in x]
+        for col in ena_cols:
+            download_url = record[col]
+            cmd = "{} {} {} {}".format(
+                cmd, _find_aspera_keypath(ascp_dir), download_url, srx_dir
+            )
+            run_command(cmd, verbose=False)
+    else:
+        if srapath_url is not None:
+            download_filename = path_leaf(srapath_url)
+            if ".fastq.gz" not in download_filename:
+                srr_location = os.path.join(srx_dir, srr + ".sra")
+            else:
+                srr_location = os.path.join(srx_dir, download_filename)
+            download_file(srapath_url, srr_location)
+        else:
+            download_file(download_url, srr_location)
+    if pbar:
+        pbar.update()
 
 
 def _create_query(select_type_sql, gses):
@@ -1231,6 +1274,7 @@ class SRAdb(BASEdb):
         use_ascp=False,
         ascp_dir=None,
         skip_confirmation=False,
+        threads=1,
     ):
         """Download SRA files.
 
@@ -1310,8 +1354,6 @@ class SRAdb(BASEdb):
         if not len(df.index):
             print("Could not locate {} in db".format(srp))
             sys.exit(0)
-        print(df)
-        print(use_ascp)
         if not use_ascp:
             file_sizes = df.apply(get_file_size, axis=1)
             total_file_size = millify(np.sum(file_sizes))
@@ -1324,48 +1366,25 @@ class SRAdb(BASEdb):
             if not skip_confirmation:
                 if not confirm("Start download? "):
                     sys.exit(0)
+        pbar = tqdm(total=download_list.shape[0])
 
-        def _handle_download(record, use_ascp=False):
-            srp = record["study_accession"]
-            srx = record["experiment_accession"]
-            srr = record["run_accession"]
-            download_url = record["download_url"]
-            srapath_url = record["srapath_url"]
-            out_dir = record["out_dir"]
-
-            pbar.set_description("{}/{}/{}".format(srp, srx, srr))
-            srp_dir = os.path.join(out_dir, srp)
-            srx_dir = os.path.join(srp_dir, srx)
-            download_filename = path_leaf(download_url)
-            if ".fastq.gz" not in download_filename:
-                srr_location = os.path.join(srx_dir, srr + ".sra")
-            else:
-                srr_location = os.path.join(srx_dir, download_filename)
-            mkdir_p(srx_dir)
-            if use_ascp:
-
-                cmd = ASCP_CMD_PREFIX.replace("ascp", ascp_bin)
-                ena_cols = [x for x in list(row.keys()) if "ena_fastq_ftp" in x]
-                for col in ena_cols:
-                    download_url = row[col]
-                    cmd = "{} {} {} {}".format(
-                        cmd, _find_aspera_keypath(ascp_dir), download_url, srx_dir
-                    )
-                    run_command(cmd, verbose=False)
-            else:
-                if srapath_url is not None:
-                    download_filename = path_leaf(srapath_url)
-                    if ".fastq.gz" not in download_filename:
-                        srr_location = os.path.join(srx_dir, srr + ".sra")
-                    else:
-                        srr_location = os.path.join(srx_dir, download_filename)
-                    download_file(srapath_url, srr_location)
-                else:
-                    download_file(download_url, srr_location)
-
-        with tqdm(total=download_list.shape[0]) as pbar:
-            # df.apply(lambda row: _handle_download(row,use_ascp), axis=1)
+        if threads == 1:
             for idx, row in df.iterrows():
-                _handle_download(row, use_ascp)
-                pbar.update()
+                _handle_download(
+                    row, use_ascp, pbar, ascp_bin=ascp_bin, ascp_dir=ascp_dir
+                )
+        else:
+            pool = Pool(threads)
+            pool.map(
+                partial(
+                    _handle_download,
+                    use_ascp=use_ascp,
+                    ascp_bin=ascp_bin,
+                    ascp_dir=ascp_dir,
+                ),
+                df.to_dict("records"),
+            )
+            pool.close()
+            pool.join()
+        pbar.close()
         return df
