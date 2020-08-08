@@ -7,4 +7,5 @@
 5. [Downloading subsets of a project - Python API](https://colab.research.google.com/github/saketkc/pysradb/blob/master/notebooks/05.Downloading_subsets_of_a_project.ipynb)
 6. [Download BAMs](https://colab.research.google.com/github/saketkc/pysradb/blob/master/notebooks/06.Download_BAMs.ipynb)
 7. [Metadata for multiple SRPs](https://colab.research.google.com/github/saketkc/pysradb/blob/master/notebooks/07.Multiple_SRPs.ipynb)
+8. [Multithreaded fastq downloads using Aspera Client](https://colab.research.google.com/github/saketkc/pysradb/blob/master/notebooks/08.pysradb_ascp_multithreaded.ipynb)
 
