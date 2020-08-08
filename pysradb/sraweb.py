@@ -13,7 +13,6 @@ import requests
 import xmltodict
 
 from .sradb import SRAdb
-from .utils import path_leaf
 
 warnings.simplefilter(action="ignore", category=FutureWarning)
 
@@ -135,16 +134,17 @@ class SRAweb(SRAdb):
         payload += [("accession", srp)]
         request = requests.get(self.ena_fastq_search_url, params=OrderedDict(payload))
         request_text = request.text.strip()
-        # TODO: forcing this to be http protocol instead of ftp
-        urls = [
-            (
-                path_leaf(url).replace(".fastq.gz", ""),
-                "http://{}".format(url),
-                url.replace("ftp.sra.ebi.ac.uk/", "era-fasp@fasp.sra.ebi.ac.uk:"),
-            )
-            for url in request_text.split("\n")
-            if "fastq_ftp" not in url
-        ]
+
+        urls = []
+        for line in request_text.split("\n"):
+            if line.startswith("fastq_ftp"):
+                continue
+            line = line.strip()
+            srr, url = line.split("\t")
+            http_url = "http://{}".format(url)
+            ftp_url = url.replace("ftp.sra.ebi.ac.uk/", "era-fasp@fasp.sra.ebi.ac.uk:")
+            urls += [(srr, http_url, ftp_url)]
+
         # Paired end case
         def _handle_url_split(url_split):
             url1_1 = "N/A"
@@ -185,15 +185,15 @@ class SRAweb(SRAdb):
                 urls_expanded,
                 columns=[
                     "run_accession",
-                    "ena_fastq_url_1",
-                    "ena_fastq_url_2",
+                    "ena_fastq_http_1",
+                    "ena_fastq_http_2",
                     "ena_fastq_ftp_1",
                     "ena_fastq_ftp_2",
                 ],
             )
         else:
             return pd.DataFrame(
-                urls, columns=["run_accession", "ena_fastq_url", "ena_fastq_ftp"]
+                urls, columns=["run_accession", "ena_fastq_http", "ena_fastq_ftp"]
             )
 
     def create_esummary_params(self, esearchresult, db="sra"):

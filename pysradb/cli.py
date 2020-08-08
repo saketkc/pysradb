@@ -106,11 +106,7 @@ def metadata(srp_id, db, assay, desc, detailed, expand, saveto):
 
 
 ################# download ##########################
-def download(out_dir, db, srx, srp, skip_confirmation, col="sra_url", use_wget=True):
-    if use_wget:
-        protocol = "ftp"
-    else:
-        protocol = "fasp"
+def download(out_dir, db, srx, srp, skip_confirmation, col="sra_url", use_ascp=False):
     db = _check_sradb_file(db)
     if out_dir is None:
         out_dir = os.path.join(os.getcwd(), "pysradb_downloads")
@@ -140,7 +136,7 @@ def download(out_dir, db, srx, srp, skip_confirmation, col="sra_url", use_wget=T
             out_dir=out_dir,
             filter_by_srx=srx,
             skip_confirmation=True,
-            protocol=protocol,
+            use_ascp=use_ascp,
             url_col=col,
         )
     else:
@@ -151,6 +147,7 @@ def download(out_dir, db, srx, srp, skip_confirmation, col="sra_url", use_wget=T
                 out_dir=out_dir,
                 filter_by_srx=srx,
                 skip_confirmation=skip_confirmation,
+                use_ascp=use_ascp,
             )
     sradb.close()
 
@@ -601,7 +598,7 @@ def parse_args(args=None):
         "--skip-confirmation", "-y", action="store_true", help="Skip confirmation"
     )
     subparser.add_argument(
-        "--use-wget", "-w", action="store_true", help="Use wget instead of aspera"
+        "--use_ascp", "-a", action="store_true", help="Use aspera instead of wget"
     )
     subparser.add_argument(
         "--col", help="Specify column to download", default="sra_url"
@@ -1055,7 +1052,13 @@ def parse_args(args=None):
         )
     elif args.command == "download":
         download(
-            args.out_dir, args.db, args.srx, args.srp, args.skip_confirmation, args.col
+            args.out_dir,
+            args.db,
+            args.srx,
+            args.srp,
+            args.skip_confirmation,
+            args.col,
+            args.use_ascp,
         )
     elif args.command == "search":
         search(
