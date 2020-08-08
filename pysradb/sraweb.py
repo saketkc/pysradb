@@ -137,7 +137,7 @@ class SRAweb(SRAdb):
 
         urls = []
         for line in request_text.split("\n"):
-            if line.startswith("fastq_ftp"):
+            if "fastq_ftp" in line:
                 continue
             line = line.strip()
             srr, url = line.split("\t")
