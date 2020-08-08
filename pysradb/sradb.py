@@ -13,6 +13,7 @@ from subprocess import PIPE
 import numpy as np
 import pandas as pd
 from tqdm.autonotebook import tqdm
+from tqdm.contrib.concurrent import process_map
 
 from .basedb import BASEdb
 from .download import download_file
@@ -1273,6 +1274,7 @@ class SRAdb(BASEdb):
         filter_by_srx=[],
         use_ascp=False,
         ascp_dir=None,
+        ascp_bin=None,
         skip_confirmation=False,
         threads=1,
     ):
@@ -1366,25 +1368,16 @@ class SRAdb(BASEdb):
             if not skip_confirmation:
                 if not confirm("Start download? "):
                     sys.exit(0)
-        pbar = tqdm(total=download_list.shape[0])
 
-        if threads == 1:
-            for idx, row in df.iterrows():
-                _handle_download(
-                    row, use_ascp, pbar, ascp_bin=ascp_bin, ascp_dir=ascp_dir
-                )
-        else:
-            pool = Pool(threads)
-            pool.map(
-                partial(
-                    _handle_download,
-                    use_ascp=use_ascp,
-                    ascp_bin=ascp_bin,
-                    ascp_dir=ascp_dir,
-                ),
-                df.to_dict("records"),
-            )
-            pool.close()
-            pool.join()
-        pbar.close()
+        process_map(
+            partial(
+                _handle_download,
+                use_ascp=use_ascp,
+                ascp_bin=ascp_bin,
+                ascp_dir=ascp_dir,
+            ),
+            df.to_dict("records"),
+            max_workers=threads,
+        )
+
         return df

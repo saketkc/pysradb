@@ -92,7 +92,7 @@ def download_file(
     md5_hash=None,
     timeout=10,
     block_size=1024 * 1024,
-    show_progress=True,
+    show_progress=False,
 ):
     """Resumable download.
     Expect the server to support byte ranges.
