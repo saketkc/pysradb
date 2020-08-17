@@ -1,9 +1,9 @@
 .. image:: https://raw.githubusercontent.com/saketkc/pysradb/master/docs/_static/pysradb_v3.png
     :target: https://raw.githubusercontent.com/saketkc/pysradb/master/docs/_static/pysradb_v3.png
 
-########################################################################################
-pysradb: Python package for interacting with SRAdb and downloading datasets from SRA/ENA
-########################################################################################
+######################################################################################
+pysradb: Python package for retrieving metadata and downloading datasets from SRA/ENA
+######################################################################################
 
 
 
@@ -104,7 +104,7 @@ The following notebooks document all the possible features of `pysradb`:
 5. `Downloading subsets of a project - Python API <https://colab.research.google.com/github/saketkc/pysradb/blob/master/notebooks/05.Downloading_subsets_of_a_project.ipynb>`_
 6. `Download BAMs <https://colab.research.google.com/github/saketkc/pysradb/blob/master/notebooks/06.Download_BAMs.ipynb>`_
 7. `Metadata for multiple SRPs <https://colab.research.google.com/github/saketkc/pysradb/blob/master/notebooks/07.Multiple_SRPs.ipynb>`_
-
+8. `Multithreaded fastq downloads using Aspera Client <https://colab.research.google.com/github/saketkc/pysradb/blob/master/notebooks/08.pysradb_ascp_multithreaded.ipynb>`_
 
 
 
@@ -268,14 +268,15 @@ Converting GSM to SRR
 
 
 
-Downloading entire project
-==========================
+Downloading entire project (multithreaded)
+==========================================
 
-``pysradb`` makes it super easy to download datasets from SRA.
+``pysradb`` makes it super easy to download datasets from SRA parallely:
+Using 8 threads to download:
 
 ::
 
-    $ pysradb download --out-dir ./pysradb_downloads -p SRP063852
+    $ pysradb download -y -t 8 --out-dir ./pysradb_downloads -p SRP063852
 
 Downloads are organized by ``SRP/SRX/SRR`` mimicking the hiererachy of SRA projects.
 
@@ -290,51 +291,19 @@ Downloading only certain samples of interest
 This will download all ``RNA-seq`` samples coming from this project.
 
 
-Downloading SRAmetadb (optional)
-=================================
+Ultrafast fastq downloads
+=========================
 
-``pysradb`` can utilize a SQLite database file that has preprocessed metadata made available by the
-`SRAdb <https://bmcbioinformatics.biomedcentral.com/articles/10.1186/1471-2105-14-19>`_ project.
-Though, with the release ``0.9.5``, this database file is not a hard requirement for any of the operations.
+With `aspera-client <https://downloads.asperasoft.com/en/downloads/8?list>`_ installed, `pysradb` can perform ultra fast downloads:
 
-
-SRAmetadb can be downloaded using:
-
-.. code-block:: bash
-
-   wget -c https://starbuck1.s3.amazonaws.com/sradb/SRAmetadb.sqlite.gz && gunzip SRAmetadb.sqlite.gz
-
-Alternatively, you can also download it using ``pysradb``, which by default downloads it into your
-current working directory:
-
+To download all original fastqs with `aspera-client` installed utilizing 8 threads:
 
 ::
 
-    $ pysradb metadb
+    $ pysradb download -t 8 --use_ascp -p SRP002605
 
-You can also specify an alternate directory for download by supplying the ``--out-dir <OUT_DIR>`` argument.
-
-
-Search [Requires SRAmetadb]
-===========================
-
-Search for all projects containing "ribosome profiling":
-
-::
-
-   $  pysradb search "ribosome profiling" --db SRAmetadb.sqlite | head
-
-    study_accession experiment_accession sample_accession run_accession
-    DRP000927       DRX002899            DRS002983        DRR003575
-    DRP000927       DRX002900            DRS002992        DRR003576
-    DRP000927       DRX002901            DRS003001        DRR003577
-    DRP000927       DRX002902            DRS003010        DRR003578
-    DRP000927       DRX002903            DRS003019        DRR003579
-    DRP000927       DRX002904            DRS003028        DRR003580
-    DRP000927       DRX002905            DRS003037        DRR003581
-    DRP000927       DRX002906            DRS003038        DRR003582
-    DRP003075       DRX019536            DRS026974        DRR021383
-
+Refer to the notebook for `(shallow) time benchmarks <https://colab.research.google.com/github/saketkc/pysradb/blob/master/notebooks/08.pysradb_ascp_multithreaded.ipynb>`_.
+    
 
 
 

@@ -1,5 +1,4 @@
 pandas==1.0.1
 requests==2.23.0
-requests-ftp==0.3.1
-tqdm==4.43.0
+tqdm==4.48.2
 xmltodict==0.12.0

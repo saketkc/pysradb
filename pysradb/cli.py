@@ -46,19 +46,17 @@ def _print_save_df(df, saveto=None):
             df.to_csv(saveto, index=False, header=True, sep="\t")
     else:
         if len(df.index):
-            pd.set_option("display.max_colwidth", None)
-            # Bug in pandas 0.25.3: https://github.com/pandas-dev/pandas/issues/24980
-            # causes extra leading spaces
             to_print = df.to_string(
                 index=False, justify="left", header=False, col_space=0
             ).lstrip()
-            to_print_split = to_print.split(os.linesep)
+            to_print_split = to_print.split("\n")
             to_print_split = map(lambda x: re.sub(r"\s\s+", "\t", x), to_print_split)
             to_print = ["\t".join(df.columns)]
             for line in to_print_split:
                 to_print.append(line.lstrip())
-            to_print = ("{}".format(os.linesep)).join(to_print).encode("ascii", "backslashreplace")
-            sys.stdout.write(to_print.decode())
+            to_print = list(map(lambda line: line.encode("ascii", "replace").decode(), to_print))
+            for line in to_print:
+                sys.stdout.write(line + os.linesep)
             sys.stdout.flush()
 
 def _check_sradb_file(db):
@@ -119,11 +117,9 @@ def metadata(srp_id, db, assay, desc, detailed, expand, saveto):
 
 
 ################# download ##########################
-def download(out_dir, db, srx, srp, skip_confirmation, col=None, use_wget=True):
-    if use_wget:
-        protocol = "ftp"
-    else:
-        protocol = "fasp"
+def download(
+    out_dir, db, srx, srp, skip_confirmation, col="sra_url", use_ascp=False, threads=1
+):
     db = _check_sradb_file(db)
     if out_dir is None:
         out_dir = os.path.join(os.getcwd(), "pysradb_downloads")
@@ -133,8 +129,6 @@ def download(out_dir, db, srx, srp, skip_confirmation, col=None, use_wget=True):
         for index, line in enumerate(sys.stdin):
             line = line.strip()
             line = line.lstrip(" ")
-            # line = re.sub(r"\s*\t+\s*", "\t", line)
-            # line = re.sub(r"\s\s+", "\t", line)
             text += "{}\n".format(line)
         df = pd.read_csv(StringIO(text), sep="\t")
         sradb.download(
@@ -142,8 +136,9 @@ def download(out_dir, db, srx, srp, skip_confirmation, col=None, use_wget=True):
             out_dir=out_dir,
             filter_by_srx=srx,
             skip_confirmation=True,
-            protocol=protocol,
+            use_ascp=use_ascp,
             url_col=col,
+            threads=threads,
         )
     else:
         for srp_x in srp:
@@ -153,6 +148,8 @@ def download(out_dir, db, srx, srp, skip_confirmation, col=None, use_wget=True):
                 out_dir=out_dir,
                 filter_by_srx=srx,
                 skip_confirmation=skip_confirmation,
+                use_ascp=use_ascp,
+                threads=threads,
             )
     sradb.close()
 
@@ -660,10 +657,13 @@ def parse_args(args=None):
         "--skip-confirmation", "-y", action="store_true", help="Skip confirmation"
     )
     subparser.add_argument(
-        "--use-wget", "-w", action="store_true", help="Use wget instead of aspera"
+        "--use_ascp", "-a", action="store_true", help="Use aspera instead of wget"
     )
     subparser.add_argument(
         "--col", help="Specify column to download"
+    )
+    subparser.add_argument(
+        "--threads", "-t", help="Number of threads", default=1, type=int
     )
     subparser.set_defaults(func=download)
 
@@ -1188,7 +1188,14 @@ def parse_args(args=None):
         )
     elif args.command == "download":
         download(
-            args.out_dir, args.db, args.srx, args.srp, args.skip_confirmation, args.col
+            args.out_dir,
+            args.db,
+            args.srx,
+            args.srp,
+            args.skip_confirmation,
+            args.col,
+            args.use_ascp,
+            args.threads,
         )
     elif args.command == "search":
         flags = vars(args)
