@@ -1221,11 +1221,110 @@ class SRAdb(BASEdb):
             return None
         return str(urls[0])
 
+    def _select_best_url(self, url_list, row):
+        for url in url_list:
+            if str(row[url]).startswith("https"):
+                return row[url]
+        for url in url_list:
+            if str(row[url]).startswith("ftp"):
+                return row[url]
+        return "N/A"
+
+    def _format_dataframe_for_download(self, df, url_column=None):
+        """Format a dataframe as input for pysradb download.
+
+        This method formats the input dataframe into the sradb.download
+        method.
+        First, the columns "study_accession", "experiment_accession", and
+        "run_accession" will be identified.
+        Next, this method will attempt to find the download url
+        corresponding to each run_accession. If url_column is supplied, the
+        URL in the column will be registered. Otherwise, the method looks
+        for a column header in the dataframe that matches the regex
+        string ".*sra.*(url|ftp|galaxy).*", which looks for a column header
+        that contains "sra", as well as either "url", "ftp" or "galaxy"
+        after "sra". (case insensitive). The url column will then be
+        renamed as "srapath_url".
+        If any of "study_accession", "experiment_accession",
+        "run_accession" or "srapath_url" is missing, a
+        MissingDataFrameColumnsException will be raised.
+
+        Parameters
+        ----------
+        df: Pandas.DataFrame
+            dataframe containing accession numbers of interest as well as
+            potentially other metadata pertaining to the accession numbers.
+        url_column: str
+            name of the dataframe column header that contains download
+            urls, or a regex matching the expected column header.
+            Defaults to None, in which case the regex
+            ".*sra.*(url|ftp|galaxy).*" will be used.
+
+        Returns
+        -------
+        df_for_download: Pandas.DataFrame
+            dataframe containing accession numbers and (preferably) URL links
+            that can be used for download.
+        """
+        formatted_df = []
+        missing_columns = []
+        df_columns = df.columns.tolist()
+        accession_columns = ["study_accession", "experiment_accession", "run_accession"]
+        for accession_column in accession_columns:
+            if accession_column not in df_columns:
+                missing_columns.append(accession_column)
+
+        # Special case for SraSearch
+        run_count = 1  # each row in the df contains at most 1 run_accession
+        while f"run_{run_count}_accession" in df_columns:
+            run_count += 1
+
+        if missing_columns == ["run_accession"] and run_count > 1:
+            missing_columns.clear()
+            accession_columns[-1] = "run_1_accession"
+
+        if url_column:
+            if url_column in df_columns:
+                formatted_df = df[accession_columns + [url_column]]
+                formatted_df.rename({"run_1_accession": "run_accession", url_column: "srapath_url"}, inplace=True)
+            else:
+                missing_columns.append(url_column)
+        else:
+            run_dfs = []
+            url_regex = re.compile(".*sra.*(url|ftp|galaxy).*", re.IGNORECASE)
+            matched_cols = list(filter(url_regex.match, df_columns))
+            if matched_cols:
+                for i in range(1, run_count):
+                    url_list = list(filter(lambda x: x.startswith(f"run_{i}"), matched_cols))
+                    df["srapath_url"] = df.apply(lambda row: self._select_best_url(url_list, row), axis=1)
+                    run_df = df[["study_accession", "experiment_accession", f"run_{i}_accession", "srapath_url"]]
+                    run_df = run_df.rename(columns={f"run_{i}_accession": "run_accession"})
+                    run_dfs.append(run_df)
+                if run_count == 1:
+                    df["srapath_url"] = df.apply(lambda row: self._select_best_url(url_list, row), axis=1)
+                    run_dfs = [df[["study_accession", "experiment_accession", "run_accession", "srapath_url"]]]
+                formatted_df = pd.concat(run_dfs)
+            else:
+                missing_columns.append(".*sra.*(url|ftp|galaxy).*")
+
+        if missing_columns:
+            sys.stderr.write(
+                "pysradb download is unable to run:"
+                "The following required columns are missing from the input DataFrame:\n"
+                f"{missing_columns}\n"
+                "Please run your query with \n"
+                "pysradb metadata --detailed \n"
+                "or \n"
+                "pysradb search -v 3"
+            )
+            sys.exit(1)
+        return formatted_df.dropna()
+
     def download(
         self,
         srp=None,
         df=None,
-        url_col="sra_url",
+        url_col=None,
         out_dir=None,
         filter_by_srx=[],
         protocol="ftp",
@@ -1275,42 +1374,28 @@ class SRAdb(BASEdb):
                 protocol = "ftp"
             else:
                 ascp_bin = os.path.join(ascp_dir, "connect", "bin", "ascp")
-        df = df.copy()
+
+        # Does the necessary column formatting for the dataframe
+        df = self._format_dataframe_for_download(df.copy(), url_col)
         if filter_by_srx:
             if isinstance(filter_by_srx, str):
                 filter_by_srx = [filter_by_srx]
         if filter_by_srx:
             df = df[df.experiment_accession.isin(filter_by_srx)]
-        df_cols = df.columns.tolist()
-        if url_col and url_col not in df_cols:
-            sys.stderr.write(
-                "Requested column '{}' not found in metadata.{}".format(
-                    url_col, os.linsep
-                )
-            )
-            sys.exit(1)
-        if "sra_url" in df_cols or "srapath_url" in df_cols or url_col in df_cols:
-            df["download_url"] = ""
-        else:
-            df.loc[:, "download_url"] = (
-                FTP_PREFIX[protocol]
-                + "/sra/sra-instant/reads/ByRun/sra/"
-                + df["run_accession"].str[:3]
-                + "/"
-                + df["run_accession"].str[:6]
-                + "/"
-                + df["run_accession"]
-                + "/"
-                + df["run_accession"]
-                + ".sra"
-            )
+        # seems like df["download_url"] is needed for aspera
+        df.loc[:, "download_url"] = (
+            FTP_PREFIX[protocol]
+            + "/sra/sra-instant/reads/ByRun/sra/"
+            + df["run_accession"].str[:3]
+            + "/"
+            + df["run_accession"].str[:6]
+            + "/"
+            + df["run_accession"]
+            + "/"
+            + df["run_accession"]
+            + ".sra"
+        )
 
-        if url_col in df.columns.tolist():
-            df = df.rename(columns={url_col: "srapath_url"})
-        else:
-            df["srapath_url"] = [
-                self._srapath_url_srr(srr) for srr in df["run_accession"]
-            ]
         download_list = df[
             [
                 "study_accession",
