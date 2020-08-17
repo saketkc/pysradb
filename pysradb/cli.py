@@ -53,13 +53,13 @@ def _print_save_df(df, saveto=None):
                 index=False, justify="left", header=False, col_space=0
             ).lstrip()
             to_print_split = to_print.split(os.linesep)
-            # Header formatting seems off when it is added via to_string()
-            # method. Hence it is added to to_print separately
+            to_print_split = map(lambda x: re.sub(r"\s\s+", "\t", x), to_print_split)
             to_print = ["\t".join(df.columns)]
             for line in to_print_split:
                 to_print.append(line.lstrip())
-            print(("{}".format(os.linesep)).join(to_print))
-
+            to_print = ("{}".format(os.linesep)).join(to_print).encode("ascii", "backslashreplace")
+            sys.stdout.write(to_print.decode())
+            sys.stdout.flush()
 
 def _check_sradb_file(db):
     if db is None:
@@ -119,7 +119,7 @@ def metadata(srp_id, db, assay, desc, detailed, expand, saveto):
 
 
 ################# download ##########################
-def download(out_dir, db, srx, srp, skip_confirmation, col="sra_url", use_wget=True):
+def download(out_dir, db, srx, srp, skip_confirmation, col=None, use_wget=True):
     if use_wget:
         protocol = "ftp"
     else:
@@ -133,8 +133,8 @@ def download(out_dir, db, srx, srp, skip_confirmation, col="sra_url", use_wget=T
         for index, line in enumerate(sys.stdin):
             line = line.strip()
             line = line.lstrip(" ")
-            line = re.sub(r"\s*\t+\s*", "\t", line)
-
+            # line = re.sub(r"\s*\t+\s*", "\t", line)
+            # line = re.sub(r"\s\s+", "\t", line)
             text += "{}\n".format(line)
         df = pd.read_csv(StringIO(text), sep="\t")
         sradb.download(
@@ -663,7 +663,7 @@ def parse_args(args=None):
         "--use-wget", "-w", action="store_true", help="Use wget instead of aspera"
     )
     subparser.add_argument(
-        "--col", help="Specify column to download", default="sra_url"
+        "--col", help="Specify column to download"
     )
     subparser.set_defaults(func=download)
 

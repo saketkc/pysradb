@@ -21,6 +21,48 @@ warnings.simplefilter(action="ignore", category=FutureWarning)
 tqdm.pandas()
 
 
+
+
+
+def path_leaf(path):
+    """Get path's tail from a filepath.
+
+    Parameters
+    ----------
+    path: string
+          Filepath
+
+    Returns
+    -------
+    tail: string
+          Filename
+    """
+    head, tail = ntpath.split(path)
+    return tail or ntpath.basename(head)
+
+
+def requests_3_retries():
+    """Generates a requests session object that allows 3 retries.
+
+    Returns
+    -------
+    session: requests.Session
+        requests session object that allows 3 retries for server-side
+        errors, for GET and POST requests.
+    """
+    session = requests.Session()
+    retry = Retry(
+        total=3,
+        backoff_factor=0.5,
+        status_forcelist=[500, 502, 503, 504],
+        method_whitelist=["POST", "GET"],
+    )
+    adapter = HTTPAdapter(max_retries=retry)
+    session.mount("http://", adapter)
+    session.mount("https://", adapter)
+    return session
+
+
 def scientific_name_to_taxid(name):
     """Converts a scientific name to its corresponding taxonomy ID.
 
@@ -49,45 +91,6 @@ def scientific_name_to_taxid(name):
         raise IncorrectFieldException(f"Unknown scientific name: {name}")
     r.raise_for_status()
     return r.json()[0]["taxId"]
-
-
-def requests_3_retries():
-    """Generates a requests session object that allows 3 retries.
-
-    Returns
-    -------
-    session: requests.Session
-        requests session object that allows 3 retries for server-side
-        errors, for GET and POST requests.
-    """
-    session = requests.Session()
-    retry = Retry(
-        total=3,
-        backoff_factor=0.5,
-        status_forcelist=[500, 502, 503, 504],
-        method_whitelist=["POST", "GET"],
-    )
-    adapter = HTTPAdapter(max_retries=retry)
-    session.mount("http://", adapter)
-    session.mount("https://", adapter)
-    return session
-
-
-def path_leaf(path):
-    """Get path's tail from a filepath.
-
-    Parameters
-    ----------
-    path: string
-          Filepath
-
-    Returns
-    -------
-    tail: string
-          Filename
-    """
-    head, tail = ntpath.split(path)
-    return tail or ntpath.basename(head)
 
 
 def unique(sequence):
