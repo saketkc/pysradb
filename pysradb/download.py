@@ -4,17 +4,17 @@ import hashlib
 import math
 import os
 import shutil
+import requests
+import requests_ftp
 import sys
 import warnings
 
-warnings.simplefilter(action="ignore", category=FutureWarning)
-
-import numpy as np
-import requests
-import requests_ftp
-
-requests_ftp.monkeypatch_session()
 from tqdm.autonotebook import tqdm
+
+from .utils import requests_3_retries
+
+warnings.simplefilter(action="ignore", category=FutureWarning)
+requests_ftp.monkeypatch_session()
 
 
 tqdm.pandas()
@@ -62,10 +62,7 @@ def get_file_size(row):
         url = row.download_url
     if url.startswith("ftp."):
         url = "ftp://" + url
-        r = requests.Session()
-    else:
-        r = requests
-    return float(r.head(url).headers["content-length"])
+    return float(requests_3_retries().head(url).headers["content-length"])
 
 
 def md5_validate_file(file_path, md5_hash):

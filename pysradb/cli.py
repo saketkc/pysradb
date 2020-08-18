@@ -137,9 +137,6 @@ def download(
             if not line:
                 continue
             text += "{}\n".format(line)
-            # with open(f"t{i}.txt", "w") as f:
-            #     f.write(line)
-            # i += 1
         df = pd.read_csv(StringIO(text), sep="\t")
         sradb.download(
             df=df,

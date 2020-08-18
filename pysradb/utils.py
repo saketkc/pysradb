@@ -55,7 +55,7 @@ def requests_3_retries():
         total=3,
         backoff_factor=0.5,
         status_forcelist=[500, 502, 503, 504],
-        method_whitelist=["POST", "GET"],
+        method_whitelist=["POST", "GET", "HEAD"],
     )
     adapter = HTTPAdapter(max_retries=retry)
     session.mount("http://", adapter)
