@@ -46,8 +46,12 @@ def _print_save_df(df, saveto=None):
             df.to_csv(saveto, index=False, header=True, sep="\t")
     else:
         if len(df.index):
-            to_print = df.to_string(
-                index=False, justify="left", header=False, col_space=0
+            to_print = df.replace(
+                r"[\s]{2,}|\t",
+                " ",
+                regex=True
+            ).to_string(
+                index=False, justify="left", header=False, col_space=0,
             ).lstrip()
             to_print_split = to_print.split("\n")
             to_print_split = map(lambda x: re.sub(r"\s\s+", "\t", x), to_print_split)
@@ -126,10 +130,16 @@ def download(
     sradb = get_sra_object(db)
     if not srp:
         text = ""
+        # i = 1
         for index, line in enumerate(sys.stdin):
-            line = line.strip()
-            line = line.lstrip(" ")
+            line = line.strip(" \t\n\r")
+            line = re.sub(r"\s*\t+\s*", "\t", line)
+            if not line:
+                continue
             text += "{}\n".format(line)
+            # with open(f"t{i}.txt", "w") as f:
+            #     f.write(line)
+            # i += 1
         df = pd.read_csv(StringIO(text), sep="\t")
         sradb.download(
             df=df,
