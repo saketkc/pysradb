@@ -1272,7 +1272,7 @@ class SRAdb(BASEdb):
         for url in url_list:
             if str(row[url]).startswith("ftp"):
                 return row[url]
-        return "N/A"
+        return None
 
     def _format_dataframe_for_download(self, df, url_column=None):
         """Format a dataframe as input for pysradb download.
@@ -1336,7 +1336,8 @@ class SRAdb(BASEdb):
                 formatted_df = df.loc[:, df.columns.isin(accession_columns)]
                 print(
                     f"The URL column: {url_column} is not found.\n"
-                    "Generating default download URL for each run accession...\n"
+                    "Generating default download URL for each run accession...\n",
+                    flush=True
                 )
         else:
             run_dfs = []
@@ -1357,7 +1358,12 @@ class SRAdb(BASEdb):
             if not matched_cols:
                 print(
                     f"No URL column matching the URL regex .*sra.*(url|ftp|galaxy).* is found.\n"
-                    "Generating default download URL for each run accession...\n"
+                    "You may wish to re-run your query with either\n"
+                    "pysradb metadata --detailed \n"
+                    "or \n"
+                    "pysradb search -v 3\n"
+                    "Generating default download URL for each run accession...\n",
+                    flush=True
                 )
 
         if missing_columns:
@@ -1460,14 +1466,16 @@ class SRAdb(BASEdb):
             print("Could not locate {} in db".format(srp))
             sys.exit(0)
         if not use_ascp:
-            file_sizes = df.apply(get_file_size, axis=1)
-            total_file_size = millify(np.sum(file_sizes))
+            print("Checking download URLs")
+            df["filesize"] = df.apply(get_file_size, axis=1)
+            df.dropna(subset=["filesize"])
+            total_file_size = millify(np.sum(df["filesize"]))
             print("The following files will be downloaded: \n")
             pd.set_option("display.max_colwidth", -1)
             print(df.to_string(index=False, justify="left", col_space=0))
             print(os.linesep)
             print("Total size: {}".format(total_file_size))
-            print(os.linesep)
+            print(os.linesep, flush=True)
             if not skip_confirmation:
                 if not confirm("Start download? "):
                     sys.exit(0)

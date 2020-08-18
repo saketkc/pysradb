@@ -3,6 +3,7 @@
 import hashlib
 import math
 import os
+import numpy as np
 import shutil
 import requests
 import requests_ftp
@@ -62,7 +63,23 @@ def get_file_size(row):
         url = row.download_url
     if url.startswith("ftp."):
         url = "ftp://" + url
-    return float(requests_3_retries().head(url).headers["content-length"])
+    try:
+        r = requests_3_retries().head(url)
+        size = float(r.headers["content-length"])
+        r.raise_for_status()
+    except requests.exceptions.Timeout:
+        sys.exit(f"Connection to {url} has timed out. Please retry.")
+    except requests.exceptions.HTTPError:
+        print(
+            f"The download URL:  {url}  is likely invalid.\n"
+            f"Removing {row.run_accession} from the download list\n",
+            flush=True
+        )
+        return np.NaN
+    except KeyError:
+        print("Key error for: " + url, flush=True)
+        return 0
+    return size
 
 
 def md5_validate_file(file_path, md5_hash):
