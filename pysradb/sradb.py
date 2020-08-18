@@ -1274,6 +1274,12 @@ class SRAdb(BASEdb):
                 return row[url]
         return None
 
+    def _select_valid_aspera_url(self, aspera_cols, row):
+        for col in aspera_cols:
+            if row[col] and "fasp" in row[col]:
+                return row[col]
+        return ""
+
     def _format_dataframe_for_download(self, df, url_column=None):
         """Format a dataframe as input for pysradb download.
 
@@ -1310,7 +1316,6 @@ class SRAdb(BASEdb):
             dataframe containing accession numbers and (preferably) URL links
             that can be used for download.
         """
-        formatted_df = []
         missing_columns = []
         df_columns = df.columns.tolist()
         accession_columns = ["study_accession", "experiment_accession", "run_accession"]
@@ -1377,6 +1382,16 @@ class SRAdb(BASEdb):
                 "pysradb search -v 3\n"
             )
             sys.exit(1)
+
+        # Add aspera columns, if they exist(for EnaSearch/metadata)
+        possible_aspera_cols = ["fastq_aspera", "sra_aspera", "submitted_aspera", "ena_fastq_ftp"]
+        aspera_cols = []
+        for col in possible_aspera_cols:
+            if col not in df_columns:
+                aspera_cols.append(col)
+        if aspera_cols:
+            formatted_df["ena_fastq_ftp"] = df.apply(lambda r: self._select_valid_aspera_url(aspera_cols, r), axis=1)
+
         return formatted_df.dropna(subset=["study_accession", "experiment_accession", "run_accession"])
 
     def download(
