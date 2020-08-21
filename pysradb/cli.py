@@ -169,7 +169,7 @@ def search(saveto, db, verbosity, return_max, fields):
     if fields["run_description"]:
         verbosity = 1
     if fields["detailed"]:
-        verbosity = 1
+        verbosity = 3
     try:
         if db == "ena":
             instance = EnaSearch(

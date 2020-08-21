@@ -1051,7 +1051,7 @@ class SraSearch(QuerySearch):
         if not samples.empty:
             self.stats["sample"] = samples.nunique()
         # date range
-        daterange = self.df["run_1_published"]
+        daterange = self._merge_selected_columns(r"^run_1_published$")
         if not daterange.empty:
             dates = pd.to_datetime(daterange).dt.to_period("M").astype(str)
             self.stats["Date range"] = dates.value_counts().to_dict()
@@ -1114,7 +1114,9 @@ class SraSearch(QuerySearch):
             }
         )
         self.stats["graph_raw"]["Publication Date"] = (
-            pd.to_datetime(self.stats["graph_raw"]["Publication Date"])
+            pd.to_datetime(
+                self.stats["graph_raw"]["Publication Date"].replace("N/A", None)
+            )
             .dt.to_period("M")
             .astype(str)
         )
