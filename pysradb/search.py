@@ -427,15 +427,15 @@ class QuerySearch:
         """Shows search result statistics.
         """
         stats = (
-            "\n  Statistics for the search query:\n" +
-            "  =================================\n" +
-            f"  Number of unique studies: {self.stats['study']}\n" +
-            f"  Number of unique experiments: {self.stats['experiment']}\n" +
-            f"  Number of unique runs: {self.stats['run']}\n" +
-            f"  Number of unique samples: {self.stats['sample']}\n" +
-            f"  Mean base count of samples: {self.stats['count_mean']:.3f}\n" +
-            f"  Median base count of samples: {self.stats['count_median']:.3f}\n" +
-            f"  Sample base count standard deviation: {self.stats['count_stdev']:.3f}\n"
+            "\n  Statistics for the search query:\n"
+            + "  =================================\n"
+            + f"  Number of unique studies: {self.stats['study']}\n"
+            + f"  Number of unique experiments: {self.stats['experiment']}\n"
+            + f"  Number of unique runs: {self.stats['run']}\n"
+            + f"  Number of unique samples: {self.stats['sample']}\n"
+            + f"  Mean base count of samples: {self.stats['count_mean']:.3f}\n"
+            + f"  Median base count of samples: {self.stats['count_median']:.3f}\n"
+            + f"  Sample base count standard deviation: {self.stats['count_stdev']:.3f}\n"
         )
 
         # Statistics with categorical breakdowns:
@@ -452,7 +452,9 @@ class QuerySearch:
             stats += self._list_stat(categorical_stat)
         print(stats)
 
-    def visualise_results(self, graph_types=("all",), show=False, saveto="./search_plots/"):
+    def visualise_results(
+        self, graph_types=("all",), show=False, saveto="./search_plots/"
+    ):
         """Generate graphs that visualise the search results.
 
         This method will only work if the optional dependency, matplotlib,
@@ -479,7 +481,7 @@ class QuerySearch:
             print(
                 "The optional dependency, matplotlib, is not available on the system.\n"
                 "matplotlib is required to generate graphs to visualise search results.\n"
-                "You can install matplotlib by typing \"pip install matplotlib\" on the command line.\n"
+                'You can install matplotlib by typing "pip install matplotlib" on the command line.\n'
             )
             return
         plt.rcParams["figure.autolayout"] = True
@@ -546,10 +548,17 @@ class QuerySearch:
         """
         too_many_organisms = False
         if "Organism" in axes and self.stats["graph_raw"]["Organism"].nunique() > 30:
-            print("Too many types of organisms to plot (>30). Showing only top 30 organisms.")
+            print(
+                "Too many types of organisms to plot (>30). Showing only top 30 organisms."
+            )
             too_many_organisms = True
-        if "Publication Date" in axes and self.stats["graph_raw"]["Publication Date"].nunique() > 30:
-            self.stats["graph_raw"]["Publication Date"] = self.stats["graph_raw"]["Publication Date"].str[:-3]
+        if (
+            "Publication Date" in axes
+            and self.stats["graph_raw"]["Publication Date"].nunique() > 30
+        ):
+            self.stats["graph_raw"]["Publication Date"] = self.stats["graph_raw"][
+                "Publication Date"
+            ].str[:-3]
         if axes == ("Base Count",):
             count = list(self.stats["count_data"])
             title = "Histogram of Base Count"
@@ -566,7 +575,12 @@ class QuerySearch:
             if too_many_organisms:
                 data = data[:30]
             plt.figure(figsize=(15, 10))
-            plt.bar(range(len(data.values)), data.values, tick_label=list(data.index), color="#135c1c")
+            plt.bar(
+                range(len(data.values)),
+                data.values,
+                tick_label=list(data.index),
+                color="#135c1c",
+            )
             plt.xticks(rotation=90)
             plt.title(title, fontsize=18)
             plt.xlabel(axes[0], fontsize=14)
@@ -575,21 +589,24 @@ class QuerySearch:
         elif len(axes) == 2:
             title = f"Heatmap of {axes[0]} against {axes[1]}"
             df = self.stats["graph_raw"][list(axes)]
-            a = df.groupby([axes[0]]).agg({i: 'value_counts' for i in df.columns[1:]})
+            a = df.groupby([axes[0]]).agg({i: "value_counts" for i in df.columns[1:]})
             a = a.rename(columns={axes[1]: f"{axes[1]}_count"})
             b = a.reset_index(level=list(axes))
-            piv = pd.pivot_table(
-                b,
-                values=f"{axes[1]}_count",
-                index=[axes[0]],
-                columns=[axes[1]],
-                fill_value=0,
-                aggfunc="sum",
-                margins=True
-            ).sort_values('All', ascending=False)\
-                .drop('All', axis=1)\
-                .sort_values('All', ascending=False, axis=1)\
-                .drop('All')
+            piv = (
+                pd.pivot_table(
+                    b,
+                    values=f"{axes[1]}_count",
+                    index=[axes[0]],
+                    columns=[axes[1]],
+                    fill_value=0,
+                    aggfunc="sum",
+                    margins=True,
+                )
+                .sort_values("All", ascending=False)
+                .drop("All", axis=1)
+                .sort_values("All", ascending=False, axis=1)
+                .drop("All")
+            )
             if too_many_organisms:
                 if axes[0] == "Organism":
                     piv = piv[:30]
@@ -652,9 +669,22 @@ class SraSearch(QuerySearch):
         title=None,
         suppress_validation=False,
     ):
-        super().__init__(verbosity, return_max, query, accession, organism, layout,
-                         mbases, publication_date, platform, selection, source, strategy,
-                         title, suppress_validation)
+        super().__init__(
+            verbosity,
+            return_max,
+            query,
+            accession,
+            organism,
+            layout,
+            mbases,
+            publication_date,
+            platform,
+            selection,
+            source,
+            strategy,
+            title,
+            suppress_validation,
+        )
         self.entries = {}
         self.number_entries = 0
 
@@ -757,14 +787,17 @@ class SraSearch(QuerySearch):
                 self._parse_entry(elem)
         for field in self.entries:
             if len(self.entries[field]) < self.number_entries:
-                self.entries[field] += [""] * (self.number_entries - len(self.entries[field]))
+                self.entries[field] += [""] * (
+                    self.number_entries - len(self.entries[field])
+                )
 
     def _format_result(self):
-        self.df = pd.DataFrame.from_dict(self.entries).replace(r"^\s*$", "N/A", regex=True)
+        self.df = pd.DataFrame.from_dict(self.entries).replace(
+            r"^\s*$", "N/A", regex=True
+        )
         self.entries.clear()
         if self.df.empty:
             return
-
         # Tabulate statistics
         self._update_stats()
 
@@ -801,7 +834,7 @@ class SraSearch(QuerySearch):
                     temp_df = temp_df[temp_df[col] != "N/A"].rename(
                         columns={
                             col: "run_accession",
-                            "experiment_title": "experiment_title"
+                            "experiment_title": "experiment_title",
                         }
                     )
                     temp_dfs.append(temp_df)
@@ -831,9 +864,7 @@ class SraSearch(QuerySearch):
 
         # root element attributes
         for k, v in entry_root.attrib.items():
-            self._update_entry(
-                f"{field_header}_{k}".lower(), v
-            )
+            self._update_entry(f"{field_header}_{k}".lower(), v)
         for child in entry_root:
             # "*_REF" tags contain duplicate information that can be found
             # somewhere in the xml entry and are skipped
@@ -849,8 +880,7 @@ class SraSearch(QuerySearch):
                 for identifier in child:
                     if identifier.tag == "EXTERNAL_ID":
                         self._update_entry(
-                            f"{field_header}_external_id_{id_index}",
-                            identifier.text,
+                            f"{field_header}_external_id_{id_index}", identifier.text,
                         )
                         self._update_entry(
                             f"{field_header}_external_id_{id_index}_namespace",
@@ -865,8 +895,7 @@ class SraSearch(QuerySearch):
                 for link in child:
                     # Link type. Eg: URL_link, Xref_link
                     self._update_entry(
-                        f"{link.tag}_{link_index}_type".lower(),
-                        link[0].tag,
+                        f"{link.tag}_{link_index}_type".lower(), link[0].tag,
                     )
                     # Link values in the form of tag: value.
                     # Eg: label: GEO sample
@@ -893,27 +922,20 @@ class SraSearch(QuerySearch):
                     attribute_index += 1
             # Differentiating between sample title and experiment title.
             elif child.tag == "TITLE":
-                self._update_entry(
-                    f"{field_header}_title", child.text
-                )
+                self._update_entry(f"{field_header}_title", child.text)
             # Parsing platfrom information
             elif child.tag == "PLATFORM":
                 platform = child[0]
+                self._update_entry("experiment_platform", platform.tag)
                 self._update_entry(
-                    "experiment_platform", platform.tag
-                )
-                self._update_entry(
-                    "experiment_instrument_model",
-                    platform[0].text,
+                    "experiment_instrument_model", platform[0].text,
                 )
             # Parsing individual run information
             elif child.tag == "RUN":
                 run_count += 1
                 # run attributes
                 for k, v in child.attrib.items():
-                    self._update_entry(
-                        f"run_{run_count}_{k}".lower(), v
-                    )
+                    self._update_entry(f"run_{run_count}_{k}".lower(), v)
                 for elem in child:
                     if elem.tag == "SRAFiles":
                         srafile_index = 1
@@ -944,8 +966,7 @@ class SraSearch(QuerySearch):
                     elif elem.tag == "Bases":
                         for k, v in elem.attrib.items():
                             self._update_entry(
-                                f"run_{run_count}_total_base_{k}".lower(),
-                                v,
+                                f"run_{run_count}_total_base_{k}".lower(), v,
                             )
                         for base in elem:
                             self._update_entry(
@@ -967,14 +988,12 @@ class SraSearch(QuerySearch):
                         continue
                     elif elem.text:
                         self._update_entry(
-                            f"{field_header}_{elem.tag.lower()}",
-                            elem.text,
+                            f"{field_header}_{elem.tag.lower()}", elem.text,
                         )
                     elif elem.attrib:
                         for k, v in elem.attrib.items():
                             self._update_entry(
-                                f"{field_header}_{elem.tag}_{k}".lower(),
-                                v,
+                                f"{field_header}_{elem.tag}_{k}".lower(), v,
                             )
             # Parsing library layout (single, paired)
             if field_header == "experiment":
@@ -983,16 +1002,13 @@ class SraSearch(QuerySearch):
                 )
                 if library_layout:
                     library_layout = library_layout[0]
-                    self._update_entry(
-                        f"library_layout", library_layout.tag
-                    )
+                    self._update_entry(f"library_layout", library_layout.tag)
                     # If library layout is paired, information such as nominal
                     # standard deviation and length, etc are provided as well.
                     if library_layout.tag == "PAIRED":
                         for k, v in library_layout.attrib.items():
                             self._update_entry(
-                                f"library_layout_{k}".lower(),
-                                v,
+                                f"library_layout_{k}".lower(), v,
                             )
 
     def _update_entry(self, field_name, field_content):
@@ -1017,9 +1033,9 @@ class SraSearch(QuerySearch):
             self.entries[field_name] = []
         if len(self.entries[field_name]) > self.number_entries:
             return
-        self.entries[field_name] += [""] * (self.number_entries - len(self.entries[field_name])) + [
-            field_content
-        ]
+        self.entries[field_name] += [""] * (
+            self.number_entries - len(self.entries[field_name])
+        ) + [field_content]
 
     def _update_stats(self):
         # study
@@ -1037,7 +1053,7 @@ class SraSearch(QuerySearch):
         # date range
         daterange = self.df["run_1_published"]
         if not daterange.empty:
-            dates = pd.to_datetime(daterange).dt.to_period('M').astype(str)
+            dates = pd.to_datetime(daterange).dt.to_period("M").astype(str)
             self.stats["Date range"] = dates.value_counts().to_dict()
         # organisms
         organisms = self._merge_selected_columns(r"^sample.*scientific_name.*")
@@ -1045,44 +1061,63 @@ class SraSearch(QuerySearch):
             self.stats["Organisms"] = organisms.value_counts().to_dict()
         # strategy
         if "experiment_library_strategy" in self.df.columns:
-            self.stats["Library strategy"] = self.df["experiment_library_strategy"].value_counts().to_dict()
+            self.stats["Library strategy"] = (
+                self.df["experiment_library_strategy"].value_counts().to_dict()
+            )
         # source
         if "experiment_library_source" in self.df.columns:
-            self.stats["Library source"] = self.df["experiment_library_source"].value_counts().to_dict()
+            self.stats["Library source"] = (
+                self.df["experiment_library_source"].value_counts().to_dict()
+            )
         # selection
         if "experiment_library_selection" in self.df.columns:
-            self.stats["Library selection"] = self.df["experiment_library_selection"].value_counts().to_dict()
+            self.stats["Library selection"] = (
+                self.df["experiment_library_selection"].value_counts().to_dict()
+            )
         # layout
         if "experiment_library_layout" in self.df.columns:
-            self.stats["Library layout"] = self.df["experiment_library_layout"].value_counts().to_dict()
+            self.stats["Library layout"] = (
+                self.df["experiment_library_layout"].value_counts().to_dict()
+            )
         # platform
         if "experiment_platform" in self.df.columns:
-            self.stats["Platform"] = self.df["experiment_platform"].value_counts().to_dict()
+            self.stats["Platform"] = (
+                self.df["experiment_platform"].value_counts().to_dict()
+            )
         # count
-        count = self._merge_selected_columns(r"^run_.*_total_base_count$").astype("int64")
+        count = self._merge_selected_columns(r"^run_.*_total_base_count$").astype(
+            "int64"
+        )
         self.stats["count_data"] = count
         self.stats["count_mean"] = count.mean()
         self.stats["count_median"] = count.median()
         self.stats["count_stdev"] = count.std()
 
         # for graphing
-        self.stats["graph_raw"] = self.df[[
-            "sample_scientific_name",
-            "experiment_library_strategy",
-            "experiment_library_source",
-            "experiment_library_selection",
-            "run_1_published",
-            "experiment_platform"
-        ]].rename(columns={
-            "sample_scientific_name": "Organism",
-            "experiment_library_strategy": "Library Strategy",
-            "experiment_library_source": "Library Source",
-            "experiment_library_selection": "Library Selection",
-            "run_1_published": "Publication Date",
-            "experiment_platform": "Platform"
-        })
-        self.stats["graph_raw"]["Publication Date"] = pd.to_datetime(self.stats["graph_raw"]["Publication Date"]).dt.to_period('M').astype(str)
-
+        self.stats["graph_raw"] = self.df[
+            [
+                "sample_scientific_name",
+                "experiment_library_strategy",
+                "experiment_library_source",
+                "experiment_library_selection",
+                "run_1_published",
+                "experiment_platform",
+            ]
+        ].rename(
+            columns={
+                "sample_scientific_name": "Organism",
+                "experiment_library_strategy": "Library Strategy",
+                "experiment_library_source": "Library Source",
+                "experiment_library_selection": "Library Selection",
+                "run_1_published": "Publication Date",
+                "experiment_platform": "Platform",
+            }
+        )
+        self.stats["graph_raw"]["Publication Date"] = (
+            pd.to_datetime(self.stats["graph_raw"]["Publication Date"])
+            .dt.to_period("M")
+            .astype(str)
+        )
 
     def _merge_selected_columns(self, regex):
         columns = list(self.df.filter(regex=regex, axis=1).columns)
@@ -1091,7 +1126,9 @@ class SraSearch(QuerySearch):
         elif len(columns) == 1:
             series = self.df[columns[0]]
         else:
-            series = self.df[columns[0]].append([self.df[c] for c in columns[1:]], ignore_index=True)
+            series = self.df[columns[0]].append(
+                [self.df[c] for c in columns[1:]], ignore_index=True
+            )
         return series[series != "N/A"]
 
 
@@ -1215,9 +1252,7 @@ class EnaSearch(QuerySearch):
         # Currently, if the user does not specify a query field, the query will
         # be matched to experiment_title (aka description),
         # or one of the accession fields
-        stats_columns = (
-
-        )
+        stats_columns = ()
         payload = {
             "query": self._format_query_string(),
             "result": "read_run",
@@ -1304,26 +1339,36 @@ class EnaSearch(QuerySearch):
         daterange = self.df["first_public"]
         daterange = daterange[daterange != "N/A"]
         if not daterange.empty:
-            dates = pd.to_datetime(daterange).dt.to_period('M').astype(str)
+            dates = pd.to_datetime(daterange).dt.to_period("M").astype(str)
             self.stats["Date range"] = dates.value_counts().to_dict()
         # organisms
         organisms = self.df["scientific_name"]
         self.stats["Organisms"] = organisms.value_counts().to_dict()
         # strategy
         if "library_strategy" in self.df.columns:
-            self.stats["Library strategy"] = self.df["library_strategy"].value_counts().to_dict()
+            self.stats["Library strategy"] = (
+                self.df["library_strategy"].value_counts().to_dict()
+            )
         # source
         if "library_source" in self.df.columns:
-            self.stats["Library source"] = self.df["library_source"].value_counts().to_dict()
+            self.stats["Library source"] = (
+                self.df["library_source"].value_counts().to_dict()
+            )
         # selection
         if "library_selection" in self.df.columns:
-            self.stats["Library selection"] = self.df["library_selection"].value_counts().to_dict()
+            self.stats["Library selection"] = (
+                self.df["library_selection"].value_counts().to_dict()
+            )
         # layout
         if "library_layout" in self.df.columns:
-            self.stats["Library layout"] = self.df["library_layout"].value_counts().to_dict()
+            self.stats["Library layout"] = (
+                self.df["library_layout"].value_counts().to_dict()
+            )
         # platform
         if "instrument_platform" in self.df.columns:
-            self.stats["Platform"] = self.df["instrument_platform"].value_counts().to_dict()
+            self.stats["Platform"] = (
+                self.df["instrument_platform"].value_counts().to_dict()
+            )
         # count
         count = self.df["base_count"].copy()
         count = count[count != "N/A"].astype("int64")
@@ -1333,22 +1378,30 @@ class EnaSearch(QuerySearch):
         self.stats["count_stdev"] = count.std()
 
         # For graphing
-        self.stats["graph_raw"] = self.df[[
-            "scientific_name",
-            "library_strategy",
-            "library_source",
-            "library_selection",
-            "first_public",
-            "instrument_platform"
-        ]].rename(columns={
-            "scientific_name": "Organism",
-            "library_strategy": "Library Strategy",
-            "library_source": "Library Source",
-            "library_selection": "Library Selection",
-            "first_public": "Publication Date",
-            "instrument_platform": "Platform"
-        })
-        self.stats["graph_raw"]["Publication Date"] = pd.to_datetime(self.stats["graph_raw"]["Publication Date"]).dt.to_period('M').astype(str)
+        self.stats["graph_raw"] = self.df[
+            [
+                "scientific_name",
+                "library_strategy",
+                "library_source",
+                "library_selection",
+                "first_public",
+                "instrument_platform",
+            ]
+        ].rename(
+            columns={
+                "scientific_name": "Organism",
+                "library_strategy": "Library Strategy",
+                "library_source": "Library Source",
+                "library_selection": "Library Selection",
+                "first_public": "Publication Date",
+                "instrument_platform": "Platform",
+            }
+        )
+        self.stats["graph_raw"]["Publication Date"] = (
+            pd.to_datetime(self.stats["graph_raw"]["Publication Date"])
+            .dt.to_period("M")
+            .astype(str)
+        )
 
 
 class GeoSearch(SraSearch):

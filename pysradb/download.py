@@ -73,7 +73,7 @@ def get_file_size(row):
         print(
             f"The download URL:  {url}  is likely invalid.\n"
             f"Removing {row.run_accession} from the download list\n",
-            flush=True
+            flush=True,
         )
         return np.NaN
     except KeyError:

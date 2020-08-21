@@ -46,22 +46,23 @@ def _print_save_df(df, saveto=None):
             df.to_csv(saveto, index=False, header=True, sep="\t")
     else:
         if len(df.index):
-            to_print = df.replace(
-                r"[\s]{2,}|\t",
-                " ",
-                regex=True
-            ).to_string(
-                index=False, justify="left", header=False, col_space=0,
-            ).lstrip()
+            to_print = (
+                df.replace(r"[\s]{2,}|\t", " ", regex=True)
+                .to_string(index=False, justify="left", header=False, col_space=0,)
+                .lstrip()
+            )
             to_print_split = to_print.split("\n")
             to_print_split = map(lambda x: re.sub(r"\s\s+", "\t", x), to_print_split)
             to_print = ["\t".join(df.columns)]
             for line in to_print_split:
                 to_print.append(line.lstrip())
-            to_print = list(map(lambda line: line.encode("ascii", "replace").decode(), to_print))
+            to_print = list(
+                map(lambda line: line.encode("ascii", "replace").decode(), to_print)
+            )
             for line in to_print:
                 sys.stdout.write(line + os.linesep)
             sys.stdout.flush()
+
 
 def _check_sradb_file(db):
     if db is None:
@@ -80,7 +81,6 @@ def _check_sradb_file(db):
         """
         # Use the web version
         return "web"
-
     if not os.path.isfile(db):
         raise RuntimeError("{} does not exist".format(db))
     return db
@@ -224,14 +224,11 @@ def search(saveto, db, verbosity, return_max, fields):
     except (MissingQueryException, IncorrectFieldException) as e:
         print(e)
         return
-
     if fields["stats"]:
         instance.show_result_statistics()
-
     if fields["graphs"]:
         graph_types = tuple(fields["graphs"].split())
         instance.visualise_results(graph_types, False)
-
     _print_save_df(instance.get_df(), saveto)
 
 
@@ -673,9 +670,7 @@ def parse_args(args=None):
     subparser.add_argument(
         "--use_ascp", "-a", action="store_true", help="Use aspera instead of wget"
     )
-    subparser.add_argument(
-        "--col", help="Specify column to download"
-    )
+    subparser.add_argument("--col", help="Specify column to download")
     subparser.add_argument(
         "--threads", "-t", help="Number of threads", default=1, type=int
     )
@@ -683,12 +678,14 @@ def parse_args(args=None):
 
     # pysradb search
     subparser = subparsers.add_parser("search", help="Search SRA/ENA for matching text")
-    subparser.add_argument("-o", "--saveto", help="Save search result dataframe to file")
+    subparser.add_argument(
+        "-o", "--saveto", help="Save search result dataframe to file"
+    )
     subparser.add_argument(
         "-s",
         "--stats",
         action="store_true",
-        help="Displays some useful statistics for the search results."
+        help="Displays some useful statistics for the search results.",
     )
     subparser.add_argument(
         "-g",
@@ -700,7 +697,7 @@ def parse_args(args=None):
             "By default all graphs are generated. \n"
             "Alternatively, select a subset from the options below in a space-separated string:\n"
             "daterange, organism, source, selection, platform, basecount"
-        )
+        ),
     )
     subparser.add_argument(
         "-d",
@@ -736,10 +733,17 @@ def parse_args(args=None):
         "-O", "--organism", nargs="+", help="Scientific name of the sample organism"
     )
     subparser.add_argument(
-        "-L", "--layout", choices=["SINGLE", "PAIRED"], help="Library layout", type=str.upper
+        "-L",
+        "--layout",
+        choices=["SINGLE", "PAIRED"],
+        help="Library layout",
+        type=str.upper,
     )
     subparser.add_argument(
-        "-M", "--mbases", help="Size of the sample rounded to the nearest megabase", type=int
+        "-M",
+        "--mbases",
+        help="Size of the sample rounded to the nearest megabase",
+        type=int,
     )
     subparser.add_argument(
         "-D",
@@ -751,7 +755,9 @@ def parse_args(args=None):
     subparser.add_argument("-P", "--platform", nargs="+", help="Sequencing platform")
     subparser.add_argument("-E", "--selection", nargs="+", help="Library selection")
     subparser.add_argument("-C", "--source", nargs="+", help="Library source")
-    subparser.add_argument("-S", "--strategy", nargs="+", help="Library preparation strategy")
+    subparser.add_argument(
+        "-S", "--strategy", nargs="+", help="Library preparation strategy"
+    )
     subparser.add_argument("-T", "--title", nargs="+", help="Experiment title")
 
     # The following arguments are for GEO DataSets only

@@ -21,9 +21,6 @@ warnings.simplefilter(action="ignore", category=FutureWarning)
 tqdm.pandas()
 
 
-
-
-
 def path_leaf(path):
     """Get path's tail from a filepath.
 

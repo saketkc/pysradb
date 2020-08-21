@@ -636,7 +636,6 @@ class SRAdb(BASEdb):
                 "sample_alias",
                 "study_alias",
             ]
-
         if sample_attribute:
             out_type += ["sample_attribute"]
         select_type_sql = (",").join(out_type)
@@ -1055,7 +1054,6 @@ class SRAdb(BASEdb):
                 "sample_alias",
                 "study_alias",
             ]
-
         if sample_attribute:
             out_type += ["sample_attribute"]
         select_type_sql = (",").join(out_type)
@@ -1133,7 +1131,6 @@ class SRAdb(BASEdb):
                 "sample_alias",
                 "study_alias",
             ]
-
         if sample_attribute:
             out_type += ["sample_attribute"]
         select_type_sql = (",").join(out_type)
@@ -1322,42 +1319,60 @@ class SRAdb(BASEdb):
         for accession_column in accession_columns:
             if accession_column not in df_columns:
                 missing_columns.append(accession_column)
-
         # Special case for SraSearch
         run_count = 1  # each row in the df contains at most 1 run_accession
         while f"run_{run_count}_accession" in df_columns:
             run_count += 1
-
         if missing_columns == ["run_accession"] and run_count > 1:
             missing_columns.clear()
             accession_columns[-1] = "run_1_accession"
-
         if url_column:
             if url_column in df_columns:
 
-                formatted_df = df.loc[:, df.columns.isin(accession_columns + [url_column])]
-                formatted_df.rename({"run_1_accession": "run_accession", url_column: "srapath_url"}, inplace=True)
+                formatted_df = df.loc[
+                    :, df.columns.isin(accession_columns + [url_column])
+                ]
+                formatted_df.rename(
+                    {"run_1_accession": "run_accession", url_column: "srapath_url"},
+                    inplace=True,
+                )
             else:
                 formatted_df = df.loc[:, df.columns.isin(accession_columns)]
                 print(
                     f"The URL column: {url_column} is not found.\n"
                     "Generating default download URL for each run accession...\n",
-                    flush=True
+                    flush=True,
                 )
         else:
             run_dfs = []
             url_regex = re.compile(".*sra.*(url|ftp|galaxy).*", re.IGNORECASE)
             matched_cols = list(filter(url_regex.match, df_columns))
             for i in range(1, run_count):
-                url_list = list(filter(lambda x: x.startswith(f"run_{i}"), matched_cols))
-                df["srapath_url"] = df.apply(lambda row: self._select_best_url(url_list, row), axis=1)
-                expected_columns = ["study_accession", "experiment_accession", f"run_{i}_accession", "srapath_url"]
+                url_list = list(
+                    filter(lambda x: x.startswith(f"run_{i}"), matched_cols)
+                )
+                df["srapath_url"] = df.apply(
+                    lambda row: self._select_best_url(url_list, row), axis=1
+                )
+                expected_columns = [
+                    "study_accession",
+                    "experiment_accession",
+                    f"run_{i}_accession",
+                    "srapath_url",
+                ]
                 run_df = df.loc[:, df.columns.isin(expected_columns)]
                 run_df = run_df.rename(columns={f"run_{i}_accession": "run_accession"})
                 run_dfs.append(run_df)
             if run_count == 1:
-                df["srapath_url"] = df.apply(lambda row: self._select_best_url(matched_cols, row), axis=1)
-                expected_columns = ["study_accession", "experiment_accession", "run_accession", "srapath_url"]
+                df["srapath_url"] = df.apply(
+                    lambda row: self._select_best_url(matched_cols, row), axis=1
+                )
+                expected_columns = [
+                    "study_accession",
+                    "experiment_accession",
+                    "run_accession",
+                    "srapath_url",
+                ]
                 run_dfs = [df.loc[:, df.columns.isin(expected_columns)]]
             formatted_df = pd.concat(run_dfs)
             if not matched_cols:
@@ -1368,9 +1383,8 @@ class SRAdb(BASEdb):
                     "or \n"
                     "pysradb search -v 3\n"
                     "Generating default download URL for each run accession...\n",
-                    flush=True
+                    flush=True,
                 )
-
         if missing_columns:
             sys.stderr.write(
                 "\npysradb download is unable to run:\n"
@@ -1382,17 +1396,24 @@ class SRAdb(BASEdb):
                 "pysradb search -v 3\n"
             )
             sys.exit(1)
-
         # Add aspera columns, if they exist(for EnaSearch/metadata)
-        possible_aspera_cols = ["fastq_aspera", "sra_aspera", "submitted_aspera", "ena_fastq_ftp"]
+        possible_aspera_cols = [
+            "fastq_aspera",
+            "sra_aspera",
+            "submitted_aspera",
+            "ena_fastq_ftp",
+        ]
         aspera_cols = []
         for col in possible_aspera_cols:
             if col not in df_columns:
                 aspera_cols.append(col)
         if aspera_cols:
-            formatted_df["ena_fastq_ftp"] = df.apply(lambda r: self._select_valid_aspera_url(aspera_cols, r), axis=1)
-
-        return formatted_df.dropna(subset=["study_accession", "experiment_accession", "run_accession"])
+            formatted_df["ena_fastq_ftp"] = df.apply(
+                lambda r: self._select_valid_aspera_url(aspera_cols, r), axis=1
+            )
+        return formatted_df.dropna(
+            subset=["study_accession", "experiment_accession", "run_accession"]
+        )
 
     def download(
         self,
@@ -1443,7 +1464,6 @@ class SRAdb(BASEdb):
                 )
             else:
                 ascp_bin = os.path.join(ascp_dir, "connect", "bin", "ascp")
-
         # Does the necessary column formatting for the dataframe
         df = self._format_dataframe_for_download(df.copy(), url_col)
         if filter_by_srx:
@@ -1451,7 +1471,6 @@ class SRAdb(BASEdb):
                 filter_by_srx = [filter_by_srx]
         if filter_by_srx:
             df = df[df.experiment_accession.isin(filter_by_srx)]
-
         df.loc[:, "download_url"] = (
             FTP_PREFIX["ftp"]
             + "/sra/sra-instant/reads/ByRun/sra/"
@@ -1474,7 +1493,6 @@ class SRAdb(BASEdb):
                 "download_url",
                 "srapath_url",
             ]
-
             + ena_columns
         ].values
         if not len(df.index):
@@ -1494,7 +1512,6 @@ class SRAdb(BASEdb):
             if not skip_confirmation:
                 if not confirm("Start download? "):
                     sys.exit(0)
-
         process_map(
             partial(
                 _handle_download,
