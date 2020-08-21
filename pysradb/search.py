@@ -999,9 +999,7 @@ class SraSearch(QuerySearch):
                             )
             # Parsing library layout (single, paired)
             if field_header == "experiment":
-                library_layout = child.find(
-                    "./DESIGN/LIBRARY_DESCRIPTOR/LIBRARY_LAYOUT"
-                )
+                library_layout = child.find("./LIBRARY_DESCRIPTOR/LIBRARY_LAYOUT")
                 if library_layout:
                     library_layout = library_layout[0]
                     self._update_entry(f"library_layout", library_layout.tag)
