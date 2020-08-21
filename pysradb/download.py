@@ -6,7 +6,6 @@ import os
 import numpy as np
 import shutil
 import requests
-import requests_ftp
 import sys
 import warnings
 
@@ -15,7 +14,6 @@ from tqdm.autonotebook import tqdm
 from .utils import requests_3_retries
 
 warnings.simplefilter(action="ignore", category=FutureWarning)
-requests_ftp.monkeypatch_session()
 
 
 tqdm.pandas()
