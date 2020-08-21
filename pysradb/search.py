@@ -727,6 +727,8 @@ class SraSearch(QuerySearch):
                 self._format_response(r.raw)
             pbar.close()
             self._format_result()
+            if self.verbosity >= 2:
+                self.df["pmid"] = list(uids)
         except requests.exceptions.Timeout:
             sys.exit(f"Connection to the server has timed out. Please retry.")
         except requests.exceptions.HTTPError:
