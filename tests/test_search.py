@@ -986,46 +986,41 @@ def test_sra_search_format_result_1(sra_response_xml_1, sra_formatted_responses_
             platform="illumina",
             organism="Caenorhabditis elegans",
         )
-        query._format_result(sra_response_xml_1)
-        if i > 1:
-            col0 = [
-                c
-                for c in query.get_df().columns
-                if not re.search(r"\d|run|sample", c)
-            ]
-            col1 = [
-                c
-                for c in sra_formatted_responses_1[i].columns
-                if not re.search(r"\d|run|sample", c)
-            ]
-            expected_df = sra_formatted_responses_1[i][col1]
-            actual_df = query.get_df()[col0]
-        else:
-            expected_df = sra_formatted_responses_2[i]
-            actual_df = query.get_df()
+        query._format_response(sra_response_xml_1)
+        query._format_result()
+        col0 = [
+            c
+            for c in query.get_df().columns
+            if ("run" not in c.lower() and "sample" not in c.lower())
+        ]
+        col1 = [
+            c
+            for c in sra_formatted_responses_1[i].columns
+            if ("run" not in c.lower() and "sample" not in c.lower())
+        ]
+        expected_df = sra_formatted_responses_1[i][col1]
+        actual_df = query.get_df()[col0]
         pd.testing.assert_frame_equal(expected_df, actual_df, check_dtype=False)
 
 
 def test_sra_search_format_result_2(sra_response_xml_2, sra_formatted_responses_2):
     for i in range(4):
         query = SraSearch(i, 1000, accession="ERS3331676")
-        query._format_result(sra_response_xml_2)
-        if i > 1:
-            col0 = [
-                c
-                for c in query.get_df().columns
-                if not re.search(r"\d|run|sample", c)
-            ]
-            col1 = [
-                c
-                for c in sra_formatted_responses_2[i].columns
-                if not re.search(r"\d|run|sample", c)
-            ]
-            expected_df = sra_formatted_responses_2[i][col1]
-            actual_df = query.get_df()[col0]
-        else:
-            expected_df = sra_formatted_responses_2[i]
-            actual_df = query.get_df()
+
+        query._format_response(sra_response_xml_2)
+        query._format_result()
+        col0 = [
+            c
+            for c in query.get_df().columns
+            if ("run" not in c.lower() and "sample" not in c.lower())
+        ]
+        col1 = [
+            c
+            for c in sra_formatted_responses_2[i].columns
+            if ("run" not in c.lower() and "sample" not in c.lower())
+        ]
+        expected_df = sra_formatted_responses_2[i][col1]
+        actual_df = query.get_df()[col0]
         pd.testing.assert_frame_equal(expected_df, actual_df, check_dtype=False)
 
 
@@ -1132,7 +1127,7 @@ def test_ena_search_format_request():
         "limit": 20,
         "fields": "study_accession,experiment_accession,experiment_title,description,tax_id,scientific_name,"
         "library_strategy,library_source,library_selection,sample_accession,sample_title,"
-        "instrument_model,run_accession,read_count,base_count",
+        "instrument_model,run_accession,read_count,base_count,first_public,library_layout,instrument_platform",
     }
 
 
