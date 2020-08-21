@@ -232,6 +232,13 @@ def search(saveto, db, verbosity, return_max, fields):
         print(e)
         return
 
+    if fields["stats"]:
+        instance.show_result_statistics()
+
+    if fields["graphs"]:
+        graph_types = tuple(fields["graphs"].split())
+        instance.visualise_results(graph_types, False)
+
     _print_save_df(instance.get_df(), saveto)
 
 
@@ -680,13 +687,11 @@ def parse_args(args=None):
 
     # pysradb search
     subparser = subparsers.add_parser("search", help="Search SRA/ENA for matching text")
-    subparser.add_argument("--saveto", help="Save search result dataframe to file")
+    subparser.add_argument("-o", "--saveto", help="Save search result dataframe to file")
     subparser.add_argument(
         "-s",
         "--stats",
-        nargs="?",
-        const="3",
-        choices=["1", "2", "3"],
+        action="store_true",
         help="Displays some useful statistics for the search results."
     )
     subparser.add_argument(
@@ -694,9 +699,15 @@ def parse_args(args=None):
         "--graphs",
         nargs="?",
         const="all",
-        # choices=["all", "pdat", "mbases", "layout", "strategy", "source"]
+        help=(
+            "Generates graphs to illustrate the search result. "
+            "By default all graphs are generated. \n"
+            "Alternatively, select a subset from the options below in a space-separated string:\n"
+            "daterange, organism, source, selection, platform, basecount"
+        )
     )
     subparser.add_argument(
+        "-d",
         "--db",
         choices=["ena", "sra_geo", "sra"],
         default="sra",
@@ -724,40 +735,44 @@ def parse_args(args=None):
         help="Main query string. Note that if no query is supplied, at least one of the "
         "following flags must be present:",
     )
-    subparser.add_argument("--accession", help="Accession number")
+    subparser.add_argument("-A", "--accession", help="Accession number")
     subparser.add_argument(
-        "--organism", nargs="+", help="Scientific name of the sample organism"
+        "-O", "--organism", nargs="+", help="Scientific name of the sample organism"
     )
     subparser.add_argument(
-        "--layout", choices=["SINGLE", "PAIRED"], help="Library layout", type=str.upper
+        "-L", "--layout", choices=["SINGLE", "PAIRED"], help="Library layout", type=str.upper
     )
     subparser.add_argument(
-        "--mbases", help="Size of the sample rounded to the nearest megabase", type=int
+        "-M", "--mbases", help="Size of the sample rounded to the nearest megabase", type=int
     )
     subparser.add_argument(
+        "-D",
         "--publication-date",
         help="Publication date of the run in the format dd-mm-yyyy. If a date range is desired, "
         "enter the start date, followed by end date, separated by a colon ':'.\n "
         "Example: 01-01-2010:31-12-2010",
     )
-    subparser.add_argument("--platform", nargs="+", help="Sequencing platform")
-    subparser.add_argument("--selection", nargs="+", help="Library selection")
-    subparser.add_argument("--source", nargs="+", help="Library source")
-    subparser.add_argument("--strategy", nargs="+", help="Library preparation strategy")
-    subparser.add_argument("--title", nargs="+", help="Experiment title")
+    subparser.add_argument("-P", "--platform", nargs="+", help="Sequencing platform")
+    subparser.add_argument("-E", "--selection", nargs="+", help="Library selection")
+    subparser.add_argument("-C", "--source", nargs="+", help="Library source")
+    subparser.add_argument("-S", "--strategy", nargs="+", help="Library preparation strategy")
+    subparser.add_argument("-T", "--title", nargs="+", help="Experiment title")
 
     # The following arguments are for GEO DataSets only
     subparser.add_argument(
+        "-G",
         "--geo-query",
         nargs="+",
         help="Main query string for GEO DataSet. This flag is only used when db is set to be sra_geo.",
     )
     subparser.add_argument(
+        "-Y",
         "--geo-dataset-type",
         nargs="+",
         help="GEO DataSet Type. This flag is only used when --db is set to be sra_geo.",
     )
     subparser.add_argument(
+        "-Z",
         "--geo-entry-type",
         nargs="+",
         help="GEO Entry Type. This flag is only used when --db is set to be sra_geo.",

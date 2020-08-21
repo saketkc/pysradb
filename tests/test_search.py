@@ -986,7 +986,8 @@ def test_sra_search_format_result_1(sra_response_xml_1, sra_formatted_responses_
             platform="illumina",
             organism="Caenorhabditis elegans",
         )
-        query._format_result(sra_response_xml_1)
+        query._format_response(sra_response_xml_1)
+        query._format_result()
         col0 = [
             c
             for c in query.get_df().columns
@@ -1005,7 +1006,8 @@ def test_sra_search_format_result_1(sra_response_xml_1, sra_formatted_responses_
 def test_sra_search_format_result_2(sra_response_xml_2, sra_formatted_responses_2):
     for i in range(4):
         query = SraSearch(i, 1000, accession="ERS3331676")
-        query._format_result(sra_response_xml_2)
+        query._format_response(sra_response_xml_2)
+        query._format_result()
         col0 = [
             c
             for c in query.get_df().columns
