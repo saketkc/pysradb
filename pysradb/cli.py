@@ -166,6 +166,10 @@ def download(
 
 ######################### search #################################
 def search(saveto, db, verbosity, return_max, fields):
+    if fields["run_description"]:
+        verbosity = 1
+    if fields["detailed"]:
+        verbosity = 1
     try:
         if db == "ena":
             instance = EnaSearch(
@@ -713,6 +717,16 @@ def parse_args(args=None):
         default=2,
         help="Level of search result details (0, 1, 2 or 3), default = 2",
         type=int,
+    )
+    subparser.add_argument(
+        "--run-description",
+        action="store_true",
+        help="Displays run accessions and descriptions only. Equivalent to --verbosity 1",
+    )
+    subparser.add_argument(
+        "--detailed",
+        action="store_true",
+        help="Displays detailed search results. Equivalent to --verbosity 3.",
     )
     subparser.add_argument(
         "-m",
