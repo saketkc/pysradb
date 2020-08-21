@@ -1405,7 +1405,7 @@ class SRAdb(BASEdb):
         ]
         aspera_cols = []
         for col in possible_aspera_cols:
-            if col not in df_columns:
+            if col in df_columns:
                 aspera_cols.append(col)
         if aspera_cols:
             formatted_df["ena_fastq_ftp"] = df.apply(

@@ -1075,9 +1075,9 @@ class SraSearch(QuerySearch):
                 self.df["experiment_library_selection"].value_counts().to_dict()
             )
         # layout
-        if "experiment_library_layout" in self.df.columns:
+        if "library_layout" in self.df.columns:
             self.stats["Library layout"] = (
-                self.df["experiment_library_layout"].value_counts().to_dict()
+                self.df["library_layout"].value_counts().to_dict()
             )
         # platform
         if "experiment_platform" in self.df.columns:
