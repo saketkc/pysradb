@@ -21,7 +21,7 @@ See an `example <https://www.ncbi.nlm.nih.gov/Traces/study/?acc=SRP098789>`_ of 
    df = db.sra_metadata('SRP098789')
    df.head()
 
-.. table::
+::
 
     ===============  ====================  ======================================================================  =============  ========  =================  ==============  ================  ==============  ============  ==========  ========  ============  ===============
     study_accession  experiment_accession                             experiment_title                             run_accession  taxon_id  library_selection  library_layout  library_strategy  library_source  library_name    bases      spots    adapter_spec  avg_read_length
