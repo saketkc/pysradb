@@ -1,5 +1,5 @@
-pysradb
-=======
+pysradb modules
+===============
 
 .. toctree::
    :maxdepth: 4
