@@ -1,0 +1,467 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Python API Usage &#8212; pysradb 0.10.5-dev0 documentation</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/graphviz.css" />
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Usage Scenarios" href="usage_scenarios.html" />
+    <link rel="prev" title="CLI Tutorial" href="cmdline.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="python-api-usage">
+<span id="apiusage"></span><h1>Python API Usage<a class="headerlink" href="#python-api-usage" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="use-case-1-fetch-the-metadata-table-sra-runtable">
+<h2>Use Case 1: Fetch the metadata table (SRA-runtable)<a class="headerlink" href="#use-case-1-fetch-the-metadata-table-sra-runtable" title="Permalink to this headline">¶</a></h2>
+<p>The simplest use case of <cite>pysradb</cite> is when you apriopri know the SRA project ID (SRP)
+and would simply want to fetch the metadata associated with it. This is generally
+reflected in the <cite>SraRunTable.txt</cite> that you get from NCBI’s website.
+See an <a class="reference external" href="https://www.ncbi.nlm.nih.gov/Traces/study/?acc=SRP098789">example</a> of a SraRunTable.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pysradb</span> <span class="kn">import</span> <span class="n">SRAdb</span>
+<span class="n">db</span> <span class="o">=</span> <span class="n">SRAdb</span><span class="p">(</span><span class="s1">&#39;SRAmetadb.sqlite&#39;</span><span class="p">)</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">sra_metadata</span><span class="p">(</span><span class="s1">&#39;SRP098789&#39;</span><span class="p">)</span>
+<span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>===============  ====================  ======================================================================  =============  ========  =================  ==============  ================  ==============  ============  ==========  ========  ============  ===============
+study_accession  experiment_accession                             experiment_title                             run_accession  taxon_id  library_selection  library_layout  library_strategy  library_source  library_name    bases      spots    adapter_spec  avg_read_length
+===============  ====================  ======================================================================  =============  ========  =================  ==============  ================  ==============  ============  ==========  ========  ============  ===============
+SRP098789        SRX2536403            GSM2475997: 1.5 Ã‚ÂµM PF-067446846, 10 min, rep 1; Homo sapiens; OTHER  SRR5227288         9606  other              SINGLE -        OTHER             TRANSCRIPTOMIC                2104142750  42082855                             50
+SRP098789        SRX2536404            GSM2475998: 1.5 Ã‚ÂµM PF-067446846, 10 min, rep 2; Homo sapiens; OTHER  SRR5227289         9606  other              SINGLE -        OTHER             TRANSCRIPTOMIC                2082873050  41657461                             50
+SRP098789        SRX2536405            GSM2475999: 1.5 Ã‚ÂµM PF-067446846, 10 min, rep 3; Homo sapiens; OTHER  SRR5227290         9606  other              SINGLE -        OTHER             TRANSCRIPTOMIC                2023148650  40462973                             50
+SRP098789        SRX2536406            GSM2476000: 0.3 Ã‚ÂµM PF-067446846, 10 min, rep 1; Homo sapiens; OTHER  SRR5227291         9606  other              SINGLE -        OTHER             TRANSCRIPTOMIC                2057165950  41143319                             50
+SRP098789        SRX2536407            GSM2476001: 0.3 Ã‚ÂµM PF-067446846, 10 min, rep 2; Homo sapiens; OTHER  SRR5227292         9606  other              SINGLE -        OTHER             TRANSCRIPTOMIC                3027621850  60552437                             50
+===============  ====================  ======================================================================  =============  ========  =================  ==============  ================  ==============  ============  ==========  ========  ============  ===============
+</pre></div>
+</div>
+<p>The metadata is returned as a <cite>pandas</cite> dataframe and hence allows you to perform
+all regular select/query operations available through <cite>pandas</cite>.</p>
+</div>
+<div class="section" id="use-case-2-downloading-an-entire-project-arranged-experiment-wise">
+<h2>Use Case 2: Downloading an entire project arranged experiment wise<a class="headerlink" href="#use-case-2-downloading-an-entire-project-arranged-experiment-wise" title="Permalink to this headline">¶</a></h2>
+<p>Once you have fetched the metadata and made sure, this is the project
+you were looking for, you would want to download everything at once.
+NCBI follows this hiererachy: <cite>SRP =&gt; SRX =&gt; SRR</cite>. Each <cite>SRP</cite> (project) has multiple
+<cite>SRX</cite> (experiments) and each <cite>SRX</cite> in turn has multiple <cite>SRR</cite> (runs) inside it.
+We want to mimick this hiereachy in our downloads. The reason to do that is simple:
+in most cases you care about <cite>SRX</cite> the most, and would want to “merge” your SRRs
+in one way or the other. Having this hierearchy ensures your downstream code
+can handle such cases easily, without worrying about which runs (SRR) need to be merged.</p>
+<p>We strongly recommend installing <cite>aspera-client</cite> which uses UDP and is <a class="reference external" href="http://www.skullbox.net/tcpudp.php">designed to be faster</a>.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pysradb</span> <span class="kn">import</span> <span class="n">SRAdb</span>
+<span class="n">db</span> <span class="o">=</span> <span class="n">SRAdb</span><span class="p">(</span><span class="s1">&#39;SRAmetadb.sqlite&#39;</span><span class="p">)</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">sra_metadata</span><span class="p">(</span><span class="s1">&#39;SRP017942&#39;</span><span class="p">)</span>
+<span class="n">db</span><span class="o">.</span><span class="n">download</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="use-case-3-downloading-a-subset-of-experiments">
+<h2>Use Case 3: Downloading a subset of experiments<a class="headerlink" href="#use-case-3-downloading-a-subset-of-experiments" title="Permalink to this headline">¶</a></h2>
+<p>Often, you need to process only a smaller set of samples from a project (SRP).
+Consider this project which has data spanning four assays.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">sra_metadata</span><span class="p">(</span><span class="s1">&#39;SRP000941&#39;</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">library_strategy</span><span class="o">.</span><span class="n">unique</span><span class="p">())</span>
+<span class="p">[</span><span class="s1">&#39;ChIP-Seq&#39;</span> <span class="s1">&#39;Bisulfite-Seq&#39;</span> <span class="s1">&#39;RNA-Seq&#39;</span> <span class="s1">&#39;WGS&#39;</span> <span class="s1">&#39;OTHER&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>But, you might be only interested in analyzing the <cite>RNA-seq</cite> samples and would just want to download that subset.
+This is simple using <cite>pysradb</cite> since the metadata can be subset just as you would subset a dataframe in
+pandas.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">df_rna</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="o">.</span><span class="n">library_strategy</span> <span class="o">==</span> <span class="s1">&#39;RNA-Seq&#39;</span><span class="p">]</span>
+<span class="n">db</span><span class="o">.</span><span class="n">download</span><span class="p">(</span><span class="n">df</span><span class="o">=</span><span class="n">df_rna</span><span class="p">,</span> <span class="n">out_dir</span><span class="o">=</span><span class="s1">&#39;/pysradb_downloads&#39;</span><span class="p">)()</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="use-case-4-getting-cell-type-treatment-information-from-sample-attributes">
+<h2>Use Case 4: Getting cell-type/treatment information from sample_attributes<a class="headerlink" href="#use-case-4-getting-cell-type-treatment-information-from-sample-attributes" title="Permalink to this headline">¶</a></h2>
+<p>Cell type/tissue informations is usually hidden in the <cite>sample_attributes</cite> column,
+which can be expanded:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pysradb.filter_attrs</span> <span class="kn">import</span> <span class="n">expand_sample_attribute_columns</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">sra_metadata</span><span class="p">(</span><span class="s1">&#39;SRP017942&#39;</span><span class="p">)</span>
+<span class="n">expand_sample_attribute_columns</span><span class="p">(</span><span class="n">df</span><span class="p">)</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 3%" />
+<col style="width: 4%" />
+<col style="width: 14%" />
+<col style="width: 5%" />
+<col style="width: 30%" />
+<col style="width: 3%" />
+<col style="width: 2%" />
+<col style="width: 3%" />
+<col style="width: 3%" />
+<col style="width: 3%" />
+<col style="width: 3%" />
+<col style="width: 2%" />
+<col style="width: 2%" />
+<col style="width: 2%" />
+<col style="width: 2%" />
+<col style="width: 3%" />
+<col style="width: 2%" />
+<col style="width: 2%" />
+<col style="width: 2%" />
+<col style="width: 3%" />
+<col style="width: 6%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>study_accession</p></th>
+<th class="head"><p>experiment_accession</p></th>
+<th class="head"><p>experiment_title</p></th>
+<th class="head"><p>experiment_attribute</p></th>
+<th class="head"><p>sample_attribute</p></th>
+<th class="head"><p>run_accession</p></th>
+<th class="head"><p>taxon_id</p></th>
+<th class="head"><p>library_selection</p></th>
+<th class="head"><p>library_layout</p></th>
+<th class="head"><p>library_strategy</p></th>
+<th class="head"><p>library_source</p></th>
+<th class="head"><p>library_name</p></th>
+<th class="head"><p>bases</p></th>
+<th class="head"><p>spots</p></th>
+<th class="head"><p>adapter_spec</p></th>
+<th class="head"><p>avg_read_length</p></th>
+<th class="head"><p>assay_type</p></th>
+<th class="head"><p>cell_line</p></th>
+<th class="head"><p>source_name</p></th>
+<th class="head"><p>transfected_with</p></th>
+<th class="head"><p>treatment</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>SRP017942</p></td>
+<td><p>SRX217028</p></td>
+<td><p>GSM1063575: 293T_GFP; Homo sapiens; RNA-Seq</p></td>
+<td><p>GEO Accession: GSM1063575</p></td>
+<td><p>source_name: 293T cells || cell line: 293T cells || transfected with: 3XFLAG-GFP || assay type: Riboseq</p></td>
+<td><p>SRR648667</p></td>
+<td><p>9606</p></td>
+<td><p>other</p></td>
+<td><p>SINGLE -</p></td>
+<td><p>RNA-Seq</p></td>
+<td><p>TRANSCRIPTOMIC</p></td>
+<td></td>
+<td><p>1806641316</p></td>
+<td><p>50184481</p></td>
+<td></td>
+<td><p>36</p></td>
+<td><p>riboseq</p></td>
+<td><p>293t cells</p></td>
+<td><p>293t cells</p></td>
+<td><p>3xflag-gfp</p></td>
+<td><p>NaN</p></td>
+</tr>
+<tr class="row-odd"><td><p>SRP017942</p></td>
+<td><p>SRX217029</p></td>
+<td><p>GSM1063576: 293T_GFP_2hrs_severe_Heat_Shock; Homo sapiens; RNA-Seq</p></td>
+<td><p>GEO Accession: GSM1063576</p></td>
+<td><p>source_name: 293T cells || cell line: 293T cells || transfected with: 3XFLAG-GFP || treatment: severe heat shock (44C 2 hours) || assay type: Riboseq</p></td>
+<td><p>SRR648668</p></td>
+<td><p>9606</p></td>
+<td><p>other</p></td>
+<td><p>SINGLE -</p></td>
+<td><p>RNA-Seq</p></td>
+<td><p>TRANSCRIPTOMIC</p></td>
+<td></td>
+<td><p>3436984836</p></td>
+<td><p>95471801</p></td>
+<td></td>
+<td><p>36</p></td>
+<td><p>riboseq</p></td>
+<td><p>293t cells</p></td>
+<td><p>293t cells</p></td>
+<td><p>3xflag-gfp</p></td>
+<td><p>severe heat shock (44c 2 hours)</p></td>
+</tr>
+<tr class="row-even"><td><p>SRP017942</p></td>
+<td><p>SRX217030</p></td>
+<td><p>GSM1063577: 293T_Hspa1a; Homo sapiens; RNA-Seq</p></td>
+<td><p>GEO Accession: GSM1063577</p></td>
+<td><p>source_name: 293T cells || cell line: 293T cells || transfected with: 3XFLAG-Hspa1a || assay type: Riboseq</p></td>
+<td><p>SRR648669</p></td>
+<td><p>9606</p></td>
+<td><p>other</p></td>
+<td><p>SINGLE -</p></td>
+<td><p>RNA-Seq</p></td>
+<td><p>TRANSCRIPTOMIC</p></td>
+<td></td>
+<td><p>3330909216</p></td>
+<td><p>92525256</p></td>
+<td></td>
+<td><p>36</p></td>
+<td><p>riboseq</p></td>
+<td><p>293t cells</p></td>
+<td><p>293t cells</p></td>
+<td><p>3xflag-hspa1a</p></td>
+<td><p>NaN</p></td>
+</tr>
+<tr class="row-odd"><td><p>SRP017942</p></td>
+<td><p>SRX217031</p></td>
+<td><p>GSM1063578: 293T_Hspa1a_2hrs_severe_Heat_Shock; Homo sapiens; RNA-Seq</p></td>
+<td><p>GEO Accession: GSM1063578</p></td>
+<td><p>source_name: 293T cells || cell line: 293T cells || transfected with: 3XFLAG-Hspa1a || treatment: severe heat shock (44C 2 hours) || assay type: Riboseq</p></td>
+<td><p>SRR648670</p></td>
+<td><p>9606</p></td>
+<td><p>other</p></td>
+<td><p>SINGLE -</p></td>
+<td><p>RNA-Seq</p></td>
+<td><p>TRANSCRIPTOMIC</p></td>
+<td></td>
+<td><p>3622123512</p></td>
+<td><p>100614542</p></td>
+<td></td>
+<td><p>36</p></td>
+<td><p>riboseq</p></td>
+<td><p>293t cells</p></td>
+<td><p>293t cells</p></td>
+<td><p>3xflag-hspa1a</p></td>
+<td><p>severe heat shock (44c 2 hours)</p></td>
+</tr>
+<tr class="row-even"><td><p>SRP017942</p></td>
+<td><p>SRX217956</p></td>
+<td><p>GSM794854: 3T3-Control-Riboseq; Mus musculus; RNA-Seq</p></td>
+<td><p>GEO Accession: GSM794854</p></td>
+<td><p>source_name: 3T3 cells || treatment: control || cell line: 3T3 cells || assay type: Riboseq</p></td>
+<td><p>SRR649752</p></td>
+<td><p>10090</p></td>
+<td><p>cDNA</p></td>
+<td><p>SINGLE -</p></td>
+<td><p>RNA-Seq</p></td>
+<td><p>TRANSCRIPTOMIC</p></td>
+<td></td>
+<td><p>594945396</p></td>
+<td><p>16526261</p></td>
+<td></td>
+<td><p>36</p></td>
+<td><p>riboseq</p></td>
+<td><p>3t3 cells</p></td>
+<td><p>3t3 cells</p></td>
+<td><p>NaN</p></td>
+<td><p>control</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="use-case-5-searching-for-datasets">
+<h2>Use Case 5: Searching for datasets<a class="headerlink" href="#use-case-5-searching-for-datasets" title="Permalink to this headline">¶</a></h2>
+<p>Another common operation that we do on SRA is seach, plain text search.</p>
+<p>If you want to look up for all projects where <cite>ribosome profiling</cite> appears somewhere
+in the description:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">search_sra</span><span class="p">(</span><span class="n">search_str</span><span class="o">=</span><span class="s1">&#39;&quot;ribosome profiling&quot;&#39;</span><span class="p">)</span>
+<span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 7%" />
+<col style="width: 10%" />
+<col style="width: 27%" />
+<col style="width: 6%" />
+<col style="width: 4%" />
+<col style="width: 8%" />
+<col style="width: 7%" />
+<col style="width: 8%" />
+<col style="width: 7%" />
+<col style="width: 6%" />
+<col style="width: 5%" />
+<col style="width: 4%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>study_accession</p></th>
+<th class="head"><p>experiment_accession</p></th>
+<th class="head"><p>experiment_title</p></th>
+<th class="head"><p>run_accession</p></th>
+<th class="head"><p>taxon_id</p></th>
+<th class="head"><p>library_selection</p></th>
+<th class="head"><p>library_layout</p></th>
+<th class="head"><p>library_strategy</p></th>
+<th class="head"><p>library_source</p></th>
+<th class="head"><p>library_name</p></th>
+<th class="head"><p>bases</p></th>
+<th class="head"><p>spots</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>DRP003075</p></td>
+<td><p>DRX019536</p></td>
+<td><p>Illumina Genome Analyzer IIx sequencing of SAMD00018584</p></td>
+<td><p>DRR021383</p></td>
+<td><p>83333</p></td>
+<td><p>other</p></td>
+<td><p>SINGLE -</p></td>
+<td><p>OTHER</p></td>
+<td><p>TRANSCRIPTOMIC</p></td>
+<td><p>GAII05_3</p></td>
+<td><p>978776480</p></td>
+<td><p>12234706</p></td>
+</tr>
+<tr class="row-odd"><td><p>DRP003075</p></td>
+<td><p>DRX019537</p></td>
+<td><p>Illumina Genome Analyzer IIx sequencing of SAMD00018585</p></td>
+<td><p>DRR021384</p></td>
+<td><p>83333</p></td>
+<td><p>other</p></td>
+<td><p>SINGLE -</p></td>
+<td><p>OTHER</p></td>
+<td><p>TRANSCRIPTOMIC</p></td>
+<td><p>GAII05_4</p></td>
+<td><p>894201680</p></td>
+<td><p>11177521</p></td>
+</tr>
+<tr class="row-even"><td><p>DRP003075</p></td>
+<td><p>DRX019538</p></td>
+<td><p>Illumina Genome Analyzer IIx sequencing of SAMD00018586</p></td>
+<td><p>DRR021385</p></td>
+<td><p>83333</p></td>
+<td><p>other</p></td>
+<td><p>SINGLE -</p></td>
+<td><p>OTHER</p></td>
+<td><p>TRANSCRIPTOMIC</p></td>
+<td><p>GAII05_5</p></td>
+<td><p>931536720</p></td>
+<td><p>11644209</p></td>
+</tr>
+<tr class="row-odd"><td><p>DRP003075</p></td>
+<td><p>DRX019540</p></td>
+<td><p>Illumina Genome Analyzer IIx sequencing of SAMD00018588</p></td>
+<td><p>DRR021387</p></td>
+<td><p>83333</p></td>
+<td><p>other</p></td>
+<td><p>SINGLE -</p></td>
+<td><p>OTHER</p></td>
+<td><p>TRANSCRIPTOMIC</p></td>
+<td><p>GAII07_4</p></td>
+<td><p>2759398700</p></td>
+<td><p>27593987</p></td>
+</tr>
+<tr class="row-even"><td><p>DRP003075</p></td>
+<td><p>DRX019541</p></td>
+<td><p>Illumina Genome Analyzer IIx sequencing of SAMD00018589</p></td>
+<td><p>DRR021388</p></td>
+<td><p>83333</p></td>
+<td><p>other</p></td>
+<td><p>SINGLE -</p></td>
+<td><p>OTHER</p></td>
+<td><p>TRANSCRIPTOMIC</p></td>
+<td><p>GAII07_5</p></td>
+<td><p>2386196500</p></td>
+<td><p>23861965</p></td>
+</tr>
+</tbody>
+</table>
+<p>Again, the results are available as a <cite>pandas</cite> dataframe and hence
+you can perform all subset operations post your query. Your query doesn’t need
+to be exact.</p>
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">pysradb</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cmdline.html">CLI Tutorial</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Python API Usage</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#use-case-1-fetch-the-metadata-table-sra-runtable">Use Case 1: Fetch the metadata table (SRA-runtable)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#use-case-2-downloading-an-entire-project-arranged-experiment-wise">Use Case 2: Downloading an entire project arranged experiment wise</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#use-case-3-downloading-a-subset-of-experiments">Use Case 3: Downloading a subset of experiments</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#use-case-4-getting-cell-type-treatment-information-from-sample-attributes">Use Case 4: Getting cell-type/treatment information from sample_attributes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#use-case-5-searching-for-datasets">Use Case 5: Searching for datasets</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="usage_scenarios.html">Usage Scenarios</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modules.html">pysradb</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contributing.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="authors.html">Credits</a></li>
+<li class="toctree-l1"><a class="reference internal" href="history.html">History</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="cmdline.html" title="previous chapter">CLI Tutorial</a></li>
+      <li>Next: <a href="usage_scenarios.html" title="next chapter">Usage Scenarios</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2018, Saket Choudhary.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.2.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="_sources/python-api-usage.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
