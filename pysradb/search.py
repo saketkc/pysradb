@@ -522,8 +522,14 @@ class QuerySearch:
                     if plot_keys[graph_type] in plot and plot not in selected_plots:
                         selected_plots.append(plot)
             plots = selected_plots
+        too_many_organisms = False
+        if self.stats["graph_raw"]["Organism"].nunique() > 30:
+            print(
+                "Too many types of organisms to plot (>30). Showing only top 30 organisms."
+            )
+            too_many_organisms = True
         for plot in plots:
-            self._plot_graph(plt, plot, show, saveto)
+            self._plot_graph(plt, plot, show, saveto, too_many_organisms)
 
     def search(self):
         pass
@@ -533,7 +539,7 @@ class QuerySearch:
         """
         return self.df
 
-    def _plot_graph(self, plt, axes, show, savedir):
+    def _plot_graph(self, plt, axes, show, savedir, too_many_organisms):
         """Plots a graph based on data from self.stats
 
         Parameters
@@ -546,12 +552,7 @@ class QuerySearch:
         show: bool
             whether to call plt.show
         """
-        too_many_organisms = False
-        if "Organism" in axes and self.stats["graph_raw"]["Organism"].nunique() > 30:
-            print(
-                "Too many types of organisms to plot (>30). Showing only top 30 organisms."
-            )
-            too_many_organisms = True
+
         if (
             "Publication Date" in axes
             and self.stats["graph_raw"]["Publication Date"].nunique() > 30
@@ -563,7 +564,7 @@ class QuerySearch:
             count = list(self.stats["count_data"])
             title = "Histogram of Base Count"
             plt.figure(figsize=(15, 10))
-            plt.hist(count, min(70, len(count)), color="#135c1c")
+            plt.hist(count, min(70, len(count)), color="#135c1c", log=True)
             plt.xlabel("Base Count", fontsize=14)
             plt.ylabel("Frequency", fontsize=14)
             plt.xticks(rotation=90)
@@ -1327,6 +1328,8 @@ class EnaSearch(QuerySearch):
             )
             self.df = self.df[columns]
         self.df.dropna(how="all")
+
+        print(f"Successfully retrieved {len(self.df.index)} entries from ENA database.")
 
     def _update_stats(self):
         # study

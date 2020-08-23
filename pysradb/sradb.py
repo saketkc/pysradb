@@ -1393,6 +1393,8 @@ class SRAdb(BASEdb):
                 "Please run your query with either\n"
                 "pysradb metadata --detailed \n"
                 "or \n"
+                "pysradb search --detailed\n"
+                "or \n"
                 "pysradb search -v 3\n"
             )
             sys.exit(1)
