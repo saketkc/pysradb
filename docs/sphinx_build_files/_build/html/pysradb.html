@@ -1,0 +1,1802 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>pysradb package &#8212; pysradb 0.10.5-dev0 documentation</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/graphviz.css" />
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Contributing" href="contributing.html" />
+    <link rel="prev" title="pysradb" href="modules.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="pysradb-package">
+<h1>pysradb package<a class="headerlink" href="#pysradb-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-pysradb.basedb">
+<span id="pysradb-basedb-module"></span><h2>pysradb.basedb module<a class="headerlink" href="#module-pysradb.basedb" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt id="pysradb.basedb.BASEdb">
+<em class="property">class </em><code class="sig-prename descclassname">pysradb.basedb.</code><code class="sig-name descname">BASEdb</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">sqlite_file</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysradb/basedb.html#BASEdb"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pysradb.basedb.BASEdb" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py method">
+<dt id="pysradb.basedb.BASEdb.all_row_counts">
+<code class="sig-name descname">all_row_counts</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysradb/basedb.html#BASEdb.all_row_counts"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pysradb.basedb.BASEdb.all_row_counts" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get row counts of all tables in the db file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>row_counts: DataFrame</strong></dt><dd><p>A dataframe with table names and corresponding
+row count.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pysradb.basedb.BASEdb.close">
+<code class="sig-name descname">close</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysradb/basedb.html#BASEdb.close"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pysradb.basedb.BASEdb.close" title="Permalink to this definition">¶</a></dt>
+<dd><p>Close sqlite connection.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pysradb.basedb.BASEdb.desc_table">
+<code class="sig-name descname">desc_table</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">table</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysradb/basedb.html#BASEdb.desc_table"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pysradb.basedb.BASEdb.desc_table" title="Permalink to this definition">¶</a></dt>
+<dd><p>Describe all fields in a table.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>table: string</strong></dt><dd><p>Table name.
+See <cite>list_tables</cite> for getting all table names</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>table_desc: DataFrame</strong></dt><dd><p>A DataFrame with field name and its
+schema description</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pysradb.basedb.BASEdb.get_row_count">
+<code class="sig-name descname">get_row_count</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">table</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysradb/basedb.html#BASEdb.get_row_count"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pysradb.basedb.BASEdb.get_row_count" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get row counts for a table.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>table: string</strong></dt><dd><p>Table name.
+See <cite>list_tables</cite> for getting all table names</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>row_count: int</strong></dt><dd><p>Number of rows in table</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pysradb.basedb.BASEdb.list_fields">
+<code class="sig-name descname">list_fields</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">table</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysradb/basedb.html#BASEdb.list_fields"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pysradb.basedb.BASEdb.list_fields" title="Permalink to this definition">¶</a></dt>
+<dd><p>List all fields in a given table.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>table: string</strong></dt><dd><p>Table name.
+See <cite>list_tables</cite> for getting all table names</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>field_list: list</strong></dt><dd><p>A list of field names for the table</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pysradb.basedb.BASEdb.list_tables">
+<code class="sig-name descname">list_tables</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysradb/basedb.html#BASEdb.list_tables"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pysradb.basedb.BASEdb.list_tables" title="Permalink to this definition">¶</a></dt>
+<dd><p>List all tables in the sqlite file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>table_list: list</strong></dt><dd><p>List of all table names</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pysradb.basedb.BASEdb.open">
+<code class="sig-name descname">open</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysradb/basedb.html#BASEdb.open"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pysradb.basedb.BASEdb.open" title="Permalink to this definition">¶</a></dt>
+<dd><p>Open sqlite connection.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pysradb.basedb.BASEdb.query">
+<code class="sig-name descname">query</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">sql_query</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysradb/basedb.html#BASEdb.query"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pysradb.basedb.BASEdb.query" title="Permalink to this definition">¶</a></dt>
+<dd><p>Run SQL query.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>sql_query: string</strong></dt><dd><p>SQL query string</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>results: DataFrame</strong></dt><dd><p>Query results formatted as dataframe</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-pysradb.cli">
+<span id="pysradb-cli-module"></span><h2>pysradb.cli module<a class="headerlink" href="#module-pysradb.cli" title="Permalink to this headline">¶</a></h2>
+<p>Command line interface for pysradb</p>
+<dl class="py class">
+<dt id="pysradb.cli.ArgParser">
+<em class="property">class </em><code class="sig-prename descclassname">pysradb.cli.</code><code class="sig-name descname">ArgParser</code><span class="sig-paren">(</span><em class="sig-param">prog=None</em>, <em class="sig-param">usage=None</em>, <em class="sig-param">description=None</em>, <em class="sig-param">epilog=None</em>, <em class="sig-param">parents=[]</em>, <em class="sig-param">formatter_class=&lt;class 'argparse.HelpFormatter'&gt;</em>, <em class="sig-param">prefix_chars='-'</em>, <em class="sig-param">fromfile_prefix_chars=None</em>, <em class="sig-param">argument_default=None</em>, <em class="sig-param">conflict_handler='error'</em>, <em class="sig-param">add_help=True</em>, <em class="sig-param">allow_abbrev=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysradb/cli.html#ArgParser"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pysradb.cli.ArgParser" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">argparse.ArgumentParser</span></code></p>
+<dl class="py method">
+<dt id="pysradb.cli.ArgParser.error">
+<code class="sig-name descname">error</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">message</span><span class="p">:</span> <span class="n">string</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysradb/cli.html#ArgParser.error"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pysradb.cli.ArgParser.error" title="Permalink to this definition">¶</a></dt>
+<dd><p>Prints a usage message incorporating the message to stderr and
+exits.</p>
+<p>If you override this in a subclass, it should not return – it
+should either exit or raise an exception.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="pysradb.cli.CustomFormatterArgP">
+<em class="property">class </em><code class="sig-prename descclassname">pysradb.cli.</code><code class="sig-name descname">CustomFormatterArgP</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">prog</span></em>, <em class="sig-param"><span class="n">indent_increment</span><span class="o">=</span><span class="default_value">2</span></em>, <em class="sig-param"><span class="n">max_help_position</span><span class="o">=</span><span class="default_value">24</span></em>, <em class="sig-param"><span class="n">width</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysradb/cli.html#CustomFormatterArgP"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pysradb.cli.CustomFormatterArgP" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">argparse.ArgumentDefaultsHelpFormatter</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">argparse.RawDescriptionHelpFormatter</span></code></p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="pysradb.cli.download">
+<code class="sig-prename descclassname">pysradb.cli.</code><code class="sig-name descname">download</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">out_dir</span></em>, <em class="sig-param"><span class="n">db</span></em>, <em class="sig-param"><span class="n">srx</span></em>, <em class="sig-param"><span class="n">srp</span></em>, <em class="sig-param"><span class="n">skip_confirmation</span></em>, <em class="sig-param"><span class="n">col</span><span class="o">=</span><span class="default_value">'sra_url'</span></em>, <em class="sig-param"><span class="n">use_ascp</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">threads</span><span class="o">=</span><span class="default_value">1</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysradb/cli.html#download"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pysradb.cli.download" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt id="pysradb.cli.get_sra_object">
+<code class="sig-prename descclassname">pysradb.cli.</code><code class="sig-name descname">get_sra_object</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">db</span><span class="o">=</span><span class="default_value">'web'</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysradb/cli.html#get_sra_object"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pysradb.cli.get_sra_object" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt id="pysradb.cli.gse_to_gsm">
+<code class="sig-prename descclassname">pysradb.cli.</code><code class="sig-name descname">gse_to_gsm</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">gse_ids</span></em>, <em class="sig-param"><span class="n">db</span></em>, <em class="sig-param"><span class="n">saveto</span></em>, <em class="sig-param"><span class="n">detailed</span></em>, <em class="sig-param"><span class="n">desc</span></em>, <em class="sig-param"><span class="n">expand</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysradb/cli.html#gse_to_gsm"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pysradb.cli.gse_to_gsm" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt id="pysradb.cli.gse_to_srp">
+<code class="sig-prename descclassname">pysradb.cli.</code><code class="sig-name descname">gse_to_srp</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">gse_ids</span></em>, <em class="sig-param"><span class="n">db</span></em>, <em class="sig-param"><span class="n">saveto</span></em>, <em class="sig-param"><span class="n">detailed</span></em>, <em class="sig-param"><span class="n">desc</span></em>, <em class="sig-param"><span class="n">expand</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysradb/cli.html#gse_to_srp"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pysradb.cli.gse_to_srp" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt id="pysradb.cli.gsm_to_gse">
+<code class="sig-prename descclassname">pysradb.cli.</code><code class="sig-name descname">gsm_to_gse</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">gsm_ids</span></em>, <em class="sig-param"><span class="n">db</span></em>, <em class="sig-param"><span class="n">saveto</span></em>, <em class="sig-param"><span class="n">detailed</span></em>, <em class="sig-param"><span class="n">desc</span></em>, <em class="sig-param"><span class="n">expand</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysradb/cli.html#gsm_to_gse"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pysradb.cli.gsm_to_gse" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt id="pysradb.cli.gsm_to_srp">
+<code class="sig-prename descclassname">pysradb.cli.</code><code class="sig-name descname">gsm_to_srp</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">gsm_ids</span></em>, <em class="sig-param"><span class="n">db</span></em>, <em class="sig-param"><span class="n">saveto</span></em>, <em class="sig-param"><span class="n">detailed</span></em>, <em class="sig-param"><span class="n">desc</span></em>, <em class="sig-param"><span class="n">expand</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysradb/cli.html#gsm_to_srp"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pysradb.cli.gsm_to_srp" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt id="pysradb.cli.gsm_to_srr">
+<code class="sig-prename descclassname">pysradb.cli.</code><code class="sig-name descname">gsm_to_srr</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">gsm_ids</span></em>, <em class="sig-param"><span class="n">db</span></em>, <em class="sig-param"><span class="n">saveto</span></em>, <em class="sig-param"><span class="n">detailed</span></em>, <em class="sig-param"><span class="n">desc</span></em>, <em class="sig-param"><span class="n">expand</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysradb/cli.html#gsm_to_srr"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pysradb.cli.gsm_to_srr" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt id="pysradb.cli.gsm_to_srs">
+<code class="sig-prename descclassname">pysradb.cli.</code><code class="sig-name descname">gsm_to_srs</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">gsm_ids</span></em>, <em class="sig-param"><span class="n">db</span></em>, <em class="sig-param"><span class="n">saveto</span></em>, <em class="sig-param"><span class="n">detailed</span></em>, <em class="sig-param"><span class="n">desc</span></em>, <em class="sig-param"><span class="n">expand</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysradb/cli.html#gsm_to_srs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pysradb.cli.gsm_to_srs" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt id="pysradb.cli.gsm_to_srx">
+<code class="sig-prename descclassname">pysradb.cli.</code><code class="sig-name descname">gsm_to_srx</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">gsm_ids</span></em>, <em class="sig-param"><span class="n">db</span></em>, <em class="sig-param"><span class="n">saveto</span></em>, <em class="sig-param"><span class="n">detailed</span></em>, <em class="sig-param"><span class="n">desc</span></em>, <em class="sig-param"><span class="n">expand</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysradb/cli.html#gsm_to_srx"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pysradb.cli.gsm_to_srx" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt id="pysradb.cli.metadata">
+<code class="sig-prename descclassname">pysradb.cli.</code><code class="sig-name descname">metadata</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">srp_id</span></em>, <em class="sig-param"><span class="n">db</span></em>, <em class="sig-param"><span class="n">assay</span></em>, <em class="sig-param"><span class="n">desc</span></em>, <em class="sig-param"><span class="n">detailed</span></em>, <em class="sig-param"><span class="n">expand</span></em>, <em class="sig-param"><span class="n">saveto</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysradb/cli.html#metadata"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pysradb.cli.metadata" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt id="pysradb.cli.metadb">
+<code class="sig-prename descclassname">pysradb.cli.</code><code class="sig-name descname">metadb</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">out_dir</span></em>, <em class="sig-param"><span class="n">overwrite</span></em>, <em class="sig-param"><span class="n">keep_gz</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysradb/cli.html#metadb"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pysradb.cli.metadb" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt id="pysradb.cli.parse_args">
+<code class="sig-prename descclassname">pysradb.cli.</code><code class="sig-name descname">parse_args</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">args</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysradb/cli.html#parse_args"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pysradb.cli.parse_args" title="Permalink to this definition">¶</a></dt>
+<dd><p>Argument parser</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="pysradb.cli.search">
+<code class="sig-prename descclassname">pysradb.cli.</code><code class="sig-name descname">search</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">saveto</span></em>, <em class="sig-param"><span class="n">db</span></em>, <em class="sig-param"><span class="n">verbosity</span></em>, <em class="sig-param"><span class="n">return_max</span></em>, <em class="sig-param"><span class="n">fields</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysradb/cli.html#search"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pysradb.cli.search" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt id="pysradb.cli.srp_to_gse">
+<code class="sig-prename descclassname">pysradb.cli.</code><code class="sig-name descname">srp_to_gse</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">srp_id</span></em>, <em class="sig-param"><span class="n">db</span></em>, <em class="sig-param"><span class="n">saveto</span></em>, <em class="sig-param"><span class="n">detailed</span></em>, <em class="sig-param"><span class="n">desc</span></em>, <em class="sig-param"><span class="n">expand</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysradb/cli.html#srp_to_gse"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pysradb.cli.srp_to_gse" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt id="pysradb.cli.srp_to_srr">
+<code class="sig-prename descclassname">pysradb.cli.</code><code class="sig-name descname">srp_to_srr</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">srp_id</span></em>, <em class="sig-param"><span class="n">db</span></em>, <em class="sig-param"><span class="n">saveto</span></em>, <em class="sig-param"><span class="n">detailed</span></em>, <em class="sig-param"><span class="n">desc</span></em>, <em class="sig-param"><span class="n">expand</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysradb/cli.html#srp_to_srr"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pysradb.cli.srp_to_srr" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt id="pysradb.cli.srp_to_srs">
+<code class="sig-prename descclassname">pysradb.cli.</code><code class="sig-name descname">srp_to_srs</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">srp_id</span></em>, <em class="sig-param"><span class="n">db</span></em>, <em class="sig-param"><span class="n">saveto</span></em>, <em class="sig-param"><span class="n">detailed</span></em>, <em class="sig-param"><span class="n">desc</span></em>, <em class="sig-param"><span class="n">expand</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysradb/cli.html#srp_to_srs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pysradb.cli.srp_to_srs" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt id="pysradb.cli.srp_to_srx">
+<code class="sig-prename descclassname">pysradb.cli.</code><code class="sig-name descname">srp_to_srx</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">srp_id</span></em>, <em class="sig-param"><span class="n">db</span></em>, <em class="sig-param"><span class="n">saveto</span></em>, <em class="sig-param"><span class="n">detailed</span></em>, <em class="sig-param"><span class="n">desc</span></em>, <em class="sig-param"><span class="n">expand</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysradb/cli.html#srp_to_srx"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pysradb.cli.srp_to_srx" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt id="pysradb.cli.srr_to_gsm">
+<code class="sig-prename descclassname">pysradb.cli.</code><code class="sig-name descname">srr_to_gsm</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">srr_ids</span></em>, <em class="sig-param"><span class="n">db</span></em>, <em class="sig-param"><span class="n">saveto</span></em>, <em class="sig-param"><span class="n">detailed</span></em>, <em class="sig-param"><span class="n">desc</span></em>, <em class="sig-param"><span class="n">expand</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysradb/cli.html#srr_to_gsm"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pysradb.cli.srr_to_gsm" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt id="pysradb.cli.srr_to_srp">
+<code class="sig-prename descclassname">pysradb.cli.</code><code class="sig-name descname">srr_to_srp</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">srr_ids</span></em>, <em class="sig-param"><span class="n">db</span></em>, <em class="sig-param"><span class="n">saveto</span></em>, <em class="sig-param"><span class="n">detailed</span></em>, <em class="sig-param"><span class="n">desc</span></em>, <em class="sig-param"><span class="n">expand</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysradb/cli.html#srr_to_srp"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pysradb.cli.srr_to_srp" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt id="pysradb.cli.srr_to_srs">
+<code class="sig-prename descclassname">pysradb.cli.</code><code class="sig-name descname">srr_to_srs</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">srr_ids</span></em>, <em class="sig-param"><span class="n">db</span></em>, <em class="sig-param"><span class="n">saveto</span></em>, <em class="sig-param"><span class="n">detailed</span></em>, <em class="sig-param"><span class="n">desc</span></em>, <em class="sig-param"><span class="n">expand</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysradb/cli.html#srr_to_srs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pysradb.cli.srr_to_srs" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt id="pysradb.cli.srr_to_srx">
+<code class="sig-prename descclassname">pysradb.cli.</code><code class="sig-name descname">srr_to_srx</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">srr_ids</span></em>, <em class="sig-param"><span class="n">db</span></em>, <em class="sig-param"><span class="n">saveto</span></em>, <em class="sig-param"><span class="n">detailed</span></em>, <em class="sig-param"><span class="n">desc</span></em>, <em class="sig-param"><span class="n">expand</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysradb/cli.html#srr_to_srx"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pysradb.cli.srr_to_srx" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt id="pysradb.cli.srs_to_gsm">
+<code class="sig-prename descclassname">pysradb.cli.</code><code class="sig-name descname">srs_to_gsm</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">srs_ids</span></em>, <em class="sig-param"><span class="n">db</span></em>, <em class="sig-param"><span class="n">saveto</span></em>, <em class="sig-param"><span class="n">detailed</span></em>, <em class="sig-param"><span class="n">desc</span></em>, <em class="sig-param"><span class="n">expand</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysradb/cli.html#srs_to_gsm"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pysradb.cli.srs_to_gsm" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt id="pysradb.cli.srs_to_srx">
+<code class="sig-prename descclassname">pysradb.cli.</code><code class="sig-name descname">srs_to_srx</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">srs_ids</span></em>, <em class="sig-param"><span class="n">db</span></em>, <em class="sig-param"><span class="n">saveto</span></em>, <em class="sig-param"><span class="n">detailed</span></em>, <em class="sig-param"><span class="n">desc</span></em>, <em class="sig-param"><span class="n">expand</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysradb/cli.html#srs_to_srx"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pysradb.cli.srs_to_srx" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt id="pysradb.cli.srx_to_srp">
+<code class="sig-prename descclassname">pysradb.cli.</code><code class="sig-name descname">srx_to_srp</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">srx_ids</span></em>, <em class="sig-param"><span class="n">db</span></em>, <em class="sig-param"><span class="n">saveto</span></em>, <em class="sig-param"><span class="n">detailed</span></em>, <em class="sig-param"><span class="n">desc</span></em>, <em class="sig-param"><span class="n">expand</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysradb/cli.html#srx_to_srp"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pysradb.cli.srx_to_srp" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt id="pysradb.cli.srx_to_srr">
+<code class="sig-prename descclassname">pysradb.cli.</code><code class="sig-name descname">srx_to_srr</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">srx_ids</span></em>, <em class="sig-param"><span class="n">db</span></em>, <em class="sig-param"><span class="n">saveto</span></em>, <em class="sig-param"><span class="n">detailed</span></em>, <em class="sig-param"><span class="n">desc</span></em>, <em class="sig-param"><span class="n">expand</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysradb/cli.html#srx_to_srr"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pysradb.cli.srx_to_srr" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt id="pysradb.cli.srx_to_srs">
+<code class="sig-prename descclassname">pysradb.cli.</code><code class="sig-name descname">srx_to_srs</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">srx_ids</span></em>, <em class="sig-param"><span class="n">db</span></em>, <em class="sig-param"><span class="n">saveto</span></em>, <em class="sig-param"><span class="n">detailed</span></em>, <em class="sig-param"><span class="n">desc</span></em>, <em class="sig-param"><span class="n">expand</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysradb/cli.html#srx_to_srs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pysradb.cli.srx_to_srs" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="module-pysradb.download">
+<span id="pysradb-download-module"></span><h2>pysradb.download module<a class="headerlink" href="#module-pysradb.download" title="Permalink to this headline">¶</a></h2>
+<p>Utility function to download data</p>
+<dl class="py function">
+<dt id="pysradb.download.download_file">
+<code class="sig-prename descclassname">pysradb.download.</code><code class="sig-name descname">download_file</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">url</span></em>, <em class="sig-param"><span class="n">file_path</span></em>, <em class="sig-param"><span class="n">md5_hash</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">timeout</span><span class="o">=</span><span class="default_value">10</span></em>, <em class="sig-param"><span class="n">block_size</span><span class="o">=</span><span class="default_value">1048576</span></em>, <em class="sig-param"><span class="n">show_progress</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysradb/download.html#download_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pysradb.download.download_file" title="Permalink to this definition">¶</a></dt>
+<dd><p>Resumable download.
+Expect the server to support byte ranges.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>url: string</strong></dt><dd><p>URL</p>
+</dd>
+<dt><strong>file_path: string</strong></dt><dd><p>Local file path to store the downloaded file</p>
+</dd>
+<dt><strong>md5_hash: string</strong></dt><dd><p>Expected MD5 string of downloaded file</p>
+</dd>
+<dt><strong>timeout: int</strong></dt><dd><p>Seconds to wait before terminating request</p>
+</dd>
+<dt><strong>block_size: int</strong></dt><dd><p>Chunkx of bytes to read (default: 1024 * 1024 = 1MB)</p>
+</dd>
+<dt><strong>show_progress: bool</strong></dt><dd><p>Show progress bar</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="pysradb.download.get_file_size">
+<code class="sig-prename descclassname">pysradb.download.</code><code class="sig-name descname">get_file_size</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">row</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysradb/download.html#get_file_size"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pysradb.download.get_file_size" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get size of file to be downloaded.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>row: pd.DataFrame row</strong></dt><dd></dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>content_length: int</strong></dt><dd></dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="pysradb.download.md5_validate_file">
+<code class="sig-prename descclassname">pysradb.download.</code><code class="sig-name descname">md5_validate_file</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">file_path</span></em>, <em class="sig-param"><span class="n">md5_hash</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysradb/download.html#md5_validate_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pysradb.download.md5_validate_file" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check file containt against an MD5.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>file_path: string</strong></dt><dd><p>Path to file</p>
+</dd>
+<dt><strong>md5_hash: string</strong></dt><dd><p>Expected md5 hash</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>valid: bool</strong></dt><dd><p>True if expected and observed md5 match</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="pysradb.download.millify">
+<code class="sig-prename descclassname">pysradb.download.</code><code class="sig-name descname">millify</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">n</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysradb/download.html#millify"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pysradb.download.millify" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert integer to human readable format.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>n</strong><span class="classifier">int</span></dt><dd></dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>millidx</strong><span class="classifier">str</span></dt><dd><p>Formatted integer</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="module-pysradb.filter_attrs">
+<span id="pysradb-filter-attrs-module"></span><h2>pysradb.filter_attrs module<a class="headerlink" href="#module-pysradb.filter_attrs" title="Permalink to this headline">¶</a></h2>
+<dl class="py function">
+<dt id="pysradb.filter_attrs.expand_sample_attribute_columns">
+<code class="sig-prename descclassname">pysradb.filter_attrs.</code><code class="sig-name descname">expand_sample_attribute_columns</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">metadata_df</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysradb/filter_attrs.html#expand_sample_attribute_columns"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pysradb.filter_attrs.expand_sample_attribute_columns" title="Permalink to this definition">¶</a></dt>
+<dd><p>Expand sample attribute columns to individual columns.</p>
+<p>Since the sample_attribute column content can be different
+for differnt rows even if coming from the same project (SRP),
+we explicitly iterate through the rows to first determine
+what additional columns need to be created.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>metadata_df: DataFrame</strong></dt><dd><p>Dataframe as obtained from sra_metadata
+or equivalent</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>expanded_df: DataFrame</strong></dt><dd><p>Dataframe with additionals columns pertaining
+to sample_attribute appended</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="pysradb.filter_attrs.guess_cell_type">
+<code class="sig-prename descclassname">pysradb.filter_attrs.</code><code class="sig-name descname">guess_cell_type</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">sample_attribute</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysradb/filter_attrs.html#guess_cell_type"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pysradb.filter_attrs.guess_cell_type" title="Permalink to this definition">¶</a></dt>
+<dd><p>Guess possible cell line from sample_attribute data.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>sample_attribute: string</strong></dt><dd><p>sample_attribute string as in the metadata column</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>cell_type: string</strong></dt><dd><p>Possible cell type of sample.
+Returns None if no match found.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="pysradb.filter_attrs.guess_strain_type">
+<code class="sig-prename descclassname">pysradb.filter_attrs.</code><code class="sig-name descname">guess_strain_type</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">sample_attribute</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysradb/filter_attrs.html#guess_strain_type"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pysradb.filter_attrs.guess_strain_type" title="Permalink to this definition">¶</a></dt>
+<dd><p>Guess strain type from sample_attribute data.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>sample_attribute: string</strong></dt><dd><p>sample_attribute string as in the metadata column</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>strain_type: string</strong></dt><dd><p>Possible cell type of sample.
+Returns None if no match found.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="pysradb.filter_attrs.guess_tissue_type">
+<code class="sig-prename descclassname">pysradb.filter_attrs.</code><code class="sig-name descname">guess_tissue_type</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">sample_attribute</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysradb/filter_attrs.html#guess_tissue_type"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pysradb.filter_attrs.guess_tissue_type" title="Permalink to this definition">¶</a></dt>
+<dd><p>Guess tissue type from sample_attribute data.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>sample_attribute: string</strong></dt><dd><p>sample_attribute string as in the metadata column</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>tissue_type: string</strong></dt><dd><p>Possible cell type of sample.
+Returns None if no match found.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="module-pysradb.geodb">
+<span id="pysradb-geodb-module"></span><h2>pysradb.geodb module<a class="headerlink" href="#module-pysradb.geodb" title="Permalink to this headline">¶</a></h2>
+<p>Methods to interact with SRA</p>
+<dl class="py class">
+<dt id="pysradb.geodb.GEOdb">
+<em class="property">class </em><code class="sig-prename descclassname">pysradb.geodb.</code><code class="sig-name descname">GEOdb</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">sqlite_file</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysradb/geodb.html#GEOdb"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pysradb.geodb.GEOdb" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pysradb.basedb.BASEdb" title="pysradb.basedb.BASEdb"><code class="xref py py-class docutils literal notranslate"><span class="pre">pysradb.basedb.BASEdb</span></code></a></p>
+<dl class="py method">
+<dt id="pysradb.geodb.GEOdb.geo_convert">
+<code class="sig-name descname">geo_convert</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">from_acc</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysradb/geodb.html#GEOdb.geo_convert"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pysradb.geodb.GEOdb.geo_convert" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert one GEO accession to other.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>from_acc: string</strong></dt><dd><p>GPL/GSE/GSM accession ID</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>mapping_df: DataFrame</strong></dt><dd><p>A dataframe with relevant mappings</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pysradb.geodb.GEOdb.gse_metadata">
+<code class="sig-name descname">gse_metadata</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">gse</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysradb/geodb.html#GEOdb.gse_metadata"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pysradb.geodb.GEOdb.gse_metadata" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get metadata for GSE ID.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>gse: string</strong></dt><dd><p>GSE ID</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>metadata_df: DataFrame</strong></dt><dd><p>A dataframe with relevant fields</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pysradb.geodb.GEOdb.gse_to_gsm">
+<code class="sig-name descname">gse_to_gsm</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">gse</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysradb/geodb.html#GEOdb.gse_to_gsm"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pysradb.geodb.GEOdb.gse_to_gsm" title="Permalink to this definition">¶</a></dt>
+<dd><p>Fetch GSMs for a GSE.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>gse: string</strong></dt><dd><p>GSE ID</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>mapping_df: DataFrame</strong></dt><dd><p>A dataframe with relevant mappings</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pysradb.geodb.GEOdb.gsm_metadata">
+<code class="sig-name descname">gsm_metadata</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">gsm</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysradb/geodb.html#GEOdb.gsm_metadata"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pysradb.geodb.GEOdb.gsm_metadata" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get metadata for GSM ID.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>gsm: string</strong></dt><dd><p>GSM ID</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>metadata_df: DataFrame</strong></dt><dd><p>A dataframe with relevant fields</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pysradb.geodb.GEOdb.gsm_to_gse">
+<code class="sig-name descname">gsm_to_gse</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">gsm</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysradb/geodb.html#GEOdb.gsm_to_gse"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pysradb.geodb.GEOdb.gsm_to_gse" title="Permalink to this definition">¶</a></dt>
+<dd><p>Fetch GSE for a GSM.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>gsm: string</strong></dt><dd><p>GSM ID</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>mapping_df: DataFrame</strong></dt><dd><p>A dataframe with relevant mappings</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pysradb.geodb.GEOdb.guess_srp_from_gse">
+<code class="sig-name descname">guess_srp_from_gse</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">gse</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysradb/geodb.html#GEOdb.guess_srp_from_gse"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pysradb.geodb.GEOdb.guess_srp_from_gse" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert GSE to SRP id.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>gse: string</strong></dt><dd><p>GSE ID</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>srp: string</strong></dt><dd><p>SRP ID</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt id="pysradb.geodb.download_geodb_file">
+<code class="sig-prename descclassname">pysradb.geodb.</code><code class="sig-name descname">download_geodb_file</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">download_dir</span><span class="o">=</span><span class="default_value">'D:\\Projects\\github-io\\bscrow.github.io\\docs'</span></em>, <em class="sig-param"><span class="n">overwrite</span><span class="o">=</span><span class="default_value">True</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysradb/geodb.html#download_geodb_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pysradb.geodb.download_geodb_file" title="Permalink to this definition">¶</a></dt>
+<dd><p>Download GEOmetadb.sqlite file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>download_dir: string</strong></dt><dd><p>Directory to download SRAmetadb.sqlite</p>
+</dd>
+<dt><strong>overwrite: bool</strong></dt><dd><p>overwrite existing file(s).
+Set to True by default.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="module-pysradb.sradb">
+<span id="pysradb-sradb-module"></span><h2>pysradb.sradb module<a class="headerlink" href="#module-pysradb.sradb" title="Permalink to this headline">¶</a></h2>
+<p>Methods to interact with SRA</p>
+<dl class="py class">
+<dt id="pysradb.sradb.SRAdb">
+<em class="property">class </em><code class="sig-prename descclassname">pysradb.sradb.</code><code class="sig-name descname">SRAdb</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">sqlite_file</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysradb/sradb.html#SRAdb"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pysradb.sradb.SRAdb" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pysradb.basedb.BASEdb" title="pysradb.basedb.BASEdb"><code class="xref py py-class docutils literal notranslate"><span class="pre">pysradb.basedb.BASEdb</span></code></a></p>
+<dl class="py method">
+<dt id="pysradb.sradb.SRAdb.download">
+<code class="sig-name descname">download</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">srp</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">df</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">url_col</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">out_dir</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">filter_by_srx</span><span class="o">=</span><span class="default_value">[]</span></em>, <em class="sig-param"><span class="n">use_ascp</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">ascp_dir</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">ascp_bin</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">skip_confirmation</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">threads</span><span class="o">=</span><span class="default_value">1</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysradb/sradb.html#SRAdb.download"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pysradb.sradb.SRAdb.download" title="Permalink to this definition">¶</a></dt>
+<dd><p>Download SRA files.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>srp: string</strong></dt><dd><p>SRP ID (optional)</p>
+</dd>
+<dt><strong>df: Dataframe</strong></dt><dd><p>A dataframe as obtained from <cite>sra_metadata</cite></p>
+</dd>
+<dt><strong>url_col: string</strong></dt><dd><p>Column of df to use for downloading</p>
+</dd>
+<dt><strong>out_dir: string</strong></dt><dd><p>Directory location for download</p>
+</dd>
+<dt><strong>filter_by_srx: list</strong></dt><dd><p>List of SRX ids to filter</p>
+</dd>
+<dt><strong>protocol: string</strong></dt><dd><p>[‘fasp’/’ftp’] fasp =&gt; faster download, ftp =&gt; slower</p>
+</dd>
+<dt><strong>ascp_dir: string</strong></dt><dd><p>Location of ascp directory</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pysradb.sradb.SRAdb.gse_to_gsm">
+<code class="sig-name descname">gse_to_gsm</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">gses</span></em>, <em class="sig-param"><span class="n">sample_attribute</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">detailed</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">expand_sample_attributes</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysradb/sradb.html#SRAdb.gse_to_gsm"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pysradb.sradb.SRAdb.gse_to_gsm" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert GSE to GSM</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>gses: string or list</strong></dt><dd><p>List of GSE ID</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>gse_to_gsm_df: DataFrame</strong></dt><dd></dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pysradb.sradb.SRAdb.gse_to_srp">
+<code class="sig-name descname">gse_to_srp</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">gses</span></em>, <em class="sig-param"><span class="n">sample_attribute</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">detailed</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">expand_sample_attributes</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysradb/sradb.html#SRAdb.gse_to_srp"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pysradb.sradb.SRAdb.gse_to_srp" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert SRP to GSE</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>gses: string or list</strong></dt><dd><p>List of GSE ID</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>gse_to_srp_df: DataFrame</strong></dt><dd></dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pysradb.sradb.SRAdb.gsm_to_gse">
+<code class="sig-name descname">gsm_to_gse</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">gsms</span></em>, <em class="sig-param"><span class="n">sample_attribute</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">detailed</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">expand_sample_attributes</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysradb/sradb.html#SRAdb.gsm_to_gse"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pysradb.sradb.SRAdb.gsm_to_gse" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert GSM to GSE</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>gsms: string or list</strong></dt><dd><p>List of GSM ID</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>gsm_to_gse_df: DataFrame</strong></dt><dd></dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pysradb.sradb.SRAdb.gsm_to_srp">
+<code class="sig-name descname">gsm_to_srp</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">gsms</span></em>, <em class="sig-param"><span class="n">sample_attribute</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">detailed</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">expand_sample_attributes</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysradb/sradb.html#SRAdb.gsm_to_srp"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pysradb.sradb.SRAdb.gsm_to_srp" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert GSM to SRP.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>gsms: string or list</strong></dt><dd><p>List of GSM ID</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>gsm_to_srp_df: DataFrame</strong></dt><dd></dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pysradb.sradb.SRAdb.gsm_to_srr">
+<code class="sig-name descname">gsm_to_srr</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">gsms</span></em>, <em class="sig-param"><span class="n">sample_attribute</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">detailed</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">expand_sample_attributes</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysradb/sradb.html#SRAdb.gsm_to_srr"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pysradb.sradb.SRAdb.gsm_to_srr" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert GSMs to SRR.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>gsms: string or list</strong></dt><dd><p>List of GSM id</p>
+</dd>
+<dt><strong>sample_attribute: bool</strong></dt><dd><p>Include <cite>sample_attribute</cite> column</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>gsm_to_srr_df: DataFrame</strong></dt><dd><p>DataFrame with two columns for GSM/SRR</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pysradb.sradb.SRAdb.gsm_to_srs">
+<code class="sig-name descname">gsm_to_srs</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">gsms</span></em>, <em class="sig-param"><span class="n">sample_attribute</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">detailed</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">expand_sample_attributes</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysradb/sradb.html#SRAdb.gsm_to_srs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pysradb.sradb.SRAdb.gsm_to_srs" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert GSM to SRS.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>gsms: list or string</strong></dt><dd><p>List of gsms</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>gsm_to_srs_df: DataFrame</strong></dt><dd></dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pysradb.sradb.SRAdb.gsm_to_srx">
+<code class="sig-name descname">gsm_to_srx</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">gsms</span></em>, <em class="sig-param"><span class="n">sample_attribute</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">detailed</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">expand_sample_attributes</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysradb/sradb.html#SRAdb.gsm_to_srx"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pysradb.sradb.SRAdb.gsm_to_srx" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert GSM to SRX.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>srx: string</strong></dt><dd><p>SRX ID</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>srs_to_srx_df: DataFrame</strong></dt><dd></dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pysradb.sradb.SRAdb.search_by_expt_id">
+<code class="sig-name descname">search_by_expt_id</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">srx</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysradb/sradb.html#SRAdb.search_by_expt_id"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pysradb.sradb.SRAdb.search_by_expt_id" title="Permalink to this definition">¶</a></dt>
+<dd><p>Search for a SRX/GSM id in the experiments.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>srx: string</strong></dt><dd><p>SRX (experiment_accession) ID</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>results: dict</strong></dt><dd><p>Dictionary with relevant hits</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pysradb.sradb.SRAdb.search_sra">
+<code class="sig-name descname">search_sra</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">search_str</span></em>, <em class="sig-param"><span class="n">out_type</span><span class="o">=</span><span class="default_value">['study_accession', 'experiment_accession', 'sample_accession', 'run_accession']</span></em>, <em class="sig-param"><span class="n">assay</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">sample_attribute</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">detailed</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">expand_sample_attributes</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">output_read_lengths</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysradb/sradb.html#SRAdb.search_sra"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pysradb.sradb.SRAdb.search_sra" title="Permalink to this definition">¶</a></dt>
+<dd><p>Search SRA for any search term.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>search_str: string</strong></dt><dd><p>SQL like text string to search.
+SQL like text =&gt; For example,
+terms in quotes “” enforce an exact search.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>query_df: DataFrame</strong></dt><dd><p>Dataframe with relevant query results</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pysradb.sradb.SRAdb.sra_metadata">
+<code class="sig-name descname">sra_metadata</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">acc</span></em>, <em class="sig-param"><span class="n">out_type</span><span class="o">=</span><span class="default_value">['study_accession', 'experiment_accession', 'sample_accession', 'run_accession']</span></em>, <em class="sig-param"><span class="n">assay</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">sample_attribute</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">detailed</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">expand_sample_attributes</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">output_read_lengths</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">acc_is_searchstr</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysradb/sradb.html#SRAdb.sra_metadata"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pysradb.sradb.SRAdb.sra_metadata" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get metadata for the provided SRA accession.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>acc: string or list</strong></dt><dd><p>SRA accession ID</p>
+</dd>
+<dt><strong>out_type: list</strong></dt><dd><p>List of columns to output</p>
+</dd>
+<dt><strong>assay: bool</strong></dt><dd><p>True if assay should be outputted</p>
+</dd>
+<dt><strong>sample_attribute: bool</strong></dt><dd><p>True if sample_attribute should be outputted</p>
+</dd>
+<dt><strong>detailed: bool</strong></dt><dd><p>True if full metadata tables should be outputted</p>
+</dd>
+<dt><strong>expand_sample_attributes: bool</strong></dt><dd><p>Should sample_attribute column be expanded?</p>
+</dd>
+<dt><strong>output_read_lengths: bool</strong></dt><dd><p>True if read lengths should be calculated</p>
+</dd>
+<dt><strong>acc_is_searchstr: bool</strong></dt><dd><p>True if acc is a search string</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>metadata_df: DataFrame</strong></dt><dd><p>A dataframe with all relevant columns</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pysradb.sradb.SRAdb.srp_to_gse">
+<code class="sig-name descname">srp_to_gse</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">srp</span></em>, <em class="sig-param"><span class="n">sample_attribute</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">detailed</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">expand_sample_attributes</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysradb/sradb.html#SRAdb.srp_to_gse"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pysradb.sradb.SRAdb.srp_to_gse" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert SRP to GSE</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>srp: string</strong></dt><dd><p>SRP ID</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>srp_to_srr_df: DataFrame</strong></dt><dd></dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pysradb.sradb.SRAdb.srp_to_srr">
+<code class="sig-name descname">srp_to_srr</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">srp</span></em>, <em class="sig-param"><span class="n">sample_attribute</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">detailed</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">expand_sample_attributes</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysradb/sradb.html#SRAdb.srp_to_srr"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pysradb.sradb.SRAdb.srp_to_srr" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert SRP to SRR.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>srp: string</strong></dt><dd><p>SRP ID</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>srp_to_srr_df: DataFrame</strong></dt><dd></dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pysradb.sradb.SRAdb.srp_to_srs">
+<code class="sig-name descname">srp_to_srs</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">srp</span></em>, <em class="sig-param"><span class="n">sample_attribute</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">detailed</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">expand_sample_attributes</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysradb/sradb.html#SRAdb.srp_to_srs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pysradb.sradb.SRAdb.srp_to_srs" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert SRP to SRS.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>srp: string</strong></dt><dd><p>SRP ID</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>srp_to_srs_df: DataFrame</strong></dt><dd><p>DataFrame with two columns for SRS</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pysradb.sradb.SRAdb.srp_to_srx">
+<code class="sig-name descname">srp_to_srx</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">srp</span></em>, <em class="sig-param"><span class="n">sample_attribute</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">detailed</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">expand_sample_attributes</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysradb/sradb.html#SRAdb.srp_to_srx"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pysradb.sradb.SRAdb.srp_to_srx" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert SRP to SRX/SRR.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>srp: string</strong></dt><dd><p>SRP ID</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>srp_to_srx_df: DataFrame</strong></dt><dd><p>DataFrame with two columns for SRX/SRR</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pysradb.sradb.SRAdb.srr_to_gsm">
+<code class="sig-name descname">srr_to_gsm</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">srrs</span></em>, <em class="sig-param"><span class="n">sample_attribute</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">detailed</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">expand_sample_attributes</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysradb/sradb.html#SRAdb.srr_to_gsm"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pysradb.sradb.SRAdb.srr_to_gsm" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert SRR to GSM</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>gses: string or list</strong></dt><dd><p>List of SRR</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>srr_to_gsm_df: DataFrame</strong></dt><dd></dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pysradb.sradb.SRAdb.srr_to_srp">
+<code class="sig-name descname">srr_to_srp</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">srrs</span></em>, <em class="sig-param"><span class="n">sample_attribute</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">detailed</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">expand_sample_attributes</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysradb/sradb.html#SRAdb.srr_to_srp"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pysradb.sradb.SRAdb.srr_to_srp" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert SRR to SRP.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>srr: list of string</strong></dt><dd><p>List of SRR IDs</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>srr_to_srp_df: DataFrame</strong></dt><dd></dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pysradb.sradb.SRAdb.srr_to_srs">
+<code class="sig-name descname">srr_to_srs</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">srrs</span></em>, <em class="sig-param"><span class="n">sample_attribute</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">detailed</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">expand_sample_attributes</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysradb/sradb.html#SRAdb.srr_to_srs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pysradb.sradb.SRAdb.srr_to_srs" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert SRR to SRS.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>srr: list of string</strong></dt><dd><p>List of SRR IDs</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>srp_to_srs_df: DataFrame</strong></dt><dd></dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pysradb.sradb.SRAdb.srr_to_srx">
+<code class="sig-name descname">srr_to_srx</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">srrs</span></em>, <em class="sig-param"><span class="n">sample_attribute</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">detailed</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">expand_sample_attributes</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysradb/sradb.html#SRAdb.srr_to_srx"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pysradb.sradb.SRAdb.srr_to_srx" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert SRR to SRX.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>srrs: string or list</strong></dt><dd><p>List of SRR id</p>
+</dd>
+<dt><strong>sample_attribute: bool</strong></dt><dd><p>Include <cite>sample_attribute</cite> column</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>srr_to_srx_df: DataFrame</strong></dt><dd><p>DataFrame with two columns for SRX/SRR</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pysradb.sradb.SRAdb.srs_to_gsm">
+<code class="sig-name descname">srs_to_gsm</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">srss</span></em>, <em class="sig-param"><span class="n">sample_attribute</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">detailed</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">expand_sample_attributes</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysradb/sradb.html#SRAdb.srs_to_gsm"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pysradb.sradb.SRAdb.srs_to_gsm" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert SRS to GSM.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>srss: list or string</strong></dt><dd><p>List of SRS ID</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>srs_to_gsm_df: DataFrame</strong></dt><dd></dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pysradb.sradb.SRAdb.srs_to_srx">
+<code class="sig-name descname">srs_to_srx</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">srss</span></em>, <em class="sig-param"><span class="n">sample_attribute</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">detailed</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">expand_sample_attributes</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysradb/sradb.html#SRAdb.srs_to_srx"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pysradb.sradb.SRAdb.srs_to_srx" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert SRS to SRX.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>srx: string</strong></dt><dd><p>SRX ID</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>srs_to_srx_df: DataFrame</strong></dt><dd></dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pysradb.sradb.SRAdb.srx_to_srp">
+<code class="sig-name descname">srx_to_srp</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">srxs</span></em>, <em class="sig-param"><span class="n">sample_attribute</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">detailed</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">expand_sample_attributes</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysradb/sradb.html#SRAdb.srx_to_srp"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pysradb.sradb.SRAdb.srx_to_srp" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert SRXs to SRP.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>srxs: string or list</strong></dt><dd><p>List of SRX id</p>
+</dd>
+<dt><strong>sample_attribute: bool</strong></dt><dd><p>Include <cite>sample_attribute</cite> column</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>srx_to_srp_df: DataFrame</strong></dt><dd><p>DataFrame with two columns for SRX</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pysradb.sradb.SRAdb.srx_to_srr">
+<code class="sig-name descname">srx_to_srr</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">srxs</span></em>, <em class="sig-param"><span class="n">sample_attribute</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">detailed</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">expand_sample_attributes</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysradb/sradb.html#SRAdb.srx_to_srr"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pysradb.sradb.SRAdb.srx_to_srr" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert SRXs to SRR/SRP.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>srxs: string or list</strong></dt><dd><p>List of SRX id</p>
+</dd>
+<dt><strong>sample_attribute: bool</strong></dt><dd><p>Include <cite>sample_attribute</cite> column</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>srx_to_srp_df: DataFrame</strong></dt><dd><p>DataFrame with two columns for SRX/SRR</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pysradb.sradb.SRAdb.srx_to_srs">
+<code class="sig-name descname">srx_to_srs</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">srxs</span></em>, <em class="sig-param"><span class="n">sample_attribute</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">detailed</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">expand_sample_attributes</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysradb/sradb.html#SRAdb.srx_to_srs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pysradb.sradb.SRAdb.srx_to_srs" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert SRX to SRS.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>srx: string</strong></dt><dd><p>SRX ID</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>srp_to_srs_df: DataFrame</strong></dt><dd></dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt id="pysradb.sradb.download_sradb_file">
+<code class="sig-prename descclassname">pysradb.sradb.</code><code class="sig-name descname">download_sradb_file</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">download_dir</span><span class="o">=</span><span class="default_value">'D:\\Projects\\github-io\\bscrow.github.io\\docs'</span></em>, <em class="sig-param"><span class="n">overwrite</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">keep_gz</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysradb/sradb.html#download_sradb_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pysradb.sradb.download_sradb_file" title="Permalink to this definition">¶</a></dt>
+<dd><p>Download SRAdb.sqlite file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>download_dir: string</strong></dt><dd><p>Directory to download SRAmetadb.sqlite</p>
+</dd>
+<dt><strong>overwrite: bool</strong></dt><dd><p>overwrite existing file(s).
+Set to True by default.</p>
+</dd>
+<dt><strong>keep_gz: bool</strong></dt><dd><p>Delete .gz file after extraction is complete</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="module-pysradb.sraweb">
+<span id="pysradb-sraweb-module"></span><h2>pysradb.sraweb module<a class="headerlink" href="#module-pysradb.sraweb" title="Permalink to this headline">¶</a></h2>
+<p>Utilities to interact with SRA online</p>
+<dl class="py class">
+<dt id="pysradb.sraweb.SRAweb">
+<em class="property">class </em><code class="sig-prename descclassname">pysradb.sraweb.</code><code class="sig-name descname">SRAweb</code><a class="reference internal" href="_modules/pysradb/sraweb.html#SRAweb"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pysradb.sraweb.SRAweb" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pysradb.sradb.SRAdb" title="pysradb.sradb.SRAdb"><code class="xref py py-class docutils literal notranslate"><span class="pre">pysradb.sradb.SRAdb</span></code></a></p>
+<dl class="py method">
+<dt id="pysradb.sraweb.SRAweb.close">
+<code class="sig-name descname">close</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysradb/sraweb.html#SRAweb.close"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pysradb.sraweb.SRAweb.close" title="Permalink to this definition">¶</a></dt>
+<dd><p>Close sqlite connection.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pysradb.sraweb.SRAweb.create_esummary_params">
+<code class="sig-name descname">create_esummary_params</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">esearchresult</span></em>, <em class="sig-param"><span class="n">db</span><span class="o">=</span><span class="default_value">'sra'</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysradb/sraweb.html#SRAweb.create_esummary_params"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pysradb.sraweb.SRAweb.create_esummary_params" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pysradb.sraweb.SRAweb.fetch_ena_fastq">
+<code class="sig-name descname">fetch_ena_fastq</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">srp</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysradb/sraweb.html#SRAweb.fetch_ena_fastq"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pysradb.sraweb.SRAweb.fetch_ena_fastq" title="Permalink to this definition">¶</a></dt>
+<dd><p>Fetch FASTQ records from ENA (EXPERIMENTAL)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>srp: string</strong></dt><dd><p>Srudy accession</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>srr_url: list</strong></dt><dd><p>List of SRR fastq urls</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pysradb.sraweb.SRAweb.fetch_gds_results">
+<code class="sig-name descname">fetch_gds_results</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">gse</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysradb/sraweb.html#SRAweb.fetch_gds_results"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pysradb.sraweb.SRAweb.fetch_gds_results" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pysradb.sraweb.SRAweb.format_xml">
+<em class="property">static </em><code class="sig-name descname">format_xml</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">string</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysradb/sraweb.html#SRAweb.format_xml"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pysradb.sraweb.SRAweb.format_xml" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a fake root to make ‘string’ a valid xml</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>string: str</strong></dt><dd></dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>xml: str</strong></dt><dd></dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pysradb.sraweb.SRAweb.get_efetch_response">
+<code class="sig-name descname">get_efetch_response</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">db</span></em>, <em class="sig-param"><span class="n">term</span></em>, <em class="sig-param"><span class="n">usehistory</span><span class="o">=</span><span class="default_value">'y'</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysradb/sraweb.html#SRAweb.get_efetch_response"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pysradb.sraweb.SRAweb.get_efetch_response" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pysradb.sraweb.SRAweb.get_esummary_response">
+<code class="sig-name descname">get_esummary_response</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">db</span></em>, <em class="sig-param"><span class="n">term</span></em>, <em class="sig-param"><span class="n">usehistory</span><span class="o">=</span><span class="default_value">'y'</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysradb/sraweb.html#SRAweb.get_esummary_response"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pysradb.sraweb.SRAweb.get_esummary_response" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pysradb.sraweb.SRAweb.gse_to_gsm">
+<code class="sig-name descname">gse_to_gsm</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">gse</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysradb/sraweb.html#SRAweb.gse_to_gsm"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pysradb.sraweb.SRAweb.gse_to_gsm" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert GSE to GSM</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>gses: string or list</strong></dt><dd><p>List of GSE ID</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>gse_to_gsm_df: DataFrame</strong></dt><dd></dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pysradb.sraweb.SRAweb.gse_to_srp">
+<code class="sig-name descname">gse_to_srp</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">gse</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysradb/sraweb.html#SRAweb.gse_to_srp"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pysradb.sraweb.SRAweb.gse_to_srp" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert SRP to GSE</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>gses: string or list</strong></dt><dd><p>List of GSE ID</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>gse_to_srp_df: DataFrame</strong></dt><dd></dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pysradb.sraweb.SRAweb.gsm_to_srp">
+<code class="sig-name descname">gsm_to_srp</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">gsm</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysradb/sraweb.html#SRAweb.gsm_to_srp"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pysradb.sraweb.SRAweb.gsm_to_srp" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert GSM to SRP.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>gsms: string or list</strong></dt><dd><p>List of GSM ID</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>gsm_to_srp_df: DataFrame</strong></dt><dd></dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pysradb.sraweb.SRAweb.gsm_to_srr">
+<code class="sig-name descname">gsm_to_srr</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">gsm</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysradb/sraweb.html#SRAweb.gsm_to_srr"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pysradb.sraweb.SRAweb.gsm_to_srr" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert GSMs to SRR.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>gsms: string or list</strong></dt><dd><p>List of GSM id</p>
+</dd>
+<dt><strong>sample_attribute: bool</strong></dt><dd><p>Include <cite>sample_attribute</cite> column</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>gsm_to_srr_df: DataFrame</strong></dt><dd><p>DataFrame with two columns for GSM/SRR</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pysradb.sraweb.SRAweb.gsm_to_srs">
+<code class="sig-name descname">gsm_to_srs</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">gsm</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysradb/sraweb.html#SRAweb.gsm_to_srs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pysradb.sraweb.SRAweb.gsm_to_srs" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get SRS for a GSM</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pysradb.sraweb.SRAweb.gsm_to_srx">
+<code class="sig-name descname">gsm_to_srx</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">gsm</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysradb/sraweb.html#SRAweb.gsm_to_srx"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pysradb.sraweb.SRAweb.gsm_to_srx" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get SRX for a GSM</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pysradb.sraweb.SRAweb.search">
+<code class="sig-name descname">search</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysradb/sraweb.html#SRAweb.search"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pysradb.sraweb.SRAweb.search" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pysradb.sraweb.SRAweb.sra_metadata">
+<code class="sig-name descname">sra_metadata</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">srp</span></em>, <em class="sig-param"><span class="n">sample_attribute</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">detailed</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">expand_sample_attributes</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">output_read_lengths</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysradb/sraweb.html#SRAweb.sra_metadata"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pysradb.sraweb.SRAweb.sra_metadata" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get metadata for the provided SRA accession.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>acc: string or list</strong></dt><dd><p>SRA accession ID</p>
+</dd>
+<dt><strong>out_type: list</strong></dt><dd><p>List of columns to output</p>
+</dd>
+<dt><strong>assay: bool</strong></dt><dd><p>True if assay should be outputted</p>
+</dd>
+<dt><strong>sample_attribute: bool</strong></dt><dd><p>True if sample_attribute should be outputted</p>
+</dd>
+<dt><strong>detailed: bool</strong></dt><dd><p>True if full metadata tables should be outputted</p>
+</dd>
+<dt><strong>expand_sample_attributes: bool</strong></dt><dd><p>Should sample_attribute column be expanded?</p>
+</dd>
+<dt><strong>output_read_lengths: bool</strong></dt><dd><p>True if read lengths should be calculated</p>
+</dd>
+<dt><strong>acc_is_searchstr: bool</strong></dt><dd><p>True if acc is a search string</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>metadata_df: DataFrame</strong></dt><dd><p>A dataframe with all relevant columns</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pysradb.sraweb.SRAweb.srp_to_gse">
+<code class="sig-name descname">srp_to_gse</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">srp</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysradb/sraweb.html#SRAweb.srp_to_gse"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pysradb.sraweb.SRAweb.srp_to_gse" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get GSE for a SRP</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pysradb.sraweb.SRAweb.srp_to_srr">
+<code class="sig-name descname">srp_to_srr</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">srp</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysradb/sraweb.html#SRAweb.srp_to_srr"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pysradb.sraweb.SRAweb.srp_to_srr" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get SRR for a SRP</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pysradb.sraweb.SRAweb.srp_to_srs">
+<code class="sig-name descname">srp_to_srs</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">srp</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysradb/sraweb.html#SRAweb.srp_to_srs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pysradb.sraweb.SRAweb.srp_to_srs" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get SRS for a SRP</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pysradb.sraweb.SRAweb.srp_to_srx">
+<code class="sig-name descname">srp_to_srx</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">srp</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysradb/sraweb.html#SRAweb.srp_to_srx"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pysradb.sraweb.SRAweb.srp_to_srx" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get SRX for a SRP</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pysradb.sraweb.SRAweb.srr_to_gsm">
+<code class="sig-name descname">srr_to_gsm</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">srr</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysradb/sraweb.html#SRAweb.srr_to_gsm"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pysradb.sraweb.SRAweb.srr_to_gsm" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get GSM for a SRR</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pysradb.sraweb.SRAweb.srr_to_srp">
+<code class="sig-name descname">srr_to_srp</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">srr</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysradb/sraweb.html#SRAweb.srr_to_srp"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pysradb.sraweb.SRAweb.srr_to_srp" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get SRP for a SRR</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pysradb.sraweb.SRAweb.srr_to_srs">
+<code class="sig-name descname">srr_to_srs</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">srr</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysradb/sraweb.html#SRAweb.srr_to_srs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pysradb.sraweb.SRAweb.srr_to_srs" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get SRS for a SRR</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pysradb.sraweb.SRAweb.srr_to_srx">
+<code class="sig-name descname">srr_to_srx</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">srr</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysradb/sraweb.html#SRAweb.srr_to_srx"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pysradb.sraweb.SRAweb.srr_to_srx" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get SRX for a SRR</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pysradb.sraweb.SRAweb.srs_to_gsm">
+<code class="sig-name descname">srs_to_gsm</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">srs</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysradb/sraweb.html#SRAweb.srs_to_gsm"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pysradb.sraweb.SRAweb.srs_to_gsm" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get GSM for a SRS</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pysradb.sraweb.SRAweb.srs_to_srx">
+<code class="sig-name descname">srs_to_srx</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">srs</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysradb/sraweb.html#SRAweb.srs_to_srx"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pysradb.sraweb.SRAweb.srs_to_srx" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get SRX for a SRS</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pysradb.sraweb.SRAweb.srx_to_gsm">
+<code class="sig-name descname">srx_to_gsm</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">srx</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysradb/sraweb.html#SRAweb.srx_to_gsm"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pysradb.sraweb.SRAweb.srx_to_gsm" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pysradb.sraweb.SRAweb.srx_to_srp">
+<code class="sig-name descname">srx_to_srp</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">srx</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysradb/sraweb.html#SRAweb.srx_to_srp"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pysradb.sraweb.SRAweb.srx_to_srp" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get SRP for a SRX</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pysradb.sraweb.SRAweb.srx_to_srr">
+<code class="sig-name descname">srx_to_srr</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">srx</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysradb/sraweb.html#SRAweb.srx_to_srr"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pysradb.sraweb.SRAweb.srx_to_srr" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get SRR for a SRX</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pysradb.sraweb.SRAweb.srx_to_srs">
+<code class="sig-name descname">srx_to_srs</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">srx</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysradb/sraweb.html#SRAweb.srx_to_srs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pysradb.sraweb.SRAweb.srx_to_srs" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get SRS for a SRX</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pysradb.sraweb.SRAweb.xml_to_json">
+<em class="property">static </em><code class="sig-name descname">xml_to_json</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">xml</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysradb/sraweb.html#SRAweb.xml_to_json"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pysradb.sraweb.SRAweb.xml_to_json" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert xml to json.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>xml: str</strong></dt><dd><p>Input XML</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>xml_dict: dict</strong></dt><dd><p>Parsed xml as dict</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt id="pysradb.sraweb.get_retmax">
+<code class="sig-prename descclassname">pysradb.sraweb.</code><code class="sig-name descname">get_retmax</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">n_records</span></em>, <em class="sig-param"><span class="n">retmax</span><span class="o">=</span><span class="default_value">500</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysradb/sraweb.html#get_retmax"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pysradb.sraweb.get_retmax" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get retstart and retmax till n_records are exhausted</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-pysradb.utils">
+<span id="pysradb-utils-module"></span><h2>pysradb.utils module<a class="headerlink" href="#module-pysradb.utils" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt id="pysradb.utils.TqdmUpTo">
+<em class="property">class </em><code class="sig-prename descclassname">pysradb.utils.</code><code class="sig-name descname">TqdmUpTo</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysradb/utils.html#TqdmUpTo"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pysradb.utils.TqdmUpTo" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">tqdm.std.tqdm</span></code></p>
+<p>Alternative Class-based version of the above.
+Provides <cite>update_to(n)</cite> which uses <cite>tqdm.update(delta_n)</cite>.
+Inspired by [twine#242](<a class="reference external" href="https://github.com/pypa/twine/pull/242">https://github.com/pypa/twine/pull/242</a>),
+[here](<a class="reference external" href="https://github.com/pypa/twine/commit/42e55e06">https://github.com/pypa/twine/commit/42e55e06</a>).</p>
+<p>Credits:
+<a class="reference external" href="https://github.com/tqdm/tqdm/blob/69326b718905816bb827e0e66c5508c9c04bc06c/examples/tqdm_wget.py">https://github.com/tqdm/tqdm/blob/69326b718905816bb827e0e66c5508c9c04bc06c/examples/tqdm_wget.py</a></p>
+<dl class="py method">
+<dt id="pysradb.utils.TqdmUpTo.update_to">
+<code class="sig-name descname">update_to</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">b</span><span class="o">=</span><span class="default_value">1</span></em>, <em class="sig-param"><span class="n">bsize</span><span class="o">=</span><span class="default_value">1</span></em>, <em class="sig-param"><span class="n">tsize</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysradb/utils.html#TqdmUpTo.update_to"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pysradb.utils.TqdmUpTo.update_to" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="simple">
+<dt>b<span class="classifier">int, optional</span></dt><dd><p>Number of blocks transferred so far [default: 1].</p>
+</dd>
+<dt>bsize<span class="classifier">int, optional</span></dt><dd><p>Size of each block (in tqdm units) [default: 1].</p>
+</dd>
+<dt>tsize<span class="classifier">int, optional</span></dt><dd><p>Total size (in tqdm units). If [default: None] remains unchanged.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt id="pysradb.utils.confirm">
+<code class="sig-prename descclassname">pysradb.utils.</code><code class="sig-name descname">confirm</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">preceeding_text</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysradb/utils.html#confirm"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pysradb.utils.confirm" title="Permalink to this definition">¶</a></dt>
+<dd><p>Confirm user input.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>preceeding_text: str</strong></dt><dd><p>Text to print</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>response: bool</strong></dt><dd></dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="pysradb.utils.copyfileobj">
+<code class="sig-prename descclassname">pysradb.utils.</code><code class="sig-name descname">copyfileobj</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">fsrc</span></em>, <em class="sig-param"><span class="n">fdst</span></em>, <em class="sig-param"><span class="n">bufsize</span><span class="o">=</span><span class="default_value">16384</span></em>, <em class="sig-param"><span class="n">filesize</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">desc</span><span class="o">=</span><span class="default_value">''</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysradb/utils.html#copyfileobj"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pysradb.utils.copyfileobj" title="Permalink to this definition">¶</a></dt>
+<dd><p>Copy file object with a progress bar.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>fsrc: filehandle</strong></dt><dd><p>Input file handle</p>
+</dd>
+<dt><strong>fdst: filehandle</strong></dt><dd><p>Output file handle</p>
+</dd>
+<dt><strong>bufsize: int</strong></dt><dd><p>Length of output buffer</p>
+</dd>
+<dt><strong>filesize: int</strong></dt><dd><p>Input file file size</p>
+</dd>
+<dt><strong>desc: string</strong></dt><dd><p>Description for tqdm status</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="pysradb.utils.get_gzip_uncompressed_size">
+<code class="sig-prename descclassname">pysradb.utils.</code><code class="sig-name descname">get_gzip_uncompressed_size</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">filepath</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysradb/utils.html#get_gzip_uncompressed_size"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pysradb.utils.get_gzip_uncompressed_size" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get uncompressed size of a .gz file</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>filepath: string</strong></dt><dd><p>Path to input file</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>filesize: int</strong></dt><dd><p>Uncompressed file size</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="pysradb.utils.mkdir_p">
+<code class="sig-prename descclassname">pysradb.utils.</code><code class="sig-name descname">mkdir_p</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">path</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysradb/utils.html#mkdir_p"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pysradb.utils.mkdir_p" title="Permalink to this definition">¶</a></dt>
+<dd><p>Python version mkdir -p</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>path</strong><span class="classifier">string</span></dt><dd><p>Path to directory to create</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="pysradb.utils.order_dataframe">
+<code class="sig-prename descclassname">pysradb.utils.</code><code class="sig-name descname">order_dataframe</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">df</span></em>, <em class="sig-param"><span class="n">columns</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysradb/utils.html#order_dataframe"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pysradb.utils.order_dataframe" title="Permalink to this definition">¶</a></dt>
+<dd><p>Order a dataframe</p>
+<p>Order a dataframe by moving the <cite>columns</cite> in the front</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>df: Dataframe</strong></dt><dd><p>Dataframe</p>
+</dd>
+<dt><strong>columns: list</strong></dt><dd><p>List of columns that need to be put in front</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="pysradb.utils.path_leaf">
+<code class="sig-prename descclassname">pysradb.utils.</code><code class="sig-name descname">path_leaf</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">path</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysradb/utils.html#path_leaf"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pysradb.utils.path_leaf" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get path’s tail from a filepath.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>path: string</strong></dt><dd><p>Filepath</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>tail: string</strong></dt><dd><p>Filename</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="pysradb.utils.requests_3_retries">
+<code class="sig-prename descclassname">pysradb.utils.</code><code class="sig-name descname">requests_3_retries</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysradb/utils.html#requests_3_retries"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pysradb.utils.requests_3_retries" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generates a requests session object that allows 3 retries.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>session: requests.Session</strong></dt><dd><p>requests session object that allows 3 retries for server-side
+errors, for GET and POST requests.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="pysradb.utils.run_command">
+<code class="sig-prename descclassname">pysradb.utils.</code><code class="sig-name descname">run_command</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">command</span></em>, <em class="sig-param"><span class="n">verbose</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysradb/utils.html#run_command"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pysradb.utils.run_command" title="Permalink to this definition">¶</a></dt>
+<dd><p>Run a shell command</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="pysradb.utils.scientific_name_to_taxid">
+<code class="sig-prename descclassname">pysradb.utils.</code><code class="sig-name descname">scientific_name_to_taxid</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">name</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysradb/utils.html#scientific_name_to_taxid"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pysradb.utils.scientific_name_to_taxid" title="Permalink to this definition">¶</a></dt>
+<dd><p>Converts a scientific name to its corresponding taxonomy ID.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>name: str</strong></dt><dd><p>Scientific name of interest.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>taxid: str</strong></dt><dd><p>Taxonomy Id of the Scientific name.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>IncorrectFieldException</strong></dt><dd><p>If the scientific name cannot be found.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="pysradb.utils.unique">
+<code class="sig-prename descclassname">pysradb.utils.</code><code class="sig-name descname">unique</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">sequence</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysradb/utils.html#unique"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pysradb.utils.unique" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get unique elements from a list maintaining the order.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>input_list: list</strong></dt><dd></dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>unique_list: list</strong></dt><dd><p>List with unique elements maintaining the order</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="module-pysradb">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-pysradb" title="Permalink to this headline">¶</a></h2>
+<p>Top-level package for pysradb.</p>
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">pysradb</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cmdline.html">CLI Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="python-api-usage.html">Python API Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage_scenarios.html">Usage Scenarios</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">pysradb</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">pysradb package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#submodules">Submodules</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-pysradb.basedb">pysradb.basedb module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-pysradb.cli">pysradb.cli module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-pysradb.download">pysradb.download module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-pysradb.filter_attrs">pysradb.filter_attrs module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-pysradb.geodb">pysradb.geodb module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-pysradb.sradb">pysradb.sradb module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-pysradb.sraweb">pysradb.sraweb module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-pysradb.utils">pysradb.utils module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-pysradb">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="contributing.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="authors.html">Credits</a></li>
+<li class="toctree-l1"><a class="reference internal" href="history.html">History</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+  <li><a href="modules.html">pysradb</a><ul>
+      <li>Previous: <a href="modules.html" title="previous chapter">pysradb</a></li>
+      <li>Next: <a href="contributing.html" title="next chapter">Contributing</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2018, Saket Choudhary.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.2.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="_sources/pysradb.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

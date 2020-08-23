@@ -1,0 +1,374 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>pysradb: Python package for retrieving metadata and downloading datasets from SRA/ENA &#8212; pysradb 0.10.5-dev0 documentation</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/graphviz.css" />
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <a class="reference external image-reference" href="https://raw.githubusercontent.com/saketkc/pysradb/master/docs/_static/pysradb_v3.png"><img alt="https://raw.githubusercontent.com/saketkc/pysradb/master/docs/_static/pysradb_v3.png" src="https://raw.githubusercontent.com/saketkc/pysradb/master/docs/_static/pysradb_v3.png" /></a>
+<div class="section" id="pysradb-python-package-for-retrieving-metadata-and-downloading-datasets-from-sra-ena">
+<h1>pysradb: Python package for retrieving metadata and downloading datasets from SRA/ENA<a class="headerlink" href="#pysradb-python-package-for-retrieving-metadata-and-downloading-datasets-from-sra-ena" title="Permalink to this headline">¶</a></h1>
+<a class="reference external image-reference" href="https://pypi.python.org/pypi/pysradb"><img alt="https://img.shields.io/pypi/v/pysradb.svg?style=flat-square" src="https://img.shields.io/pypi/v/pysradb.svg?style=flat-square" /></a>
+<a class="reference external image-reference" href="http://bioconda.github.io/recipes/pysradb/README.html"><img alt="https://img.shields.io/badge/install%20with-bioconda-brightgreen.svg?style=flat-square" src="https://img.shields.io/badge/install%20with-bioconda-brightgreen.svg?style=flat-square" /></a>
+<a class="reference external image-reference" href="https://zenodo.org/badge/latestdoi/159590788"><img alt="https://zenodo.org/badge/159590788.svg" src="https://zenodo.org/badge/159590788.svg" /></a>
+<a class="reference external image-reference" href="https://travis-ci.com/saketkc/pysradb"><img alt="https://img.shields.io/travis/saketkc/pysradb.svg?style=flat-square" src="https://img.shields.io/travis/saketkc/pysradb.svg?style=flat-square" /></a>
+<div class="section" id="publication">
+<h2>Publication<a class="headerlink" href="#publication" title="Permalink to this headline">¶</a></h2>
+<blockquote>
+<div><p><a class="reference external" href="https://f1000research.com/articles/8-532/v1">pysradb: A Python package to query next-generation sequencing metadata and data from NCBI Sequence Read Archive</a></p>
+<p>Presentation slides from BOSC (ISMB-ECCB) 2019: <a class="reference external" href="https://f1000research.com/slides/8-1183">https://f1000research.com/slides/8-1183</a></p>
+</div></blockquote>
+</div>
+<div class="section" id="cli-usage">
+<h2>CLI Usage<a class="headerlink" href="#cli-usage" title="Permalink to this headline">¶</a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">pysradb</span></code> supports command line ussage. The documentation
+is in progress. See  <a class="reference external" href="https://github.com/saketkc/pysradb/blob/master/docs/cmdline.rst">cmdline</a> for
+some quick usage instructions. See <a class="reference external" href="https://www.saket-choudhary.me/pysradb/quickstart.html#the-full-list-of-possible-pysradb-operations">quickstart</a> for
+a list of instructions for each sub-command.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ pysradb
+ usage: pysradb [-h] [--version] [--citation]
+                {metadb,metadata,download,search,gse-to-gsm,gse-to-srp,gsm-to-gse,gsm-to-srp,gsm-to-srr,gsm-to-srs,gsm-to-srx,srp-to-gse,srp-to-srr,srp-to-srs,srp-to-srx,srr-to-gsm,srr-to-srp,srr-to-srs,srr-to-srx,srs-to-gsm,srs-to-srx,srx-to-srp,srx-to-srr,srx-to-srs}
+                ...
+
+ pysradb: Query NGS metadata and data from NCBI Sequence Read Archive.
+ version: 0.9.0.
+ Citation: 10.12688/f1000research.18676.1
+
+ optional arguments:
+   -h, --help            show this help message and exit
+   --version             show program&#39;s version number and exit
+   --citation            how to cite
+
+ subcommands:
+   {metadb,metadata,download,search,gse-to-gsm,gse-to-srp,gsm-to-gse,gsm-to-srp,gsm-to-srr,gsm-to-srs,gsm-to-srx,srp-to-gse,srp-to-srr,srp-to-srs,srp-to-srx,srr-to-gsm,srr-to-srp,srr-to-srs,srr-to-srx,srs-to-gsm,srs-to-srx,srx-to-srp,srx-to-srr,srx-to-srs}
+     metadb              Download SRAmetadb.sqlite
+     metadata            Fetch metadata for SRA project (SRPnnnn)
+     download            Download SRA project (SRPnnnn)
+     search              Search SRA for matching text
+     gse-to-gsm          Get GSM for a GSE
+     gse-to-srp          Get SRP for a GSE
+     gsm-to-gse          Get GSE for a GSM
+     gsm-to-srp          Get SRP for a GSM
+     gsm-to-srr          Get SRR for a GSM
+     gsm-to-srs          Get SRS for a GSM
+     gsm-to-srx          Get SRX for a GSM
+     srp-to-gse          Get GSE for a SRP
+     srp-to-srr          Get SRR for a SRP
+     srp-to-srs          Get SRS for a SRP
+     srp-to-srx          Get SRX for a SRP
+     srr-to-gsm          Get GSM for a SRR
+     srr-to-srp          Get SRP for a SRR
+     srr-to-srs          Get SRS for a SRR
+     srr-to-srx          Get SRX for a SRR
+     srs-to-gsm          Get GSM for a SRS
+     srs-to-srx          Get SRX for a SRS
+     srx-to-srp          Get SRP for a SRX
+     srx-to-srr          Get SRR for a SRX
+     srx-to-srs          Get SRS for a SRX
+</pre></div>
+</div>
+</div>
+<div class="section" id="id1">
+<h2>Quickstart<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
+<p>A Google Colaboratory version of most used commands are available in this <a class="reference external" href="https://colab.research.google.com/drive/1C60V-jkcNZiaCra_V5iEyFs318jgVoUR">Colab Notebook</a> . Note that this does not require you to download the heavy SQLite file and uses the <cite>SRAWeb</cite> mode (explained below).</p>
+<p>The following notebooks document all the possible features of <cite>pysradb</cite>:</p>
+<ol class="arabic simple">
+<li><p><a class="reference external" href="https://colab.research.google.com/github/saketkc/pysradb/blob/master/notebooks/01.Python-API_demo.ipynb">Python API</a></p></li>
+<li><p><a class="reference external" href="https://colab.research.google.com/github/saketkc/pysradb/blob/master/notebooks/02.Commandline_download.ipynb">Downloading datasets from SRA - command line</a></p></li>
+<li><p><a class="reference external" href="https://colab.research.google.com/github/saketkc/pysradb/blob/master/notebooks/03.ParallelDownload.ipynb">Parallely download multiple datasets - Python API</a></p></li>
+<li><p><a class="reference external" href="https://colab.research.google.com/github/saketkc/pysradb/blob/master/notebooks/04.SRA_to_fastq_conda.ipynb">Converting SRA-to-fastq - command line (requires conda)</a></p></li>
+<li><p><a class="reference external" href="https://colab.research.google.com/github/saketkc/pysradb/blob/master/notebooks/05.Downloading_subsets_of_a_project.ipynb">Downloading subsets of a project - Python API</a></p></li>
+<li><p><a class="reference external" href="https://colab.research.google.com/github/saketkc/pysradb/blob/master/notebooks/06.Download_BAMs.ipynb">Download BAMs</a></p></li>
+<li><p><a class="reference external" href="https://colab.research.google.com/github/saketkc/pysradb/blob/master/notebooks/07.Multiple_SRPs.ipynb">Metadata for multiple SRPs</a></p></li>
+<li><p><a class="reference external" href="https://colab.research.google.com/github/saketkc/pysradb/blob/master/notebooks/08.pysradb_ascp_multithreaded.ipynb">Multithreaded fastq downloads using Aspera Client</a></p></li>
+</ol>
+</div>
+<div class="section" id="installation">
+<h2>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h2>
+<p>To install stable version using <cite>pip</cite>:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip install pysradb
+</pre></div>
+</div>
+<p>Alternatively, if you use conda:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>conda install -c bioconda pysradb
+</pre></div>
+</div>
+<p>This step will install all the dependencies.
+If you have an existing environment with a lot of pre-installed packages, conda might be <a class="reference external" href="https://github.com/bioconda/bioconda-recipes/issues/13774">slow</a>.
+Please consider creating a new enviroment for <code class="docutils literal notranslate"><span class="pre">pysradb</span></code>:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>conda create -c bioconda -n pysradb <span class="nv">PYTHON</span><span class="o">=</span><span class="m">3</span> pysradb
+</pre></div>
+</div>
+<div class="section" id="dependecies">
+<h3>Dependecies<a class="headerlink" href="#dependecies" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nv">pandas</span><span class="o">==</span><span class="m">1</span>.0.1
+<span class="nv">requests</span><span class="o">==</span><span class="m">2</span>.23.0
+<span class="nv">tqdm</span><span class="o">==</span><span class="m">4</span>.43.0
+<span class="nv">xmltodict</span><span class="o">==</span><span class="m">0</span>.12.0
+</pre></div>
+</div>
+</div>
+<div class="section" id="installing-pysradb-in-development-mode">
+<h3>Installing pysradb in development mode<a class="headerlink" href="#installing-pysradb-in-development-mode" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip install -U pandas tqdm requests xmltodict
+git clone https://github.com/saketkc/pysradb.git
+<span class="nb">cd</span> pysradb
+pip install -e .
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="using-pysradb">
+<h2>Using pysradb<a class="headerlink" href="#using-pysradb" title="Permalink to this headline">¶</a></h2>
+<p>Please see <a class="reference external" href="https://saket-choudhary.me/pysradb/usage_scenarios.html">usage_scenarios</a> for a few usage scenarios.
+Here are few hand-picked examples.</p>
+<div class="section" id="mode-srametadb-or-sraweb">
+<h3>Mode: SRAmetadb or SRAWeb<a class="headerlink" href="#mode-srametadb-or-sraweb" title="Permalink to this headline">¶</a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">pysradb</span></code>’s initial versions were completely dependent on the <code class="docutils literal notranslate"><span class="pre">SRAmnetadb.sqlite</span></code> file made available by the <code class="docutils literal notranslate"><span class="pre">SRAdb</span></code> project, we refer to this as the <code class="docutils literal notranslate"><span class="pre">SRAmetadb</span></code> mode. However, with <code class="docutils literal notranslate"><span class="pre">`pysradb</span> <span class="pre">0.9.5</span></code>, the depedence on the SQLite file has been made optional. In the abseence of the SQLite file, the operations are performed usiNCBi’s <code class="docutils literal notranslate"><span class="pre">esrarch</span></code> and <code class="docutils literal notranslate"><span class="pre">esummary</span></code> interface, a mode which we refer to as the <code class="docutils literal notranslate"><span class="pre">SRAweb</span></code> mode.  All the operations
+with the exception of <code class="docutils literal notranslate"><span class="pre">search</span></code> can be performed withoudownloading the SQLite file.
+NOTE: The additional flags such as <code class="docutils literal notranslate"><span class="pre">--desc</span></code>, <code class="docutils literal notranslate"><span class="pre">-detailed</span></code> and <code class="docutils literal notranslate"><span class="pre">-expand</span></code> are currently not fully supported in the <code class="docutils literal notranslate"><span class="pre">SRAweb</span></code> mode and will be supported in a future release. However, all the basic funcuionality of interconverting one ID to another is available in both <code class="docutils literal notranslate"><span class="pre">SRAweb</span></code> and <code class="docutils literal notranslate"><span class="pre">SRAmetadb</span></code> mode.</p>
+</div>
+<div class="section" id="getting-sra-metadata">
+<h3>Getting SRA metadata<a class="headerlink" href="#getting-sra-metadata" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ pysradb metadata SRP000941 | head
+
+study_accession experiment_accession experiment_title                                                                                                                 experiment_desc                                                                                                                  organism_taxid  organism_name library_strategy library_source  library_selection sample_accession sample_title instrument                    total_spots total_size    run_accession run_total_spots run_total_bases
+SRP000941       SRX056722                                                                         Reference Epigenome: ChIP-Seq Analysis of H3K27ac in hESC H1 Cells                                                               Reference Epigenome: ChIP-Seq Analysis of H3K27ac in hESC H1 Cells  9606            Homo sapiens       ChIP-Seq           GENOMIC    ChIP            SRS184466                              Illumina HiSeq 2000    26900401     531654480   SRR179707     26900401         807012030
+SRP000941       SRX027889                                                                            Reference Epigenome: ChIP-Seq Analysis of H2AK5ac in hESC Cells                                                                  Reference Epigenome: ChIP-Seq Analysis of H2AK5ac in hESC Cells  9606            Homo sapiens       ChIP-Seq           GENOMIC    ChIP            SRS116481                      Illumina Genome Analyzer II    37528590     779578968   SRR067978     37528590        1351029240
+SRP000941       SRX027888                                                                                     Reference Epigenome: ChIP-Seq Input from hESC H1 Cells                                                                           Reference Epigenome: ChIP-Seq Input from hESC H1 Cells  9606            Homo sapiens       ChIP-Seq           GENOMIC  RANDOM            SRS116483                      Illumina Genome Analyzer II    13603127    3232309537   SRR067977     13603127         489712572
+SRP000941       SRX027887                                                                                     Reference Epigenome: ChIP-Seq Input from hESC H1 Cells                                                                           Reference Epigenome: ChIP-Seq Input from hESC H1 Cells  9606            Homo sapiens       ChIP-Seq           GENOMIC  RANDOM            SRS116562                      Illumina Genome Analyzer II    22430523     506327844   SRR067976     22430523         807498828
+SRP000941       SRX027886                                                                                     Reference Epigenome: ChIP-Seq Input from hESC H1 Cells                                                                           Reference Epigenome: ChIP-Seq Input from hESC H1 Cells  9606            Homo sapiens       ChIP-Seq           GENOMIC  RANDOM            SRS116560                      Illumina Genome Analyzer II    15342951     301720436   SRR067975     15342951         552346236
+SRP000941       SRX027885                                                                                     Reference Epigenome: ChIP-Seq Input from hESC H1 Cells                                                                           Reference Epigenome: ChIP-Seq Input from hESC H1 Cells  9606            Homo sapiens       ChIP-Seq           GENOMIC  RANDOM            SRS116482                      Illumina Genome Analyzer II    39725232     851429082   SRR067974     39725232        1430108352
+SRP000941       SRX027884                                                                                     Reference Epigenome: ChIP-Seq Input from hESC H1 Cells                                                                           Reference Epigenome: ChIP-Seq Input from hESC H1 Cells  9606            Homo sapiens       ChIP-Seq           GENOMIC  RANDOM            SRS116481                      Illumina Genome Analyzer II    32633277     544478483   SRR067973     32633277        1174797972
+SRP000941       SRX027883                                                                                     Reference Epigenome: ChIP-Seq Input from hESC H1 Cells                                                                           Reference Epigenome: ChIP-Seq Input from hESC H1 Cells  9606            Homo sapiens       ChIP-Seq           GENOMIC  RANDOM            SRS004118                      Illumina Genome Analyzer II    22150965    3262293717   SRR067972      9357767         336879612
+SRP000941       SRX027883                                                                                     Reference Epigenome: ChIP-Seq Input from hESC H1 Cells                                                                           Reference Epigenome: ChIP-Seq Input from hESC H1 Cells  9606            Homo sapiens       ChIP-Seq           GENOMIC  RANDOM            SRS004118                      Illumina Genome Analyzer II    22150965    3262293717   SRR067971     12793198         460555128
+</pre></div>
+</div>
+</div>
+<div class="section" id="getting-detailed-sra-metadata">
+<h3>Getting detailed SRA metadata<a class="headerlink" href="#getting-detailed-sra-metadata" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ pysradb metadata SRP075720 --detailed | head
+
+study_accession experiment_accession experiment_title                                  experiment_desc                                   organism_taxid  organism_name library_strategy library_source  library_selection sample_accession sample_title instrument           total_spots total_size run_accession run_total_spots run_total_bases
+SRP075720       SRX1800476            GSM2177569: Kcng4_2la_H9; Mus musculus; RNA-Seq   GSM2177569: Kcng4_2la_H9; Mus musculus; RNA-Seq  10090           Mus musculus  RNA-Seq          TRANSCRIPTOMIC  cDNA              SRS1467643                    Illumina HiSeq 2500  2547148      97658407  SRR3587912    2547148         127357400
+SRP075720       SRX1800475            GSM2177568: Kcng4_2la_H8; Mus musculus; RNA-Seq   GSM2177568: Kcng4_2la_H8; Mus musculus; RNA-Seq  10090           Mus musculus  RNA-Seq          TRANSCRIPTOMIC  cDNA              SRS1467642                    Illumina HiSeq 2500  2676053     101904264  SRR3587911    2676053         133802650
+SRP075720       SRX1800474            GSM2177567: Kcng4_2la_H7; Mus musculus; RNA-Seq   GSM2177567: Kcng4_2la_H7; Mus musculus; RNA-Seq  10090           Mus musculus  RNA-Seq          TRANSCRIPTOMIC  cDNA              SRS1467641                    Illumina HiSeq 2500  1603567      61729014  SRR3587910    1603567          80178350
+SRP075720       SRX1800473            GSM2177566: Kcng4_2la_H6; Mus musculus; RNA-Seq   GSM2177566: Kcng4_2la_H6; Mus musculus; RNA-Seq  10090           Mus musculus  RNA-Seq          TRANSCRIPTOMIC  cDNA              SRS1467640                    Illumina HiSeq 2500  2498920      94977329  SRR3587909    2498920         124946000
+SRP075720       SRX1800472            GSM2177565: Kcng4_2la_H5; Mus musculus; RNA-Seq   GSM2177565: Kcng4_2la_H5; Mus musculus; RNA-Seq  10090           Mus musculus  RNA-Seq          TRANSCRIPTOMIC  cDNA              SRS1467639                    Illumina HiSeq 2500  2226670      83473957  SRR3587908    2226670         111333500
+SRP075720       SRX1800471            GSM2177564: Kcng4_2la_H4; Mus musculus; RNA-Seq   GSM2177564: Kcng4_2la_H4; Mus musculus; RNA-Seq  10090           Mus musculus  RNA-Seq          TRANSCRIPTOMIC  cDNA              SRS1467638                    Illumina HiSeq 2500  2269546      87486278  SRR3587907    2269546         113477300
+SRP075720       SRX1800470            GSM2177563: Kcng4_2la_H3; Mus musculus; RNA-Seq   GSM2177563: Kcng4_2la_H3; Mus musculus; RNA-Seq  10090           Mus musculus  RNA-Seq          TRANSCRIPTOMIC  cDNA              SRS1467636                    Illumina HiSeq 2500  2333284      88669838  SRR3587906    2333284         116664200
+SRP075720       SRX1800469            GSM2177562: Kcng4_2la_H2; Mus musculus; RNA-Seq   GSM2177562: Kcng4_2la_H2; Mus musculus; RNA-Seq  10090           Mus musculus  RNA-Seq          TRANSCRIPTOMIC  cDNA              SRS1467637                    Illumina HiSeq 2500  2071159      79689296  SRR3587905    2071159         103557950
+SRP075720       SRX1800468            GSM2177561: Kcng4_2la_H1; Mus musculus; RNA-Seq   GSM2177561: Kcng4_2la_H1; Mus musculus; RNA-Seq  10090           Mus musculus  RNA-Seq          TRANSCRIPTOMIC  cDNA              SRS1467635                    Illumina HiSeq 2500  2321657      89307894  SRR3587904    2321657         116082850
+</pre></div>
+</div>
+</div>
+<div class="section" id="converting-srp-to-gse">
+<h3>Converting SRP to GSE<a class="headerlink" href="#converting-srp-to-gse" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ pysradb srp-to-gse SRP075720
+
+study_accession study_alias
+SRP075720       GSE81903
+</pre></div>
+</div>
+</div>
+<div class="section" id="converting-gsm-to-srp">
+<h3>Converting GSM to SRP<a class="headerlink" href="#converting-gsm-to-srp" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ pysradb gsm-to-srp GSM2177186
+
+experiment_alias study_accession
+GSM2177186       SRP075720
+</pre></div>
+</div>
+</div>
+<div class="section" id="converting-gsm-to-gse">
+<h3>Converting GSM to GSE<a class="headerlink" href="#converting-gsm-to-gse" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ pysradb gsm-to-gse GSM2177186
+
+experiment_alias study_alias
+GSM2177186       GSE81903
+</pre></div>
+</div>
+</div>
+<div class="section" id="converting-gsm-to-srx">
+<h3>Converting GSM to SRX<a class="headerlink" href="#converting-gsm-to-srx" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ pysradb gsm-to-srx GSM2177186
+
+experiment_alias experiment_accession
+GSM2177186       SRX1800089
+</pre></div>
+</div>
+</div>
+<div class="section" id="converting-gsm-to-srr">
+<h3>Converting GSM to SRR<a class="headerlink" href="#converting-gsm-to-srr" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ pysradb gsm-to-srr GSM2177186
+
+experiment_alias run_accession
+GSM2177186       SRR3587529
+</pre></div>
+</div>
+</div>
+<div class="section" id="downloading-entire-project-multithreaded">
+<h3>Downloading entire project (multithreaded)<a class="headerlink" href="#downloading-entire-project-multithreaded" title="Permalink to this headline">¶</a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">pysradb</span></code> makes it super easy to download datasets from SRA parallely:
+Using 8 threads to download:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ pysradb download -y -t 8 --out-dir ./pysradb_downloads -p SRP063852
+</pre></div>
+</div>
+<p>Downloads are organized by <code class="docutils literal notranslate"><span class="pre">SRP/SRX/SRR</span></code> mimicking the hiererachy of SRA projects.</p>
+</div>
+<div class="section" id="downloading-only-certain-samples-of-interest">
+<h3>Downloading only certain samples of interest<a class="headerlink" href="#downloading-only-certain-samples-of-interest" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ pysradb metadata SRP000941 --detailed | grep &#39;study\|RNA-Seq&#39; | pysradb download
+</pre></div>
+</div>
+<p>This will download all <code class="docutils literal notranslate"><span class="pre">RNA-seq</span></code> samples coming from this project.</p>
+</div>
+<div class="section" id="ultrafast-fastq-downloads">
+<h3>Ultrafast fastq downloads<a class="headerlink" href="#ultrafast-fastq-downloads" title="Permalink to this headline">¶</a></h3>
+<p>With <a class="reference external" href="https://downloads.asperasoft.com/en/downloads/8?list">aspera-client</a> installed, <cite>pysradb</cite> can perform ultra fast downloads:</p>
+<p>To download all original fastqs with <cite>aspera-client</cite> installed utilizing 8 threads:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ pysradb download -t 8 --use_ascp -p SRP002605
+</pre></div>
+</div>
+<p>Refer to the notebook for <a class="reference external" href="https://colab.research.google.com/github/saketkc/pysradb/blob/master/notebooks/08.pysradb_ascp_multithreaded.ipynb">(shallow) time benchmarks</a>.</p>
+</div>
+</div>
+<div class="section" id="id2">
+<h2>Publication<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h2>
+<blockquote>
+<div><p><a class="reference external" href="https://f1000research.com/articles/8-532/v1">pysradb: A Python package to query next-generation sequencing metadata and data from NCBI Sequence Read Archive</a></p>
+<p>Presentation slides from BOSC (ISMB-ECCB) 2019: <a class="reference external" href="https://f1000research.com/slides/8-1183">https://f1000research.com/slides/8-1183</a></p>
+</div></blockquote>
+</div>
+<div class="section" id="citation">
+<h2>Citation<a class="headerlink" href="#citation" title="Permalink to this headline">¶</a></h2>
+<p>Choudhary, Saket. “pysradb: A Python Package to Query next-Generation Sequencing Metadata and Data from NCBI Sequence Read Archive.” F1000Research, vol. 8, F1000 (Faculty of 1000 Ltd), Apr. 2019, p. 532 (<a class="reference external" href="https://f1000research.com/articles/8-532/v1">https://f1000research.com/articles/8-532/v1</a>)</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nd">@article</span><span class="p">{</span><span class="n">Choudhary2019</span><span class="p">,</span>
+<span class="n">doi</span> <span class="o">=</span> <span class="p">{</span><span class="mf">10.12688</span><span class="o">/</span><span class="n">f1000research</span><span class="o">.</span><span class="mf">18676.1</span><span class="p">},</span>
+<span class="n">url</span> <span class="o">=</span> <span class="p">{</span><span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">doi</span><span class="o">.</span><span class="n">org</span><span class="o">/</span><span class="mf">10.12688</span><span class="o">/</span><span class="n">f1000research</span><span class="o">.</span><span class="mf">18676.1</span><span class="p">},</span>
+<span class="n">year</span> <span class="o">=</span> <span class="p">{</span><span class="mi">2019</span><span class="p">},</span>
+<span class="n">month</span> <span class="o">=</span> <span class="n">apr</span><span class="p">,</span>
+<span class="n">publisher</span> <span class="o">=</span> <span class="p">{</span><span class="n">F1000</span> <span class="p">(</span><span class="n">Faculty</span> <span class="n">of</span> <span class="mi">1000</span> <span class="n">Ltd</span><span class="p">)},</span>
+<span class="n">volume</span> <span class="o">=</span> <span class="p">{</span><span class="mi">8</span><span class="p">},</span>
+<span class="n">pages</span> <span class="o">=</span> <span class="p">{</span><span class="mi">532</span><span class="p">},</span>
+<span class="n">author</span> <span class="o">=</span> <span class="p">{</span><span class="n">Saket</span> <span class="n">Choudhary</span><span class="p">},</span>
+<span class="n">title</span> <span class="o">=</span> <span class="p">{</span><span class="n">pysradb</span><span class="p">:</span> <span class="n">A</span> <span class="p">{</span><span class="n">P</span><span class="p">}</span><span class="n">ython</span> <span class="n">package</span> <span class="n">to</span> <span class="n">query</span> <span class="nb">next</span><span class="o">-</span><span class="n">generation</span> <span class="n">sequencing</span> <span class="n">metadata</span> <span class="ow">and</span> <span class="n">data</span> <span class="kn">from</span> <span class="p">{</span><span class="n">NCBI</span><span class="p">}</span> <span class="p">{</span><span class="n">S</span><span class="p">}</span><span class="n">equence</span> <span class="p">{</span><span class="n">R</span><span class="p">}</span><span class="n">ead</span> <span class="p">{</span><span class="n">A</span><span class="p">}</span><span class="n">rchive</span><span class="p">},</span>
+<span class="n">journal</span> <span class="o">=</span> <span class="p">{</span><span class="n">F1000Research</span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Zenodo archive: <a class="reference external" href="https://zenodo.org/badge/latestdoi/159590788">https://zenodo.org/badge/latestdoi/159590788</a></p>
+<p>Zenodo DOI: 10.5281/zenodo.2306881</p>
+</div>
+<div class="section" id="questions">
+<h2>Questions?<a class="headerlink" href="#questions" title="Permalink to this headline">¶</a></h2>
+<p>Join our <a class="reference external" href="https://join.slack.com/t/pysradb/shared_invite/zt-f01jndpy-KflPu3Be5Aq3FzRh5wj1Ug">Slack Channel</a> or open an <a class="reference external" href="https://github.com/saketkc/pysradb/issues">issue</a>.</p>
+<ul class="simple">
+<li><p>Free software: BSD license</p></li>
+<li><p>Documentation: <a class="reference external" href="https://saketkc.github.io/pysradb">https://saketkc.github.io/pysradb</a></p></li>
+</ul>
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">pysradb</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cmdline.html">CLI Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="python-api-usage.html">Python API Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage_scenarios.html">Usage Scenarios</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modules.html">pysradb</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contributing.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="authors.html">Credits</a></li>
+<li class="toctree-l1"><a class="reference internal" href="history.html">History</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2018, Saket Choudhary.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.2.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="_sources/readme.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

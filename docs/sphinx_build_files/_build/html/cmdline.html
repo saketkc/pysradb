@@ -1,0 +1,356 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CLI Tutorial &#8212; pysradb 0.10.5-dev0 documentation</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/graphviz.css" />
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Python API Usage" href="python-api-usage.html" />
+    <link rel="prev" title="srx-to-srs" href="commands/srx-to-srs.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="cli-tutorial">
+<span id="clitutorial"></span><h1>CLI Tutorial<a class="headerlink" href="#cli-tutorial" title="Permalink to this headline">¶</a></h1>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ pysradb
+ Usage: pysradb [OPTIONS] COMMAND [ARGS]...
+
+   pysradb: Query NGS metadata and data from NCBI Sequence Read Archive.
+
+   Citation: Pending.
+
+ Options:
+   --version   Show the version and exit.
+   -h, --help  Show this message and exit.
+
+ Commands:
+   download    Download SRA project (SRPnnnn)
+   gse-to-gsm  Get GSM for a GSE
+   gse-to-srp  Get SRP for a GSE
+   gsm-to-gse  Get GSE for a GSM
+   gsm-to-srp  Get SRP for a GSM
+   gsm-to-srr  Get SRR for a GSM
+   gsm-to-srx  Get SRX for a GSM
+   metadata    Fetch metadata for SRA project (SRPnnnn)
+   metadb      Download SRAmetadb.sqlite
+   search      Search SRA for matching text
+   srp-to-gse  Get GSE for a SRP
+   srp-to-srr  Get SRR for a SRP
+   srp-to-srs  Get SRS for a SRP
+   srp-to-srx  Get SRX for a SRP
+   srr-to-srp  Get SRP for a SRR
+   srr-to-srs  Get SRS for a SRR
+   srr-to-srx  Get SRX for a SRR
+   srs-to-srx  Get SRX for a SRS
+   srx-to-srp  Get SRP for a SRX
+   srx-to-srr  Get SRR for a SRX
+   srx-to-srs  Get SRS for a SRX
+</pre></div>
+</div>
+<p>All the operations in <cite>pysradb</cite> rely on the SQLite file <cite>SRAmetadb.sqlite</cite> provided
+by the SRAdb project. We can download it using <cite>pysradb</cite>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ pysradb srametadb
+</pre></div>
+</div>
+<p>This will download and extract <code class="docutils literal notranslate"><span class="pre">SRAmetadb.sqlite.gz</span></code> in the current directory.
+you can also specify an output directory using <code class="docutils literal notranslate"><span class="pre">--out-dir</span></code> option.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ pysradb srametadb -h
+
+ Usage: pysradb srametadb [OPTIONS]
+
+   Download SRAmetadb.sqlite
+
+ Options:
+   --out-dir TEXT       Output directory location
+   --overwrite BOOLEAN  Overwrite existing file
+   -h, --help           Show this message and exit.
+</pre></div>
+</div>
+<p>Having obtained the SQLite file, we can now perform all our data/metadata seach
+operations. For the rest of this walkthrough we will assume the
+sqlite directory exists in the current working directory, so that
+we do not need to specify the path to <cite>pysradb</cite>.</p>
+<div class="section" id="getting-metadata-for-a-sra-project-srp">
+<h2>Getting metadata for a SRA project (SRP)<a class="headerlink" href="#getting-metadata-for-a-sra-project-srp" title="Permalink to this headline">¶</a></h2>
+<p>The most basic information associated with any SRA project is its list of experiments
+and run accessions.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ pysradb metadata SRP098789
+
+ study_accession experiment_accession sample_accession run_accession
+ SRP098789       SRX2536403           SRS1956353       SRR5227288
+ SRP098789       SRX2536404           SRS1956354       SRR5227289
+ SRP098789       SRX2536405           SRS1956355       SRR5227290
+ SRP098789       SRX2536406           SRS1956356       SRR5227291
+ SRP098789       SRX2536407           SRS1956357       SRR5227292
+ SRP098789       SRX2536408           SRS1956358       SRR5227293
+ SRP098789       SRX2536409           SRS1956359       SRR5227294
+</pre></div>
+</div>
+<p>Listing SRX and SRRs for a SRP is often not useful. We might
+want to take a quick look at the metadata associated with
+the samples:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ pysradb metadata SRP098789 --desc
+
+ study_accession experiment_accession sample_accession run_accession sample_attribute
+ SRP098789       SRX2536403           SRS1956353       SRR5227288    source_name: Huh7_1.5 Ã‚ÂµM PF-067446846_10 min_ribo-seq || cell line: Huh7 || treatment time: 10 min || library type: ribo-seq
+ SRP098789       SRX2536404           SRS1956354       SRR5227289    source_name: Huh7_1.5 Ã‚ÂµM PF-067446846_10 min_ribo-seq || cell line: Huh7 || treatment time: 10 min || library type: ribo-seq
+ SRP098789       SRX2536405           SRS1956355       SRR5227290    source_name: Huh7_1.5 Ã‚ÂµM PF-067446846_10 min_ribo-seq || cell line: Huh7 || treatment time: 10 min || library type: ribo-seq
+ SRP098789       SRX2536406           SRS1956356       SRR5227291    source_name: Huh7_0.3 Ã‚ÂµM PF-067446846_10 min_ribo-seq || cell line: Huh7 || treatment time: 10 min || library type: ribo-seq
+ SRP098789       SRX2536407           SRS1956357       SRR5227292    source_name: Huh7_0.3 Ã‚ÂµM PF-067446846_10 min_ribo-seq || cell line: Huh7 || treatment time: 10 min || library type: ribo-seq
+ SRP098789       SRX2536408           SRS1956358       SRR5227293    source_name: Huh7_0.3 Ã‚ÂµM PF-067446846_10 min_ribo-seq || cell line: Huh7 || treatment time: 10 min || library type: ribo-seq
+</pre></div>
+</div>
+<p>Better still, we might need to separate out the information in <cite>source_name</cite> column to multiple
+columns. For example, in the above example, we might need the <cite>cell line</cite> information in
+a separate column. This is achieved by <cite>–expand</cite> flag:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ pysradb metadata SRP098789 --desc --expand
+
+study_accession experiment_accession sample_accession run_accession cell_line library_type source_name                                  treatment_time
+SRP098789       SRX2536403           SRS1956353       SRR5227288    huh7      ribo-seq     huh7_1.5 ã‚âµm pf-067446846_10 min_ribo-seq  10 min
+SRP098789       SRX2536404           SRS1956354       SRR5227289    huh7      ribo-seq     huh7_1.5 ã‚âµm pf-067446846_10 min_ribo-seq  10 min
+SRP098789       SRX2536405           SRS1956355       SRR5227290    huh7      ribo-seq     huh7_1.5 ã‚âµm pf-067446846_10 min_ribo-seq  10 min
+SRP098789       SRX2536406           SRS1956356       SRR5227291    huh7      ribo-seq     huh7_0.3 ã‚âµm pf-067446846_10 min_ribo-seq  10 min
+SRP098789       SRX2536407           SRS1956357       SRR5227292    huh7      ribo-seq     huh7_0.3 ã‚âµm pf-067446846_10 min_ribo-seq  10 min
+</pre></div>
+</div>
+<p>The example here came from a Ribosome profiling study and consists of a collection of
+both Ribo-seq and RNA-seq samples. In order to filter out only the RNA-seq samples,
+we could pass it an extra flag of <cite>–assay</cite> and then filter RNA-seq samples.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ pysradb metadata SRP098789 --assay | grep &#39;study|RNA-Seq&#39;
+
+SRP098789       SRX2536422           SRR5227307    RNA-Seq          SINGLE -
+SRP098789       SRX2536424           SRR5227309    RNA-Seq          SINGLE -
+SRP098789       SRX2536426           SRR5227311    RNA-Seq          SINGLE -
+SRP098789       SRX2536428           SRR5227313    RNA-Seq          SINGLE -
+</pre></div>
+</div>
+<p>A more complicated example will consist of multiple assays. For example <cite>SRP000941</cite>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ pysradb metadata --db data/SRAmetadb.sqlite SRP000941 --assay  | tr -s &#39;  &#39; | cut -f5 -d &#39; &#39; | sort | uniq -c
+999 Bisulfite-Seq
+768 ChIP-Seq
+  1 library_strategy
+121 OTHER
+353 RNA-Seq
+ 28 WGS
+</pre></div>
+</div>
+</div>
+<div class="section" id="get-experiment-accessions-for-a-project-srp-srx">
+<h2>Get experiment accessions for a project (SRP =&gt; SRX)<a class="headerlink" href="#get-experiment-accessions-for-a-project-srp-srx" title="Permalink to this headline">¶</a></h2>
+<p>A frequently encountered task involves getting all the
+experiments (SRX) for a particular study accession (SRP).
+Consider project <cite>SRP048759</cite>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ pysradb srp-to-srx SRP048759
+</pre></div>
+</div>
+</div>
+<div class="section" id="get-sample-accessions-for-a-project-srp-srs">
+<h2>Get sample accessions for a project (SRP =&gt; SRS)<a class="headerlink" href="#get-sample-accessions-for-a-project-srp-srs" title="Permalink to this headline">¶</a></h2>
+<p>Each experiment involves one or multiple biological samples (SRS),
+that are put through different experiments (SRX).</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ pysradb srp-to-srs --detailed SRP048759
+
+study_accession sample_accession
+SRP048759       SRS718878
+SRP048759       SRS718879
+SRP048759       SRS718880
+SRP048759       SRS718881
+SRP048759       SRS718882
+SRP048759       SRS718883
+SRP048759       SRS718884
+SRP048759       SRS718885
+SRP048759       SRS718886
+</pre></div>
+</div>
+<p>This is very limited information. It can again be detailed out
+using the <cite>–detailed</cite> flag:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ pysradb srp-to-srs --detailed SRP048759
+
+study_accession sample_accession        experiment_accession    run_accession   study_alias     sample_alias    experiment_alias        run_alias
+SRP048759       SRS718878       SRX729552       SRR1608490      GSE62190        GSM1521543      GSM1521543      GSM1521543_r1
+SRP048759       SRS718878       SRX729552       SRR1608491      GSE62190        GSM1521543      GSM1521543      GSM1521543_r2
+SRP048759       SRS718878       SRX729552       SRR1608492      GSE62190        GSM1521543      GSM1521543      GSM1521543_r3
+SRP048759       SRS718878       SRX729552       SRR1608493      GSE62190        GSM1521543      GSM1521543      GSM1521543_r4
+SRP048759       SRS718879       SRX729553       SRR1608494      GSE62190        GSM1521544      GSM1521544      GSM1521544_r1
+SRP048759       SRS718879       SRX729553       SRR1608495      GSE62190        GSM1521544      GSM1521544      GSM1521544_r2
+</pre></div>
+</div>
+</div>
+<div class="section" id="get-run-accessions-for-experiments-srx-srr">
+<h2>Get run accessions for experiments (SRX =&gt; SRR)<a class="headerlink" href="#get-run-accessions-for-experiments-srx-srr" title="Permalink to this headline">¶</a></h2>
+<p>Another frequently encountered task involves fetching the run accessions (SRR)
+for a particular experiment (SRX). Consider experiments <cite>SRX217956</cite> and
+<cite>SRX2536403</cite>. We want to be able to resolve the run accessions for these
+experiments:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ pysradb srx-to-srr SRX217956  SRX2536403 --desc
+
+experiment_accession run_accession study_accession sample_attribute
+SRX217956            SRR649752     SRP017942       source_name: 3T3 cells || treatment: control || cell line: 3T3 cells || assay type: Riboseq
+SRX2536403           SRR5227288    SRP098789       source_name: Huh7_1.5 Ã‚ÂµM PF-067446846_10 min_ribo-seq || cell line: Huh7 || treatment time: 10 min || library type: ribo-seq
+</pre></div>
+</div>
+</div>
+<div class="section" id="get-experiment-accessions-for-runs-srr-srx">
+<h2>Get experiment accessions for runs (SRR =&gt; SRX)<a class="headerlink" href="#get-experiment-accessions-for-runs-srr-srx" title="Permalink to this headline">¶</a></h2>
+<p>For fetching experiment accessions (SRX) for one or multiple
+run accessions (SRR):</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ pysradb srr-to-srx --db data/SRAmetadb.sqlite SRR5227288 SRR649752 --desc
+run_accession study_accession experiment_accession sample_attribute
+SRR649752     SRP017942       SRX217956            source_name: 3T3 cells || treatment: control || cell line: 3T3 cells || assay type: Riboseq
+SRR5227288    SRP098789       SRX2536403           source_name: Huh7_1.5 Ã‚ÂµM PF-067446846_10 min_ribo-seq || cell line: Huh7 || treatment time: 10 min || library type: ribo-seq
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ pysradb metadata --db data/SRAmetadb.sqlite --assay SRP098789 | pysradb download --db data/SRAmetadb.sqlite
+</pre></div>
+</div>
+</div>
+<div class="section" id="get-geo-accessions-for-studies-srp-gse">
+<h2>Get GEO accessions for studies (SRP =&gt; GSE)<a class="headerlink" href="#get-geo-accessions-for-studies-srp-gse" title="Permalink to this headline">¶</a></h2>
+<p><strong>SRP to GSE:</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ pysradb srp-to-gse SRP090415
+
+study_accession study_alias
+SRP090415       GSE87328
+</pre></div>
+</div>
+<p><strong>But not all SRPs will have an associated GEO id (GSE):</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ pysradb srp-to-gse SRP029589
+
+study_accession study_alias
+SRP029589       PRJNA218051
+</pre></div>
+</div>
+</div>
+<div class="section" id="get-sra-accessions-for-geo-studies-gse-srp">
+<h2>Get SRA accessions for GEO studies (GSE =&gt; SRP)<a class="headerlink" href="#get-sra-accessions-for-geo-studies-gse-srp" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ pysradb gse-to-srp GSE87328i
+
+study_alias study_accession
+GSE87328    SRP090415
+</pre></div>
+</div>
+</div>
+<div class="section" id="searching-sra">
+<h2>Searching SRA<a class="headerlink" href="#searching-sra" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ pysradb search &#39;cycloheximide heatshock&#39;
+
+study_accession experiment_accession sample_accession run_accession
+SRP044649       SRX657376            SRS662567        SRR1520327
+SRP044649       SRX657377            SRS662568        SRR1520328
+</pre></div>
+</div>
+<p>Please see <a class="reference external" href="https://www.saket-choudhary.me/pysradb/quickstart.html#the-full-list-of-possible-pysradb-operations">quickstart</a> for all possible operations available through <code class="docutils literal notranslate"><span class="pre">pysradb</span></code>.</p>
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">pysradb</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quickstart</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">CLI Tutorial</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#getting-metadata-for-a-sra-project-srp">Getting metadata for a SRA project (SRP)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#get-experiment-accessions-for-a-project-srp-srx">Get experiment accessions for a project (SRP =&gt; SRX)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#get-sample-accessions-for-a-project-srp-srs">Get sample accessions for a project (SRP =&gt; SRS)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#get-run-accessions-for-experiments-srx-srr">Get run accessions for experiments (SRX =&gt; SRR)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#get-experiment-accessions-for-runs-srr-srx">Get experiment accessions for runs (SRR =&gt; SRX)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#get-geo-accessions-for-studies-srp-gse">Get GEO accessions for studies (SRP =&gt; GSE)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#get-sra-accessions-for-geo-studies-gse-srp">Get SRA accessions for GEO studies (GSE =&gt; SRP)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#searching-sra">Searching SRA</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="python-api-usage.html">Python API Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage_scenarios.html">Usage Scenarios</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modules.html">pysradb</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contributing.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="authors.html">Credits</a></li>
+<li class="toctree-l1"><a class="reference internal" href="history.html">History</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="commands/srx-to-srs.html" title="previous chapter">srx-to-srs</a></li>
+      <li>Next: <a href="python-api-usage.html" title="next chapter">Python API Usage</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2018, Saket Choudhary.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.2.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="_sources/cmdline.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
