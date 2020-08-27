@@ -424,8 +424,7 @@ class QuerySearch:
         return f"  {stat_header}: {stat_breakdown}\n"
 
     def show_result_statistics(self):
-        """Shows search result statistics.
-        """
+        """Shows search result statistics."""
         stats = (
             "\n  Statistics for the search query:\n"
             + "  =================================\n"
@@ -535,8 +534,7 @@ class QuerySearch:
         pass
 
     def get_df(self):
-        """Getter for the search result dataframe.
-        """
+        """Getter for the search result dataframe."""
         return self.df
 
     def _plot_graph(self, plt, axes, show, savedir, too_many_organisms):
@@ -883,7 +881,8 @@ class SraSearch(QuerySearch):
                 for identifier in child:
                     if identifier.tag == "EXTERNAL_ID":
                         self._update_entry(
-                            f"{field_header}_external_id_{id_index}", identifier.text,
+                            f"{field_header}_external_id_{id_index}",
+                            identifier.text,
                         )
                         self._update_entry(
                             f"{field_header}_external_id_{id_index}_namespace",
@@ -898,7 +897,8 @@ class SraSearch(QuerySearch):
                 for link in child:
                     # Link type. Eg: URL_link, Xref_link
                     self._update_entry(
-                        f"{link.tag}_{link_index}_type".lower(), link[0].tag,
+                        f"{link.tag}_{link_index}_type".lower(),
+                        link[0].tag,
                     )
                     # Link values in the form of tag: value.
                     # Eg: label: GEO sample
@@ -931,7 +931,8 @@ class SraSearch(QuerySearch):
                 platform = child[0]
                 self._update_entry("experiment_platform", platform.tag)
                 self._update_entry(
-                    "experiment_instrument_model", platform[0].text,
+                    "experiment_instrument_model",
+                    platform[0].text,
                 )
             # Parsing individual run information
             elif child.tag == "RUN":
@@ -969,7 +970,8 @@ class SraSearch(QuerySearch):
                     elif elem.tag == "Bases":
                         for k, v in elem.attrib.items():
                             self._update_entry(
-                                f"run_{run_count}_total_base_{k}".lower(), v,
+                                f"run_{run_count}_total_base_{k}".lower(),
+                                v,
                             )
                         for base in elem:
                             self._update_entry(
@@ -991,12 +993,14 @@ class SraSearch(QuerySearch):
                         continue
                     elif elem.text:
                         self._update_entry(
-                            f"{field_header}_{elem.tag.lower()}", elem.text,
+                            f"{field_header}_{elem.tag.lower()}",
+                            elem.text,
                         )
                     elif elem.attrib:
                         for k, v in elem.attrib.items():
                             self._update_entry(
-                                f"{field_header}_{elem.tag}_{k}".lower(), v,
+                                f"{field_header}_{elem.tag}_{k}".lower(),
+                                v,
                             )
             # Parsing library layout (single, paired)
             if field_header == "experiment":
@@ -1009,7 +1013,8 @@ class SraSearch(QuerySearch):
                     if library_layout.tag == "PAIRED":
                         for k, v in library_layout.attrib.items():
                             self._update_entry(
-                                f"library_layout_{k}".lower(), v,
+                                f"library_layout_{k}".lower(),
+                                v,
                             )
 
     def _update_entry(self, field_name, field_content):

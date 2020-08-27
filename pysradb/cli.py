@@ -48,7 +48,12 @@ def _print_save_df(df, saveto=None):
         if len(df.index):
             to_print = (
                 df.replace(r"[\s]{2,}|\t", " ", regex=True)
-                .to_string(index=False, justify="left", header=False, col_space=0,)
+                .to_string(
+                    index=False,
+                    justify="left",
+                    header=False,
+                    col_space=0,
+                )
                 .lstrip()
             )
             to_print_split = to_print.split("\n")

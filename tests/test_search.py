@@ -23,8 +23,7 @@ from pysradb.search import *
 
 @pytest.fixture(scope="module")
 def valid_search_inputs_1():
-    """Basic search input tests for Sra and Ena (single inputs)
-    """
+    """Basic search input tests for Sra and Ena (single inputs)"""
     return [
         [
             0,
@@ -223,8 +222,7 @@ def valid_search_inputs_1():
 
 @pytest.fixture(scope="module")
 def valid_search_inputs_2():
-    """More complex input tests for Sra and Ena
-    """
+    """More complex input tests for Sra and Ena"""
     return [
         [
             0,
@@ -343,8 +341,7 @@ def valid_search_inputs_2():
 
 @pytest.fixture(scope="module")
 def valid_search_inputs_geo():
-    """Basic search input tests for Geo
-    """
+    """Basic search input tests for Geo"""
     return [
         [
             2,
@@ -551,8 +548,7 @@ def empty_search_inputs_geo():
 
 @pytest.fixture(scope="module")
 def invalid_search_inputs():
-    """Invalid search input tests for QuerySearch
-    """
+    """Invalid search input tests for QuerySearch"""
     return [
         [
             4,

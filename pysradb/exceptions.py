@@ -22,7 +22,6 @@ class MissingQueryException(Exception):
 
 
 class IncorrectFieldException(Exception):
-    """Exception raised when the user enters incorrect inputs for a flag.
-    """
+    """Exception raised when the user enters incorrect inputs for a flag."""
 
     pass
