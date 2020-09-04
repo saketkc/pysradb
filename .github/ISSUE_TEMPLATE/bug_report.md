@@ -1,15 +1,23 @@
-* pysradb version:
-* Python version:
-* Operating System:
+---
+name: Bug report
+about: Create a report to help us improve
+title: "[BUG]"
+labels: bug
+assignees: ''
 
-### Description
+---
 
-Describe what you were trying to get done.
-Tell us what happened, what went wrong, and what you expected to happen.
+**Describe the bug**
+A clear and concise description of what the bug is.
 
-### What I Did
+**To Reproduce**
+Steps to reproduce the behavior:
+`pysradb <command> SRPxxx`
 
-```
-Paste the command(s) you ran and the output.
-If there was a crash, please include the traceback here.
-```
+
+**Desktop (please complete the following information):**
+ - OS: [e.g. Ubuntu 20.04]
+ - Python version [e.g. 3.8]
+
+**Additional context**
+Add any other context about the problem here.
