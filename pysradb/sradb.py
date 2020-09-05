@@ -1505,6 +1505,7 @@ class SRAdb(BASEdb):
             df["filesize"] = df.apply(get_file_size, axis=1)
             df.dropna(subset=["filesize"])
             total_file_size = millify(np.sum(df["filesize"]))
+            df["filesize"] = df["filesize"].apply(lambda x: millify(x))
             print("The following files will be downloaded: \n")
             pd.set_option("display.max_colwidth", -1)
             print(df.to_string(index=False, justify="left", col_space=0))

@@ -63,7 +63,7 @@ def get_file_size(row):
         url = "ftp://" + url
     try:
         r = requests_3_retries().head(url)
-        size = float(r.headers["content-length"])
+        size = int(r.headers["content-length"])
         r.raise_for_status()
     except requests.exceptions.Timeout:
         sys.exit(f"Connection to {url} has timed out. Please retry.")
