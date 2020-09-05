@@ -26,7 +26,6 @@ CLI Tutorial
       gsm-to-srr  Get SRR for a GSM
       gsm-to-srx  Get SRX for a GSM
       metadata    Fetch metadata for SRA project (SRPnnnn)
-      metadb      Download SRAmetadb.sqlite
       search      Search SRA for matching text
       srp-to-gse  Get GSE for a SRP
       srp-to-srr  Get SRR for a SRP
@@ -39,38 +38,6 @@ CLI Tutorial
       srx-to-srp  Get SRP for a SRX
       srx-to-srr  Get SRR for a SRX
       srx-to-srs  Get SRS for a SRX
-
-
-All the operations in `pysradb` rely on the SQLite file `SRAmetadb.sqlite` provided
-by the SRAdb project. We can download it using `pysradb`:
-
-::
-
-   $ pysradb srametadb
-
-This will download and extract ``SRAmetadb.sqlite.gz`` in the current directory.
-you can also specify an output directory using ``--out-dir`` option.
-
-
-::
-
-   $ pysradb srametadb -h
-
-    Usage: pysradb srametadb [OPTIONS]
-
-      Download SRAmetadb.sqlite
-
-    Options:
-      --out-dir TEXT       Output directory location
-      --overwrite BOOLEAN  Overwrite existing file
-      -h, --help           Show this message and exit.
-
-
-
-Having obtained the SQLite file, we can now perform all our data/metadata seach
-operations. For the rest of this walkthrough we will assume the
-sqlite directory exists in the current working directory, so that
-we do not need to specify the path to `pysradb`.
 
 
 ========================================
@@ -146,7 +113,7 @@ A more complicated example will consist of multiple assays. For example `SRP0009
 
 ::
 
-   $ pysradb metadata --db data/SRAmetadb.sqlite SRP000941 --assay  | tr -s '  ' | cut -f5 -d ' ' | sort | uniq -c
+   $ pysradb metadata SRP000941 --detailed  | tr -s '  ' | cut -f5 -d ' ' | sort | uniq -c
    999 Bisulfite-Seq
    768 ChIP-Seq
      1 library_strategy
@@ -233,7 +200,7 @@ run accessions (SRR):
 
 ::
 
-   $ pysradb srr-to-srx --db data/SRAmetadb.sqlite SRR5227288 SRR649752 --desc
+   $ pysradb srr-to-srx SRR5227288 SRR649752 --desc
    run_accession study_accession experiment_accession sample_attribute
    SRR649752     SRP017942       SRX217956            source_name: 3T3 cells || treatment: control || cell line: 3T3 cells || assay type: Riboseq
    SRR5227288    SRP098789       SRX2536403           source_name: Huh7_1.5 Ã‚ÂµM PF-067446846_10 min_ribo-seq || cell line: Huh7 || treatment time: 10 min || library type: ribo-seq
@@ -242,7 +209,7 @@ run accessions (SRR):
 
 ::
 
-   $ pysradb metadata --db data/SRAmetadb.sqlite --assay SRP098789 | pysradb download --db data/SRAmetadb.sqlite
+   $ pysradb metadata --detailed SRP098789 | pysradb download
 
 
 ===========================================
