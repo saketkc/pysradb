@@ -14,7 +14,7 @@ from pysradb.filter_attrs import guess_tissue_type
 
 def test_not_valid_file():
     """Test to check for error if file is either not
-        present or not a valid sqlite file"""
+    present or not a valid sqlite file"""
     path = "SRAmetadb.sqlite"
     try:
         db = SRAdb(path)
