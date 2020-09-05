@@ -2,6 +2,15 @@
 History
 #######
 
+
+*******************
+0.11.0 (09-04-2020)
+*******************
+* `pysradb download` now supports multiple threads for paralle downloads
+* `pysradb download` also supports ultra fast downloads of FASTQs from ENA using aspera-client
+
+
+
 *******************
 0.10.3 (03-26-2020)
 *******************
