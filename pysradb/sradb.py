@@ -70,12 +70,12 @@ def _handle_download(record, use_ascp=False, pbar=None, ascp_bin=None, ascp_dir=
     mkdir_p(srx_dir)
     if use_ascp:
 
-        cmd = ASCP_CMD_PREFIX.replace("ascp", ascp_bin)
+        ascp = ASCP_CMD_PREFIX.replace("ascp", ascp_bin)
         ena_cols = [x for x in list(record.keys()) if "ena_fastq_ftp" in x]
         for col in ena_cols:
             download_url = record[col]
             cmd = "{} {} {} {}".format(
-                cmd, _find_aspera_keypath(ascp_dir), download_url, srx_dir
+                ascp, _find_aspera_keypath(ascp_dir), download_url, srx_dir
             )
             run_command(cmd, verbose=False)
     else:

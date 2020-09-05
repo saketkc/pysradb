@@ -16,6 +16,12 @@ from .sradb import SRAdb
 
 warnings.simplefilter(action="ignore", category=FutureWarning)
 
+from xml.sax.saxutils import escape
+
+
+def xmlescape(data):
+    return escape(data, entities={"'": "&apos;", '"': "&quot;"})
+
 
 def _order_first(df, column_order_list):
     columns = column_order_list + [
@@ -94,7 +100,8 @@ class SRAweb(SRAdb):
         --------
         xml: str
         """
-        string = unescape(string.strip())
+        # string = unescape(string.strip())
+        string = string.strip()
         return "<root>" + string + "</root>"
 
     @staticmethod
