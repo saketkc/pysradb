@@ -82,7 +82,7 @@ a list of instructions for each sub-command.
 Quickstart
 **********
 
-A Google Colaboratory version of most used commands are available in this `Colab Notebook <https://colab.research.google.com/drive/1C60V-jkcNZiaCra_V5iEyFs318jgVoUR>`_ . Note that this does not require you to download the heavy SQLite file and uses the `SRAWeb` mode (explained below).
+A Google Colaboratory version of most used commands are available in this `Colab Notebook <https://colab.research.google.com/drive/1C60V-jkcNZiaCra_V5iEyFs318jgVoUR>`_ . Note that this requires only an active internet connection (no additional downloads are made).
 
 The following notebooks document all the possible features of `pysradb`:
 
