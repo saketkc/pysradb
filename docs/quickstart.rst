@@ -17,11 +17,6 @@ Using pysradb
 =============
 
 
-**Download SRAmetadb.sqlite**:
-
-::
-
-    pysradb srametadb
 
 
 **Convert SRP to SRX**:
@@ -64,7 +59,6 @@ The full list of possible `pysradb` operations
       gsm-to-srr  Get SRR for a GSM
       gsm-to-srx  Get SRX for a GSM
       metadata    Fetch metadata for SRA project (SRPnnnn)
-      metadb      Download SRAmetadb.sqlite
       search      Search SRA for matching text
       srp-to-gse  Get GSE for a SRP
       srp-to-srr  Get SRR for a SRP
@@ -85,7 +79,6 @@ The full list of possible `pysradb` operations
    commands/gse-to-gsm
    commands/gse-to-srp
    commands/metadata
-   commands/metadb
    commands/srp-to-gse
    commands/srp-to-srr
    commands/srp-to-srs
