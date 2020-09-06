@@ -430,7 +430,7 @@ class SRAweb(SRAdb):
                 experiment_record["library_strategy"] = exp_library_strategy
                 experiment_record["library_source"] = exp_library_source
                 experiment_record["library_selection"] = exp_library_selection
-                experiment_record["library_source"] = exp_library_source
+                experiment_record["library_layout"] = exp_library_layout
                 experiment_record["sample_accession"] = exp_sample_ID
                 experiment_record["sample_title"] = exp_sample_name
                 experiment_record["instrument"] = exp_instrument
@@ -542,11 +542,12 @@ class SRAweb(SRAdb):
         metadata_df = metadata_df[metadata_df.columns.dropna()]
         metadata_df = metadata_df.drop_duplicates()
         metadata_df = metadata_df.replace(r"^\s*$", np.nan, regex=True)
-        ena_results = self.fetch_ena_fastq(srp)
-        if ena_results.shape[0]:
-            metadata_df = metadata_df.merge(
-                ena_results, on="run_accession", how="outer"
-            )
+        for srp in metadata_df.study_accession.unique():
+            ena_results = self.fetch_ena_fastq(srp)
+            if ena_results.shape[0]:
+                metadata_df = metadata_df.merge(
+                    ena_results, on="run_accession", how="left"
+                )
         metadata_df = metadata_df.fillna("N/A")
         return metadata_df
 
