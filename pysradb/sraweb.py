@@ -430,7 +430,7 @@ class SRAweb(SRAdb):
                 experiment_record["library_strategy"] = exp_library_strategy
                 experiment_record["library_source"] = exp_library_source
                 experiment_record["library_selection"] = exp_library_selection
-                experiment_record["library_source"] = exp_library_source
+                experiment_record["library_layout"] = exp_library_layout
                 experiment_record["sample_accession"] = exp_sample_ID
                 experiment_record["sample_title"] = exp_sample_name
                 experiment_record["instrument"] = exp_instrument
