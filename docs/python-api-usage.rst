@@ -16,8 +16,8 @@ See an `example <https://www.ncbi.nlm.nih.gov/Traces/study/?acc=SRP098789>`_ of 
 
 .. code-block:: python
 
-   from pysradb import SRAdb
-   db = SRAdb('SRAmetadb.sqlite')
+   from pysradb import SRAWeb
+   db = SRAWeb()
    df = db.sra_metadata('SRP098789')
    df.head()
 
@@ -53,8 +53,8 @@ We strongly recommend installing `aspera-client` which uses UDP and is `designed
 
 .. code-block:: python
 
-   from pysradb import SRAdb
-   db = SRAdb('SRAmetadb.sqlite')
+   from pysradb import SRAWeb
+   db = SRAWeb()
    df = db.sra_metadata('SRP017942')
    db.download(df)
 
