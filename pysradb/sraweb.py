@@ -546,11 +546,11 @@ class SRAweb(SRAdb):
                     "ena_fastq_ftp", "ena_fastq_ftp_1", "ena_fastq_ftp_2"]
         metadata_df[ena_cols] = np.nan
 
-        metadata_df.set_index("run_accession")
+        metadata_df = metadata_df.set_index("run_accession")
         for srp in metadata_df.study_accession.unique():
             ena_results = self.fetch_ena_fastq(srp)
             if ena_results.shape[0]:
-                ena_results.set_index("run_accession")
+                ena_results = ena_results.set_index("run_accession")
                 metadata_df.update(
                     ena_results
                 )
