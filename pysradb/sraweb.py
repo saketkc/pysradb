@@ -542,12 +542,23 @@ class SRAweb(SRAdb):
         metadata_df = metadata_df[metadata_df.columns.dropna()]
         metadata_df = metadata_df.drop_duplicates()
         metadata_df = metadata_df.replace(r"^\s*$", np.nan, regex=True)
+        ena_cols = [
+            "ena_fastq_http",
+            "ena_fastq_http_1",
+            "ena_fastq_http_2",
+            "ena_fastq_ftp",
+            "ena_fastq_ftp_1",
+            "ena_fastq_ftp_2",
+        ]
+        metadata_df[ena_cols] = np.nan
+
+        metadata_df = metadata_df.set_index("run_accession")
         for srp in metadata_df.study_accession.unique():
             ena_results = self.fetch_ena_fastq(srp)
             if ena_results.shape[0]:
-                metadata_df = metadata_df.merge(
-                    ena_results, on="run_accession", how="left"
-                )
+                ena_results = ena_results.set_index("run_accession")
+                metadata_df.update(ena_results)
+        metadata_df = metadata_df.reset_index()
         metadata_df = metadata_df.fillna("N/A")
         return metadata_df
 

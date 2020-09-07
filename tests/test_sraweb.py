@@ -42,6 +42,15 @@ def test_sra_metadata_multiple_detailed(sraweb_connection):
     df = sraweb_connection.sra_metadata(["SRP002605", "SRP098789"], detailed=True)
     columns = ["treatment time", "library type", "transfection", "time"]
     assert len(set(columns).intersection(set(df.columns))) == 4
+    ftp_cols = [
+        "ena_fastq_http",
+        "ena_fastq_http_1",
+        "ena_fastq_http_2",
+        "ena_fastq_ftp",
+        "ena_fastq_ftp_1",
+        "ena_fastq_ftp_2",
+    ]
+    assert len(set(ftp_cols).intersection(set(df.columns))) == 6
 
 
 def test_tissue_column(sraweb_connection):
