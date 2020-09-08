@@ -53,8 +53,8 @@ def get_retmax(n_records, retmax=500):
 
 
 class SRAweb(SRAdb):
-    def __init__(self):
-        self.base_url = {}
+    def __init__(self, api_key=None):
+        self.base_url = dict()
         self.base_url[
             "esummary"
         ] = "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esummary.fcgi"
@@ -81,12 +81,19 @@ class SRAweb(SRAdb):
             ("usehistory", "n"),
             ("retmode", "json"),
         ]
-
         self.efetch_params = [
             ("db", "sra"),
             ("usehistory", "n"),
             ("retmode", "runinfo"),
         ]
+
+        if api_key is not None:
+            self.esearch_params["sra"].append(("api_key", str(api_key)))
+            self.esearch_params["geo"].append(("api_key", str(api_key)))
+            self.efetch_params.append(("api_key", str(api_key)))
+            self.sleep_time = 1 / 10
+        else:
+            self.sleep_time = 1 / 3
 
     @staticmethod
     def format_xml(string):
