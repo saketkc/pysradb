@@ -54,6 +54,17 @@ def get_retmax(n_records, retmax=500):
 
 class SRAweb(SRAdb):
     def __init__(self, api_key=None):
+        """
+        Initialize a SRAwebdb.
+
+        Parameters
+        ----------
+
+        api_key: string
+                 API key for ncbi eutils. This key increases the number of
+                 lookups from 3 per second to 10 per second.
+                 https://ncbiinsights.ncbi.nlm.nih.gov/2017/11/02/new-api-keys-for-the-e-utilities/
+        """
         self.base_url = dict()
         self.base_url[
             "esummary"
