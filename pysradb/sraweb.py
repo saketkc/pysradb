@@ -4,7 +4,7 @@ import sys
 import time
 import warnings
 from collections import OrderedDict
-from html import unescape
+import concurrent.futures
 from xml.parsers.expat import ExpatError
 
 import numpy as np
@@ -568,11 +568,20 @@ class SRAweb(SRAdb):
         metadata_df[ena_cols] = np.nan
 
         metadata_df = metadata_df.set_index("run_accession")
-        for srp in metadata_df.study_accession.unique():
-            ena_results = self.fetch_ena_fastq(srp)
-            if ena_results.shape[0]:
-                ena_results = ena_results.set_index("run_accession")
-                metadata_df.update(ena_results)
+        # multithreading lookup on ENA, since a lot of time is spent waiting
+        # for its reply
+        with concurrent.futures.ThreadPoolExecutor(max_workers=5) as executor:
+            # load our function calls into a list of futures
+            futures = [
+                executor.submit(self.fetch_ena_fastq, srp)
+                for srp in metadata_df.study_accession.unique()
+            ]
+            # now proceed synchronously
+            for future in concurrent.futures.as_completed(futures):
+                ena_results = future.result()
+                if ena_results.shape[0]:
+                    ena_results = ena_results.set_index("run_accession")
+                    metadata_df.update(ena_results)
         metadata_df = metadata_df.reset_index()
         metadata_df = metadata_df.fillna("N/A")
         return metadata_df
