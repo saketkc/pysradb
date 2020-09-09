@@ -61,9 +61,7 @@ class SRAweb(SRAdb):
         ----------
 
         api_key: string
-                 API key for ncbi eutils. This key increases the number of
-                 lookups from 3 per second to 10 per second.
-                 https://ncbiinsights.ncbi.nlm.nih.gov/2017/11/02/new-api-keys-for-the-e-utilities/
+                 API key for ncbi eutils.
         """
         self.base_url = dict()
         self.base_url[
