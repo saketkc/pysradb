@@ -286,7 +286,6 @@ class SRAweb(SRAdb):
                         results[key] += value
                     else:
                         results[key] = value
-            time.sleep(0.1)
         return results
 
     def get_efetch_response(self, db, term, usehistory="y"):
@@ -349,7 +348,7 @@ class SRAweb(SRAdb):
                 result = response
                 for value in result:
                     results.append(value)
-            time.sleep(0.3)
+            time.sleep(self.sleep_time)
         return results
 
     def sra_metadata(
@@ -470,7 +469,7 @@ class SRAweb(SRAdb):
         if not detailed:
             return metadata_df
 
-        time.sleep(0.5)
+        time.sleep(self.sleep_time)
         efetch_result = self.get_efetch_response("sra", srp)
         if not isinstance(efetch_result, list):
             efetch_result = [efetch_result]
@@ -673,7 +672,7 @@ class SRAweb(SRAdb):
             columns={"SRA": "experiment_accession", "accession": "experiment_alias"}
         )
         srx = gsm_df.experiment_accession.tolist()
-        time.sleep(0.3)
+        time.sleep(self.sleep_time)
         srs_df = self.srx_to_srs(srx)
         gsm_df = srs_df.merge(gsm_df, on="experiment_accession")[
             ["experiment_alias", "sample_accession"]
@@ -748,7 +747,7 @@ class SRAweb(SRAdb):
     def srs_to_gsm(self, srs, **kwargs):
         """Get GSM for a SRS"""
         srx_df = self.srs_to_srx(srs)
-        time.sleep(0.5)
+        time.sleep(self.sleep_time)
         gsm_df = self.srx_to_gsm(srx_df.experiment_accession.tolist(), **kwargs)
         srs_df = srx_df.merge(gsm_df, on="experiment_accession")
         return _order_first(srs_df, ["sample_accession", "experiment_alias"])
