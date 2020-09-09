@@ -223,4 +223,4 @@ def test_srx_to_srs(sraweb_connection):
 
 def test_xmlns_id(sraweb_connection):
     df = sraweb_connection.sra_metadata(["GSM1013144", "GSM2520660"])
-    assert list(df["library_layout"]) == ["SINGLE"] * 2
+    assert list(df["library_layout"]) == ["PAIRED", "SINGLE"]
