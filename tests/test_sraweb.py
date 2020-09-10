@@ -219,3 +219,8 @@ def test_srx_to_srs(sraweb_connection):
     """Test if srx is converted to srs correctly"""
     df = sraweb_connection.srx_to_srs("SRX663253")
     assert list(df["sample_accession"]) == ["SRS668126"]
+
+
+def test_xmlns_id(sraweb_connection):
+    df = sraweb_connection.sra_metadata(["GSM1013144", "GSM2520660"])
+    assert list(df["library_layout"]) == ["PAIRED", "SINGLE"]

@@ -135,7 +135,7 @@ class SRAweb(SRAdb):
                   Parsed xml as dict
         """
         try:
-            json = xmltodict.parse(xml)["root"]
+            json = xmltodict.parse(xml, process_namespaces=True)["root"]
         except ExpatError:
             raise RuntimeError("Unable to parse xml: {}".format(xml))
         return json
