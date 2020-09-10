@@ -157,6 +157,7 @@ class QuerySearch:
             "count_median": "-",
             "count_stdev": "-",
         }
+        self.plot_objects = {}
 
     def _input_multi_regex_checker(self, regex_matcher, input_query, error_message):
         """Checks if the user input match exactly 1 of the possible regex.
@@ -562,6 +563,10 @@ class QuerySearch:
         """Getter for the search result dataframe."""
         return self.df
 
+    def get_plot_objects(self):
+        """Get the plot objects for plots generated."""
+        return self.plot_objects
+
     def _plot_graph(self, plt, axes, show, savedir, too_many_organisms):
         """Plots a graph based on data from self.stats
 
@@ -593,6 +598,7 @@ class QuerySearch:
             plt.xticks(rotation=90)
             plt.title(title, fontsize=18)
             plt.savefig(f"{savedir}{title}.jpeg")
+            self.plot_objects[axes] = plt
         elif len(axes) == 1:
             title = f"Histogram of {axes[0]}"
             data = self.stats["graph_raw"][axes[0]].value_counts()
@@ -610,6 +616,7 @@ class QuerySearch:
             plt.xlabel(axes[0], fontsize=14)
             plt.ylabel("Frequency", fontsize=14)
             plt.savefig(f"{savedir}{title}.jpeg")
+            self.plot_objects[axes] = plt
         elif len(axes) == 2:
             title = f"Heatmap of {axes[0]} against {axes[1]}"
             df = self.stats["graph_raw"][list(axes)]
@@ -647,6 +654,7 @@ class QuerySearch:
             ax.set_ylabel(axes[0], fontsize=14)
             ax.set_xlabel(axes[1], fontsize=14)
             ax.get_figure().savefig(f"{savedir}{title}.jpeg")
+            self.plot_objects[axes] = (fig, ax)
         if show:
             plt.show()
 
