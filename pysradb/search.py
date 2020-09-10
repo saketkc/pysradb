@@ -597,7 +597,7 @@ class QuerySearch:
             plt.ylabel("Frequency", fontsize=14)
             plt.xticks(rotation=90)
             plt.title(title, fontsize=18)
-            plt.savefig(f"{savedir}{title}.jpeg")
+            plt.savefig(f"{savedir}{title}.svg")
             self.plot_objects[axes] = plt
         elif len(axes) == 1:
             title = f"Histogram of {axes[0]}"
@@ -615,7 +615,7 @@ class QuerySearch:
             plt.title(title, fontsize=18)
             plt.xlabel(axes[0], fontsize=14)
             plt.ylabel("Frequency", fontsize=14)
-            plt.savefig(f"{savedir}{title}.jpeg")
+            plt.savefig(f"{savedir}{title}.svg")
             self.plot_objects[axes] = plt
         elif len(axes) == 2:
             title = f"Heatmap of {axes[0]} against {axes[1]}"
@@ -653,7 +653,7 @@ class QuerySearch:
             ax.set_yticklabels(piv.index)
             ax.set_ylabel(axes[0], fontsize=14)
             ax.set_xlabel(axes[1], fontsize=14)
-            ax.get_figure().savefig(f"{savedir}{title}.jpeg")
+            ax.get_figure().savefig(f"{savedir}{title}.svg")
             self.plot_objects[axes] = (fig, ax)
         if show:
             plt.show()
