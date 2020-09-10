@@ -208,6 +208,31 @@ class QuerySearch:
     def _validate_fields(self):
         """Verifies that user input format is correct.
 
+        This helper function tries to match the input query strings from
+        the user to the exact string that is accepted by both SRA and ENA
+
+        Note: as of the implementation of this method, ENA does not have
+        a documentation page listing the accepted values for query
+        parameters. The list of parameters below were collected from ENA's
+        advanced search page: https://www.ebi.ac.uk/ena/browser/advanced-search
+
+        Updating new values:
+        If any new values are accepted by ENA, it should appear under
+        the corresponding parameter in the page. To update this method,
+        think of a regex that captures what the user may type for the new
+        value, and include it in the respective xxx_matcher dictionary
+        below as a regex:value key value pair.
+
+        Eg: if a new sequencing platform, Pokemon, is added to ENA,
+        navigate to "Instrument Platform" parameter on ENA's advanced
+        search page and copy the corresponding phrase (eg "poKe_Mon").
+        Then add the key value pair ".*poke.*": "poKe_Mon" to
+        platform_matcher below.
+
+        Unlike SRA, ENA requires supplied param values to be exact match
+        to filter accordingly (eg "cDNA_oligo_dT"), which motivated this
+        feature.
+
         Raises
         ------
         IncorrectFieldException

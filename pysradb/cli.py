@@ -135,7 +135,6 @@ def download(
     sradb = get_sra_object(db)
     if not srp:
         text = ""
-        # i = 1
         for index, line in enumerate(sys.stdin):
             line = line.strip(" \t\n\r")
             line = re.sub(r"\s*\t+\s*", "\t", line)
@@ -720,7 +719,13 @@ def parse_args(args=None):
         "--verbosity",
         choices=[0, 1, 2, 3],
         default=2,
-        help="Level of search result details (0, 1, 2 or 3), default = 2",
+        help=(
+            "Level of search result details (0, 1, 2 or 3), default = 2\n"
+            "0: run accession only\n"
+            "1: run accession and experiment title\n"
+            "2: accession numbers, titles and sequencing information\n"
+            "3: records in 2 and other information such as download url, sample attributes, etc"
+        ),
         type=int,
     )
     subparser.add_argument(
