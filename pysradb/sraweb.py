@@ -53,8 +53,17 @@ def get_retmax(n_records, retmax=500):
 
 
 class SRAweb(SRAdb):
-    def __init__(self):
-        self.base_url = {}
+    def __init__(self, api_key=None):
+        """
+        Initialize a SRAwebdb.
+
+        Parameters
+        ----------
+
+        api_key: string
+                 API key for ncbi eutils.
+        """
+        self.base_url = dict()
         self.base_url[
             "esummary"
         ] = "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esummary.fcgi"
@@ -81,12 +90,19 @@ class SRAweb(SRAdb):
             ("usehistory", "n"),
             ("retmode", "json"),
         ]
-
         self.efetch_params = [
             ("db", "sra"),
             ("usehistory", "n"),
             ("retmode", "runinfo"),
         ]
+
+        if api_key is not None:
+            self.esearch_params["sra"].append(("api_key", str(api_key)))
+            self.esearch_params["geo"].append(("api_key", str(api_key)))
+            self.efetch_params.append(("api_key", str(api_key)))
+            self.sleep_time = 1 / 10
+        else:
+            self.sleep_time = 1 / 3
 
     @staticmethod
     def format_xml(string):
@@ -268,7 +284,6 @@ class SRAweb(SRAdb):
                         results[key] += value
                     else:
                         results[key] = value
-            time.sleep(0.1)
         return results
 
     def get_efetch_response(self, db, term, usehistory="y"):
@@ -331,7 +346,7 @@ class SRAweb(SRAdb):
                 result = response
                 for value in result:
                     results.append(value)
-            time.sleep(0.3)
+            time.sleep(self.sleep_time)
         return results
 
     def sra_metadata(
@@ -452,7 +467,7 @@ class SRAweb(SRAdb):
         if not detailed:
             return metadata_df
 
-        time.sleep(0.5)
+        time.sleep(self.sleep_time)
         efetch_result = self.get_efetch_response("sra", srp)
         if not isinstance(efetch_result, list):
             efetch_result = [efetch_result]
@@ -664,7 +679,7 @@ class SRAweb(SRAdb):
             columns={"SRA": "experiment_accession", "accession": "experiment_alias"}
         )
         srx = gsm_df.experiment_accession.tolist()
-        time.sleep(0.3)
+        time.sleep(self.sleep_time)
         srs_df = self.srx_to_srs(srx)
         gsm_df = srs_df.merge(gsm_df, on="experiment_accession")[
             ["experiment_alias", "sample_accession"]
@@ -739,7 +754,7 @@ class SRAweb(SRAdb):
     def srs_to_gsm(self, srs, **kwargs):
         """Get GSM for a SRS"""
         srx_df = self.srs_to_srx(srs)
-        time.sleep(0.5)
+        time.sleep(self.sleep_time)
         gsm_df = self.srx_to_gsm(srx_df.experiment_accession.tolist(), **kwargs)
         srs_df = srx_df.merge(gsm_df, on="experiment_accession")
         return _order_first(srs_df, ["sample_accession", "experiment_alias"])
