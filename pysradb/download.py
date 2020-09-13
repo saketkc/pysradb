@@ -44,19 +44,22 @@ def millify(n):
     return "{:.1f}{}".format(n / 10 ** (3 * millidx), millnames[millidx])
 
 
-def get_file_size(row):
+def get_file_size(row, url_col):
     """Get size of file to be downloaded.
 
     Parameters
     ----------
     row: pd.DataFrame row
 
+    url_col: str
+        url_column
+
     Returns
     -------
     content_length: int
     """
-    if row.srapath_url is not None:
-        url = row.srapath_url
+    if row[url_col] is not None:
+        url = row[url_col]
     else:
         url = row.download_url
     if url.startswith("ftp."):

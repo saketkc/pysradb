@@ -1262,22 +1262,21 @@ class SRAdb(BASEdb):
             return None
         return str(urls[0])
 
-    def _select_best_url(self, url_list, row):
-        for url in url_list:
-            if str(row[url]).startswith("https"):
-                return row[url]
-        for url in url_list:
-            if str(row[url]).startswith("ftp"):
-                return row[url]
+    def _select_best_url(self, url_list, row, use_ascp):
+        if use_ascp:
+            for url in url_list:
+                if str(row[url]).startswith("fasp"):
+                    return row[url]
+        else:
+            for url in url_list:
+                if str(row[url]).startswith("http"):
+                    return row[url]
+            for url in url_list:
+                if str(row[url]).startswith("ftp"):
+                    return row[url]
         return None
 
-    def _select_valid_aspera_url(self, aspera_cols, row):
-        for col in aspera_cols:
-            if row[col] and "fasp" in row[col]:
-                return row[col]
-        return ""
-
-    def _format_dataframe_for_download(self, df, url_column=None):
+    def _format_dataframe_for_download(self, df, url_column, use_ascp):
         """Format a dataframe as input for pysradb download.
 
         This method formats the input dataframe into the sradb.download
@@ -1285,13 +1284,20 @@ class SRAdb(BASEdb):
         First, the columns "study_accession", "experiment_accession", and
         "run_accession" will be identified.
         Next, this method will attempt to find the download url
-        corresponding to each run_accession. If url_column is supplied, the
-        URL in the column will be registered. Otherwise, the method looks
-        for a column header in the dataframe that matches the regex
+        corresponding to each run_accession.
+        If url_column is supplied, the column will be used if found.
+        If url_column is not supplied or not found, the method looks
+        for column headers in the dataframe that matches the regex
         string ".*sra.*(url|ftp|galaxy).*", which looks for a column header
         that contains "sra", as well as either "url", "ftp" or "galaxy"
-        after "sra". (case insensitive). The url column will then be
-        renamed as "srapath_url".
+        after "sra". (case insensitive). If use_ascp is true, the program
+        will look for known columns containing ascp links instead.
+
+        All matching columns will be
+        returned for the user to select the url column to use. Additionally,
+        the column "recommended_url" is returned as well, which ensures as
+        much as possible that the column contains url links for every run
+        accession.
         If any of "study_accession", "experiment_accession",
         "run_accession" or "srapath_url" is missing, a
         MissingDataFrameColumnsException will be raised.
@@ -1304,8 +1310,12 @@ class SRAdb(BASEdb):
         url_column: str
             name of the dataframe column header that contains download
             urls, or a regex matching the expected column header.
-            Defaults to None, in which case the regex
-            ".*sra.*(url|ftp|galaxy).*" will be used.
+            if url_column == None, the regex ".*sra.*(url|ftp|galaxy).*"
+            will be used.
+        use_ascp: bool
+            whether ascp is used. If true and url_column is invalid or not
+            specified, the program will look for known columns containing
+            ascp links (containing "aspera" or "fasta")
 
         Returns
         -------
@@ -1326,23 +1336,30 @@ class SRAdb(BASEdb):
         if missing_columns == ["run_accession"] and run_count > 1:
             missing_columns.clear()
             accession_columns[-1] = "run_1_accession"
-        if url_column:
-            if url_column in df_columns:
+        if url_column and url_column in df_columns:
+            formatted_df = df.loc[
+                :, df.columns.isin(accession_columns + [url_column])
+            ]
+            formatted_df.rename(
+                {"run_1_accession": "run_accession"},
+                inplace=True,
+            )
+        elif use_ascp and run_count == 1:
+            # Add aspera columns, if they exist(for EnaSearch/metadata)
+            possible_aspera_cols = [
+                "fastq_aspera",
+                "sra_aspera",
+                "submitted_aspera",
+                "ena_fastq_ftp",
+            ]
+            aspera_cols = []
+            for col in possible_aspera_cols:
+                if col in df_columns:
+                    aspera_cols.append(col)
+            formatted_df = df.loc[
+                :, df.columns.isin(accession_columns + aspera_cols)
+            ].rename({"run_1_accession": "run_accession"})
 
-                formatted_df = df.loc[
-                    :, df.columns.isin(accession_columns + [url_column])
-                ]
-                formatted_df.rename(
-                    {"run_1_accession": "run_accession", url_column: "srapath_url"},
-                    inplace=True,
-                )
-            else:
-                formatted_df = df.loc[:, df.columns.isin(accession_columns)]
-                print(
-                    f"The URL column: {url_column} is not found.\n"
-                    "Generating default download URL for each run accession...\n",
-                    flush=True,
-                )
         else:
             run_dfs = []
             url_regex = re.compile(".*sra.*(url|ftp|galaxy).*", re.IGNORECASE)
@@ -1351,33 +1368,48 @@ class SRAdb(BASEdb):
                 url_list = list(
                     filter(lambda x: x.startswith(f"run_{i}"), matched_cols)
                 )
-                df["srapath_url"] = df.apply(
-                    lambda row: self._select_best_url(url_list, row), axis=1
+                df["recommended_url"] = df.apply(
+                    lambda row: self._select_best_url(url_list, row, use_ascp), axis=1
                 )
+
+                def remove_unusable_urls(url, use_ascp):
+                    if use_ascp:
+                        if url.startswith("fasp"):
+                            return url
+                    else:
+                        if url.startswith("http") or url.startswith("ftp"):
+                            return url
+                    return None
+                for url_c in url_list:
+                    df[url_c] = df[url_c].apply(
+                        lambda url: remove_unusable_urls(url, use_ascp)
+                    )
                 expected_columns = [
                     "study_accession",
                     "experiment_accession",
                     f"run_{i}_accession",
-                    "srapath_url",
-                ]
+                    "recommended_url",
+                ] + url_list
                 run_df = df.loc[:, df.columns.isin(expected_columns)]
                 run_df = run_df.rename(columns={f"run_{i}_accession": "run_accession"})
                 run_dfs.append(run_df)
             if run_count == 1:
-                df["srapath_url"] = df.apply(
-                    lambda row: self._select_best_url(matched_cols, row), axis=1
-                )
                 expected_columns = [
                     "study_accession",
                     "experiment_accession",
                     "run_accession",
-                    "srapath_url",
+                    "recommended_url",
                 ]
+                df["recommended_url"] = df.apply(
+                    lambda row: self._select_best_url(matched_cols, row), axis=1
+                )
+
                 run_dfs = [df.loc[:, df.columns.isin(expected_columns)]]
             formatted_df = pd.concat(run_dfs)
+            formatted_df.dropna(axis=1, how="all")
             if not matched_cols:
                 print(
-                    f"No URL column matching the URL regex .*sra.*(url|ftp|galaxy).* is found.\n"
+                    f"No URL column is found.\n"
                     "You may wish to re-run your query with either\n"
                     "pysradb metadata --detailed \n"
                     "or \n"
@@ -1398,21 +1430,6 @@ class SRAdb(BASEdb):
                 "pysradb search -v 3\n"
             )
             sys.exit(1)
-        # Add aspera columns, if they exist(for EnaSearch/metadata)
-        possible_aspera_cols = [
-            "fastq_aspera",
-            "sra_aspera",
-            "submitted_aspera",
-            "ena_fastq_ftp",
-        ]
-        aspera_cols = []
-        for col in possible_aspera_cols:
-            if col in df_columns:
-                aspera_cols.append(col)
-        if aspera_cols:
-            formatted_df["ena_fastq_ftp"] = df.apply(
-                lambda r: self._select_valid_aspera_url(aspera_cols, r), axis=1
-            )
         return formatted_df.dropna(
             subset=["study_accession", "experiment_accession", "run_accession"]
         )
@@ -1467,7 +1484,25 @@ class SRAdb(BASEdb):
             else:
                 ascp_bin = os.path.join(ascp_dir, "connect", "bin", "ascp")
         # Does the necessary column formatting for the dataframe
-        df = self._format_dataframe_for_download(df.copy(), url_col)
+        df = self._format_dataframe_for_download(df.copy(), url_col, use_ascp)
+        if url_col not in df.columns:
+            print(
+                f"The supplied url column {url_col} cannot be found.\n"
+                "Using recommended_url instead?",
+                flush=True
+            )
+            url_col = "recommended_url"
+            #TODO: Debug the following to allow the user to select which
+            # column to use instead.
+
+            # pd.set_option("display.max_colwidth", -1)
+            # print(df.to_string(index=False, justify="left", col_space=0))
+            # print(os.linesep, flush=True)
+            # if not confirm("Use recommended_url instead?"):
+            #     url_col = input("Please enter an url column to use.")
+            #     if url_col not in df.columns:
+            #         sys.exit(1)
+
         if filter_by_srx:
             if isinstance(filter_by_srx, str):
                 filter_by_srx = [filter_by_srx]
@@ -1487,22 +1522,12 @@ class SRAdb(BASEdb):
         )
         ena_columns = [col for col in df.columns if "ena" in col]
         df["out_dir"] = out_dir
-        download_list = df[
-            [
-                "study_accession",
-                "experiment_accession",
-                "run_accession",
-                "download_url",
-                "srapath_url",
-            ]
-            + ena_columns
-        ].values
         if not len(df.index):
             print("Could not locate {} in db".format(srp))
             sys.exit(0)
         if not use_ascp:
-            print("Checking download URLs")
-            df["filesize"] = df.apply(get_file_size, axis=1)
+            print("Checking download URLs", flush=True)
+            df["filesize"] = df.apply(lambda x: get_file_size(x, url_col), axis=1)
             df.dropna(subset=["filesize"])
             total_file_size = millify(np.sum(df["filesize"]))
             df["filesize"] = df["filesize"].apply(lambda x: millify(x))

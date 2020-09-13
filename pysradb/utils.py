@@ -264,6 +264,7 @@ def confirm(preceeding_text):
     -------
     response: bool
     """
+    print(os.linesep, flush=True)
     notification_str = "Please respond with 'y' or 'n'"
     while True:
         choice = input("{} [Y/n]: ".format(preceeding_text)).lower()
@@ -271,7 +272,7 @@ def confirm(preceeding_text):
             return True
         if choice in "no":
             return False
-        print(notification_str)
+        print(notification_str, flush=True)
 
 
 def copyfileobj(fsrc, fdst, bufsize=16384, filesize=None, desc=""):
