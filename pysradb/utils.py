@@ -212,9 +212,9 @@ def confirm(preceeding_text):
     notification_str = "Please respond with 'y' or 'n'"
     while True:
         choice = input("{} [Y/n]: ".format(preceeding_text)).lower()
-        if choice in "yes" or not choice:
+        if choice in ["yes", "y"] or not choice:
             return True
-        if choice in "no":
+        if choice in ["no", "n"]:
             return False
         print(notification_str)
 
