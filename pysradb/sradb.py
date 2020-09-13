@@ -1481,16 +1481,13 @@ class SRAdb(BASEdb):
                     + "You can supress this message by using `--use-wget` flag\n"
                     + "Continuing with wget ...\n\n"
                 )
+                use_ascp = False
             else:
                 ascp_bin = os.path.join(ascp_dir, "connect", "bin", "ascp")
         # Does the necessary column formatting for the dataframe
         df = self._format_dataframe_for_download(df.copy(), url_col, use_ascp)
         if url_col not in df.columns:
-            print(
-                f"The supplied url column {url_col} cannot be found.\n"
-                "Using recommended_url instead?",
-                flush=True,
-            )
+            print(f'The supplied url column "{url_col}" cannot be found.\n')
             url_col = "recommended_url"
             if not skip_confirmation:
                 pd.set_option("display.max_colwidth", -1)
@@ -1498,8 +1495,10 @@ class SRAdb(BASEdb):
                 print(os.linesep, flush=True)
                 if not confirm("Use recommended_url instead?"):
                     url_col = input("Please enter an url column to use:  ")
-                    if url_col not in df.columns:
-                        sys.exit(1)
+            else:
+                print("Using recommended_url instead.\n", flush=True)
+        if url_col not in df.columns:
+            sys.exit("\nMissing url columns!")
 
         if filter_by_srx:
             if isinstance(filter_by_srx, str):
