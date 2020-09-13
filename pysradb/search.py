@@ -1367,7 +1367,6 @@ class EnaSearch(QuerySearch):
             self.df = self.df[columns]
         self.df.dropna(how="all")
 
-
     def _update_stats(self):
         # study
         self.stats["study"] = self.df["study_accession"].nunique()

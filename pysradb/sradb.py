@@ -13,7 +13,7 @@ from subprocess import PIPE
 import numpy as np
 import pandas as pd
 from tqdm.autonotebook import tqdm
-from tqdm.contrib.concurrent import process_map
+from tqdm.contrib.concurrent import process_map, thread_map
 
 from .basedb import BASEdb
 from .download import download_file
@@ -1337,9 +1337,7 @@ class SRAdb(BASEdb):
             missing_columns.clear()
             accession_columns[-1] = "run_1_accession"
         if url_column and url_column in df_columns:
-            formatted_df = df.loc[
-                :, df.columns.isin(accession_columns + [url_column])
-            ]
+            formatted_df = df.loc[:, df.columns.isin(accession_columns + [url_column])]
             formatted_df.rename(
                 {"run_1_accession": "run_accession"},
                 inplace=True,
@@ -1380,6 +1378,7 @@ class SRAdb(BASEdb):
                         if url.startswith("http") or url.startswith("ftp"):
                             return url
                     return None
+
                 for url_c in url_list:
                     df[url_c] = df[url_c].apply(
                         lambda url: remove_unusable_urls(url, use_ascp)
@@ -1401,7 +1400,8 @@ class SRAdb(BASEdb):
                     "recommended_url",
                 ]
                 df["recommended_url"] = df.apply(
-                    lambda row: self._select_best_url(matched_cols, row, use_ascp), axis=1
+                    lambda row: self._select_best_url(matched_cols, row, use_ascp),
+                    axis=1,
                 )
 
                 run_dfs = [df.loc[:, df.columns.isin(expected_columns)]]
@@ -1489,19 +1489,17 @@ class SRAdb(BASEdb):
             print(
                 f"The supplied url column {url_col} cannot be found.\n"
                 "Using recommended_url instead?",
-                flush=True
+                flush=True,
             )
             url_col = "recommended_url"
-            #TODO: Debug the following to allow the user to select which
-            # column to use instead.
-
-            # pd.set_option("display.max_colwidth", -1)
-            # print(df.to_string(index=False, justify="left", col_space=0))
-            # print(os.linesep, flush=True)
-            # if not confirm("Use recommended_url instead?"):
-            #     url_col = input("Please enter an url column to use.")
-            #     if url_col not in df.columns:
-            #         sys.exit(1)
+            if not skip_confirmation:
+                pd.set_option("display.max_colwidth", -1)
+                print(df.to_string(index=False, justify="left", col_space=0))
+                print(os.linesep, flush=True)
+                if not confirm("Use recommended_url instead?"):
+                    url_col = input("Please enter an url column to use:  ")
+                    if url_col not in df.columns:
+                        sys.exit(1)
 
         if filter_by_srx:
             if isinstance(filter_by_srx, str):
@@ -1540,7 +1538,8 @@ class SRAdb(BASEdb):
             if not skip_confirmation:
                 if not confirm("Start download? "):
                     sys.exit(0)
-        process_map(
+        df["srapath_url"] = df[url_col]
+        thread_map(
             partial(
                 _handle_download,
                 use_ascp=use_ascp,
