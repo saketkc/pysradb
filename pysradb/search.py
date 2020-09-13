@@ -1367,7 +1367,6 @@ class EnaSearch(QuerySearch):
             self.df = self.df[columns]
         self.df.dropna(how="all")
 
-        print(f"Successfully retrieved {len(self.df.index)} entries from ENA database.")
 
     def _update_stats(self):
         # study

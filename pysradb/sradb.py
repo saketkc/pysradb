@@ -1401,7 +1401,7 @@ class SRAdb(BASEdb):
                     "recommended_url",
                 ]
                 df["recommended_url"] = df.apply(
-                    lambda row: self._select_best_url(matched_cols, row), axis=1
+                    lambda row: self._select_best_url(matched_cols, row, use_ascp), axis=1
                 )
 
                 run_dfs = [df.loc[:, df.columns.isin(expected_columns)]]
