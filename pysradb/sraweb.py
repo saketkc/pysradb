@@ -29,7 +29,9 @@ def _order_first(df, column_order_list):
     columns = column_order_list + [
         col for col in df.columns.tolist() if col not in column_order_list
     ]
-    df = df.loc[:, columns]
+    # check if all columns do exist in the dataframe
+    if len(set(columns).intersection(df.columns)) == len(columns):
+        df = df.loc[:, columns]
     return df
 
 
