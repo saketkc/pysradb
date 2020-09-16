@@ -1,5 +1,6 @@
 """Utilities to interact with SRA online"""
 
+import os
 import sys
 import time
 import warnings
@@ -335,11 +336,22 @@ class SRAweb(SRAdb):
                 request_text = request.text.strip()
 
             try:
-                response = xmltodict.parse(request_text)["EXPERIMENT_PACKAGE_SET"][
-                    "EXPERIMENT_PACKAGE"
-                ]
+                xml_response = xmltodict.parse(request_text)
+
+                exp_response = xml_response.get("EXPERIMENT_PACKAGE_SET", {})
+                response = exp_response.get("EXPERIMENT_PACKAGE", {})
             except ExpatError:
-                raise RuntimeError("Unable to parse xml: {}".format(request_text))
+                sys.stderr.write(
+                    "Unable to parse xml: {}{}".format(request_text, os.linesep)
+                )
+                sys.exit(1)
+            if not response:
+                sys.stderr.write(
+                    "Unable to parse xml response. Received: {}{}".format(
+                        xml_response, os.linesep
+                    )
+                )
+                sys.exit(1)
             if retstart == 0:
                 results = response
             else:
