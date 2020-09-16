@@ -8,6 +8,7 @@ from collections import OrderedDict
 import concurrent.futures
 from xml.parsers.expat import ExpatError
 
+from json.decoder import JSONDecodeError
 import numpy as np
 import pandas as pd
 import requests
@@ -250,7 +251,29 @@ class SRAweb(SRAdb):
             term = " OR ".join(term)
         payload += [("term", term)]
         request = requests.post(self.base_url["esearch"], data=OrderedDict(payload))
-        esearch_response = request.json()
+        try:
+            esearch_response = request.json()
+        except JSONDecodeError:
+            sys.stderr.write(
+                "Unable to parse esummary response json: {}{}. Will retry once.".format(
+                    request.text, os.linesep
+                )
+            )
+            retry_after = request.headers.get("Retry-After", 1)
+            time.sleep(int(retry_after))
+            request = requests.post(self.base_url["esearch"], data=OrderedDict(payload))
+            try:
+                esearch_response = request.json()
+            except JSONDecodeError:
+                sys.stderr.write(
+                    "Unable to parse esummary response json: {}{}. Aborting.".format(
+                        request.text, os.linesep
+                    )
+                )
+                sys.exit(1)
+
+            # retry again
+
         if "esummaryresult" in esearch_response:
             print("No result found")
             return
