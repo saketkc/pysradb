@@ -634,7 +634,7 @@ class SRAweb(SRAdb):
         try:
             uids = result["uids"]
         except KeyError:
-            print("No results found for {}".format(gse))
+            print("No results found for {} | Obtained result: {}".format(gse, result))
             sys.exit(1)
         gse_records = []
         for uid in uids:
