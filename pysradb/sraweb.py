@@ -781,11 +781,7 @@ class SRAweb(SRAdb):
         srr_df = self.sra_metadata(srr, **kwargs)
         if kwargs and kwargs["detailed"] == True:
             return srr_df
-        if (
-            len(set(srr_df.columns).intersection(["run_accession", "study_accession"]))
-            == 2
-        ):
-            return _order_first(srr_df, ["run_accession", "study_accession"])
+        return _order_first(srr_df, ["run_accession", "study_accession"])
 
     def srr_to_srs(self, srr, **kwargs):
         """Get SRS for a SRR"""
