@@ -295,7 +295,12 @@ class SRAweb(SRAdb):
             request = requests.get(
                 self.base_url["esummary"], params=OrderedDict(payload)
             )
-            response = request.json()
+            try:
+                response = request.json()
+            except JSONDecodeError:
+                time.sleep(1)
+                response = _retry_response(self.base_url["esummary"], payload, "result")
+
             if "error" in response:
                 # API rate limite exceeded
                 response = _retry_response(self.base_url["esummary"], payload, "result")
@@ -774,7 +779,11 @@ class SRAweb(SRAdb):
         srr_df = self.sra_metadata(srr, **kwargs)
         if kwargs and kwargs["detailed"] == True:
             return srr_df
-        return _order_first(srr_df, ["run_accession", "study_accession"])
+        if (
+            len(set(srr_df.columns).intersection(["run_accession", "study_accession"]))
+            == 2
+        ):
+            return _order_first(srr_df, ["run_accession", "study_accession"])
 
     def srr_to_srs(self, srr, **kwargs):
         """Get SRS for a SRR"""
