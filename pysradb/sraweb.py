@@ -1,5 +1,6 @@
 """Utilities to interact with SRA online"""
 
+import os
 import sys
 import time
 import warnings
@@ -7,6 +8,7 @@ from collections import OrderedDict
 import concurrent.futures
 from xml.parsers.expat import ExpatError
 
+from json.decoder import JSONDecodeError
 import numpy as np
 import pandas as pd
 import requests
@@ -27,7 +29,9 @@ def _order_first(df, column_order_list):
     columns = column_order_list + [
         col for col in df.columns.tolist() if col not in column_order_list
     ]
-    df = df.loc[:, columns]
+    # check if all columns do exist in the dataframe
+    if len(set(columns).intersection(df.columns)) == len(columns):
+        df = df.loc[:, columns]
     return df
 
 
@@ -249,7 +253,29 @@ class SRAweb(SRAdb):
             term = " OR ".join(term)
         payload += [("term", term)]
         request = requests.post(self.base_url["esearch"], data=OrderedDict(payload))
-        esearch_response = request.json()
+        try:
+            esearch_response = request.json()
+        except JSONDecodeError:
+            sys.stderr.write(
+                "Unable to parse esummary response json: {}{}. Will retry once.".format(
+                    request.text, os.linesep
+                )
+            )
+            retry_after = request.headers.get("Retry-After", 1)
+            time.sleep(int(retry_after))
+            request = requests.post(self.base_url["esearch"], data=OrderedDict(payload))
+            try:
+                esearch_response = request.json()
+            except JSONDecodeError:
+                sys.stderr.write(
+                    "Unable to parse esummary response json: {}{}. Aborting.".format(
+                        request.text, os.linesep
+                    )
+                )
+                sys.exit(1)
+
+            # retry again
+
         if "esummaryresult" in esearch_response:
             print("No result found")
             return
@@ -271,7 +297,12 @@ class SRAweb(SRAdb):
             request = requests.get(
                 self.base_url["esummary"], params=OrderedDict(payload)
             )
-            response = request.json()
+            try:
+                response = request.json()
+            except JSONDecodeError:
+                time.sleep(1)
+                response = _retry_response(self.base_url["esummary"], payload, "result")
+
             if "error" in response:
                 # API rate limite exceeded
                 response = _retry_response(self.base_url["esummary"], payload, "result")
@@ -335,11 +366,22 @@ class SRAweb(SRAdb):
                 request_text = request.text.strip()
 
             try:
-                response = xmltodict.parse(request_text)["EXPERIMENT_PACKAGE_SET"][
-                    "EXPERIMENT_PACKAGE"
-                ]
+                xml_response = xmltodict.parse(request_text)
+
+                exp_response = xml_response.get("EXPERIMENT_PACKAGE_SET", {})
+                response = exp_response.get("EXPERIMENT_PACKAGE", {})
             except ExpatError:
-                raise RuntimeError("Unable to parse xml: {}".format(request_text))
+                sys.stderr.write(
+                    "Unable to parse xml: {}{}".format(request_text, os.linesep)
+                )
+                sys.exit(1)
+            if not response:
+                sys.stderr.write(
+                    "Unable to parse xml response. Received: {}{}".format(
+                        xml_response, os.linesep
+                    )
+                )
+                sys.exit(1)
             if retstart == 0:
                 results = response
             else:
@@ -592,7 +634,7 @@ class SRAweb(SRAdb):
         try:
             uids = result["uids"]
         except KeyError:
-            print("No results found for {}".format(gse))
+            print("No results found for {} | Obtained result: {}".format(gse, result))
             sys.exit(1)
         gse_records = []
         for uid in uids:

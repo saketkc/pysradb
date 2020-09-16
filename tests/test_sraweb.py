@@ -10,7 +10,7 @@ from pysradb.sraweb import SRAweb
 @pytest.fixture(scope="module")
 def sraweb_connection():
     db = SRAweb()
-    time.sleep(1)
+    time.sleep(2)
     return db
 
 
