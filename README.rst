@@ -128,9 +128,9 @@ Dependecies
 
 .. code-block:: bash
 
-   pandas==1.0.1
-   requests==2.23.0
-   tqdm==4.43.0
+   pandas==1.1.2
+   requests==2.24.0
+   tqdm==4.49.0
    xmltodict==0.12.0
 
 
