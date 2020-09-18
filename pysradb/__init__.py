@@ -3,7 +3,7 @@
 
 __author__ = """Saket Choudhary"""
 __email__ = "saketkc@gmail.com"
-__version__ = "0.11.1-dev0"
+__version__ = "0.11.1"
 
 from .filter_attrs import expand_sample_attribute_columns
 from .geodb import GEOdb
