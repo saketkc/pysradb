@@ -590,6 +590,8 @@ class QuerySearch:
             ].str[:-3]
         if axes == ("Base Count",):
             count = list(self.stats["count_data"])
+            if len(count) == 0:
+                return
             title = "Histogram of Base Count"
             plt.figure(figsize=(15, 10))
             plt.hist(count, min(70, len(count)), color="#135c1c", log=True)
@@ -855,11 +857,12 @@ class SraSearch(QuerySearch):
             "run_1_total_spots",
             "run_1_total_bases",
         ]
+        temp_cols = []
         for col in important_columns:
-            if col not in columns:
-                important_columns.remove(col)
-            else:
+            if col in columns:
+                temp_cols.append(col)
                 columns.remove(col)
+        important_columns = temp_cols
         if self.verbosity <= 1:
             temp_dfs = []
             for col in self.df.columns:
@@ -1124,9 +1127,7 @@ class SraSearch(QuerySearch):
                 self.df["experiment_platform"].value_counts().to_dict()
             )
         # count
-        count = self._merge_selected_columns(r"^run_.*_total_base_count$").astype(
-            "int64"
-        )
+        count = self._merge_selected_columns(r"^run_.*_total_bases$").astype("int64")
         self.stats["count_data"] = count
         self.stats["count_mean"] = count.mean()
         self.stats["count_median"] = count.median()
