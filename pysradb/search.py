@@ -1558,11 +1558,15 @@ class GeoSearch(SraSearch):
         return payload
 
     def _format_request(self):
+        if not self.search_geo:
+            retmax = self.return_max
+        else:
+            retmax = self.return_max * 10
         payload = {
             "db": "sra",
             "term": self._format_query_string(),
             "retmode": "json",
-            "retmax": self.return_max * 10,
+            "retmax": retmax,
         }
         return payload
 
