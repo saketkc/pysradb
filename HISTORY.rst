@@ -2,6 +2,15 @@
 History
 #######
 
+*******************
+0.11.1 (09-18-2020)
+*******************
+* `library_layout` is now outputted in metadata #56
+*  `-detailed` unifies columns for ENA fastq links instead of appending _x/_y #59
+* bugfix for parsing namespace in xml outputs #65
+* XML errors from NCBI are now handled more gracefully #69
+* Documentation and dependency updates
+
 
 *******************
 0.11.0 (09-04-2020)
