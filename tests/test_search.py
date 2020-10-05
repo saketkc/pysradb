@@ -1194,5 +1194,5 @@ def test_geo_search_format_request():
         "db": "sra",
         "term": "covid-19 AND sra gds[Filter]",
         "retmode": "json",
-        "retmax": 10000,
+        "retmax": 1000,
     }
