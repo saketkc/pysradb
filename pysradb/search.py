@@ -5,6 +5,7 @@ import os
 import re
 import requests
 import sys
+import time
 import urllib
 import pandas as pd
 import xml.etree.ElementTree as Et
@@ -580,7 +581,7 @@ class QuerySearch:
         show: bool
             whether to call plt.show
         """
-
+        timestamp = time.strftime("%Y-%m-%d %H-%M-%S")
         if (
             "Publication Date" in axes
             and self.stats["graph_raw"]["Publication Date"].nunique() > 30
@@ -599,7 +600,7 @@ class QuerySearch:
             plt.ylabel("Frequency", fontsize=14)
             plt.xticks(rotation=90)
             plt.title(title, fontsize=18)
-            plt.savefig(f"{savedir}{title}.svg")
+            plt.savefig(f"{savedir}{title} {timestamp}.svg")
             self.plot_objects[axes] = plt
         elif len(axes) == 1:
             title = f"Histogram of {axes[0]}"
@@ -617,7 +618,7 @@ class QuerySearch:
             plt.title(title, fontsize=18)
             plt.xlabel(axes[0], fontsize=14)
             plt.ylabel("Frequency", fontsize=14)
-            plt.savefig(f"{savedir}{title}.svg")
+            plt.savefig(f"{savedir}{title} {timestamp}.svg")
             self.plot_objects[axes] = plt
         elif len(axes) == 2:
             title = f"Heatmap of {axes[0]} against {axes[1]}"
@@ -655,7 +656,7 @@ class QuerySearch:
             ax.set_yticklabels(piv.index)
             ax.set_ylabel(axes[0], fontsize=14)
             ax.set_xlabel(axes[1], fontsize=14)
-            ax.get_figure().savefig(f"{savedir}{title}.svg")
+            ax.get_figure().savefig(f"{savedir}{title} {timestamp}.svg")
             self.plot_objects[axes] = (fig, ax)
         if show:
             plt.show()
