@@ -1448,6 +1448,34 @@ class EnaSearch(QuerySearch):
 
 
 class GeoSearch(SraSearch):
+    """Subclass of SraSearch that can query both GEO DataSets and SRA API.
+
+    Methods
+    -------
+    search()
+        sends the user query via requests to SRA, GEO DataSets, or both
+        depending on the search query. If query is sent to both APIs,
+        the intersection of the two sets of query results are returned.
+
+    _format_geo_query_string()
+        formats the GEO DataSets portion of the input user query into a
+        string.
+
+    _format_geo_request()
+        formats the GEO DataSets request payload
+
+    _format_result(content)
+        formats the search query output and converts it into a pandas
+        dataframe
+
+    See Also
+    --------
+    GeoSearch.info(): GeoSearch usage details
+    SraSearch: Superclass of GeoSearch
+    QuerySearch: Superclass of SraSearch
+
+    """
+
     def __init__(
         self,
         verbosity=2,
@@ -1654,3 +1682,72 @@ class GeoSearch(SraSearch):
                     f"HTTPError: This is likely caused by an invalid search query: "
                     f"\nURL queried: {r.url} \nUser query: {self.fields}"
                 )
+
+    @classmethod
+    def info(cls):
+        """Information on how to use GeoSearch.
+
+        Displays information on how to query GEO DataSets / SRA via
+        GeoSearch, including accepted inputs for geo_query,
+        geo_dataset_type and geo_entry_type.
+
+        Returns
+        -------
+        info: str
+            Information on how to use GeoSearch.
+        """
+        info = (
+            "General Information:\n"
+            "--------------------\n"
+            "GeoSearch (Or 'pysradb search --db geo ...' on the command line) \n"
+            "is able to query both SRA and GEO DataSets, returning the subset \n"
+            "of entries that appears within both search queries. \n\n"
+            "Queries sent to SRA and GEO DataSets will have 'sra gds[Filter]' \n"
+            "and 'gds sra[Filter]' appended to the search queries respectively \n"
+            "to ensure that the entries in the search result can also be found \n"
+            "in the other API. \n\n"
+            "Queries sent to SRA uses the same fields as SraSearch, \n"
+            "or 'pysradb search --db sra ...' on the command line. \n\n"
+            "The following fields, if used, are sent as part of the GEO DataSets query: \n"
+            "organism, publication_date, geo_query, geo_dataset_type, geo_entry_type\n\n"
+            "Notes about GEO DataSets specific fields: \n"
+            "----------------------------------------- \n"
+            "geo_query: This is the free text query, similar to 'query', that \n"
+            "is sent to GEO DataSets API. The 'query' field is the free text \n"
+            "query sent to SRA API instead.\n\n"
+            "geo_dataset_type: The type of GEO DataSet, which can be one of the following: \n"
+            "  expression profiling by array \n"
+            "  expression profiling by genome tiling array \n"
+            "  expression profiling by high throughput sequencing \n"
+            "  expression profiling by mpss \n"
+            "  expression profiling by rt pcr \n"
+            "  expression profiling by sage \n"
+            "  expression profiling by snp array \n"
+            "  genome binding/occupancy profiling by array \n"
+            "  genome binding/occupancy profiling by genome tiling array \n"
+            "  genome binding/occupancy profiling by high throughput sequencing \n"
+            "  genome binding/occupancy profiling by snp array \n"
+            "  genome variation profiling by array \n"
+            "  genome variation profiling by genome tiling array \n"
+            "  genome variation profiling by high throughput sequencing \n"
+            "  genome variation profiling by snp array \n"
+            "  methylation profiling by array \n"
+            "  methylation profiling by genome tiling array \n"
+            "  methylation profiling by high throughput sequencing \n"
+            "  methylation profiling by snp array \n"
+            "  non coding rna profiling by array \n"
+            "  non coding rna profiling by genome tiling array \n"
+            "  non coding rna profiling by high throughput sequencing \n"
+            "  other \n"
+            "  protein profiling by mass spec \n"
+            "  protein profiling by protein array \n"
+            "  snp genotyping by snp array \n"
+            "  third party reanalysis\n\n"
+            "geo_dataset_type: The type of GEO entry, which can be one of the following: \n"
+            "  gds\n"
+            "  gpl\n"
+            "  gse\n"
+            "  gsm\n\n"
+        )
+
+        return info

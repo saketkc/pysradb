@@ -240,6 +240,10 @@ def search(saveto, db, verbosity, return_max, fields):
     _print_save_df(instance.get_df(), saveto)
 
 
+def get_geo_search_info():
+    print(GeoSearch.info())
+
+
 ####################################################################
 
 
@@ -712,7 +716,9 @@ def parse_args(args=None):
         "--db",
         choices=["ena", "geo", "sra"],
         default="sra",
-        help="Select the db API (sra, ena, or geo) to query, default = sra",
+        help="Select the db API (sra, ena, or geo) to query, default = sra.     "
+        "Note: pysradb search works slightly differently when db = geo. \n"
+        "Please refer to 'pysradb search --geo-info' for more details.",
     )
     subparser.add_argument(
         "-v",
@@ -760,7 +766,7 @@ def parse_args(args=None):
         "-L",
         "--layout",
         choices=["SINGLE", "PAIRED"],
-        help="Library layout",
+        help="Library layout. Accepts either SINGLE or PAIRED",
         type=str.upper,
     )
     subparser.add_argument(
@@ -786,22 +792,32 @@ def parse_args(args=None):
 
     # The following arguments are for GEO DataSets only
     subparser.add_argument(
+        "-I",
+        "--geo-info",
+        action="store_true",
+        help="Displays information on how to query GEO DataSets via 'pysradb search --db geo ...', "
+        "including accepted inputs for -G/--geo-query, -Y/--geo-dataset-type and -Z/--geo-entry-type. ",
+    )
+    subparser.add_argument(
         "-G",
         "--geo-query",
         nargs="+",
-        help="Main query string for GEO DataSet. This flag is only used when db is set to be geo.",
+        help="Main query string for GEO DataSet. This flag is only used when db is set to be geo."
+        "Please refer to 'pysradb search --geo-info' for more details.",
     )
     subparser.add_argument(
         "-Y",
         "--geo-dataset-type",
         nargs="+",
-        help="GEO DataSet Type. This flag is only used when --db is set to be geo.",
+        help="GEO DataSet Type. This flag is only used when --db is set to be geo."
+        "Please refer to 'pysradb search --geo-info' for more details.",
     )
     subparser.add_argument(
         "-Z",
         "--geo-entry-type",
         nargs="+",
-        help="GEO Entry Type. This flag is only used when --db is set to be geo.",
+        help="GEO Entry Type. This flag is only used when --db is set to be geo."
+        "Please refer to 'pysradb search --geo-info' for more details.",
     )
 
     subparser.set_defaults(func=search)
@@ -1266,13 +1282,16 @@ def parse_args(args=None):
         )
     elif args.command == "search":
         flags = vars(args)
-        search(
-            flags.pop("saveto"),
-            flags.pop("db"),
-            flags.pop("verbosity"),
-            flags.pop("max"),
-            flags,
-        )
+        if flags.pop("geo_info"):
+            get_geo_search_info()
+        else:
+            search(
+                flags.pop("saveto"),
+                flags.pop("db"),
+                flags.pop("verbosity"),
+                flags.pop("max"),
+                flags,
+            )
     elif args.command == "gse-to-gsm":
         gse_to_gsm(
             args.gse_ids, args.db, args.saveto, args.detailed, args.desc, args.expand

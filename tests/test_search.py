@@ -1196,3 +1196,9 @@ def test_geo_search_format_request():
         "retmode": "json",
         "retmax": 1000,
     }
+
+
+def test_geo_info():
+    assert type(GeoSearch.info()) == str and GeoSearch.info().startswith(
+        "General Information:"
+    )
