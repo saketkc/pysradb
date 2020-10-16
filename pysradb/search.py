@@ -452,6 +452,9 @@ class QuerySearch:
 
     def show_result_statistics(self):
         """Shows search result statistics."""
+        if self.df.empty:
+            print("No results are found for the current search query, hence no statistics can be generated.")
+            return
         stats = (
             "\n  Statistics for the search query:\n"
             + "  =================================\n"
@@ -501,6 +504,9 @@ class QuerySearch:
         show : bool
             Whether plotted graphs are immediately shown.
         """
+        if self.df.empty:
+            print("No results are found for the current search query, hence no graphs can be generated.")
+            return
         try:
             import matplotlib.pyplot as plt
         except ImportError:
