@@ -1,0 +1,93 @@
+run_accession,experiment_title
+SRR11217925,GSM4369051: rnaH27nsun3; Caenorhabditis elegans; RNA-Seq
+SRR11217924,GSM4369050: rnaH27nsun2; Caenorhabditis elegans; RNA-Seq
+SRR11217923,GSM4369049: rnaH27nsun1; Caenorhabditis elegans; RNA-Seq
+SRR11217922,GSM4369048: rnaH27WT3; Caenorhabditis elegans; RNA-Seq
+SRR11217921,GSM4369047: rnaH27WT2; Caenorhabditis elegans; RNA-Seq
+SRR11217920,GSM4369046: rnaH27WT1; Caenorhabditis elegans; RNA-Seq
+SRR11217919,GSM4369045: rnaL20nsun3; Caenorhabditis elegans; RNA-Seq
+SRR11217918,GSM4369044: rnaL20nsun2; Caenorhabditis elegans; RNA-Seq
+SRR11217917,GSM4369043: rnaL20nsun1; Caenorhabditis elegans; RNA-Seq
+SRR11217916,GSM4369042: rnaL20WT3; Caenorhabditis elegans; RNA-Seq
+SRR11217915,GSM4369041: rnaL20WT2; Caenorhabditis elegans; RNA-Seq
+SRR11217914,GSM4369040: rnaL20WT1; Caenorhabditis elegans; RNA-Seq
+SRR11186550,GSM4340680: pmk-1(km25)RPF Replicate 2; Caenorhabditis elegans; RNA-Seq
+SRR11186549,GSM4340679: pmk-1(km25) total mRNA Replicate 2; Caenorhabditis elegans; RNA-Seq
+SRR11186548,GSM4340678: pmk-1(km25)RPF Replicate 1; Caenorhabditis elegans; RNA-Seq
+SRR11186547,GSM4340677: pmk-1(km25) total mRNA Replicate 1; Caenorhabditis elegans; RNA-Seq
+SRR11186546,GSM4340676: ced-3(n717)RPF Replicate 2; Caenorhabditis elegans; RNA-Seq
+SRR11186545,GSM4340675: ced-3(n717) total mRNA Replicate 2; Caenorhabditis elegans; RNA-Seq
+SRR11186544,GSM4340674: ced-3(n717)RPF Replicate 1; Caenorhabditis elegans; RNA-Seq
+SRR11186543,GSM4340673: ced-3(n717) total mRNA Replicate 1; Caenorhabditis elegans; RNA-Seq
+SRR11186542,GSM4340672: WT RPF Replicate 2; Caenorhabditis elegans; RNA-Seq
+SRR11186541,GSM4340671: WT total mRNA Replicate 2; Caenorhabditis elegans; RNA-Seq
+SRR11186540,GSM4340670: WT RPF Replicate 1; Caenorhabditis elegans; RNA-Seq
+SRR11186539,GSM4340669: WT total mRNA Replicate 1; Caenorhabditis elegans; RNA-Seq
+SRR10398500,GSM4148088: Slee141_mRNAseqFP_meg34_3: meg-3meg-4 mRNAseq-3; Caenorhabditis elegans; RNA-Seq
+SRR10398499,GSM4148087: Slee139_mRNAseqFP_meg34_2: meg-3meg-4 mRNAseq-2; Caenorhabditis elegans; RNA-Seq
+SRR10398498,GSM4148086: Slee125_mRNAseqFP_meg34_1: meg-3meg-4 mRNAseq-1; Caenorhabditis elegans; RNA-Seq
+SRR10398497,GSM4148085: Slee142_mRNAseqFP_N2_3: wild type mRNAseq-3; Caenorhabditis elegans; RNA-Seq
+SRR10398496,GSM4148084: Slee138_mRNAseqFP_N2_2: wild type mRNAseq-2; Caenorhabditis elegans; RNA-Seq
+SRR10398495,GSM4148083: Slee113_mRNAseqFP_N2_1: wild type mRNAseq-1; Caenorhabditis elegans; RNA-Seq
+SRR10398494,GSM4148082: Slee135_meg34: meg-3meg-4 Riboseq-3; Caenorhabditis elegans; OTHER
+SRR10398493,GSM4148081: Slee133_meg34: meg-3meg-4 Riboseq-2; Caenorhabditis elegans; OTHER
+SRR10398492,GSM4148080: Slee123_meg34: meg-3meg-4 Riboseq-1; Caenorhabditis elegans; OTHER
+SRR10398491,GSM4148079: Slee136_N2: wild type Riboseq-3; Caenorhabditis elegans; OTHER
+SRR10398490,GSM4148078: Slee132_N2: wild type Riboseq-2; Caenorhabditis elegans; OTHER
+SRR10398489,GSM4148077: Slee111_N2: wild type Riboseq-1; Caenorhabditis elegans; OTHER
+SRR7241911,GSM3168388: C. elegans embryos ribosome profiling; Caenorhabditis elegans; RNA-Seq
+SRR5026637,Bayesian Prediction of RNA Translation from Ribosome Profiling
+SRR5026603,Bayesian Prediction of RNA Translation from Ribosome Profiling
+SRR5026592,Bayesian Prediction of RNA Translation from Ribosome Profiling
+SRR5026589,Bayesian Prediction of RNA Translation from Ribosome Profiling
+SRR5026359,Bayesian Prediction of RNA Translation from Ribosome Profiling
+SRR5026356,Bayesian Prediction of RNA Translation from Ribosome Profiling
+SRR3219264,unc-54(cc3389) Ribo-seq
+SRR3219253,unc-54(+) Ribo-seq
+SRR3219248,unc-54(+) Ribo-seq
+SRR1804351,GSM1611598: frac_26-34nt; Caenorhabditis elegans; OTHER
+SRR1804349,GSM1611597: frac_28-35nt; Caenorhabditis elegans; OTHER
+SRR1804348,GSM1611596: frac_28-30nt; Caenorhabditis elegans; OTHER
+SRR1804346,GSM1611595: frac_25-30nt; Caenorhabditis elegans; OTHER
+SRR1804345,GSM1611594: 04_N2_893_GCkit; Caenorhabditis elegans; OTHER
+SRR1804343,GSM1611593: 03_N2_893_SGkit; Caenorhabditis elegans; OTHER
+SRR1804341,GSM1611592: 02_N2_893_GCop; Caenorhabditis elegans; OTHER
+SRR1804340,GSM1611591: 01_N2_893_SGop; Caenorhabditis elegans; OTHER
+SRR1635379,GSM1534607: RNASeq_c14_2; Caenorhabditis elegans; RNA-Seq
+SRR1635378,GSM1534606: RNASeq_c14_1; Caenorhabditis elegans; RNA-Seq
+SRR1635377,GSM1534605: RNASeq_N2_2; Caenorhabditis elegans; RNA-Seq
+SRR1635376,GSM1534604: RNASeq_N2_1; Caenorhabditis elegans; RNA-Seq
+SRR914339,GSM1169554: Celeg-3-FED-RPF; Caenorhabditis elegans; OTHER
+SRR914338,GSM1169553: Celeg-2-FED-RPF; Caenorhabditis elegans; OTHER
+SRR914337,GSM1169552: Celeg-1-FED-RPF; Caenorhabditis elegans; OTHER
+SRR914336,GSM1169551: Celeg-3-ST-RPF; Caenorhabditis elegans; OTHER
+SRR914335,GSM1169550: Celeg-2-ST-RPF; Caenorhabditis elegans; OTHER
+SRR914334,GSM1169549: Celeg-1-ST-RPF; Caenorhabditis elegans; OTHER
+SRR914333,GSM1169548: Celeg-3-FED-mRNA; Caenorhabditis elegans; RNA-Seq
+SRR914332,GSM1169547: Celeg-2-FED-mRNA; Caenorhabditis elegans; RNA-Seq
+SRR914331,GSM1169546: Celeg-1-FED-mRNA; Caenorhabditis elegans; RNA-Seq
+SRR914330,GSM1169545: Celeg-3-ST-mRNA; Caenorhabditis elegans; RNA-Seq
+SRR914329,GSM1169544: Celeg-2-ST-mRNA; Caenorhabditis elegans; RNA-Seq
+SRR914328,GSM1169543: Celeg-1-ST-mRNA; Caenorhabditis elegans; RNA-Seq
+SRR522897,L1 ribosome footprints replicate 4
+SRR522895,L2 ribosome footprints replicate 2 (seq-replicate)
+SRR522883,L4 ribosome footprints replicate 1
+SRR522896,L1 ribosome footprints replicate 3
+SRR522872,L1 ribosome footprints replicate 2
+SRR522871,L1 ribosome footprints replicate 1
+SRR522892,L2 ribosome footprints replicate 3
+SRR522890,L2 ribosome footprints replicate 2
+SRR522881,L2 ribosome footprints replicate 1
+SRR522153,L4 total RNA-seq
+SRR522152,L1 total RNA-seq
+SRR522151,L4 mRNA-seq replicate 2
+SRR522882,L4 mRNA-seq replicate 1
+SRR522888,L1 mRNA-seq replicate 4
+SRR522011,L1 replicate 3 mRNA-seq
+SRR522010,L1 replicate 2 mRNA-seq
+SRR522009,L1 mRNA-seq replicate 1
+SRR1804352,GSM1611598: frac_26-34nt; Caenorhabditis elegans; OTHER
+SRR1804350,GSM1611597: frac_28-35nt; Caenorhabditis elegans; OTHER
+SRR1804347,GSM1611595: frac_25-30nt; Caenorhabditis elegans; OTHER
+SRR1804344,GSM1611593: 03_N2_893_SGkit; Caenorhabditis elegans; OTHER
+SRR1804342,GSM1611592: 02_N2_893_GCop; Caenorhabditis elegans; OTHER
