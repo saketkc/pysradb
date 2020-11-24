@@ -1,0 +1,2 @@
+study_accession,experiment_accession,experiment_title,sample_taxon_id,sample_scientific_name,experiment_library_strategy,experiment_library_source,experiment_library_selection,sample_accession,sample_alias,experiment_instrument_model,pool_member_spots,run_1_size,run_1_accession,run_1_total_spots,run_1_total_bases
+ERP113893,ERX4190585,HiSeq X Ten paired end sequencing,562,Escherichia coli,WGS,GENOMIC,RANDOM,ERS3331676,96c1f848-4c9d-11e9-8292-68b599768938,HiSeq X Ten,1150278,94976452,ERR4229796,1150278,347383956

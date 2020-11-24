@@ -11,6 +11,11 @@ from textwrap import dedent
 import pandas as pd
 
 from . import __version__
+from .exceptions import IncorrectFieldException
+from .exceptions import MissingQueryException
+from .search import EnaSearch
+from .search import GeoSearch
+from .search import SraSearch
 from .sradb import SRAdb
 from .sradb import download_sradb_file
 from .sraweb import SRAweb
@@ -34,18 +39,34 @@ class ArgParser(argparse.ArgumentParser):
 
 def _print_save_df(df, saveto=None):
     if saveto:
-        df.to_csv(saveto, index=False, header=True, sep="\t")
+        if saveto.lower().endswith(".csv"):
+            #  if the save file format is csv
+            df.to_csv(saveto, index=False, header=True)
+        else:
+            df.to_csv(saveto, index=False, header=True, sep="\t")
     else:
         if len(df.index):
-            pd.set_option("display.max_colwidth", None)
-            # Bug in pandas 0.25.3: https://github.com/pandas-dev/pandas/issues/24980
-            # causes extra leading spaces
-            to_print = df.to_string(index=False, justify="left", col_space=0).lstrip()
-            to_print_split = to_print.split(os.linesep)
-            to_print = []
+            to_print = (
+                df.replace(r"[\s]{2,}|\t", " ", regex=True)
+                .to_string(
+                    index=False,
+                    justify="left",
+                    header=False,
+                    col_space=0,
+                )
+                .lstrip()
+            )
+            to_print_split = to_print.split("\n")
+            to_print_split = map(lambda x: re.sub(r"\s\s+", "\t", x), to_print_split)
+            to_print = ["\t".join(df.columns)]
             for line in to_print_split:
                 to_print.append(line.lstrip())
-            print(("{}".format(os.linesep)).join(to_print))
+            to_print = list(
+                map(lambda line: line.encode("ascii", "replace").decode(), to_print)
+            )
+            for line in to_print:
+                sys.stdout.write(line + os.linesep)
+            sys.stdout.flush()
 
 
 def _check_sradb_file(db):
@@ -65,7 +86,6 @@ def _check_sradb_file(db):
         """
         # Use the web version
         return "web"
-
     if not os.path.isfile(db):
         raise RuntimeError("{} does not exist".format(db))
     return db
@@ -116,21 +136,10 @@ def download(
     if not srp:
         text = ""
         for index, line in enumerate(sys.stdin):
-            line = line.strip()
-            line = line.lstrip(" ")
-            # pandas has different paddings to indent,
-            # we cannot replace all sapces at once since the description column
-            # can have text with space
-            line = re.sub("\s\s\s", "\t", line)
-            line = re.sub("\s\s", "\t", line)
-            line = re.sub("\t+", "\t", line)
-            line = re.sub("\s\t", "\t", line)
-            line = re.sub("\t\s", "\t", line)
-
-            if index == 0:
-                # For first line which is the header, allow substituting spaces with tab at once
-                line = re.sub("\s+", "\t", line)
-
+            line = line.strip(" \t\n\r")
+            line = re.sub(r"\s*\t+\s*", "\t", line)
+            if not line:
+                continue
             text += "{}\n".format(line)
         df = pd.read_csv(StringIO(text), sep="\t")
         sradb.download(
@@ -160,18 +169,79 @@ def download(
 
 
 ######################### search #################################
-def search(search_text, db, assay, desc, detailed, expand, saveto):
-    db = _check_sradb_file(db)
-    sradb = get_sra_object(db)
-    df = sradb.search_sra(
-        search_text,
-        assay=assay,
-        detailed=detailed,
-        sample_attribute=desc,
-        expand_sample_attributes=expand,
-    )
-    _print_save_df(df, saveto)
-    sradb.close()
+def search(saveto, db, verbosity, return_max, fields):
+    if fields["run_description"]:
+        verbosity = 1
+    if fields["detailed"]:
+        verbosity = 3
+    try:
+        if db == "ena":
+            instance = EnaSearch(
+                verbosity,
+                return_max,
+                fields["query"],
+                fields["accession"],
+                fields["organism"],
+                fields["layout"],
+                fields["mbases"],
+                fields["publication_date"],
+                fields["platform"],
+                fields["selection"],
+                fields["source"],
+                fields["strategy"],
+                fields["title"],
+            )
+            instance.search()
+        elif db == "geo":
+            instance = GeoSearch(
+                verbosity,
+                return_max,
+                fields["query"],
+                fields["accession"],
+                fields["organism"],
+                fields["layout"],
+                fields["mbases"],
+                fields["publication_date"],
+                fields["platform"],
+                fields["selection"],
+                fields["source"],
+                fields["strategy"],
+                fields["title"],
+                fields["geo_query"],
+                fields["geo_dataset_type"],
+                fields["geo_entry_type"],
+            )
+            instance.search()
+        else:
+            instance = SraSearch(
+                verbosity,
+                return_max,
+                fields["query"],
+                fields["accession"],
+                fields["organism"],
+                fields["layout"],
+                fields["mbases"],
+                fields["publication_date"],
+                fields["platform"],
+                fields["selection"],
+                fields["source"],
+                fields["strategy"],
+                fields["title"],
+            )
+            instance.search()
+    except (MissingQueryException, IncorrectFieldException) as e:
+        print(e)
+        return
+    if fields["stats"]:
+        instance.show_result_statistics()
+    if fields["graphs"]:
+        graph_types = tuple(fields["graphs"].split())
+        instance.visualise_results(graph_types, False)
+    _print_save_df(instance.get_df(), saveto)
+
+
+def get_geo_search_info():
+    print(GeoSearch.info())
 
 
 ####################################################################
@@ -530,13 +600,18 @@ def parse_args(args=None):
         ),
         formatter_class=CustomFormatterArgP,
     )
+
+    # pysradb subcommands
     subparsers = parser.add_subparsers(title="subcommands", dest="command")
+
+    # pysradb --version
     parser.add_argument(
         "--version",
         action="version",
         version="%(prog)s {version}".format(version=__version__),
     )
 
+    # pysradb --citation
     parser.add_argument(
         "--citation",
         action="version",
@@ -561,6 +636,7 @@ def parse_args(args=None):
         help="how to cite",
     )
 
+    # pysradb metadb
     subparser = subparsers.add_parser("metadb", help="Download SRAmetadb.sqlite")
     subparser.add_argument("--out-dir", type=str, help="Output directory location")
     subparser.add_argument(
@@ -573,6 +649,7 @@ def parse_args(args=None):
     )
     subparser.set_defaults(func=metadb)
 
+    # pysradb metadata
     subparser = subparsers.add_parser(
         "metadata", help="Fetch metadata for SRA project (SRPnnnn)"
     )
@@ -593,6 +670,7 @@ def parse_args(args=None):
     subparser.add_argument("srp_id", nargs="+")
     subparser.set_defaults(func=metadata)
 
+    # pysradb download
     subparser = subparsers.add_parser("download", help="Download SRA project (SRPnnnn)")
     subparser.add_argument("--out-dir", help="Output directory root")
     subparser.add_argument("--db", help="Path to SRAmetadb.sqlite file", type=str)
@@ -604,32 +682,147 @@ def parse_args(args=None):
     subparser.add_argument(
         "--use_ascp", "-a", action="store_true", help="Use aspera instead of wget"
     )
-    subparser.add_argument(
-        "--col", help="Specify column to download", default="sra_url"
-    )
+    subparser.add_argument("--col", help="Specify column to download")
     subparser.add_argument(
         "--threads", "-t", help="Number of threads", default=1, type=int
     )
     subparser.set_defaults(func=download)
 
-    subparser = subparsers.add_parser("search", help="Search SRA for matching text")
-    subparser.add_argument("--saveto", help="Save metadata dataframe to file")
-    subparser.add_argument("--db", help="Path to SRAmetadb.sqlite file", type=str)
+    # pysradb search
+    subparser = subparsers.add_parser("search", help="Search SRA/ENA for matching text")
     subparser.add_argument(
-        "--assay", action="store_true", help="Include assay type in output"
+        "-o", "--saveto", help="Save search result dataframe to file"
     )
     subparser.add_argument(
-        "--desc", action="store_true", help="Should sample_attribute be included"
+        "-s",
+        "--stats",
+        action="store_true",
+        help="Displays some useful statistics for the search results.",
     )
     subparser.add_argument(
-        "--detailed", action="store_true", help="Display detailed metadata table"
+        "-g",
+        "--graphs",
+        nargs="?",
+        const="all",
+        help=(
+            "Generates graphs to illustrate the search result. "
+            "By default all graphs are generated. \n"
+            "Alternatively, select a subset from the options below in a space-separated string:\n"
+            "daterange, organism, source, selection, platform, basecount"
+        ),
     )
     subparser.add_argument(
-        "--expand", action="store_true", help="Should sample_attribute be expanded"
+        "-d",
+        "--db",
+        choices=["ena", "geo", "sra"],
+        default="sra",
+        help="Select the db API (sra, ena, or geo) to query, default = sra.     "
+        "Note: pysradb search works slightly differently when db = geo. \n"
+        "Please refer to 'pysradb search --geo-info' for more details.",
     )
-    subparser.add_argument("search_text", type=str)
+    subparser.add_argument(
+        "-v",
+        "--verbosity",
+        choices=[0, 1, 2, 3],
+        default=2,
+        help=(
+            "Level of search result details (0, 1, 2 or 3), default = 2\n"
+            "0: run accession only\n"
+            "1: run accession and experiment title\n"
+            "2: accession numbers, titles and sequencing information\n"
+            "3: records in 2 and other information such as download url, sample attributes, etc"
+        ),
+        type=int,
+    )
+    subparser.add_argument(
+        "--run-description",
+        action="store_true",
+        help="Displays run accessions and descriptions only. Equivalent to --verbosity 1",
+    )
+    subparser.add_argument(
+        "--detailed",
+        action="store_true",
+        help="Displays detailed search results. Equivalent to --verbosity 3.",
+    )
+    subparser.add_argument(
+        "-m",
+        "--max",
+        default=20,
+        help="Maximum number of entries to return, default = 20",
+        type=int,
+    )
+    subparser.add_argument(
+        "-q",
+        "--query",
+        nargs="+",
+        help="Main query string. Note that if no query is supplied, at least one of the "
+        "following flags must be present:",
+    )
+    subparser.add_argument("-A", "--accession", help="Accession number")
+    subparser.add_argument(
+        "-O", "--organism", nargs="+", help="Scientific name of the sample organism"
+    )
+    subparser.add_argument(
+        "-L",
+        "--layout",
+        choices=["SINGLE", "PAIRED"],
+        help="Library layout. Accepts either SINGLE or PAIRED",
+        type=str.upper,
+    )
+    subparser.add_argument(
+        "-M",
+        "--mbases",
+        help="Size of the sample rounded to the nearest megabase",
+        type=int,
+    )
+    subparser.add_argument(
+        "-D",
+        "--publication-date",
+        help="Publication date of the run in the format dd-mm-yyyy. If a date range is desired, "
+        "enter the start date, followed by end date, separated by a colon ':'.\n "
+        "Example: 01-01-2010:31-12-2010",
+    )
+    subparser.add_argument("-P", "--platform", nargs="+", help="Sequencing platform")
+    subparser.add_argument("-E", "--selection", nargs="+", help="Library selection")
+    subparser.add_argument("-C", "--source", nargs="+", help="Library source")
+    subparser.add_argument(
+        "-S", "--strategy", nargs="+", help="Library preparation strategy"
+    )
+    subparser.add_argument("-T", "--title", nargs="+", help="Experiment title")
+
+    # The following arguments are for GEO DataSets only
+    subparser.add_argument(
+        "-I",
+        "--geo-info",
+        action="store_true",
+        help="Displays information on how to query GEO DataSets via 'pysradb search --db geo ...', "
+        "including accepted inputs for -G/--geo-query, -Y/--geo-dataset-type and -Z/--geo-entry-type. ",
+    )
+    subparser.add_argument(
+        "-G",
+        "--geo-query",
+        nargs="+",
+        help="Main query string for GEO DataSet. This flag is only used when db is set to be geo."
+        "Please refer to 'pysradb search --geo-info' for more details.",
+    )
+    subparser.add_argument(
+        "-Y",
+        "--geo-dataset-type",
+        nargs="+",
+        help="GEO DataSet Type. This flag is only used when --db is set to be geo."
+        "Please refer to 'pysradb search --geo-info' for more details.",
+    )
+    subparser.add_argument(
+        "-Z",
+        "--geo-entry-type",
+        nargs="+",
+        help="GEO Entry Type. This flag is only used when --db is set to be geo."
+        "Please refer to 'pysradb search --geo-info' for more details.",
+    )
+
     subparser.set_defaults(func=search)
 
+    # pysradb gse-to-gsm
     subparser = subparsers.add_parser("gse-to-gsm", help="Get GSM for a GSE")
     subparser.add_argument("--db", help="Path to SRAmetadb.sqlite file", type=str)
     subparser.add_argument("--saveto", help="Save output to file")
@@ -650,6 +843,7 @@ def parse_args(args=None):
     subparser.add_argument("gse_ids", nargs="+")
     subparser.set_defaults(func=gse_to_gsm)
 
+    # pysradb gse-to-srp
     subparser = subparsers.add_parser("gse-to-srp", help="Get SRP for a GSE")
     subparser.add_argument("--db", help="Path to SRAmetadb.sqlite file", type=str)
     subparser.add_argument("--saveto", help="Save output to file")
@@ -673,6 +867,7 @@ def parse_args(args=None):
     subparser.add_argument("gse_ids", nargs="+")
     subparser.set_defaults(func=gse_to_gsm)
 
+    # pysradb gsm-to-gse
     subparser = subparsers.add_parser("gsm-to-gse", help="Get GSE for a GSM")
     subparser.add_argument("--db", help="Path to SRAmetadb.sqlite file", type=str)
     subparser.add_argument("--saveto", help="Save output to file")
@@ -693,6 +888,7 @@ def parse_args(args=None):
     subparser.add_argument("gsm_ids", nargs="+")
     subparser.set_defaults(func=gsm_to_gse)
 
+    # pysradb gsm-to-srp
     subparser = subparsers.add_parser("gsm-to-srp", help="Get SRP for a GSM")
     subparser.add_argument("--db", help="Path to SRAmetadb.sqlite file", type=str)
     subparser.add_argument(
@@ -716,6 +912,7 @@ def parse_args(args=None):
     subparser.add_argument("gsm_ids", nargs="+")
     subparser.set_defaults(func=gsm_to_srp)
 
+    # pysradb gsm-to-srr
     subparser = subparsers.add_parser("gsm-to-srr", help="Get SRR for a GSM")
     subparser.add_argument("--db", help="Path to SRAmetadb.sqlite file", type=str)
     subparser.add_argument(
@@ -738,6 +935,7 @@ def parse_args(args=None):
     subparser.add_argument("gsm_ids", nargs="+")
     subparser.set_defaults(func=gsm_to_srr)
 
+    # pysradb gsm-to-srs
     subparser = subparsers.add_parser("gsm-to-srs", help="Get SRS for a GSM")
     subparser.add_argument("--db", help="Path to SRAmetadb.sqlite file", type=str)
     subparser.add_argument(
@@ -760,6 +958,7 @@ def parse_args(args=None):
     subparser.add_argument("gsm_ids", nargs="+")
     subparser.set_defaults(func=gsm_to_srs)
 
+    # pysradb gsm-to-srx
     subparser = subparsers.add_parser("gsm-to-srx", help="Get SRX for a GSM")
     subparser.add_argument("--db", help="Path to SRAmetadb.sqlite file", type=str)
     subparser.add_argument(
@@ -783,6 +982,7 @@ def parse_args(args=None):
     subparser.add_argument("gsm_ids", nargs="+")
     subparser.set_defaults(func=gsm_to_srx)
 
+    # pysradb srp-to-gse
     subparser = subparsers.add_parser("srp-to-gse", help="Get GSE for a SRP")
     subparser.add_argument("--db", help="Path to SRAmetadb.sqlite file", type=str)
     subparser.add_argument("--saveto", help="Save output to file")
@@ -800,6 +1000,7 @@ def parse_args(args=None):
     subparser.add_argument("srp_id")
     subparser.set_defaults(func=srp_to_gse)
 
+    # pysradb srp-to-srr
     subparser = subparsers.add_parser("srp-to-srr", help="Get SRR for a SRP")
     subparser.add_argument("--db", help="Path to SRAmetadb.sqlite file", type=str)
     subparser.add_argument("--saveto", help="Save output to file")
@@ -822,6 +1023,7 @@ def parse_args(args=None):
     subparser.add_argument("srp_id")
     subparser.set_defaults(func=srp_to_srr)
 
+    # pysradb srp-to-srs
     subparser = subparsers.add_parser("srp-to-srs", help="Get SRS for a SRP")
     subparser.add_argument("--db", help="Path to SRAmetadb.sqlite file", type=str)
     subparser.add_argument("--saveto", help="Save output to file")
@@ -844,6 +1046,7 @@ def parse_args(args=None):
     subparser.add_argument("srp_id")
     subparser.set_defaults(func=srp_to_srs)
 
+    # pysradb srp-to-srx
     subparser = subparsers.add_parser("srp-to-srx", help="Get SRX for a SRP")
     subparser.add_argument("--db", help="Path to SRAmetadb.sqlite file", type=str)
     subparser.add_argument("--saveto", help="Save output to file")
@@ -866,6 +1069,7 @@ def parse_args(args=None):
     subparser.add_argument("srp_id")
     subparser.set_defaults(func=srp_to_srx)
 
+    # pysradb srr-to-gsm
     subparser = subparsers.add_parser("srr-to-gsm", help="Get GSM for a SRR")
     subparser.add_argument("--db", help="Path to SRAmetadb.sqlite file", type=str)
     subparser.add_argument(
@@ -888,6 +1092,7 @@ def parse_args(args=None):
     subparser.add_argument("srr_ids", nargs="+")
     subparser.set_defaults(func=srr_to_gsm)
 
+    # pysradb srr-to-srp
     subparser = subparsers.add_parser("srr-to-srp", help="Get SRP for a SRR")
     subparser.add_argument("--db", help="Path to SRAmetadb.sqlite file", type=str)
     subparser.add_argument(
@@ -910,6 +1115,7 @@ def parse_args(args=None):
     subparser.add_argument("srr_ids", nargs="+")
     subparser.set_defaults(func=srr_to_srp)
 
+    # pysradb srr-to-srs
     subparser = subparsers.add_parser("srr-to-srs", help="Get SRS for a SRR")
     subparser.add_argument("--db", help="Path to SRAmetadb.sqlite file", type=str)
     subparser.add_argument(
@@ -932,6 +1138,7 @@ def parse_args(args=None):
     subparser.add_argument("srr_ids", nargs="+")
     subparser.set_defaults(func=srr_to_srs)
 
+    # pysradb srr-to-srx
     subparser = subparsers.add_parser("srr-to-srx", help="Get SRX for a SRR")
     subparser.add_argument("--db", help="Path to SRAmetadb.sqlite file", type=str)
     subparser.add_argument(
@@ -954,6 +1161,7 @@ def parse_args(args=None):
     subparser.add_argument("srr_ids", nargs="+")
     subparser.set_defaults(func=srr_to_srx)
 
+    # pysradb srs-to-gsm
     subparser = subparsers.add_parser("srs-to-gsm", help="Get GSM for a SRS")
     subparser.add_argument("--db", help="Path to SRAmetadb.sqlite file", type=str)
     subparser.add_argument("--saveto", help="Save output to file")
@@ -971,6 +1179,7 @@ def parse_args(args=None):
     subparser.add_argument("srs_ids", nargs="+")
     subparser.set_defaults(func=srs_to_gsm)
 
+    # pysradb srs-to-srx
     subparser = subparsers.add_parser("srs-to-srx", help="Get SRX for a SRS")
     subparser.add_argument("--db", help="Path to SRAmetadb.sqlite file", type=str)
     subparser.add_argument("--saveto", help="Save output to file")
@@ -988,6 +1197,7 @@ def parse_args(args=None):
     subparser.add_argument("srs_ids", nargs="+")
     subparser.set_defaults(func=srs_to_srx)
 
+    # pysradb srx-to-srp
     subparser = subparsers.add_parser("srx-to-srp", help="Get SRP for a SRX")
     subparser.add_argument("--db", help="Path to SRAmetadb.sqlite file", type=str)
     subparser.add_argument(
@@ -1010,6 +1220,7 @@ def parse_args(args=None):
     subparser.add_argument("srx_ids", nargs="+")
     subparser.set_defaults(func=srx_to_srp)
 
+    # pysradb srx-to-srr
     subparser = subparsers.add_parser("srx-to-srr", help="Get SRR for a SRX")
     subparser.add_argument("--db", help="Path to SRAmetadb.sqlite file", type=str)
     subparser.add_argument(
@@ -1027,6 +1238,7 @@ def parse_args(args=None):
     subparser.add_argument("srx_ids", nargs="+")
     subparser.set_defaults(func=srx_to_srr)
 
+    # pysradb srx-to-srs
     subparser = subparsers.add_parser("srx-to-srs", help="Get SRS for a SRX")
     subparser.add_argument("--db", help="Path to SRAmetadb.sqlite file", type=str)
     subparser.add_argument("--saveto", help="Save output to file")
@@ -1069,15 +1281,17 @@ def parse_args(args=None):
             args.threads,
         )
     elif args.command == "search":
-        search(
-            args.search_text,
-            args.db,
-            args.assay,
-            args.desc,
-            args.detailed,
-            args.expand,
-            args.saveto,
-        )
+        flags = vars(args)
+        if flags.pop("geo_info"):
+            get_geo_search_info()
+        else:
+            search(
+                flags.pop("saveto"),
+                flags.pop("db"),
+                flags.pop("verbosity"),
+                flags.pop("max"),
+                flags,
+            )
     elif args.command == "gse-to-gsm":
         gse_to_gsm(
             args.gse_ids, args.db, args.saveto, args.detailed, args.desc, args.expand

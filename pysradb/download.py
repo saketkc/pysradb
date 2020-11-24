@@ -3,14 +3,18 @@
 import hashlib
 import math
 import os
+import numpy as np
 import shutil
+import requests
+import requests_ftp
 import sys
 import warnings
 
-import numpy as np
-import requests
 from tqdm.autonotebook import tqdm
 
+from .utils import requests_3_retries
+
+requests_ftp.monkeypatch_session()
 warnings.simplefilter(action="ignore", category=FutureWarning)
 
 
@@ -42,22 +46,43 @@ def millify(n):
     return "{:.1f}{}".format(n / 10 ** (3 * millidx), millnames[millidx])
 
 
-def get_file_size(row):
+def get_file_size(row, url_col):
     """Get size of file to be downloaded.
 
     Parameters
     ----------
     row: pd.DataFrame row
 
+    url_col: str
+        url_column
+
     Returns
     -------
     content_length: int
     """
-    if row.srapath_url is not None:
-        url = row.srapath_url
+    if row[url_col] is not None:
+        url = row[url_col]
     else:
         url = row.download_url
-    return float(requests.head(url).headers["content-length"])
+    if url.startswith("ftp."):
+        url = "ftp://" + url
+    try:
+        r = requests_3_retries().head(url)
+        size = int(r.headers["content-length"])
+        r.raise_for_status()
+    except requests.exceptions.Timeout:
+        sys.exit(f"Connection to {url} has timed out. Please retry.")
+    except requests.exceptions.HTTPError:
+        print(
+            f"The download URL:  {url}  is likely invalid.\n"
+            f"Removing {row.run_accession} from the download list\n",
+            flush=True,
+        )
+        return np.NaN
+    except KeyError:
+        print("Key error for: " + url, flush=True)
+        return 0
+    return size
 
 
 def md5_validate_file(file_path, md5_hash):
@@ -112,6 +137,11 @@ def download_file(
     show_progress: bool
                    Show progress bar
     """
+    if url.startswith("ftp."):
+        url = "ftp://" + url
+        session = requests.Session()
+    else:
+        session = requests
     if os.path.exists(file_path) and os.path.getsize(file_path):
         return
     tmp_file_path = file_path + ".part"
@@ -119,9 +149,9 @@ def download_file(
     file_mode = "ab" if first_byte else "wb"
     file_size = -1
     try:
-        file_size = int(requests.head(url).headers["Content-length"])
+        file_size = int(session.head(url).headers["Content-length"])
         headers = {"Range": "bytes=%s-" % first_byte}
-        r = requests.get(url, headers=headers, stream=True)
+        r = session.get(url, headers=headers, stream=True)
         if show_progress:
             desc = "Downloading {}".format(url.split("/")[-1])
             pbar = tqdm(

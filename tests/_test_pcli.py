@@ -8,7 +8,6 @@ from shlex import quote
 from shlex import split
 
 import pytest
-
 from pysradb import SRAdb
 
 
