@@ -20,7 +20,6 @@ Usage and options
       Get SRP for a GSE
 
     Options:
-      --db FILE      Path to SRAmetadb.sqlite file
       --saveto TEXT  Save output to file
       --detailed     Output additional columns: [sample_accession (SRS),
                                                  run_accession (SRR),
@@ -158,5 +157,5 @@ using the ``--saveto`` argument:
 
 ::
 
-    $ pysradb gse-to-gsm --detailed --expand --saveto GSE41637_metadata.tsv GSE41637
+    $ pysradb gse-to-gsm --detailed --saveto GSE41637_metadata.tsv GSE41637
 

@@ -216,7 +216,6 @@ Statistics:
    .. code-tab:: py
 
       from pysradb.search import EnaSearch
-
       instance = EnaSearch(return_max=10000, organism="Severe acute respiratory syndrome coronavirus 2")
       instance.search()
       instance.show_result_statistics()
@@ -340,7 +339,6 @@ download, after filtering the dataframe entries:
    .. code-tab:: py
 
       from pysradb.sraweb import SRAweb
-
       db = SRAweb()
       df = db.sra_metadata('SRP016501', detailed=True)
       db.download(df=df)
@@ -494,7 +492,6 @@ The full list of possible `pysradb` operations
                    ...
 
     pysradb: Query NGS metadata and data from NCBI Sequence Read Archive.
-    version: 0.10.5-dev0.
     Citation: 10.12688/f1000research.18676.1
 
     optional arguments:
@@ -528,6 +525,7 @@ The full list of possible `pysradb` operations
         srx-to-srp          Get SRP for a SRX
         srx-to-srr          Get SRR for a SRX
         srx-to-srs          Get SRS for a SRX
+
 
 
 
