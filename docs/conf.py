@@ -21,7 +21,7 @@
 import os
 import sys
 
-#import guzzle_sphinx_theme
+# import guzzle_sphinx_theme
 import pysradb
 
 autodoc_mock_imports = ["xmltodict", "numpy", "pandas", "requests", "tqdm"]
@@ -48,7 +48,7 @@ extensions = [
     "sphinx.ext.inheritance_diagram",
     "numpydoc",
     "sphinxcontrib.fulltoc",
-    'sphinx_tabs.tabs',
+    "sphinx_tabs.tabs",
 ]
 
 # Add any paths that contain templates here, relative to this directory.
