@@ -8,7 +8,7 @@ Python API Usage
 Use Case 1: Fetch the metadata table (SRA-runtable)
 ===================================================
 
-The simplest use case of `pysradb` is when you apriopri know the SRA project ID (SRP)
+The simplest use case of `pysradb` is when you know the SRA project ID (SRP)
 and would simply want to fetch the metadata associated with it. This is generally
 reflected in the `SraRunTable.txt` that you get from NCBI's website.
 See an `example <https://www.ncbi.nlm.nih.gov/Traces/study/?acc=SRP098789>`_ of a SraRunTable.
@@ -21,7 +21,7 @@ See an `example <https://www.ncbi.nlm.nih.gov/Traces/study/?acc=SRP098789>`_ of 
    df = db.sra_metadata('SRP098789')
    df.head()
 
-.. table::
+::
 
     ===============  ====================  ======================================================================  =============  ========  =================  ==============  ================  ==============  ============  ==========  ========  ============  ===============
     study_accession  experiment_accession                             experiment_title                             run_accession  taxon_id  library_selection  library_layout  library_strategy  library_source  library_name    bases      spots    adapter_spec  avg_read_length
