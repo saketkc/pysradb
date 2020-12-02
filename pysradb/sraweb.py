@@ -469,6 +469,10 @@ class SRAweb(SRAdb):
             exp_library_selection = exp_library_descriptor["LIBRARY_SELECTION"]
             if isinstance(exp_library_selection, dict):
                 exp_library_selection = exp_library_selection["#text"]
+            # library_name
+            exp_library_name = exp_library_descriptor["LIBRARY_NAME"]
+            if isinstance(exp_library_selection, dict):
+                exp_library_name = exp_library_name["#text"]
             # library_layout
             exp_library_layout = list(exp_library_descriptor["LIBRARY_LAYOUT"].keys())[
                 0
@@ -484,6 +488,7 @@ class SRAweb(SRAdb):
                 experiment_record["organism_taxid "] = exp_taxid
                 experiment_record["organism_name"] = exp_organism_name
 
+                experiment_record["library_name"] = exp_library_name
                 experiment_record["library_strategy"] = exp_library_strategy
                 experiment_record["library_source"] = exp_library_source
                 experiment_record["library_selection"] = exp_library_selection
