@@ -470,7 +470,7 @@ class SRAweb(SRAdb):
             if isinstance(exp_library_selection, dict):
                 exp_library_selection = exp_library_selection["#text"]
             # library_name
-            exp_library_name = exp_library_descriptor["LIBRARY_NAME"]
+            exp_library_name = exp_library_descriptor.get("LIBRARY_NAME", "")
             if isinstance(exp_library_selection, dict):
                 exp_library_name = exp_library_name["#text"]
             # library_layout
