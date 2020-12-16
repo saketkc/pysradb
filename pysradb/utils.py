@@ -90,6 +90,58 @@ def path_leaf(path):
     return tail or ntpath.basename(head)
 
 
+def requests_3_retries():
+    """Generates a requests session object that allows 3 retries.
+
+    Returns
+    -------
+    session: requests.Session
+        requests session object that allows 3 retries for server-side
+        errors, for GET and POST requests.
+    """
+    session = requests.Session()
+    retry = Retry(
+        total=3,
+        backoff_factor=0.5,
+        status_forcelist=[500, 502, 503, 504],
+        allowed_methods=["POST", "GET", "HEAD"],
+    )
+    adapter = HTTPAdapter(max_retries=retry)
+    session.mount("http://", adapter)
+    session.mount("https://", adapter)
+    return session
+
+
+def scientific_name_to_taxid(name):
+    """Converts a scientific name to its corresponding taxonomy ID.
+
+    Parameters
+    ----------
+    name: str
+        Scientific name of interest.
+
+    Returns
+    -------
+    taxid: str
+        Taxonomy Id of the Scientific name.
+
+    Raises
+    ------
+    IncorrectFieldException
+        If the scientific name cannot be found.
+
+    """
+
+    r = requests.get(
+        "https://www.ebi.ac.uk/ena/data/taxonomy/v1/taxon/scientific-name/" + name,
+        timeout=5,
+    )
+    if r.status_code == 404:
+        raise IncorrectFieldException(f"Unknown scientific name: {name}")
+    r.raise_for_status()
+    return r.json()[0]["taxId"]
+
+
 def unique(sequence):
     """Get unique elements from a list maintaining the order.
 
@@ -264,14 +316,15 @@ def confirm(preceeding_text):
     -------
     response: bool
     """
+    print(os.linesep, flush=True)
     notification_str = "Please respond with 'y' or 'n'"
     while True:
         choice = input("{} [Y/n]: ".format(preceeding_text)).lower()
-        if choice in "yes" or not choice:
+        if choice in ["yes", "y"] or not choice:
             return True
-        if choice in "no":
+        if choice in ["no", "n"]:
             return False
-        print(notification_str)
+        print(notification_str, flush=True)
 
 
 def copyfileobj(fsrc, fdst, bufsize=16384, filesize=None, desc=""):

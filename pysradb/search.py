@@ -1,9 +1,11 @@
 """This file contains the search classes for the search feature.
 """
-
+import numpy as np
+import os
 import re
 import requests
 import sys
+import time
 import urllib
 import pandas as pd
 import xml.etree.ElementTree as Et
@@ -140,6 +142,23 @@ class QuerySearch:
             raise MissingQueryException()
         if not suppress_validation:
             self._validate_fields()
+        self.stats = {
+            "study": "-",
+            "experiment": "-",
+            "run": "-",
+            "sample": "-",
+            "Date range": "-",
+            "Organisms": "-",
+            "Library strategy": "-",
+            "Library source": "-",
+            "Library selection": "-",
+            "Library layout": "-",
+            "Platform": "-",
+            "count_mean": "-",
+            "count_median": "-",
+            "count_stdev": "-",
+        }
+        self.plot_objects = {}
 
     def _input_multi_regex_checker(self, regex_matcher, input_query, error_message):
         """Checks if the user input match exactly 1 of the possible regex.
@@ -190,6 +209,31 @@ class QuerySearch:
 
     def _validate_fields(self):
         """Verifies that user input format is correct.
+
+        This helper function tries to match the input query strings from
+        the user to the exact string that is accepted by both SRA and ENA
+
+        Note: as of the implementation of this method, ENA does not have
+        a documentation page listing the accepted values for query
+        parameters. The list of parameters below were collected from ENA's
+        advanced search page: https://www.ebi.ac.uk/ena/browser/advanced-search
+
+        Updating new values:
+        If any new values are accepted by ENA, it should appear under
+        the corresponding parameter in the page. To update this method,
+        think of a regex that captures what the user may type for the new
+        value, and include it in the respective xxx_matcher dictionary
+        below as a regex:value key value pair.
+
+        Eg: if a new sequencing platform, Pokemon, is added to ENA,
+        navigate to "Instrument Platform" parameter on ENA's advanced
+        search page and copy the corresponding phrase (eg "poKe_Mon").
+        Then add the key value pair ".*poke.*": "poKe_Mon" to
+        platform_matcher below.
+
+        Unlike SRA, ENA requires supplied param values to be exact match
+        to filter accordingly (eg "cDNA_oligo_dT"), which motivated this
+        feature.
 
         Raises
         ------
@@ -396,11 +440,236 @@ class QuerySearch:
         if message:
             raise IncorrectFieldException(message)
 
+    def _list_stat(self, stat_header):
+        stat = self.stats[stat_header]
+        if type(stat) != dict:
+            return f"  {stat_header}: {stat}\n"
+        keys = sorted(stat.keys())
+        stat_breakdown = "\n"
+        for key in keys:
+            stat_breakdown += f"\t  {key}:  {stat[key]}\n"
+        return f"  {stat_header}: {stat_breakdown}\n"
+
+    def show_result_statistics(self):
+        """Shows search result statistics."""
+        if self.df.empty:
+            print(
+                "No results are found for the current search query, hence no statistics can be generated."
+            )
+            return
+        stats = (
+            "\n  Statistics for the search query:\n"
+            + "  =================================\n"
+            + f"  Number of unique studies: {self.stats['study']}\n"
+            + f"  Number of unique experiments: {self.stats['experiment']}\n"
+            + f"  Number of unique runs: {self.stats['run']}\n"
+            + f"  Number of unique samples: {self.stats['sample']}\n"
+            + f"  Mean base count of samples: {self.stats['count_mean']:.3f}\n"
+            + f"  Median base count of samples: {self.stats['count_median']:.3f}\n"
+            + f"  Sample base count standard deviation: {self.stats['count_stdev']:.3f}\n"
+        )
+
+        # Statistics with categorical breakdowns:
+        categorical_stats = (
+            "Date range",
+            "Organisms",
+            "Platform",
+            "Library strategy",
+            "Library source",
+            "Library selection",
+            "Library layout",
+        )
+        for categorical_stat in categorical_stats:
+            stats += self._list_stat(categorical_stat)
+        print(stats)
+
+    def visualise_results(
+        self, graph_types=("all",), show=False, saveto="./search_plots/"
+    ):
+        """Generate graphs that visualise the search results.
+
+        This method will only work if the optional dependency, matplotlib,
+        is installed in the system.
+
+        Parameters
+        ----------
+        graph_types : tuple
+            tuple containing strings representing types of graphs to
+            generate.
+            Possible strings:
+                all, daterange, organism, source, selection, platform,
+                basecount
+
+        saveto : str
+            directory name where the generated graphs are saved.
+
+        show : bool
+            Whether plotted graphs are immediately shown.
+        """
+        if self.df.empty:
+            print(
+                "No results are found for the current search query, hence no graphs can be generated."
+            )
+            return
+        try:
+            import matplotlib.pyplot as plt
+        except ImportError:
+            print(
+                "The optional dependency, matplotlib, is not available on the system.\n"
+                "matplotlib is required to generate graphs to visualise search results.\n"
+                'You can install matplotlib by typing "pip install matplotlib" on the command line.\n'
+            )
+            return
+        plt.rcParams["figure.autolayout"] = True
+        if not os.path.isdir(saveto):
+            os.mkdir(saveto)
+        plots = [
+            ("Base Count",),
+            ("Publication Date",),
+            ("Organism",),
+            ("Library Source",),
+            ("Library Selection",),
+            ("Platform",),
+            ("Organism", "Publication Date"),
+            ("Library Source", "Publication Date"),
+            ("Library Selection", "Publication Date"),
+            ("Platform", "Publication Date"),
+            ("Library Source", "Organism"),
+            ("Library Selection", "Organism"),
+            ("Platform", "Organism"),
+            ("Library Selection", "Library Source"),
+            ("Platform", "Library Source"),
+            ("Platform", "Library Selection"),
+        ]
+        plot_keys = {
+            "daterange": "Publication Date",
+            "organism": "Organism",
+            "source": "Library Source",
+            "selection": "Library Selection",
+            "platform": "Platform",
+            "basecount": "Base Count",
+        }
+        if "all" not in graph_types:
+            selected_plots = []
+            for graph_type in graph_types:
+                if graph_type not in plot_keys:
+                    continue
+                for plot in plots:
+                    if plot_keys[graph_type] in plot and plot not in selected_plots:
+                        selected_plots.append(plot)
+            plots = selected_plots
+        too_many_organisms = False
+        if self.stats["graph_raw"]["Organism"].nunique() > 30:
+            print(
+                "Too many types of organisms to plot (>30). Showing only top 30 organisms."
+            )
+            too_many_organisms = True
+        for plot in plots:
+            self._plot_graph(plt, plot, show, saveto, too_many_organisms)
+
     def search(self):
         pass
 
     def get_df(self):
-        return self.df.replace(r"^\s*$", "N/A", regex=True)
+        """Getter for the search result dataframe."""
+        return self.df
+
+    def get_plot_objects(self):
+        """Get the plot objects for plots generated."""
+        return self.plot_objects
+
+    def _plot_graph(self, plt, axes, show, savedir, too_many_organisms):
+        """Plots a graph based on data from self.stats
+
+        Parameters
+        ----------
+        axes: tuple
+            tuple containing 1 or 2 strings corresponding to the statistics
+            to plot. 1 string: Histogram. 2 string: heat map
+        savedir: str
+            directory to save to
+        show: bool
+            whether to call plt.show
+        """
+        timestamp = time.strftime("%Y-%m-%d %H-%M-%S")
+        if (
+            "Publication Date" in axes
+            and self.stats["graph_raw"]["Publication Date"].nunique() > 30
+        ):
+            self.stats["graph_raw"]["Publication Date"] = self.stats["graph_raw"][
+                "Publication Date"
+            ].str[:-3]
+        if axes == ("Base Count",):
+            count = list(self.stats["count_data"])
+            if len(count) == 0:
+                return
+            title = "Histogram of Base Count"
+            plt.figure(figsize=(15, 10))
+            plt.hist(count, min(70, len(count)), color="#135c1c", log=True)
+            plt.xlabel("Base Count", fontsize=14)
+            plt.ylabel("Frequency", fontsize=14)
+            plt.xticks(rotation=90)
+            plt.title(title, fontsize=18)
+            plt.savefig(f"{savedir}{title} {timestamp}.svg")
+            self.plot_objects[axes] = plt
+        elif len(axes) == 1:
+            title = f"Histogram of {axes[0]}"
+            data = self.stats["graph_raw"][axes[0]].value_counts()
+            if too_many_organisms:
+                data = data[:30]
+            plt.figure(figsize=(15, 10))
+            plt.bar(
+                range(len(data.values)),
+                data.values,
+                tick_label=list(data.index),
+                color="#135c1c",
+            )
+            plt.xticks(rotation=90)
+            plt.title(title, fontsize=18)
+            plt.xlabel(axes[0], fontsize=14)
+            plt.ylabel("Frequency", fontsize=14)
+            plt.savefig(f"{savedir}{title} {timestamp}.svg")
+            self.plot_objects[axes] = plt
+        elif len(axes) == 2:
+            title = f"Heatmap of {axes[0]} against {axes[1]}"
+            df = self.stats["graph_raw"][list(axes)]
+            a = df.groupby([axes[0]]).agg({i: "value_counts" for i in df.columns[1:]})
+            a = a.rename(columns={axes[1]: f"{axes[1]}_count"})
+            b = a.reset_index(level=list(axes))
+            piv = (
+                pd.pivot_table(
+                    b,
+                    values=f"{axes[1]}_count",
+                    index=[axes[0]],
+                    columns=[axes[1]],
+                    fill_value=0,
+                    aggfunc="sum",
+                    margins=True,
+                )
+                .sort_values("All", ascending=False)
+                .drop("All", axis=1)
+                .sort_values("All", ascending=False, axis=1)
+                .drop("All")
+            )
+            if too_many_organisms:
+                if axes[0] == "Organism":
+                    piv = piv[:30]
+                else:
+                    piv = piv.iloc[:, :30]
+            fig, ax = plt.subplots(figsize=(15, 12))
+            im = ax.imshow(piv, cmap="Greens")
+            fig.colorbar(im, ax=ax)
+            ax.set_title(title, fontsize=18)
+            ax.set_xticks(range(len(piv.columns)))
+            ax.set_yticks(range(len(piv.index)))
+            ax.set_xticklabels(piv.columns, rotation=90)
+            ax.set_yticklabels(piv.index)
+            ax.set_ylabel(axes[0], fontsize=14)
+            ax.set_xlabel(axes[1], fontsize=14)
+            ax.get_figure().savefig(f"{savedir}{title} {timestamp}.svg")
+            self.plot_objects[axes] = (fig, ax)
+        if show:
+            plt.show()
 
 
 class SraSearch(QuerySearch):
@@ -427,6 +696,42 @@ class SraSearch(QuerySearch):
     QuerySearch: Superclass of SraSearch
 
     """
+
+    def __init__(
+        self,
+        verbosity=2,
+        return_max=20,
+        query=None,
+        accession=None,
+        organism=None,
+        layout=None,
+        mbases=None,
+        publication_date=None,
+        platform=None,
+        selection=None,
+        source=None,
+        strategy=None,
+        title=None,
+        suppress_validation=False,
+    ):
+        super().__init__(
+            verbosity,
+            return_max,
+            query,
+            accession,
+            organism,
+            layout,
+            mbases,
+            publication_date,
+            platform,
+            selection,
+            source,
+            strategy,
+            title,
+            suppress_validation,
+        )
+        self.entries = {}
+        self.number_entries = 0
 
     def search(self):
         # Step 1: retrieves the list of uids that satisfies the input
@@ -464,8 +769,11 @@ class SraSearch(QuerySearch):
                 )
                 r.raise_for_status()
                 r.raw.decode_content = True
-                self._format_result(r.raw)
+                self._format_response(r.raw)
             pbar.close()
+            self._format_result()
+            if self.verbosity >= 2:
+                self.df["pmid"] = list(uids)
         except requests.exceptions.Timeout:
             sys.exit(f"Connection to the server has timed out. Please retry.")
         except requests.exceptions.HTTPError:
@@ -509,9 +817,7 @@ class SraSearch(QuerySearch):
         }
         return payload
 
-    def _format_result(self, content):
-        entries = {}
-        number_entries = 0
+    def _format_response(self, content):
         field_categories = [
             "EXPERIMENT",
             "SUBMISSION",
@@ -523,17 +829,28 @@ class SraSearch(QuerySearch):
         ]
         for event, elem in Et.iterparse(content):
             if elem.tag == "EXPERIMENT_PACKAGE":
-                number_entries += 1
+                self.number_entries += 1
             elif elem.tag in field_categories:
-                self._parse_entry(elem, entries, number_entries)
-        for field in entries:
-            if len(entries[field]) < number_entries:
-                entries[field] += [""] * (number_entries - len(entries[field]))
-        self.df = pd.DataFrame.from_dict(entries).replace(r"^\s*$", "N/A", regex=True)
+                self._parse_entry(elem)
+        for field in self.entries:
+            if len(self.entries[field]) < self.number_entries:
+                self.entries[field] += [""] * (
+                    self.number_entries - len(self.entries[field])
+                )
+
+    def _format_result(self):
+        self.df = pd.DataFrame.from_dict(self.entries).replace(
+            r"^\s*$", "N/A", regex=True
+        )
+        self.entries.clear()
         if self.df.empty:
             return
+        # Tabulate statistics
+        self._update_stats()
+
         columns = list(self.df.columns)
         important_columns = [
+            "study_accession",
             "experiment_accession",
             "experiment_title",
             "design_description",
@@ -551,48 +868,51 @@ class SraSearch(QuerySearch):
             "run_1_total_spots",
             "run_1_total_bases",
         ]
+        temp_cols = []
         for col in important_columns:
-            if col not in columns:
-                important_columns.remove(col)
-            else:
+            if col in columns:
+                temp_cols.append(col)
                 columns.remove(col)
+        important_columns = temp_cols
+        if self.verbosity <= 1:
+            temp_dfs = []
+            for col in self.df.columns:
+                if re.match("run_[0-9]+_accession", col):
+                    temp_df = self.df[[col, "experiment_title"]]
+                    temp_df = temp_df[temp_df[col] != "N/A"].rename(
+                        columns={
+                            col: "run_accession",
+                            "experiment_title": "experiment_title",
+                        }
+                    )
+                    temp_dfs.append(temp_df)
+            run_dataframe = pd.concat(temp_dfs)
+            run_dataframe.sort_values(by=["run_accession"], kind="mergesort")
+            self.df = run_dataframe
         if self.verbosity == 0:
-            self.df = self.df[["run_1_accession"]]
+            self.df = self.df[["run_accession"]]
         elif self.verbosity == 1:
-            if "experiment_title" not in self.df.columns:
-                self.df = self.df[["run_1_accession"]]
-            else:
-                self.df = self.df[["run_1_accession", "experiment_title"]]
+            pass  # df has already been formatted above
         elif self.verbosity == 2:
             self.df = self.df[important_columns]
         elif self.verbosity == 3:
             self.df = self.df[important_columns + sorted(columns)]
         self.df.dropna(how="all")
 
-    def _parse_entry(self, entry_root, entries, number_entries):
+    def _parse_entry(self, entry_root):
         """Parses a subset of the XML tree from request stream
 
         Parameters
         ----------
         entry_root: ElementTree.Element
             root element of the xml tree from requests stream
-        entries: dict
-            python dictionary of lists, containing the entry information
-            from the search results
-        number_entries: int
-            The number of entries that has been processed. This is used
-            to pad lists in the dictionary with empty strings, for entries
-            missing certain fields
-
         """
         field_header = entry_root.tag.lower()
         run_count = 0
 
         # root element attributes
         for k, v in entry_root.attrib.items():
-            self._update_entry(
-                entries, f"{field_header}_{k}".lower(), v, number_entries
-            )
+            self._update_entry(f"{field_header}_{k}".lower(), v)
         for child in entry_root:
             # "*_REF" tags contain duplicate information that can be found
             # somewhere in the xml entry and are skipped
@@ -608,16 +928,12 @@ class SraSearch(QuerySearch):
                 for identifier in child:
                     if identifier.tag == "EXTERNAL_ID":
                         self._update_entry(
-                            entries,
                             f"{field_header}_external_id_{id_index}",
                             identifier.text,
-                            number_entries,
                         )
                         self._update_entry(
-                            entries,
                             f"{field_header}_external_id_{id_index}_namespace",
                             identifier.get("namespace"),
-                            number_entries,
                         )
             # "*_LINKS" tags contain 0 or more "*_LINK" children tags,
             # each containing information (values) regarding the link
@@ -628,20 +944,16 @@ class SraSearch(QuerySearch):
                 for link in child:
                     # Link type. Eg: URL_link, Xref_link
                     self._update_entry(
-                        entries,
                         f"{link.tag}_{link_index}_type".lower(),
                         link[0].tag,
-                        number_entries,
                     )
                     # Link values in the form of tag: value.
                     # Eg: label: GEO sample
                     link_value_index = 1
                     for link_value in link[0]:
                         self._update_entry(
-                            entries,
                             f"{link.tag}_{link_index}_value_{link_value_index}".lower(),
                             f"{link_value.tag}: {link_value.text}",
-                            number_entries,
                         )
                         link_value_index += 1
                     link_index += 1
@@ -654,56 +966,42 @@ class SraSearch(QuerySearch):
                 for attribute in child:
                     for val in attribute:
                         self._update_entry(
-                            entries,
                             f"{child.tag}_{attribute_index}_{val.tag}".lower(),
                             val.text,
-                            number_entries,
                         )
                     attribute_index += 1
             # Differentiating between sample title and experiment title.
             elif child.tag == "TITLE":
-                self._update_entry(
-                    entries, f"{field_header}_title", child.text, number_entries
-                )
+                self._update_entry(f"{field_header}_title", child.text)
             # Parsing platfrom information
             elif child.tag == "PLATFORM":
                 platform = child[0]
+                self._update_entry("experiment_platform", platform.tag)
                 self._update_entry(
-                    entries, "experiment_platform", platform.tag, number_entries
-                )
-                self._update_entry(
-                    entries,
                     "experiment_instrument_model",
                     platform[0].text,
-                    number_entries,
                 )
             # Parsing individual run information
             elif child.tag == "RUN":
                 run_count += 1
                 # run attributes
                 for k, v in child.attrib.items():
-                    self._update_entry(
-                        entries, f"run_{run_count}_{k}".lower(), v, number_entries
-                    )
+                    self._update_entry(f"run_{run_count}_{k}".lower(), v)
                 for elem in child:
                     if elem.tag == "SRAFiles":
                         srafile_index = 1
                         for srafile in elem:
                             for k, v in srafile.attrib.items():
                                 self._update_entry(
-                                    entries,
                                     f"run_{run_count}_srafile_{srafile_index}_{k}".lower(),
                                     v,
-                                    number_entries,
                                 )
                             alternatives_index = 1
                             for alternatives in srafile:
                                 for k, v in alternatives.attrib.items():
                                     self._update_entry(
-                                        entries,
                                         f"run_{run_count}_srafile_{srafile_index}_alternative_{alternatives_index}_{k}".lower(),
                                         v,
-                                        number_entries,
                                     )
                                 alternatives_index += 1
                             srafile_index += 1
@@ -712,35 +1010,27 @@ class SraSearch(QuerySearch):
                         for cloudfile in elem:
                             for k, v in cloudfile.attrib.items():
                                 self._update_entry(
-                                    entries,
                                     f"run_{run_count}_cloudfile_{cloudfile_index}_{k}".lower(),
                                     v,
-                                    number_entries,
                                 )
                             cloudfile_index += 1
                     elif elem.tag == "Bases":
                         for k, v in elem.attrib.items():
                             self._update_entry(
-                                entries,
                                 f"run_{run_count}_total_base_{k}".lower(),
                                 v,
-                                number_entries,
                             )
                         for base in elem:
                             self._update_entry(
-                                entries,
                                 f"run_{run_count}_base_{base.attrib['value']}_count",
                                 base.attrib["count"],
-                                number_entries,
                             )
                     elif elem.tag == "Databases":
                         database_index = 1
                         for database in elem:
                             self._update_entry(
-                                entries,
                                 f"run_{run_count}_database_{database_index}".lower(),
                                 Et.tostring(database).decode(),
-                                number_entries,
                             )
                             database_index += 1
             else:
@@ -750,41 +1040,31 @@ class SraSearch(QuerySearch):
                         continue
                     elif elem.text:
                         self._update_entry(
-                            entries,
                             f"{field_header}_{elem.tag.lower()}",
                             elem.text,
-                            number_entries,
                         )
                     elif elem.attrib:
                         for k, v in elem.attrib.items():
                             self._update_entry(
-                                entries,
                                 f"{field_header}_{elem.tag}_{k}".lower(),
                                 v,
-                                number_entries,
                             )
             # Parsing library layout (single, paired)
             if field_header == "experiment":
-                library_layout = child.find(
-                    "./DESIGN/LIBRARY_DESCRIPTOR/LIBRARY_LAYOUT"
-                )
+                library_layout = child.find("./LIBRARY_DESCRIPTOR/LIBRARY_LAYOUT")
                 if library_layout:
                     library_layout = library_layout[0]
-                    self._update_entry(
-                        entries, f"library_layout", library_layout.tag, number_entries
-                    )
+                    self._update_entry(f"library_layout", library_layout.tag)
                     # If library layout is paired, information such as nominal
                     # standard deviation and length, etc are provided as well.
                     if library_layout.tag == "PAIRED":
                         for k, v in library_layout.attrib.items():
                             self._update_entry(
-                                entries,
                                 f"library_layout_{k}".lower(),
                                 v,
-                                number_entries,
                             )
 
-    def _update_entry(self, entries, field_name, field_content, number_entries):
+    def _update_entry(self, field_name, field_content):
         """Adds information from a field into the entries dictionary
 
         This is a helper function that adds information parsed from the XML
@@ -796,26 +1076,113 @@ class SraSearch(QuerySearch):
 
         Parameters
         ----------
-        entries: dict
-            python dictionary of lists, containing the entry information
-            from the search results
         field_name: str
             Name of the field where a value belonging to an entry is to be
             added
         field_content: str
             Value to be added
-        number_entries: int
-            The number of entries that has been processed. This is used
-            to pad lists in the dictionary with empty strings, for entries
-            missing certain fields
         """
-        if field_name not in entries:
-            entries[field_name] = []
-        if len(entries[field_name]) > number_entries:
+        if field_name not in self.entries:
+            self.entries[field_name] = []
+        if len(self.entries[field_name]) > self.number_entries:
             return
-        entries[field_name] += [""] * (number_entries - len(entries[field_name])) + [
-            field_content
-        ]
+        self.entries[field_name] += [""] * (
+            self.number_entries - len(self.entries[field_name])
+        ) + [field_content]
+
+    def _update_stats(self):
+        # study
+        self.stats["study"] = self.df["study_accession"].nunique()
+        # experiment
+        self.stats["experiment"] = self.df["experiment_accession"].nunique()
+        # run
+        runs = self._merge_selected_columns(r"^run.*accession$")
+        if not runs.empty:
+            self.stats["run"] = runs.nunique()
+        # sample
+        samples = self._merge_selected_columns(r"^sample.*accession$")
+        if not samples.empty:
+            self.stats["sample"] = samples.nunique()
+        # date range
+        daterange = self._merge_selected_columns(r"^run_1_published$")
+        if not daterange.empty:
+            dates = pd.to_datetime(daterange).dt.to_period("M").astype(str)
+            self.stats["Date range"] = dates.value_counts().to_dict()
+        # organisms
+        organisms = self._merge_selected_columns(r"^sample.*scientific_name.*")
+        if not organisms.empty:
+            self.stats["Organisms"] = organisms.value_counts().to_dict()
+        # strategy
+        if "experiment_library_strategy" in self.df.columns:
+            self.stats["Library strategy"] = (
+                self.df["experiment_library_strategy"].value_counts().to_dict()
+            )
+        # source
+        if "experiment_library_source" in self.df.columns:
+            self.stats["Library source"] = (
+                self.df["experiment_library_source"].value_counts().to_dict()
+            )
+        # selection
+        if "experiment_library_selection" in self.df.columns:
+            self.stats["Library selection"] = (
+                self.df["experiment_library_selection"].value_counts().to_dict()
+            )
+        # layout
+        if "library_layout" in self.df.columns:
+            self.stats["Library layout"] = (
+                self.df["library_layout"].value_counts().to_dict()
+            )
+        # platform
+        if "experiment_platform" in self.df.columns:
+            self.stats["Platform"] = (
+                self.df["experiment_platform"].value_counts().to_dict()
+            )
+        # count
+        count = self._merge_selected_columns(r"^run_.*_total_bases$").astype("int64")
+        self.stats["count_data"] = count
+        self.stats["count_mean"] = count.mean()
+        self.stats["count_median"] = count.median()
+        self.stats["count_stdev"] = count.std()
+
+        # for graphing
+        self.stats["graph_raw"] = self.df[
+            [
+                "sample_scientific_name",
+                "experiment_library_strategy",
+                "experiment_library_source",
+                "experiment_library_selection",
+                "run_1_published",
+                "experiment_platform",
+            ]
+        ].rename(
+            columns={
+                "sample_scientific_name": "Organism",
+                "experiment_library_strategy": "Library Strategy",
+                "experiment_library_source": "Library Source",
+                "experiment_library_selection": "Library Selection",
+                "run_1_published": "Publication Date",
+                "experiment_platform": "Platform",
+            }
+        )
+        self.stats["graph_raw"]["Publication Date"] = (
+            pd.to_datetime(
+                self.stats["graph_raw"]["Publication Date"].replace("N/A", None)
+            )
+            .dt.to_period("M")
+            .astype(str)
+        )
+
+    def _merge_selected_columns(self, regex):
+        columns = list(self.df.filter(regex=regex, axis=1).columns)
+        if not columns:
+            series = pd.Series(dtype="object")
+        elif len(columns) == 1:
+            series = self.df[columns[0]]
+        else:
+            series = self.df[columns[0]].append(
+                [self.df[c] for c in columns[1:]], ignore_index=True
+            )
+        return series[series != "N/A"]
 
 
 class EnaSearch(QuerySearch):
@@ -938,20 +1305,16 @@ class EnaSearch(QuerySearch):
         # Currently, if the user does not specify a query field, the query will
         # be matched to experiment_title (aka description),
         # or one of the accession fields
+        stats_columns = ()
         payload = {
-            "dataPortal": "ena",
             "query": self._format_query_string(),
             "result": "read_run",
             "format": "json",
             "limit": self.return_max,
         }
 
-        # Selects the exact fields to return at different verbosity levels
-        if self.verbosity == 0:
-            payload["fields"] = "run_accession"
-        elif self.verbosity == 1:
-            pass  # default, fields = "run_accession,description"
-        elif self.verbosity == 2:
+        # Selects the fields to return at different verbosity levels
+        if self.verbosity < 3:
             payload["fields"] = (
                 "study_accession,"
                 "experiment_accession,"
@@ -967,7 +1330,10 @@ class EnaSearch(QuerySearch):
                 "instrument_model,"
                 "run_accession,"
                 "read_count,"
-                "base_count"
+                "base_count,"
+                "first_public,"
+                "library_layout,"
+                "instrument_platform"
             )
         elif self.verbosity == 3:
             payload["fields"] = "all"
@@ -977,33 +1343,149 @@ class EnaSearch(QuerySearch):
         if not content:
             return
         self.df = pd.DataFrame.from_dict(content).replace(r"^\s*$", "N/A", regex=True)
-        if self.verbosity == 3:
+
+        # Tabulate statistics
+        self._update_stats()
+
+        important_columns = [
+            "study_accession",
+            "experiment_accession",
+            "experiment_title",
+            "description",
+            "tax_id",
+            "scientific_name",
+            "library_strategy",
+            "library_source",
+            "library_selection",
+            "sample_accession",
+            "sample_title",
+            "instrument_model",
+            "run_accession",
+            "read_count",
+            "base_count",
+        ]
+
+        if self.verbosity == 0:
+            self.df = self.df[["run_accession"]]
+        elif self.verbosity == 1:
+            self.df = self.df[["run_accession", "description"]]
+        elif self.verbosity == 2:
+            self.df = self.df[important_columns]
+        elif self.verbosity == 3:
             columns = list(self.df.columns)
-            important_columns = [
-                "study_accession",
-                "experiment_accession",
-                "experiment_title",
-                "description",
-                "tax_id",
-                "scientific_name",
-                "library_strategy",
-                "library_source",
-                "library_selection",
-                "sample_accession",
-                "sample_title",
-                "instrument_model",
-                "run_accession",
-                "read_count",
-                "base_count",
-            ]
             columns = important_columns + sorted(
                 [col for col in columns if col not in important_columns]
             )
             self.df = self.df[columns]
         self.df.dropna(how="all")
 
+    def _update_stats(self):
+        # study
+        self.stats["study"] = self.df["study_accession"].nunique()
+        # experiment
+        self.stats["experiment"] = self.df["experiment_accession"].nunique()
+        # run
+        self.stats["run"] = self.df["run_accession"].nunique()
+        # sample
+        self.stats["sample"] = self.df["sample_accession"].nunique()
+        # date range
+        daterange = self.df["first_public"]
+        daterange = daterange[daterange != "N/A"]
+        if not daterange.empty:
+            dates = pd.to_datetime(daterange).dt.to_period("M").astype(str)
+            self.stats["Date range"] = dates.value_counts().to_dict()
+        # organisms
+        organisms = self.df["scientific_name"]
+        self.stats["Organisms"] = organisms.value_counts().to_dict()
+        # strategy
+        if "library_strategy" in self.df.columns:
+            self.stats["Library strategy"] = (
+                self.df["library_strategy"].value_counts().to_dict()
+            )
+        # source
+        if "library_source" in self.df.columns:
+            self.stats["Library source"] = (
+                self.df["library_source"].value_counts().to_dict()
+            )
+        # selection
+        if "library_selection" in self.df.columns:
+            self.stats["Library selection"] = (
+                self.df["library_selection"].value_counts().to_dict()
+            )
+        # layout
+        if "library_layout" in self.df.columns:
+            self.stats["Library layout"] = (
+                self.df["library_layout"].value_counts().to_dict()
+            )
+        # platform
+        if "instrument_platform" in self.df.columns:
+            self.stats["Platform"] = (
+                self.df["instrument_platform"].value_counts().to_dict()
+            )
+        # count
+        count = self.df["base_count"].copy()
+        count = count[count != "N/A"].astype("int64")
+        self.stats["count_data"] = count
+        self.stats["count_mean"] = count.mean()
+        self.stats["count_median"] = count.median()
+        self.stats["count_stdev"] = count.std()
+
+        # For graphing
+        self.stats["graph_raw"] = self.df[
+            [
+                "scientific_name",
+                "library_strategy",
+                "library_source",
+                "library_selection",
+                "first_public",
+                "instrument_platform",
+            ]
+        ].rename(
+            columns={
+                "scientific_name": "Organism",
+                "library_strategy": "Library Strategy",
+                "library_source": "Library Source",
+                "library_selection": "Library Selection",
+                "first_public": "Publication Date",
+                "instrument_platform": "Platform",
+            }
+        )
+        self.stats["graph_raw"]["Publication Date"] = (
+            pd.to_datetime(self.stats["graph_raw"]["Publication Date"])
+            .dt.to_period("M")
+            .astype(str)
+        )
+
 
 class GeoSearch(SraSearch):
+    """Subclass of SraSearch that can query both GEO DataSets and SRA API.
+
+    Methods
+    -------
+    search()
+        sends the user query via requests to SRA, GEO DataSets, or both
+        depending on the search query. If query is sent to both APIs,
+        the intersection of the two sets of query results are returned.
+
+    _format_geo_query_string()
+        formats the GEO DataSets portion of the input user query into a
+        string.
+
+    _format_geo_request()
+        formats the GEO DataSets request payload
+
+    _format_result(content)
+        formats the search query output and converts it into a pandas
+        dataframe
+
+    See Also
+    --------
+    GeoSearch.info(): GeoSearch usage details
+    SraSearch: Superclass of GeoSearch
+    QuerySearch: Superclass of SraSearch
+
+    """
+
     def __init__(
         self,
         verbosity=2,
@@ -1036,6 +1518,24 @@ class GeoSearch(SraSearch):
                 self.geo_fields[k] = " ".join(self.geo_fields[k])
         self.search_sra = True
         self.search_geo = True
+        self.entries = {}
+        self.number_entries = 0
+        self.stats = {
+            "study": "-",
+            "experiment": "-",
+            "run": "-",
+            "sample": "-",
+            "Date range": "-",
+            "Organisms": "-",
+            "Library strategy": "-",
+            "Library source": "-",
+            "Library selection": "-",
+            "Library layout": "-",
+            "Platform": "-",
+            "count_mean": "-",
+            "count_median": "-",
+            "count_stdev": "-",
+        }
         try:
             super().__init__(
                 verbosity,
@@ -1096,11 +1596,15 @@ class GeoSearch(SraSearch):
         return payload
 
     def _format_request(self):
+        if not self.search_geo:
+            retmax = self.return_max
+        else:
+            retmax = self.return_max * 10
         payload = {
             "db": "sra",
             "term": self._format_query_string(),
             "retmode": "json",
-            "retmax": self.return_max * 10,
+            "retmax": retmax,
         }
         return payload
 
@@ -1178,8 +1682,9 @@ class GeoSearch(SraSearch):
                     )
                     r.raise_for_status()
                     r.raw.decode_content = True
-                    self._format_result(r.raw)
+                    self._format_response(r.raw)
                 pbar.close()
+                self._format_result()
             except requests.exceptions.Timeout:
                 sys.exit(f"Connection to the server has timed out. Please retry.")
             except requests.exceptions.HTTPError:
@@ -1187,3 +1692,72 @@ class GeoSearch(SraSearch):
                     f"HTTPError: This is likely caused by an invalid search query: "
                     f"\nURL queried: {r.url} \nUser query: {self.fields}"
                 )
+
+    @classmethod
+    def info(cls):
+        """Information on how to use GeoSearch.
+
+        Displays information on how to query GEO DataSets / SRA via
+        GeoSearch, including accepted inputs for geo_query,
+        geo_dataset_type and geo_entry_type.
+
+        Returns
+        -------
+        info: str
+            Information on how to use GeoSearch.
+        """
+        info = (
+            "General Information:\n"
+            "--------------------\n"
+            "GeoSearch (Or 'pysradb search --db geo ...' on the command line) \n"
+            "is able to query both SRA and GEO DataSets, returning the subset \n"
+            "of entries that appears within both search queries. \n\n"
+            "Queries sent to SRA and GEO DataSets will have 'sra gds[Filter]' \n"
+            "and 'gds sra[Filter]' appended to the search queries respectively \n"
+            "to ensure that the entries in the search result can also be found \n"
+            "in the other API. \n\n"
+            "Queries sent to SRA uses the same fields as SraSearch, \n"
+            "or 'pysradb search --db sra ...' on the command line. \n\n"
+            "The following fields, if used, are sent as part of the GEO DataSets query: \n"
+            "organism, publication_date, geo_query, geo_dataset_type, geo_entry_type\n\n"
+            "Notes about GEO DataSets specific fields: \n"
+            "----------------------------------------- \n"
+            "geo_query: This is the free text query, similar to 'query', that \n"
+            "is sent to GEO DataSets API. The 'query' field is the free text \n"
+            "query sent to SRA API instead.\n\n"
+            "geo_dataset_type: The type of GEO DataSet, which can be one of the following: \n"
+            "  expression profiling by array \n"
+            "  expression profiling by genome tiling array \n"
+            "  expression profiling by high throughput sequencing \n"
+            "  expression profiling by mpss \n"
+            "  expression profiling by rt pcr \n"
+            "  expression profiling by sage \n"
+            "  expression profiling by snp array \n"
+            "  genome binding/occupancy profiling by array \n"
+            "  genome binding/occupancy profiling by genome tiling array \n"
+            "  genome binding/occupancy profiling by high throughput sequencing \n"
+            "  genome binding/occupancy profiling by snp array \n"
+            "  genome variation profiling by array \n"
+            "  genome variation profiling by genome tiling array \n"
+            "  genome variation profiling by high throughput sequencing \n"
+            "  genome variation profiling by snp array \n"
+            "  methylation profiling by array \n"
+            "  methylation profiling by genome tiling array \n"
+            "  methylation profiling by high throughput sequencing \n"
+            "  methylation profiling by snp array \n"
+            "  non coding rna profiling by array \n"
+            "  non coding rna profiling by genome tiling array \n"
+            "  non coding rna profiling by high throughput sequencing \n"
+            "  other \n"
+            "  protein profiling by mass spec \n"
+            "  protein profiling by protein array \n"
+            "  snp genotyping by snp array \n"
+            "  third party reanalysis\n\n"
+            "geo_dataset_type: The type of GEO entry, which can be one of the following: \n"
+            "  gds\n"
+            "  gpl\n"
+            "  gse\n"
+            "  gsm\n\n"
+        )
+
+        return info

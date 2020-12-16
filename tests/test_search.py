@@ -23,8 +23,7 @@ from pysradb.search import *
 
 @pytest.fixture(scope="module")
 def valid_search_inputs_1():
-    """Basic search input tests for Sra and Ena (single inputs)
-    """
+    """Basic search input tests for Sra and Ena (single inputs)"""
     return [
         [
             0,
@@ -223,8 +222,7 @@ def valid_search_inputs_1():
 
 @pytest.fixture(scope="module")
 def valid_search_inputs_2():
-    """More complex input tests for Sra and Ena
-    """
+    """More complex input tests for Sra and Ena"""
     return [
         [
             0,
@@ -343,8 +341,7 @@ def valid_search_inputs_2():
 
 @pytest.fixture(scope="module")
 def valid_search_inputs_geo():
-    """Basic search input tests for Geo
-    """
+    """Basic search input tests for Geo"""
     return [
         [
             2,
@@ -551,8 +548,7 @@ def empty_search_inputs_geo():
 
 @pytest.fixture(scope="module")
 def invalid_search_inputs():
-    """Invalid search input tests for QuerySearch
-    """
+    """Invalid search input tests for QuerySearch"""
     return [
         [
             4,
@@ -978,7 +974,7 @@ def test_sra_search_format_request():
 
 
 def test_sra_search_format_result_1(sra_response_xml_1, sra_formatted_responses_1):
-    for i in range(4):
+    for i in range(2, 4):
         query = SraSearch(
             i,
             1000,
@@ -986,7 +982,8 @@ def test_sra_search_format_result_1(sra_response_xml_1, sra_formatted_responses_
             platform="illumina",
             organism="Caenorhabditis elegans",
         )
-        query._format_result(sra_response_xml_1)
+        query._format_response(sra_response_xml_1)
+        query._format_result()
         col0 = [
             c
             for c in query.get_df().columns
@@ -1005,7 +1002,9 @@ def test_sra_search_format_result_1(sra_response_xml_1, sra_formatted_responses_
 def test_sra_search_format_result_2(sra_response_xml_2, sra_formatted_responses_2):
     for i in range(4):
         query = SraSearch(i, 1000, accession="ERS3331676")
-        query._format_result(sra_response_xml_2)
+
+        query._format_response(sra_response_xml_2)
+        query._format_result()
         col0 = [
             c
             for c in query.get_df().columns
@@ -1026,14 +1025,14 @@ def test_sra_search_format_result_2(sra_response_xml_2, sra_formatted_responses_
 
 def test_ena_search_1():
     instance = EnaSearch(
-        0, 1000, query="ribosome profiling", publication_date="01-10-2012:01-01-2013"
+        0, 1000, platform="pacbio", publication_date="01-10-2012:01-01-2013"
     )
     instance.search()
     df = instance.get_df()["run_accession"].to_list()
     with open("./tests/data/test_search/ena_search_test1.txt", "r") as f:
         expected_accessions = f.read().splitlines()
-    for accession in expected_accessions:
-        assert accession in df
+    for accession in df:
+        assert accession in expected_accessions
 
 
 def test_ena_search_2(capsys):
@@ -1118,14 +1117,13 @@ def test_ena_search_format_request():
     )
 
     assert EnaSearch(2, 20, "covid-19")._format_request() == {
-        "dataPortal": "ena",
         "query": query_string,
         "result": "read_run",
         "format": "json",
         "limit": 20,
         "fields": "study_accession,experiment_accession,experiment_title,description,tax_id,scientific_name,"
         "library_strategy,library_source,library_selection,sample_accession,sample_title,"
-        "instrument_model,run_accession,read_count,base_count",
+        "instrument_model,run_accession,read_count,base_count,first_public,library_layout,instrument_platform",
     }
 
 
@@ -1196,5 +1194,11 @@ def test_geo_search_format_request():
         "db": "sra",
         "term": "covid-19 AND sra gds[Filter]",
         "retmode": "json",
-        "retmax": 10000,
+        "retmax": 1000,
     }
+
+
+def test_geo_info():
+    assert type(GeoSearch.info()) == str and GeoSearch.info().startswith(
+        "General Information:"
+    )

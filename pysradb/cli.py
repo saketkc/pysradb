@@ -46,19 +46,27 @@ def _print_save_df(df, saveto=None):
             df.to_csv(saveto, index=False, header=True, sep="\t")
     else:
         if len(df.index):
-            pd.set_option("display.max_colwidth", None)
-            # Bug in pandas 0.25.3: https://github.com/pandas-dev/pandas/issues/24980
-            # causes extra leading spaces
-            to_print = df.to_string(
-                index=False, justify="left", header=False, col_space=0
-            ).lstrip()
-            to_print_split = to_print.split(os.linesep)
-            # Header formatting seems off when it is added via to_string()
-            # method. Hence it is added to to_print separately
+            to_print = (
+                df.replace(r"[\s]{2,}|\t", " ", regex=True)
+                .to_string(
+                    index=False,
+                    justify="left",
+                    header=False,
+                    col_space=0,
+                )
+                .lstrip()
+            )
+            to_print_split = to_print.split("\n")
+            to_print_split = map(lambda x: re.sub(r"\s\s+", "\t", x), to_print_split)
             to_print = ["\t".join(df.columns)]
             for line in to_print_split:
                 to_print.append(line.lstrip())
-            print(("{}".format(os.linesep)).join(to_print))
+            to_print = list(
+                map(lambda line: line.encode("ascii", "replace").decode(), to_print)
+            )
+            for line in to_print:
+                sys.stdout.write(line + os.linesep)
+            sys.stdout.flush()
 
 
 def _check_sradb_file(db):
@@ -78,7 +86,6 @@ def _check_sradb_file(db):
         """
         # Use the web version
         return "web"
-
     if not os.path.isfile(db):
         raise RuntimeError("{} does not exist".format(db))
     return db
@@ -119,11 +126,9 @@ def metadata(srp_id, db, assay, desc, detailed, expand, saveto):
 
 
 ################# download ##########################
-def download(out_dir, db, srx, srp, skip_confirmation, col="sra_url", use_wget=True):
-    if use_wget:
-        protocol = "ftp"
-    else:
-        protocol = "fasp"
+def download(
+    out_dir, db, srx, srp, skip_confirmation, col="sra_url", use_ascp=False, threads=1
+):
     db = _check_sradb_file(db)
     if out_dir is None:
         out_dir = os.path.join(os.getcwd(), "pysradb_downloads")
@@ -131,21 +136,10 @@ def download(out_dir, db, srx, srp, skip_confirmation, col="sra_url", use_wget=T
     if not srp:
         text = ""
         for index, line in enumerate(sys.stdin):
-            line = line.strip()
-            line = line.lstrip(" ")
-            # pandas has different paddings to indent,
-            # we cannot replace all sapces at once since the description column
-            # can have text with space
-            line = re.sub("\s\s\s", "\t", line)
-            line = re.sub("\s\s", "\t", line)
-            line = re.sub("\t+", "\t", line)
-            line = re.sub("\s\t", "\t", line)
-            line = re.sub("\t\s", "\t", line)
-
-            if index == 0:
-                # For first line which is the header, allow substituting spaces with tab at once
-                line = re.sub("\s+", "\t", line)
-
+            line = line.strip(" \t\n\r")
+            line = re.sub(r"\s*\t+\s*", "\t", line)
+            if not line:
+                continue
             text += "{}\n".format(line)
         df = pd.read_csv(StringIO(text), sep="\t")
         sradb.download(
@@ -153,8 +147,9 @@ def download(out_dir, db, srx, srp, skip_confirmation, col="sra_url", use_wget=T
             out_dir=out_dir,
             filter_by_srx=srx,
             skip_confirmation=True,
-            protocol=protocol,
+            use_ascp=use_ascp,
             url_col=col,
+            threads=threads,
         )
     else:
         for srp_x in srp:
@@ -164,6 +159,8 @@ def download(out_dir, db, srx, srp, skip_confirmation, col="sra_url", use_wget=T
                 out_dir=out_dir,
                 filter_by_srx=srx,
                 skip_confirmation=skip_confirmation,
+                use_ascp=use_ascp,
+                threads=threads,
             )
     sradb.close()
 
@@ -173,6 +170,10 @@ def download(out_dir, db, srx, srp, skip_confirmation, col="sra_url", use_wget=T
 
 ######################### search #################################
 def search(saveto, db, verbosity, return_max, fields):
+    if fields["run_description"]:
+        verbosity = 1
+    if fields["detailed"]:
+        verbosity = 3
     try:
         if db == "ena":
             instance = EnaSearch(
@@ -191,7 +192,7 @@ def search(saveto, db, verbosity, return_max, fields):
                 fields["title"],
             )
             instance.search()
-        elif db == "sra_geo":
+        elif db == "geo":
             instance = GeoSearch(
                 verbosity,
                 return_max,
@@ -231,8 +232,16 @@ def search(saveto, db, verbosity, return_max, fields):
     except (MissingQueryException, IncorrectFieldException) as e:
         print(e)
         return
-
+    if fields["stats"]:
+        instance.show_result_statistics()
+    if fields["graphs"]:
+        graph_types = tuple(fields["graphs"].split())
+        instance.visualise_results(graph_types, False)
     _print_save_df(instance.get_df(), saveto)
+
+
+def get_geo_search_info():
+    print(GeoSearch.info())
 
 
 ####################################################################
@@ -671,29 +680,69 @@ def parse_args(args=None):
         "--skip-confirmation", "-y", action="store_true", help="Skip confirmation"
     )
     subparser.add_argument(
-        "--use-wget", "-w", action="store_true", help="Use wget instead of aspera"
+        "--use_ascp", "-a", action="store_true", help="Use aspera instead of wget"
     )
+    subparser.add_argument("--col", help="Specify column to download")
     subparser.add_argument(
-        "--col", help="Specify column to download", default="sra_url"
+        "--threads", "-t", help="Number of threads", default=1, type=int
     )
     subparser.set_defaults(func=download)
 
     # pysradb search
     subparser = subparsers.add_parser("search", help="Search SRA/ENA for matching text")
-    subparser.add_argument("--saveto", help="Save search result dataframe to file")
     subparser.add_argument(
+        "-o", "--saveto", help="Save search result dataframe to file"
+    )
+    subparser.add_argument(
+        "-s",
+        "--stats",
+        action="store_true",
+        help="Displays some useful statistics for the search results.",
+    )
+    subparser.add_argument(
+        "-g",
+        "--graphs",
+        nargs="?",
+        const="all",
+        help=(
+            "Generates graphs to illustrate the search result. "
+            "By default all graphs are generated. \n"
+            "Alternatively, select a subset from the options below in a space-separated string:\n"
+            "daterange, organism, source, selection, platform, basecount"
+        ),
+    )
+    subparser.add_argument(
+        "-d",
         "--db",
-        choices=["ena", "sra_geo", "sra"],
+        choices=["ena", "geo", "sra"],
         default="sra",
-        help="Select the db API (sra, ena, or sra_geo) to query, default = sra",
+        help="Select the db API (sra, ena, or geo) to query, default = sra.     "
+        "Note: pysradb search works slightly differently when db = geo. \n"
+        "Please refer to 'pysradb search --geo-info' for more details.",
     )
     subparser.add_argument(
         "-v",
         "--verbosity",
         choices=[0, 1, 2, 3],
         default=2,
-        help="Level of search result details (0, 1, 2 or 3), default = 2",
+        help=(
+            "Level of search result details (0, 1, 2 or 3), default = 2\n"
+            "0: run accession only\n"
+            "1: run accession and experiment title\n"
+            "2: accession numbers, titles and sequencing information\n"
+            "3: records in 2 and other information such as download url, sample attributes, etc"
+        ),
         type=int,
+    )
+    subparser.add_argument(
+        "--run-description",
+        action="store_true",
+        help="Displays run accessions and descriptions only. Equivalent to --verbosity 1",
+    )
+    subparser.add_argument(
+        "--detailed",
+        action="store_true",
+        help="Displays detailed search results. Equivalent to --verbosity 3.",
     )
     subparser.add_argument(
         "-m",
@@ -709,43 +758,66 @@ def parse_args(args=None):
         help="Main query string. Note that if no query is supplied, at least one of the "
         "following flags must be present:",
     )
-    subparser.add_argument("--accession", help="Accession number")
+    subparser.add_argument("-A", "--accession", help="Accession number")
     subparser.add_argument(
-        "--organism", nargs="+", help="Scientific name of the sample organism"
+        "-O", "--organism", nargs="+", help="Scientific name of the sample organism"
     )
     subparser.add_argument(
-        "--layout", choices=["SINGLE", "PAIRED"], help="Library layout", type=str.upper
+        "-L",
+        "--layout",
+        choices=["SINGLE", "PAIRED"],
+        help="Library layout. Accepts either SINGLE or PAIRED",
+        type=str.upper,
     )
     subparser.add_argument(
-        "--mbases", help="Size of the sample rounded to the nearest megabase", type=int
+        "-M",
+        "--mbases",
+        help="Size of the sample rounded to the nearest megabase",
+        type=int,
     )
     subparser.add_argument(
+        "-D",
         "--publication-date",
         help="Publication date of the run in the format dd-mm-yyyy. If a date range is desired, "
         "enter the start date, followed by end date, separated by a colon ':'.\n "
         "Example: 01-01-2010:31-12-2010",
     )
-    subparser.add_argument("--platform", nargs="+", help="Sequencing platform")
-    subparser.add_argument("--selection", nargs="+", help="Library selection")
-    subparser.add_argument("--source", nargs="+", help="Library source")
-    subparser.add_argument("--strategy", nargs="+", help="Library preparation strategy")
-    subparser.add_argument("--title", nargs="+", help="Experiment title")
+    subparser.add_argument("-P", "--platform", nargs="+", help="Sequencing platform")
+    subparser.add_argument("-E", "--selection", nargs="+", help="Library selection")
+    subparser.add_argument("-C", "--source", nargs="+", help="Library source")
+    subparser.add_argument(
+        "-S", "--strategy", nargs="+", help="Library preparation strategy"
+    )
+    subparser.add_argument("-T", "--title", nargs="+", help="Experiment title")
 
     # The following arguments are for GEO DataSets only
     subparser.add_argument(
+        "-I",
+        "--geo-info",
+        action="store_true",
+        help="Displays information on how to query GEO DataSets via 'pysradb search --db geo ...', "
+        "including accepted inputs for -G/--geo-query, -Y/--geo-dataset-type and -Z/--geo-entry-type. ",
+    )
+    subparser.add_argument(
+        "-G",
         "--geo-query",
         nargs="+",
-        help="Main query string for GEO DataSet. This flag is only used when db is set to be sra_geo.",
+        help="Main query string for GEO DataSet. This flag is only used when db is set to be geo."
+        "Please refer to 'pysradb search --geo-info' for more details.",
     )
     subparser.add_argument(
+        "-Y",
         "--geo-dataset-type",
         nargs="+",
-        help="GEO DataSet Type. This flag is only used when --db is set to be sra_geo.",
+        help="GEO DataSet Type. This flag is only used when --db is set to be geo."
+        "Please refer to 'pysradb search --geo-info' for more details.",
     )
     subparser.add_argument(
+        "-Z",
         "--geo-entry-type",
         nargs="+",
-        help="GEO Entry Type. This flag is only used when --db is set to be sra_geo.",
+        help="GEO Entry Type. This flag is only used when --db is set to be geo."
+        "Please refer to 'pysradb search --geo-info' for more details.",
     )
 
     subparser.set_defaults(func=search)
@@ -1199,17 +1271,27 @@ def parse_args(args=None):
         )
     elif args.command == "download":
         download(
-            args.out_dir, args.db, args.srx, args.srp, args.skip_confirmation, args.col
+            args.out_dir,
+            args.db,
+            args.srx,
+            args.srp,
+            args.skip_confirmation,
+            args.col,
+            args.use_ascp,
+            args.threads,
         )
     elif args.command == "search":
         flags = vars(args)
-        search(
-            flags.pop("saveto"),
-            flags.pop("db"),
-            flags.pop("verbosity"),
-            flags.pop("max"),
-            flags,
-        )
+        if flags.pop("geo_info"):
+            get_geo_search_info()
+        else:
+            search(
+                flags.pop("saveto"),
+                flags.pop("db"),
+                flags.pop("verbosity"),
+                flags.pop("max"),
+                flags,
+            )
     elif args.command == "gse-to-gsm":
         gse_to_gsm(
             args.gse_ids, args.db, args.saveto, args.detailed, args.desc, args.expand

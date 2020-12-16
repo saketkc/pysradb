@@ -1,28 +1,37 @@
 """Utilities to interact with SRA online"""
 
+import os
 import sys
 import time
 import warnings
 from collections import OrderedDict
-from html import unescape
+import concurrent.futures
 from xml.parsers.expat import ExpatError
 
+from json.decoder import JSONDecodeError
 import numpy as np
 import pandas as pd
 import requests
 import xmltodict
 
 from .sradb import SRAdb
-from .utils import path_leaf
 
 warnings.simplefilter(action="ignore", category=FutureWarning)
+
+from xml.sax.saxutils import escape
+
+
+def xmlescape(data):
+    return escape(data, entities={"'": "&apos;", '"': "&quot;"})
 
 
 def _order_first(df, column_order_list):
     columns = column_order_list + [
         col for col in df.columns.tolist() if col not in column_order_list
     ]
-    df = df.loc[:, columns]
+    # check if all columns do exist in the dataframe
+    if len(set(columns).intersection(df.columns)) == len(columns):
+        df = df.loc[:, columns]
     return df
 
 
@@ -48,8 +57,17 @@ def get_retmax(n_records, retmax=500):
 
 
 class SRAweb(SRAdb):
-    def __init__(self):
-        self.base_url = {}
+    def __init__(self, api_key=None):
+        """
+        Initialize a SRAwebdb.
+
+        Parameters
+        ----------
+
+        api_key: string
+                 API key for ncbi eutils.
+        """
+        self.base_url = dict()
         self.base_url[
             "esummary"
         ] = "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esummary.fcgi"
@@ -76,12 +94,19 @@ class SRAweb(SRAdb):
             ("usehistory", "n"),
             ("retmode", "json"),
         ]
-
         self.efetch_params = [
             ("db", "sra"),
             ("usehistory", "n"),
             ("retmode", "runinfo"),
         ]
+
+        if api_key is not None:
+            self.esearch_params["sra"].append(("api_key", str(api_key)))
+            self.esearch_params["geo"].append(("api_key", str(api_key)))
+            self.efetch_params.append(("api_key", str(api_key)))
+            self.sleep_time = 1 / 10
+        else:
+            self.sleep_time = 1 / 3
 
     @staticmethod
     def format_xml(string):
@@ -95,7 +120,8 @@ class SRAweb(SRAdb):
         --------
         xml: str
         """
-        string = unescape(string.strip())
+        # string = unescape(string.strip())
+        string = string.strip()
         return "<root>" + string + "</root>"
 
     @staticmethod
@@ -113,7 +139,7 @@ class SRAweb(SRAdb):
                   Parsed xml as dict
         """
         try:
-            json = xmltodict.parse(xml)["root"]
+            json = xmltodict.parse(xml, process_namespaces=True)["root"]
         except ExpatError:
             raise RuntimeError("Unable to parse xml: {}".format(xml))
         return json
@@ -135,16 +161,20 @@ class SRAweb(SRAdb):
         payload += [("accession", srp)]
         request = requests.get(self.ena_fastq_search_url, params=OrderedDict(payload))
         request_text = request.text.strip()
-        # TODO: forcing this to be http protocol instead of ftp
-        urls = [
-            (
-                path_leaf(url).replace(".fastq.gz", ""),
-                "http://{}".format(url),
-                url.replace("ftp.sra.ebi.ac.uk/", "era-fasp@fasp.sra.ebi.ac.uk:"),
-            )
-            for url in request_text.split("\n")
-            if "fastq_ftp" not in url
-        ]
+
+        urls = []
+        for line in request_text.split("\n"):
+            if "fastq_ftp" in line:
+                continue
+            line = line.strip()
+            line_split = line.split("\t")
+            if len(line_split) != 2:
+                continue
+            srr, url = line.split("\t")
+            http_url = "http://{}".format(url)
+            ftp_url = url.replace("ftp.sra.ebi.ac.uk/", "era-fasp@fasp.sra.ebi.ac.uk:")
+            urls += [(srr, http_url, ftp_url)]
+
         # Paired end case
         def _handle_url_split(url_split):
             url1_1 = "N/A"
@@ -185,15 +215,15 @@ class SRAweb(SRAdb):
                 urls_expanded,
                 columns=[
                     "run_accession",
-                    "ena_fastq_url_1",
-                    "ena_fastq_url_2",
+                    "ena_fastq_http_1",
+                    "ena_fastq_http_2",
                     "ena_fastq_ftp_1",
                     "ena_fastq_ftp_2",
                 ],
             )
         else:
             return pd.DataFrame(
-                urls, columns=["run_accession", "ena_fastq_url", "ena_fastq_ftp"]
+                urls, columns=["run_accession", "ena_fastq_http", "ena_fastq_ftp"]
             )
 
     def create_esummary_params(self, esearchresult, db="sra"):
@@ -223,7 +253,29 @@ class SRAweb(SRAdb):
             term = " OR ".join(term)
         payload += [("term", term)]
         request = requests.post(self.base_url["esearch"], data=OrderedDict(payload))
-        esearch_response = request.json()
+        try:
+            esearch_response = request.json()
+        except JSONDecodeError:
+            sys.stderr.write(
+                "Unable to parse esummary response json: {}{}. Will retry once.".format(
+                    request.text, os.linesep
+                )
+            )
+            retry_after = request.headers.get("Retry-After", 1)
+            time.sleep(int(retry_after))
+            request = requests.post(self.base_url["esearch"], data=OrderedDict(payload))
+            try:
+                esearch_response = request.json()
+            except JSONDecodeError:
+                sys.stderr.write(
+                    "Unable to parse esummary response json: {}{}. Aborting.".format(
+                        request.text, os.linesep
+                    )
+                )
+                sys.exit(1)
+
+            # retry again
+
         if "esummaryresult" in esearch_response:
             print("No result found")
             return
@@ -245,7 +297,12 @@ class SRAweb(SRAdb):
             request = requests.get(
                 self.base_url["esummary"], params=OrderedDict(payload)
             )
-            response = request.json()
+            try:
+                response = request.json()
+            except JSONDecodeError:
+                time.sleep(1)
+                response = _retry_response(self.base_url["esummary"], payload, "result")
+
             if "error" in response:
                 # API rate limite exceeded
                 response = _retry_response(self.base_url["esummary"], payload, "result")
@@ -258,7 +315,6 @@ class SRAweb(SRAdb):
                         results[key] += value
                     else:
                         results[key] = value
-            time.sleep(0.1)
         return results
 
     def get_efetch_response(self, db, term, usehistory="y"):
@@ -310,18 +366,29 @@ class SRAweb(SRAdb):
                 request_text = request.text.strip()
 
             try:
-                response = xmltodict.parse(request_text)["EXPERIMENT_PACKAGE_SET"][
-                    "EXPERIMENT_PACKAGE"
-                ]
+                xml_response = xmltodict.parse(request_text)
+
+                exp_response = xml_response.get("EXPERIMENT_PACKAGE_SET", {})
+                response = exp_response.get("EXPERIMENT_PACKAGE", {})
             except ExpatError:
-                raise RuntimeError("Unable to parse xml: {}".format(request_text))
+                sys.stderr.write(
+                    "Unable to parse xml: {}{}".format(request_text, os.linesep)
+                )
+                sys.exit(1)
+            if not response:
+                sys.stderr.write(
+                    "Unable to parse xml response. Received: {}{}".format(
+                        xml_response, os.linesep
+                    )
+                )
+                sys.exit(1)
             if retstart == 0:
                 results = response
             else:
                 result = response
                 for value in result:
                     results.append(value)
-            time.sleep(0.3)
+            time.sleep(self.sleep_time)
         return results
 
     def sra_metadata(
@@ -402,6 +469,10 @@ class SRAweb(SRAdb):
             exp_library_selection = exp_library_descriptor["LIBRARY_SELECTION"]
             if isinstance(exp_library_selection, dict):
                 exp_library_selection = exp_library_selection["#text"]
+            # library_name
+            exp_library_name = exp_library_descriptor.get("LIBRARY_NAME", "")
+            if isinstance(exp_library_selection, dict):
+                exp_library_name = exp_library_name["#text"]
             # library_layout
             exp_library_layout = list(exp_library_descriptor["LIBRARY_LAYOUT"].keys())[
                 0
@@ -417,10 +488,11 @@ class SRAweb(SRAdb):
                 experiment_record["organism_taxid "] = exp_taxid
                 experiment_record["organism_name"] = exp_organism_name
 
+                experiment_record["library_name"] = exp_library_name
                 experiment_record["library_strategy"] = exp_library_strategy
                 experiment_record["library_source"] = exp_library_source
                 experiment_record["library_selection"] = exp_library_selection
-                experiment_record["library_source"] = exp_library_source
+                experiment_record["library_layout"] = exp_library_layout
                 experiment_record["sample_accession"] = exp_sample_ID
                 experiment_record["sample_title"] = exp_sample_name
                 experiment_record["instrument"] = exp_instrument
@@ -442,7 +514,7 @@ class SRAweb(SRAdb):
         if not detailed:
             return metadata_df
 
-        time.sleep(0.5)
+        time.sleep(self.sleep_time)
         efetch_result = self.get_efetch_response("sra", srp)
         if not isinstance(efetch_result, list):
             efetch_result = [efetch_result]
@@ -479,7 +551,8 @@ class SRAweb(SRAdb):
 
                 detailed_record["run_accession"] = run_set["@accession"]
                 detailed_record["run_alias"] = run_set["@alias"]
-                sra_files = run_set["SRAFiles"]["SRAFile"]
+                sra_files = run_set.get("SRAFiles", {})
+                sra_files = sra_files.get("SRAFile", {})
                 if isinstance(sra_files, OrderedDict):
                     detailed_record["sra_url"] = sra_files["@url"]
                 else:
@@ -531,11 +604,32 @@ class SRAweb(SRAdb):
         metadata_df = metadata_df[metadata_df.columns.dropna()]
         metadata_df = metadata_df.drop_duplicates()
         metadata_df = metadata_df.replace(r"^\s*$", np.nan, regex=True)
-        ena_results = self.fetch_ena_fastq(srp)
-        if ena_results.shape[0]:
-            metadata_df = metadata_df.merge(
-                ena_results, on="run_accession", how="outer"
-            )
+        ena_cols = [
+            "ena_fastq_http",
+            "ena_fastq_http_1",
+            "ena_fastq_http_2",
+            "ena_fastq_ftp",
+            "ena_fastq_ftp_1",
+            "ena_fastq_ftp_2",
+        ]
+        metadata_df[ena_cols] = np.nan
+
+        metadata_df = metadata_df.set_index("run_accession")
+        # multithreading lookup on ENA, since a lot of time is spent waiting
+        # for its reply
+        with concurrent.futures.ThreadPoolExecutor(max_workers=5) as executor:
+            # load our function calls into a list of futures
+            futures = [
+                executor.submit(self.fetch_ena_fastq, srp)
+                for srp in metadata_df.study_accession.unique()
+            ]
+            # now proceed synchronously
+            for future in concurrent.futures.as_completed(futures):
+                ena_results = future.result()
+                if ena_results.shape[0]:
+                    ena_results = ena_results.set_index("run_accession")
+                    metadata_df.update(ena_results)
+        metadata_df = metadata_df.reset_index()
         metadata_df = metadata_df.fillna("N/A")
         return metadata_df
 
@@ -545,7 +639,7 @@ class SRAweb(SRAdb):
         try:
             uids = result["uids"]
         except KeyError:
-            print("No results found for {}".format(gse))
+            print("No results found for {} | Obtained result: {}".format(gse, result))
             sys.exit(1)
         gse_records = []
         for uid in uids:
@@ -632,7 +726,7 @@ class SRAweb(SRAdb):
             columns={"SRA": "experiment_accession", "accession": "experiment_alias"}
         )
         srx = gsm_df.experiment_accession.tolist()
-        time.sleep(0.3)
+        time.sleep(self.sleep_time)
         srs_df = self.srx_to_srs(srx)
         gsm_df = srs_df.merge(gsm_df, on="experiment_accession")[
             ["experiment_alias", "sample_accession"]
@@ -707,7 +801,7 @@ class SRAweb(SRAdb):
     def srs_to_gsm(self, srs, **kwargs):
         """Get GSM for a SRS"""
         srx_df = self.srs_to_srx(srs)
-        time.sleep(0.5)
+        time.sleep(self.sleep_time)
         gsm_df = self.srx_to_gsm(srx_df.experiment_accession.tolist(), **kwargs)
         srs_df = srx_df.merge(gsm_df, on="experiment_accession")
         return _order_first(srs_df, ["sample_accession", "experiment_alias"])
