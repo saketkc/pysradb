@@ -1,6 +1,5 @@
 """This file contains the search classes for the search feature.
 """
-import numpy as np
 import os
 import re
 import requests
@@ -78,8 +77,18 @@ class QuerySearch:
     -------
     get_df()
         Returns the dataframe storing this search result.
+
     search()
         Executes the search.
+
+    show_result_statistics()
+        Shows summary information about search results.
+
+    visualise_results()
+        Generate graphs that visualise the search results.
+
+    get_plot_objects():
+        Get the plot objects for plots generated.
 
     """
 
@@ -682,6 +691,18 @@ class SraSearch(QuerySearch):
         sends the user query via requests to NCBI Entrez API and returns
         search results as a pandas dataframe.
 
+    show_result_statistics()
+        Shows summary information about search results.
+
+    visualise_results()
+        Generate graphs that visualise the search results.
+
+    get_plot_objects():
+        Get the plot objects for plots generated.
+
+    get_uids():
+        Get NCBI uids retrieved during this search query.
+
     _format_query_string()
         formats the input user query into a string
 
@@ -732,6 +753,7 @@ class SraSearch(QuerySearch):
         )
         self.entries = {}
         self.number_entries = 0
+        self.uids = []
 
     def search(self):
         # Step 1: retrieves the list of uids that satisfies the input
@@ -744,21 +766,21 @@ class SraSearch(QuerySearch):
                 timeout=SEARCH_REQUEST_TIMEOUT,
             )
             r.raise_for_status()
-            uids = r.json()["esearchresult"]["idlist"]
+            self.uids = r.json()["esearchresult"]["idlist"]
 
             # Step 2: retrieves the detailed information for each uid
             # returned, in groups of SRA_SEARCH_GROUP_SIZE.
-            if not uids:
+            if not self.uids:
                 print(
                     f"No results found for the following search query: \n {self.fields}"
                 )
                 return  # If no queries found, return nothing
-            pbar = tqdm(total=len(uids))
-            for i in range(0, len(uids), SRA_SEARCH_GROUP_SIZE):
+            pbar = tqdm(total=len(self.uids))
+            for i in range(0, len(self.uids), SRA_SEARCH_GROUP_SIZE):
                 current_uids = ",".join(
-                    uids[i : min(i + SRA_SEARCH_GROUP_SIZE, len(uids))]
+                    self.uids[i : min(i + SRA_SEARCH_GROUP_SIZE, len(self.uids))]
                 )
-                pbar.update(min(SRA_SEARCH_GROUP_SIZE, len(uids) - i))
+                pbar.update(min(SRA_SEARCH_GROUP_SIZE, len(self.uids) - i))
                 payload2 = {"db": "sra", "retmode": "xml", "id": current_uids}
 
                 r = requests_3_retries().get(
@@ -772,8 +794,7 @@ class SraSearch(QuerySearch):
                 self._format_response(r.raw)
             pbar.close()
             self._format_result()
-            if self.verbosity >= 2:
-                self.df["pmid"] = list(uids)
+
         except requests.exceptions.Timeout:
             sys.exit(f"Connection to the server has timed out. Please retry.")
         except requests.exceptions.HTTPError:
@@ -781,6 +802,14 @@ class SraSearch(QuerySearch):
                 f"HTTPError: This is likely caused by an invalid search query: "
                 f"\nURL queried: {r.url} \nUser query: {self.fields}"
             )
+
+    def get_uids(self):
+        """Get NCBI uids retrieved during this search query.
+
+        Note: There is a chance that some uids retrieved do not appear in
+        the search result output (Refer to #88)
+        """
+        return self.uids
 
     def _format_query_string(self):
         term = ""
@@ -1195,6 +1224,15 @@ class EnaSearch(QuerySearch):
         sends the user query via requests to ENA API and stores search
         result as an instance attribute in the form of a pandas dataframe
 
+    show_result_statistics()
+        Shows summary information about search results.
+
+    visualise_results()
+        Generate graphs that visualise the search results.
+
+    get_plot_objects():
+        Get the plot objects for plots generated.
+
     _format_query_string()
         formats the input user query into a string
 
@@ -1466,6 +1504,15 @@ class GeoSearch(SraSearch):
         sends the user query via requests to SRA, GEO DataSets, or both
         depending on the search query. If query is sent to both APIs,
         the intersection of the two sets of query results are returned.
+
+    show_result_statistics()
+        Shows summary information about search results.
+
+    visualise_results()
+        Generate graphs that visualise the search results.
+
+    get_plot_objects():
+        Get the plot objects for plots generated.
 
     _format_geo_query_string()
         formats the GEO DataSets portion of the input user query into a
