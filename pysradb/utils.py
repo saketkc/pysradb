@@ -45,7 +45,7 @@ def requests_3_retries():
     -------
     session: requests.Session
         requests session object that allows 3 retries for server-side
-        errors, for GET and POST requests.
+        errors.
     """
     session = requests.Session()
     retry = Retry(
