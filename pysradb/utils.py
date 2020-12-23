@@ -45,14 +45,13 @@ def requests_3_retries():
     -------
     session: requests.Session
         requests session object that allows 3 retries for server-side
-        errors, for GET and POST requests.
+        errors.
     """
     session = requests.Session()
     retry = Retry(
         total=3,
         backoff_factor=0.5,
         status_forcelist=[500, 502, 503, 504],
-        allowed_methods=["POST", "GET", "HEAD"],
     )
     adapter = HTTPAdapter(max_retries=retry)
     session.mount("http://", adapter)
