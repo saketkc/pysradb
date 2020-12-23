@@ -838,6 +838,11 @@ def sra_formatted_responses_2():
         ),
     ]
 
+@pytest.fixture(scope="module")
+def sra_uids():
+    with open("./tests/data/test_search/sra_uids.txt", "r") as f:
+        uids = f.read().splitlines()
+    return uids
 
 @pytest.fixture(scope="module")
 def ena_responses_json():
@@ -918,6 +923,14 @@ def test_sra_search_1():
     with open("./tests/data/test_search/sra_search_test1.txt", "r") as f:
         expected_accessions = f.read().splitlines()
     assert found_accessions == set(expected_accessions)
+
+
+def test_sra_uids(sra_uids):
+    instance = SraSearch(
+        3, 1000, query="ribosome profiling", publication_date="01-10-2012:01-01-2013"
+    )
+    instance.search()
+    assert instance.get_uids() == sra_uids
 
 
 def test_valid_search_query_1_sra(valid_search_inputs_1):
