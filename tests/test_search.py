@@ -838,11 +838,13 @@ def sra_formatted_responses_2():
         ),
     ]
 
+
 @pytest.fixture(scope="module")
 def sra_uids():
     with open("./tests/data/test_search/sra_uids.txt", "r") as f:
         uids = f.read().splitlines()
     return uids
+
 
 @pytest.fixture(scope="module")
 def ena_responses_json():
