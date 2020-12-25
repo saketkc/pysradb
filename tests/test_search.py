@@ -1010,7 +1010,9 @@ def test_sra_search_format_result_1(sra_response_xml_1, sra_formatted_responses_
             for c in sra_formatted_responses_1[i].columns
             if ("run" not in c.lower() and "sample" not in c.lower())
         ]
-        expected_df = sra_formatted_responses_1[i][col1].fillna("N/A").replace("<NA>", "N/A")
+        expected_df = (
+            sra_formatted_responses_1[i][col1].fillna("N/A").replace("<NA>", "N/A")
+        )
         actual_df = query.get_df()[col0].fillna("N/A").replace("<NA>", "N/A")
         pd.testing.assert_frame_equal(expected_df, actual_df, check_dtype=False)
 
@@ -1031,7 +1033,9 @@ def test_sra_search_format_result_2(sra_response_xml_2, sra_formatted_responses_
             for c in sra_formatted_responses_2[i].columns
             if ("run" not in c.lower() and "sample" not in c.lower())
         ]
-        expected_df = sra_formatted_responses_2[i][col1].fillna("N/A").replace("<NA>", "N/A")
+        expected_df = (
+            sra_formatted_responses_2[i][col1].fillna("N/A").replace("<NA>", "N/A")
+        )
         actual_df = query.get_df()[col0].fillna("N/A").replace("<NA>", "N/A")
         pd.testing.assert_frame_equal(expected_df, actual_df, check_dtype=False)
 

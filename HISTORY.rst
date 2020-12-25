@@ -7,7 +7,7 @@ History
 1.0.0 (MM-DD-YYYY)
 *******************
 * `N/A` is now replcaced with `pd.NA`
-
+* Two new fields in `--detailed`: `instrument_model` and `instrument_model_desc` [#75](https://github.com/saketkc/pysradb/issues/75)
 
 *******************
 0.11.1 (09-18-2020)
