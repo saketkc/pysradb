@@ -177,8 +177,8 @@ class SRAweb(SRAdb):
 
         # Paired end case
         def _handle_url_split(url_split):
-            url1_1 = "N/A"
-            url1_2 = "N/A"
+            url1_1 = pd.NA
+            url1_2 = pd.NA
             for url_temp in url_split:
                 if "_1.fastq.gz" in url_temp:
                     url1_1 = url_temp
@@ -441,11 +441,11 @@ class SRAweb(SRAdb):
             # experiment_title
             exp_name = exp_json["Experiment"]["@name"]
 
-            exp_organism = exp_json.get("Organism", "N/A")
-            exp_organism_name = "N/A"
-            exp_taxid = "N/A"
+            exp_organism = exp_json.get("Organism", pd.NA)
+            exp_organism_name = pd.NA
+            exp_taxid = pd.NA
             if isinstance(exp_organism, dict):
-                exp_organism_name = exp_organism.get("@ScientificName", "N/A")
+                exp_organism_name = exp_organism.get("@ScientificName", pd.NA)
                 exp_taxid = exp_organism["@taxid"]
 
             exp_instrument = list(exp_json["Instrument"].values())[0]
@@ -630,7 +630,7 @@ class SRAweb(SRAdb):
                     ena_results = ena_results.set_index("run_accession")
                     metadata_df.update(ena_results)
         metadata_df = metadata_df.reset_index()
-        metadata_df = metadata_df.fillna("N/A")
+        metadata_df = metadata_df.fillna(pd.NA)
         return metadata_df
 
     def fetch_gds_results(self, gse, **kwargs):
