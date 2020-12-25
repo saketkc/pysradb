@@ -2,6 +2,7 @@
 """
 
 import json
+import pandas as pd
 import pytest
 
 from pysradb.search import *
@@ -1009,8 +1010,8 @@ def test_sra_search_format_result_1(sra_response_xml_1, sra_formatted_responses_
             for c in sra_formatted_responses_1[i].columns
             if ("run" not in c.lower() and "sample" not in c.lower())
         ]
-        expected_df = sra_formatted_responses_1[i][col1]
-        actual_df = query.get_df()[col0]
+        expected_df = sra_formatted_responses_1[i][col1].fillna("N/A").replace("<NA>", "N/A")
+        actual_df = query.get_df()[col0].fillna("N/A").replace("<NA>", "N/A")
         pd.testing.assert_frame_equal(expected_df, actual_df, check_dtype=False)
 
 
@@ -1030,8 +1031,8 @@ def test_sra_search_format_result_2(sra_response_xml_2, sra_formatted_responses_
             for c in sra_formatted_responses_2[i].columns
             if ("run" not in c.lower() and "sample" not in c.lower())
         ]
-        expected_df = sra_formatted_responses_2[i][col1]
-        actual_df = query.get_df()[col0]
+        expected_df = sra_formatted_responses_2[i][col1].fillna("N/A").replace("<NA>", "N/A")
+        actual_df = query.get_df()[col0].fillna("N/A").replace("<NA>", "N/A")
         pd.testing.assert_frame_equal(expected_df, actual_df, check_dtype=False)
 
 
@@ -1152,8 +1153,8 @@ def test_ena_search_format_result(ena_responses_json, ena_formatted_responses):
             organism="Caenorhabditis elegans",
         )
         query._format_result(ena_responses_json[i])
-        expected_df = ena_formatted_responses[i]
-        actual_df = query.get_df()
+        expected_df = ena_formatted_responses[i].fillna("N/A").replace("<NA>", "N/A")
+        actual_df = query.get_df().fillna("N/A").replace("<NA>", "N/A")
         pd.testing.assert_frame_equal(expected_df, actual_df, check_dtype=False)
 
 
