@@ -1,6 +1,7 @@
 """Tests for SRAweb"""
 
 import time
+import pandas as pd
 
 import pytest
 from pysradb.sraweb import SRAweb
@@ -23,7 +24,7 @@ def test_sra_metadata_missing_orgname(sraweb_connection):
     """Test if metadata has right number of entries"""
     df = sraweb_connection.sra_metadata("ERP000171")
     # See: https://github.com/saketkc/pysradb/issues/46#issuecomment-657268760
-    assert "N/A" in df.organism_name.tolist()
+    assert sum(pd.isna(df.organism_name.tolist())) > 0
 
 
 def test_sra_metadata_multiple(sraweb_connection):

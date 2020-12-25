@@ -869,7 +869,7 @@ class SraSearch(QuerySearch):
 
     def _format_result(self):
         self.df = pd.DataFrame.from_dict(self.entries).replace(
-            r"^\s*$", "N/A", regex=True
+            r"^\s*$", pd.NA, regex=True
         )
         self.entries.clear()
         if self.df.empty:
@@ -908,7 +908,7 @@ class SraSearch(QuerySearch):
             for col in self.df.columns:
                 if re.match("run_[0-9]+_accession", col):
                     temp_df = self.df[[col, "experiment_title"]]
-                    temp_df = temp_df[temp_df[col] != "N/A"].rename(
+                    temp_df = temp_df[~pd.isna(temp_df[col])].rename(
                         columns={
                             col: "run_accession",
                             "experiment_title": "experiment_title",
@@ -1195,7 +1195,7 @@ class SraSearch(QuerySearch):
         )
         self.stats["graph_raw"]["Publication Date"] = (
             pd.to_datetime(
-                self.stats["graph_raw"]["Publication Date"].replace("N/A", None)
+                self.stats["graph_raw"]["Publication Date"].replace(pd.NA, None)
             )
             .dt.to_period("M")
             .astype(str)
@@ -1211,7 +1211,7 @@ class SraSearch(QuerySearch):
             series = self.df[columns[0]].append(
                 [self.df[c] for c in columns[1:]], ignore_index=True
             )
-        return series[series != "N/A"]
+        return series[~pd.isna(series)]
 
 
 class EnaSearch(QuerySearch):
@@ -1380,7 +1380,7 @@ class EnaSearch(QuerySearch):
     def _format_result(self, content):
         if not content:
             return
-        self.df = pd.DataFrame.from_dict(content).replace(r"^\s*$", "N/A", regex=True)
+        self.df = pd.DataFrame.from_dict(content).replace(r"^\s*$", pd.NA, regex=True)
 
         # Tabulate statistics
         self._update_stats()
@@ -1428,7 +1428,7 @@ class EnaSearch(QuerySearch):
         self.stats["sample"] = self.df["sample_accession"].nunique()
         # date range
         daterange = self.df["first_public"]
-        daterange = daterange[daterange != "N/A"]
+        daterange = daterange[~pd.isna(daterange)]
         if not daterange.empty:
             dates = pd.to_datetime(daterange).dt.to_period("M").astype(str)
             self.stats["Date range"] = dates.value_counts().to_dict()
@@ -1462,7 +1462,7 @@ class EnaSearch(QuerySearch):
             )
         # count
         count = self.df["base_count"].copy()
-        count = count[count != "N/A"].astype("int64")
+        count = count[~pd.isna(count)].astype("int64")
         self.stats["count_data"] = count
         self.stats["count_mean"] = count.mean()
         self.stats["count_median"] = count.median()
