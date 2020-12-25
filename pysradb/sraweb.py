@@ -432,6 +432,9 @@ class SRAweb(SRAdb):
                 runs = [runs]
             exp_title = exp_json["Summary"]["Title"]
             exp_platform = exp_json["Summary"]["Platform"]
+            if isinstance(exp_platform, OrderedDict):
+                exp_platform_model = exp_platform.get("@instrument_model", pd.NA)
+                exp_platform_desc = exp_platform.get("#text", pd.NA)
             exp_total_runs = exp_json["Summary"]["Statistics"]["@total_runs"]
             exp_total_spots = exp_json["Summary"]["Statistics"]["@total_spots"]
             exp_total_size = exp_json["Summary"]["Statistics"]["@total_size"]
@@ -496,6 +499,8 @@ class SRAweb(SRAdb):
                 experiment_record["sample_accession"] = exp_sample_ID
                 experiment_record["sample_title"] = exp_sample_name
                 experiment_record["instrument"] = exp_instrument
+                experiment_record["instrument_model"] = exp_platform_model
+                experiment_record["instrument_model_desc"] = exp_platform_desc
                 experiment_record["total_spots"] = exp_total_spots
                 experiment_record["total_size"] = exp_total_size
                 run_accession = run_record["@acc"]
