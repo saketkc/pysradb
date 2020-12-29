@@ -26,15 +26,6 @@ pysradb: Python package for retrieving metadata and downloading datasets from SR
 
 
 
-***********
-Publication
-***********
-
- `pysradb: A Python package to query next-generation sequencing metadata and data from NCBI Sequence Read Archive <https://f1000research.com/articles/8-532/v1>`_
-
-
- Presentation slides from BOSC (ISMB-ECCB) 2019: https://f1000research.com/slides/8-1183
-
 *********
 CLI Usage
 *********
