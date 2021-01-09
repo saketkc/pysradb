@@ -505,10 +505,8 @@ class QuerySearch:
         graph_types : tuple
             tuple containing strings representing types of graphs to
             generate.
-            Possible strings:
-                all, daterange, organism, source, selection, platform,
-                basecount
-
+            Possible strings: all, daterange, organism, source, selection, platform,
+            basecount
         saveto : str
             directory name where the generated graphs are saved.
 
@@ -1527,7 +1525,7 @@ class GeoSearch(SraSearch):
 
     See Also
     --------
-    GeoSearch.info(): GeoSearch usage details
+    GeoSearch.info: GeoSearch usage details
     SraSearch: Superclass of GeoSearch
     QuerySearch: Superclass of SraSearch
 

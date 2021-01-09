@@ -1,11 +1,9 @@
 .. _pysradbsearch:
 
-#######
-search
-#######
+###############
+Metadata Search
+###############
 
-Python API Documentation
-========================
 
 As a python module, `pysradb search` organises each search query as an
 instance of either the `SraSearch`, `EnaSearch` or the `GeoSearch` class.
@@ -26,8 +24,8 @@ These classes take in the following parameters in their constructor:
 
 |
 
-**Parameters:**
-***************
+Parameters
+~~~~~~~~~~
 
 **verbosity** : int
     This determines how much details are retrieved and shown in the search result:
@@ -206,20 +204,21 @@ out on the command line or returned as a `pandas DataFrame` object respectively.
 pysradb usage on the two platforms will be displayed by selecting the
 corresponding tab below.
 
-**Searching SRA database and retrieving metadata**:
-***************************************************
+Searching SRA database and retrieving metadata
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Let's take for example we are interested in coronavirus sequences published
 on Short Reads Archive (SRA) in the first week of August 2020.
 
-.. tabs::
+.. tabbed:: Console
 
-   .. code-tab:: console
+   .. code-block:: bash
 
         $ pysradb search -q coronavirus --publication-date 01-08-2020:07-08-2020
 
+.. tabbed:: Python
 
-   .. code-tab:: py
+   .. code-block:: python
 
       from pysradb.search import SraSearch
 
@@ -256,19 +255,20 @@ Output:
 |
 
 
-**Searching ENA database and retrieving metadata**:
-***************************************************
+Searching ENA database and retrieving metadata
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 To query European Nucleotide Archive (ENA) instead:
 
-.. tabs::
+.. tabbed:: Console
 
-   .. code-tab:: console
+   .. code-block:: bash
 
         $ pysradb search --db ena -q coronavirus --publication-date 01-08-2020:07-08-2020
 
+.. tabbed:: Python
 
-   .. code-tab:: py
+   .. code-block:: python
 
       from pysradb.search import EnaSearch
 
@@ -303,19 +303,20 @@ Output:
 
 |
 
-**Searching GEO Datasets database and retrieving metadata**:
-************************************************************
+Searching GEO Datasets database and retrieving metadata
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 To query GEO Datasets instead:
 
-.. tabs::
+.. tabbed:: Console
 
-   .. code-tab:: console
+   .. code-block:: bash
 
         $ pysradb search --db geo -q coronavirus --publication-date 01-08-2020:07-08-2020
 
+.. tabbed:: Python
 
-   .. code-tab:: py
+   .. code-block:: python
 
       from pysradb.search import GeoSearch
 
@@ -333,20 +334,21 @@ Output:
 
 |
 
-**Controlling the amount and level of detail of the metadata retrieved**:
-*************************************************************************
+Controlling the level of detail of the metadata retrieved
+*********************************************************
 
 We can control the maximum number of result entries to retrieve using the
 `-m` / `--max` flag or the `return_max` parameter:
 
-.. tabs::
+.. tabbed:: Console
 
-   .. code-tab:: console
+   .. code-block:: bash
 
         $ pysradb search -q coronavirus --publication-date 01-08-2020:07-08-2020 -m 5
 
+.. tabbed:: Python
 
-   .. code-tab:: py
+   .. code-block:: python
 
       from pysradb.search import SraSearch
 
@@ -367,21 +369,22 @@ Output:
 |
 
 To control the number of columns of the metadata output, we can use the
-`-v` / `--verbosity` flags or the `verbosity` parameter. The default
+``-v`` / ``--verbosity`` flags or the ``verbosity`` parameter. The default
 verbosity, which is shown above, is 2.
 
 We can set verbosity to be 1 to only see run_accession and experiment title.
-On the command-line, we can use the more intuitive `--run-description` flag
-in place of the more obscure `-v 1` as shown below:
+On the command-line, we can use the more intuitive  ``--run-description`` flag
+in place of the more obscure ``-v 1`` as shown below:
 
-.. tabs::
+.. tabbed:: Console
 
-   .. code-tab:: console
+   .. code-block:: bash
 
         $ pysradb search -v 1 -q coronavirus --publication-date 01-08-2020:07-08-2020
 
+.. tabbed:: Python
 
-   .. code-tab:: py
+   .. code-block:: python
 
       from pysradb.search import SraSearch
 
@@ -418,17 +421,18 @@ Output:
 
 To view a more detailed metadata, including download URLs and sample
 attributes, we can set verbosity to be 3. Similar to the previous example,
-we can use the more intuitive `--detailed` flag in place of the more
-obscure `-v 3` as shown below:
+we can use the more intuitive ``--detailed`` flag in place of the more
+obscure ``-v 3`` as shown below:
 
-.. tabs::
+.. tabbed:: Console
 
-   .. code-tab:: console
+   .. code-block:: bash
 
         $ pysradb search -v 3 -q coronavirus --publication-date 01-08-2020:07-08-2020
 
+.. tabbed:: Python
 
-   .. code-tab:: py
+   .. code-block:: python
 
       from pysradb.search import SraSearch
 
@@ -463,20 +467,21 @@ Output:
 
 |
 
-**Saving Metadata to File**:
-****************************
+Saving Metadata to File
+~~~~~~~~~~~~~~~~~~~~~~~
 
 Metadata retrieved can be saved in either a comma separated format or as a tab
 separated format.
 
-.. tabs::
+.. tabbed:: Console
 
-   .. code-tab:: console
+   .. code-block:: bash
 
         $ pysradb search --db ena -q coronavirus --publication-date 01-08-2020:07-08-2020 --saveto coronavirus.csv
 
 
-   .. code-tab:: py
+.. tabbed:: Python
+   .. code-block:: python
 
       from pysradb.search import EnaSearch
 
@@ -487,8 +492,8 @@ separated format.
 |
 
 
-**Generating Statistics and Graphs**:
-*************************************
+Generating Statistics and Graphs
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 If the number of returned entries is large, it might be troublesome to
 filter through the metadata to find any information of interest. As a
@@ -499,14 +504,15 @@ statistics and graphs for the search result:
 
 Statistics:
 
-.. tabs::
+.. tabbed:: Console
 
-   .. code-tab:: console
+   .. code-block:: bash
 
         $ pysradb search --db ena --organism "Severe acute respiratory syndrome coronavirus 2" --max 10000 -s
 
+.. tabbed:: Python
 
-   .. code-tab:: py
+   .. code-block:: python
 
       from pysradb.search import EnaSearch
 
@@ -566,14 +572,16 @@ Output:
 
 Graphs:
 
-.. tabs::
+.. tabbed:: Console
 
-   .. code-tab:: console
+   .. code-block:: bash
 
         $ pysradb search --db ena -q e --max 500000 -g
 
+.. tabbed:: Python
 
-   .. code-tab:: py
+   .. code-block:: python
+
 
       from pysradb.search import EnaSearch
 

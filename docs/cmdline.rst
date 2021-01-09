@@ -1,8 +1,8 @@
 .. _clitutorial:
 
-############
-CLI Tutorial
-############
+####
+CLI
+####
 
 ::
 
@@ -69,7 +69,7 @@ the samples:
 
 ::
 
-   $ pysradb metadata SRP098789 --desc
+   $ pysradb metadata SRP098789
 
     study_accession experiment_accession sample_accession run_accession sample_attribute
     SRP098789       SRX2536403           SRS1956353       SRR5227288    source_name: Huh7_1.5 Ã‚ÂµM PF-067446846_10 min_ribo-seq || cell line: Huh7 || treatment time: 10 min || library type: ribo-seq
@@ -80,29 +80,12 @@ the samples:
     SRP098789       SRX2536408           SRS1956358       SRR5227293    source_name: Huh7_0.3 Ã‚ÂµM PF-067446846_10 min_ribo-seq || cell line: Huh7 || treatment time: 10 min || library type: ribo-seq
 
 
-Better still, we might need to separate out the information in `source_name` column to multiple
-columns. For example, in the above example, we might need the `cell line` information in
-a separate column. This is achieved by `--expand` flag:
-
-::
-
-   $ pysradb metadata SRP098789 --desc --expand
-
-   study_accession experiment_accession sample_accession run_accession cell_line library_type source_name                                  treatment_time
-   SRP098789       SRX2536403           SRS1956353       SRR5227288    huh7      ribo-seq     huh7_1.5 ã‚âµm pf-067446846_10 min_ribo-seq  10 min
-   SRP098789       SRX2536404           SRS1956354       SRR5227289    huh7      ribo-seq     huh7_1.5 ã‚âµm pf-067446846_10 min_ribo-seq  10 min
-   SRP098789       SRX2536405           SRS1956355       SRR5227290    huh7      ribo-seq     huh7_1.5 ã‚âµm pf-067446846_10 min_ribo-seq  10 min
-   SRP098789       SRX2536406           SRS1956356       SRR5227291    huh7      ribo-seq     huh7_0.3 ã‚âµm pf-067446846_10 min_ribo-seq  10 min
-   SRP098789       SRX2536407           SRS1956357       SRR5227292    huh7      ribo-seq     huh7_0.3 ã‚âµm pf-067446846_10 min_ribo-seq  10 min
-
-
 The example here came from a Ribosome profiling study and consists of a collection of
-both Ribo-seq and RNA-seq samples. In order to filter out only the RNA-seq samples,
-we could pass it an extra flag of `--assay` and then filter RNA-seq samples.
+both Ribo-seq and RNA-seq samples. We can filter out only the RNA-seq samples:
 
 ::
 
-   $ pysradb metadata SRP098789 --assay | grep 'study|RNA-Seq'
+   $ pysradb metadata SRP098789 --detailed | grep 'study|RNA-Seq'
 
    SRP098789       SRX2536422           SRR5227307    RNA-Seq          SINGLE -
    SRP098789       SRX2536424           SRR5227309    RNA-Seq          SINGLE -
@@ -123,7 +106,7 @@ A more complicated example will consist of multiple assays. For example `SRP0009
 
 
 ====================================================
-Get experiment accessions for a project (SRP => SRX)
+Experiment accessions for a project (SRP => SRX)
 ====================================================
 
 A frequently encountered task involves getting all the
@@ -135,7 +118,7 @@ Consider project `SRP048759`:
    $ pysradb srp-to-srx SRP048759
 
 ================================================
-Get sample accessions for a project (SRP => SRS)
+Sample accessions for a project (SRP => SRS)
 ================================================
 
 Each experiment involves one or multiple biological samples (SRS),
@@ -174,7 +157,7 @@ using the `--detailed` flag:
 
 
 ===============================================
-Get run accessions for experiments (SRX => SRR)
+Run accessions for experiments (SRX => SRR)
 ===============================================
 
 Another frequently encountered task involves fetching the run accessions (SRR)
@@ -184,7 +167,7 @@ experiments:
 
 ::
 
-   $ pysradb srx-to-srr SRX217956  SRX2536403 --desc
+   $ pysradb srx-to-srr SRX217956  SRX2536403 --detailed
 
    experiment_accession run_accession study_accession sample_attribute
    SRX217956            SRR649752     SRP017942       source_name: 3T3 cells || treatment: control || cell line: 3T3 cells || assay type: Riboseq
@@ -192,7 +175,7 @@ experiments:
 
 
 ===============================================
-Get experiment accessions for runs (SRR => SRX)
+Experiment accessions for runs (SRR => SRX)
 ===============================================
 
 For fetching experiment accessions (SRX) for one or multiple
@@ -200,12 +183,16 @@ run accessions (SRR):
 
 ::
 
-   $ pysradb srr-to-srx SRR5227288 SRR649752 --desc
+   $ pysradb srr-to-srx SRR5227288 SRR649752 --detailed
    run_accession study_accession experiment_accession sample_attribute
    SRR649752     SRP017942       SRX217956            source_name: 3T3 cells || treatment: control || cell line: 3T3 cells || assay type: Riboseq
    SRR5227288    SRP098789       SRX2536403           source_name: Huh7_1.5 Ã‚ÂµM PF-067446846_10 min_ribo-seq || cell line: Huh7 || treatment time: 10 min || library type: ribo-seq
 
 
+
+===========================
+Downaloading entire project
+===========================
 
 ::
 
@@ -213,10 +200,9 @@ run accessions (SRR):
 
 
 ===========================================
-Get GEO accessions for studies (SRP => GSE)
+GEO accessions for studies (SRP => GSE)
 ===========================================
 
-**SRP to GSE:**
 
 ::
 
@@ -225,7 +211,7 @@ Get GEO accessions for studies (SRP => GSE)
    study_accession study_alias
    SRP090415       GSE87328
 
-**But not all SRPs will have an associated GEO id (GSE):**
+But not all SRPs will have an associated GEO id (GSE):
 
 ::
 
@@ -236,7 +222,7 @@ Get GEO accessions for studies (SRP => GSE)
 
 
 ===============================================
-Get SRA accessions for GEO studies (GSE => SRP)
+SRA accessions for GEO studies (GSE => SRP)
 ===============================================
 
 ::
@@ -245,18 +231,6 @@ Get SRA accessions for GEO studies (GSE => SRP)
 
     study_alias study_accession
     GSE87328    SRP090415
-
-=============
-Searching SRA
-=============
-
-::
-
-    $ pysradb search 'cycloheximide heatshock'
-
-    study_accession experiment_accession sample_accession run_accession
-    SRP044649       SRX657376            SRS662567        SRR1520327
-    SRP044649       SRX657377            SRS662568        SRR1520328
 
 
 Please see `quickstart <https://www.saket-choudhary.me/pysradb/quickstart.html#the-full-list-of-possible-pysradb-operations>`_ for all possible operations available through ``pysradb``.
