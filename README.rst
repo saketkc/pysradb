@@ -1,14 +1,12 @@
-.. image:: https://raw.githubusercontent.com/saketkc/pysradb/master/docs/_static/pysradb_v3.png
-    :target: https://raw.githubusercontent.com/saketkc/pysradb/master/docs/_static/pysradb_v3.png
+.. raw:: html
 
+    <img src="https://raw.githubusercontent.com/saketkc/pysradb/master/docs/_static/pysradb_v3.png" height="90px">
+
+
+    
 ######################################################################################
-pysradb: Python package for retrieving metadata and downloading datasets from SRA/ENA
+A Python package for retrieving metadata and downloading datasets from SRA/ENA
 ######################################################################################
-
-
-
-
-
 
 .. image:: https://img.shields.io/pypi/v/pysradb.svg?style=flat-square
     :target: https://pypi.python.org/pypi/pysradb
