@@ -1,9 +1,10 @@
 """Tests for SRAweb"""
 
 import time
-import pandas as pd
 
+import pandas as pd
 import pytest
+
 from pysradb.sraweb import SRAweb
 
 

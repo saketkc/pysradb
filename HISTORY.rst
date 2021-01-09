@@ -4,10 +4,13 @@ History
 
 
 *******************
-1.0.0 (MM-DD-YYYY)
+1.0.0 (01-09-2021)
 *******************
+* Retired ``metadb`` and ``SRAdb`` based search through CLI - everything defaults to ``SRAweb``
+* ``SRAweb`` now supports `search <https://saket-choudhary.me/pysradb/quickstart.html#search>`_
 * `N/A` is now replcaced with `pd.NA`
 * Two new fields in `--detailed`: `instrument_model` and `instrument_model_desc` [#75](https://github.com/saketkc/pysradb/issues/75)
+* Updated documentation
 
 *******************
 0.11.1 (09-18-2020)

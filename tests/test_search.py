@@ -2,11 +2,11 @@
 """
 
 import json
+
 import pandas as pd
 import pytest
 
 from pysradb.search import *
-
 
 # =========================== pytest fixtures ============================
 # pytest fixtures containing simulated input/outputs for various functions

@@ -69,48 +69,10 @@ def _print_save_df(df, saveto=None):
             sys.stdout.flush()
 
 
-def _check_sradb_file(db):
-    if db is None:
-        db = os.path.join(os.getcwd(), "SRAmetadb.sqlite")
-        if os.path.isfile(db):
-            return db
-        """
-        if confirm(
-            "SRAmetadb.sqlite file was not found in the current directory. Please quit and specify the path using `--db <DB_PATH>`"
-            + os.linesep
-            + "Otherwise, should I download SRAmetadb.sqlite in the current directory?"
-        ):
-            download_sradb_file()
-        else:
-            sys.exit(1)
-        """
-        # Use the web version
-        return "web"
-    if not os.path.isfile(db):
-        raise RuntimeError("{} does not exist".format(db))
-    return db
-
-
-def get_sra_object(db="web"):
-    if db == "web":
-        return SRAweb()
-    return SRAdb(db)
-
-
-################### metadb #########################
-def metadb(out_dir, overwrite, keep_gz):
-    if out_dir is None:
-        out_dir = os.getcwd()
-    download_sradb_file(out_dir, overwrite, keep_gz)
-
-
-#####################################################
-
-
 ###################### metadata ##############################
 def metadata(srp_id, db, assay, desc, detailed, expand, saveto):
     db = _check_sradb_file(db)
-    sradb = get_sra_object(db)
+    sradb = SRAweb()
     df = sradb.sra_metadata(
         srp_id,
         assay=assay,
@@ -132,7 +94,7 @@ def download(
     db = _check_sradb_file(db)
     if out_dir is None:
         out_dir = os.path.join(os.getcwd(), "pysradb_downloads")
-    sradb = get_sra_object(db)
+    sradb = SRAweb()
     if not srp:
         text = ""
         for index, line in enumerate(sys.stdin):
@@ -250,7 +212,7 @@ def get_geo_search_info():
 ######################### gse-to-gsm ###############################
 def gse_to_gsm(gse_ids, db, saveto, detailed, desc, expand):
     db = _check_sradb_file(db)
-    sradb = get_sra_object(db)
+    sradb = SRAweb()
     df = sradb.gse_to_gsm(
         gse_ids,
         detailed=detailed,
@@ -267,7 +229,7 @@ def gse_to_gsm(gse_ids, db, saveto, detailed, desc, expand):
 ######################## gse-to-srp ################################
 def gse_to_srp(gse_ids, db, saveto, detailed, desc, expand):
     db = _check_sradb_file(db)
-    sradb = get_sra_object(db)
+    sradb = SRAweb()
     df = sradb.gse_to_srp(
         gse_ids,
         detailed=detailed,
@@ -284,7 +246,7 @@ def gse_to_srp(gse_ids, db, saveto, detailed, desc, expand):
 ######################### gsm-to-gse #################################
 def gsm_to_gse(gsm_ids, db, saveto, detailed, desc, expand):
     db = _check_sradb_file(db)
-    sradb = get_sra_object(db)
+    sradb = SRAweb()
     df = sradb.gsm_to_gse(
         gsm_ids,
         detailed=detailed,
@@ -301,7 +263,7 @@ def gsm_to_gse(gsm_ids, db, saveto, detailed, desc, expand):
 ############################ gsm-to-srp ################################
 def gsm_to_srp(gsm_ids, db, saveto, detailed, desc, expand):
     db = _check_sradb_file(db)
-    sradb = get_sra_object(db)
+    sradb = SRAweb()
     df = sradb.gsm_to_srp(
         gsm_ids,
         detailed=detailed,
@@ -318,7 +280,7 @@ def gsm_to_srp(gsm_ids, db, saveto, detailed, desc, expand):
 ############################ gsm-to-srr ################################
 def gsm_to_srr(gsm_ids, db, saveto, detailed, desc, expand):
     db = _check_sradb_file(db)
-    sradb = get_sra_object(db)
+    sradb = SRAweb()
     df = sradb.gsm_to_srr(
         gsm_ids,
         detailed=detailed,
@@ -335,7 +297,7 @@ def gsm_to_srr(gsm_ids, db, saveto, detailed, desc, expand):
 ############################ gsm-to-srs ################################
 def gsm_to_srs(gsm_ids, db, saveto, detailed, desc, expand):
     db = _check_sradb_file(db)
-    sradb = get_sra_object(db)
+    sradb = SRAweb()
     df = sradb.gsm_to_srs(
         gsm_ids,
         detailed=detailed,
@@ -352,7 +314,7 @@ def gsm_to_srs(gsm_ids, db, saveto, detailed, desc, expand):
 ############################# gsm-to-srx ###############################
 def gsm_to_srx(gsm_ids, db, saveto, detailed, desc, expand):
     db = _check_sradb_file(db)
-    sradb = get_sra_object(db)
+    sradb = SRAweb()
     df = sradb.gsm_to_srx(
         gsm_ids,
         detailed=detailed,
@@ -369,7 +331,7 @@ def gsm_to_srx(gsm_ids, db, saveto, detailed, desc, expand):
 ########################### srp-to-gse ##################################
 def srp_to_gse(srp_id, db, saveto, detailed, desc, expand):
     db = _check_sradb_file(db)
-    sradb = get_sra_object(db)
+    sradb = SRAweb()
     df = sradb.srp_to_gse(
         srp_id,
         detailed=detailed,
@@ -386,7 +348,7 @@ def srp_to_gse(srp_id, db, saveto, detailed, desc, expand):
 ########################### srp-to-srr ##################################
 def srp_to_srr(srp_id, db, saveto, detailed, desc, expand):
     db = _check_sradb_file(db)
-    sradb = get_sra_object(db)
+    sradb = SRAweb()
     df = sradb.srp_to_srr(
         srp_id,
         detailed=detailed,
@@ -403,7 +365,7 @@ def srp_to_srr(srp_id, db, saveto, detailed, desc, expand):
 ########################### srp-to-srs ##################################
 def srp_to_srs(srp_id, db, saveto, detailed, desc, expand):
     db = _check_sradb_file(db)
-    sradb = get_sra_object(db)
+    sradb = SRAweb()
     df = sradb.srp_to_srs(
         srp_id,
         detailed=detailed,
@@ -420,7 +382,7 @@ def srp_to_srs(srp_id, db, saveto, detailed, desc, expand):
 ########################### srp-to-srx ##################################
 def srp_to_srx(srp_id, db, saveto, detailed, desc, expand):
     db = _check_sradb_file(db)
-    sradb = get_sra_object(db)
+    sradb = SRAweb()
     df = sradb.srp_to_srx(
         srp_id,
         detailed=detailed,
@@ -437,7 +399,7 @@ def srp_to_srx(srp_id, db, saveto, detailed, desc, expand):
 ########################### srr-to-gsm ##################################
 def srr_to_gsm(srr_ids, db, saveto, detailed, desc, expand):
     db = _check_sradb_file(db)
-    sradb = get_sra_object(db)
+    sradb = SRAweb()
     df = sradb.srr_to_gsm(
         srr_ids,
         detailed=detailed,
@@ -454,7 +416,7 @@ def srr_to_gsm(srr_ids, db, saveto, detailed, desc, expand):
 ########################### srr-to-srp ##################################
 def srr_to_srp(srr_ids, db, saveto, detailed, desc, expand):
     db = _check_sradb_file(db)
-    sradb = get_sra_object(db)
+    sradb = SRAweb()
     df = sradb.srr_to_srp(
         srr_ids,
         detailed=detailed,
@@ -471,7 +433,7 @@ def srr_to_srp(srr_ids, db, saveto, detailed, desc, expand):
 ########################### srr-to-srs ##################################
 def srr_to_srs(srr_ids, db, saveto, detailed, desc, expand):
     db = _check_sradb_file(db)
-    sradb = get_sra_object(db)
+    sradb = SRAweb()
     df = sradb.srr_to_srs(
         srr_ids,
         detailed=detailed,
@@ -488,7 +450,7 @@ def srr_to_srs(srr_ids, db, saveto, detailed, desc, expand):
 ########################### srr-to-srx ##################################
 def srr_to_srx(srr_ids, db, saveto, detailed, desc, expand):
     db = _check_sradb_file(db)
-    sradb = get_sra_object(db)
+    sradb = SRAweb()
     df = sradb.srr_to_srx(
         srr_ids,
         detailed=detailed,
@@ -505,7 +467,7 @@ def srr_to_srx(srr_ids, db, saveto, detailed, desc, expand):
 ########################### srs-to-gsm ##################################
 def srs_to_gsm(srs_ids, db, saveto, detailed, desc, expand):
     db = _check_sradb_file(db)
-    sradb = get_sra_object(db)
+    sradb = SRAweb()
     df = sradb.srs_to_gsm(
         srs_ids,
         detailed=detailed,
@@ -522,7 +484,7 @@ def srs_to_gsm(srs_ids, db, saveto, detailed, desc, expand):
 ########################### srs-to-srx ##################################
 def srs_to_srx(srs_ids, db, saveto, detailed, desc, expand):
     db = _check_sradb_file(db)
-    sradb = get_sra_object(db)
+    sradb = SRAweb()
     df = sradb.srs_to_srx(
         srs_ids,
         detailed=detailed,
@@ -539,7 +501,7 @@ def srs_to_srx(srs_ids, db, saveto, detailed, desc, expand):
 ########################### srx-to-srp ##################################
 def srx_to_srp(srx_ids, db, saveto, detailed, desc, expand):
     db = _check_sradb_file(db)
-    sradb = get_sra_object(db)
+    sradb = SRAweb()
     df = sradb.srx_to_srp(
         srx_ids,
         detailed=detailed,
@@ -556,7 +518,7 @@ def srx_to_srp(srx_ids, db, saveto, detailed, desc, expand):
 ########################### srx-to-srr ##################################
 def srx_to_srr(srx_ids, db, saveto, detailed, desc, expand):
     db = _check_sradb_file(db)
-    sradb = get_sra_object(db)
+    sradb = SRAweb()
     df = sradb.srx_to_srr(
         srx_ids,
         detailed=detailed,
@@ -573,7 +535,7 @@ def srx_to_srr(srx_ids, db, saveto, detailed, desc, expand):
 ########################### srx-to-srs ##################################
 def srx_to_srs(srx_ids, db, saveto, detailed, desc, expand):
     db = _check_sradb_file(db)
-    sradb = get_sra_object(db)
+    sradb = SRAweb()
     df = sradb.srx_to_srs(
         srx_ids,
         detailed=detailed,
@@ -636,25 +598,11 @@ def parse_args(args=None):
         help="how to cite",
     )
 
-    # pysradb metadb
-    subparser = subparsers.add_parser("metadb", help="Download SRAmetadb.sqlite")
-    subparser.add_argument("--out-dir", type=str, help="Output directory location")
-    subparser.add_argument(
-        "--overwrite", action="store_true", help="Overwrite existing file"
-    )
-    subparser.add_argument(
-        "--keep-gz",
-        action="store_true",
-        help="Should keep SRAmetadb.sqlite.gz post decompression",
-    )
-    subparser.set_defaults(func=metadb)
-
     # pysradb metadata
     subparser = subparsers.add_parser(
         "metadata", help="Fetch metadata for SRA project (SRPnnnn)"
     )
     subparser.add_argument("--saveto", help="Save metadata dataframe to file")
-    subparser.add_argument("--db", help="Path to SRAmetadb.sqlite file", type=str)
     subparser.add_argument(
         "--assay", action="store_true", help="Include assay type in output"
     )
@@ -673,7 +621,6 @@ def parse_args(args=None):
     # pysradb download
     subparser = subparsers.add_parser("download", help="Download SRA project (SRPnnnn)")
     subparser.add_argument("--out-dir", help="Output directory root")
-    subparser.add_argument("--db", help="Path to SRAmetadb.sqlite file", type=str)
     subparser.add_argument("--srx", "-x", help="Download only these SRX(s)", nargs="+")
     subparser.add_argument("--srp", "-p", help="SRP ID", nargs="+")
     subparser.add_argument(
@@ -824,7 +771,6 @@ def parse_args(args=None):
 
     # pysradb gse-to-gsm
     subparser = subparsers.add_parser("gse-to-gsm", help="Get GSM for a GSE")
-    subparser.add_argument("--db", help="Path to SRAmetadb.sqlite file", type=str)
     subparser.add_argument("--saveto", help="Save output to file")
     subparser.add_argument(
         "--detailed",
@@ -845,7 +791,6 @@ def parse_args(args=None):
 
     # pysradb gse-to-srp
     subparser = subparsers.add_parser("gse-to-srp", help="Get SRP for a GSE")
-    subparser.add_argument("--db", help="Path to SRAmetadb.sqlite file", type=str)
     subparser.add_argument("--saveto", help="Save output to file")
     subparser.add_argument(
         "--detailed",
@@ -869,7 +814,6 @@ def parse_args(args=None):
 
     # pysradb gsm-to-gse
     subparser = subparsers.add_parser("gsm-to-gse", help="Get GSE for a GSM")
-    subparser.add_argument("--db", help="Path to SRAmetadb.sqlite file", type=str)
     subparser.add_argument("--saveto", help="Save output to file")
     subparser.add_argument(
         "--detailed",
@@ -890,7 +834,6 @@ def parse_args(args=None):
 
     # pysradb gsm-to-srp
     subparser = subparsers.add_parser("gsm-to-srp", help="Get SRP for a GSM")
-    subparser.add_argument("--db", help="Path to SRAmetadb.sqlite file", type=str)
     subparser.add_argument(
         "--desc", action="store_true", help="Should sample_attribute be included"
     )
@@ -914,7 +857,6 @@ def parse_args(args=None):
 
     # pysradb gsm-to-srr
     subparser = subparsers.add_parser("gsm-to-srr", help="Get SRR for a GSM")
-    subparser.add_argument("--db", help="Path to SRAmetadb.sqlite file", type=str)
     subparser.add_argument(
         "--desc", action="store_true", help="Should sample_attribute be included"
     )
@@ -937,7 +879,6 @@ def parse_args(args=None):
 
     # pysradb gsm-to-srs
     subparser = subparsers.add_parser("gsm-to-srs", help="Get SRS for a GSM")
-    subparser.add_argument("--db", help="Path to SRAmetadb.sqlite file", type=str)
     subparser.add_argument(
         "--desc", action="store_true", help="Should sample_attribute be included"
     )
@@ -960,7 +901,6 @@ def parse_args(args=None):
 
     # pysradb gsm-to-srx
     subparser = subparsers.add_parser("gsm-to-srx", help="Get SRX for a GSM")
-    subparser.add_argument("--db", help="Path to SRAmetadb.sqlite file", type=str)
     subparser.add_argument(
         "--desc", action="store_true", help="Should sample_attribute be included"
     )
@@ -984,7 +924,6 @@ def parse_args(args=None):
 
     # pysradb srp-to-gse
     subparser = subparsers.add_parser("srp-to-gse", help="Get GSE for a SRP")
-    subparser.add_argument("--db", help="Path to SRAmetadb.sqlite file", type=str)
     subparser.add_argument("--saveto", help="Save output to file")
     subparser.add_argument(
         "--detailed",
@@ -1002,7 +941,6 @@ def parse_args(args=None):
 
     # pysradb srp-to-srr
     subparser = subparsers.add_parser("srp-to-srr", help="Get SRR for a SRP")
-    subparser.add_argument("--db", help="Path to SRAmetadb.sqlite file", type=str)
     subparser.add_argument("--saveto", help="Save output to file")
     subparser.add_argument(
         "--detailed",
@@ -1025,7 +963,6 @@ def parse_args(args=None):
 
     # pysradb srp-to-srs
     subparser = subparsers.add_parser("srp-to-srs", help="Get SRS for a SRP")
-    subparser.add_argument("--db", help="Path to SRAmetadb.sqlite file", type=str)
     subparser.add_argument("--saveto", help="Save output to file")
     subparser.add_argument(
         "--detailed",
@@ -1048,7 +985,6 @@ def parse_args(args=None):
 
     # pysradb srp-to-srx
     subparser = subparsers.add_parser("srp-to-srx", help="Get SRX for a SRP")
-    subparser.add_argument("--db", help="Path to SRAmetadb.sqlite file", type=str)
     subparser.add_argument("--saveto", help="Save output to file")
     subparser.add_argument(
         "--detailed",
@@ -1071,7 +1007,6 @@ def parse_args(args=None):
 
     # pysradb srr-to-gsm
     subparser = subparsers.add_parser("srr-to-gsm", help="Get GSM for a SRR")
-    subparser.add_argument("--db", help="Path to SRAmetadb.sqlite file", type=str)
     subparser.add_argument(
         "--detailed",
         action="store_true",
@@ -1094,7 +1029,6 @@ def parse_args(args=None):
 
     # pysradb srr-to-srp
     subparser = subparsers.add_parser("srr-to-srp", help="Get SRP for a SRR")
-    subparser.add_argument("--db", help="Path to SRAmetadb.sqlite file", type=str)
     subparser.add_argument(
         "--detailed",
         action="store_true",
@@ -1117,7 +1051,6 @@ def parse_args(args=None):
 
     # pysradb srr-to-srs
     subparser = subparsers.add_parser("srr-to-srs", help="Get SRS for a SRR")
-    subparser.add_argument("--db", help="Path to SRAmetadb.sqlite file", type=str)
     subparser.add_argument(
         "--detailed",
         action="store_true",
@@ -1140,7 +1073,6 @@ def parse_args(args=None):
 
     # pysradb srr-to-srx
     subparser = subparsers.add_parser("srr-to-srx", help="Get SRX for a SRR")
-    subparser.add_argument("--db", help="Path to SRAmetadb.sqlite file", type=str)
     subparser.add_argument(
         "--detailed",
         action="store_true",
@@ -1163,7 +1095,6 @@ def parse_args(args=None):
 
     # pysradb srs-to-gsm
     subparser = subparsers.add_parser("srs-to-gsm", help="Get GSM for a SRS")
-    subparser.add_argument("--db", help="Path to SRAmetadb.sqlite file", type=str)
     subparser.add_argument("--saveto", help="Save output to file")
     subparser.add_argument(
         "--detailed",
@@ -1181,7 +1112,6 @@ def parse_args(args=None):
 
     # pysradb srs-to-srx
     subparser = subparsers.add_parser("srs-to-srx", help="Get SRX for a SRS")
-    subparser.add_argument("--db", help="Path to SRAmetadb.sqlite file", type=str)
     subparser.add_argument("--saveto", help="Save output to file")
     subparser.add_argument(
         "--detailed",
@@ -1199,7 +1129,6 @@ def parse_args(args=None):
 
     # pysradb srx-to-srp
     subparser = subparsers.add_parser("srx-to-srp", help="Get SRP for a SRX")
-    subparser.add_argument("--db", help="Path to SRAmetadb.sqlite file", type=str)
     subparser.add_argument(
         "--desc", action="store_true", help="Should sample_attribute be included"
     )
@@ -1222,7 +1151,6 @@ def parse_args(args=None):
 
     # pysradb srx-to-srr
     subparser = subparsers.add_parser("srx-to-srr", help="Get SRR for a SRX")
-    subparser.add_argument("--db", help="Path to SRAmetadb.sqlite file", type=str)
     subparser.add_argument(
         "--desc", action="store_true", help="Should sample_attribute be included"
     )
@@ -1240,7 +1168,6 @@ def parse_args(args=None):
 
     # pysradb srx-to-srs
     subparser = subparsers.add_parser("srx-to-srs", help="Get SRS for a SRX")
-    subparser.add_argument("--db", help="Path to SRAmetadb.sqlite file", type=str)
     subparser.add_argument("--saveto", help="Save output to file")
     subparser.add_argument(
         "--detailed",
@@ -1257,9 +1184,7 @@ def parse_args(args=None):
     subparser.set_defaults(func=srx_to_srs)
 
     args = parser.parse_args(args=None if sys.argv[1:] else ["--help"])
-    if args.command == "metadb":
-        metadb(args.out_dir, args.overwrite, args.keep_gz)
-    elif args.command == "metadata":
+    if args.command == "metadata":
         metadata(
             args.srp_id,
             args.db,

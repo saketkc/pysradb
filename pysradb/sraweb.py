@@ -1,14 +1,14 @@
 """Utilities to interact with SRA online"""
 
+import concurrent.futures
 import os
 import sys
 import time
 import warnings
 from collections import OrderedDict
-import concurrent.futures
+from json.decoder import JSONDecodeError
 from xml.parsers.expat import ExpatError
 
-from json.decoder import JSONDecodeError
 import numpy as np
 import pandas as pd
 import requests

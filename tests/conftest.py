@@ -2,6 +2,7 @@
 import os
 
 import pytest
+
 from pysradb import download_geodb_file
 from pysradb import download_sradb_file
 
