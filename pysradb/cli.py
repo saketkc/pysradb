@@ -131,7 +131,7 @@ def download(
 
 
 ######################### search #################################
-def search(saveto, verbosity, return_max, fields):
+def search(saveto, db, verbosity, return_max, fields):
     if fields["run_description"]:
         verbosity = 1
     if fields["detailed"]:
