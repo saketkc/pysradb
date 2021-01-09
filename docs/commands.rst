@@ -1,7 +1,7 @@
 .. _commands:
 
-pysradb API Documentation
-=========================
+API Documentation
+=================
 
 .. toctree::
    :maxdepth: 2

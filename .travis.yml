@@ -7,7 +7,7 @@ install:
 - pip install -U pandas click tqdm
 - pip install -U sphinx ipython travis-sphinx
 - pip install -U numpydoc sphinxcontrib-fulltoc guzzle_sphinx_theme sphinx-tabs
-- pip install git+https://github.com/leokoppel/sphinxcontrib-versioning.git
+- pip install sphinx_rtd_theme sphinx nbsphinx ipython pydata-sphinx-theme nbsphinx-link sphinx-panels
 - pip install -U pytest coverage pytest-cov codecov black flake8
 - wget -c https://download.asperasoft.com/download/sw/connect/3.8.1/ibm-aspera-connect-3.8.1.161274-linux-g2.12-64.tar.gz && tar -zxvf ibm-aspera-connect-3.8.1.161274-linux-g2.12-64.tar.gz && bash ibm-aspera-connect-3.8.1.161274-linux-g2.12-64.sh
 - make install

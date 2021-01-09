@@ -49,7 +49,9 @@ extensions = [
     "numpydoc",
     "sphinxcontrib.fulltoc",
     "sphinx_tabs.tabs",
+    "sphinx_panels",
 ]
+panels_add_bootstrap_css = False
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ["_templates"]
@@ -100,7 +102,7 @@ todo_include_todos = False
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
 #
-html_theme = "alabaster"
+html_theme = "pydata_sphinx_theme"
 
 # Theme options are theme-specific and customize the look and feel of a
 # theme further.  For a list of options available for each theme, see the
@@ -187,3 +189,9 @@ numpydoc_show_class_members = False
 
 scv_greatest_tag = True
 scv_show_banner = True
+
+html_logo = "_static/pysradb_v3.png"
+html_theme_options = {
+    "github_url": "https://github.com/saketkc/pysradb",
+    #    "navbar_align": "left",
+}

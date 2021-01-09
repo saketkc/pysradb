@@ -1,8 +1,8 @@
 .. _apiusage:
 
-################
-Python API Usage
-################
+##########
+Python API
+##########
 
 ===================================================
 Use Case 1: Fetch the metadata table (SRA-runtable)
