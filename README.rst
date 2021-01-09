@@ -23,7 +23,11 @@ pysradb: Python package for retrieving metadata and downloading datasets from SR
     :target: https://travis-ci.com/saketkc/pysradb
 
 
+*************
+Documentation
+*************
 
+https://saketkc.github.io/pysradb
 
 
 *********
@@ -330,5 +334,4 @@ Questions?
 
 Join our `Slack Channel <https://join.slack.com/t/pysradb/shared_invite/zt-f01jndpy-KflPu3Be5Aq3FzRh5wj1Ug>`_ or open an `issue <https://github.com/saketkc/pysradb/issues>`_.
 
-* Free software: BSD license
-* Documentation: https://saketkc.github.io/pysradb
+
