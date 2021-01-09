@@ -28,6 +28,14 @@ pysradb.download module
    :undoc-members:
    :show-inheritance:
 
+pysradb.exceptions module
+-------------------------
+
+.. automodule:: pysradb.exceptions
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 pysradb.filter\_attrs module
 ----------------------------
 
@@ -40,6 +48,14 @@ pysradb.geodb module
 --------------------
 
 .. automodule:: pysradb.geodb
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+pysradb.search module
+---------------------
+
+.. automodule:: pysradb.search
    :members:
    :undoc-members:
    :show-inheritance:
@@ -60,6 +76,14 @@ pysradb.sraweb module
    :undoc-members:
    :show-inheritance:
 
+pysradb.taxid2name module
+-------------------------
+
+.. automodule:: pysradb.taxid2name
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 pysradb.utils module
 --------------------
 
@@ -67,7 +91,6 @@ pysradb.utils module
    :members:
    :undoc-members:
    :show-inheritance:
-
 
 Module contents
 ---------------
