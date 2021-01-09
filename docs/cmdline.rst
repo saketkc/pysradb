@@ -6,38 +6,44 @@ CLI
 
 ::
 
-   $ pysradb
-    Usage: pysradb [OPTIONS] COMMAND [ARGS]...
+    $ pysradb
+    usage: pysradb [-h] [--version] [--citation]
+                   {metadb,metadata,download,search,gse-to-gsm,gse-to-srp,gsm-to-gse,gsm-to-srp,gsm-to-srr,gsm-to-srs,gsm-to-srx,srp-to-gse,srp-to-srr,srp-to-srs,srp-to-srx,srr-to-gsm,srr-to-srp,srr-to-srs,srr-to-srx,srs-to-gsm,srs-to-srx,srx-to-srp,srx-to-srr,srx-to-srs}
+                   ...
 
-      pysradb: Query NGS metadata and data from NCBI Sequence Read Archive.
+    pysradb: Query NGS metadata and data from NCBI Sequence Read Archive.
+    Citation: 10.12688/f1000research.18676.1
 
-      Citation: Pending.
+    optional arguments:
+      -h, --help            show this help message and exit
+      --version             show program's version number and exit
+      --citation            how to cite
 
-    Options:
-      --version   Show the version and exit.
-      -h, --help  Show this message and exit.
-
-    Commands:
-      download    Download SRA project (SRPnnnn)
-      gse-to-gsm  Get GSM for a GSE
-      gse-to-srp  Get SRP for a GSE
-      gsm-to-gse  Get GSE for a GSM
-      gsm-to-srp  Get SRP for a GSM
-      gsm-to-srr  Get SRR for a GSM
-      gsm-to-srx  Get SRX for a GSM
-      metadata    Fetch metadata for SRA project (SRPnnnn)
-      search      Search SRA for matching text
-      srp-to-gse  Get GSE for a SRP
-      srp-to-srr  Get SRR for a SRP
-      srp-to-srs  Get SRS for a SRP
-      srp-to-srx  Get SRX for a SRP
-      srr-to-srp  Get SRP for a SRR
-      srr-to-srs  Get SRS for a SRR
-      srr-to-srx  Get SRX for a SRR
-      srs-to-srx  Get SRX for a SRS
-      srx-to-srp  Get SRP for a SRX
-      srx-to-srr  Get SRR for a SRX
-      srx-to-srs  Get SRS for a SRX
+    subcommands:
+      {metadb,metadata,download,search,gse-to-gsm,gse-to-srp,gsm-to-gse,gsm-to-srp,gsm-to-srr,gsm-to-srs,gsm-to-srx,srp-to-gse,srp-to-srr,srp-to-srs,srp-to-srx,srr-to-gsm,srr-to-srp,srr-to-srs,srr-to-srx,srs-to-gsm,srs-to-srx,srx-to-srp,srx-to-srr,srx-to-srs}
+        metadata            Fetch metadata for SRA project (SRPnnnn)
+        download            Download SRA project (SRPnnnn)
+        search              Search SRA/ENA for matching text
+        gse-to-gsm          Get GSM for a GSE
+        gse-to-srp          Get SRP for a GSE
+        gsm-to-gse          Get GSE for a GSM
+        gsm-to-srp          Get SRP for a GSM
+        gsm-to-srr          Get SRR for a GSM
+        gsm-to-srs          Get SRS for a GSM
+        gsm-to-srx          Get SRX for a GSM
+        srp-to-gse          Get GSE for a SRP
+        srp-to-srr          Get SRR for a SRP
+        srp-to-srs          Get SRS for a SRP
+        srp-to-srx          Get SRX for a SRP
+        srr-to-gsm          Get GSM for a SRR
+        srr-to-srp          Get SRP for a SRR
+        srr-to-srs          Get SRS for a SRR
+        srr-to-srx          Get SRX for a SRR
+        srs-to-gsm          Get GSM for a SRS
+        srs-to-srx          Get SRX for a SRS
+        srx-to-srp          Get SRP for a SRX
+        srx-to-srr          Get SRR for a SRX
+        srx-to-srs          Get SRS for a SRX
 
 
 ========================================
