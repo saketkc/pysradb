@@ -193,5 +193,5 @@ scv_show_banner = True
 html_logo = "_static/pysradb_v3.png"
 html_theme_options = {
     "github_url": "https://github.com/saketkc/pysradb",
-#    "navbar_align": "left",
+    #    "navbar_align": "left",
 }
