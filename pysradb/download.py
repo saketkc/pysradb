@@ -3,13 +3,13 @@
 import hashlib
 import math
 import os
-import numpy as np
 import shutil
-import requests
-import requests_ftp
 import sys
 import warnings
 
+import numpy as np
+import requests
+import requests_ftp
 from tqdm.autonotebook import tqdm
 
 from .utils import requests_3_retries

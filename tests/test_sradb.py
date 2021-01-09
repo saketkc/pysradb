@@ -5,6 +5,7 @@ import os
 from sqlite3 import OperationalError
 
 import pytest
+
 from pysradb import SRAdb
 from pysradb.filter_attrs import guess_cell_type
 from pysradb.filter_attrs import guess_strain_type

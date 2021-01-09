@@ -1,19 +1,20 @@
 """Methods to interact with SRA"""
 
-from functools import partial
 import gzip
-from multiprocessing import Pool
 import os
 import re
 import subprocess
 import sys
 import warnings
+from functools import partial
+from multiprocessing import Pool
 from subprocess import PIPE
 
 import numpy as np
 import pandas as pd
 from tqdm.autonotebook import tqdm
-from tqdm.contrib.concurrent import process_map, thread_map
+from tqdm.contrib.concurrent import process_map
+from tqdm.contrib.concurrent import thread_map
 
 from .basedb import BASEdb
 from .download import download_file
