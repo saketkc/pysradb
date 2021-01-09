@@ -22,7 +22,7 @@ Notebooks
 
 A Google Colaboratory version of most used commands are available in this `Colab Notebook <https://colab.research.google.com/drive/1C60V-jkcNZiaCra_V5iEyFs318jgVoUR>`_ . Note that this requires only an active internet connection (no additional downloads are made).
 
-The following notebooks document all the possible features of `pysradb`:
+The following notebooks document all the possible features of ``pysradb``:
 
 1. `Python API <https://colab.research.google.com/github/saketkc/pysradb/blob/master/notebooks/01.Python-API_demo.ipynb>`_
 2. `Downloading datasets from SRA - command line <https://colab.research.google.com/github/saketkc/pysradb/blob/master/notebooks/02.Commandline_download.ipynb>`_
