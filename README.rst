@@ -48,7 +48,7 @@ a list of instructions for each sub-command.
                    ...
 
     pysradb: Query NGS metadata and data from NCBI Sequence Read Archive.
-    version: 0.11.0.
+    version: 1.0
     Citation: 10.12688/f1000research.18676.1
 
     optional arguments:
@@ -144,9 +144,8 @@ Installing pysradb in development mode
 
 .. code-block:: bash
 
-   pip install -U pandas tqdm requests xmltodict
    git clone https://github.com/saketkc/pysradb.git
-   cd pysradb
+   cd pysradb && pip install -r requirements.txt   
    pip install -e .
 
 
@@ -157,8 +156,8 @@ Using pysradb
 
 
 
-Getting SRA metadata
-====================
+Obtaining SRA metadata
+======================
 
 ::
 
@@ -176,8 +175,8 @@ Getting SRA metadata
     SRP000941       SRX027883                                                                                     Reference Epigenome: ChIP-Seq Input from hESC H1 Cells                                                                           Reference Epigenome: ChIP-Seq Input from hESC H1 Cells  9606            Homo sapiens       ChIP-Seq           GENOMIC  RANDOM            SRS004118                      Illumina Genome Analyzer II    22150965    3262293717   SRR067971     12793198         460555128
 
 
-Getting detailed SRA metadata
-=============================
+Obtaining detailed SRA metadata
+===============================
 
 ::
 
@@ -252,8 +251,8 @@ Converting GSM to SRR
 
 
 
-Downloading entire project (multithreaded)
-==========================================
+Downloading an entire SRA/ENA project (multithreaded)
+=====================================================
 
 ``pysradb`` makes it super easy to download datasets from SRA parallely:
 Using 8 threads to download:
@@ -333,5 +332,3 @@ Questions?
 **********
 
 Join our `Slack Channel <https://join.slack.com/t/pysradb/shared_invite/zt-f01jndpy-KflPu3Be5Aq3FzRh5wj1Ug>`_ or open an `issue <https://github.com/saketkc/pysradb/issues>`_.
-
-
