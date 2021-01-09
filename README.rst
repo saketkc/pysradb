@@ -1,7 +1,6 @@
-.. raw:: html
-
-    <img src="https://raw.githubusercontent.com/saketkc/pysradb/master/docs/_static/pysradb_v3.png" height="90px">
-
+.. image:: https://raw.githubusercontent.com/saketkc/pysradb/master/docs/_static/pysradb_v3.png
+    :target: https://raw.githubusercontent.com/saketkc/pysradb/master/docs/_static/pysradb_v3.png
+    :height: 90px
 
     
 ######################################################################################
