@@ -95,7 +95,7 @@ The following notebooks document all the possible features of `pysradb`:
 6. `Download BAMs <https://colab.research.google.com/github/saketkc/pysradb/blob/master/notebooks/06.Download_BAMs.ipynb>`_
 7. `Metadata for multiple SRPs <https://colab.research.google.com/github/saketkc/pysradb/blob/master/notebooks/07.Multiple_SRPs.ipynb>`_
 8. `Multithreaded fastq downloads using Aspera Client <https://colab.research.google.com/github/saketkc/pysradb/blob/master/notebooks/08.pysradb_ascp_multithreaded.ipynb>`_
-
+9. `Searching SRA/GEO/ENA <https://colab.research.google.com/github/saketkc/pysradb/blob/master/notebooks/09.Query_Search.ipynb>`_
 
 
 
@@ -129,10 +129,10 @@ Dependecies
 
 .. code-block:: bash
 
-   pandas==1.1.2
-   requests==2.24.0
-   tqdm==4.49.0
-   xmltodict==0.12.0
+   pandas
+   requests
+   tqdm
+   xmltodict
 
 
 Installing pysradb in development mode
