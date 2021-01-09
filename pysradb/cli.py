@@ -70,8 +70,8 @@ def _print_save_df(df, saveto=None):
 
 
 ###################### metadata ##############################
-def metadata(srp_id, db, assay, desc, detailed, expand, saveto):
-    db = _check_sradb_file(db)
+def metadata(srp_id, assay, desc, detailed, expand, saveto):
+
     sradb = SRAweb()
     df = sradb.sra_metadata(
         srp_id,
@@ -89,9 +89,9 @@ def metadata(srp_id, db, assay, desc, detailed, expand, saveto):
 
 ################# download ##########################
 def download(
-    out_dir, db, srx, srp, skip_confirmation, col="sra_url", use_ascp=False, threads=1
+    out_dir, srx, srp, skip_confirmation, col="sra_url", use_ascp=False, threads=1
 ):
-    db = _check_sradb_file(db)
+
     if out_dir is None:
         out_dir = os.path.join(os.getcwd(), "pysradb_downloads")
     sradb = SRAweb()
@@ -131,7 +131,7 @@ def download(
 
 
 ######################### search #################################
-def search(saveto, db, verbosity, return_max, fields):
+def search(saveto, verbosity, return_max, fields):
     if fields["run_description"]:
         verbosity = 1
     if fields["detailed"]:
@@ -210,8 +210,8 @@ def get_geo_search_info():
 
 
 ######################### gse-to-gsm ###############################
-def gse_to_gsm(gse_ids, db, saveto, detailed, desc, expand):
-    db = _check_sradb_file(db)
+def gse_to_gsm(gse_ids, saveto, detailed, desc, expand):
+
     sradb = SRAweb()
     df = sradb.gse_to_gsm(
         gse_ids,
@@ -227,8 +227,8 @@ def gse_to_gsm(gse_ids, db, saveto, detailed, desc, expand):
 
 
 ######################## gse-to-srp ################################
-def gse_to_srp(gse_ids, db, saveto, detailed, desc, expand):
-    db = _check_sradb_file(db)
+def gse_to_srp(gse_ids, saveto, detailed, desc, expand):
+
     sradb = SRAweb()
     df = sradb.gse_to_srp(
         gse_ids,
@@ -244,8 +244,8 @@ def gse_to_srp(gse_ids, db, saveto, detailed, desc, expand):
 
 
 ######################### gsm-to-gse #################################
-def gsm_to_gse(gsm_ids, db, saveto, detailed, desc, expand):
-    db = _check_sradb_file(db)
+def gsm_to_gse(gsm_ids, saveto, detailed, desc, expand):
+
     sradb = SRAweb()
     df = sradb.gsm_to_gse(
         gsm_ids,
@@ -261,8 +261,8 @@ def gsm_to_gse(gsm_ids, db, saveto, detailed, desc, expand):
 
 
 ############################ gsm-to-srp ################################
-def gsm_to_srp(gsm_ids, db, saveto, detailed, desc, expand):
-    db = _check_sradb_file(db)
+def gsm_to_srp(gsm_ids, saveto, detailed, desc, expand):
+
     sradb = SRAweb()
     df = sradb.gsm_to_srp(
         gsm_ids,
@@ -278,8 +278,8 @@ def gsm_to_srp(gsm_ids, db, saveto, detailed, desc, expand):
 
 
 ############################ gsm-to-srr ################################
-def gsm_to_srr(gsm_ids, db, saveto, detailed, desc, expand):
-    db = _check_sradb_file(db)
+def gsm_to_srr(gsm_ids, saveto, detailed, desc, expand):
+
     sradb = SRAweb()
     df = sradb.gsm_to_srr(
         gsm_ids,
@@ -295,8 +295,8 @@ def gsm_to_srr(gsm_ids, db, saveto, detailed, desc, expand):
 
 
 ############################ gsm-to-srs ################################
-def gsm_to_srs(gsm_ids, db, saveto, detailed, desc, expand):
-    db = _check_sradb_file(db)
+def gsm_to_srs(gsm_ids, saveto, detailed, desc, expand):
+
     sradb = SRAweb()
     df = sradb.gsm_to_srs(
         gsm_ids,
@@ -312,8 +312,8 @@ def gsm_to_srs(gsm_ids, db, saveto, detailed, desc, expand):
 
 
 ############################# gsm-to-srx ###############################
-def gsm_to_srx(gsm_ids, db, saveto, detailed, desc, expand):
-    db = _check_sradb_file(db)
+def gsm_to_srx(gsm_ids, saveto, detailed, desc, expand):
+
     sradb = SRAweb()
     df = sradb.gsm_to_srx(
         gsm_ids,
@@ -329,8 +329,8 @@ def gsm_to_srx(gsm_ids, db, saveto, detailed, desc, expand):
 
 
 ########################### srp-to-gse ##################################
-def srp_to_gse(srp_id, db, saveto, detailed, desc, expand):
-    db = _check_sradb_file(db)
+def srp_to_gse(srp_id, saveto, detailed, desc, expand):
+
     sradb = SRAweb()
     df = sradb.srp_to_gse(
         srp_id,
@@ -346,8 +346,8 @@ def srp_to_gse(srp_id, db, saveto, detailed, desc, expand):
 
 
 ########################### srp-to-srr ##################################
-def srp_to_srr(srp_id, db, saveto, detailed, desc, expand):
-    db = _check_sradb_file(db)
+def srp_to_srr(srp_id, saveto, detailed, desc, expand):
+
     sradb = SRAweb()
     df = sradb.srp_to_srr(
         srp_id,
@@ -363,8 +363,8 @@ def srp_to_srr(srp_id, db, saveto, detailed, desc, expand):
 
 
 ########################### srp-to-srs ##################################
-def srp_to_srs(srp_id, db, saveto, detailed, desc, expand):
-    db = _check_sradb_file(db)
+def srp_to_srs(srp_id, saveto, detailed, desc, expand):
+
     sradb = SRAweb()
     df = sradb.srp_to_srs(
         srp_id,
@@ -380,8 +380,8 @@ def srp_to_srs(srp_id, db, saveto, detailed, desc, expand):
 
 
 ########################### srp-to-srx ##################################
-def srp_to_srx(srp_id, db, saveto, detailed, desc, expand):
-    db = _check_sradb_file(db)
+def srp_to_srx(srp_id, saveto, detailed, desc, expand):
+
     sradb = SRAweb()
     df = sradb.srp_to_srx(
         srp_id,
@@ -397,8 +397,8 @@ def srp_to_srx(srp_id, db, saveto, detailed, desc, expand):
 
 
 ########################### srr-to-gsm ##################################
-def srr_to_gsm(srr_ids, db, saveto, detailed, desc, expand):
-    db = _check_sradb_file(db)
+def srr_to_gsm(srr_ids, saveto, detailed, desc, expand):
+
     sradb = SRAweb()
     df = sradb.srr_to_gsm(
         srr_ids,
@@ -414,8 +414,8 @@ def srr_to_gsm(srr_ids, db, saveto, detailed, desc, expand):
 
 
 ########################### srr-to-srp ##################################
-def srr_to_srp(srr_ids, db, saveto, detailed, desc, expand):
-    db = _check_sradb_file(db)
+def srr_to_srp(srr_ids, saveto, detailed, desc, expand):
+
     sradb = SRAweb()
     df = sradb.srr_to_srp(
         srr_ids,
@@ -431,8 +431,8 @@ def srr_to_srp(srr_ids, db, saveto, detailed, desc, expand):
 
 
 ########################### srr-to-srs ##################################
-def srr_to_srs(srr_ids, db, saveto, detailed, desc, expand):
-    db = _check_sradb_file(db)
+def srr_to_srs(srr_ids, saveto, detailed, desc, expand):
+
     sradb = SRAweb()
     df = sradb.srr_to_srs(
         srr_ids,
@@ -448,8 +448,8 @@ def srr_to_srs(srr_ids, db, saveto, detailed, desc, expand):
 
 
 ########################### srr-to-srx ##################################
-def srr_to_srx(srr_ids, db, saveto, detailed, desc, expand):
-    db = _check_sradb_file(db)
+def srr_to_srx(srr_ids, saveto, detailed, desc, expand):
+
     sradb = SRAweb()
     df = sradb.srr_to_srx(
         srr_ids,
@@ -465,8 +465,8 @@ def srr_to_srx(srr_ids, db, saveto, detailed, desc, expand):
 
 
 ########################### srs-to-gsm ##################################
-def srs_to_gsm(srs_ids, db, saveto, detailed, desc, expand):
-    db = _check_sradb_file(db)
+def srs_to_gsm(srs_ids, saveto, detailed, desc, expand):
+
     sradb = SRAweb()
     df = sradb.srs_to_gsm(
         srs_ids,
@@ -482,8 +482,8 @@ def srs_to_gsm(srs_ids, db, saveto, detailed, desc, expand):
 
 
 ########################### srs-to-srx ##################################
-def srs_to_srx(srs_ids, db, saveto, detailed, desc, expand):
-    db = _check_sradb_file(db)
+def srs_to_srx(srs_ids, saveto, detailed, desc, expand):
+
     sradb = SRAweb()
     df = sradb.srs_to_srx(
         srs_ids,
@@ -499,8 +499,8 @@ def srs_to_srx(srs_ids, db, saveto, detailed, desc, expand):
 
 
 ########################### srx-to-srp ##################################
-def srx_to_srp(srx_ids, db, saveto, detailed, desc, expand):
-    db = _check_sradb_file(db)
+def srx_to_srp(srx_ids, saveto, detailed, desc, expand):
+
     sradb = SRAweb()
     df = sradb.srx_to_srp(
         srx_ids,
@@ -516,8 +516,8 @@ def srx_to_srp(srx_ids, db, saveto, detailed, desc, expand):
 
 
 ########################### srx-to-srr ##################################
-def srx_to_srr(srx_ids, db, saveto, detailed, desc, expand):
-    db = _check_sradb_file(db)
+def srx_to_srr(srx_ids, saveto, detailed, desc, expand):
+
     sradb = SRAweb()
     df = sradb.srx_to_srr(
         srx_ids,
@@ -533,8 +533,8 @@ def srx_to_srr(srx_ids, db, saveto, detailed, desc, expand):
 
 
 ########################### srx-to-srs ##################################
-def srx_to_srs(srx_ids, db, saveto, detailed, desc, expand):
-    db = _check_sradb_file(db)
+def srx_to_srs(srx_ids, saveto, detailed, desc, expand):
+
     sradb = SRAweb()
     df = sradb.srx_to_srs(
         srx_ids,
@@ -1187,7 +1187,6 @@ def parse_args(args=None):
     if args.command == "metadata":
         metadata(
             args.srp_id,
-            args.db,
             args.assay,
             args.desc,
             args.detailed,
@@ -1197,7 +1196,6 @@ def parse_args(args=None):
     elif args.command == "download":
         download(
             args.out_dir,
-            args.db,
             args.srx,
             args.srp,
             args.skip_confirmation,
@@ -1218,85 +1216,45 @@ def parse_args(args=None):
                 flags,
             )
     elif args.command == "gse-to-gsm":
-        gse_to_gsm(
-            args.gse_ids, args.db, args.saveto, args.detailed, args.desc, args.expand
-        )
+        gse_to_gsm(args.gse_ids, args.saveto, args.detailed, args.desc, args.expand)
     elif args.command == "gse-to-srp":
-        gse_to_srp(
-            args.gse_ids, args.db, args.saveto, args.detailed, args.desc, args.expand
-        )
+        gse_to_srp(args.gse_ids, args.saveto, args.detailed, args.desc, args.expand)
     elif args.command == "gsm-to-gse":
-        gsm_to_gse(
-            args.gsm_ids, args.db, args.saveto, args.detailed, args.desc, args.expand
-        )
+        gsm_to_gse(args.gsm_ids, args.saveto, args.detailed, args.desc, args.expand)
     elif args.command == "gsm-to-srp":
-        gsm_to_srp(
-            args.gsm_ids, args.db, args.saveto, args.detailed, args.desc, args.expand
-        )
+        gsm_to_srp(args.gsm_ids, args.saveto, args.detailed, args.desc, args.expand)
     elif args.command == "gsm-to-srr":
-        gsm_to_srr(
-            args.gsm_ids, args.db, args.saveto, args.detailed, args.desc, args.expand
-        )
+        gsm_to_srr(args.gsm_ids, args.saveto, args.detailed, args.desc, args.expand)
     elif args.command == "gsm-to-srs":
-        gsm_to_srs(
-            args.gsm_ids, args.db, args.saveto, args.detailed, args.desc, args.expand
-        )
+        gsm_to_srs(args.gsm_ids, args.saveto, args.detailed, args.desc, args.expand)
     elif args.command == "gsm-to-srx":
-        gsm_to_srx(
-            args.gsm_ids, args.db, args.saveto, args.detailed, args.desc, args.expand
-        )
+        gsm_to_srx(args.gsm_ids, args.saveto, args.detailed, args.desc, args.expand)
     elif args.command == "srp-to-gse":
-        srp_to_gse(
-            args.srp_id, args.db, args.saveto, args.detailed, args.desc, args.expand
-        )
+        srp_to_gse(args.srp_id, args.saveto, args.detailed, args.desc, args.expand)
     elif args.command == "srp-to-srr":
-        srp_to_srr(
-            args.srp_id, args.db, args.saveto, args.detailed, args.desc, args.expand
-        )
+        srp_to_srr(args.srp_id, args.saveto, args.detailed, args.desc, args.expand)
     elif args.command == "srp-to-srs":
-        srp_to_srs(
-            args.srp_id, args.db, args.saveto, args.detailed, args.desc, args.expand
-        )
+        srp_to_srs(args.srp_id, args.saveto, args.detailed, args.desc, args.expand)
     elif args.command == "srp-to-srx":
-        srp_to_srx(
-            args.srp_id, args.db, args.saveto, args.detailed, args.desc, args.expand
-        )
+        srp_to_srx(args.srp_id, args.saveto, args.detailed, args.desc, args.expand)
     elif args.command == "srr-to-gsm":
-        srr_to_gsm(
-            args.srr_ids, args.db, args.saveto, args.detailed, args.desc, args.expand
-        )
+        srr_to_gsm(args.srr_ids, args.saveto, args.detailed, args.desc, args.expand)
     elif args.command == "srr-to-srp":
-        srr_to_srp(
-            args.srr_ids, args.db, args.saveto, args.detailed, args.desc, args.expand
-        )
+        srr_to_srp(args.srr_ids, args.saveto, args.detailed, args.desc, args.expand)
     elif args.command == "srr-to-srs":
-        srr_to_srs(
-            args.srr_ids, args.db, args.saveto, args.detailed, args.desc, args.expand
-        )
+        srr_to_srs(args.srr_ids, args.saveto, args.detailed, args.desc, args.expand)
     elif args.command == "srr-to-srx":
-        srr_to_srx(
-            args.srr_ids, args.db, args.saveto, args.detailed, args.desc, args.expand
-        )
+        srr_to_srx(args.srr_ids, args.saveto, args.detailed, args.desc, args.expand)
     elif args.command == "srs-to-gsm":
-        srs_to_gsm(
-            args.srs_ids, args.db, args.saveto, args.detailed, args.desc, args.expand
-        )
+        srs_to_gsm(args.srs_ids, args.saveto, args.detailed, args.desc, args.expand)
     elif args.command == "srs-to-srx":
-        srs_to_srx(
-            args.srs_ids, args.db, args.saveto, args.detailed, args.desc, args.expand
-        )
+        srs_to_srx(args.srs_ids, args.saveto, args.detailed, args.desc, args.expand)
     elif args.command == "srx-to-srp":
-        srx_to_srp(
-            args.srx_ids, args.db, args.saveto, args.detailed, args.desc, args.expand
-        )
+        srx_to_srp(args.srx_ids, args.saveto, args.detailed, args.desc, args.expand)
     elif args.command == "srx-to-srr":
-        srx_to_srr(
-            args.srx_ids, args.db, args.saveto, args.detailed, args.desc, args.expand
-        )
+        srx_to_srr(args.srx_ids, args.saveto, args.detailed, args.desc, args.expand)
     elif args.command == "srx-to-srs":
-        srx_to_srs(
-            args.srx_ids, args.db, args.saveto, args.detailed, args.desc, args.expand
-        )
+        srx_to_srs(args.srx_ids, args.saveto, args.detailed, args.desc, args.expand)
 
 
 if __name__ == "__main__":
