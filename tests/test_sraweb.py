@@ -121,9 +121,9 @@ def test_gse_to_gsm(sraweb_connection):
 def test_gse_to_gsm1(sraweb_connection):
     """Test if gse_to_gsm works without passing `detailed` parameter"""
     df = sraweb_connection.gse_to_gsm("GSE63858")
-    assert list(df["experiment_alias"]) == [
-        "GSM1558531",
+    assert list(sorted(df["experiment_alias"])) == [
         "GSM1558530",
+        "GSM1558531"
     ]
 
 
