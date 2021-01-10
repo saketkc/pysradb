@@ -195,3 +195,7 @@ html_theme_options = {
     "github_url": "https://github.com/saketkc/pysradb",
     #    "navbar_align": "left",
 }
+html_theme_options = {
+    "google_analytics_id": "G-JFT0M2HLEM",
+}
+
