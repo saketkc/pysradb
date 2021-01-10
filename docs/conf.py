@@ -198,4 +198,3 @@ html_theme_options = {
 html_theme_options = {
     "google_analytics_id": "G-JFT0M2HLEM",
 }
-
