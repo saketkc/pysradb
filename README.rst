@@ -2,7 +2,7 @@
     :target: https://raw.githubusercontent.com/saketkc/pysradb/master/docs/_static/pysradb_v3.png
     :height: 90px
 
-    
+
 ######################################################################################
 A Python package for retrieving metadata and downloading datasets from SRA/ENA
 ######################################################################################
@@ -54,7 +54,7 @@ a list of instructions for each sub-command.
       --citation            how to cite
 
     subcommands:
-      {metadata,download,search,gse-to-gsm,gse-to-srp,gsm-to-gse,gsm-to-srp,gsm-to-srr,gsm-to-srs,gsm-to-srx,srp-to-gse,srp-to-srr,srp-to-srs,srp-to-srx,srr-to-gsm,srr-to-srp,srr-to-srs,srr-to-srx,srs-to-gsm,srs-to-srx,srx-to-srp,srx-to-srr,srx-to-srs}       
+      {metadata,download,search,gse-to-gsm,gse-to-srp,gsm-to-gse,gsm-to-srp,gsm-to-srr,gsm-to-srs,gsm-to-srx,srp-to-gse,srp-to-srr,srp-to-srs,srp-to-srx,srr-to-gsm,srr-to-srp,srr-to-srs,srr-to-srx,srs-to-gsm,srs-to-srx,srx-to-srp,srx-to-srr,srx-to-srs}
         metadata            Fetch metadata for SRA project (SRPnnnn)
         download            Download SRA project (SRPnnnn)
         search              Search SRA for matching text
@@ -123,7 +123,7 @@ Please consider creating a new enviroment for ``pysradb``:
 
 .. code-block:: bash
 
-   conda create -c bioconda -n pysradb PYTHON=3 pysradb
+   conda create -c bioconda -n pysradb PYTHON=3.7 pysradb
 
 Dependecies
 ===========
@@ -142,7 +142,7 @@ Installing pysradb in development mode
 .. code-block:: bash
 
    git clone https://github.com/saketkc/pysradb.git
-   cd pysradb && pip install -r requirements.txt   
+   cd pysradb && pip install -r requirements.txt
    pip install -e .
 
 
@@ -283,7 +283,7 @@ To download all original fastqs with `aspera-client` installed utilizing 8 threa
     $ pysradb download -t 8 --use_ascp -p SRP002605
 
 Refer to the notebook for `(shallow) time benchmarks <https://colab.research.google.com/github/saketkc/pysradb/blob/master/notebooks/08.pysradb_ascp_multithreaded.ipynb>`_.
-    
+
 
 
 
