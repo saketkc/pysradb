@@ -45,7 +45,7 @@ a list of instructions for each sub-command.
                    ...
 
     pysradb: Query NGS metadata and data from NCBI Sequence Read Archive.
-    version: 1.0
+    version: 1.0.1
     Citation: 10.12688/f1000research.18676.1
 
     optional arguments:
