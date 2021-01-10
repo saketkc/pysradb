@@ -20,7 +20,8 @@ selecting the corresponding tab below.
 Notebooks
 =========
 
-A Google Colaboratory version of most used commands are available in this `Colab Notebook <https://colab.research.google.com/drive/1C60V-jkcNZiaCra_V5iEyFs318jgVoUR>`_ . Note that this requires only an active internet connection (no additional downloads are made).
+A Google Colaboratory version of most used commands are available in this `Colab Notebook <https://colab.research.google.com/drive/1C60V-jkcNZiaCra_V5iEyFs318jgVoUR>`_ .
+Colab runs Python 3.6 while ``pysradb`` requires Python 3.7+ and hence the notebooks no longer run on Colab, but can be downloaded and run locally.
 
 The following notebooks document all the possible features of ``pysradb``:
 

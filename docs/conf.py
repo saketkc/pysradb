@@ -196,5 +196,5 @@ html_theme_options = {
     #    "navbar_align": "left",
 }
 html_theme_options = {
-    "google_analytics_id": "G-JFT0M2HLEM",
+    "google_analytics_id": "G-CKQZFCEENZ",
 }
