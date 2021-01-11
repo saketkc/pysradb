@@ -31,10 +31,8 @@ https://saketkc.github.io/pysradb
 CLI Usage
 *********
 
-``pysradb`` supports command line ussage. The documentation
-is in progress. See  `cmdline <https://github.com/saketkc/pysradb/blob/master/docs/cmdline.rst>`_ for
-some quick usage instructions. See `quickstart <https://www.saket-choudhary.me/pysradb/quickstart.html#the-full-list-of-possible-pysradb-operations>`_ for
-a list of instructions for each sub-command.
+``pysradb`` supports command line ussage. See `CLI <https://saket-choudhary.me/pysradb/cmdline.html>`_ instructions or  `quickstart guide <https://www.saket-choudhary.me/pysradb/quickstart.html>`_.
+ 
 
 
 ::
