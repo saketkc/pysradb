@@ -17,7 +17,7 @@ imagesize==1.2.0
 importlib-metadata==3.3.0
 ipython==7.19.0
 ipython-genutils==0.2.0
-jedi==0.17.0
+jedi==0.18.0
 Jinja2==2.11.2
 jsonschema==3.2.0
 jupyter-client==6.1.10
