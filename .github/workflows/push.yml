@@ -6,16 +6,13 @@ jobs:
   build:
 
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        python-version: 3.9
     if: github.ref == 'refs/heads/master'
     steps:
     - uses: actions/checkout@v2
-    - name: Set up Python ${{ matrix.python-version }}
+    - name: Set up Python 3.9
       uses: actions/setup-python@v1
       with:
-        python-version: ${{ matrix.python-version }}
+        python-version: 3.9
 
     - name: Install dependencies
       run: |
@@ -39,7 +36,7 @@ jobs:
         codecov
     - uses: ammaraskar/sphinx-action@master
       with:
-        pre-build-command: "pip install -r requirements.txt && pip install . && pip install -U sphinx ipython numpydoc sphinxcontrib-fulltoc sphinx-tabs sphinx_rtd_theme sphinx nbsphinx ipython pydata-sphinx-theme nbsphinx-link sphinx-panels"
+        pre-build-command: "pip install -U pip && pip install -r requirements.txt && pip install . && pip install -U sphinx ipython numpydoc sphinxcontrib-fulltoc sphinx-tabs sphinx_rtd_theme sphinx nbsphinx ipython pydata-sphinx-theme nbsphinx-link sphinx-panels"
         docs-folder: "docs/"
     # Publish built docs to gh-pages branch.
     # ===============================
