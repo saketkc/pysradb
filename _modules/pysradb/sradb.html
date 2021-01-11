@@ -1516,7 +1516,7 @@
                 <span class="n">missing_columns</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">accession_column</span><span class="p">)</span>
         <span class="c1"># Special case for SraSearch</span>
         <span class="n">run_count</span> <span class="o">=</span> <span class="mi">1</span>  <span class="c1"># each row in the df contains at most 1 run_accession</span>
-        <span class="k">while</span> <span class="sa">f</span><span class="s2">&quot;run_</span><span class="si">{</span><span class="n">run_count</span><span class="si">}</span><span class="s2">_accession&quot;</span> <span class="ow">in</span> <span class="n">df_columns</span><span class="p">:</span>
+        <span class="k">while</span> <span class="sa">f</span><span class="s2">&quot;run_</span><span class="si">{run_count}</span><span class="s2">_accession&quot;</span> <span class="ow">in</span> <span class="n">df_columns</span><span class="p">:</span>
             <span class="n">run_count</span> <span class="o">+=</span> <span class="mi">1</span>
         <span class="k">if</span> <span class="n">missing_columns</span> <span class="o">==</span> <span class="p">[</span><span class="s2">&quot;run_accession&quot;</span><span class="p">]</span> <span class="ow">and</span> <span class="n">run_count</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
             <span class="n">missing_columns</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
@@ -1549,7 +1549,7 @@
             <span class="n">matched_cols</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">filter</span><span class="p">(</span><span class="n">url_regex</span><span class="o">.</span><span class="n">match</span><span class="p">,</span> <span class="n">df_columns</span><span class="p">))</span>
             <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">run_count</span><span class="p">):</span>
                 <span class="n">url_list</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span>
-                    <span class="nb">filter</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;run_</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">),</span> <span class="n">matched_cols</span><span class="p">)</span>
+                    <span class="nb">filter</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;run_</span><span class="si">{i}</span><span class="s2">&quot;</span><span class="p">),</span> <span class="n">matched_cols</span><span class="p">)</span>
                 <span class="p">)</span>
                 <span class="n">df</span><span class="p">[</span><span class="s2">&quot;recommended_url&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span>
                     <span class="k">lambda</span> <span class="n">row</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_select_best_url</span><span class="p">(</span><span class="n">url_list</span><span class="p">,</span> <span class="n">row</span><span class="p">,</span> <span class="n">use_ascp</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span>
@@ -1571,11 +1571,11 @@
                 <span class="n">expected_columns</span> <span class="o">=</span> <span class="p">[</span>
                     <span class="s2">&quot;study_accession&quot;</span><span class="p">,</span>
                     <span class="s2">&quot;experiment_accession&quot;</span><span class="p">,</span>
-                    <span class="sa">f</span><span class="s2">&quot;run_</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">_accession&quot;</span><span class="p">,</span>
+                    <span class="sa">f</span><span class="s2">&quot;run_</span><span class="si">{i}</span><span class="s2">_accession&quot;</span><span class="p">,</span>
                     <span class="s2">&quot;recommended_url&quot;</span><span class="p">,</span>
                 <span class="p">]</span> <span class="o">+</span> <span class="n">url_list</span>
                 <span class="n">run_df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[:,</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">expected_columns</span><span class="p">)]</span>
-                <span class="n">run_df</span> <span class="o">=</span> <span class="n">run_df</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">{</span><span class="sa">f</span><span class="s2">&quot;run_</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">_accession&quot;</span><span class="p">:</span> <span class="s2">&quot;run_accession&quot;</span><span class="p">})</span>
+                <span class="n">run_df</span> <span class="o">=</span> <span class="n">run_df</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">{</span><span class="sa">f</span><span class="s2">&quot;run_</span><span class="si">{i}</span><span class="s2">_accession&quot;</span><span class="p">:</span> <span class="s2">&quot;run_accession&quot;</span><span class="p">})</span>
                 <span class="n">run_dfs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">run_df</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">run_count</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
                 <span class="n">expected_columns</span> <span class="o">=</span> <span class="p">[</span>
@@ -1606,7 +1606,7 @@
             <span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="o">.</span><span class="n">write</span><span class="p">(</span>
                 <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">pysradb download is unable to run:</span><span class="se">\n</span><span class="s2">&quot;</span>
                 <span class="s2">&quot;The following required columns are missing from the input DataFrame:</span><span class="se">\n</span><span class="s2">&quot;</span>
-                <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">missing_columns</span><span class="si">}</span><span class="se">\n\n</span><span class="s2">&quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{missing_columns}</span><span class="se">\n\n</span><span class="s2">&quot;</span>
                 <span class="s2">&quot;Please run your query with either</span><span class="se">\n</span><span class="s2">&quot;</span>
                 <span class="s2">&quot;pysradb metadata --detailed </span><span class="se">\n</span><span class="s2">&quot;</span>
                 <span class="s2">&quot;or </span><span class="se">\n</span><span class="s2">&quot;</span>
@@ -1672,7 +1672,7 @@
         <span class="c1"># Does the necessary column formatting for the dataframe</span>
         <span class="n">df</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_format_dataframe_for_download</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">copy</span><span class="p">(),</span> <span class="n">url_col</span><span class="p">,</span> <span class="n">use_ascp</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">url_col</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
-            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;The supplied url column &quot;</span><span class="si">{</span><span class="n">url_col</span><span class="si">}</span><span class="s1">&quot; cannot be found.</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;The supplied url column &quot;</span><span class="si">{url_col}</span><span class="s1">&quot; cannot be found.</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
             <span class="n">url_col</span> <span class="o">=</span> <span class="s2">&quot;recommended_url&quot;</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="n">skip_confirmation</span><span class="p">:</span>
                 <span class="n">pd</span><span class="o">.</span><span class="n">set_option</span><span class="p">(</span><span class="s2">&quot;display.max_colwidth&quot;</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
@@ -1768,7 +1768,7 @@
     <footer class="footer mt-5 mt-md-0">
   <div class="container">
     <p>
-          &copy; Copyright 2018, Saket Choudhary.<br/>
+          &copy; Copyright 2021, Saket Choudhary.<br/>
         Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.4.3.<br/>
     </p>
   </div>

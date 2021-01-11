@@ -185,6 +185,23 @@
                 
   <div class="section" id="download">
 <h1>download<a class="headerlink" href="#download" title="Permalink to this headline">¶</a></h1>
+<p>All the <cite>.sra</cite> files belonnging to a certain project can be downloaded using <code class="docutils literal notranslate"><span class="pre">download</span></code>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ pysradb download -y -t 8 -p SRP002605
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">pysradb</span></code> also supports faster downloading of <cite>.sra/.fastq</cite> files using UDP protocol if <a class="reference external" href="https://downloads.asperasoft.com/connect2/">aspera-client</a> is installed:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ wget -c https://download.asperasoft.com/download/sw/connect/3.9.9/ibm-aspera-connect-3.9.9.177872-linux-g2.12-64.tar.gz
+$ tar -zxvf ibm-aspera-connect-3.9.9.177872-linux-g2.12-64.tar.gz &amp;&amp; ls
+$ bash ibm-aspera-connect-3.9.9.177872-linux-g2.12-64.sh
+
+
+$ pysradb download --use_ascp -y -t 8 -p SRP002605
+</pre></div>
+</div>
+<p>It is also possible to pipe the output of <code class="docutils literal notranslate"><span class="pre">metadata</span></code> to download:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ pysradb metadata --detailed SRP098789 | pysradb download
+</pre></div>
+</div>
 </div>
 
 
@@ -221,7 +238,7 @@
     <footer class="footer mt-5 mt-md-0">
   <div class="container">
     <p>
-          &copy; Copyright 2018, Saket Choudhary.<br/>
+          &copy; Copyright 2021, Saket Choudhary.<br/>
         Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.4.3.<br/>
     </p>
   </div>

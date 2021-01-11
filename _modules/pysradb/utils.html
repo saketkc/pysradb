@@ -268,7 +268,7 @@
         <span class="n">timeout</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span>
     <span class="p">)</span>
     <span class="k">if</span> <span class="n">r</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">404</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="n">IncorrectFieldException</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unknown scientific name: </span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="n">IncorrectFieldException</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unknown scientific name: </span><span class="si">{name}</span><span class="s2">&quot;</span><span class="p">)</span>
     <span class="n">r</span><span class="o">.</span><span class="n">raise_for_status</span><span class="p">()</span>
     <span class="k">return</span> <span class="n">r</span><span class="o">.</span><span class="n">json</span><span class="p">()[</span><span class="mi">0</span><span class="p">][</span><span class="s2">&quot;taxId&quot;</span><span class="p">]</span></div>
 
@@ -521,7 +521,7 @@
     <footer class="footer mt-5 mt-md-0">
   <div class="container">
     <p>
-          &copy; Copyright 2018, Saket Choudhary.<br/>
+          &copy; Copyright 2021, Saket Choudhary.<br/>
         Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.4.3.<br/>
     </p>
   </div>
