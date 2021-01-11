@@ -12,7 +12,7 @@ decorator==4.4.2
 defusedxml==0.6.0
 docutils==0.16
 entrypoints==0.3
-idna==2.10
+idna==3.1
 imagesize==1.2.0
 importlib-metadata==3.3.0
 ipython==7.19.0
