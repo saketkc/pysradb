@@ -1,0 +1,1777 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>pysradb.sradb &#8212; pysradb 1.0.1 documentation</title>
+    
+  <link rel="stylesheet" href="../../_static/css/index.73d71520a4ca3b99cfee5594769eaaae.css">
+
+    
+  <link rel="stylesheet"
+    href="../../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    
+      
+  <link rel="stylesheet"
+    href="../../_static/vendor/open-sans_all/1.44.1/index.css">
+  <link rel="stylesheet"
+    href="../../_static/vendor/lato_latin-ext/1.44.1/index.css">
+
+    
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/basic.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx_tabs/semantic-ui-2.4.1/segment.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx_tabs/semantic-ui-2.4.1/menu.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx_tabs/semantic-ui-2.4.1/tab.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx_tabs/tabs.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
+    
+  <link rel="preload" as="script" href="../../_static/js/index.3da636dd464baa7582d2.js">
+
+    <script id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/sphinx_tabs/semantic-ui-2.4.1/tab.min.js"></script>
+    <script src="../../_static/sphinx_tabs/tabs.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="en" />
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+    
+    <nav class="navbar navbar-light navbar-expand-lg bg-light fixed-top bd-navbar" id="navbar-main">
+<div class="container-xl">
+
+    <a class="navbar-brand" href="../../index.html">
+    
+      <img src="../../_static/pysradb_v3.png" class="logo" alt="logo" />
+    
+    </a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-menu" aria-controls="navbar-menu" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div id="navbar-menu" class="col-lg-9 collapse navbar-collapse">
+      <ul id="navbar-main-elements" class="navbar-nav mr-auto">
+        
+        
+        <li class="nav-item ">
+            <a class="nav-link" href="../../installation.html">Installation</a>
+        </li>
+        
+        <li class="nav-item ">
+            <a class="nav-link" href="../../quickstart.html">Quickstart</a>
+        </li>
+        
+        <li class="nav-item ">
+            <a class="nav-link" href="../../cmdline.html">CLI</a>
+        </li>
+        
+        <li class="nav-item ">
+            <a class="nav-link" href="../../python-api-usage.html">Python API</a>
+        </li>
+        
+        <li class="nav-item ">
+            <a class="nav-link" href="../../case_studies.html">Case Studies</a>
+        </li>
+        
+        <li class="nav-item ">
+            <a class="nav-link" href="../../commands.html">API Documentation</a>
+        </li>
+        
+        <li class="nav-item ">
+            <a class="nav-link" href="../../contributing.html">Contributing</a>
+        </li>
+        
+        <li class="nav-item ">
+            <a class="nav-link" href="../../authors.html">Credits</a>
+        </li>
+        
+        <li class="nav-item ">
+            <a class="nav-link" href="../../history.html">History</a>
+        </li>
+        
+        <li class="nav-item ">
+            <a class="nav-link" href="../../modules.html">pysradb</a>
+        </li>
+        
+        
+      </ul>
+
+
+      
+
+      <ul class="navbar-nav">
+        
+        
+      </ul>
+    </div>
+</div>
+    </nav>
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+          <div class="col-12 col-md-3 bd-sidebar"><form class="bd-search d-flex align-items-center" action="../../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off" >
+</form>
+<nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
+
+    <div class="bd-toc-item active">
+    
+  
+    <ul class="nav bd-sidenav">
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+      </ul>
+  
+  </nav>
+          </div>
+          
+
+          
+          <div class="d-none d-xl-block col-xl-2 bd-toc">
+              
+
+<nav id="bd-toc-nav">
+    <ul class="nav section-nav flex-column">
+    
+    </ul>
+</nav>
+
+
+              
+          </div>
+          
+
+          
+          <main class="col-12 col-md-9 col-xl-7 py-md-5 pl-md-5 pr-md-4 bd-content" role="main">
+              
+              <div>
+                
+  <h1>Source code for pysradb.sradb</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;Methods to interact with SRA&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">gzip</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">re</span>
+<span class="kn">import</span> <span class="nn">subprocess</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">import</span> <span class="nn">warnings</span>
+<span class="kn">from</span> <span class="nn">functools</span> <span class="kn">import</span> <span class="n">partial</span>
+<span class="kn">from</span> <span class="nn">multiprocessing</span> <span class="kn">import</span> <span class="n">Pool</span>
+<span class="kn">from</span> <span class="nn">subprocess</span> <span class="kn">import</span> <span class="n">PIPE</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">from</span> <span class="nn">tqdm.autonotebook</span> <span class="kn">import</span> <span class="n">tqdm</span>
+<span class="kn">from</span> <span class="nn">tqdm.contrib.concurrent</span> <span class="kn">import</span> <span class="n">process_map</span>
+<span class="kn">from</span> <span class="nn">tqdm.contrib.concurrent</span> <span class="kn">import</span> <span class="n">thread_map</span>
+
+<span class="kn">from</span> <span class="nn">.basedb</span> <span class="kn">import</span> <span class="n">BASEdb</span>
+<span class="kn">from</span> <span class="nn">.download</span> <span class="kn">import</span> <span class="n">download_file</span>
+<span class="kn">from</span> <span class="nn">.download</span> <span class="kn">import</span> <span class="n">get_file_size</span>
+<span class="kn">from</span> <span class="nn">.download</span> <span class="kn">import</span> <span class="n">millify</span>
+<span class="kn">from</span> <span class="nn">.filter_attrs</span> <span class="kn">import</span> <span class="n">expand_sample_attribute_columns</span>
+<span class="kn">from</span> <span class="nn">.taxid2name</span> <span class="kn">import</span> <span class="n">TAXID_TO_NAME</span>
+<span class="kn">from</span> <span class="nn">.utils</span> <span class="kn">import</span> <span class="n">_find_aspera_keypath</span>
+<span class="kn">from</span> <span class="nn">.utils</span> <span class="kn">import</span> <span class="n">_get_url</span>
+<span class="kn">from</span> <span class="nn">.utils</span> <span class="kn">import</span> <span class="n">confirm</span>
+<span class="kn">from</span> <span class="nn">.utils</span> <span class="kn">import</span> <span class="n">copyfileobj</span>
+<span class="kn">from</span> <span class="nn">.utils</span> <span class="kn">import</span> <span class="n">get_gzip_uncompressed_size</span>
+<span class="kn">from</span> <span class="nn">.utils</span> <span class="kn">import</span> <span class="n">mkdir_p</span>
+<span class="kn">from</span> <span class="nn">.utils</span> <span class="kn">import</span> <span class="n">order_dataframe</span>
+<span class="kn">from</span> <span class="nn">.utils</span> <span class="kn">import</span> <span class="n">path_leaf</span>
+<span class="kn">from</span> <span class="nn">.utils</span> <span class="kn">import</span> <span class="n">run_command</span>
+<span class="kn">from</span> <span class="nn">.utils</span> <span class="kn">import</span> <span class="n">unique</span>
+
+<span class="n">warnings</span><span class="o">.</span><span class="n">simplefilter</span><span class="p">(</span><span class="n">action</span><span class="o">=</span><span class="s2">&quot;ignore&quot;</span><span class="p">,</span> <span class="n">category</span><span class="o">=</span><span class="ne">FutureWarning</span><span class="p">)</span>
+
+
+<span class="n">tqdm</span><span class="o">.</span><span class="n">pandas</span><span class="p">()</span>
+
+
+<span class="n">FTP_PREFIX</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;fasp&quot;</span><span class="p">:</span> <span class="s2">&quot;anonftp@ftp-trace.ncbi.nlm.nih.gov:&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;ftp&quot;</span><span class="p">:</span> <span class="s2">&quot;ftp://ftp-trace.ncbi.nlm.nih.gov&quot;</span><span class="p">,</span>
+<span class="p">}</span>
+<span class="n">SRADB_URL</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s2">&quot;https://s3.amazonaws.com/starbuck1/sradb/SRAmetadb.sqlite.gz&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;https://gbnci-abcc.ncifcrf.gov/backup/SRAmetadb.sqlite.gz&quot;</span><span class="p">,</span>
+<span class="p">]</span>
+
+<span class="n">ASCP_CMD_PREFIX</span> <span class="o">=</span> <span class="s2">&quot;ascp -k1 -T -l 300m -P33001 -i&quot;</span>
+<span class="n">PY3_VERSION</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">version_info</span><span class="o">.</span><span class="n">minor</span>
+
+
+<span class="k">def</span> <span class="nf">_handle_download</span><span class="p">(</span><span class="n">record</span><span class="p">,</span> <span class="n">use_ascp</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">pbar</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">ascp_bin</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">ascp_dir</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="n">srp</span> <span class="o">=</span> <span class="n">record</span><span class="p">[</span><span class="s2">&quot;study_accession&quot;</span><span class="p">]</span>
+    <span class="n">srx</span> <span class="o">=</span> <span class="n">record</span><span class="p">[</span><span class="s2">&quot;experiment_accession&quot;</span><span class="p">]</span>
+    <span class="n">srr</span> <span class="o">=</span> <span class="n">record</span><span class="p">[</span><span class="s2">&quot;run_accession&quot;</span><span class="p">]</span>
+    <span class="n">download_url</span> <span class="o">=</span> <span class="n">record</span><span class="p">[</span><span class="s2">&quot;download_url&quot;</span><span class="p">]</span>
+    <span class="n">srapath_url</span> <span class="o">=</span> <span class="n">record</span><span class="p">[</span><span class="s2">&quot;srapath_url&quot;</span><span class="p">]</span>
+    <span class="n">out_dir</span> <span class="o">=</span> <span class="n">record</span><span class="p">[</span><span class="s2">&quot;out_dir&quot;</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">pbar</span><span class="p">:</span>
+        <span class="n">pbar</span><span class="o">.</span><span class="n">set_description</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{}</span><span class="s2">/</span><span class="si">{}</span><span class="s2">/</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">srp</span><span class="p">,</span> <span class="n">srx</span><span class="p">,</span> <span class="n">srr</span><span class="p">))</span>
+    <span class="n">srp_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">out_dir</span><span class="p">,</span> <span class="n">srp</span><span class="p">)</span>
+    <span class="n">srx_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">srp_dir</span><span class="p">,</span> <span class="n">srx</span><span class="p">)</span>
+    <span class="n">download_filename</span> <span class="o">=</span> <span class="n">path_leaf</span><span class="p">(</span><span class="n">download_url</span><span class="p">)</span>
+    <span class="k">if</span> <span class="s2">&quot;.fastq.gz&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">download_filename</span><span class="p">:</span>
+        <span class="n">srr_location</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">srx_dir</span><span class="p">,</span> <span class="n">srr</span> <span class="o">+</span> <span class="s2">&quot;.sra&quot;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">srr_location</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">srx_dir</span><span class="p">,</span> <span class="n">download_filename</span><span class="p">)</span>
+    <span class="n">mkdir_p</span><span class="p">(</span><span class="n">srx_dir</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">use_ascp</span><span class="p">:</span>
+
+        <span class="n">ascp</span> <span class="o">=</span> <span class="n">ASCP_CMD_PREFIX</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;ascp&quot;</span><span class="p">,</span> <span class="n">ascp_bin</span><span class="p">)</span>
+        <span class="n">ena_cols</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">record</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span> <span class="k">if</span> <span class="s2">&quot;ena_fastq_ftp&quot;</span> <span class="ow">in</span> <span class="n">x</span><span class="p">]</span>
+        <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">ena_cols</span><span class="p">:</span>
+            <span class="n">download_url</span> <span class="o">=</span> <span class="n">record</span><span class="p">[</span><span class="n">col</span><span class="p">]</span>
+            <span class="n">cmd</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">{}</span><span class="s2"> </span><span class="si">{}</span><span class="s2"> </span><span class="si">{}</span><span class="s2"> </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                <span class="n">ascp</span><span class="p">,</span> <span class="n">_find_aspera_keypath</span><span class="p">(</span><span class="n">ascp_dir</span><span class="p">),</span> <span class="n">download_url</span><span class="p">,</span> <span class="n">srx_dir</span>
+            <span class="p">)</span>
+            <span class="n">run_command</span><span class="p">(</span><span class="n">cmd</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">srapath_url</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">download_filename</span> <span class="o">=</span> <span class="n">path_leaf</span><span class="p">(</span><span class="n">srapath_url</span><span class="p">)</span>
+            <span class="k">if</span> <span class="s2">&quot;.fastq.gz&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">download_filename</span><span class="p">:</span>
+                <span class="n">srr_location</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">srx_dir</span><span class="p">,</span> <span class="n">srr</span> <span class="o">+</span> <span class="s2">&quot;.sra&quot;</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">srr_location</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">srx_dir</span><span class="p">,</span> <span class="n">download_filename</span><span class="p">)</span>
+            <span class="n">download_file</span><span class="p">(</span><span class="n">srapath_url</span><span class="p">,</span> <span class="n">srr_location</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">download_file</span><span class="p">(</span><span class="n">download_url</span><span class="p">,</span> <span class="n">srr_location</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">pbar</span><span class="p">:</span>
+        <span class="n">pbar</span><span class="o">.</span><span class="n">update</span><span class="p">()</span>
+
+
+<span class="k">def</span> <span class="nf">_create_query</span><span class="p">(</span><span class="n">select_type_sql</span><span class="p">,</span> <span class="n">gses</span><span class="p">):</span>
+    <span class="n">sql</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="s2">&quot;SELECT DISTINCT &quot;</span>
+        <span class="o">+</span> <span class="n">select_type_sql</span>
+        <span class="o">+</span> <span class="s2">&quot; FROM sra_ft WHERE sra_ft MATCH &#39;&quot;</span>
+        <span class="o">+</span> <span class="s2">&quot; OR &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">gses</span><span class="p">)</span>
+        <span class="o">+</span> <span class="s2">&quot;&#39;;&quot;</span>
+    <span class="p">)</span>
+    <span class="k">return</span> <span class="n">sql</span>
+
+
+<span class="k">def</span> <span class="nf">_expand_sample_attrs</span><span class="p">(</span><span class="n">metadata_df</span><span class="p">):</span>
+    <span class="k">if</span> <span class="s2">&quot;sample_attribute&quot;</span> <span class="ow">in</span> <span class="n">metadata_df</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">tolist</span><span class="p">():</span>
+        <span class="n">metadata_df</span> <span class="o">=</span> <span class="n">expand_sample_attribute_columns</span><span class="p">(</span><span class="n">metadata_df</span><span class="p">)</span>
+        <span class="n">metadata_df</span> <span class="o">=</span> <span class="n">metadata_df</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;sample_attribute&quot;</span><span class="p">])</span>
+    <span class="k">return</span> <span class="n">metadata_df</span>
+
+
+<span class="k">def</span> <span class="nf">_listify</span><span class="p">(</span><span class="n">ids</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;convert string to list of unit length&quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">ids</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="n">ids</span> <span class="o">=</span> <span class="p">[</span><span class="n">ids</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">ids</span>
+
+
+<span class="k">def</span> <span class="nf">_prettify_df</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">out_type</span><span class="p">,</span> <span class="n">expand_sample_attributes</span><span class="p">):</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">index</span><span class="p">):</span>
+        <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">out_type</span><span class="p">]</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="n">out_type</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">expand_sample_attributes</span><span class="p">:</span>
+        <span class="n">df</span> <span class="o">=</span> <span class="n">_expand_sample_attrs</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">df</span>
+
+
+<div class="viewcode-block" id="download_sradb_file"><a class="viewcode-back" href="../../pysradb.html#pysradb.sradb.download_sradb_file">[docs]</a><span class="k">def</span> <span class="nf">download_sradb_file</span><span class="p">(</span><span class="n">download_dir</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">(),</span> <span class="n">overwrite</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">keep_gz</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Download SRAdb.sqlite file.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    download_dir: string</span>
+<span class="sd">                  Directory to download SRAmetadb.sqlite</span>
+<span class="sd">    overwrite: bool</span>
+<span class="sd">               overwrite existing file(s).</span>
+<span class="sd">               Set to True by default.</span>
+<span class="sd">    keep_gz: bool</span>
+<span class="sd">             Delete .gz file after extraction is complete</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">download_location</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">download_dir</span><span class="p">,</span> <span class="s2">&quot;SRAmetadb.sqlite.gz&quot;</span><span class="p">)</span>
+    <span class="n">download_location_unzip</span> <span class="o">=</span> <span class="n">download_location</span><span class="o">.</span><span class="n">rstrip</span><span class="p">(</span><span class="s2">&quot;.gz&quot;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">download_location</span><span class="p">)</span> <span class="ow">and</span> <span class="n">overwrite</span> <span class="ow">is</span> <span class="kc">False</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span>
+            <span class="s2">&quot;</span><span class="si">{}</span><span class="s2"> already exists! Set `overwrite=True` to redownload.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                <span class="n">download_location</span>
+            <span class="p">)</span>
+        <span class="p">)</span>
+    <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">download_location_unzip</span><span class="p">)</span> <span class="ow">and</span> <span class="n">overwrite</span> <span class="ow">is</span> <span class="kc">False</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span>
+            <span class="s2">&quot;</span><span class="si">{}</span><span class="s2"> already exists! Set `overwrite=True` to redownload.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                <span class="n">download_location_unzip</span>
+            <span class="p">)</span>
+        <span class="p">)</span>
+    <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">download_location_unzip</span><span class="p">):</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">download_location_unzip</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">download_location</span><span class="p">):</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">download_location</span><span class="p">)</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">_get_url</span><span class="p">(</span><span class="n">SRADB_URL</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">download_location</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="c1"># Try other URL</span>
+        <span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="o">.</span><span class="n">write</span><span class="p">(</span>
+            <span class="s2">&quot;Could not use </span><span class="si">{}</span><span class="s2">.</span><span class="se">\n</span><span class="s2">Exception: </span><span class="si">{}</span><span class="s2">.</span><span class="se">\n</span><span class="s2">Trying alternate url ...</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                <span class="n">SRADB_URL</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">e</span>
+            <span class="p">)</span>
+        <span class="p">)</span>
+        <span class="n">_get_url</span><span class="p">(</span><span class="n">SRADB_URL</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">download_location</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Extracting </span><span class="si">{}</span><span class="s2"> ...&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">download_location</span><span class="p">))</span>
+    <span class="n">filesize</span> <span class="o">=</span> <span class="n">get_gzip_uncompressed_size</span><span class="p">(</span><span class="n">download_location</span><span class="p">)</span>
+    <span class="k">with</span> <span class="n">gzip</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">download_location</span><span class="p">,</span> <span class="s2">&quot;rb&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">fh_in</span><span class="p">:</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">download_location_unzip</span><span class="p">,</span> <span class="s2">&quot;wb&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">fh_out</span><span class="p">:</span>
+            <span class="n">copyfileobj</span><span class="p">(</span>
+                <span class="n">fh_in</span><span class="p">,</span>
+                <span class="n">fh_out</span><span class="p">,</span>
+                <span class="n">filesize</span><span class="o">=</span><span class="n">filesize</span><span class="p">,</span>
+                <span class="n">desc</span><span class="o">=</span><span class="s2">&quot;Extracting </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s2">&quot;SRAmetadb.sqlite.gz&quot;</span><span class="p">),</span>
+            <span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">keep_gz</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">download_location</span><span class="p">):</span>
+            <span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">download_location</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Done!&quot;</span><span class="p">)</span>
+    <span class="n">db</span> <span class="o">=</span> <span class="n">SRAdb</span><span class="p">(</span><span class="n">download_location_unzip</span><span class="p">)</span>
+    <span class="n">metadata</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="s2">&quot;SELECT * FROM metaInfo&quot;</span><span class="p">)</span>
+    <span class="n">db</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Metadata associated with </span><span class="si">{}</span><span class="s2">:&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">download_location_unzip</span><span class="p">))</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">metadata</span><span class="p">)</span></div>
+
+
+<span class="k">def</span> <span class="nf">_verify_srametadb</span><span class="p">(</span><span class="n">filepath</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Check if supplied SQLite is valid&quot;&quot;&quot;</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">db</span> <span class="o">=</span> <span class="n">BASEdb</span><span class="p">(</span><span class="n">filepath</span><span class="p">)</span>
+    <span class="k">except</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span>
+            <span class="s2">&quot;</span><span class="si">{}</span><span class="s2"> not a valid SRAmetadb.sqlite file or path.</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">filepath</span><span class="p">)</span>
+            <span class="o">+</span> <span class="s2">&quot;Please download one using `pysradb metadb`.&quot;</span>
+        <span class="p">)</span>
+        <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">metadata</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="s2">&quot;SELECT * FROM metaInfo&quot;</span><span class="p">)</span>
+    <span class="n">db</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+    <span class="k">if</span> <span class="nb">list</span><span class="p">(</span><span class="n">metadata</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">)</span> <span class="o">!=</span> <span class="p">[</span><span class="s2">&quot;schema version&quot;</span><span class="p">,</span> <span class="s2">&quot;1.0&quot;</span><span class="p">]:</span>
+        <span class="nb">print</span><span class="p">(</span>
+            <span class="s2">&quot;</span><span class="si">{}</span><span class="s2"> not a valid SRAmetadb.sqlite file.</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">filepath</span><span class="p">)</span>
+            <span class="o">+</span> <span class="s2">&quot;Please download one using `pysradb metadb`.&quot;</span>
+        <span class="p">)</span>
+        <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="SRAdb"><a class="viewcode-back" href="../../pysradb.html#pysradb.sradb.SRAdb">[docs]</a><span class="k">class</span> <span class="nc">SRAdb</span><span class="p">(</span><span class="n">BASEdb</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sqlite_file</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Initialize SRAdb.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+
+<span class="sd">        sqlite_file: string</span>
+<span class="sd">                     Path to unzipped SRAmetadb.sqlite file</span>
+
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">_verify_srametadb</span><span class="p">(</span><span class="n">sqlite_file</span><span class="p">)</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">SRAdb</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">sqlite_file</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_db_type</span> <span class="o">=</span> <span class="s2">&quot;SRA&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">valid_in_acc_type</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="s2">&quot;SRA&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;ERA&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;DRA&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;SRP&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;ERP&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;DRP&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;SRS&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;ERS&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;DRS&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;SRX&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;ERX&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;DRX&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;SRR&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;ERR&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;DRR&quot;</span><span class="p">,</span>
+        <span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">valid_in_type</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;SRA&quot;</span><span class="p">:</span> <span class="s2">&quot;submission&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;ERA&quot;</span><span class="p">:</span> <span class="s2">&quot;submission&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;DRA&quot;</span><span class="p">:</span> <span class="s2">&quot;submission&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;SRP&quot;</span><span class="p">:</span> <span class="s2">&quot;study&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;ERP&quot;</span><span class="p">:</span> <span class="s2">&quot;study&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;DRP&quot;</span><span class="p">:</span> <span class="s2">&quot;study&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;SRS&quot;</span><span class="p">:</span> <span class="s2">&quot;sample&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;ERS&quot;</span><span class="p">:</span> <span class="s2">&quot;sample&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;DRS&quot;</span><span class="p">:</span> <span class="s2">&quot;sample&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;SRX&quot;</span><span class="p">:</span> <span class="s2">&quot;experiment&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;ERX&quot;</span><span class="p">:</span> <span class="s2">&quot;experiment&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;DRX&quot;</span><span class="p">:</span> <span class="s2">&quot;experiment&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;SRR&quot;</span><span class="p">:</span> <span class="s2">&quot;run&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;ERR&quot;</span><span class="p">:</span> <span class="s2">&quot;run&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;DRR&quot;</span><span class="p">:</span> <span class="s2">&quot;run&quot;</span><span class="p">,</span>
+        <span class="p">}</span>
+
+<div class="viewcode-block" id="SRAdb.sra_metadata"><a class="viewcode-back" href="../../pysradb.html#pysradb.sradb.SRAdb.sra_metadata">[docs]</a>    <span class="k">def</span> <span class="nf">sra_metadata</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">acc</span><span class="p">,</span>
+        <span class="n">out_type</span><span class="o">=</span><span class="p">[</span>
+            <span class="s2">&quot;study_accession&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;experiment_accession&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;sample_accession&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;run_accession&quot;</span><span class="p">,</span>
+        <span class="p">],</span>
+        <span class="n">assay</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="n">sample_attribute</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="n">detailed</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="n">expand_sample_attributes</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="n">output_read_lengths</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="n">acc_is_searchstr</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Get metadata for the provided SRA accession.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        acc: string or list</span>
+<span class="sd">             SRA accession ID</span>
+<span class="sd">        out_type: list</span>
+<span class="sd">                  List of columns to output</span>
+<span class="sd">        assay: bool</span>
+<span class="sd">               True if assay should be outputted</span>
+<span class="sd">        sample_attribute: bool</span>
+<span class="sd">                          True if sample_attribute should be outputted</span>
+<span class="sd">        detailed: bool</span>
+<span class="sd">                  True if full metadata tables should be outputted</span>
+<span class="sd">        expand_sample_attributes: bool</span>
+<span class="sd">                                  Should sample_attribute column be expanded?</span>
+<span class="sd">        output_read_lengths: bool</span>
+<span class="sd">                             True if read lengths should be calculated</span>
+<span class="sd">        acc_is_searchstr: bool</span>
+<span class="sd">                          True if acc is a search string</span>
+
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        metadata_df: DataFrame</span>
+<span class="sd">                     A dataframe with all relevant columns</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">acc</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+            <span class="n">acc</span> <span class="o">=</span> <span class="p">[</span><span class="n">acc</span><span class="p">]</span>
+        <span class="k">for</span> <span class="n">single_acc</span> <span class="ow">in</span> <span class="n">acc</span><span class="p">:</span>
+            <span class="n">in_acc_type</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\\</span><span class="s2">d+$&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">single_acc</span><span class="p">)</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">in_acc_type</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">valid_in_acc_type</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">acc_is_searchstr</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{}</span><span class="s2"> not a valid input type&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">in_acc_type</span><span class="p">))</span>
+            <span class="k">if</span> <span class="n">acc_is_searchstr</span><span class="p">:</span>
+                <span class="n">in_type</span> <span class="o">=</span> <span class="s2">&quot;study&quot;</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">in_type</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">valid_in_type</span><span class="p">[</span><span class="n">in_acc_type</span><span class="p">]</span>
+        <span class="n">output_columns</span> <span class="o">=</span> <span class="n">out_type</span><span class="p">[:]</span>
+        <span class="k">if</span> <span class="n">detailed</span><span class="p">:</span>
+            <span class="n">output_columns</span> <span class="o">+=</span> <span class="p">[</span>
+                <span class="s2">&quot;experiment_title&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;experiment_attribute&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;sample_attribute&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;run_accession&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;taxon_id&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;library_selection&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;library_layout&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;library_strategy&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;library_source&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;library_name&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;bases&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;spots&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;adapter_spec&quot;</span><span class="p">,</span>
+            <span class="p">]</span>
+        <span class="k">if</span> <span class="n">assay</span><span class="p">:</span>
+            <span class="k">if</span> <span class="s2">&quot;library_strategy&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">output_columns</span><span class="p">:</span>
+                <span class="n">output_columns</span> <span class="o">+=</span> <span class="p">[</span><span class="s2">&quot;library_strategy&quot;</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">sample_attribute</span><span class="p">:</span>
+            <span class="k">if</span> <span class="s2">&quot;sample_attribute&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">output_columns</span><span class="p">:</span>
+                <span class="n">output_columns</span> <span class="o">+=</span> <span class="p">[</span><span class="s2">&quot;sample_attribute&quot;</span><span class="p">]</span>
+        <span class="n">output_columns</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">output_columns</span> <span class="k">if</span> <span class="n">x</span> <span class="o">!=</span> <span class="n">in_type</span><span class="p">]</span>
+        <span class="n">output_columns</span> <span class="o">=</span> <span class="n">unique</span><span class="p">(</span><span class="n">output_columns</span><span class="p">)</span>
+        <span class="n">select_type</span> <span class="o">=</span> <span class="p">[</span><span class="n">in_type</span> <span class="o">+</span> <span class="s2">&quot;_accession&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="n">output_columns</span>
+        <span class="n">select_type_sql</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;,&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">select_type</span><span class="p">)</span>
+        <span class="n">sql</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="s2">&quot;SELECT DISTINCT &quot;</span>
+            <span class="o">+</span> <span class="n">select_type_sql</span>
+            <span class="o">+</span> <span class="s2">&quot; FROM sra_ft WHERE sra_ft MATCH &#39;&quot;</span>
+            <span class="o">+</span> <span class="s2">&quot; OR &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">acc</span><span class="p">)</span>
+            <span class="o">+</span> <span class="s2">&quot;&#39;;&quot;</span>
+        <span class="p">)</span>
+        <span class="n">df</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">sql</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">index</span><span class="p">):</span>
+            <span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;Empty results&quot;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">df</span>
+        <span class="k">if</span> <span class="s2">&quot;bases&quot;</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
+            <span class="k">if</span> <span class="s2">&quot;spots&quot;</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
+                <span class="n">df</span><span class="p">[</span><span class="s2">&quot;avg_read_length&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s2">&quot;bases&quot;</span><span class="p">]</span> <span class="o">/</span> <span class="n">df</span><span class="p">[</span><span class="s2">&quot;spots&quot;</span><span class="p">]</span>
+                <span class="n">df</span><span class="p">[</span><span class="s2">&quot;spots&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s2">&quot;spots&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+            <span class="n">df</span><span class="p">[</span><span class="s2">&quot;bases&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s2">&quot;bases&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+        <span class="k">if</span> <span class="s2">&quot;taxon_id&quot;</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
+            <span class="n">df</span><span class="p">[</span><span class="s2">&quot;taxon_id&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s2">&quot;taxon_id&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+            <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;taxon_id&quot;</span><span class="p">])</span>
+            <span class="n">df</span><span class="p">[</span><span class="s2">&quot;organism_name&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s2">&quot;taxon_id&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span>
+                <span class="k">lambda</span> <span class="n">taxid</span><span class="p">:</span> <span class="n">TAXID_TO_NAME</span><span class="p">[</span><span class="n">taxid</span><span class="p">]</span>
+            <span class="p">)</span>
+            <span class="n">output_columns</span> <span class="o">+=</span> <span class="p">[</span><span class="s2">&quot;organism_name&quot;</span><span class="p">]</span>
+        <span class="k">if</span> <span class="s2">&quot;experiment_accession&quot;</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span> <span class="ow">and</span> <span class="s2">&quot;run_accession&quot;</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
+            <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;experiment_accession&quot;</span><span class="p">,</span> <span class="s2">&quot;run_accession&quot;</span><span class="p">])</span>
+        <span class="k">elif</span> <span class="s2">&quot;experiment_accession&quot;</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
+            <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;experiment_accession&quot;</span><span class="p">])</span>
+        <span class="k">elif</span> <span class="s2">&quot;run_accession&quot;</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
+            <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;run_accession&quot;</span><span class="p">])</span>
+        <span class="k">elif</span> <span class="s2">&quot;sample_accession&quot;</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
+            <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;sample_accession&quot;</span><span class="p">])</span>
+        <span class="k">if</span> <span class="n">output_read_lengths</span> <span class="ow">and</span> <span class="s2">&quot;avg_read_length&quot;</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
+            <span class="n">output_columns</span> <span class="o">=</span> <span class="n">output_columns</span> <span class="o">+</span> <span class="p">[</span><span class="s2">&quot;avg_read_length&quot;</span><span class="p">]</span>
+        <span class="n">metadata_df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">metadata_df</span> <span class="o">=</span> <span class="n">order_dataframe</span><span class="p">(</span><span class="n">metadata_df</span><span class="p">,</span> <span class="n">output_columns</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">expand_sample_attributes</span><span class="p">:</span>
+            <span class="k">if</span> <span class="s2">&quot;sample_attribute&quot;</span> <span class="ow">in</span> <span class="n">metadata_df</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">tolist</span><span class="p">():</span>
+                <span class="n">metadata_df</span> <span class="o">=</span> <span class="n">expand_sample_attribute_columns</span><span class="p">(</span><span class="n">metadata_df</span><span class="p">)</span>
+                <span class="n">metadata_df</span> <span class="o">=</span> <span class="n">metadata_df</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;sample_attribute&quot;</span><span class="p">])</span>
+        <span class="k">return</span> <span class="n">metadata_df</span></div>
+
+<div class="viewcode-block" id="SRAdb.srp_to_srx"><a class="viewcode-back" href="../../pysradb.html#pysradb.sradb.SRAdb.srp_to_srx">[docs]</a>    <span class="k">def</span> <span class="nf">srp_to_srx</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">srp</span><span class="p">,</span>
+        <span class="n">sample_attribute</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="n">detailed</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="n">expand_sample_attributes</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Convert SRP to SRX/SRR.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        srp: string</span>
+<span class="sd">             SRP ID</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        srp_to_srx_df: DataFrame</span>
+<span class="sd">                       DataFrame with two columns for SRX/SRR</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">out_type</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;experiment_accession&quot;</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">detailed</span><span class="p">:</span>
+            <span class="n">out_type</span> <span class="o">+=</span> <span class="p">[</span>
+                <span class="s2">&quot;sample_accession&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;run_accession&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;experiment_alias&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;sample_alias&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;run_alias&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;study_alias&quot;</span><span class="p">,</span>
+            <span class="p">]</span>
+        <span class="k">if</span> <span class="n">sample_attribute</span><span class="p">:</span>
+            <span class="n">out_type</span> <span class="o">+=</span> <span class="p">[</span><span class="s2">&quot;sample_attribute&quot;</span><span class="p">]</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">sra_metadata</span><span class="p">(</span>
+            <span class="n">acc</span><span class="o">=</span><span class="n">srp</span><span class="p">,</span>
+            <span class="n">out_type</span><span class="o">=</span><span class="n">out_type</span><span class="p">,</span>
+            <span class="n">sample_attribute</span><span class="o">=</span><span class="n">sample_attribute</span><span class="p">,</span>
+            <span class="n">expand_sample_attributes</span><span class="o">=</span><span class="n">expand_sample_attributes</span><span class="p">,</span>
+        <span class="p">)</span></div>
+
+<div class="viewcode-block" id="SRAdb.srp_to_srs"><a class="viewcode-back" href="../../pysradb.html#pysradb.sradb.SRAdb.srp_to_srs">[docs]</a>    <span class="k">def</span> <span class="nf">srp_to_srs</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">srp</span><span class="p">,</span>
+        <span class="n">sample_attribute</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="n">detailed</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="n">expand_sample_attributes</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Convert SRP to SRS.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        srp: string</span>
+<span class="sd">             SRP ID</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        srp_to_srs_df: DataFrame</span>
+<span class="sd">                       DataFrame with two columns for SRS</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">out_type</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;study_accession&quot;</span><span class="p">,</span> <span class="s2">&quot;sample_accession&quot;</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">detailed</span><span class="p">:</span>
+            <span class="n">out_type</span> <span class="o">+=</span> <span class="p">[</span>
+                <span class="s2">&quot;experiment_accession&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;run_accession&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;study_alias&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;sample_alias&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;experiment_alias&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;run_alias&quot;</span><span class="p">,</span>
+            <span class="p">]</span>
+        <span class="k">if</span> <span class="n">sample_attribute</span><span class="p">:</span>
+            <span class="n">out_type</span> <span class="o">+=</span> <span class="p">[</span><span class="s2">&quot;sample_attribute&quot;</span><span class="p">]</span>
+        <span class="n">df</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sra_metadata</span><span class="p">(</span>
+            <span class="n">acc</span><span class="o">=</span><span class="n">srp</span><span class="p">,</span>
+            <span class="n">out_type</span><span class="o">=</span><span class="n">out_type</span><span class="p">,</span>
+            <span class="n">expand_sample_attributes</span><span class="o">=</span><span class="n">expand_sample_attributes</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="n">df</span></div>
+
+<div class="viewcode-block" id="SRAdb.srp_to_srr"><a class="viewcode-back" href="../../pysradb.html#pysradb.sradb.SRAdb.srp_to_srr">[docs]</a>    <span class="k">def</span> <span class="nf">srp_to_srr</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">srp</span><span class="p">,</span>
+        <span class="n">sample_attribute</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="n">detailed</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="n">expand_sample_attributes</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Convert SRP to SRR.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        srp: string</span>
+<span class="sd">             SRP ID</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        srp_to_srr_df: DataFrame</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">out_type</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;study_accession&quot;</span><span class="p">,</span> <span class="s2">&quot;run_accession&quot;</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">detailed</span><span class="p">:</span>
+            <span class="n">out_type</span> <span class="o">+=</span> <span class="p">[</span>
+                <span class="s2">&quot;experiment_accession&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;sample_accession&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;study_alias&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;experiment_alias&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;sample_alias&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;run_alias&quot;</span><span class="p">,</span>
+            <span class="p">]</span>
+        <span class="k">if</span> <span class="n">sample_attribute</span><span class="p">:</span>
+            <span class="n">out_type</span> <span class="o">+=</span> <span class="p">[</span><span class="s2">&quot;sample_attribute&quot;</span><span class="p">]</span>
+        <span class="n">df</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sra_metadata</span><span class="p">(</span>
+            <span class="n">acc</span><span class="o">=</span><span class="n">srp</span><span class="p">,</span>
+            <span class="n">out_type</span><span class="o">=</span><span class="n">out_type</span><span class="p">,</span>
+            <span class="n">expand_sample_attributes</span><span class="o">=</span><span class="n">expand_sample_attributes</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="n">df</span></div>
+
+<div class="viewcode-block" id="SRAdb.srp_to_gse"><a class="viewcode-back" href="../../pysradb.html#pysradb.sradb.SRAdb.srp_to_gse">[docs]</a>    <span class="k">def</span> <span class="nf">srp_to_gse</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">srp</span><span class="p">,</span>
+        <span class="n">sample_attribute</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="n">detailed</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="n">expand_sample_attributes</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Convert SRP to GSE</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        srp: string</span>
+<span class="sd">             SRP ID</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        srp_to_srr_df: DataFrame</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">out_type</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;study_accession&quot;</span><span class="p">,</span> <span class="s2">&quot;study_alias&quot;</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">detailed</span><span class="p">:</span>
+            <span class="n">out_type</span> <span class="o">+=</span> <span class="p">[</span>
+                <span class="s2">&quot;experiment_accession&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;run_accession&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;sample_accession&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;experiment_alias&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;run_alias&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;sample_alias&quot;</span><span class="p">,</span>
+            <span class="p">]</span>
+        <span class="k">if</span> <span class="n">sample_attribute</span><span class="p">:</span>
+            <span class="n">out_type</span> <span class="o">+=</span> <span class="p">[</span><span class="s2">&quot;sample_attribute&quot;</span><span class="p">]</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">sra_metadata</span><span class="p">(</span>
+            <span class="n">acc</span><span class="o">=</span><span class="n">srp</span><span class="p">,</span>
+            <span class="n">out_type</span><span class="o">=</span><span class="n">out_type</span><span class="p">,</span>
+            <span class="n">expand_sample_attributes</span><span class="o">=</span><span class="n">expand_sample_attributes</span><span class="p">,</span>
+        <span class="p">)</span></div>
+
+<div class="viewcode-block" id="SRAdb.gse_to_srp"><a class="viewcode-back" href="../../pysradb.html#pysradb.sradb.SRAdb.gse_to_srp">[docs]</a>    <span class="k">def</span> <span class="nf">gse_to_srp</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">gses</span><span class="p">,</span>
+        <span class="n">sample_attribute</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="n">detailed</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="n">expand_sample_attributes</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Convert SRP to GSE</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        gses: string or list</span>
+<span class="sd">              List of GSE ID</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        gse_to_srp_df: DataFrame</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">gses</span> <span class="o">=</span> <span class="n">_listify</span><span class="p">(</span><span class="n">gses</span><span class="p">)</span>
+        <span class="n">out_type</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;study_alias&quot;</span><span class="p">,</span> <span class="s2">&quot;study_accession&quot;</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">detailed</span><span class="p">:</span>
+            <span class="n">out_type</span> <span class="o">+=</span> <span class="p">[</span>
+                <span class="s2">&quot;experiment_accession&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;sample_accession&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;experiment_alias&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;sample_alias&quot;</span><span class="p">,</span>
+            <span class="p">]</span>
+        <span class="k">if</span> <span class="n">sample_attribute</span><span class="p">:</span>
+            <span class="n">out_type</span> <span class="o">+=</span> <span class="p">[</span><span class="s2">&quot;sample_attribute&quot;</span><span class="p">]</span>
+        <span class="n">select_type_sql</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;,&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">out_type</span><span class="p">)</span>
+        <span class="n">sql</span> <span class="o">=</span> <span class="n">_create_query</span><span class="p">(</span><span class="n">select_type_sql</span><span class="p">,</span> <span class="n">gses</span><span class="p">)</span>
+        <span class="n">df</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">sql</span><span class="p">)</span>
+        <span class="n">df</span> <span class="o">=</span> <span class="n">_prettify_df</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">out_type</span><span class="p">,</span> <span class="n">expand_sample_attributes</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">df</span></div>
+
+<div class="viewcode-block" id="SRAdb.gsm_to_srp"><a class="viewcode-back" href="../../pysradb.html#pysradb.sradb.SRAdb.gsm_to_srp">[docs]</a>    <span class="k">def</span> <span class="nf">gsm_to_srp</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">gsms</span><span class="p">,</span>
+        <span class="n">sample_attribute</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="n">detailed</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="n">expand_sample_attributes</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Convert GSM to SRP.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        gsms: string or list</span>
+<span class="sd">              List of GSM ID</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        gsm_to_srp_df: DataFrame</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">gsms</span> <span class="o">=</span> <span class="n">_listify</span><span class="p">(</span><span class="n">gsms</span><span class="p">)</span>
+        <span class="n">out_type</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;experiment_alias&quot;</span><span class="p">,</span> <span class="s2">&quot;study_accession&quot;</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">detailed</span><span class="p">:</span>
+            <span class="n">out_type</span> <span class="o">+=</span> <span class="p">[</span>
+                <span class="s2">&quot;experiment_accession&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;sample_accession&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;run_accession&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;experiment_alias&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;sample_alias&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;run_alias&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;study_alias&quot;</span><span class="p">,</span>
+            <span class="p">]</span>
+        <span class="k">if</span> <span class="n">sample_attribute</span><span class="p">:</span>
+            <span class="n">out_type</span> <span class="o">+=</span> <span class="p">[</span><span class="s2">&quot;sample_attribute&quot;</span><span class="p">]</span>
+        <span class="n">select_type_sql</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;,&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">out_type</span><span class="p">)</span>
+        <span class="n">sql</span> <span class="o">=</span> <span class="n">_create_query</span><span class="p">(</span><span class="n">select_type_sql</span><span class="p">,</span> <span class="n">gsms</span><span class="p">)</span>
+        <span class="n">df</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">sql</span><span class="p">)</span>
+        <span class="n">df</span> <span class="o">=</span> <span class="n">_prettify_df</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">out_type</span><span class="p">,</span> <span class="n">expand_sample_attributes</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">df</span></div>
+
+<div class="viewcode-block" id="SRAdb.gsm_to_srr"><a class="viewcode-back" href="../../pysradb.html#pysradb.sradb.SRAdb.gsm_to_srr">[docs]</a>    <span class="k">def</span> <span class="nf">gsm_to_srr</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">gsms</span><span class="p">,</span>
+        <span class="n">sample_attribute</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="n">detailed</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="n">expand_sample_attributes</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Convert GSMs to SRR.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        gsms: string or list</span>
+<span class="sd">              List of GSM id</span>
+<span class="sd">        sample_attribute: bool</span>
+<span class="sd">                          Include `sample_attribute` column</span>
+
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        gsm_to_srr_df: DataFrame</span>
+<span class="sd">                       DataFrame with two columns for GSM/SRR</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">gsms</span> <span class="o">=</span> <span class="n">_listify</span><span class="p">(</span><span class="n">gsms</span><span class="p">)</span>
+
+        <span class="n">out_type</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;experiment_alias&quot;</span><span class="p">,</span> <span class="s2">&quot;run_accession&quot;</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">detailed</span><span class="p">:</span>
+            <span class="n">out_type</span> <span class="o">+=</span> <span class="p">[</span>
+                <span class="s2">&quot;experiment_accession&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;sample_accession&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;study_accession&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;run_alias&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;sample_alias&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;study_alias&quot;</span><span class="p">,</span>
+            <span class="p">]</span>
+        <span class="k">if</span> <span class="n">sample_attribute</span><span class="p">:</span>
+            <span class="n">out_type</span> <span class="o">+=</span> <span class="p">[</span><span class="s2">&quot;sample_attribute&quot;</span><span class="p">]</span>
+        <span class="n">select_type_sql</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;,&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">out_type</span><span class="p">)</span>
+        <span class="n">sql</span> <span class="o">=</span> <span class="n">_create_query</span><span class="p">(</span><span class="n">select_type_sql</span><span class="p">,</span> <span class="n">gsms</span><span class="p">)</span>
+        <span class="n">df</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">sql</span><span class="p">)</span>
+        <span class="n">df</span> <span class="o">=</span> <span class="n">_prettify_df</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">out_type</span><span class="p">,</span> <span class="n">expand_sample_attributes</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">df</span></div>
+
+<div class="viewcode-block" id="SRAdb.gsm_to_srs"><a class="viewcode-back" href="../../pysradb.html#pysradb.sradb.SRAdb.gsm_to_srs">[docs]</a>    <span class="k">def</span> <span class="nf">gsm_to_srs</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">gsms</span><span class="p">,</span>
+        <span class="n">sample_attribute</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="n">detailed</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="n">expand_sample_attributes</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Convert GSM to SRS.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        gsms: list or string</span>
+<span class="sd">              List of gsms</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        gsm_to_srs_df: DataFrame</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">gsms</span> <span class="o">=</span> <span class="n">_listify</span><span class="p">(</span><span class="n">gsms</span><span class="p">)</span>
+        <span class="n">out_type</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;sample_alias&quot;</span><span class="p">,</span> <span class="s2">&quot;sample_accession&quot;</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">detailed</span><span class="p">:</span>
+            <span class="n">out_type</span> <span class="o">+=</span> <span class="p">[</span>
+                <span class="s2">&quot;sample_accession&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;experiment_accession&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;run_accession&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;study_accession&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;sample_alias&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;experiment_alias&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;run_alias&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;study_alias&quot;</span><span class="p">,</span>
+            <span class="p">]</span>
+        <span class="k">if</span> <span class="n">sample_attribute</span><span class="p">:</span>
+            <span class="n">out_type</span> <span class="o">+=</span> <span class="p">[</span><span class="s2">&quot;sample_attribute&quot;</span><span class="p">]</span>
+        <span class="n">select_type_sql</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;,&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">out_type</span><span class="p">)</span>
+        <span class="n">sql</span> <span class="o">=</span> <span class="n">_create_query</span><span class="p">(</span><span class="n">select_type_sql</span><span class="p">,</span> <span class="n">gsms</span><span class="p">)</span>
+        <span class="n">df</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">sql</span><span class="p">)</span>
+        <span class="n">df</span> <span class="o">=</span> <span class="n">_prettify_df</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">out_type</span><span class="p">,</span> <span class="n">expand_sample_attributes</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">df</span></div>
+
+<div class="viewcode-block" id="SRAdb.gsm_to_srx"><a class="viewcode-back" href="../../pysradb.html#pysradb.sradb.SRAdb.gsm_to_srx">[docs]</a>    <span class="k">def</span> <span class="nf">gsm_to_srx</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">gsms</span><span class="p">,</span>
+        <span class="n">sample_attribute</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="n">detailed</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="n">expand_sample_attributes</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Convert GSM to SRX.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        srx: string</span>
+<span class="sd">             SRX ID</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        srs_to_srx_df: DataFrame</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">gsms</span> <span class="o">=</span> <span class="n">_listify</span><span class="p">(</span><span class="n">gsms</span><span class="p">)</span>
+        <span class="n">out_type</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;experiment_alias&quot;</span><span class="p">,</span> <span class="s2">&quot;experiment_accession&quot;</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">detailed</span><span class="p">:</span>
+            <span class="n">out_type</span> <span class="o">+=</span> <span class="p">[</span>
+                <span class="s2">&quot;sample_accession&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;run_accession&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;study_accession&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;sample_alias&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;experiment_alias&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;run_alias&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;study_alias&quot;</span><span class="p">,</span>
+            <span class="p">]</span>
+        <span class="k">if</span> <span class="n">sample_attribute</span><span class="p">:</span>
+            <span class="n">out_type</span> <span class="o">+=</span> <span class="p">[</span><span class="s2">&quot;sample_attribute&quot;</span><span class="p">]</span>
+        <span class="n">select_type_sql</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;,&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">out_type</span><span class="p">)</span>
+        <span class="n">sql</span> <span class="o">=</span> <span class="n">_create_query</span><span class="p">(</span><span class="n">select_type_sql</span><span class="p">,</span> <span class="n">gsms</span><span class="p">)</span>
+        <span class="n">df</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">sql</span><span class="p">)</span>
+        <span class="n">df</span> <span class="o">=</span> <span class="n">_prettify_df</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">out_type</span><span class="p">,</span> <span class="n">expand_sample_attributes</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">df</span></div>
+
+<div class="viewcode-block" id="SRAdb.gse_to_gsm"><a class="viewcode-back" href="../../pysradb.html#pysradb.sradb.SRAdb.gse_to_gsm">[docs]</a>    <span class="k">def</span> <span class="nf">gse_to_gsm</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">gses</span><span class="p">,</span>
+        <span class="n">sample_attribute</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="n">detailed</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="n">expand_sample_attributes</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Convert GSE to GSM</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        gses: string or list</span>
+<span class="sd">              List of GSE ID</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        gse_to_gsm_df: DataFrame</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">gses</span> <span class="o">=</span> <span class="n">_listify</span><span class="p">(</span><span class="n">gses</span><span class="p">)</span>
+        <span class="n">out_type</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;study_alias&quot;</span><span class="p">,</span> <span class="s2">&quot;experiment_alias&quot;</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">detailed</span><span class="p">:</span>
+            <span class="n">out_type</span> <span class="o">+=</span> <span class="p">[</span>
+                <span class="s2">&quot;experiment_accession&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;sample_accession&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;run_accession&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;sample_alias&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;run_alias&quot;</span><span class="p">,</span>
+            <span class="p">]</span>
+        <span class="k">if</span> <span class="n">sample_attribute</span><span class="p">:</span>
+            <span class="n">out_type</span> <span class="o">+=</span> <span class="p">[</span><span class="s2">&quot;sample_attribute&quot;</span><span class="p">]</span>
+        <span class="n">select_type_sql</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;,&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">out_type</span><span class="p">)</span>
+        <span class="n">sql</span> <span class="o">=</span> <span class="n">_create_query</span><span class="p">(</span><span class="n">select_type_sql</span><span class="p">,</span> <span class="n">gses</span><span class="p">)</span>
+        <span class="n">df</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">sql</span><span class="p">)</span>
+        <span class="n">df</span> <span class="o">=</span> <span class="n">_prettify_df</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">out_type</span><span class="p">,</span> <span class="n">expand_sample_attributes</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">df</span></div>
+
+<div class="viewcode-block" id="SRAdb.gsm_to_gse"><a class="viewcode-back" href="../../pysradb.html#pysradb.sradb.SRAdb.gsm_to_gse">[docs]</a>    <span class="k">def</span> <span class="nf">gsm_to_gse</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">gsms</span><span class="p">,</span>
+        <span class="n">sample_attribute</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="n">detailed</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="n">expand_sample_attributes</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Convert GSM to GSE</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        gsms: string or list</span>
+<span class="sd">              List of GSM ID</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        gsm_to_gse_df: DataFrame</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">gsms</span> <span class="o">=</span> <span class="n">_listify</span><span class="p">(</span><span class="n">gsms</span><span class="p">)</span>
+        <span class="n">out_type</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;experiment_alias&quot;</span><span class="p">,</span> <span class="s2">&quot;study_alias&quot;</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">detailed</span><span class="p">:</span>
+            <span class="n">out_type</span> <span class="o">+=</span> <span class="p">[</span>
+                <span class="s2">&quot;experiment_accession&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;sample_accession&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;run_accession&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;sample_alias&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;run_alias&quot;</span><span class="p">,</span>
+            <span class="p">]</span>
+        <span class="k">if</span> <span class="n">sample_attribute</span><span class="p">:</span>
+            <span class="n">out_type</span> <span class="o">+=</span> <span class="p">[</span><span class="s2">&quot;sample_attribute&quot;</span><span class="p">]</span>
+        <span class="n">select_type_sql</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;,&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">out_type</span><span class="p">)</span>
+        <span class="n">sql</span> <span class="o">=</span> <span class="n">_create_query</span><span class="p">(</span><span class="n">select_type_sql</span><span class="p">,</span> <span class="n">gsms</span><span class="p">)</span>
+        <span class="n">df</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">sql</span><span class="p">)</span>
+        <span class="n">df</span> <span class="o">=</span> <span class="n">_prettify_df</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">out_type</span><span class="p">,</span> <span class="n">expand_sample_attributes</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">df</span></div>
+
+<div class="viewcode-block" id="SRAdb.srr_to_srp"><a class="viewcode-back" href="../../pysradb.html#pysradb.sradb.SRAdb.srr_to_srp">[docs]</a>    <span class="k">def</span> <span class="nf">srr_to_srp</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">srrs</span><span class="p">,</span>
+        <span class="n">sample_attribute</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="n">detailed</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="n">expand_sample_attributes</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Convert SRR to SRP.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        srr: list of string</span>
+<span class="sd">             List of SRR IDs</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        srr_to_srp_df: DataFrame</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">srrs</span> <span class="o">=</span> <span class="n">_listify</span><span class="p">(</span><span class="n">srrs</span><span class="p">)</span>
+        <span class="n">out_type</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;run_accession&quot;</span><span class="p">,</span> <span class="s2">&quot;study_accession&quot;</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">detailed</span><span class="p">:</span>
+            <span class="n">out_type</span> <span class="o">+=</span> <span class="p">[</span>
+                <span class="s2">&quot;experiment_accession&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;sample_accession&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;run_alias&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;study_alias&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;experiment_alias&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;sample_alias&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;study_alias&quot;</span><span class="p">,</span>
+            <span class="p">]</span>
+        <span class="k">if</span> <span class="n">sample_attribute</span><span class="p">:</span>
+            <span class="n">out_type</span> <span class="o">+=</span> <span class="p">[</span><span class="s2">&quot;sample_attribute&quot;</span><span class="p">]</span>
+        <span class="n">select_type_sql</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;,&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">out_type</span><span class="p">)</span>
+        <span class="n">sql</span> <span class="o">=</span> <span class="n">_create_query</span><span class="p">(</span><span class="n">select_type_sql</span><span class="p">,</span> <span class="n">srrs</span><span class="p">)</span>
+        <span class="n">df</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">sql</span><span class="p">)</span>
+        <span class="n">df</span> <span class="o">=</span> <span class="n">_prettify_df</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">out_type</span><span class="p">,</span> <span class="n">expand_sample_attributes</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">df</span></div>
+
+<div class="viewcode-block" id="SRAdb.srr_to_srs"><a class="viewcode-back" href="../../pysradb.html#pysradb.sradb.SRAdb.srr_to_srs">[docs]</a>    <span class="k">def</span> <span class="nf">srr_to_srs</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">srrs</span><span class="p">,</span>
+        <span class="n">sample_attribute</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="n">detailed</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="n">expand_sample_attributes</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Convert SRR to SRS.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        srr: list of string</span>
+<span class="sd">             List of SRR IDs</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        srp_to_srs_df: DataFrame</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">srrs</span> <span class="o">=</span> <span class="n">_listify</span><span class="p">(</span><span class="n">srrs</span><span class="p">)</span>
+        <span class="n">out_type</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;run_accession&quot;</span><span class="p">,</span> <span class="s2">&quot;sample_accession&quot;</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">detailed</span><span class="p">:</span>
+            <span class="n">out_type</span> <span class="o">+=</span> <span class="p">[</span>
+                <span class="s2">&quot;experiment_accession&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;study_accession&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;run_alias&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;sample_alias&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;experiment_alias&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;study_alias&quot;</span><span class="p">,</span>
+            <span class="p">]</span>
+        <span class="k">if</span> <span class="n">sample_attribute</span><span class="p">:</span>
+            <span class="n">out_type</span> <span class="o">+=</span> <span class="p">[</span><span class="s2">&quot;sample_attribute&quot;</span><span class="p">]</span>
+        <span class="n">select_type_sql</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;,&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">out_type</span><span class="p">)</span>
+        <span class="n">sql</span> <span class="o">=</span> <span class="n">_create_query</span><span class="p">(</span><span class="n">select_type_sql</span><span class="p">,</span> <span class="n">srrs</span><span class="p">)</span>
+        <span class="n">df</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">sql</span><span class="p">)</span>
+        <span class="n">df</span> <span class="o">=</span> <span class="n">_prettify_df</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">out_type</span><span class="p">,</span> <span class="n">expand_sample_attributes</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">df</span></div>
+
+<div class="viewcode-block" id="SRAdb.srx_to_srs"><a class="viewcode-back" href="../../pysradb.html#pysradb.sradb.SRAdb.srx_to_srs">[docs]</a>    <span class="k">def</span> <span class="nf">srx_to_srs</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">srxs</span><span class="p">,</span>
+        <span class="n">sample_attribute</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="n">detailed</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="n">expand_sample_attributes</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Convert SRX to SRS.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        srx: string</span>
+<span class="sd">             SRX ID</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        srp_to_srs_df: DataFrame</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">srxs</span> <span class="o">=</span> <span class="n">_listify</span><span class="p">(</span><span class="n">srxs</span><span class="p">)</span>
+        <span class="n">out_type</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;experiment_accession&quot;</span><span class="p">,</span> <span class="s2">&quot;sample_accession&quot;</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">detailed</span><span class="p">:</span>
+            <span class="n">out_type</span> <span class="o">+=</span> <span class="p">[</span>
+                <span class="s2">&quot;run_accession&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;study_accession&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;experiment_alias&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;sample_alias&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;run_alias&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;study_alias&quot;</span><span class="p">,</span>
+            <span class="p">]</span>
+        <span class="k">if</span> <span class="n">sample_attribute</span><span class="p">:</span>
+            <span class="n">out_type</span> <span class="o">+=</span> <span class="p">[</span><span class="s2">&quot;sample_attribute&quot;</span><span class="p">]</span>
+        <span class="n">select_type_sql</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;,&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">out_type</span><span class="p">)</span>
+        <span class="n">sql</span> <span class="o">=</span> <span class="n">_create_query</span><span class="p">(</span><span class="n">select_type_sql</span><span class="p">,</span> <span class="n">srxs</span><span class="p">)</span>
+        <span class="n">df</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">sql</span><span class="p">)</span>
+        <span class="n">df</span> <span class="o">=</span> <span class="n">_prettify_df</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">out_type</span><span class="p">,</span> <span class="n">expand_sample_attributes</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">df</span></div>
+
+<div class="viewcode-block" id="SRAdb.srs_to_gsm"><a class="viewcode-back" href="../../pysradb.html#pysradb.sradb.SRAdb.srs_to_gsm">[docs]</a>    <span class="k">def</span> <span class="nf">srs_to_gsm</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">srss</span><span class="p">,</span>
+        <span class="n">sample_attribute</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="n">detailed</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="n">expand_sample_attributes</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Convert SRS to GSM.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        srss: list or string</span>
+<span class="sd">              List of SRS ID</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        srs_to_gsm_df: DataFrame</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">srss</span> <span class="o">=</span> <span class="n">_listify</span><span class="p">(</span><span class="n">srss</span><span class="p">)</span>
+        <span class="n">out_type</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;sample_accession&quot;</span><span class="p">,</span> <span class="s2">&quot;sample_alias&quot;</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">detailed</span><span class="p">:</span>
+            <span class="n">out_type</span> <span class="o">+=</span> <span class="p">[</span>
+                <span class="s2">&quot;experiment_accession&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;run_accession&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;study_accession&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;experiment_alias&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;run_alias&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;study_alias&quot;</span><span class="p">,</span>
+            <span class="p">]</span>
+        <span class="k">if</span> <span class="n">sample_attribute</span><span class="p">:</span>
+            <span class="n">out_type</span> <span class="o">+=</span> <span class="p">[</span><span class="s2">&quot;sample_attribute&quot;</span><span class="p">]</span>
+        <span class="n">select_type_sql</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;,&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">out_type</span><span class="p">)</span>
+        <span class="n">sql</span> <span class="o">=</span> <span class="n">_create_query</span><span class="p">(</span><span class="n">select_type_sql</span><span class="p">,</span> <span class="n">srss</span><span class="p">)</span>
+        <span class="n">df</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">sql</span><span class="p">)</span>
+        <span class="n">df</span> <span class="o">=</span> <span class="n">_prettify_df</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">out_type</span><span class="p">,</span> <span class="n">expand_sample_attributes</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">df</span></div>
+
+<div class="viewcode-block" id="SRAdb.srs_to_srx"><a class="viewcode-back" href="../../pysradb.html#pysradb.sradb.SRAdb.srs_to_srx">[docs]</a>    <span class="k">def</span> <span class="nf">srs_to_srx</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">srss</span><span class="p">,</span>
+        <span class="n">sample_attribute</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="n">detailed</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="n">expand_sample_attributes</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Convert SRS to SRX.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        srx: string</span>
+<span class="sd">             SRX ID</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        srs_to_srx_df: DataFrame</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">srss</span> <span class="o">=</span> <span class="n">_listify</span><span class="p">(</span><span class="n">srss</span><span class="p">)</span>
+        <span class="n">out_type</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;sample_accession&quot;</span><span class="p">,</span> <span class="s2">&quot;experiment_accession&quot;</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">detailed</span><span class="p">:</span>
+            <span class="n">out_type</span> <span class="o">+=</span> <span class="p">[</span>
+                <span class="s2">&quot;run_accession&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;study_accession&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;sample_alias&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;experiment_alias&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;run_alias&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;study_alias&quot;</span><span class="p">,</span>
+            <span class="p">]</span>
+        <span class="k">if</span> <span class="n">sample_attribute</span><span class="p">:</span>
+            <span class="n">out_type</span> <span class="o">+=</span> <span class="p">[</span><span class="s2">&quot;sample_attribute&quot;</span><span class="p">]</span>
+        <span class="n">select_type_sql</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;,&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">out_type</span><span class="p">)</span>
+        <span class="n">sql</span> <span class="o">=</span> <span class="n">_create_query</span><span class="p">(</span><span class="n">select_type_sql</span><span class="p">,</span> <span class="n">srss</span><span class="p">)</span>
+        <span class="n">df</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">sql</span><span class="p">)</span>
+        <span class="n">df</span> <span class="o">=</span> <span class="n">_prettify_df</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">out_type</span><span class="p">,</span> <span class="n">expand_sample_attributes</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">df</span></div>
+
+<div class="viewcode-block" id="SRAdb.srr_to_srx"><a class="viewcode-back" href="../../pysradb.html#pysradb.sradb.SRAdb.srr_to_srx">[docs]</a>    <span class="k">def</span> <span class="nf">srr_to_srx</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">srrs</span><span class="p">,</span>
+        <span class="n">sample_attribute</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="n">detailed</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="n">expand_sample_attributes</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Convert SRR to SRX.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        srrs: string or list</span>
+<span class="sd">              List of SRR id</span>
+<span class="sd">        sample_attribute: bool</span>
+<span class="sd">                          Include `sample_attribute` column</span>
+
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        srr_to_srx_df: DataFrame</span>
+<span class="sd">                       DataFrame with two columns for SRX/SRR</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">srrs</span> <span class="o">=</span> <span class="n">_listify</span><span class="p">(</span><span class="n">srrs</span><span class="p">)</span>
+
+        <span class="n">out_type</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;run_accession&quot;</span><span class="p">,</span> <span class="s2">&quot;experiment_accession&quot;</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">detailed</span><span class="p">:</span>
+            <span class="n">out_type</span> <span class="o">+=</span> <span class="p">[</span>
+                <span class="s2">&quot;sample_accession&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;study_accession&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;run_alias&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;experiment_alias&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;sample_alias&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;study_alias&quot;</span><span class="p">,</span>
+            <span class="p">]</span>
+        <span class="k">if</span> <span class="n">sample_attribute</span><span class="p">:</span>
+            <span class="n">out_type</span> <span class="o">+=</span> <span class="p">[</span><span class="s2">&quot;sample_attribute&quot;</span><span class="p">]</span>
+        <span class="n">select_type_sql</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;,&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">out_type</span><span class="p">)</span>
+        <span class="n">sql</span> <span class="o">=</span> <span class="n">_create_query</span><span class="p">(</span><span class="n">select_type_sql</span><span class="p">,</span> <span class="n">srrs</span><span class="p">)</span>
+        <span class="n">df</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">sql</span><span class="p">)</span>
+        <span class="n">df</span> <span class="o">=</span> <span class="n">_prettify_df</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">out_type</span><span class="p">,</span> <span class="n">expand_sample_attributes</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">df</span></div>
+
+<div class="viewcode-block" id="SRAdb.srx_to_srp"><a class="viewcode-back" href="../../pysradb.html#pysradb.sradb.SRAdb.srx_to_srp">[docs]</a>    <span class="k">def</span> <span class="nf">srx_to_srp</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">srxs</span><span class="p">,</span>
+        <span class="n">sample_attribute</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="n">detailed</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="n">expand_sample_attributes</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Convert SRXs to SRP.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        srxs: string or list</span>
+<span class="sd">              List of SRX id</span>
+<span class="sd">        sample_attribute: bool</span>
+<span class="sd">                          Include `sample_attribute` column</span>
+
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        srx_to_srp_df: DataFrame</span>
+<span class="sd">                       DataFrame with two columns for SRX</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">srxs</span> <span class="o">=</span> <span class="n">_listify</span><span class="p">(</span><span class="n">srxs</span><span class="p">)</span>
+        <span class="n">out_type</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;experiment_accession&quot;</span><span class="p">,</span> <span class="s2">&quot;study_accession&quot;</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">detailed</span><span class="p">:</span>
+            <span class="n">out_type</span> <span class="o">+=</span> <span class="p">[</span>
+                <span class="s2">&quot;run_accession&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;sample_accession&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;experiment_alias&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;run_alias&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;sample_alias&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;study_alias&quot;</span><span class="p">,</span>
+            <span class="p">]</span>
+        <span class="k">if</span> <span class="n">sample_attribute</span><span class="p">:</span>
+            <span class="n">out_type</span> <span class="o">+=</span> <span class="p">[</span><span class="s2">&quot;sample_attribute&quot;</span><span class="p">]</span>
+        <span class="n">select_type_sql</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;,&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">out_type</span><span class="p">)</span>
+        <span class="n">sql</span> <span class="o">=</span> <span class="n">_create_query</span><span class="p">(</span><span class="n">select_type_sql</span><span class="p">,</span> <span class="n">srxs</span><span class="p">)</span>
+        <span class="n">df</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">sql</span><span class="p">)</span>
+        <span class="n">df</span> <span class="o">=</span> <span class="n">_prettify_df</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">out_type</span><span class="p">,</span> <span class="n">expand_sample_attributes</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">df</span></div>
+
+<div class="viewcode-block" id="SRAdb.srr_to_gsm"><a class="viewcode-back" href="../../pysradb.html#pysradb.sradb.SRAdb.srr_to_gsm">[docs]</a>    <span class="k">def</span> <span class="nf">srr_to_gsm</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">srrs</span><span class="p">,</span>
+        <span class="n">sample_attribute</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="n">detailed</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="n">expand_sample_attributes</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Convert SRR to GSM</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        gses: string or list</span>
+<span class="sd">              List of SRR</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        srr_to_gsm_df: DataFrame</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">srrs</span> <span class="o">=</span> <span class="n">_listify</span><span class="p">(</span><span class="n">srrs</span><span class="p">)</span>
+        <span class="n">out_type</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;run_alias&quot;</span><span class="p">,</span> <span class="s2">&quot;experiment_alias&quot;</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">detailed</span><span class="p">:</span>
+            <span class="n">out_type</span> <span class="o">+=</span> <span class="p">[</span>
+                <span class="s2">&quot;run_accession&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;experiment_accession&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;study_accession&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;sample_accession&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;study_alias&quot;</span> <span class="s2">&quot;sample_alias&quot;</span><span class="p">,</span>
+            <span class="p">]</span>
+        <span class="k">if</span> <span class="n">sample_attribute</span><span class="p">:</span>
+            <span class="n">out_type</span> <span class="o">+=</span> <span class="p">[</span><span class="s2">&quot;sample_attribute&quot;</span><span class="p">]</span>
+        <span class="n">select_type_sql</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;,&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">out_type</span><span class="p">)</span>
+        <span class="n">sql</span> <span class="o">=</span> <span class="n">_create_query</span><span class="p">(</span><span class="n">select_type_sql</span><span class="p">,</span> <span class="n">srrs</span><span class="p">)</span>
+        <span class="n">df</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">sql</span><span class="p">)</span>
+        <span class="n">df</span> <span class="o">=</span> <span class="n">_prettify_df</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">out_type</span><span class="p">,</span> <span class="n">expand_sample_attributes</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">df</span></div>
+
+<div class="viewcode-block" id="SRAdb.srx_to_srr"><a class="viewcode-back" href="../../pysradb.html#pysradb.sradb.SRAdb.srx_to_srr">[docs]</a>    <span class="k">def</span> <span class="nf">srx_to_srr</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">srxs</span><span class="p">,</span>
+        <span class="n">sample_attribute</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="n">detailed</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="n">expand_sample_attributes</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Convert SRXs to SRR/SRP.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        srxs: string or list</span>
+<span class="sd">              List of SRX id</span>
+<span class="sd">        sample_attribute: bool</span>
+<span class="sd">                          Include `sample_attribute` column</span>
+
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        srx_to_srp_df: DataFrame</span>
+<span class="sd">                       DataFrame with two columns for SRX/SRR</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">srxs</span> <span class="o">=</span> <span class="n">_listify</span><span class="p">(</span><span class="n">srxs</span><span class="p">)</span>
+        <span class="n">out_type</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;experiment_accession&quot;</span><span class="p">,</span> <span class="s2">&quot;run_accession&quot;</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">detailed</span><span class="p">:</span>
+            <span class="n">out_type</span> <span class="o">+=</span> <span class="p">[</span>
+                <span class="s2">&quot;sample_accession&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;study_accession&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;experiment_alias&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;run_alias&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;sample_alias&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;study_alias&quot;</span><span class="p">,</span>
+            <span class="p">]</span>
+        <span class="k">if</span> <span class="n">sample_attribute</span><span class="p">:</span>
+            <span class="n">out_type</span> <span class="o">+=</span> <span class="p">[</span><span class="s2">&quot;sample_attribute&quot;</span><span class="p">]</span>
+        <span class="n">select_type_sql</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;,&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">out_type</span><span class="p">)</span>
+        <span class="n">sql</span> <span class="o">=</span> <span class="n">_create_query</span><span class="p">(</span><span class="n">select_type_sql</span><span class="p">,</span> <span class="n">srxs</span><span class="p">)</span>
+        <span class="n">df</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">sql</span><span class="p">)</span>
+        <span class="n">df</span> <span class="o">=</span> <span class="n">_prettify_df</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">out_type</span><span class="p">,</span> <span class="n">expand_sample_attributes</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">df</span></div>
+
+<div class="viewcode-block" id="SRAdb.search_sra"><a class="viewcode-back" href="../../pysradb.html#pysradb.sradb.SRAdb.search_sra">[docs]</a>    <span class="k">def</span> <span class="nf">search_sra</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">search_str</span><span class="p">,</span>
+        <span class="n">out_type</span><span class="o">=</span><span class="p">[</span>
+            <span class="s2">&quot;study_accession&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;experiment_accession&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;sample_accession&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;run_accession&quot;</span><span class="p">,</span>
+        <span class="p">],</span>
+        <span class="n">assay</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="n">sample_attribute</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="n">detailed</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="n">expand_sample_attributes</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="n">output_read_lengths</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Search SRA for any search term.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        search_str: string</span>
+<span class="sd">                    SQL like text string to search.</span>
+<span class="sd">                    SQL like text =&gt; For example,</span>
+<span class="sd">                    terms in quotes &quot;&quot; enforce an exact search.</span>
+
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        query_df: DataFrame</span>
+<span class="sd">                  Dataframe with relevant query results</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">sra_metadata</span><span class="p">(</span>
+            <span class="n">search_str</span><span class="p">,</span>
+            <span class="n">out_type</span><span class="o">=</span><span class="n">out_type</span><span class="p">,</span>
+            <span class="n">assay</span><span class="o">=</span><span class="n">assay</span><span class="p">,</span>
+            <span class="n">sample_attribute</span><span class="o">=</span><span class="n">sample_attribute</span><span class="p">,</span>
+            <span class="n">detailed</span><span class="o">=</span><span class="n">detailed</span><span class="p">,</span>
+            <span class="n">expand_sample_attributes</span><span class="o">=</span><span class="n">expand_sample_attributes</span><span class="p">,</span>
+            <span class="n">output_read_lengths</span><span class="o">=</span><span class="n">output_read_lengths</span><span class="p">,</span>
+            <span class="n">acc_is_searchstr</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="p">)</span></div>
+
+<div class="viewcode-block" id="SRAdb.search_by_expt_id"><a class="viewcode-back" href="../../pysradb.html#pysradb.sradb.SRAdb.search_by_expt_id">[docs]</a>    <span class="k">def</span> <span class="nf">search_by_expt_id</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">srx</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Search for a SRX/GSM id in the experiments.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        srx: string</span>
+<span class="sd">             SRX (experiment_accession) ID</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        results: dict</span>
+<span class="sd">                 Dictionary with relevant hits</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="s2">&quot;GSM&quot;</span> <span class="ow">in</span> <span class="n">srx</span><span class="p">:</span>
+            <span class="n">results</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span>
+                <span class="s1">&#39;select * from EXPERIMENT where experiment_alias = &quot;</span><span class="si">{}</span><span class="s1">&quot;&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">srx</span><span class="p">)</span>
+            <span class="p">)</span><span class="o">.</span><span class="n">fetchall</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">results</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span>
+                <span class="s1">&#39;select * from EXPERIMENT where experiment_accession = &quot;</span><span class="si">{}</span><span class="s1">&quot;&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">srx</span><span class="p">)</span>
+            <span class="p">)</span><span class="o">.</span><span class="n">fetchall</span><span class="p">()</span>
+        <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">results</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;Got multiple hits&quot;</span>
+        <span class="n">results</span> <span class="o">=</span> <span class="n">results</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">column_names</span> <span class="o">=</span> <span class="nb">list</span><span class="p">([</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">cursor</span><span class="o">.</span><span class="n">description</span><span class="p">])</span>
+        <span class="n">results</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">column_names</span><span class="p">,</span> <span class="n">results</span><span class="p">)))</span>
+        <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="o">.</span><span class="n">from_dict</span><span class="p">(</span><span class="n">results</span><span class="p">,</span> <span class="n">orient</span><span class="o">=</span><span class="s2">&quot;index&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">T</span></div>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">_srapath_url</span><span class="p">(</span><span class="n">sacc</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Get srapath URL for a SRP/SRR.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        srp: string</span>
+
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        srr_paths: dict</span>
+<span class="sd">                   A dict of URLS with keys as SRR</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">PY3_VERSION</span> <span class="o">&gt;=</span> <span class="mi">7</span><span class="p">:</span>
+            <span class="n">proc</span> <span class="o">=</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">run</span><span class="p">([</span><span class="s2">&quot;srapath&quot;</span><span class="p">,</span> <span class="n">sacc</span><span class="p">],</span> <span class="n">capture_output</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">proc</span> <span class="o">=</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">run</span><span class="p">([</span><span class="s2">&quot;srapath&quot;</span><span class="p">,</span> <span class="n">sacc</span><span class="p">],</span> <span class="n">stdout</span><span class="o">=</span><span class="n">PIPE</span><span class="p">,</span> <span class="n">stderr</span><span class="o">=</span><span class="n">PIPE</span><span class="p">)</span>
+        <span class="n">stdout</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">proc</span><span class="o">.</span><span class="n">stdout</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s2">&quot;utf-8&quot;</span><span class="p">))</span>
+
+        <span class="n">urls</span> <span class="o">=</span> <span class="n">stdout</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="c1"># TODO: Improve this</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">urls</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>
+            <span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;Unable to run srapath.</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="kc">None</span>
+        <span class="n">urls</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">urls</span><span class="p">))</span>
+        <span class="n">srrs</span> <span class="o">=</span> <span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">url</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">])</span> <span class="k">for</span> <span class="n">url</span> <span class="ow">in</span> <span class="n">urls</span><span class="p">]</span>
+        <span class="k">return</span> <span class="nb">dict</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">srrs</span><span class="p">,</span> <span class="n">urls</span><span class="p">))</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">_srapath_url_srr</span><span class="p">(</span><span class="n">srr</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Get srapath URL for a SRR.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        srp: string</span>
+
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        srr_paths: dict</span>
+<span class="sd">                   A dict of URLS with keys as SRR</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">PY3_VERSION</span> <span class="o">&gt;=</span> <span class="mi">7</span><span class="p">:</span>
+            <span class="n">proc</span> <span class="o">=</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">run</span><span class="p">([</span><span class="s2">&quot;srapath&quot;</span><span class="p">,</span> <span class="n">srr</span><span class="p">],</span> <span class="n">capture_output</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">proc</span> <span class="o">=</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">run</span><span class="p">([</span><span class="s2">&quot;srapath&quot;</span><span class="p">,</span> <span class="n">srr</span><span class="p">],</span> <span class="n">stdout</span><span class="o">=</span><span class="n">PIPE</span><span class="p">,</span> <span class="n">stderr</span><span class="o">=</span><span class="n">PIPE</span><span class="p">)</span>
+        <span class="n">stdout</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">proc</span><span class="o">.</span><span class="n">stdout</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s2">&quot;utf-8&quot;</span><span class="p">))</span>
+        <span class="n">urls</span> <span class="o">=</span> <span class="n">stdout</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="c1"># TODO: Improve this</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">urls</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>
+            <span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;Unable to run srapath.</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="kc">None</span>
+        <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="n">urls</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+
+    <span class="k">def</span> <span class="nf">_select_best_url</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">url_list</span><span class="p">,</span> <span class="n">row</span><span class="p">,</span> <span class="n">use_ascp</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">use_ascp</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">url</span> <span class="ow">in</span> <span class="n">url_list</span><span class="p">:</span>
+                <span class="k">if</span> <span class="nb">str</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="n">url</span><span class="p">])</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;fasp&quot;</span><span class="p">):</span>
+                    <span class="k">return</span> <span class="n">row</span><span class="p">[</span><span class="n">url</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">url</span> <span class="ow">in</span> <span class="n">url_list</span><span class="p">:</span>
+                <span class="k">if</span> <span class="nb">str</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="n">url</span><span class="p">])</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;http&quot;</span><span class="p">):</span>
+                    <span class="k">return</span> <span class="n">row</span><span class="p">[</span><span class="n">url</span><span class="p">]</span>
+            <span class="k">for</span> <span class="n">url</span> <span class="ow">in</span> <span class="n">url_list</span><span class="p">:</span>
+                <span class="k">if</span> <span class="nb">str</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="n">url</span><span class="p">])</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;ftp&quot;</span><span class="p">):</span>
+                    <span class="k">return</span> <span class="n">row</span><span class="p">[</span><span class="n">url</span><span class="p">]</span>
+        <span class="k">return</span> <span class="kc">None</span>
+
+    <span class="k">def</span> <span class="nf">_format_dataframe_for_download</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">df</span><span class="p">,</span> <span class="n">url_column</span><span class="p">,</span> <span class="n">use_ascp</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Format a dataframe as input for pysradb download.</span>
+
+<span class="sd">        This method formats the input dataframe into the sradb.download</span>
+<span class="sd">        method.</span>
+<span class="sd">        First, the columns &quot;study_accession&quot;, &quot;experiment_accession&quot;, and</span>
+<span class="sd">        &quot;run_accession&quot; will be identified.</span>
+<span class="sd">        Next, this method will attempt to find the download url</span>
+<span class="sd">        corresponding to each run_accession.</span>
+<span class="sd">        If url_column is supplied, the column will be used if found.</span>
+<span class="sd">        If url_column is not supplied or not found, the method looks</span>
+<span class="sd">        for column headers in the dataframe that matches the regex</span>
+<span class="sd">        string &quot;.*sra.*(url|ftp|galaxy).*&quot;, which looks for a column header</span>
+<span class="sd">        that contains &quot;sra&quot;, as well as either &quot;url&quot;, &quot;ftp&quot; or &quot;galaxy&quot;</span>
+<span class="sd">        after &quot;sra&quot;. (case insensitive). If use_ascp is true, the program</span>
+<span class="sd">        will look for known columns containing ascp links instead.</span>
+
+<span class="sd">        All matching columns will be</span>
+<span class="sd">        returned for the user to select the url column to use. Additionally,</span>
+<span class="sd">        the column &quot;recommended_url&quot; is returned as well, which ensures as</span>
+<span class="sd">        much as possible that the column contains url links for every run</span>
+<span class="sd">        accession.</span>
+<span class="sd">        If any of &quot;study_accession&quot;, &quot;experiment_accession&quot;,</span>
+<span class="sd">        &quot;run_accession&quot; or &quot;srapath_url&quot; is missing, a</span>
+<span class="sd">        MissingDataFrameColumnsException will be raised.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        df: Pandas.DataFrame</span>
+<span class="sd">            dataframe containing accession numbers of interest as well as</span>
+<span class="sd">            potentially other metadata pertaining to the accession numbers.</span>
+<span class="sd">        url_column: str</span>
+<span class="sd">            name of the dataframe column header that contains download</span>
+<span class="sd">            urls, or a regex matching the expected column header.</span>
+<span class="sd">            if url_column == None, the regex &quot;.*sra.*(url|ftp|galaxy).*&quot;</span>
+<span class="sd">            will be used.</span>
+<span class="sd">        use_ascp: bool</span>
+<span class="sd">            whether ascp is used. If true and url_column is invalid or not</span>
+<span class="sd">            specified, the program will look for known columns containing</span>
+<span class="sd">            ascp links (containing &quot;aspera&quot; or &quot;fasta&quot;)</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        df_for_download: Pandas.DataFrame</span>
+<span class="sd">            dataframe containing accession numbers and (preferably) URL links</span>
+<span class="sd">            that can be used for download.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">missing_columns</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">df_columns</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+        <span class="n">accession_columns</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;study_accession&quot;</span><span class="p">,</span> <span class="s2">&quot;experiment_accession&quot;</span><span class="p">,</span> <span class="s2">&quot;run_accession&quot;</span><span class="p">]</span>
+        <span class="k">for</span> <span class="n">accession_column</span> <span class="ow">in</span> <span class="n">accession_columns</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">accession_column</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">df_columns</span><span class="p">:</span>
+                <span class="n">missing_columns</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">accession_column</span><span class="p">)</span>
+        <span class="c1"># Special case for SraSearch</span>
+        <span class="n">run_count</span> <span class="o">=</span> <span class="mi">1</span>  <span class="c1"># each row in the df contains at most 1 run_accession</span>
+        <span class="k">while</span> <span class="sa">f</span><span class="s2">&quot;run_</span><span class="si">{</span><span class="n">run_count</span><span class="si">}</span><span class="s2">_accession&quot;</span> <span class="ow">in</span> <span class="n">df_columns</span><span class="p">:</span>
+            <span class="n">run_count</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="k">if</span> <span class="n">missing_columns</span> <span class="o">==</span> <span class="p">[</span><span class="s2">&quot;run_accession&quot;</span><span class="p">]</span> <span class="ow">and</span> <span class="n">run_count</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">missing_columns</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+            <span class="n">accession_columns</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;run_1_accession&quot;</span>
+        <span class="k">if</span> <span class="n">url_column</span> <span class="ow">and</span> <span class="n">url_column</span> <span class="ow">in</span> <span class="n">df_columns</span><span class="p">:</span>
+            <span class="n">formatted_df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[:,</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">accession_columns</span> <span class="o">+</span> <span class="p">[</span><span class="n">url_column</span><span class="p">])]</span>
+            <span class="n">formatted_df</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span>
+                <span class="p">{</span><span class="s2">&quot;run_1_accession&quot;</span><span class="p">:</span> <span class="s2">&quot;run_accession&quot;</span><span class="p">},</span>
+                <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="p">)</span>
+        <span class="k">elif</span> <span class="n">use_ascp</span> <span class="ow">and</span> <span class="n">run_count</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="c1"># Add aspera columns, if they exist(for EnaSearch/metadata)</span>
+            <span class="n">possible_aspera_cols</span> <span class="o">=</span> <span class="p">[</span>
+                <span class="s2">&quot;fastq_aspera&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;sra_aspera&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;submitted_aspera&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;ena_fastq_ftp&quot;</span><span class="p">,</span>
+            <span class="p">]</span>
+            <span class="n">aspera_cols</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">possible_aspera_cols</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">df_columns</span><span class="p">:</span>
+                    <span class="n">aspera_cols</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">col</span><span class="p">)</span>
+            <span class="n">formatted_df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span>
+                <span class="p">:,</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">accession_columns</span> <span class="o">+</span> <span class="n">aspera_cols</span><span class="p">)</span>
+            <span class="p">]</span><span class="o">.</span><span class="n">rename</span><span class="p">({</span><span class="s2">&quot;run_1_accession&quot;</span><span class="p">:</span> <span class="s2">&quot;run_accession&quot;</span><span class="p">})</span>
+
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">run_dfs</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="n">url_regex</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s2">&quot;.*sra.*(url|ftp|galaxy).*&quot;</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">IGNORECASE</span><span class="p">)</span>
+            <span class="n">matched_cols</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">filter</span><span class="p">(</span><span class="n">url_regex</span><span class="o">.</span><span class="n">match</span><span class="p">,</span> <span class="n">df_columns</span><span class="p">))</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">run_count</span><span class="p">):</span>
+                <span class="n">url_list</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span>
+                    <span class="nb">filter</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;run_</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">),</span> <span class="n">matched_cols</span><span class="p">)</span>
+                <span class="p">)</span>
+                <span class="n">df</span><span class="p">[</span><span class="s2">&quot;recommended_url&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span>
+                    <span class="k">lambda</span> <span class="n">row</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_select_best_url</span><span class="p">(</span><span class="n">url_list</span><span class="p">,</span> <span class="n">row</span><span class="p">,</span> <span class="n">use_ascp</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span>
+                <span class="p">)</span>
+
+                <span class="k">def</span> <span class="nf">remove_unusable_urls</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">use_ascp</span><span class="p">):</span>
+                    <span class="k">if</span> <span class="n">use_ascp</span><span class="p">:</span>
+                        <span class="k">if</span> <span class="n">url</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;fasp&quot;</span><span class="p">):</span>
+                            <span class="k">return</span> <span class="n">url</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="k">if</span> <span class="n">url</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;http&quot;</span><span class="p">)</span> <span class="ow">or</span> <span class="n">url</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;ftp&quot;</span><span class="p">):</span>
+                            <span class="k">return</span> <span class="n">url</span>
+                    <span class="k">return</span> <span class="kc">None</span>
+
+                <span class="k">for</span> <span class="n">url_c</span> <span class="ow">in</span> <span class="n">url_list</span><span class="p">:</span>
+                    <span class="n">df</span><span class="p">[</span><span class="n">url_c</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">url_c</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span>
+                        <span class="k">lambda</span> <span class="n">url</span><span class="p">:</span> <span class="n">remove_unusable_urls</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">use_ascp</span><span class="p">)</span>
+                    <span class="p">)</span>
+                <span class="n">expected_columns</span> <span class="o">=</span> <span class="p">[</span>
+                    <span class="s2">&quot;study_accession&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;experiment_accession&quot;</span><span class="p">,</span>
+                    <span class="sa">f</span><span class="s2">&quot;run_</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">_accession&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;recommended_url&quot;</span><span class="p">,</span>
+                <span class="p">]</span> <span class="o">+</span> <span class="n">url_list</span>
+                <span class="n">run_df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[:,</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">expected_columns</span><span class="p">)]</span>
+                <span class="n">run_df</span> <span class="o">=</span> <span class="n">run_df</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">{</span><span class="sa">f</span><span class="s2">&quot;run_</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">_accession&quot;</span><span class="p">:</span> <span class="s2">&quot;run_accession&quot;</span><span class="p">})</span>
+                <span class="n">run_dfs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">run_df</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">run_count</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="n">expected_columns</span> <span class="o">=</span> <span class="p">[</span>
+                    <span class="s2">&quot;study_accession&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;experiment_accession&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;run_accession&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;recommended_url&quot;</span><span class="p">,</span>
+                <span class="p">]</span>
+                <span class="n">df</span><span class="p">[</span><span class="s2">&quot;recommended_url&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span>
+                    <span class="k">lambda</span> <span class="n">row</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_select_best_url</span><span class="p">(</span><span class="n">matched_cols</span><span class="p">,</span> <span class="n">row</span><span class="p">,</span> <span class="n">use_ascp</span><span class="p">),</span>
+                    <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+                <span class="p">)</span>
+
+                <span class="n">run_dfs</span> <span class="o">=</span> <span class="p">[</span><span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[:,</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">expected_columns</span><span class="p">)]]</span>
+            <span class="n">formatted_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">(</span><span class="n">run_dfs</span><span class="p">)</span>
+            <span class="n">formatted_df</span><span class="o">.</span><span class="n">dropna</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">how</span><span class="o">=</span><span class="s2">&quot;all&quot;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">matched_cols</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span>
+                    <span class="sa">f</span><span class="s2">&quot;No URL column is found.</span><span class="se">\n</span><span class="s2">&quot;</span>
+                    <span class="s2">&quot;You may wish to re-run your query with either</span><span class="se">\n</span><span class="s2">&quot;</span>
+                    <span class="s2">&quot;pysradb metadata --detailed </span><span class="se">\n</span><span class="s2">&quot;</span>
+                    <span class="s2">&quot;or </span><span class="se">\n</span><span class="s2">&quot;</span>
+                    <span class="s2">&quot;pysradb search -v 3</span><span class="se">\n</span><span class="s2">&quot;</span>
+                    <span class="s2">&quot;Generating default download URL for each run accession...</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
+                    <span class="n">flush</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                <span class="p">)</span>
+        <span class="k">if</span> <span class="n">missing_columns</span><span class="p">:</span>
+            <span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="o">.</span><span class="n">write</span><span class="p">(</span>
+                <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">pysradb download is unable to run:</span><span class="se">\n</span><span class="s2">&quot;</span>
+                <span class="s2">&quot;The following required columns are missing from the input DataFrame:</span><span class="se">\n</span><span class="s2">&quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">missing_columns</span><span class="si">}</span><span class="se">\n\n</span><span class="s2">&quot;</span>
+                <span class="s2">&quot;Please run your query with either</span><span class="se">\n</span><span class="s2">&quot;</span>
+                <span class="s2">&quot;pysradb metadata --detailed </span><span class="se">\n</span><span class="s2">&quot;</span>
+                <span class="s2">&quot;or </span><span class="se">\n</span><span class="s2">&quot;</span>
+                <span class="s2">&quot;pysradb search --detailed</span><span class="se">\n</span><span class="s2">&quot;</span>
+                <span class="s2">&quot;or </span><span class="se">\n</span><span class="s2">&quot;</span>
+                <span class="s2">&quot;pysradb search -v 3</span><span class="se">\n</span><span class="s2">&quot;</span>
+            <span class="p">)</span>
+            <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">formatted_df</span><span class="o">.</span><span class="n">dropna</span><span class="p">(</span>
+            <span class="n">subset</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;study_accession&quot;</span><span class="p">,</span> <span class="s2">&quot;experiment_accession&quot;</span><span class="p">,</span> <span class="s2">&quot;run_accession&quot;</span><span class="p">]</span>
+        <span class="p">)</span>
+
+<div class="viewcode-block" id="SRAdb.download"><a class="viewcode-back" href="../../pysradb.html#pysradb.sradb.SRAdb.download">[docs]</a>    <span class="k">def</span> <span class="nf">download</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">srp</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">df</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">url_col</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">out_dir</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">filter_by_srx</span><span class="o">=</span><span class="p">[],</span>
+        <span class="n">use_ascp</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="n">ascp_dir</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">ascp_bin</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">skip_confirmation</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="n">threads</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Download SRA files.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        srp: string</span>
+<span class="sd">             SRP ID (optional)</span>
+<span class="sd">        df: Dataframe</span>
+<span class="sd">            A dataframe as obtained from `sra_metadata`</span>
+<span class="sd">        url_col: string</span>
+<span class="sd">                Column of df to use for downloading</span>
+<span class="sd">        out_dir: string</span>
+<span class="sd">                 Directory location for download</span>
+<span class="sd">        filter_by_srx: list</span>
+<span class="sd">                       List of SRX ids to filter</span>
+<span class="sd">        protocol: string</span>
+<span class="sd">                  [&#39;fasp&#39;/&#39;ftp&#39;] fasp =&gt; faster download, ftp =&gt; slower</span>
+<span class="sd">        ascp_dir: string</span>
+<span class="sd">                  Location of ascp directory</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">out_dir</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">out_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">(),</span> <span class="s2">&quot;pysradb_downloads&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">srp</span><span class="p">:</span>
+            <span class="n">df</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sra_metadata</span><span class="p">(</span><span class="n">srp</span><span class="p">,</span> <span class="n">detailed</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">use_ascp</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">ascp_dir</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">ascp_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">expanduser</span><span class="p">(</span><span class="s2">&quot;~&quot;</span><span class="p">),</span> <span class="s2">&quot;.aspera&quot;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">ascp_dir</span><span class="p">):</span>
+                <span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="o">.</span><span class="n">write</span><span class="p">(</span>
+                    <span class="s2">&quot;Count not find aspera at: </span><span class="si">{}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">ascp_dir</span><span class="p">)</span>
+                    <span class="o">+</span> <span class="s2">&quot;Install aspera-client following instructions&quot;</span>
+                    <span class="o">+</span> <span class="s2">&quot;at https://github.com/saketkc/pysradb/README.rst for faster downloads.</span><span class="se">\n</span><span class="s2">&quot;</span>
+                    <span class="o">+</span> <span class="s2">&quot;You can supress this message by using `--use-wget` flag</span><span class="se">\n</span><span class="s2">&quot;</span>
+                    <span class="o">+</span> <span class="s2">&quot;Continuing with wget ...</span><span class="se">\n\n</span><span class="s2">&quot;</span>
+                <span class="p">)</span>
+                <span class="n">use_ascp</span> <span class="o">=</span> <span class="kc">False</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">ascp_bin</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">ascp_dir</span><span class="p">,</span> <span class="s2">&quot;connect&quot;</span><span class="p">,</span> <span class="s2">&quot;bin&quot;</span><span class="p">,</span> <span class="s2">&quot;ascp&quot;</span><span class="p">)</span>
+        <span class="c1"># Does the necessary column formatting for the dataframe</span>
+        <span class="n">df</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_format_dataframe_for_download</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">copy</span><span class="p">(),</span> <span class="n">url_col</span><span class="p">,</span> <span class="n">use_ascp</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">url_col</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;The supplied url column &quot;</span><span class="si">{</span><span class="n">url_col</span><span class="si">}</span><span class="s1">&quot; cannot be found.</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+            <span class="n">url_col</span> <span class="o">=</span> <span class="s2">&quot;recommended_url&quot;</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">skip_confirmation</span><span class="p">:</span>
+                <span class="n">pd</span><span class="o">.</span><span class="n">set_option</span><span class="p">(</span><span class="s2">&quot;display.max_colwidth&quot;</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+                <span class="nb">print</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">to_string</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">justify</span><span class="o">=</span><span class="s2">&quot;left&quot;</span><span class="p">,</span> <span class="n">col_space</span><span class="o">=</span><span class="mi">0</span><span class="p">))</span>
+                <span class="nb">print</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">linesep</span><span class="p">,</span> <span class="n">flush</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">confirm</span><span class="p">(</span><span class="s2">&quot;Use recommended_url instead?&quot;</span><span class="p">):</span>
+                    <span class="n">url_col</span> <span class="o">=</span> <span class="nb">input</span><span class="p">(</span><span class="s2">&quot;Please enter an url column to use:  &quot;</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Using recommended_url instead.</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">flush</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">url_col</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
+            <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Missing url columns!&quot;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">filter_by_srx</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">filter_by_srx</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+                <span class="n">filter_by_srx</span> <span class="o">=</span> <span class="p">[</span><span class="n">filter_by_srx</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">filter_by_srx</span><span class="p">:</span>
+            <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="o">.</span><span class="n">experiment_accession</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">filter_by_srx</span><span class="p">)]</span>
+        <span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[:,</span> <span class="s2">&quot;download_url&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">FTP_PREFIX</span><span class="p">[</span><span class="s2">&quot;ftp&quot;</span><span class="p">]</span>
+            <span class="o">+</span> <span class="s2">&quot;/sra/sra-instant/reads/ByRun/sra/&quot;</span>
+            <span class="o">+</span> <span class="n">df</span><span class="p">[</span><span class="s2">&quot;run_accession&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">str</span><span class="p">[:</span><span class="mi">3</span><span class="p">]</span>
+            <span class="o">+</span> <span class="s2">&quot;/&quot;</span>
+            <span class="o">+</span> <span class="n">df</span><span class="p">[</span><span class="s2">&quot;run_accession&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">str</span><span class="p">[:</span><span class="mi">6</span><span class="p">]</span>
+            <span class="o">+</span> <span class="s2">&quot;/&quot;</span>
+            <span class="o">+</span> <span class="n">df</span><span class="p">[</span><span class="s2">&quot;run_accession&quot;</span><span class="p">]</span>
+            <span class="o">+</span> <span class="s2">&quot;/&quot;</span>
+            <span class="o">+</span> <span class="n">df</span><span class="p">[</span><span class="s2">&quot;run_accession&quot;</span><span class="p">]</span>
+            <span class="o">+</span> <span class="s2">&quot;.sra&quot;</span>
+        <span class="p">)</span>
+        <span class="n">ena_columns</span> <span class="o">=</span> <span class="p">[</span><span class="n">col</span> <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span> <span class="k">if</span> <span class="s2">&quot;ena&quot;</span> <span class="ow">in</span> <span class="n">col</span><span class="p">]</span>
+        <span class="n">df</span><span class="p">[</span><span class="s2">&quot;out_dir&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">out_dir</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">index</span><span class="p">):</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Could not locate </span><span class="si">{}</span><span class="s2"> in db&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">srp</span><span class="p">))</span>
+            <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">use_ascp</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Checking download URLs&quot;</span><span class="p">,</span> <span class="n">flush</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            <span class="n">df</span><span class="p">[</span><span class="s2">&quot;filesize&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">get_file_size</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">url_col</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+            <span class="n">df</span><span class="o">.</span><span class="n">dropna</span><span class="p">(</span><span class="n">subset</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;filesize&quot;</span><span class="p">])</span>
+            <span class="n">total_file_size</span> <span class="o">=</span> <span class="n">millify</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;filesize&quot;</span><span class="p">]))</span>
+            <span class="n">df</span><span class="p">[</span><span class="s2">&quot;filesize&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s2">&quot;filesize&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">millify</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;The following files will be downloaded: </span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="n">pd</span><span class="o">.</span><span class="n">set_option</span><span class="p">(</span><span class="s2">&quot;display.max_colwidth&quot;</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">to_string</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">justify</span><span class="o">=</span><span class="s2">&quot;left&quot;</span><span class="p">,</span> <span class="n">col_space</span><span class="o">=</span><span class="mi">0</span><span class="p">))</span>
+            <span class="nb">print</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">linesep</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Total size: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">total_file_size</span><span class="p">))</span>
+            <span class="nb">print</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">linesep</span><span class="p">,</span> <span class="n">flush</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">skip_confirmation</span><span class="p">:</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">confirm</span><span class="p">(</span><span class="s2">&quot;Start download? &quot;</span><span class="p">):</span>
+                    <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+        <span class="n">df</span><span class="p">[</span><span class="s2">&quot;srapath_url&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">url_col</span><span class="p">]</span>
+        <span class="n">thread_map</span><span class="p">(</span>
+            <span class="n">partial</span><span class="p">(</span>
+                <span class="n">_handle_download</span><span class="p">,</span>
+                <span class="n">use_ascp</span><span class="o">=</span><span class="n">use_ascp</span><span class="p">,</span>
+                <span class="n">ascp_bin</span><span class="o">=</span><span class="n">ascp_bin</span><span class="p">,</span>
+                <span class="n">ascp_dir</span><span class="o">=</span><span class="n">ascp_dir</span><span class="p">,</span>
+            <span class="p">),</span>
+            <span class="n">df</span><span class="o">.</span><span class="n">to_dict</span><span class="p">(</span><span class="s2">&quot;records&quot;</span><span class="p">),</span>
+            <span class="n">max_workers</span><span class="o">=</span><span class="n">threads</span><span class="p">,</span>
+        <span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">df</span></div></div>
+</pre></div>
+
+              </div>
+              
+              
+              <div class='prev-next-bottom'>
+                
+
+              </div>
+              
+          </main>
+          
+
+      </div>
+    </div>
+
+    
+  <script src="../../_static/js/index.3da636dd464baa7582d2.js"></script>
+
+
+    
+    <!-- Google Analytics -->
+    <script>
+      window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+      ga('create', 'G-CKQZFCEENZ', 'auto');
+      ga('set', 'anonymizeIp', true);
+      ga('send', 'pageview');
+    </script>
+    <script async src='https://www.google-analytics.com/analytics.js'></script>
+    <!-- End Google Analytics -->
+    <footer class="footer mt-5 mt-md-0">
+  <div class="container">
+    <p>
+          &copy; Copyright 2018, Saket Choudhary.<br/>
+        Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.4.3.<br/>
+    </p>
+  </div>
+</footer>
+  </body>
+</html>

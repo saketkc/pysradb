@@ -1,0 +1,436 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>pysradb.filter_attrs &#8212; pysradb 1.0.1 documentation</title>
+    
+  <link rel="stylesheet" href="../../_static/css/index.73d71520a4ca3b99cfee5594769eaaae.css">
+
+    
+  <link rel="stylesheet"
+    href="../../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    
+      
+  <link rel="stylesheet"
+    href="../../_static/vendor/open-sans_all/1.44.1/index.css">
+  <link rel="stylesheet"
+    href="../../_static/vendor/lato_latin-ext/1.44.1/index.css">
+
+    
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/basic.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx_tabs/semantic-ui-2.4.1/segment.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx_tabs/semantic-ui-2.4.1/menu.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx_tabs/semantic-ui-2.4.1/tab.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx_tabs/tabs.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
+    
+  <link rel="preload" as="script" href="../../_static/js/index.3da636dd464baa7582d2.js">
+
+    <script id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/sphinx_tabs/semantic-ui-2.4.1/tab.min.js"></script>
+    <script src="../../_static/sphinx_tabs/tabs.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="en" />
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+    
+    <nav class="navbar navbar-light navbar-expand-lg bg-light fixed-top bd-navbar" id="navbar-main">
+<div class="container-xl">
+
+    <a class="navbar-brand" href="../../index.html">
+    
+      <img src="../../_static/pysradb_v3.png" class="logo" alt="logo" />
+    
+    </a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-menu" aria-controls="navbar-menu" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div id="navbar-menu" class="col-lg-9 collapse navbar-collapse">
+      <ul id="navbar-main-elements" class="navbar-nav mr-auto">
+        
+        
+        <li class="nav-item ">
+            <a class="nav-link" href="../../installation.html">Installation</a>
+        </li>
+        
+        <li class="nav-item ">
+            <a class="nav-link" href="../../quickstart.html">Quickstart</a>
+        </li>
+        
+        <li class="nav-item ">
+            <a class="nav-link" href="../../cmdline.html">CLI</a>
+        </li>
+        
+        <li class="nav-item ">
+            <a class="nav-link" href="../../python-api-usage.html">Python API</a>
+        </li>
+        
+        <li class="nav-item ">
+            <a class="nav-link" href="../../case_studies.html">Case Studies</a>
+        </li>
+        
+        <li class="nav-item ">
+            <a class="nav-link" href="../../commands.html">API Documentation</a>
+        </li>
+        
+        <li class="nav-item ">
+            <a class="nav-link" href="../../contributing.html">Contributing</a>
+        </li>
+        
+        <li class="nav-item ">
+            <a class="nav-link" href="../../authors.html">Credits</a>
+        </li>
+        
+        <li class="nav-item ">
+            <a class="nav-link" href="../../history.html">History</a>
+        </li>
+        
+        <li class="nav-item ">
+            <a class="nav-link" href="../../modules.html">pysradb</a>
+        </li>
+        
+        
+      </ul>
+
+
+      
+
+      <ul class="navbar-nav">
+        
+        
+      </ul>
+    </div>
+</div>
+    </nav>
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+          <div class="col-12 col-md-3 bd-sidebar"><form class="bd-search d-flex align-items-center" action="../../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off" >
+</form>
+<nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
+
+    <div class="bd-toc-item active">
+    
+  
+    <ul class="nav bd-sidenav">
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+      </ul>
+  
+  </nav>
+          </div>
+          
+
+          
+          <div class="d-none d-xl-block col-xl-2 bd-toc">
+              
+
+<nav id="bd-toc-nav">
+    <ul class="nav section-nav flex-column">
+    
+    </ul>
+</nav>
+
+
+              
+          </div>
+          
+
+          
+          <main class="col-12 col-md-9 col-xl-7 py-md-5 pl-md-5 pr-md-4 bd-content" role="main">
+              
+              <div>
+                
+  <h1>Source code for pysradb.filter_attrs</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">re</span>
+<span class="kn">import</span> <span class="nn">warnings</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+
+
+<span class="k">def</span> <span class="nf">_get_sample_attr_keys</span><span class="p">(</span><span class="n">sample_attribute</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">sample_attribute</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span>
+    <span class="n">sample_attribute_splitted</span> <span class="o">=</span> <span class="n">sample_attribute</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;||&quot;</span><span class="p">)</span>
+    <span class="n">split_by_colon</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="nb">str</span><span class="p">(</span><span class="n">attr</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;: &quot;</span><span class="p">)</span> <span class="k">for</span> <span class="n">attr</span> <span class="ow">in</span> <span class="n">sample_attribute_splitted</span>
+    <span class="p">]</span>
+
+    <span class="c1"># Iterate once more to consider first one as the key</span>
+    <span class="c1"># and remaining as the value</span>
+    <span class="c1"># This is because of bad annotations like in this example</span>
+    <span class="c1"># Example: isolate: not applicable || organism: Mus musculus || cell_line: 17-Cl1 ||\</span>
+    <span class="c1"># infect: MHV-A59 || time point: 5: hour || compound: cycloheximide ||\</span>
+    <span class="c1"># sequencing protocol: RiboSeq || biological repeat: long read sequencing</span>
+    <span class="c1"># Notice the `time: 5: hour`</span>
+    <span class="c1"># sample_attribute: investigation type: metagenome || project name: Landsort Depth 20090415 transect ||</span>
+    <span class="c1"># sequencing method: 454 || collection date: 2009-04-15 || ammonium: 8.7: Ã‚ÂµM || chlorophyll: 0: Ã‚Âµg/L ||</span>
+    <span class="c1"># dissolved oxygen: -1.33: Ã‚Âµmol/kg || nitrate: 0.02: Ã‚ÂµM || nitrogen: 0: Ã‚ÂµM ||</span>
+    <span class="c1"># environmental package: water || geographic location (latitude): 58.6: DD ||</span>
+    <span class="c1"># geographic location (longitude): 18.2: DD || geographic location (country and/or sea,region): Baltic Sea ||</span>
+    <span class="c1"># environment (biome): 00002150 || environment (feature): 00002150 || environment (material): 00002150 ||</span>
+    <span class="c1"># depth: 400: m || Phosphate:  || Total phosphorous:  || Silicon:</span>
+    <span class="c1"># Handle empty cases as above</span>
+    <span class="n">split_by_colon</span> <span class="o">=</span> <span class="p">[</span><span class="n">attr</span> <span class="k">for</span> <span class="n">attr</span> <span class="ow">in</span> <span class="n">split_by_colon</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">attr</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="mi">2</span><span class="p">]</span>
+
+    <span class="k">for</span> <span class="n">index</span><span class="p">,</span> <span class="n">element</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">split_by_colon</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">element</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">2</span><span class="p">:</span>
+            <span class="n">key</span> <span class="o">=</span> <span class="n">element</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+            <span class="n">value</span> <span class="o">=</span> <span class="s2">&quot;:&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">element</span><span class="p">[</span><span class="mi">1</span><span class="p">:])</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+            <span class="n">split_by_colon</span><span class="p">[</span><span class="n">index</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">]</span>
+
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">sample_attribute_dict</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">split_by_colon</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;This is most likely a bug, please report it upstream.&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">((</span><span class="s2">&quot;sample_attribute: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">sample_attribute</span><span class="p">)))</span>
+        <span class="k">raise</span>
+    <span class="n">sample_attribute_keys</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span>
+        <span class="nb">map</span><span class="p">(</span>
+            <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;\s+&quot;</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="p">,</span> <span class="n">x</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="p">,</span> <span class="s2">&quot;_&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">lower</span><span class="p">()),</span>
+            <span class="nb">list</span><span class="p">(</span><span class="n">sample_attribute_dict</span><span class="o">.</span><span class="n">keys</span><span class="p">()),</span>
+        <span class="p">)</span>
+    <span class="p">)</span>
+    <span class="n">sample_attribute_values</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span>
+        <span class="nb">map</span><span class="p">(</span>
+            <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;\s+&quot;</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="p">,</span> <span class="n">x</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;,&quot;</span><span class="p">,</span> <span class="s2">&quot;__&quot;</span><span class="p">)),</span>
+            <span class="nb">list</span><span class="p">(</span><span class="n">sample_attribute_dict</span><span class="o">.</span><span class="n">values</span><span class="p">()),</span>
+        <span class="p">)</span>
+    <span class="p">)</span>
+    <span class="k">return</span> <span class="n">sample_attribute_keys</span><span class="p">,</span> <span class="n">sample_attribute_values</span>
+
+
+<div class="viewcode-block" id="expand_sample_attribute_columns"><a class="viewcode-back" href="../../pysradb.html#pysradb.filter_attrs.expand_sample_attribute_columns">[docs]</a><span class="k">def</span> <span class="nf">expand_sample_attribute_columns</span><span class="p">(</span><span class="n">metadata_df</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Expand sample attribute columns to individual columns.</span>
+
+<span class="sd">    Since the sample_attribute column content can be different</span>
+<span class="sd">    for differnt rows even if coming from the same project (SRP),</span>
+<span class="sd">    we explicitly iterate through the rows to first determine</span>
+<span class="sd">    what additional columns need to be created.</span>
+
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    metadata_df: DataFrame</span>
+<span class="sd">                 Dataframe as obtained from sra_metadata</span>
+<span class="sd">                 or equivalent</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    expanded_df: DataFrame</span>
+<span class="sd">                 Dataframe with additionals columns pertaining</span>
+<span class="sd">                 to sample_attribute appended</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">additional_columns</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">metadata_df</span> <span class="o">=</span> <span class="n">metadata_df</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">metadata_df</span><span class="o">.</span><span class="n">iterrows</span><span class="p">():</span>
+        <span class="n">sample_attribute</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="s2">&quot;sample_attribute&quot;</span><span class="p">]</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">sample_attribute</span><span class="p">:</span>
+            <span class="k">continue</span>
+        <span class="n">sample_attribute</span> <span class="o">=</span> <span class="n">sample_attribute</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+        <span class="n">sample_attribute_keys</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">_get_sample_attr_keys</span><span class="p">(</span><span class="n">sample_attribute</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">sample_attribute_keys</span><span class="p">:</span>
+            <span class="n">additional_columns</span> <span class="o">+=</span> <span class="n">sample_attribute_keys</span>
+    <span class="n">additional_columns</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">sorted</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">additional_columns</span><span class="p">)))</span>
+    <span class="c1"># if any of the additional column already exists</span>
+    <span class="c1"># call the additional column  as *_expanded</span>
+    <span class="n">additional_columns</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span>
+        <span class="nb">map</span><span class="p">(</span>
+            <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span> <span class="k">if</span> <span class="n">x</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">metadata_df</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span> <span class="k">else</span> <span class="n">x</span> <span class="o">+</span> <span class="s2">&quot;_expanded&quot;</span><span class="p">,</span>
+            <span class="n">additional_columns</span><span class="p">,</span>
+        <span class="p">)</span>
+    <span class="p">)</span>
+    <span class="n">additional_columns</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">sorted</span><span class="p">(</span><span class="n">additional_columns</span><span class="p">))</span>
+    <span class="n">empty_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="n">additional_columns</span><span class="p">)</span>
+    <span class="n">metadata_df_expanded</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">metadata_df</span><span class="p">,</span> <span class="n">empty_df</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">metadata_df_expanded</span><span class="o">.</span><span class="n">iterrows</span><span class="p">():</span>
+        <span class="n">sample_attribute</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="s2">&quot;sample_attribute&quot;</span><span class="p">]</span>
+        <span class="n">sample_attribute_keys</span><span class="p">,</span> <span class="n">sample_attribute_values</span> <span class="o">=</span> <span class="n">_get_sample_attr_keys</span><span class="p">(</span>
+            <span class="n">sample_attribute</span>
+        <span class="p">)</span>
+        <span class="k">if</span> <span class="n">sample_attribute_keys</span><span class="p">:</span>
+            <span class="n">sample_attribute_keys</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span>
+                <span class="nb">map</span><span class="p">(</span>
+                    <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span>
+                    <span class="k">if</span> <span class="n">x</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">metadata_df</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+                    <span class="k">else</span> <span class="n">x</span> <span class="o">+</span> <span class="s2">&quot;_expanded&quot;</span><span class="p">,</span>
+                    <span class="n">sample_attribute_keys</span><span class="p">,</span>
+                <span class="p">)</span>
+            <span class="p">)</span>
+        <span class="n">metadata_df_expanded</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">idx</span><span class="p">,</span> <span class="n">sample_attribute_keys</span><span class="p">]</span> <span class="o">=</span> <span class="n">sample_attribute_values</span>
+    <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span> <span class="ow">in</span> <span class="n">metadata_df_expanded</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">tolist</span><span class="p">():</span>
+        <span class="k">del</span> <span class="n">metadata_df_expanded</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">metadata_df_expanded</span></div>
+
+
+<div class="viewcode-block" id="guess_cell_type"><a class="viewcode-back" href="../../pysradb.html#pysradb.filter_attrs.guess_cell_type">[docs]</a><span class="k">def</span> <span class="nf">guess_cell_type</span><span class="p">(</span><span class="n">sample_attribute</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Guess possible cell line from sample_attribute data.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    sample_attribute: string</span>
+<span class="sd">                      sample_attribute string as in the metadata column</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    cell_type: string</span>
+<span class="sd">               Possible cell type of sample.</span>
+<span class="sd">               Returns None if no match found.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">sample_attribute</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">sample_attribute</span><span class="p">)</span>
+    <span class="n">cell_type</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="k">if</span> <span class="s2">&quot;cell line:&quot;</span> <span class="ow">in</span> <span class="n">sample_attribute</span><span class="p">:</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;cell line: \w+&quot;</span><span class="p">,</span> <span class="n">sample_attribute</span><span class="p">)</span>
+        <span class="n">cell_type</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;\s+&quot;</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="p">,</span> <span class="n">x</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">lstrip</span><span class="p">(</span><span class="s2">&quot;cell line:&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span>
+    <span class="k">if</span> <span class="s2">&quot;cell_line:&quot;</span> <span class="ow">in</span> <span class="n">sample_attribute</span><span class="p">:</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;cell_line: \w+&quot;</span><span class="p">,</span> <span class="n">sample_attribute</span><span class="p">)</span>
+        <span class="n">cell_type</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;\s+&quot;</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="p">,</span> <span class="n">x</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">lstrip</span><span class="p">(</span><span class="s2">&quot;cell_line:&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span>
+    <span class="k">if</span> <span class="s2">&quot;cell-line:&quot;</span> <span class="ow">in</span> <span class="n">sample_attribute</span><span class="p">:</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;cell-line: \w+&quot;</span><span class="p">,</span> <span class="n">sample_attribute</span><span class="p">)</span>
+        <span class="n">cell_type</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;\s+&quot;</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="p">,</span> <span class="n">x</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">lstrip</span><span class="p">(</span><span class="s2">&quot;cell-line:&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span>
+    <span class="k">if</span> <span class="s2">&quot;cell_type:&quot;</span> <span class="ow">in</span> <span class="n">sample_attribute</span><span class="p">:</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;cell_type: \w+&quot;</span><span class="p">,</span> <span class="n">sample_attribute</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;\s+&quot;</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="p">,</span> <span class="n">x</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">lstrip</span><span class="p">(</span><span class="s2">&quot;cell_type:&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span>
+    <span class="k">if</span> <span class="s2">&quot;source_name:&quot;</span> <span class="ow">in</span> <span class="n">sample_attribute</span><span class="p">:</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;source_name: \w+&quot;</span><span class="p">,</span> <span class="n">sample_attribute</span><span class="p">)</span>
+        <span class="n">cell_type</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span>
+            <span class="sa">r</span><span class="s2">&quot;\s+&quot;</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="p">,</span> <span class="n">x</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">lstrip</span><span class="p">(</span><span class="s2">&quot;source_name:&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+        <span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
+            <span class="s2">&quot;Couldn&#39;t parse </span><span class="si">{}</span><span class="s2"> for cell line&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">sample_attribute</span><span class="p">),</span> <span class="ne">UserWarning</span>
+        <span class="p">)</span>
+    <span class="k">return</span> <span class="n">cell_type</span></div>
+
+
+<div class="viewcode-block" id="guess_tissue_type"><a class="viewcode-back" href="../../pysradb.html#pysradb.filter_attrs.guess_tissue_type">[docs]</a><span class="k">def</span> <span class="nf">guess_tissue_type</span><span class="p">(</span><span class="n">sample_attribute</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Guess tissue type from sample_attribute data.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    sample_attribute: string</span>
+<span class="sd">                      sample_attribute string as in the metadata column</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    tissue_type: string</span>
+<span class="sd">               Possible cell type of sample.</span>
+<span class="sd">               Returns None if no match found.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">sample_attribute</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">sample_attribute</span><span class="p">)</span>
+    <span class="n">tissue_type</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="k">if</span> <span class="s2">&quot;tissue: &quot;</span> <span class="ow">in</span> <span class="n">sample_attribute</span><span class="p">:</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;tissue: \w+&quot;</span><span class="p">,</span> <span class="n">sample_attribute</span><span class="p">)</span>
+        <span class="n">tissue_type</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;\s+&quot;</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="p">,</span> <span class="n">x</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">lstrip</span><span class="p">(</span><span class="s2">&quot;tissue:&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
+            <span class="s2">&quot;Couldn&#39;t parse </span><span class="si">{}</span><span class="s2"> for tissue&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">sample_attribute</span><span class="p">),</span> <span class="ne">UserWarning</span>
+        <span class="p">)</span>
+    <span class="k">return</span> <span class="n">tissue_type</span></div>
+
+
+<div class="viewcode-block" id="guess_strain_type"><a class="viewcode-back" href="../../pysradb.html#pysradb.filter_attrs.guess_strain_type">[docs]</a><span class="k">def</span> <span class="nf">guess_strain_type</span><span class="p">(</span><span class="n">sample_attribute</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Guess strain type from sample_attribute data.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    sample_attribute: string</span>
+<span class="sd">                      sample_attribute string as in the metadata column</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    strain_type: string</span>
+<span class="sd">                 Possible cell type of sample.</span>
+<span class="sd">                 Returns None if no match found.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">sample_attribute</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">sample_attribute</span><span class="p">)</span>
+    <span class="n">strain_type</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="k">if</span> <span class="s2">&quot;strain: &quot;</span> <span class="ow">in</span> <span class="n">sample_attribute</span><span class="p">:</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;strain: \w+&quot;</span><span class="p">,</span> <span class="n">sample_attribute</span><span class="p">)</span>
+        <span class="n">strain_type</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;\s+&quot;</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="p">,</span> <span class="n">x</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">lstrip</span><span class="p">(</span><span class="s2">&quot;strain:&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
+            <span class="s2">&quot;Couldn&#39;t parse </span><span class="si">{}</span><span class="s2"> for strain&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">sample_attribute</span><span class="p">),</span> <span class="ne">UserWarning</span>
+        <span class="p">)</span>
+    <span class="k">return</span> <span class="n">strain_type</span></div>
+</pre></div>
+
+              </div>
+              
+              
+              <div class='prev-next-bottom'>
+                
+
+              </div>
+              
+          </main>
+          
+
+      </div>
+    </div>
+
+    
+  <script src="../../_static/js/index.3da636dd464baa7582d2.js"></script>
+
+
+    
+    <!-- Google Analytics -->
+    <script>
+      window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+      ga('create', 'G-CKQZFCEENZ', 'auto');
+      ga('set', 'anonymizeIp', true);
+      ga('send', 'pageview');
+    </script>
+    <script async src='https://www.google-analytics.com/analytics.js'></script>
+    <!-- End Google Analytics -->
+    <footer class="footer mt-5 mt-md-0">
+  <div class="container">
+    <p>
+          &copy; Copyright 2018, Saket Choudhary.<br/>
+        Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.4.3.<br/>
+    </p>
+  </div>
+</footer>
+  </body>
+</html>

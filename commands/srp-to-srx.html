@@ -1,0 +1,317 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>srp-to-srx &#8212; pysradb 1.0.1 documentation</title>
+    
+  <link rel="stylesheet" href="../_static/css/index.73d71520a4ca3b99cfee5594769eaaae.css">
+
+    
+  <link rel="stylesheet"
+    href="../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    
+      
+  <link rel="stylesheet"
+    href="../_static/vendor/open-sans_all/1.44.1/index.css">
+  <link rel="stylesheet"
+    href="../_static/vendor/lato_latin-ext/1.44.1/index.css">
+
+    
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/basic.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx_tabs/semantic-ui-2.4.1/segment.min.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx_tabs/semantic-ui-2.4.1/menu.min.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx_tabs/semantic-ui-2.4.1/tab.min.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx_tabs/tabs.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
+    
+  <link rel="preload" as="script" href="../_static/js/index.3da636dd464baa7582d2.js">
+
+    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="srr-to-srs" href="srr-to-srs.html" />
+    <link rel="prev" title="srp-to-srs" href="srp-to-srs.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="en" />
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+    
+    <nav class="navbar navbar-light navbar-expand-lg bg-light fixed-top bd-navbar" id="navbar-main">
+<div class="container-xl">
+
+    <a class="navbar-brand" href="../index.html">
+    
+      <img src="../_static/pysradb_v3.png" class="logo" alt="logo" />
+    
+    </a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-menu" aria-controls="navbar-menu" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div id="navbar-menu" class="col-lg-9 collapse navbar-collapse">
+      <ul id="navbar-main-elements" class="navbar-nav mr-auto">
+        
+        
+        <li class="nav-item ">
+            <a class="nav-link" href="../installation.html">Installation</a>
+        </li>
+        
+        <li class="nav-item active">
+            <a class="nav-link" href="../quickstart.html">Quickstart</a>
+        </li>
+        
+        <li class="nav-item ">
+            <a class="nav-link" href="../cmdline.html">CLI</a>
+        </li>
+        
+        <li class="nav-item ">
+            <a class="nav-link" href="../python-api-usage.html">Python API</a>
+        </li>
+        
+        <li class="nav-item ">
+            <a class="nav-link" href="../case_studies.html">Case Studies</a>
+        </li>
+        
+        <li class="nav-item ">
+            <a class="nav-link" href="../commands.html">API Documentation</a>
+        </li>
+        
+        <li class="nav-item ">
+            <a class="nav-link" href="../contributing.html">Contributing</a>
+        </li>
+        
+        <li class="nav-item ">
+            <a class="nav-link" href="../authors.html">Credits</a>
+        </li>
+        
+        <li class="nav-item ">
+            <a class="nav-link" href="../history.html">History</a>
+        </li>
+        
+        <li class="nav-item ">
+            <a class="nav-link" href="../modules.html">pysradb</a>
+        </li>
+        
+        
+      </ul>
+
+
+      
+
+      <ul class="navbar-nav">
+        
+        
+      </ul>
+    </div>
+</div>
+    </nav>
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+          <div class="col-12 col-md-3 bd-sidebar"><form class="bd-search d-flex align-items-center" action="../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off" >
+</form>
+<nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
+
+    <div class="bd-toc-item active">
+    
+  
+    <ul class="nav bd-sidenav">
+        
+        
+        
+        
+          
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+      </ul>
+  
+  </nav>
+          </div>
+          
+
+          
+          <div class="d-none d-xl-block col-xl-2 bd-toc">
+              
+<div class="tocsection onthispage pt-5 pb-3">
+    <i class="fas fa-list"></i> On this page
+</div>
+
+<nav id="bd-toc-nav">
+    <ul class="nav section-nav flex-column">
+    
+        <li class="nav-item toc-entry toc-h2">
+            <a href="#usage-and-options" class="nav-link">Usage and options</a>
+        </li>
+    
+        <li class="nav-item toc-entry toc-h2">
+            <a href="#convert-sra-study-accession-srp-to-sra-experiment-accession-srx" class="nav-link">Convert SRA study accession (SRP) to SRA experiment accession (SRX)</a>
+        </li>
+    
+        <li class="nav-item toc-entry toc-h2">
+            <a href="#saving-metadata-to-a-file" class="nav-link">Saving metadata to a file</a>
+        </li>
+    
+    </ul>
+</nav>
+
+
+              
+          </div>
+          
+
+          
+          <main class="col-12 col-md-9 col-xl-7 py-md-5 pl-md-5 pr-md-4 bd-content" role="main">
+              
+              <div>
+                
+  <div class="section" id="srp-to-srx">
+<span id="srptosrx"></span><h1>srp-to-srx<a class="headerlink" href="#srp-to-srx" title="Permalink to this headline">¶</a></h1>
+<p><code class="docutils literal notranslate"><span class="pre">srp-to-srx</span></code> converts a SRA study accession (SRP) to corresponding
+SRA experiment accession(s) (SRX).</p>
+<div class="section" id="usage-and-options">
+<h2>Usage and options<a class="headerlink" href="#usage-and-options" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ pysradb srp-to-srx -h
+
+Usage: pysradb srp-to-srx [OPTIONS] SRP_ID
+
+  Get SRX/SRR for a SRP
+
+Options:
+  --saveto TEXT  Save output to file
+  --detailed     Output additional columns: [sample_accession (SRS),
+                 run_accession (SRR),
+                 experiment_alias (GSM),
+                 sample_alias
+                 (GSM_),
+                 run_alias (GSM_r)&#39;,
+                 study_alias (GSE)]
+  -h, --help     Show this message and exit.
+</pre></div>
+</div>
+</div>
+<div class="section" id="convert-sra-study-accession-srp-to-sra-experiment-accession-srx">
+<h2>Convert SRA study accession (SRP) to SRA experiment accession (SRX)<a class="headerlink" href="#convert-sra-study-accession-srp-to-sra-experiment-accession-srx" title="Permalink to this headline">¶</a></h2>
+<p>To convert a SRA study accession of the form <code class="docutils literal notranslate"><span class="pre">SRPmmmmm</span></code> to its
+corresponding SRA experiment accession(s) of the form <code class="docutils literal notranslate"><span class="pre">SRXnnnn</span></code>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ pysradb srp-to-srx SRP098789
+
+experiment_accession study_accession
+SRX2536403           SRP098789
+SRX2536404           SRP098789
+SRX2536405           SRP098789
+SRX2536406           SRP098789
+SRX2536407           SRP098789
+SRX2536408           SRP098789
+SRX2536409           SRP098789
+SRX2536410           SRP098789
+SRX2536411           SRP098789
+SRX2536412           SRP098789
+SRX2536413           SRP098789
+SRX2536414           SRP098789
+SRX2536415           SRP098789
+SRX2536416           SRP098789
+SRX2536417           SRP098789
+SRX2536418           SRP098789
+SRX2536419           SRP098789
+SRX2536420           SRP098789
+SRX2536421           SRP098789
+SRX2536422           SRP098789
+SRX2536423           SRP098789
+SRX2536424           SRP098789
+SRX2536425           SRP098789
+SRX2536426           SRP098789
+SRX2536427           SRP098789
+SRX2536428           SRP098789
+</pre></div>
+</div>
+<p>In order to obtain detailed metadata:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ pysradb srp-to-srx --detailed SRP098789
+</pre></div>
+</div>
+</div>
+<div class="section" id="saving-metadata-to-a-file">
+<h2>Saving metadata to a file<a class="headerlink" href="#saving-metadata-to-a-file" title="Permalink to this headline">¶</a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">pysradb</span></code> follows a consistent pattern for providing
+an option to save output of any of its subcommands to a file
+using the <code class="docutils literal notranslate"><span class="pre">--saveto</span></code> argument:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ pysradb srp-to-srx --detailed --saveto SRP098789_metadata.tsv SRP098789
+</pre></div>
+</div>
+</div>
+</div>
+
+
+              </div>
+              
+              
+              <div class='prev-next-bottom'>
+                
+    <a class='left-prev' id="prev-link" href="srp-to-srs.html" title="previous page">srp-to-srs</a>
+    <a class='right-next' id="next-link" href="srr-to-srs.html" title="next page">srr-to-srs</a>
+
+              </div>
+              
+          </main>
+          
+
+      </div>
+    </div>
+
+    
+  <script src="../_static/js/index.3da636dd464baa7582d2.js"></script>
+
+
+    
+    <!-- Google Analytics -->
+    <script>
+      window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+      ga('create', 'G-CKQZFCEENZ', 'auto');
+      ga('set', 'anonymizeIp', true);
+      ga('send', 'pageview');
+    </script>
+    <script async src='https://www.google-analytics.com/analytics.js'></script>
+    <!-- End Google Analytics -->
+    <footer class="footer mt-5 mt-md-0">
+  <div class="container">
+    <p>
+          &copy; Copyright 2018, Saket Choudhary.<br/>
+        Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.4.3.<br/>
+    </p>
+  </div>
+</footer>
+  </body>
+</html>

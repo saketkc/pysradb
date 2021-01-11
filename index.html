@@ -1,0 +1,364 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Introduction &#8212; pysradb 1.0.1 documentation</title>
+    
+  <link rel="stylesheet" href="_static/css/index.73d71520a4ca3b99cfee5594769eaaae.css">
+
+    
+  <link rel="stylesheet"
+    href="_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    
+      
+  <link rel="stylesheet"
+    href="_static/vendor/open-sans_all/1.44.1/index.css">
+  <link rel="stylesheet"
+    href="_static/vendor/lato_latin-ext/1.44.1/index.css">
+
+    
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/basic.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/graphviz.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx_tabs/semantic-ui-2.4.1/segment.min.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx_tabs/semantic-ui-2.4.1/menu.min.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx_tabs/semantic-ui-2.4.1/tab.min.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx_tabs/tabs.css" />
+    <link rel="stylesheet" type="text/css" href="_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
+    <link rel="stylesheet" type="text/css" href="_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
+    
+  <link rel="preload" as="script" href="_static/js/index.3da636dd464baa7582d2.js">
+
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Installation" href="installation.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="en" />
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+    
+    <nav class="navbar navbar-light navbar-expand-lg bg-light fixed-top bd-navbar" id="navbar-main">
+<div class="container-xl">
+
+    <a class="navbar-brand" href="#">
+    
+      <img src="_static/pysradb_v3.png" class="logo" alt="logo" />
+    
+    </a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-menu" aria-controls="navbar-menu" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div id="navbar-menu" class="col-lg-9 collapse navbar-collapse">
+      <ul id="navbar-main-elements" class="navbar-nav mr-auto">
+        
+        
+        <li class="nav-item ">
+            <a class="nav-link" href="installation.html">Installation</a>
+        </li>
+        
+        <li class="nav-item ">
+            <a class="nav-link" href="quickstart.html">Quickstart</a>
+        </li>
+        
+        <li class="nav-item ">
+            <a class="nav-link" href="cmdline.html">CLI</a>
+        </li>
+        
+        <li class="nav-item ">
+            <a class="nav-link" href="python-api-usage.html">Python API</a>
+        </li>
+        
+        <li class="nav-item ">
+            <a class="nav-link" href="case_studies.html">Case Studies</a>
+        </li>
+        
+        <li class="nav-item ">
+            <a class="nav-link" href="commands.html">API Documentation</a>
+        </li>
+        
+        <li class="nav-item ">
+            <a class="nav-link" href="contributing.html">Contributing</a>
+        </li>
+        
+        <li class="nav-item ">
+            <a class="nav-link" href="authors.html">Credits</a>
+        </li>
+        
+        <li class="nav-item ">
+            <a class="nav-link" href="history.html">History</a>
+        </li>
+        
+        <li class="nav-item ">
+            <a class="nav-link" href="modules.html">pysradb</a>
+        </li>
+        
+        
+      </ul>
+
+
+      
+
+      <ul class="navbar-nav">
+        
+        
+      </ul>
+    </div>
+</div>
+    </nav>
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+          <div class="col-12 col-md-3 bd-sidebar"><form class="bd-search d-flex align-items-center" action="search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off" >
+</form>
+<nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
+
+    <div class="bd-toc-item active">
+    
+  
+    <ul class="nav bd-sidenav">
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+      </ul>
+  
+  </nav>
+          </div>
+          
+
+          
+          <div class="d-none d-xl-block col-xl-2 bd-toc">
+              
+<div class="tocsection onthispage pt-5 pb-3">
+    <i class="fas fa-list"></i> On this page
+</div>
+
+<nav id="bd-toc-nav">
+    <ul class="nav section-nav flex-column">
+    
+        <li class="nav-item toc-entry toc-h2">
+            <a href="#" class="nav-link">Introduction</a>
+        </li>
+    
+        <li class="nav-item toc-entry toc-h2">
+            <a href="#quick-example" class="nav-link">Quick Example</a>
+        </li>
+    
+        <li class="nav-item toc-entry toc-h2">
+            <a href="#contents" class="nav-link">Contents</a>
+        </li>
+    
+        <li class="nav-item toc-entry toc-h2">
+            <a href="#publication" class="nav-link">Publication</a>
+        </li>
+    
+        <li class="nav-item toc-entry toc-h2">
+            <a href="#citation" class="nav-link">Citation</a>
+        </li>
+    
+        <li class="nav-item toc-entry toc-h2">
+            <a href="#questions" class="nav-link">Questions?</a>
+        </li>
+    
+        <li class="nav-item toc-entry toc-h2">
+            <a href="#indices-and-tables" class="nav-link">Indices and tables</a>
+        </li>
+    
+    </ul>
+</nav>
+
+
+              
+          </div>
+          
+
+          
+          <main class="col-12 col-md-9 col-xl-7 py-md-5 pl-md-5 pr-md-4 bd-content" role="main">
+              
+              <div>
+                
+  <div class="section" id="introduction">
+<h1>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h1>
+<p><code class="docutils literal notranslate"><span class="pre">pysradb</span></code> provides a simple method to programmatically access metadata
+and download sequencing data from NCBI’s Sequence Read Archive (SRA) and European Bioinformatics
+Institute’s European Nucleotide Archive (ENA).</p>
+</div>
+<div class="section" id="quick-example">
+<h1>Quick Example<a class="headerlink" href="#quick-example" title="Permalink to this headline">¶</a></h1>
+<p>To fetch metadata associated with project accession <code class="docutils literal notranslate"><span class="pre">SRP265425</span></code></p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> pysradb metadata SRP265425
+
+<span class="go">study_accession     experiment_accession    experiment_title        experiment_desc organism_taxid  organism_name   library_name    library_strategy        library_source  library_selection       library_layout  sample_accession        sample_title    instrument      instrument_model        instrument_model_desc   total_spots     total_size      run_accession   run_total_spots run_total_bases</span>
+<span class="go">SRP265425   SRX8434255      Ampliseq of SARS-CoV-2  Ampliseq of SARS-CoV-2  2697049 Severe acute respiratory syndrome coronavirus 2 63-2020-04-22   AMPLICON        VIRAL RNA       RT-PCR  SINGLE  SRS6745319              Ion Torrent S5 XL       Ion Torrent S5 XL       ION_TORRENT     1311358 83306910        SRR11886735     1311358 109594216</span>
+<span class="go">SRP265425   SRX8434254      Ampliseq of SARS-CoV-2  Ampliseq of SARS-CoV-2  2697049 Severe acute respiratory syndrome coronavirus 2 62-2020-04-22   AMPLICON        VIRAL RNA       RT-PCR  SINGLE  SRS6745320              Ion Torrent S5 XL       Ion Torrent S5 XL       ION_TORRENT     2614109 204278682       SRR11886736     2614109 262305651</span>
+<span class="go">SRP265425   SRX8434253      Ampliseq of SARS-CoV-2  Ampliseq of SARS-CoV-2  2697049 Severe acute respiratory syndrome coronavirus 2 61-2020-04-22   AMPLICON        VIRAL RNA       RT-PCR  SINGLE  SRS6745318              Ion Torrent S5 XL       Ion Torrent S5 XL       ION_TORRENT     2286312 183516004       SRR11886737     2286312 263304134</span>
+<span class="go">SRP265425   SRX8434252      Ampliseq of SARS-CoV-2  Ampliseq of SARS-CoV-2  2697049 Severe acute respiratory syndrome coronavirus 2 60-2020-04-22   AMPLICON        VIRAL RNA       RT-PCR  SINGLE  SRS6745317              Ion Torrent S5 XL       Ion Torrent S5 XL       ION_TORRENT     5202567 507524965       SRR11886738     5202567 781291588</span>
+<span class="go">SRP265425   SRX8434251      Ampliseq of SARS-CoV-2  Ampliseq of SARS-CoV-2  2697049 Severe acute respiratory syndrome coronavirus 2 38-2020-04-03   AMPLICON        VIRAL RNA       RT-PCR  SINGLE  SRS6745315              Ion Torrent S5 XL       Ion Torrent S5 XL       ION_TORRENT     3313960 356104406       SRR11886739     3313960 612430817</span>
+<span class="go">SRP265425   SRX8434250      Ampliseq of SARS-CoV-2  Ampliseq of SARS-CoV-2  2697049 Severe acute respiratory syndrome coronavirus 2 37-2020-04-03   AMPLICON        VIRAL RNA       RT-PCR  SINGLE  SRS6745316              Ion Torrent S5 XL       Ion Torrent S5 XL       ION_TORRENT     5155733 565882351       SRR11886740     5155733 954342917</span>
+<span class="go">SRP265425   SRX8434249      Ampliseq of SARS-CoV-2  Ampliseq of SARS-CoV-2  2697049 Severe acute respiratory syndrome coronavirus 2 36-2020-04-03   AMPLICON        VIRAL RNA       RT-PCR  SINGLE  SRS6745313              Ion Torrent S5 XL       Ion Torrent S5 XL       ION_TORRENT     1324589 175619046       SRR11886741     1324589 216531400</span>
+<span class="go">SRP265425   SRX8434248      Ampliseq of SARS-CoV-2  Ampliseq of SARS-CoV-2  2697049 Severe acute respiratory syndrome coronavirus 2 35-2020-04-03   AMPLICON        VIRAL RNA       RT-PCR  SINGLE  SRS6745314              Ion Torrent S5 XL       Ion Torrent S5 XL       ION_TORRENT     1639851 198973268       SRR11886742     1639851 245466005</span>
+<span class="go">SRP265425   SRX8434247      Ampliseq of SARS-CoV-2  Ampliseq of SARS-CoV-2  2697049 Severe acute respiratory syndrome coronavirus 2 68-2020-05-07   AMPLICON        VIRAL RNA       RT-PCR  SINGLE  SRS6745312              Ion Torrent S5 XL       Ion Torrent S5 XL       ION_TORRENT     3921389 210198580       SRR11886743     3921389 332935558</span>
+<span class="go">SRP265425   SRX8434246      Ampliseq of SARS-CoV-2  Ampliseq of SARS-CoV-2  2697049 Severe acute respiratory syndrome coronavirus 2 66-2020-04-22   AMPLICON        VIRAL RNA       RT-PCR  SINGLE  SRS6745311              Ion Torrent S5 XL       Ion Torrent S5 XL       ION_TORRENT     14295475        2150005008      SRR11886744     14295475        2967829315</span>
+<span class="go">SRP265425   SRX8434245      Ampliseq of SARS-CoV-2  Ampliseq of SARS-CoV-2  2697049 Severe acute respiratory syndrome coronavirus 2 65-2020-04-22   AMPLICON        VIRAL RNA       RT-PCR  SINGLE  SRS6745310              Ion Torrent S5 XL       Ion Torrent S5 XL       ION_TORRENT     5124692 294846140       SRR11886745     5124692 431819462</span>
+<span class="go">SRP265425   SRX8434244      Ampliseq of SARS-CoV-2  Ampliseq of SARS-CoV-2  2697049 Severe acute respiratory syndrome coronavirus 2 64-2020-04-22   AMPLICON        VIRAL RNA       RT-PCR  SINGLE  SRS6745309              Ion Torrent S5 XL       Ion Torrent S5 XL       ION_TORRENT     2986306 205666872       SRR11886746     2986306 275400959</span>
+<span class="go">SRP265425   SRX8434243      Ampliseq of SARS-CoV-2  Ampliseq of SARS-CoV-2  2697049 Severe acute respiratory syndrome coronavirus 2 34-2020-04-03   AMPLICON        VIRAL RNA       RT-PCR  SINGLE  SRS6745308              Ion Torrent S5 XL       Ion Torrent S5 XL       ION_TORRENT     1182690 59471336        SRR11886747     1182690 86350631</span>
+<span class="go">SRP265425   SRX8434242      Ampliseq of SARS-CoV-2  Ampliseq of SARS-CoV-2  2697049 Severe acute respiratory syndrome coronavirus 2 33-2020-04-03   AMPLICON        VIRAL RNA       RT-PCR  SINGLE  SRS6745307              Ion Torrent S5 XL       Ion Torrent S5 XL       ION_TORRENT     6031816 749323230       SRR11886748     6031816 928054297</span>
+</pre></div>
+</div>
+<p>To fetch detailed metadata which includes link to raw sequencing files, specify <code class="docutils literal notranslate"><span class="pre">--detailed</span></code>:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> pysradb metadata SRP265425 --detailed
+
+<span class="go">run_accession       study_accession experiment_accession    experiment_title        experiment_desc organism_taxid  organism_name   library_name    library_strategy        library_source  library_selection       library_layout  sample_accession        sample_title    instrument      instrument_model        instrument_model_desc   total_spots     total_size      run_total_spots run_total_bases run_alias       sra_url_alt1    sra_url_alt2    sra_url experiment_alias        isolate collected_by    collection_date geo_loc_name    host    host_disease    isolation_source        lat_lon BioSampleModel  sra_url_alt3    ena_fastq_http  ena_fastq_http_1        ena_fastq_http_2        ena_fastq_ftp   ena_fastq_ftp_1 ena_fastq_ftp_2</span>
+<span class="go">SRR11886735 SRP265425       SRX8434255      Ampliseq of SARS-CoV-2  Ampliseq of SARS-CoV-2  2697049 Severe acute respiratory syndrome coronavirus 2 63-2020-04-22   AMPLICON        VIRAL RNA       RT-PCR  SINGLE  SRS6745319              Ion Torrent S5 XL       Ion Torrent S5 XL       ION_TORRENT     1311358 83306910        1311358 109594216       IonXpress_063_R_2020_04_22_15_56_22_user_GCEID-S5-58-SARS_CoV2_SA4.bam  gs://sra-pub-src-9/SRR11886735/Wuhan_Hu_1_NC_045512_21500_and_subgenomics_SA4.fasta.1   https://sra-pub-sars-cov2.s3.amazonaws.com/sra-src/SRR11886735/Wuhan_Hu_1_NC_045512_21500_and_subgenomics_SA4.fasta.1   https://sra-download.ncbi.nlm.nih.gov/traces/sra0/SRR/011608/SRR11886735                GC-20   NA      02-Apr-2020     Australia: Victoria     Homo sapiens    COVID-19        swab    NA      Pathogen.cl             http://ftp.sra.ebi.ac.uk/vol1/fastq/SRR118/035/SRR11886735/SRR11886735.fastq.gz                 era-fasp@fasp.sra.ebi.ac.uk:vol1/fastq/SRR118/035/SRR11886735/SRR11886735.fastq.gz</span>
+<span class="go">SRR11886736 SRP265425       SRX8434254      Ampliseq of SARS-CoV-2  Ampliseq of SARS-CoV-2  2697049 Severe acute respiratory syndrome coronavirus 2 62-2020-04-22   AMPLICON        VIRAL RNA       RT-PCR  SINGLE  SRS6745320              Ion Torrent S5 XL       Ion Torrent S5 XL       ION_TORRENT     2614109 204278682       2614109 262305651       IonXpress_062_R_2020_04_22_15_56_22_user_GCEID-S5-58-SARS_CoV2_SA4.bam  gs://sra-pub-src-16/SRR11886736/Wuhan_Hu_1_NC_045512_21500_and_subgenomics_SA4.fasta.1  https://sra-download.ncbi.nlm.nih.gov/traces/sra46/SRZ/011886/SRR11886736/Wuhan_Hu_1_NC_045512_21500_and_subgenomics_SA4.fasta  https://sra-download.ncbi.nlm.nih.gov/traces/sra50/SRR/011608/SRR11886736               GC-51   NA      14-Apr-2020     Australia: Victoria     Homo sapiens    COVID-19        swab    NA      Pathogen.cl     https://sra-pub-sars-cov2.s3.amazonaws.com/sra-src/SRR11886736/Wuhan_Hu_1_NC_045512_21500_and_subgenomics_SA4.fasta.1   http://ftp.sra.ebi.ac.uk/vol1/fastq/SRR118/036/SRR11886736/SRR11886736.fastq.gz                 era-fasp@fasp.sra.ebi.ac.uk:vol1/fastq/SRR118/036/SRR11886736/SRR11886736.fastq.gz</span>
+<span class="go">SRR11886737 SRP265425       SRX8434253      Ampliseq of SARS-CoV-2  Ampliseq of SARS-CoV-2  2697049 Severe acute respiratory syndrome coronavirus 2 61-2020-04-22   AMPLICON        VIRAL RNA       RT-PCR  SINGLE  SRS6745318              Ion Torrent S5 XL       Ion Torrent S5 XL       ION_TORRENT     2286312 183516004       2286312 263304134       IonXpress_061_R_2020_04_22_15_56_22_user_GCEID-S5-58-SARS_CoV2_SA4.bam  gs://sra-pub-src-16/SRR11886737/Wuhan_Hu_1_NC_045512_21500_and_subgenomics_SA4.fasta.1  https://sra-download.ncbi.nlm.nih.gov/traces/sra29/SRZ/011886/SRR11886737/Wuhan_Hu_1_NC_045512_21500_and_subgenomics_SA4.fasta  https://sra-download.ncbi.nlm.nih.gov/traces/sra17/SRR/011608/SRR11886737               GC-24   NA      07-Apr-2020     Australia: Victoria     Homo sapiens    COVID-19        swab    NA      Pathogen.cl     https://sra-pub-sars-cov2.s3.amazonaws.com/sra-src/SRR11886737/Wuhan_Hu_1_NC_045512_21500_and_subgenomics_SA4.fasta.1   http://ftp.sra.ebi.ac.uk/vol1/fastq/SRR118/037/SRR11886737/SRR11886737.fastq.gz                 era-fasp@fasp.sra.ebi.ac.uk:vol1/fastq/SRR118/037/SRR11886737/SRR11886737.fastq.gz</span>
+<span class="go">SRR11886738 SRP265425       SRX8434252      Ampliseq of SARS-CoV-2  Ampliseq of SARS-CoV-2  2697049 Severe acute respiratory syndrome coronavirus 2 60-2020-04-22   AMPLICON        VIRAL RNA       RT-PCR  SINGLE  SRS6745317              Ion Torrent S5 XL       Ion Torrent S5 XL       ION_TORRENT     5202567 507524965       5202567 781291588       IonXpress_060_R_2020_04_22_15_56_22_user_GCEID-S5-58-SARS_CoV2_SA4.bam  gs://sra-pub-src-15/SRR11886738/IonXpress_060_R_2020_04_22_15_56_22_user_GCEID_S5_58_SARS_CoV2_SA4.bam.1        https://sra-download.ncbi.nlm.nih.gov/traces/sra69/SRZ/011886/SRR11886738/IonXpress_060_R_2020_04_22_15_56_22_user_GCEID_S5_58_SARS_CoV2_SA4.bam        https://sra-download.ncbi.nlm.nih.gov/traces/sra77/SRR/011608/SRR11886738               GC-23   NA      08-Apr-2020     Australia: Victoria     Homo sapiens    COVID-19        swab    NA      Pathogen.cl     https://sra-pub-sars-cov2.s3.amazonaws.com/sra-src/SRR11886738/IonXpress_060_R_2020_04_22_15_56_22_user_GCEID_S5_58_SARS_CoV2_SA4.bam.1 http://ftp.sra.ebi.ac.uk/vol1/fastq/SRR118/038/SRR11886738/SRR11886738.fastq.gz                 era-fasp@fasp.sra.ebi.ac.uk:vol1/fastq/SRR118/038/SRR11886738/SRR11886738.fastq.gz</span>
+<span class="go">SRR11886739 SRP265425       SRX8434251      Ampliseq of SARS-CoV-2  Ampliseq of SARS-CoV-2  2697049 Severe acute respiratory syndrome coronavirus 2 38-2020-04-03   AMPLICON        VIRAL RNA       RT-PCR  SINGLE  SRS6745315              Ion Torrent S5 XL       Ion Torrent S5 XL       ION_TORRENT     3313960 356104406       3313960 612430817       IonXpress_038_R_2020_04_03_10_09_05_user_GCEID-S5-55-SARS_CoV2_SA4.bam  gs://sra-pub-src-13/SRR11886739/Wuhan_Hu_1_NC_045512_21500_and_subgenomics_SA4.fasta.1  https://sra-pub-sars-cov2.s3.amazonaws.com/sra-src/SRR11886739/Wuhan_Hu_1_NC_045512_21500_and_subgenomics_SA4.fasta.1   https://sra-download.ncbi.nlm.nih.gov/traces/sra24/SRR/011608/SRR11886739               GC-11b  NA      24-Mar-2020     Australia: Victoria     Homo sapiens    COVID-19        swab    NA      Pathogen.cl             http://ftp.sra.ebi.ac.uk/vol1/fastq/SRR118/039/SRR11886739/SRR11886739.fastq.gz                 era-fasp@fasp.sra.ebi.ac.uk:vol1/fastq/SRR118/039/SRR11886739/SRR11886739.fastq.gz</span>
+<span class="go">SRR11886740 SRP265425       SRX8434250      Ampliseq of SARS-CoV-2  Ampliseq of SARS-CoV-2  2697049 Severe acute respiratory syndrome coronavirus 2 37-2020-04-03   AMPLICON        VIRAL RNA       RT-PCR  SINGLE  SRS6745316              Ion Torrent S5 XL       Ion Torrent S5 XL       ION_TORRENT     5155733 565882351       5155733 954342917       IonXpress_037_R_2020_04_03_10_09_05_user_GCEID-S5-55-SARS_CoV2_SA4.bam  gs://sra-pub-src-5/SRR11886740/IonXpress_037_R_2020_04_03_10_09_05_user_GCEID_S5_55_SARS_CoV2_SA4.bam.1 https://sra-pub-sars-cov2.s3.amazonaws.com/sra-src/SRR11886740/IonXpress_037_R_2020_04_03_10_09_05_user_GCEID_S5_55_SARS_CoV2_SA4.bam.1 https://sra-download.ncbi.nlm.nih.gov/traces/sra13/SRR/011608/SRR11886740               GC-14b  NA      28-Mar-2020     Australia: Victoria     Homo sapiens    COVID-19        swab    NA      Pathogen.cl             http://ftp.sra.ebi.ac.uk/vol1/fastq/SRR118/040/SRR11886740/SRR11886740.fastq.gz                 era-fasp@fasp.sra.ebi.ac.uk:vol1/fastq/SRR118/040/SRR11886740/SRR11886740.fastq.gz</span>
+<span class="go">SRR11886741 SRP265425       SRX8434249      Ampliseq of SARS-CoV-2  Ampliseq of SARS-CoV-2  2697049 Severe acute respiratory syndrome coronavirus 2 36-2020-04-03   AMPLICON        VIRAL RNA       RT-PCR  SINGLE  SRS6745313              Ion Torrent S5 XL       Ion Torrent S5 XL       ION_TORRENT     1324589 175619046       1324589 216531400       IonXpress_036_R_2020_04_03_10_09_05_user_GCEID-S5-55-SARS_CoV2_SA4.bam  gs://sra-pub-src-11/SRR11886741/Wuhan_Hu_1_NC_045512_21500_and_subgenomics_SA4.fasta.1  https://sra-pub-sars-cov2.s3.amazonaws.com/sra-src/SRR11886741/Wuhan_Hu_1_NC_045512_21500_and_subgenomics_SA4.fasta.1   https://sra-download.ncbi.nlm.nih.gov/traces/sra57/SRR/011608/SRR11886741               GC-12   NA      24-Mar-2020     Australia: Victoria     Homo sapiens    COVID-19        swab    NA      Pathogen.cl             http://ftp.sra.ebi.ac.uk/vol1/fastq/SRR118/041/SRR11886741/SRR11886741.fastq.gz                 era-fasp@fasp.sra.ebi.ac.uk:vol1/fastq/SRR118/041/SRR11886741/SRR11886741.fastq.gz</span>
+<span class="go">SRR11886742 SRP265425       SRX8434248      Ampliseq of SARS-CoV-2  Ampliseq of SARS-CoV-2  2697049 Severe acute respiratory syndrome coronavirus 2 35-2020-04-03   AMPLICON        VIRAL RNA       RT-PCR  SINGLE  SRS6745314              Ion Torrent S5 XL       Ion Torrent S5 XL       ION_TORRENT     1639851 198973268       1639851 245466005       IonXpress_035_R_2020_04_03_10_09_05_user_GCEID-S5-55-SARS_CoV2_SA4.bam  gs://sra-pub-src-11/SRR11886742/Wuhan_Hu_1_NC_045512_21500_and_subgenomics_SA4.fasta.1  https://sra-pub-sars-cov2.s3.amazonaws.com/sra-src/SRR11886742/Wuhan_Hu_1_NC_045512_21500_and_subgenomics_SA4.fasta.1   https://sra-download.ncbi.nlm.nih.gov/traces/sra69/SRR/011608/SRR11886742               GC-13   NA      23-Mar-2020     Australia: Victoria     Homo sapiens    COVID-19        swab    NA      Pathogen.cl             http://ftp.sra.ebi.ac.uk/vol1/fastq/SRR118/042/SRR11886742/SRR11886742.fastq.gz                 era-fasp@fasp.sra.ebi.ac.uk:vol1/fastq/SRR118/042/SRR11886742/SRR11886742.fastq.gz</span>
+<span class="go">SRR11886743 SRP265425       SRX8434247      Ampliseq of SARS-CoV-2  Ampliseq of SARS-CoV-2  2697049 Severe acute respiratory syndrome coronavirus 2 68-2020-05-07   AMPLICON        VIRAL RNA       RT-PCR  SINGLE  SRS6745312              Ion Torrent S5 XL       Ion Torrent S5 XL       ION_TORRENT     3921389 210198580       3921389 332935558       IonXpress_068_R_2020_05_07_11_47_51_user_GCEID-S5-60-SARS_CoV2_SA4.bam  gs://sra-pub-src-17/SRR11886743/Wuhan_Hu_1_NC_045512_21500_and_subgenomics_SA4.fasta.1  https://sra-download.ncbi.nlm.nih.gov/traces/sra64/SRZ/011886/SRR11886743/Wuhan_Hu_1_NC_045512_21500_and_subgenomics_SA4.fasta  https://sra-download.ncbi.nlm.nih.gov/traces/sra54/SRR/011608/SRR11886743               GC-55   NA      24-Apr-2020     Australia: Victoria     Homo sapiens    COVID-19        swab    NA      Pathogen.cl     https://sra-pub-sars-cov2.s3.amazonaws.com/sra-src/SRR11886743/Wuhan_Hu_1_NC_045512_21500_and_subgenomics_SA4.fasta.1   http://ftp.sra.ebi.ac.uk/vol1/fastq/SRR118/043/SRR11886743/SRR11886743.fastq.gz                 era-fasp@fasp.sra.ebi.ac.uk:vol1/fastq/SRR118/043/SRR11886743/SRR11886743.fastq.gz</span>
+<span class="go">SRR11886744 SRP265425       SRX8434246      Ampliseq of SARS-CoV-2  Ampliseq of SARS-CoV-2  2697049 Severe acute respiratory syndrome coronavirus 2 66-2020-04-22   AMPLICON        VIRAL RNA       RT-PCR  SINGLE  SRS6745311              Ion Torrent S5 XL       Ion Torrent S5 XL       ION_TORRENT     14295475        2150005008      14295475        2967829315      IonXpress_066_R_2020_04_22_11_10_56_user_GCEID-S5-57-SARS_CoV2_SA4.fastq        gs://sra-pub-src-11/SRR11886744/IonXpress_066_R_2020_04_22_11_10_56_user_GCEID-S5-57-SARS_CoV2_SA4.fastq.1      https://sra-pub-sars-cov2.s3.amazonaws.com/sra-src/SRR11886744/IonXpress_066_R_2020_04_22_11_10_56_user_GCEID-S5-57-SARS_CoV2_SA4.fastq.1       https://sra-download.ncbi.nlm.nih.gov/traces/sra20/SRR/011608/SRR11886744               GC-26   NA      07-Mar-2020     Australia: Victoria     Homo sapiens    COVID-19        swab    NA      Pathogen.cl             http://ftp.sra.ebi.ac.uk/vol1/fastq/SRR118/044/SRR11886744/SRR11886744.fastq.gz                 era-fasp@fasp.sra.ebi.ac.uk:vol1/fastq/SRR118/044/SRR11886744/SRR11886744.fastq.gz</span>
+<span class="go">SRR11886745 SRP265425       SRX8434245      Ampliseq of SARS-CoV-2  Ampliseq of SARS-CoV-2  2697049 Severe acute respiratory syndrome coronavirus 2 65-2020-04-22   AMPLICON        VIRAL RNA       RT-PCR  SINGLE  SRS6745310              Ion Torrent S5 XL       Ion Torrent S5 XL       ION_TORRENT     5124692 294846140       5124692 431819462       IonXpress_065_R_2020_04_22_11_10_56_user_GCEID-S5-57-SARS_CoV2_SA4.bam  gs://sra-pub-src-16/SRR11886745/Wuhan_Hu_1_NC_045512_21500_and_subgenomics_SA4.fasta.1  https://sra-download.ncbi.nlm.nih.gov/traces/sra69/SRZ/011886/SRR11886745/Wuhan_Hu_1_NC_045512_21500_and_subgenomics_SA4.fasta  https://sra-download.ncbi.nlm.nih.gov/traces/sra19/SRR/011608/SRR11886745               GC-25   NA      10-Apr-2020     Australia: Victoria     Homo sapiens    COVID-19        swab    NA      Pathogen.cl     https://sra-pub-sars-cov2.s3.amazonaws.com/sra-src/SRR11886745/Wuhan_Hu_1_NC_045512_21500_and_subgenomics_SA4.fasta.1   http://ftp.sra.ebi.ac.uk/vol1/fastq/SRR118/045/SRR11886745/SRR11886745.fastq.gz                 era-fasp@fasp.sra.ebi.ac.uk:vol1/fastq/SRR118/045/SRR11886745/SRR11886745.fastq.gz</span>
+<span class="go">SRR11886746 SRP265425       SRX8434244      Ampliseq of SARS-CoV-2  Ampliseq of SARS-CoV-2  2697049 Severe acute respiratory syndrome coronavirus 2 64-2020-04-22   AMPLICON        VIRAL RNA       RT-PCR  SINGLE  SRS6745309              Ion Torrent S5 XL       Ion Torrent S5 XL       ION_TORRENT     2986306 205666872       2986306 275400959       IonXpress_064_R_2020_04_22_15_56_22_user_GCEID-S5-58-SARS_CoV2_SA4.bam  gs://sra-pub-src-17/SRR11886746/Wuhan_Hu_1_NC_045512_21500_and_subgenomics_SA4.fasta.1  https://sra-download.ncbi.nlm.nih.gov/traces/sra59/SRZ/011886/SRR11886746/Wuhan_Hu_1_NC_045512_21500_and_subgenomics_SA4.fasta  https://sra-download.ncbi.nlm.nih.gov/traces/sra47/SRR/011608/SRR11886746               GC-21   NA      03-Apr-2020     Australia: Victoria     Homo sapiens    COVID-19        swab    NA      Pathogen.cl     https://sra-pub-sars-cov2.s3.amazonaws.com/sra-src/SRR11886746/Wuhan_Hu_1_NC_045512_21500_and_subgenomics_SA4.fasta.1   http://ftp.sra.ebi.ac.uk/vol1/fastq/SRR118/046/SRR11886746/SRR11886746.fastq.gz                 era-fasp@fasp.sra.ebi.ac.uk:vol1/fastq/SRR118/046/SRR11886746/SRR11886746.fastq.gz</span>
+<span class="go">SRR11886747 SRP265425       SRX8434243      Ampliseq of SARS-CoV-2  Ampliseq of SARS-CoV-2  2697049 Severe acute respiratory syndrome coronavirus 2 34-2020-04-03   AMPLICON        VIRAL RNA       RT-PCR  SINGLE  SRS6745308              Ion Torrent S5 XL       Ion Torrent S5 XL       ION_TORRENT     1182690 59471336        1182690 86350631        IonXpress_034_R_2020_04_03_10_09_05_user_GCEID-S5-55-SARS_CoV2_SA4.bam  gs://sra-pub-src-16/SRR11886747/Wuhan_Hu_1_NC_045512_21500_and_subgenomics_SA4.fasta.1  https://sra-download.ncbi.nlm.nih.gov/traces/sra77/SRZ/011886/SRR11886747/Wuhan_Hu_1_NC_045512_21500_and_subgenomics_SA4.fasta  https://sra-download.ncbi.nlm.nih.gov/traces/sra13/SRR/011608/SRR11886747               GC-11a  NA      24-Mar-2020     Australia: Victoria     Homo sapiens    COVID-19        swab    NA      Pathogen.cl     https://sra-pub-sars-cov2.s3.amazonaws.com/sra-src/SRR11886747/Wuhan_Hu_1_NC_045512_21500_and_subgenomics_SA4.fasta.1   http://ftp.sra.ebi.ac.uk/vol1/fastq/SRR118/047/SRR11886747/SRR11886747.fastq.gz                 era-fasp@fasp.sra.ebi.ac.uk:vol1/fastq/SRR118/047/SRR11886747/SRR11886747.fastq.gz</span>
+<span class="go">SRR11886748 SRP265425       SRX8434242      Ampliseq of SARS-CoV-2  Ampliseq of SARS-CoV-2  2697049 Severe acute respiratory syndrome coronavirus 2 33-2020-04-03   AMPLICON        VIRAL RNA       RT-PCR  SINGLE  SRS6745307              Ion Torrent S5 XL       Ion Torrent S5 XL       ION_TORRENT     6031816 749323230       6031816 928054297       IonXpress_033_R_2020_04_03_10_09_05_user_GCEID-S5-55-SARS_CoV2_SA4.bam  gs://sra-pub-src-15/SRR11886748/IonXpress_033_R_2020_04_03_10_09_05_user_GCEID_S5_55_SARS_CoV2_SA4.bam.1        https://sra-download.ncbi.nlm.nih.gov/traces/sra43/SRZ/011886/SRR11886748/IonXpress_033_R_2020_04_03_10_09_05_user_GCEID_S5_55_SARS_CoV2_SA4.bam        https://sra-download.ncbi.nlm.nih.gov/traces/sra66/SRR/011608/SRR11886748               GC-14a  NA      28-Mar-2020     Australia: Victoria     Homo sapiens    COVID-19        swab    NA      Pathogen.cl     https://sra-pub-sars-cov2.s3.amazonaws.com/sra-src/SRR11886748/IonXpress_033_R_2020_04_03_10_09_05_user_GCEID_S5_55_SARS_CoV2_SA4.bam.1 http://ftp.sra.ebi.ac.uk/vol1/fastq/SRR118/048/SRR11886748/SRR11886748.fastq.gz                 era-fasp@fasp.sra.ebi.ac.uk:vol1/fastq/SRR118/048/SRR11886748/SRR11886748.fastq.gz</span>
+</pre></div>
+</div>
+<p>See <a class="reference internal" href="quickstart.html"><span class="doc">Quickstart</span></a> for other examples.</p>
+</div>
+<hr class="docutils" />
+<div class="section" id="contents">
+<h1>Contents<a class="headerlink" href="#contents" title="Permalink to this headline">¶</a></h1>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cmdline.html">CLI</a></li>
+<li class="toctree-l1"><a class="reference internal" href="python-api-usage.html">Python API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="case_studies.html">Case Studies</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands.html">API Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contributing.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="authors.html">Credits</a></li>
+<li class="toctree-l1"><a class="reference internal" href="history.html">History</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modules.html">pysradb</a></li>
+</ul>
+</div>
+</div>
+<hr class="docutils" />
+<div class="section" id="publication">
+<h1>Publication<a class="headerlink" href="#publication" title="Permalink to this headline">¶</a></h1>
+<blockquote>
+<div><p><a class="reference external" href="https://f1000research.com/articles/8-532/v1">pysradb: A Python package to query next-generation sequencing metadata and data from NCBI Sequence Read Archive</a></p>
+<p>Presentation slides from BOSC (ISMB-ECCB) 2019: <a class="reference external" href="https://f1000research.com/slides/8-1183">https://f1000research.com/slides/8-1183</a></p>
+</div></blockquote>
+</div>
+<hr class="docutils" />
+<div class="section" id="citation">
+<h1>Citation<a class="headerlink" href="#citation" title="Permalink to this headline">¶</a></h1>
+<p>Choudhary, Saket. “pysradb: A Python Package to Query next-Generation Sequencing Metadata and Data from NCBI Sequence Read Archive.” F1000Research, vol. 8, F1000 (Faculty of 1000 Ltd), Apr. 2019, p. 532 (<a class="reference external" href="https://f1000research.com/articles/8-532/v1">https://f1000research.com/articles/8-532/v1</a>)</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nd">@article</span><span class="p">{</span><span class="n">Choudhary2019</span><span class="p">,</span>
+<span class="n">doi</span> <span class="o">=</span> <span class="p">{</span><span class="mf">10.12688</span><span class="o">/</span><span class="n">f1000research</span><span class="o">.</span><span class="mf">18676.1</span><span class="p">},</span>
+<span class="n">url</span> <span class="o">=</span> <span class="p">{</span><span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">doi</span><span class="o">.</span><span class="n">org</span><span class="o">/</span><span class="mf">10.12688</span><span class="o">/</span><span class="n">f1000research</span><span class="o">.</span><span class="mf">18676.1</span><span class="p">},</span>
+<span class="n">year</span> <span class="o">=</span> <span class="p">{</span><span class="mi">2019</span><span class="p">},</span>
+<span class="n">month</span> <span class="o">=</span> <span class="n">apr</span><span class="p">,</span>
+<span class="n">publisher</span> <span class="o">=</span> <span class="p">{</span><span class="n">F1000</span> <span class="p">(</span><span class="n">Faculty</span> <span class="n">of</span> <span class="mi">1000</span> <span class="n">Ltd</span><span class="p">)},</span>
+<span class="n">volume</span> <span class="o">=</span> <span class="p">{</span><span class="mi">8</span><span class="p">},</span>
+<span class="n">pages</span> <span class="o">=</span> <span class="p">{</span><span class="mi">532</span><span class="p">},</span>
+<span class="n">author</span> <span class="o">=</span> <span class="p">{</span><span class="n">Saket</span> <span class="n">Choudhary</span><span class="p">},</span>
+<span class="n">title</span> <span class="o">=</span> <span class="p">{</span><span class="n">pysradb</span><span class="p">:</span> <span class="n">A</span> <span class="p">{</span><span class="n">P</span><span class="p">}</span><span class="n">ython</span> <span class="n">package</span> <span class="n">to</span> <span class="n">query</span> <span class="nb">next</span><span class="o">-</span><span class="n">generation</span> <span class="n">sequencing</span> <span class="n">metadata</span> <span class="ow">and</span> <span class="n">data</span> <span class="kn">from</span> <span class="p">{</span><span class="n">NCBI</span><span class="p">}</span> <span class="p">{</span><span class="n">S</span><span class="p">}</span><span class="n">equence</span> <span class="p">{</span><span class="n">R</span><span class="p">}</span><span class="n">ead</span> <span class="p">{</span><span class="n">A</span><span class="p">}</span><span class="n">rchive</span><span class="p">},</span>
+<span class="n">journal</span> <span class="o">=</span> <span class="p">{</span><span class="n">F1000Research</span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Zenodo archive: <a class="reference external" href="https://zenodo.org/badge/latestdoi/159590788">https://zenodo.org/badge/latestdoi/159590788</a></p>
+<p>Zenodo DOI: 10.5281/zenodo.2306881</p>
+</div>
+<hr class="docutils" />
+<div class="section" id="questions">
+<h1>Questions?<a class="headerlink" href="#questions" title="Permalink to this headline">¶</a></h1>
+<p>Join our <a class="reference external" href="https://join.slack.com/t/pysradb/shared_invite/zt-f01jndpy-KflPu3Be5Aq3FzRh5wj1Ug">Slack Channel</a> or open an <a class="reference external" href="https://github.com/saketkc/pysradb/issues">issue</a>.</p>
+</div>
+<div class="section" id="indices-and-tables">
+<h1>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Permalink to this headline">¶</a></h1>
+<ul class="simple">
+<li><p><a class="reference internal" href="genindex.html"><span class="std std-ref">Index</span></a></p></li>
+<li><p><a class="reference internal" href="py-modindex.html"><span class="std std-ref">Module Index</span></a></p></li>
+<li><p><a class="reference internal" href="search.html"><span class="std std-ref">Search Page</span></a></p></li>
+</ul>
+</div>
+
+
+              </div>
+              
+              
+              <div class='prev-next-bottom'>
+                
+    <a class='right-next' id="next-link" href="installation.html" title="next page">Installation</a>
+
+              </div>
+              
+          </main>
+          
+
+      </div>
+    </div>
+
+    
+  <script src="_static/js/index.3da636dd464baa7582d2.js"></script>
+
+
+    
+    <!-- Google Analytics -->
+    <script>
+      window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+      ga('create', 'G-CKQZFCEENZ', 'auto');
+      ga('set', 'anonymizeIp', true);
+      ga('send', 'pageview');
+    </script>
+    <script async src='https://www.google-analytics.com/analytics.js'></script>
+    <!-- End Google Analytics -->
+    <footer class="footer mt-5 mt-md-0">
+  <div class="container">
+    <p>
+          &copy; Copyright 2018, Saket Choudhary.<br/>
+        Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.4.3.<br/>
+    </p>
+  </div>
+</footer>
+  </body>
+</html>

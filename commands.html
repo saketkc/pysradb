@@ -1,0 +1,400 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>API Documentation &#8212; pysradb 1.0.1 documentation</title>
+    
+  <link rel="stylesheet" href="_static/css/index.73d71520a4ca3b99cfee5594769eaaae.css">
+
+    
+  <link rel="stylesheet"
+    href="_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    
+      
+  <link rel="stylesheet"
+    href="_static/vendor/open-sans_all/1.44.1/index.css">
+  <link rel="stylesheet"
+    href="_static/vendor/lato_latin-ext/1.44.1/index.css">
+
+    
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/basic.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/graphviz.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx_tabs/semantic-ui-2.4.1/segment.min.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx_tabs/semantic-ui-2.4.1/menu.min.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx_tabs/semantic-ui-2.4.1/tab.min.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx_tabs/tabs.css" />
+    <link rel="stylesheet" type="text/css" href="_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
+    <link rel="stylesheet" type="text/css" href="_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
+    
+  <link rel="preload" as="script" href="_static/js/index.3da636dd464baa7582d2.js">
+
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Contributing" href="contributing.html" />
+    <link rel="prev" title="Case Studies" href="case_studies.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="en" />
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+    
+    <nav class="navbar navbar-light navbar-expand-lg bg-light fixed-top bd-navbar" id="navbar-main">
+<div class="container-xl">
+
+    <a class="navbar-brand" href="index.html">
+    
+      <img src="_static/pysradb_v3.png" class="logo" alt="logo" />
+    
+    </a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-menu" aria-controls="navbar-menu" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div id="navbar-menu" class="col-lg-9 collapse navbar-collapse">
+      <ul id="navbar-main-elements" class="navbar-nav mr-auto">
+        
+        
+        <li class="nav-item ">
+            <a class="nav-link" href="installation.html">Installation</a>
+        </li>
+        
+        <li class="nav-item ">
+            <a class="nav-link" href="quickstart.html">Quickstart</a>
+        </li>
+        
+        <li class="nav-item ">
+            <a class="nav-link" href="cmdline.html">CLI</a>
+        </li>
+        
+        <li class="nav-item ">
+            <a class="nav-link" href="python-api-usage.html">Python API</a>
+        </li>
+        
+        <li class="nav-item ">
+            <a class="nav-link" href="case_studies.html">Case Studies</a>
+        </li>
+        
+        <li class="nav-item active">
+            <a class="nav-link" href="">API Documentation</a>
+        </li>
+        
+        <li class="nav-item ">
+            <a class="nav-link" href="contributing.html">Contributing</a>
+        </li>
+        
+        <li class="nav-item ">
+            <a class="nav-link" href="authors.html">Credits</a>
+        </li>
+        
+        <li class="nav-item ">
+            <a class="nav-link" href="history.html">History</a>
+        </li>
+        
+        <li class="nav-item ">
+            <a class="nav-link" href="modules.html">pysradb</a>
+        </li>
+        
+        
+      </ul>
+
+
+      
+
+      <ul class="navbar-nav">
+        
+        
+      </ul>
+    </div>
+</div>
+    </nav>
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+          <div class="col-12 col-md-3 bd-sidebar"><form class="bd-search d-flex align-items-center" action="search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off" >
+</form>
+<nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
+
+    <div class="bd-toc-item active">
+    
+  
+    <ul class="nav bd-sidenav">
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+          
+            
+                <li class="">
+                    <a href="commands/download.html">download</a>
+                </li>
+            
+          
+            
+                <li class="">
+                    <a href="commands/metadata.html">metadata</a>
+                </li>
+            
+          
+            
+                <li class="">
+                    <a href="commands/search.html">Metadata Search</a>
+                </li>
+            
+          
+            
+                <li class="">
+                    <a href="commands/gse-to-gsm.html">gse-to-gsm</a>
+                </li>
+            
+          
+            
+                <li class="">
+                    <a href="commands/gse-to-srp.html">gse-to-srp</a>
+                </li>
+            
+          
+            
+                <li class="">
+                    <a href="commands/srp-to-gse.html">srp-to-gse</a>
+                </li>
+            
+          
+            
+                <li class="">
+                    <a href="commands/srp-to-srr.html">srp-to-srr</a>
+                </li>
+            
+          
+            
+                <li class="">
+                    <a href="commands/srp-to-srs.html">srp-to-srs</a>
+                </li>
+            
+          
+            
+                <li class="">
+                    <a href="commands/srp-to-srx.html">srp-to-srx</a>
+                </li>
+            
+          
+            
+                <li class="">
+                    <a href="commands/srr-to-srs.html">srr-to-srs</a>
+                </li>
+            
+          
+            
+                <li class="">
+                    <a href="commands/srr-to-srx.html">srr-to-srx</a>
+                </li>
+            
+          
+            
+                <li class="">
+                    <a href="commands/srs-to-srx.html">srs-to-srx</a>
+                </li>
+            
+          
+            
+                <li class="">
+                    <a href="commands/srx-to-srr.html">srx-to-srr</a>
+                </li>
+            
+          
+            
+                <li class="">
+                    <a href="commands/srx-to-srs.html">srx-to-srs</a>
+                </li>
+            
+          
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+      </ul>
+  
+  </nav>
+          </div>
+          
+
+          
+          <div class="d-none d-xl-block col-xl-2 bd-toc">
+              
+
+<nav id="bd-toc-nav">
+    <ul class="nav section-nav flex-column">
+    
+    </ul>
+</nav>
+
+
+              
+          </div>
+          
+
+          
+          <main class="col-12 col-md-9 col-xl-7 py-md-5 pl-md-5 pr-md-4 bd-content" role="main">
+              
+              <div>
+                
+  <div class="section" id="api-documentation">
+<span id="commands"></span><h1>API Documentation<a class="headerlink" href="#api-documentation" title="Permalink to this headline">¶</a></h1>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="commands/download.html">download</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/metadata.html">metadata</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="commands/metadata.html#usage-and-options">Usage and options</a></li>
+<li class="toctree-l2"><a class="reference internal" href="commands/metadata.html#obtaining-metadata-for-sra-study-accession-srp-metadata">Obtaining  metadata for SRA study accession (SRP metadata)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="commands/metadata.html#getting-more-detailed-metadata">Getting more detailed metadata</a></li>
+<li class="toctree-l2"><a class="reference internal" href="commands/metadata.html#saving-metadata-to-a-file">Saving metadata to a file</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="commands/search.html">Metadata Search</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="commands/search.html#parameters">Parameters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="commands/search.html#searching-sra-database-and-retrieving-metadata">Searching SRA database and retrieving metadata</a></li>
+<li class="toctree-l2"><a class="reference internal" href="commands/search.html#searching-ena-database-and-retrieving-metadata">Searching ENA database and retrieving metadata</a></li>
+<li class="toctree-l2"><a class="reference internal" href="commands/search.html#searching-geo-datasets-database-and-retrieving-metadata">Searching GEO Datasets database and retrieving metadata</a></li>
+<li class="toctree-l2"><a class="reference internal" href="commands/search.html#saving-metadata-to-file">Saving Metadata to File</a></li>
+<li class="toctree-l2"><a class="reference internal" href="commands/search.html#generating-statistics-and-graphs">Generating Statistics and Graphs</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="commands/gse-to-gsm.html">gse-to-gsm</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="commands/gse-to-gsm.html#usage-and-options">Usage and options</a></li>
+<li class="toctree-l2"><a class="reference internal" href="commands/gse-to-gsm.html#convert-geo-accession-id-gse-to-geo-expriment-accession-gsm">Convert GEO accession ID (GSE) to GEO expriment accession (GSM)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="commands/gse-to-gsm.html#saving-metadata-to-a-file">Saving metadata to a file</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="commands/gse-to-srp.html">gse-to-srp</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="commands/gse-to-srp.html#usage-and-options">Usage and options</a></li>
+<li class="toctree-l2"><a class="reference internal" href="commands/gse-to-srp.html#convert-geo-accession-id-gse-to-sra-study-accession-srp">Convert GEO accession ID (GSE) to SRA study accession (SRP)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="commands/gse-to-srp.html#getting-sample-attributes">Getting sample attributes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="commands/gse-to-srp.html#saving-metadata-to-a-file">Saving metadata to a file</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="commands/srp-to-gse.html">srp-to-gse</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="commands/srp-to-gse.html#usage-and-options">Usage and options</a></li>
+<li class="toctree-l2"><a class="reference internal" href="commands/srp-to-gse.html#convert-sra-study-accession-srp-to-geo-accession-id-gse">Convert SRA study accession (SRP) to GEO accession ID (GSE)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="commands/srp-to-gse.html#saving-metadata-to-a-file">Saving metadata to a file</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="commands/srp-to-srr.html">srp-to-srr</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="commands/srp-to-srr.html#usage-and-options">Usage and options</a></li>
+<li class="toctree-l2"><a class="reference internal" href="commands/srp-to-srr.html#convert-sra-study-accession-srp-to-sra-run-accession-s-srr">Convert SRA study accession (SRP) to SRA run accession(s) (SRR)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="commands/srp-to-srr.html#saving-metadata-to-a-file">Saving metadata to a file</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="commands/srp-to-srs.html">srp-to-srs</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="commands/srp-to-srs.html#usage-and-options">Usage and options</a></li>
+<li class="toctree-l2"><a class="reference internal" href="commands/srp-to-srs.html#convert-sra-study-accession-srp-to-sra-sample-accession-srs">Convert SRA study accession (SRP) to SRA sample accession (SRS)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="commands/srp-to-srs.html#saving-metadata-to-a-file">Saving metadata to a file</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="commands/srp-to-srx.html">srp-to-srx</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="commands/srp-to-srx.html#usage-and-options">Usage and options</a></li>
+<li class="toctree-l2"><a class="reference internal" href="commands/srp-to-srx.html#convert-sra-study-accession-srp-to-sra-experiment-accession-srx">Convert SRA study accession (SRP) to SRA experiment accession (SRX)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="commands/srp-to-srx.html#saving-metadata-to-a-file">Saving metadata to a file</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="commands/srr-to-srs.html">srr-to-srs</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="commands/srr-to-srs.html#usage-and-options">Usage and options</a></li>
+<li class="toctree-l2"><a class="reference internal" href="commands/srr-to-srs.html#convert-sra-run-accession-srr-to-sra-sample-accession-srs">Convert SRA run accession (SRR) to SRA sample accession (SRS)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="commands/srr-to-srs.html#saving-metadata-to-a-file">Saving metadata to a file</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="commands/srr-to-srx.html">srr-to-srx</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="commands/srr-to-srx.html#usage-and-options">Usage and options</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="commands/srs-to-srx.html">srs-to-srx</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="commands/srs-to-srx.html#usage-and-options">Usage and options</a></li>
+<li class="toctree-l2"><a class="reference internal" href="commands/srs-to-srx.html#convert-sra-sample-accession-srs-to-sra-experiment-accession-srx">Convert SRA sample accession (SRS) to SRA experiment accession (SRX)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="commands/srs-to-srx.html#saving-metadata-to-a-file">Saving metadata to a file</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="commands/srx-to-srr.html">srx-to-srr</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="commands/srx-to-srr.html#usage-and-options">Usage and options</a></li>
+<li class="toctree-l2"><a class="reference internal" href="commands/srx-to-srr.html#convert-sra-experiment-accession-srx-to-sra-run-accession-s-srr">Convert SRA experiment accession (SRX) to SRA run accession(s) (SRR)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="commands/srx-to-srr.html#saving-metadata-to-a-file">Saving metadata to a file</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="commands/srx-to-srs.html">srx-to-srs</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="commands/srx-to-srs.html#usage-and-options">Usage and options</a></li>
+<li class="toctree-l2"><a class="reference internal" href="commands/srx-to-srs.html#convert-sra-experiment-accession-srx-to-sra-sample-accession-srs">Convert SRA experiment accession (SRX) to SRA sample accession (SRS)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="commands/srx-to-srs.html#saving-metadata-to-a-file">Saving metadata to a file</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+
+
+              </div>
+              
+              
+              <div class='prev-next-bottom'>
+                
+    <a class='left-prev' id="prev-link" href="case_studies.html" title="previous page">Case Studies</a>
+    <a class='right-next' id="next-link" href="contributing.html" title="next page">Contributing</a>
+
+              </div>
+              
+          </main>
+          
+
+      </div>
+    </div>
+
+    
+  <script src="_static/js/index.3da636dd464baa7582d2.js"></script>
+
+
+    
+    <!-- Google Analytics -->
+    <script>
+      window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+      ga('create', 'G-CKQZFCEENZ', 'auto');
+      ga('set', 'anonymizeIp', true);
+      ga('send', 'pageview');
+    </script>
+    <script async src='https://www.google-analytics.com/analytics.js'></script>
+    <!-- End Google Analytics -->
+    <footer class="footer mt-5 mt-md-0">
+  <div class="container">
+    <p>
+          &copy; Copyright 2018, Saket Choudhary.<br/>
+        Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.4.3.<br/>
+    </p>
+  </div>
+</footer>
+  </body>
+</html>
