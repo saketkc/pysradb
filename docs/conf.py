@@ -50,7 +50,12 @@ extensions = [
     "sphinxcontrib.fulltoc",
     "sphinx_tabs.tabs",
     "sphinx_panels",
+    "sphinxcontrib.gtagjs",
 ]
+gtagjs_ids = [
+    "G-CKQZFCEENZ",
+]
+
 panels_add_bootstrap_css = False
 
 # Add any paths that contain templates here, relative to this directory.
