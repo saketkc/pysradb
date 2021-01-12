@@ -17,7 +17,7 @@ A Python package for retrieving metadata and downloading datasets from SRA/ENA
     :target: https://zenodo.org/badge/latestdoi/159590788
 
 .. image:: https://github.com/saketkc/pysradb/workflows/push/badge.svg
-    :target: https://github.com/saketkc/pysradb/
+    :target: https://github.com/saketkc/pysradb/actions
 
 
 *************
