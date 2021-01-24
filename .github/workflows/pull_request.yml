@@ -39,5 +39,5 @@ jobs:
         codecov
     - uses: ammaraskar/sphinx-action@master
       with:
-        pre-build-command: "pip install -r requirements.txt && pip install . && pip install -U sphinx ipython numpydoc sphinxcontrib-fulltoc sphinx-tabs sphinx_rtd_theme sphinx nbsphinx ipython pydata-sphinx-theme nbsphinx-link sphinx-panels"
+        pre-build-command: "pip install -r requirements.txt && pip install . && pip install -U sphinxcontrib-gtagjs sphinx ipython numpydoc sphinxcontrib-fulltoc sphinx-tabs sphinx_rtd_theme sphinx nbsphinx ipython pydata-sphinx-theme nbsphinx-link sphinx-panels"
         docs-folder: "docs/"
