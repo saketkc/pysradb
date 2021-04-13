@@ -47,7 +47,6 @@ extensions = [
     "sphinx.ext.viewcode",
     "sphinx.ext.inheritance_diagram",
     "numpydoc",
-    "sphinxcontrib.fulltoc",
     "sphinx_tabs.tabs",
     "sphinx_panels",
     "sphinxcontrib.gtagjs",
