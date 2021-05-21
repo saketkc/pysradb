@@ -746,6 +746,17 @@ class SRAweb(SRAdb):
         )
         return gsm_df[["experiment_alias", "experiment_accession"]].drop_duplicates()
 
+    def gsm_to_gse(self, gsm, **kwargs):
+        gsm_df = self.fetch_gds_results(gsm, **kwargs)
+        gsm_df = gsm_df[gsm_df.entrytype == "GSE"]
+        gsm_df = gsm_df.rename(
+            columns={
+                "accession": "study_alias",
+                "SRA": "study_accession"
+            }
+        )
+        return gsm_df[["study_alias", "study_accession"]]
+
     def srp_to_gse(self, srp, **kwargs):
         """Get GSE for a SRP"""
         srp_df = self.fetch_gds_results(srp, **kwargs)
