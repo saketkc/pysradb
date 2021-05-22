@@ -3,6 +3,11 @@ History
 #######
 
 *******************
+1.0.2 (Unreleased)
+*******************
+* Fixed `gsm-to-gse` failure (`#128 <https://github.com/saketkc/pysradb/pull/128>`_)
+
+*******************
 1.0.1 (01-10-2021)
 *******************
 * Dropped Python 3.6 since pandas 1.2 is not supported
