@@ -750,10 +750,7 @@ class SRAweb(SRAdb):
         gsm_df = self.fetch_gds_results(gsm, **kwargs)
         gsm_df = gsm_df[gsm_df.entrytype == "GSE"]
         gsm_df = gsm_df.rename(
-            columns={
-                "accession": "study_alias",
-                "SRA": "study_accession"
-            }
+            columns={"accession": "study_alias", "SRA": "study_accession"}
         )
         return gsm_df[["study_alias", "study_accession"]]
 
