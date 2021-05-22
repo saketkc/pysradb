@@ -5,7 +5,7 @@ History
 *******************
 1.0.2 (Unreleased)
 *******************
-* Fixed `gsm-to-srp` failure (`#128 <https://github.com/saketkc/pysradb/pull/128>`_)
+* Fixed `gsm-to-gse` failure (`#128 <https://github.com/saketkc/pysradb/pull/128>`_)
 
 *******************
 1.0.1 (01-10-2021)
