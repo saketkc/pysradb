@@ -89,7 +89,7 @@ def metadata(srp_id, assay, desc, detailed, expand, saveto):
 
 ################# download ##########################
 def download(
-    out_dir, srx, srp, skip_confirmation, col="sra_url", use_ascp=False, threads=1
+    out_dir, srx, srp, geo, skip_confirmation, col="sra_url", use_ascp=False, threads=1
 ):
 
     if out_dir is None:
@@ -623,6 +623,7 @@ def parse_args(args=None):
     subparser.add_argument("--out-dir", help="Output directory root")
     subparser.add_argument("--srx", "-x", help="Download only these SRX(s)", nargs="+")
     subparser.add_argument("--srp", "-p", help="SRP ID", nargs="+")
+    subparser.add_argument("--geo", "-g", help="GEO ID", nargs="+")
     subparser.add_argument(
         "--skip-confirmation", "-y", action="store_true", help="Skip confirmation"
     )
@@ -1198,6 +1199,7 @@ def parse_args(args=None):
             args.out_dir,
             args.srx,
             args.srp,
+            args.geo,
             args.skip_confirmation,
             args.col,
             args.use_ascp,
