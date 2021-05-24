@@ -67,6 +67,10 @@ class GEOweb(GEOdb):
         ----------
         links: list
                List of all links valid downloadable present for a GEO ID
+        root_url: string
+                  url for root directory for a GEO ID
+        gse: string
+             GEO ID
         out_dir: string
                  Directory location for download
         """
