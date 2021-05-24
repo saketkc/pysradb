@@ -35,7 +35,7 @@ class GEOweb(GEOdb):
         links: list
                List of all valid downloadable links present for a GEO ID
         """
-        prefix = gse[:6]
+        prefix = gse[:-3]
         url = f"https://ftp.ncbi.nlm.nih.gov/geo/series/{prefix}nnn/{gse}/suppl/"
         link_objects = html.fromstring(requests.get(url).content).xpath("//a")
         links = [i.attrib["href"] for i in link_objects]
