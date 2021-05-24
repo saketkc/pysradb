@@ -133,12 +133,7 @@ def download(
     if geo:
         for geo_x in geo:
             links, root_url = geoweb.get_download_links(geo_x)
-            geoweb.download(
-                links=links,
-                root_url=root_url,
-                gse=geo_x,
-                out_dir=out_dir
-            )
+            geoweb.download(links=links, root_url=root_url, gse=geo_x, out_dir=out_dir)
     sradb.close()
 
 
