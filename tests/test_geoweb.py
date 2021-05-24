@@ -36,5 +36,5 @@ def test_file_download(geoweb_connection):
         gse="GSE161707",
         out_dir="geoweb_downloads",
     )
-    assert os.path.getsize("geoweb_downloads/GSE161707_RAW.tar")
-    assert os.path.getsize("geoweb_downloads/GSE161707_filelist.txt")
+    assert os.path.getsize("geoweb_downloads/GSE161707/GSE161707_RAW.tar")
+    assert os.path.getsize("geoweb_downloads/GSE161707/GSE161707_filelist.txt")
