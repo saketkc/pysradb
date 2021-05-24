@@ -54,7 +54,7 @@ class GEOweb(GEOdb):
 
         return links, url
 
-    def download(self, links=None, root_url=None, gse=None, out_dir=None):
+    def download(self, links, root_url, gse, verbose=False, out_dir=None):
         """Download GEO files.
 
         Parameters
@@ -65,12 +65,16 @@ class GEOweb(GEOdb):
                   url for root directory for a GEO ID
         gse: string
              GEO ID
+        verbose: bool
+                 Print file list
         out_dir: string
                  Directory location for download
         """
         if out_dir is None:
             out_dir = os.path.join(os.getcwd(), "pysradb_downloads")
 
+        # store output in a separate directory
+        out_dir = os.path.join(out_dir, gse)
         if not os.path.exists(out_dir):
             os.makedirs(out_dir)
 
@@ -83,11 +87,12 @@ class GEOweb(GEOdb):
         tar_list = [i for i in links if ".tar" in i]
         if "filelist.txt" in links:
             tar_file = tar_list[0]
-            print(f"\nThe tar file {tar_file} contains the following files:\n")
-            file_list_contents = requests.get(root_url + "filelist.txt").content.decode(
-                "utf-8"
-            )
-            print(file_list_contents)
+            if verbose:
+                print(f"\nThe tar file {tar_file} contains the following files:\n")
+                file_list_contents = requests.get(
+                    root_url + "filelist.txt"
+                ).content.decode("utf-8")
+                print(file_list_contents)
 
         # Download files
         for link in links:
