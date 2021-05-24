@@ -75,14 +75,13 @@ class GEOweb(GEOdb):
 
         # store output in a separate directory
         out_dir = os.path.join(out_dir, gse)
-        if not os.path.exists(out_dir):
-            os.makedirs(out_dir)
+        os.makedirs(out_dir, exist_ok=True)
 
         # Display files to be downloaded
-        print("\nThe following files will be downloaded, if not already present: \n")
+        print("\nThe following files will be downloaded: \n")
         for link in links:
             print(link)
-
+        print(os.linesep)
         # Check if we can access list of files in the tar file
         tar_list = [i for i in links if ".tar" in i]
         if "filelist.txt" in links:
