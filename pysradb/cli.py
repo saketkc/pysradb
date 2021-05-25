@@ -13,6 +13,7 @@ import pandas as pd
 from . import __version__
 from .exceptions import IncorrectFieldException
 from .exceptions import MissingQueryException
+from .geoweb import GEOweb
 from .search import EnaSearch
 from .search import GeoSearch
 from .search import SraSearch
@@ -89,13 +90,16 @@ def metadata(srp_id, assay, desc, detailed, expand, saveto):
 
 ################# download ##########################
 def download(
-    out_dir, srx, srp, skip_confirmation, col="sra_url", use_ascp=False, threads=1
+    out_dir, srx, srp, geo, skip_confirmation, col="sra_url", use_ascp=False, threads=1
 ):
 
     if out_dir is None:
         out_dir = os.path.join(os.getcwd(), "pysradb_downloads")
     sradb = SRAweb()
-    if not srp:
+    geoweb = GEOweb()
+    # This block is triggered only if no -p or -g arguments are provided.
+    # In this case, the input is taken from the pipe and assumed to be SRA, not GEO
+    if not srp and not geo:
         text = ""
         for index, line in enumerate(sys.stdin):
             line = line.strip(" \t\n\r")
@@ -113,7 +117,8 @@ def download(
             url_col=col,
             threads=threads,
         )
-    else:
+    # This block is triggered for downloads using the -p argument
+    if srp:
         for srp_x in srp:
             metadata = sradb.sra_metadata(srp_x, detailed=True)
             sradb.download(
@@ -124,6 +129,11 @@ def download(
                 use_ascp=use_ascp,
                 threads=threads,
             )
+    # This block is triggered for downloads using the -g argument
+    if geo:
+        for geo_x in geo:
+            links, root_url = geoweb.get_download_links(geo_x)
+            geoweb.download(links=links, root_url=root_url, gse=geo_x, out_dir=out_dir)
     sradb.close()
 
 
@@ -623,6 +633,7 @@ def parse_args(args=None):
     subparser.add_argument("--out-dir", help="Output directory root")
     subparser.add_argument("--srx", "-x", help="Download only these SRX(s)", nargs="+")
     subparser.add_argument("--srp", "-p", help="SRP ID", nargs="+")
+    subparser.add_argument("--geo", "-g", help="GEO ID", nargs="+")
     subparser.add_argument(
         "--skip-confirmation", "-y", action="store_true", help="Skip confirmation"
     )
@@ -1198,6 +1209,7 @@ def parse_args(args=None):
             args.out_dir,
             args.srx,
             args.srp,
+            args.geo,
             args.skip_confirmation,
             args.col,
             args.use_ascp,

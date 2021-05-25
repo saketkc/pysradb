@@ -6,6 +6,7 @@ History
 1.0.2 (Unreleased)
 *******************
 * Fixed `gsm-to-gse` failure (`#128 <https://github.com/saketkc/pysradb/pull/128>`_)
+* Added support for downloading data from GEO `pysradb dowload -g <GSE>` (`#129 <https://github.com/saketkc/pysradb/pull/129>`_)
 
 *******************
 1.0.1 (01-10-2021)
