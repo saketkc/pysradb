@@ -4,7 +4,7 @@
 
 
 ######################################################################################
-A Python package for retrieving metadata and downloading datasets from SRA/ENA
+A Python package for retrieving metadata and downloading datasets from SRA/ENA/GEO
 ######################################################################################
 
 .. image:: https://img.shields.io/pypi/v/pysradb.svg?style=flat-square
@@ -252,6 +252,13 @@ Converting GSM to SRR
     GSM2177186       SRR3587529
 
 
+Downloading supplementary files from GEO
+========================================
+
+::
+
+    $ pysradb download -g GSE161707
+    
 
 Downloading an entire SRA/ENA project (multithreaded)
 =====================================================
