@@ -1,8 +1,3 @@
-.. image:: https://raw.githubusercontent.com/saketkc/pysradb/master/docs/_static/pysradb_v3.png
-    :target: https://raw.githubusercontent.com/saketkc/pysradb/master/docs/_static/pysradb_v3.png
-    :height: 90px
-
-
 ######################################################################################
 A Python package for retrieving metadata and downloading datasets from SRA/ENA/GEO
 ######################################################################################
