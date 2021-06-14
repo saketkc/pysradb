@@ -2,5 +2,5 @@ lxml==4.6.3
 pandas==1.2.4
 requests==2.25.1
 requests-ftp==0.3.1
-tqdm==4.61.0
+tqdm==4.61.1
 xmltodict==0.12.0
