@@ -4,6 +4,7 @@ import concurrent.futures
 import os
 import sys
 import time
+import math
 import warnings
 from collections import OrderedDict
 from json.decoder import JSONDecodeError
@@ -249,72 +250,85 @@ class SRAweb(SRAdb):
         assert db in ["sra", "geo"]
 
         payload = self.esearch_params[db].copy()
-        if isinstance(term, list):
-            term = " OR ".join(term)
-        payload += [("term", term)]
-        request = requests.post(self.base_url["esearch"], data=OrderedDict(payload))
-        try:
-            esearch_response = request.json()
-        except JSONDecodeError:
-            sys.stderr.write(
-                "Unable to parse esummary response json: {}{}. Will retry once.".format(
-                    request.text, os.linesep
-                )
-            )
-            retry_after = request.headers.get("Retry-After", 1)
-            time.sleep(int(retry_after))
+        # TODO explain
+        if isinstance(term, str):
+            terms = [term]
+        elif isinstance(term, list):
+            STEPSIZE = 150
+            terms = []
+            for i in range(math.ceil(len(term) / STEPSIZE)):
+                terms.append(" OR ".join(term[i * STEPSIZE:(i + 1) * STEPSIZE]))
+        else:
+            # TODO @saketkc not sure if this can happen?
+            raise NotImplementedError
+
+        results = {}
+        for term in terms:
+            payload += [("term", term)]
             request = requests.post(self.base_url["esearch"], data=OrderedDict(payload))
             try:
                 esearch_response = request.json()
             except JSONDecodeError:
                 sys.stderr.write(
-                    "Unable to parse esummary response json: {}{}. Aborting.".format(
+                    "Unable to parse esummary response json: {}{}. Will retry once.".format(
                         request.text, os.linesep
                     )
                 )
-                sys.exit(1)
+                retry_after = request.headers.get("Retry-After", 1)
+                time.sleep(int(retry_after))
+                request = requests.post(self.base_url["esearch"], data=OrderedDict(payload))
+                try:
+                    esearch_response = request.json()
+                except JSONDecodeError:
+                    sys.stderr.write(
+                        "Unable to parse esummary response json: {}{}. Aborting.".format(
+                            request.text, os.linesep
+                        )
+                    )
+                    sys.exit(1)
 
-            # retry again
+                # retry again
 
-        if "esummaryresult" in esearch_response:
-            print("No result found")
-            return
-        if "error" in esearch_response:
-            # API rate limite exceeded
-            esearch_response = _retry_response(
-                self.base_url["esearch"], payload, "esearchresult"
-            )
-
-        n_records = int(esearch_response["esearchresult"]["count"])
-
-        results = {}
-        for retstart in get_retmax(n_records):
-
-            payload = self.esearch_params[db].copy()
-            payload += self.create_esummary_params(esearch_response["esearchresult"])
-            payload = OrderedDict(payload)
-            payload["retstart"] = retstart
-            request = requests.get(
-                self.base_url["esummary"], params=OrderedDict(payload)
-            )
-            try:
-                response = request.json()
-            except JSONDecodeError:
-                time.sleep(1)
-                response = _retry_response(self.base_url["esummary"], payload, "result")
-
-            if "error" in response:
+            # TODO @saketkc what to do with incomplete responses?
+            if "esummaryresult" in esearch_response:
+                print("No result found")
+                return
+            if "error" in esearch_response:
                 # API rate limite exceeded
-                response = _retry_response(self.base_url["esummary"], payload, "result")
-            if retstart == 0:
-                results = response["result"]
-            else:
-                result = response["result"]
-                for key, value in result.items():
-                    if key in list(results.keys()):
-                        results[key] += value
-                    else:
-                        results[key] = value
+                esearch_response = _retry_response(
+                    self.base_url["esearch"], payload, "esearchresult"
+                )
+
+            n_records = int(esearch_response["esearchresult"]["count"])
+
+            for retstart in get_retmax(n_records):
+
+                payload = self.esearch_params[db].copy()
+                payload += self.create_esummary_params(esearch_response["esearchresult"])
+                payload = OrderedDict(payload)
+                payload["retstart"] = retstart
+                request = requests.get(
+                    self.base_url["esummary"], params=OrderedDict(payload)
+                )
+                try:
+                    response = request.json()
+                except JSONDecodeError:
+                    time.sleep(1)
+                    response = _retry_response(self.base_url["esummary"], payload, "result")
+
+                if "error" in response:
+                    # API rate limite exceeded
+                    response = _retry_response(self.base_url["esummary"], payload, "result")
+                if retstart == 0:
+                    results = response["result"]
+                else:
+                    result = response["result"]
+                    for key, value in result.items():
+                        if key in list(results.keys()):
+                            results[key] += value
+                        else:
+                            results[key] = value
+
         return results
 
     def get_efetch_response(self, db, term, usehistory="y"):
