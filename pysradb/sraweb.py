@@ -257,7 +257,7 @@ class SRAweb(SRAdb):
             STEPSIZE = 150
             terms = []
             for i in range(math.ceil(len(term) / STEPSIZE)):
-                terms.append(" OR ".join(term[i * STEPSIZE:(i + 1) * STEPSIZE]))
+                terms.append(" OR ".join(term[i * STEPSIZE : (i + 1) * STEPSIZE]))
         else:
             # TODO @saketkc not sure if this can happen?
             raise NotImplementedError
@@ -276,7 +276,9 @@ class SRAweb(SRAdb):
                 )
                 retry_after = request.headers.get("Retry-After", 1)
                 time.sleep(int(retry_after))
-                request = requests.post(self.base_url["esearch"], data=OrderedDict(payload))
+                request = requests.post(
+                    self.base_url["esearch"], data=OrderedDict(payload)
+                )
                 try:
                     esearch_response = request.json()
                 except JSONDecodeError:
@@ -304,7 +306,9 @@ class SRAweb(SRAdb):
             for retstart in get_retmax(n_records):
 
                 payload = self.esearch_params[db].copy()
-                payload += self.create_esummary_params(esearch_response["esearchresult"])
+                payload += self.create_esummary_params(
+                    esearch_response["esearchresult"]
+                )
                 payload = OrderedDict(payload)
                 payload["retstart"] = retstart
                 request = requests.get(
@@ -314,11 +318,15 @@ class SRAweb(SRAdb):
                     response = request.json()
                 except JSONDecodeError:
                     time.sleep(1)
-                    response = _retry_response(self.base_url["esummary"], payload, "result")
+                    response = _retry_response(
+                        self.base_url["esummary"], payload, "result"
+                    )
 
                 if "error" in response:
                     # API rate limite exceeded
-                    response = _retry_response(self.base_url["esummary"], payload, "result")
+                    response = _retry_response(
+                        self.base_url["esummary"], payload, "result"
+                    )
                 result = response["result"]
                 for key, value in result.items():
                     if key in list(results.keys()):
@@ -340,7 +348,7 @@ class SRAweb(SRAdb):
             STEPSIZE = 150
             terms = []
             for i in range(math.ceil(len(term) / STEPSIZE)):
-                terms.append(" OR ".join(term[i * STEPSIZE:(i + 1) * STEPSIZE]))
+                terms.append(" OR ".join(term[i * STEPSIZE : (i + 1) * STEPSIZE]))
         else:
             # TODO @saketkc not sure if this can happen?
             raise NotImplementedError
@@ -348,7 +356,9 @@ class SRAweb(SRAdb):
         results = []
         for term in terms:
             payload = payload_original + [("term", term)]
-            request = requests.get(self.base_url["esearch"], params=OrderedDict(payload))
+            request = requests.get(
+                self.base_url["esearch"], params=OrderedDict(payload)
+            )
             esearch_response = request.json()
             if "esummaryresult" in esearch_response:
                 print("No result found")
@@ -364,10 +374,14 @@ class SRAweb(SRAdb):
             for retstart in get_retmax(n_records):
 
                 payload = self.efetch_params.copy()
-                payload += self.create_esummary_params(esearch_response["esearchresult"])
+                payload += self.create_esummary_params(
+                    esearch_response["esearchresult"]
+                )
                 payload = OrderedDict(payload)
                 payload["retstart"] = retstart
-                request = requests.get(self.base_url["efetch"], params=OrderedDict(payload))
+                request = requests.get(
+                    self.base_url["efetch"], params=OrderedDict(payload)
+                )
                 request_text = request.text.strip()
                 try:
                     request_json = request.json()
