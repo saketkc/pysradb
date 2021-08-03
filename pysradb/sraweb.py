@@ -249,7 +249,7 @@ class SRAweb(SRAdb):
 
         assert db in ["sra", "geo"]
 
-        payload = self.esearch_params[db].copy()
+        payload_original = self.esearch_params[db].copy()
         # TODO explain
         if isinstance(term, str):
             terms = [term]
@@ -264,7 +264,7 @@ class SRAweb(SRAdb):
 
         results = {}
         for term in terms:
-            payload += [("term", term)]
+            payload = payload_original + [("term", term)]
             request = requests.post(self.base_url["esearch"], data=OrderedDict(payload))
             try:
                 esearch_response = request.json()
@@ -319,90 +319,94 @@ class SRAweb(SRAdb):
                 if "error" in response:
                     # API rate limite exceeded
                     response = _retry_response(self.base_url["esummary"], payload, "result")
-                if retstart == 0:
-                    results = response["result"]
-                else:
-                    result = response["result"]
-                    for key, value in result.items():
-                        if key in list(results.keys()):
-                            results[key] += value
-                        else:
-                            results[key] = value
+                result = response["result"]
+                for key, value in result.items():
+                    if key in list(results.keys()):
+                        results[key] += value
+                    else:
+                        results[key] = value
 
+        print(results)
         return results
 
     def get_efetch_response(self, db, term, usehistory="y"):
 
         assert db in ["sra", "geo"]
 
-        payload = self.esearch_params[db].copy()
-        if isinstance(term, list):
-            term = " OR ".join(term)
-        payload += [("term", term)]
+        payload_original = self.esearch_params[db].copy()
+        # TODO explain
+        if isinstance(term, str):
+            terms = [term]
+        elif isinstance(term, list):
+            STEPSIZE = 150
+            terms = []
+            for i in range(math.ceil(len(term) / STEPSIZE)):
+                terms.append(" OR ".join(term[i * STEPSIZE:(i + 1) * STEPSIZE]))
+        else:
+            # TODO @saketkc not sure if this can happen?
+            raise NotImplementedError
 
-        request = requests.get(self.base_url["esearch"], params=OrderedDict(payload))
-        esearch_response = request.json()
-        if "esummaryresult" in esearch_response:
-            print("No result found")
-            return
-        if "error" in esearch_response:
-            # API rate limite exceeded
-            esearch_response = _retry_response(
-                self.base_url["esearch"], payload, "esearchresult"
-            )
-
-        n_records = int(esearch_response["esearchresult"]["count"])
-
-        results = {}
-        for retstart in get_retmax(n_records):
-
-            payload = self.efetch_params.copy()
-            payload += self.create_esummary_params(esearch_response["esearchresult"])
-            payload = OrderedDict(payload)
-            payload["retstart"] = retstart
-            request = requests.get(self.base_url["efetch"], params=OrderedDict(payload))
-            request_text = request.text.strip()
-            try:
-                request_json = request.json()
-            except:
-                request_json = {}  # eval(request_text)
-
-            if "error" in request_json:
-                # print("Encountered: {}".format(request_json))
-                # print("Headers: {}".format(request.headers))
-                # Handle API-rate limit exceeding
-                retry_after = request.headers["Retry-After"]
-                time.sleep(int(retry_after))
-                # try again
-                request = requests.get(
-                    self.base_url["efetch"], params=OrderedDict(payload)
+        results = []
+        for term in terms:
+            payload = payload_original + [("term", term)]
+            request = requests.get(self.base_url["esearch"], params=OrderedDict(payload))
+            esearch_response = request.json()
+            if "esummaryresult" in esearch_response:
+                print("No result found")
+                return
+            if "error" in esearch_response:
+                # API rate limite exceeded
+                esearch_response = _retry_response(
+                    self.base_url["esearch"], payload, "esearchresult"
                 )
+
+            n_records = int(esearch_response["esearchresult"]["count"])
+
+            for retstart in get_retmax(n_records):
+
+                payload = self.efetch_params.copy()
+                payload += self.create_esummary_params(esearch_response["esearchresult"])
+                payload = OrderedDict(payload)
+                payload["retstart"] = retstart
+                request = requests.get(self.base_url["efetch"], params=OrderedDict(payload))
                 request_text = request.text.strip()
+                try:
+                    request_json = request.json()
+                except:
+                    request_json = {}  # eval(request_text)
 
-            try:
-                xml_response = xmltodict.parse(request_text)
-
-                exp_response = xml_response.get("EXPERIMENT_PACKAGE_SET", {})
-                response = exp_response.get("EXPERIMENT_PACKAGE", {})
-            except ExpatError:
-                sys.stderr.write(
-                    "Unable to parse xml: {}{}".format(request_text, os.linesep)
-                )
-                sys.exit(1)
-            if not response:
-                sys.stderr.write(
-                    "Unable to parse xml response. Received: {}{}".format(
-                        xml_response, os.linesep
+                if "error" in request_json:
+                    # print("Encountered: {}".format(request_json))
+                    # print("Headers: {}".format(request.headers))
+                    # Handle API-rate limit exceeding
+                    retry_after = request.headers["Retry-After"]
+                    time.sleep(int(retry_after))
+                    # try again
+                    request = requests.get(
+                        self.base_url["efetch"], params=OrderedDict(payload)
                     )
-                )
-                sys.exit(1)
-            if retstart == 0:
-                results = response
-            else:
-                result = response
-                for value in result:
+                    request_text = request.text.strip()
+
+                try:
+                    xml_response = xmltodict.parse(request_text)
+
+                    exp_response = xml_response.get("EXPERIMENT_PACKAGE_SET", {})
+                    response = exp_response.get("EXPERIMENT_PACKAGE", {})
+                except ExpatError:
+                    sys.stderr.write(
+                        "Unable to parse xml: {}{}".format(request_text, os.linesep)
+                    )
+                    sys.exit(1)
+                if not response:
+                    sys.stderr.write(
+                        "Unable to parse xml response. Received: {}{}".format(
+                            xml_response, os.linesep
+                        )
+                    )
+                    sys.exit(1)
+                for value in response:
                     results.append(value)
-            time.sleep(self.sleep_time)
+                time.sleep(self.sleep_time)
         return results
 
     def sra_metadata(
