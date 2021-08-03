@@ -294,7 +294,7 @@ class SRAweb(SRAdb):
                 print("No result found")
                 return
             if "error" in esearch_response:
-                # API rate limite exceeded
+                # API rate limit exceeded
                 esearch_response = _retry_response(
                     self.base_url["esearch"], payload, "esearchresult"
                 )
@@ -326,7 +326,6 @@ class SRAweb(SRAdb):
                     else:
                         results[key] = value
 
-        print(results)
         return results
 
     def get_efetch_response(self, db, term, usehistory="y"):
@@ -393,11 +392,13 @@ class SRAweb(SRAdb):
                     exp_response = xml_response.get("EXPERIMENT_PACKAGE_SET", {})
                     response = exp_response.get("EXPERIMENT_PACKAGE", {})
                 except ExpatError:
+                    # TODO @saketkc what to do in these situations?
                     sys.stderr.write(
                         "Unable to parse xml: {}{}".format(request_text, os.linesep)
                     )
                     sys.exit(1)
                 if not response:
+                    # TODO @saketkc what to do in these situations?
                     sys.stderr.write(
                         "Unable to parse xml response. Received: {}{}".format(
                             xml_response, os.linesep
