@@ -1072,10 +1072,10 @@ def test_ena_search_3(capsys):
 
 def test_valid_search_query_1_ena(valid_search_inputs_1):
     expected_query = [
-        'experiment_title="*covid-19*" OR (study_accession="COVID-19" OR secondary_study_accession="COVID-19" OR'
+        '(experiment_title="*covid-19*" OR study_accession="COVID-19" OR secondary_study_accession="COVID-19" OR'
         ' sample_accession="COVID-19" OR secondary_sample_accession="COVID-19" OR experiment_accession="COVID-19" OR'
         ' submission_accession="COVID-19" OR run_accession="COVID-19")',
-        'experiment_title="*covid-19*" OR (study_accession="COVID-19" OR secondary_study_accession="COVID-19" OR'
+        '(experiment_title="*covid-19*" OR study_accession="COVID-19" OR secondary_study_accession="COVID-19" OR'
         ' sample_accession="COVID-19" OR secondary_sample_accession="COVID-19" OR experiment_accession="COVID-19" OR'
         ' submission_accession="COVID-19" OR run_accession="COVID-19")',
         '(study_accession="SRS6898940" OR secondary_study_accession="SRS6898940" OR sample_accession="SRS6898940" OR'
@@ -1101,22 +1101,22 @@ def test_valid_search_query_1_ena(valid_search_inputs_1):
 def test_valid_search_query_2_ena(valid_search_inputs_2):
     expected_query = [
         'library_layout="TRIPLE"',
-        'experiment_title="*Escherichia coli*" OR (study_accession="SRS6898222" OR '
+        '(experiment_title="*Escherichia coli*") AND (study_accession="SRS6898222" OR '
         'secondary_study_accession="SRS6898222" OR sample_accession="SRS6898222" OR '
         'secondary_sample_accession="SRS6898222" OR experiment_accession="SRS6898222" OR '
         'submission_accession="SRS6898222" OR run_accession="SRS6898222") AND tax_eq(562) AND library_layout="PAIRED" '
         "AND base_count>=5500000 AND base_count<6500000 AND first_created>=1999-01-01 AND "
-        'first_created<=2019-12-31 AND instrument_platform="ILLUMINA" AND library_selection="DNASE" AND '
-        'library_source="METATRANSCRIPTOMIC" AND library_strategy="MBD-SEQ"',
+        'first_created<=2019-12-31 AND instrument_platform="ILLUMINA" AND library_selection="DNase" AND '
+        'library_source="METATRANSCRIPTOMIC" AND library_strategy="MBD-Seq"',
         'library_layout="SINGLE" AND base_count>=4500000 AND base_count<5500000 AND first_created=2019-12-31 AND '
-        'instrument_platform="OXFORD_NANOPORE" AND library_selection="MBD2 PROTEIN METHYL-CPG BINDING DOMAIN" AND '
+        'instrument_platform="OXFORD_NANOPORE" AND library_selection="MBD2 protein methyl-CpG binding domain" AND '
         'library_source="GENOMIC SINGLE CELL" AND library_strategy="AMPLICON"',
-        'library_layout="PAIRED" AND instrument_platform="COMPLETE_GENOMICS" AND library_selection="INVERSE RRNA" AND '
-        'library_source="TRANSCRIPTOMIC" AND library_strategy="HI-C"',
-        'library_layout="SINGLE" AND instrument_platform="LS454" AND library_selection="OLIGO-DT" AND '
-        'library_source="TRANSCRIPTOMIC SINGLE CELL" AND library_strategy="MIRNA-SEQ"',
-        'instrument_platform="PACBIO_SMRT" AND library_selection="CDNA_OLIGO_DT.*" AND '
-        'library_source="METAGENOMIC" AND library_strategy="MBD-SEQ"',
+        'library_layout="PAIRED" AND instrument_platform="COMPLETE_GENOMICS" AND library_selection="Inverse rRNA" AND '
+        'library_source="TRANSCRIPTOMIC" AND library_strategy="Hi-C"',
+        'library_layout="SINGLE" AND instrument_platform="LS454" AND library_selection="Oligo-dT" AND '
+        'library_source="TRANSCRIPTOMIC SINGLE CELL" AND library_strategy="miRNA-Seq"',
+        'instrument_platform="PACBIO_SMRT" AND library_selection="cDNA_oligo_dT.*" AND '
+        'library_source="METAGENOMIC" AND library_strategy="MBD-Seq"',
         'instrument_platform="PACBIO_SMRT" AND library_selection="PCR" AND library_source="OTHER" AND '
         'library_strategy="EST"',
     ]
@@ -1130,7 +1130,7 @@ def test_valid_search_query_2_ena(valid_search_inputs_2):
 
 def test_ena_search_format_request():
     query_string = (
-        'experiment_title="*covid-19*" OR (study_accession="COVID-19" OR '
+        '(experiment_title="*covid-19*" OR study_accession="COVID-19" OR '
         'secondary_study_accession="COVID-19" OR sample_accession="COVID-19" OR '
         'secondary_sample_accession="COVID-19" OR experiment_accession="COVID-19" OR '
         'submission_accession="COVID-19" OR run_accession="COVID-19")'
