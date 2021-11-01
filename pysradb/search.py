@@ -1276,18 +1276,19 @@ class EnaSearch(QuerySearch):
     def _format_query_string(self):
         term = ""
         if self.fields["query"]:
-            term += rf'experiment_title="*{self.fields["query"]}*" OR '
+            term += rf'(experiment_title="*{self.fields["query"]}*"'
             if not self.fields["accession"]:
                 self.fields["query"] = self.fields["query"].upper()
                 term += (
-                    rf'(study_accession="{self.fields["query"]}" OR '
+                    rf' OR study_accession="{self.fields["query"]}" OR '
                     rf'secondary_study_accession="{self.fields["query"]}" OR '
                     rf'sample_accession="{self.fields["query"]}" OR '
                     rf'secondary_sample_accession="{self.fields["query"]}" OR '
                     rf'experiment_accession="{self.fields["query"]}" OR '
                     rf'submission_accession="{self.fields["query"]}" OR '
-                    rf'run_accession="{self.fields["query"]}") AND '
+                    rf'run_accession="{self.fields["query"]}"'
                 )
+            term += ") AND "
         if self.fields["accession"]:
             self.fields["accession"] = self.fields["accession"].upper()
             term += (
@@ -1326,13 +1327,13 @@ class EnaSearch(QuerySearch):
                     f"Expected format: dd-mm-yyyy or dd-mm-yyyy:dd-mm-yyyy"
                 )
         if self.fields["platform"]:
-            term += rf'instrument_platform="{self.fields["platform"].upper()}" AND '
+            term += rf'instrument_platform="{self.fields["platform"]}" AND '
         if self.fields["selection"]:
-            term += rf'library_selection="{self.fields["selection"].upper()}" AND '
+            term += rf'library_selection="{self.fields["selection"]}" AND '
         if self.fields["source"]:
-            term += rf'library_source="{self.fields["source"].upper()}" AND '
+            term += rf'library_source="{self.fields["source"]}" AND '
         if self.fields["strategy"]:
-            term += rf'library_strategy="{self.fields["strategy"].upper()}" AND '
+            term += rf'library_strategy="{self.fields["strategy"]}" AND '
         if self.fields["title"]:
             term += rf'experiment_title="*{self.fields["title"]}*" AND '
         return term[:-5]  # Removing trailing " AND "
