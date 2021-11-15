@@ -823,7 +823,10 @@ class SraSearch(QuerySearch):
         if self.fields["mbases"]:
             term += str(self.fields["mbases"]) + "[Mbases] AND "
         if self.fields["publication_date"]:
-            term += self.fields["publication_date"].replace("-", "/") + "[PDAT] AND "
+            dates = []
+            for date in self.fields["publication_date"].split(":"):
+                dates.append("/".join(date.split("-")[::-1]))
+            term += ":".join(dates) + "[PDAT] AND "
         if self.fields["platform"]:
             term += self.fields["platform"] + "[Platform] AND "
         if self.fields["selection"]:
@@ -1623,9 +1626,10 @@ class GeoSearch(SraSearch):
         if self.geo_fields["organism"]:
             term += self.geo_fields["organism"] + "[Organism] AND "
         if self.geo_fields["publication_date"]:
-            term += (
-                self.geo_fields["publication_date"].replace("-", "/") + "[PDAT] AND "
-            )
+            dates = []
+            for date in self.fields["publication_date"].split(":"):
+                dates.append("/".join(date.split("-")[::-1]))
+            term += ":".join(dates) + "[PDAT] AND "
         if self.geo_fields["dataset_type"]:
             term += self.geo_fields["dataset_type"] + "[DataSet Type] AND "
         if self.geo_fields["entry_type"]:
