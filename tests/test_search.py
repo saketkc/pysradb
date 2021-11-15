@@ -944,7 +944,7 @@ def test_valid_search_query_1_sra(valid_search_inputs_1):
         "Escherichia coli[Organism]",
         "PAIRED[Layout]",
         "5[Mbases]",
-        "01/01/2019:31/12/2019[PDAT]",
+        "2019/01/01:2019/12/31[PDAT]",
         "ION_TORRENT[Platform]",
         "RANDOM[Selection]",
         "GENOMIC[Source]",
@@ -962,9 +962,9 @@ def test_valid_search_query_2_sra(valid_search_inputs_2):
     expected_query = [
         "Triple[Layout]",
         "Escherichia coli AND SRS6898222[Accession] AND Escherichia coli[Organism] AND paired[Layout] AND "
-        "6[Mbases] AND 01/01/1999:31/12/2019[PDAT] AND ILLUMINA[Platform] AND DNase[Selection] AND "
+        "6[Mbases] AND 1999/01/01:2019/12/31[PDAT] AND ILLUMINA[Platform] AND DNase[Selection] AND "
         "METATRANSCRIPTOMIC[Source] AND MBD-Seq[Strategy]",
-        "single[Layout] AND 5[Mbases] AND 31/12/2019[PDAT] AND OXFORD_NANOPORE[Platform] AND "
+        "single[Layout] AND 5[Mbases] AND 2019/12/31[PDAT] AND OXFORD_NANOPORE[Platform] AND "
         "MBD2 protein methyl-CpG binding domain[Selection] AND GENOMIC SINGLE CELL[Source] AND AMPLICON[Strategy]",
         "Paired[Layout] AND COMPLETE_GENOMICS[Platform] AND Inverse rRNA[Selection] AND TRANSCRIPTOMIC[Source] AND "
         "Hi-C[Strategy]",
@@ -1188,7 +1188,7 @@ def test_valid_search_query_geo(valid_search_inputs_geo):
         "query AND sra gds[Filter]",
         "sra gds[Filter] AND SRS6898940[Accession]",
         "sra gds[Filter] AND Escherichia coli[Organism]",
-        "sra gds[Filter] AND 01/01/2019:31/12/2019[PDAT]",
+        "sra gds[Filter] AND 2019/01/01:2019/12/31[PDAT]",
         "",
         "",
     ]
@@ -1198,7 +1198,7 @@ def test_valid_search_query_geo(valid_search_inputs_geo):
         "GEO query AND gds sra[Filter]",
         "GEO query AND gds sra[Filter]",
         "gds sra[Filter] AND Escherichia coli[Organism]",
-        "gds sra[Filter] AND 01/01/2019:31/12/2019[PDAT]",
+        "gds sra[Filter] AND 2019/01/01:2019/12/31[PDAT]",
         "gds sra[Filter] AND GEO dataset type[DataSet Type]",
         "gds sra[Filter] AND GEO entry type[Entry Type]",
     ]
