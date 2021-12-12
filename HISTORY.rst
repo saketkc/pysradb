@@ -3,9 +3,11 @@ History
 #######
 
 *******************
-1.0.2 (Unreleased)
+1.0.2 (12-12-2021)
 *******************
 * Fixed `gsm-to-gse` failure (`#128 <https://github.com/saketkc/pysradb/pull/128>`_)
+* Fixed case sensitivity bug for ENA search (`#144 <https://github.com/saketkc/pysradb/pull/144>`_)
+* Fixed publication date bug for search (`#146 <https://github.com/saketkc/pysradb/pull/146>`_)
 * Added support for downloading data from GEO `pysradb dowload -g <GSE>` (`#129 <https://github.com/saketkc/pysradb/pull/129>`_)
 
 *******************
