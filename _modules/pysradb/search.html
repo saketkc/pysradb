@@ -15,7 +15,7 @@
             
         </script>
     
-    <title>pysradb.search &#8212; pysradb 1.0.1 documentation</title>
+    <title>pysradb.search &#8212; pysradb 1.1.0-dev0 documentation</title>
     
   <link href="../../_static/css/theme.css" rel="stylesheet">
   <link href="../../_static/css/index.ff1ffe594081f20da1ef19478df9384b.css" rel="stylesheet">
@@ -1034,7 +1034,10 @@
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">fields</span><span class="p">[</span><span class="s2">&quot;mbases&quot;</span><span class="p">]:</span>
             <span class="n">term</span> <span class="o">+=</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fields</span><span class="p">[</span><span class="s2">&quot;mbases&quot;</span><span class="p">])</span> <span class="o">+</span> <span class="s2">&quot;[Mbases] AND &quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">fields</span><span class="p">[</span><span class="s2">&quot;publication_date&quot;</span><span class="p">]:</span>
-            <span class="n">term</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fields</span><span class="p">[</span><span class="s2">&quot;publication_date&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;-&quot;</span><span class="p">,</span> <span class="s2">&quot;/&quot;</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;[PDAT] AND &quot;</span>
+            <span class="n">dates</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">for</span> <span class="n">date</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">fields</span><span class="p">[</span><span class="s2">&quot;publication_date&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;:&quot;</span><span class="p">):</span>
+                <span class="n">dates</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">date</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;-&quot;</span><span class="p">)[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]))</span>
+            <span class="n">term</span> <span class="o">+=</span> <span class="s2">&quot;:&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">dates</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;[PDAT] AND &quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">fields</span><span class="p">[</span><span class="s2">&quot;platform&quot;</span><span class="p">]:</span>
             <span class="n">term</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fields</span><span class="p">[</span><span class="s2">&quot;platform&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="s2">&quot;[Platform] AND &quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">fields</span><span class="p">[</span><span class="s2">&quot;selection&quot;</span><span class="p">]:</span>
@@ -1834,9 +1837,10 @@
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">geo_fields</span><span class="p">[</span><span class="s2">&quot;organism&quot;</span><span class="p">]:</span>
             <span class="n">term</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">geo_fields</span><span class="p">[</span><span class="s2">&quot;organism&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="s2">&quot;[Organism] AND &quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">geo_fields</span><span class="p">[</span><span class="s2">&quot;publication_date&quot;</span><span class="p">]:</span>
-            <span class="n">term</span> <span class="o">+=</span> <span class="p">(</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">geo_fields</span><span class="p">[</span><span class="s2">&quot;publication_date&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;-&quot;</span><span class="p">,</span> <span class="s2">&quot;/&quot;</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;[PDAT] AND &quot;</span>
-            <span class="p">)</span>
+            <span class="n">dates</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">for</span> <span class="n">date</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">fields</span><span class="p">[</span><span class="s2">&quot;publication_date&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;:&quot;</span><span class="p">):</span>
+                <span class="n">dates</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">date</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;-&quot;</span><span class="p">)[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]))</span>
+            <span class="n">term</span> <span class="o">+=</span> <span class="s2">&quot;:&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">dates</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;[PDAT] AND &quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">geo_fields</span><span class="p">[</span><span class="s2">&quot;dataset_type&quot;</span><span class="p">]:</span>
             <span class="n">term</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">geo_fields</span><span class="p">[</span><span class="s2">&quot;dataset_type&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="s2">&quot;[DataSet Type] AND &quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">geo_fields</span><span class="p">[</span><span class="s2">&quot;entry_type&quot;</span><span class="p">]:</span>
@@ -2046,7 +2050,7 @@
     
     <div class="footer-item">
       <p class="sphinx-version">
-Created using <a href="http://sphinx-doc.org/">Sphinx</a> 4.2.0.<br>
+Created using <a href="http://sphinx-doc.org/">Sphinx</a> 4.3.1.<br>
 </p>
     </div>
     
