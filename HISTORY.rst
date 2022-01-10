@@ -3,7 +3,7 @@ History
 #######
 
 *******************
-1.1.1 (01-10-2022)
+1.2.0 (01-10-2022)
 *******************
 * Do not exit if a qeury returns no hits (`#149 <https://github.com/saketkc/pysradb/pull/149>`)
 
