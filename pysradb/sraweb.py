@@ -406,7 +406,7 @@ class SRAweb(SRAdb):
             uids = esummary_result["uids"]
         except KeyError:
             print("No results found for {}".format(srp))
-            sys.exit(1)
+            return None
 
         exps_xml = OrderedDict()
         runs_xml = OrderedDict()
@@ -645,7 +645,7 @@ class SRAweb(SRAdb):
             uids = result["uids"]
         except KeyError:
             print("No results found for {} | Obtained result: {}".format(gse, result))
-            sys.exit(1)
+            return None
         gse_records = []
         for uid in uids:
             record = result[uid]
@@ -664,7 +664,7 @@ class SRAweb(SRAdb):
                 gse_records.append(record)
         if not len(gse_records):
             print("No results found for {}".format(gse))
-            sys.exit(1)
+            return None
         return pd.DataFrame(gse_records)
 
     def gse_to_gsm(self, gse, **kwargs):
