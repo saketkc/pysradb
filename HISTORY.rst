@@ -3,6 +3,11 @@ History
 #######
 
 *******************
+1.2.0 (01-10-2022)
+*******************
+* Do not exit if a qeury returns no hits (`#149 <https://github.com/saketkc/pysradb/pull/149>`)
+
+*******************
 1.1.0 (12-12-2021)
 *******************
 * Fixed `gsm-to-gse` failure (`#128 <https://github.com/saketkc/pysradb/pull/128>`_)
