@@ -33,7 +33,7 @@ https://saketkc.github.io/pysradb
 CLI Usage
 *********
 
-``pysradb`` supports command line ussage. See `CLI <https://saket-choudhary.me/pysradb/cmdline.html>`_ instructions or  `quickstart guide <https://www.saket-choudhary.me/pysradb/quickstart.html>`_.
+``pysradb`` supports command line usage. See `CLI <https://saket-choudhary.me/pysradb/cmdline.html>`_ instructions or  `quickstart guide <https://www.saket-choudhary.me/pysradb/quickstart.html>`_.
  
 
 
@@ -125,8 +125,8 @@ Please consider creating a new enviroment for ``pysradb``:
 
    conda create -c bioconda -n pysradb PYTHON=3.7 pysradb
 
-Dependecies
-===========
+Dependencies
+============
 
 .. code-block:: bash
 
@@ -265,7 +265,7 @@ Using 8 threads to download:
 
     $ pysradb download -y -t 8 --out-dir ./pysradb_downloads -p SRP063852
 
-Downloads are organized by ``SRP/SRX/SRR`` mimicking the hiererachy of SRA projects.
+Downloads are organized by ``SRP/SRX/SRR`` mimicking the hierarchy of SRA projects.
 
 
 Downloading only certain samples of interest
