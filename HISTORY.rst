@@ -2,6 +2,13 @@
 History
 #######
 
+******************
+1.3.0 (02-18-2022)
+******************
+
+* Add `study_title` to `--detailed` flag (`#152 <https://github.com/saketkc/pysradb/issues/152>`_)
+* Fix `KeyError` in `metadata` where some new IDs do not have any metadata (`#151 <https://github.com/saketkc/pysradb/issues/151>`_)
+
 *******************
 1.2.0 (01-10-2022)
 *******************
