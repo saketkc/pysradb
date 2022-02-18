@@ -17,30 +17,30 @@
     
     <title>pysradb.sraweb &#8212; pysradb 1.2.0 documentation</title>
     
-  <link href="../../_static/css/theme.css" rel="stylesheet">
-  <link href="../../_static/css/index.ff1ffe594081f20da1ef19478df9384b.css" rel="stylesheet">
-
+    <link href="../../_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+  
     
-  <link rel="stylesheet"
-    href="../../_static/vendor/fontawesome/5.13.0/css/all.min.css">
-  <link rel="preload" as="font" type="font/woff2" crossorigin
-    href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
-  <link rel="preload" as="font" type="font/woff2" crossorigin
-    href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
-
+    <link rel="stylesheet"
+      href="../../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+    <link rel="preload" as="font" type="font/woff2" crossorigin
+      href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+    <link rel="preload" as="font" type="font/woff2" crossorigin
+      href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+  
     
       
-
+  
     
     <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/css/blank.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/pydata-sphinx-theme.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/tabs.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
     
-  <link rel="preload" as="script" href="../../_static/js/index.be7d3bbb2ef33a8344ce.js">
-
+    <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf">
+  
     <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
     <script src="../../_static/jquery.js"></script>
     <script src="../../_static/underscore.js"></script>
@@ -163,10 +163,8 @@
       <div class="navbar-end-item">
         <ul id="navbar-icon-links" class="navbar-nav" aria-label="Icon Links">
         <li class="nav-item">
-          <a class="nav-link" href="https://github.com/saketkc/pysradb" rel="noopener" target="_blank" title="GitHub">
-            <span><i class="fab fa-github-square"></i></span>
-            <label class="sr-only">GitHub</label>
-          </a>
+          <a class="nav-link" href="https://github.com/saketkc/pysradb" rel="noopener" target="_blank" title="GitHub"><span><i class="fab fa-github-square"></i></span>
+            <label class="sr-only">GitHub</label></a>
         </li>
       </ul>
       </div>
@@ -182,7 +180,8 @@
           
             
             <!-- Only show if we have sidebars configured, else just a small margin  -->
-            <div class="col-12 col-md-3 bd-sidebar"><form class="bd-search d-flex align-items-center" action="../../search.html" method="get">
+            <div class="col-12 col-md-3 bd-sidebar">
+              <div class="sidebar-start-items"><form class="bd-search d-flex align-items-center" action="../../search.html" method="get">
   <i class="icon fas fa-search"></i>
   <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off" >
 </form><nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
@@ -190,6 +189,9 @@
     
   </div>
 </nav>
+              </div>
+              <div class="sidebar-end-items">
+              </div>
             </div>
             
           
@@ -568,14 +570,25 @@
                 <span class="c1"># print(&quot;Encountered: {}&quot;.format(request_json))</span>
                 <span class="c1"># print(&quot;Headers: {}&quot;.format(request.headers))</span>
                 <span class="c1"># Handle API-rate limit exceeding</span>
-                <span class="n">retry_after</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">headers</span><span class="p">[</span><span class="s2">&quot;Retry-After&quot;</span><span class="p">]</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="n">retry_after</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">headers</span><span class="p">[</span><span class="s2">&quot;Retry-After&quot;</span><span class="p">]</span>
+                <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">request_json</span><span class="p">[</span><span class="s2">&quot;error&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;error forwarding request&quot;</span><span class="p">:</span>
+                        <span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;Encountered error while making request.</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+                        <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
                 <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">retry_after</span><span class="p">))</span>
                 <span class="c1"># try again</span>
                 <span class="n">request</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">base_url</span><span class="p">[</span><span class="s2">&quot;efetch&quot;</span><span class="p">],</span> <span class="n">params</span><span class="o">=</span><span class="n">OrderedDict</span><span class="p">(</span><span class="n">payload</span><span class="p">)</span>
                 <span class="p">)</span>
                 <span class="n">request_text</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">text</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
-
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="n">request_json</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
+                    <span class="k">if</span> <span class="n">request_json</span><span class="p">[</span><span class="s2">&quot;error&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;error forwarding request&quot;</span><span class="p">:</span>
+                        <span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;Encountered error while making request.</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+                        <span class="k">return</span>
+                <span class="k">except</span><span class="p">:</span>
+                    <span class="n">request_json</span> <span class="o">=</span> <span class="p">{}</span>  <span class="c1"># eval(request_text)</span>
             <span class="k">try</span><span class="p">:</span>
                 <span class="n">xml_response</span> <span class="o">=</span> <span class="n">xmltodict</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">request_text</span><span class="p">)</span>
 
@@ -642,6 +655,8 @@
             <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">runs</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
                 <span class="n">runs</span> <span class="o">=</span> <span class="p">[</span><span class="n">runs</span><span class="p">]</span>
             <span class="n">exp_title</span> <span class="o">=</span> <span class="n">exp_json</span><span class="p">[</span><span class="s2">&quot;Summary&quot;</span><span class="p">][</span><span class="s2">&quot;Title&quot;</span><span class="p">]</span>
+            <span class="c1"># print(exp_json[&quot;Summary&quot;].keys())</span>
+            <span class="c1"># study_title = exp_json[&quot;DESCRIPTOR&quot;][&quot;STUDY_TITLE&quot;]</span>
             <span class="n">exp_platform</span> <span class="o">=</span> <span class="n">exp_json</span><span class="p">[</span><span class="s2">&quot;Summary&quot;</span><span class="p">][</span><span class="s2">&quot;Platform&quot;</span><span class="p">]</span>
             <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">exp_platform</span><span class="p">,</span> <span class="n">OrderedDict</span><span class="p">):</span>
                 <span class="n">exp_platform_model</span> <span class="o">=</span> <span class="n">exp_platform</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;@instrument_model&quot;</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">NA</span><span class="p">)</span>
@@ -695,6 +710,7 @@
             <span class="k">for</span> <span class="n">run_record</span> <span class="ow">in</span> <span class="n">runs</span><span class="p">:</span>
                 <span class="n">experiment_record</span> <span class="o">=</span> <span class="n">OrderedDict</span><span class="p">()</span>
                 <span class="n">experiment_record</span><span class="p">[</span><span class="s2">&quot;study_accession&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">exp_json</span><span class="p">[</span><span class="s2">&quot;Study&quot;</span><span class="p">][</span><span class="s2">&quot;@acc&quot;</span><span class="p">]</span>
+                <span class="n">experiment_record</span><span class="p">[</span><span class="s2">&quot;study_title&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">exp_json</span><span class="p">[</span><span class="s2">&quot;Study&quot;</span><span class="p">][</span><span class="s2">&quot;@name&quot;</span><span class="p">]</span>
                 <span class="n">experiment_record</span><span class="p">[</span><span class="s2">&quot;experiment_accession&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">exp_ID</span>
                 <span class="n">experiment_record</span><span class="p">[</span><span class="s2">&quot;experiment_title&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">exp_name</span>
                 <span class="n">experiment_record</span><span class="p">[</span><span class="s2">&quot;experiment_desc&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">exp_title</span>
@@ -733,8 +749,13 @@
         <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sleep_time</span><span class="p">)</span>
         <span class="n">efetch_result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_efetch_response</span><span class="p">(</span><span class="s2">&quot;sra&quot;</span><span class="p">,</span> <span class="n">srp</span><span class="p">)</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">efetch_result</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
-            <span class="n">efetch_result</span> <span class="o">=</span> <span class="p">[</span><span class="n">efetch_result</span><span class="p">]</span>
+            <span class="k">if</span> <span class="n">efetch_result</span><span class="p">:</span>
+                <span class="n">efetch_result</span> <span class="o">=</span> <span class="p">[</span><span class="n">efetch_result</span><span class="p">]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">return</span> <span class="kc">None</span>
+
         <span class="n">detailed_records</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="c1"># print(efetch_result)</span>
         <span class="k">for</span> <span class="n">record</span> <span class="ow">in</span> <span class="n">efetch_result</span><span class="p">:</span>
             <span class="k">if</span> <span class="s2">&quot;SAMPLE_ATTRIBUTES&quot;</span> <span class="ow">in</span> <span class="n">record</span><span class="p">[</span><span class="s2">&quot;SAMPLE&quot;</span><span class="p">]:</span>
                 <span class="n">sample_attributes</span> <span class="o">=</span> <span class="n">record</span><span class="p">[</span><span class="s2">&quot;SAMPLE&quot;</span><span class="p">][</span><span class="s2">&quot;SAMPLE_ATTRIBUTES&quot;</span><span class="p">][</span>
@@ -1079,8 +1100,8 @@
       </div>
     </div>
   
-  <script src="../../_static/js/index.be7d3bbb2ef33a8344ce.js"></script>
-<footer class="footer mt-5 mt-md-0">
+    <script src="../../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf"></script>
+  <footer class="footer mt-5 mt-md-0">
   <div class="container">
     
     <div class="footer-item">
@@ -1091,7 +1112,7 @@
     
     <div class="footer-item">
       <p class="sphinx-version">
-Created using <a href="http://sphinx-doc.org/">Sphinx</a> 4.3.2.<br>
+Created using <a href="http://sphinx-doc.org/">Sphinx</a> 4.4.0.<br>
 </p>
     </div>
     

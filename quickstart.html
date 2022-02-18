@@ -17,30 +17,30 @@
     
     <title>Quickstart &#8212; pysradb 1.2.0 documentation</title>
     
-  <link href="_static/css/theme.css" rel="stylesheet">
-  <link href="_static/css/index.ff1ffe594081f20da1ef19478df9384b.css" rel="stylesheet">
-
+    <link href="_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+<link href="_static/styles/pydata-sphinx-theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+  
     
-  <link rel="stylesheet"
-    href="_static/vendor/fontawesome/5.13.0/css/all.min.css">
-  <link rel="preload" as="font" type="font/woff2" crossorigin
-    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
-  <link rel="preload" as="font" type="font/woff2" crossorigin
-    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
-
+    <link rel="stylesheet"
+      href="_static/vendor/fontawesome/5.13.0/css/all.min.css">
+    <link rel="preload" as="font" type="font/woff2" crossorigin
+      href="_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+    <link rel="preload" as="font" type="font/woff2" crossorigin
+      href="_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+  
     
       
-
+  
     
     <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="_static/css/blank.css" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/pydata-sphinx-theme.css" />
     <link rel="stylesheet" type="text/css" href="_static/graphviz.css" />
     <link rel="stylesheet" type="text/css" href="_static/tabs.css" />
     <link rel="stylesheet" type="text/css" href="_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
     <link rel="stylesheet" type="text/css" href="_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
     
-  <link rel="preload" as="script" href="_static/js/index.be7d3bbb2ef33a8344ce.js">
-
+    <link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf">
+  
     <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
     <script src="_static/jquery.js"></script>
     <script src="_static/underscore.js"></script>
@@ -164,10 +164,8 @@
       <div class="navbar-end-item">
         <ul id="navbar-icon-links" class="navbar-nav" aria-label="Icon Links">
         <li class="nav-item">
-          <a class="nav-link" href="https://github.com/saketkc/pysradb" rel="noopener" target="_blank" title="GitHub">
-            <span><i class="fab fa-github-square"></i></span>
-            <label class="sr-only">GitHub</label>
-          </a>
+          <a class="nav-link" href="https://github.com/saketkc/pysradb" rel="noopener" target="_blank" title="GitHub"><span><i class="fab fa-github-square"></i></span>
+            <label class="sr-only">GitHub</label></a>
         </li>
       </ul>
       </div>
@@ -183,7 +181,8 @@
           
             
             <!-- Only show if we have sidebars configured, else just a small margin  -->
-            <div class="col-12 col-md-3 bd-sidebar"><form class="bd-search d-flex align-items-center" action="search.html" method="get">
+            <div class="col-12 col-md-3 bd-sidebar">
+              <div class="sidebar-start-items"><form class="bd-search d-flex align-items-center" action="search.html" method="get">
   <i class="icon fas fa-search"></i>
   <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off" >
 </form><nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
@@ -263,6 +262,9 @@
 
   </div>
 </nav>
+              </div>
+              <div class="sidebar-end-items">
+              </div>
             </div>
             
           
@@ -417,15 +419,15 @@ Colab runs Python 3.6 while <code class="docutils literal notranslate"><span cla
 <h2>Metadata<a class="headerlink" href="#metadata" title="Permalink to this headline">¶</a></h2>
 <p><code class="docutils literal notranslate"><span class="pre">pysradb</span></code> makes it very easy to obtain metadata from SRA/EBI:</p>
 <div class="tabbed-set docutils">
-<input checked="checked" id="e4426979-5989-444f-b4a7-e5ffd5ef545d" name="218eb92c-0a43-4f66-a5b0-1006355c2491" type="radio">
-</input><label class="tabbed-label" for="e4426979-5989-444f-b4a7-e5ffd5ef545d">
+<input checked="checked" id="5b58907e-e4a4-450c-9d55-b80cf4feb727" name="3f894fd9-34ef-4edd-9fa9-d96f25775734" type="radio">
+</input><label class="tabbed-label" for="5b58907e-e4a4-450c-9d55-b80cf4feb727">
 Console</label><div class="tabbed-content docutils">
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ pysradb metadata SRP265425
 </pre></div>
 </div>
 </div>
-<input id="2938ae06-9472-4a8d-a88a-a686662bf24d" name="218eb92c-0a43-4f66-a5b0-1006355c2491" type="radio">
-</input><label class="tabbed-label" for="2938ae06-9472-4a8d-a88a-a686662bf24d">
+<input id="cb7ab443-3ef6-4053-a8d1-a286bf5698c5" name="3f894fd9-34ef-4edd-9fa9-d96f25775734" type="radio">
+</input><label class="tabbed-label" for="cb7ab443-3ef6-4053-a8d1-a286bf5698c5">
 Python</label><div class="tabbed-content docutils">
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pysradb.sraweb</span> <span class="kn">import</span> <span class="n">SRAweb</span>
 
@@ -457,15 +459,15 @@ Python</label><div class="tabbed-content docutils">
 <p>Additionally to obtain locations of <code class="docutils literal notranslate"><span class="pre">.fastq/.sra</span></code> files and other metadata:</p>
 <p><code class="docutils literal notranslate"><span class="pre">pysradb</span></code> makes it very easy to obtain metadata from SRA/EBI:</p>
 <div class="tabbed-set docutils">
-<input checked="checked" id="0da5d786-f025-49e5-9355-b67194943dc3" name="9a7ea157-509f-4b64-a2bb-19a9b009db74" type="radio">
-</input><label class="tabbed-label" for="0da5d786-f025-49e5-9355-b67194943dc3">
+<input checked="checked" id="ba6581d2-6e0a-4725-8c83-964f01080409" name="b2823976-ba8c-4f1c-839f-8e6688e95a30" type="radio">
+</input><label class="tabbed-label" for="ba6581d2-6e0a-4725-8c83-964f01080409">
 Console</label><div class="tabbed-content docutils">
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ pysradb metadata SRP265425 --detailed
 </pre></div>
 </div>
 </div>
-<input id="65c2be5f-5694-4de2-8dc7-25a434f96162" name="9a7ea157-509f-4b64-a2bb-19a9b009db74" type="radio">
-</input><label class="tabbed-label" for="65c2be5f-5694-4de2-8dc7-25a434f96162">
+<input id="ad1a070f-eeca-4d17-92f9-98a3b591e6d0" name="b2823976-ba8c-4f1c-839f-8e6688e95a30" type="radio">
+</input><label class="tabbed-label" for="ad1a070f-eeca-4d17-92f9-98a3b591e6d0">
 Python</label><div class="tabbed-content docutils">
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pysradb.sraweb</span> <span class="kn">import</span> <span class="n">SRAweb</span>
 
@@ -501,15 +503,15 @@ Python</label><div class="tabbed-content docutils">
 <div class="section" id="convert-srp-to-srx">
 <h3>Convert SRP to SRX<a class="headerlink" href="#convert-srp-to-srx" title="Permalink to this headline">¶</a></h3>
 <div class="tabbed-set docutils">
-<input checked="checked" id="289aea67-acd9-46e3-b8cd-95ec13ae5da5" name="fcf26591-5532-4271-b42f-e7a57490bb3e" type="radio">
-</input><label class="tabbed-label" for="289aea67-acd9-46e3-b8cd-95ec13ae5da5">
+<input checked="checked" id="a22d96b6-745e-4775-a3d9-f98301750c61" name="635f9be1-017a-4767-a78b-c80d3952d89c" type="radio">
+</input><label class="tabbed-label" for="a22d96b6-745e-4775-a3d9-f98301750c61">
 Console</label><div class="tabbed-content docutils">
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ pysradb srp-to-srx SRP098789
 </pre></div>
 </div>
 </div>
-<input id="61d30439-d17e-42a6-94ae-2e0f3514be3d" name="fcf26591-5532-4271-b42f-e7a57490bb3e" type="radio">
-</input><label class="tabbed-label" for="61d30439-d17e-42a6-94ae-2e0f3514be3d">
+<input id="a49ee005-c03d-4887-b7cc-a1cc068a000c" name="635f9be1-017a-4767-a78b-c80d3952d89c" type="radio">
+</input><label class="tabbed-label" for="a49ee005-c03d-4887-b7cc-a1cc068a000c">
 Python</label><div class="tabbed-content docutils">
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pysradb.sraweb</span> <span class="kn">import</span> <span class="n">SRAweb</span>
 
@@ -557,15 +559,15 @@ SRP098789       SRX2536403      GSM2475997: 1.5 ?M PF-067446846, 10 min, rep 1; 
 <div class="section" id="convert-gse-to-srp">
 <h3>Convert GSE to SRP<a class="headerlink" href="#convert-gse-to-srp" title="Permalink to this headline">¶</a></h3>
 <div class="tabbed-set docutils">
-<input checked="checked" id="8a731d1d-b1d9-4ff2-9063-42d125c7b8f3" name="4424badf-f27f-4ac5-b212-f32d406a0d9d" type="radio">
-</input><label class="tabbed-label" for="8a731d1d-b1d9-4ff2-9063-42d125c7b8f3">
+<input checked="checked" id="b79d98b5-b036-4ecd-b859-cb9d16c5dac2" name="13f54abd-6ce5-47fb-982e-f37dc92fb8fb" type="radio">
+</input><label class="tabbed-label" for="b79d98b5-b036-4ecd-b859-cb9d16c5dac2">
 Console</label><div class="tabbed-content docutils">
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ pysradb srp-to-srx SRP098789
 </pre></div>
 </div>
 </div>
-<input id="1b6a6239-72c2-49be-9868-a8a88f4ae68f" name="4424badf-f27f-4ac5-b212-f32d406a0d9d" type="radio">
-</input><label class="tabbed-label" for="1b6a6239-72c2-49be-9868-a8a88f4ae68f">
+<input id="a58c3884-01bf-477f-aa74-b6cf0a2bdcfd" name="13f54abd-6ce5-47fb-982e-f37dc92fb8fb" type="radio">
+</input><label class="tabbed-label" for="a58c3884-01bf-477f-aa74-b6cf0a2bdcfd">
 Python</label><div class="tabbed-content docutils">
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pysradb.sraweb</span> <span class="kn">import</span> <span class="n">SRAweb</span>
 
@@ -619,15 +621,15 @@ ENA and SRA.</p>
 <div class="section" id="downloading-via-accession-number">
 <h3>Downloading via accession number<a class="headerlink" href="#downloading-via-accession-number" title="Permalink to this headline">¶</a></h3>
 <div class="tabbed-set docutils">
-<input checked="checked" id="6dd4a7e4-e317-4e5c-87f1-3126cf16a92b" name="beaf6ecf-ea9a-401d-9d9e-3e273867ee63" type="radio">
-</input><label class="tabbed-label" for="6dd4a7e4-e317-4e5c-87f1-3126cf16a92b">
+<input checked="checked" id="d1468532-d37d-42fe-9452-d4b3dcd80983" name="ad8f05ad-45db-4383-a9cc-c3ae95987b2f" type="radio">
+</input><label class="tabbed-label" for="d1468532-d37d-42fe-9452-d4b3dcd80983">
 Console</label><div class="tabbed-content docutils">
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ pysradb download SRP098789
 </pre></div>
 </div>
 </div>
-<input id="29f8d366-bc84-4158-99cb-14eda61292b5" name="beaf6ecf-ea9a-401d-9d9e-3e273867ee63" type="radio">
-</input><label class="tabbed-label" for="29f8d366-bc84-4158-99cb-14eda61292b5">
+<input id="8f54e3d8-fb2d-4a9d-8965-3776042566da" name="ad8f05ad-45db-4383-a9cc-c3ae95987b2f" type="radio">
+</input><label class="tabbed-label" for="8f54e3d8-fb2d-4a9d-8965-3776042566da">
 Python</label><div class="tabbed-content docutils">
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pysradb.sraweb</span> <span class="kn">import</span> <span class="n">SRAweb</span>
 
@@ -643,15 +645,15 @@ Python</label><div class="tabbed-content docutils">
 <p>It is also possible to pipe the dataframe from <cite>metadata</cite> or <cite>search</cite> to
 download, after filtering the dataframe entries:</p>
 <div class="tabbed-set docutils">
-<input checked="checked" id="d547ac66-8697-4875-abe4-b9e00c19198c" name="ed12531d-5f68-422c-92ac-4d093f358b9d" type="radio">
-</input><label class="tabbed-label" for="d547ac66-8697-4875-abe4-b9e00c19198c">
+<input checked="checked" id="de4de6a3-f129-4032-aafa-999175b57b21" name="05c22610-4540-4de3-b05f-1937c6579f8d" type="radio">
+</input><label class="tabbed-label" for="de4de6a3-f129-4032-aafa-999175b57b21">
 Console</label><div class="tabbed-content docutils">
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ pysradb metadata SRP276671 --detailed <span class="p">|</span> pysradb download
 </pre></div>
 </div>
 </div>
-<input id="a729e3d9-3675-406f-b627-88944dfaac4e" name="ed12531d-5f68-422c-92ac-4d093f358b9d" type="radio">
-</input><label class="tabbed-label" for="a729e3d9-3675-406f-b627-88944dfaac4e">
+<input id="da68d135-10bb-48f8-ac6a-e711e02236d2" name="05c22610-4540-4de3-b05f-1937c6579f8d" type="radio">
+</input><label class="tabbed-label" for="da68d135-10bb-48f8-ac6a-e711e02236d2">
 Python</label><div class="tabbed-content docutils">
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pysradb.sraweb</span> <span class="kn">import</span> <span class="n">SRAweb</span>
 <span class="n">db</span> <span class="o">=</span> <span class="n">SRAweb</span><span class="p">()</span>
@@ -670,15 +672,15 @@ Python</label><div class="tabbed-content docutils">
 <p>With <a class="reference external" href="https://downloads.asperasoft.com/en/downloads/8?list">aspera-client</a> installed, <code class="docutils literal notranslate"><span class="pre">pysradb</span></code> canan perform ultra fast downloads:</p>
 <p>To download all original fastqs with <cite>aspera-client</cite> installed utilizing 8 threads:</p>
 <div class="tabbed-set docutils">
-<input checked="checked" id="0f0ec9a0-4adf-4009-87d0-11c6f201b731" name="35203090-6d08-4712-a713-a799aeac6a50" type="radio">
-</input><label class="tabbed-label" for="0f0ec9a0-4adf-4009-87d0-11c6f201b731">
+<input checked="checked" id="2d59db69-123f-4ba9-9b4f-35270e21ba02" name="bdace482-b19f-4498-ac38-7a01883ddbb3" type="radio">
+</input><label class="tabbed-label" for="2d59db69-123f-4ba9-9b4f-35270e21ba02">
 Console</label><div class="tabbed-content docutils">
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> pysradb download -t <span class="m">8</span> --use_ascp -p SRP002605
 </pre></div>
 </div>
 </div>
-<input id="2c62ac32-51ba-47c0-8739-c3c532550796" name="35203090-6d08-4712-a713-a799aeac6a50" type="radio">
-</input><label class="tabbed-label" for="2c62ac32-51ba-47c0-8739-c3c532550796">
+<input id="83d66801-e888-428d-a134-8bfe600c30fd" name="bdace482-b19f-4498-ac38-7a01883ddbb3" type="radio">
+</input><label class="tabbed-label" for="83d66801-e888-428d-a134-8bfe600c30fd">
 Python</label><div class="tabbed-content docutils">
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pysradb.sraweb</span> <span class="kn">import</span> <span class="n">SRAweb</span>
 
@@ -700,15 +702,15 @@ Python</label><div class="tabbed-content docutils">
 <div class="section" id="retrieving-metadata-by-accession-number">
 <h3>Retrieving metadata by accession number<a class="headerlink" href="#retrieving-metadata-by-accession-number" title="Permalink to this headline">¶</a></h3>
 <div class="tabbed-set docutils">
-<input checked="checked" id="d0b03f58-b900-4f5d-b668-fe147c2cdc56" name="0c93f37e-474b-458b-a7e9-15fbc4753afd" type="radio">
-</input><label class="tabbed-label" for="d0b03f58-b900-4f5d-b668-fe147c2cdc56">
+<input checked="checked" id="d45e0a67-65e5-45eb-9753-c2e1d9738e3c" name="10a45065-917f-444e-bc58-91dfc1b706c4" type="radio">
+</input><label class="tabbed-label" for="d45e0a67-65e5-45eb-9753-c2e1d9738e3c">
 Console</label><div class="tabbed-content docutils">
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ pysradb metadata SRP276671
 </pre></div>
 </div>
 </div>
-<input id="51135f98-611e-484e-9cc9-aff8a41ba4b8" name="0c93f37e-474b-458b-a7e9-15fbc4753afd" type="radio">
-</input><label class="tabbed-label" for="51135f98-611e-484e-9cc9-aff8a41ba4b8">
+<input id="31b3abca-59f6-43b9-a770-df3bf2de4476" name="10a45065-917f-444e-bc58-91dfc1b706c4" type="radio">
+</input><label class="tabbed-label" for="31b3abca-59f6-43b9-a770-df3bf2de4476">
 Python</label><div class="tabbed-content docutils">
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pysradb.sraweb</span> <span class="kn">import</span> <span class="n">SRAweb</span>
 
@@ -740,15 +742,15 @@ through <cite>pandas</cite>.</p>
 <p>For more detailed metadata (including download URLs), we can include the
 <cite>detailed</cite> flag:</p>
 <div class="tabbed-set docutils">
-<input checked="checked" id="2c57a93e-c21a-4640-b3d5-20c2deaaae34" name="1c293eca-50a4-4b99-885f-879cc4c95eea" type="radio">
-</input><label class="tabbed-label" for="2c57a93e-c21a-4640-b3d5-20c2deaaae34">
+<input checked="checked" id="5f9a00be-be49-492c-8a44-6e93213ce683" name="f3f96ae9-57e6-43fb-8c7a-d8962e6793d2" type="radio">
+</input><label class="tabbed-label" for="5f9a00be-be49-492c-8a44-6e93213ce683">
 Console</label><div class="tabbed-content docutils">
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ pysradb metadata SRP276671 --detailed
 </pre></div>
 </div>
 </div>
-<input id="51e0613f-d391-41eb-8c53-aee21b1f913b" name="1c293eca-50a4-4b99-885f-879cc4c95eea" type="radio">
-</input><label class="tabbed-label" for="51e0613f-d391-41eb-8c53-aee21b1f913b">
+<input id="968db1fd-f033-495f-a61f-e87806aecf74" name="f3f96ae9-57e6-43fb-8c7a-d8962e6793d2" type="radio">
+</input><label class="tabbed-label" for="968db1fd-f033-495f-a61f-e87806aecf74">
 Python</label><div class="tabbed-content docutils">
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pysradb.sraweb</span> <span class="kn">import</span> <span class="n">SRAweb</span>
 
@@ -775,15 +777,15 @@ Python</label><div class="tabbed-content docutils">
 <p>Let’s take for example we are interested in coronavirus sequences published
 on Short Reads Archive (SRA) in the first week of August 2020.</p>
 <div class="tabbed-set docutils">
-<input checked="checked" id="b664040c-3b79-4e15-94e6-584acaccea03" name="ac9515c7-0767-44d1-9ea3-9dec596789c7" type="radio">
-</input><label class="tabbed-label" for="b664040c-3b79-4e15-94e6-584acaccea03">
+<input checked="checked" id="6acca46b-5106-497b-b80b-8e3c0624959c" name="45f61a36-b164-403b-af44-ea24909d3eff" type="radio">
+</input><label class="tabbed-label" for="6acca46b-5106-497b-b80b-8e3c0624959c">
 Console</label><div class="tabbed-content docutils">
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ pysradb search -q coronavirus --publication-date <span class="m">01</span>-08-2020:07-08-2020 --max <span class="m">10000</span>
 </pre></div>
 </div>
 </div>
-<input id="39a7a365-2846-4a9d-be98-8829b5e8e04f" name="ac9515c7-0767-44d1-9ea3-9dec596789c7" type="radio">
-</input><label class="tabbed-label" for="39a7a365-2846-4a9d-be98-8829b5e8e04f">
+<input id="5e92bbaa-4d64-41c4-bacf-67b79d21e22a" name="45f61a36-b164-403b-af44-ea24909d3eff" type="radio">
+</input><label class="tabbed-label" for="5e92bbaa-4d64-41c4-bacf-67b79d21e22a">
 Python</label><div class="tabbed-content docutils">
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pysradb.search</span> <span class="kn">import</span> <span class="n">SraSearch</span>
 
@@ -813,15 +815,15 @@ Python</label><div class="tabbed-content docutils">
 </div>
 <p>To query European Nucleotide Archive (ENA) instead:</p>
 <div class="tabbed-set docutils">
-<input checked="checked" id="56feb448-9dcf-442b-86a6-64773ce863e4" name="d58c5fae-3947-419d-b3e7-48591bbf0249" type="radio">
-</input><label class="tabbed-label" for="56feb448-9dcf-442b-86a6-64773ce863e4">
+<input checked="checked" id="2f8883e2-20c9-4bcb-a80d-be4cace53cb0" name="3a67781e-c736-42d4-b09d-03e829cd1169" type="radio">
+</input><label class="tabbed-label" for="2f8883e2-20c9-4bcb-a80d-be4cace53cb0">
 Console</label><div class="tabbed-content docutils">
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ pysradb search --db ena -q coronavirus --publication-date <span class="m">01</span>-08-2020:07-08-2020 --max <span class="m">10000</span>
 </pre></div>
 </div>
 </div>
-<input id="1498f6a4-8e76-48ad-bcaa-60849f93c6f2" name="d58c5fae-3947-419d-b3e7-48591bbf0249" type="radio">
-</input><label class="tabbed-label" for="1498f6a4-8e76-48ad-bcaa-60849f93c6f2">
+<input id="905cc1b4-b232-41c9-9bf4-d9d9930e0677" name="3a67781e-c736-42d4-b09d-03e829cd1169" type="radio">
+</input><label class="tabbed-label" for="905cc1b4-b232-41c9-9bf4-d9d9930e0677">
 Python</label><div class="tabbed-content docutils">
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pysradb.search</span> <span class="kn">import</span> <span class="n">EnaSearch</span>
 
@@ -860,15 +862,15 @@ statistics and graphs for the search result:</p>
 <div class="section" id="statistics">
 <h3>Statistics<a class="headerlink" href="#statistics" title="Permalink to this headline">¶</a></h3>
 <div class="tabbed-set docutils">
-<input checked="checked" id="04067be5-7d4b-4a0b-8266-38502cb007bc" name="b58a8cd3-08ce-41c7-b826-f41bd38f6608" type="radio">
-</input><label class="tabbed-label" for="04067be5-7d4b-4a0b-8266-38502cb007bc">
+<input checked="checked" id="12dd2c90-8bb4-4353-b1ce-bccf1a1fc5d4" name="69f6d907-ce1a-48da-afe9-e9864026fce3" type="radio">
+</input><label class="tabbed-label" for="12dd2c90-8bb4-4353-b1ce-bccf1a1fc5d4">
 Console</label><div class="tabbed-content docutils">
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ pysradb search --db ena --organism <span class="s2">&quot;Severe acute respiratory syndrome coronavirus 2&quot;</span> --max <span class="m">10000</span> -s
 </pre></div>
 </div>
 </div>
-<input id="a8a38ebb-2b94-4b5a-a8e6-99103c9898a9" name="b58a8cd3-08ce-41c7-b826-f41bd38f6608" type="radio">
-</input><label class="tabbed-label" for="a8a38ebb-2b94-4b5a-a8e6-99103c9898a9">
+<input id="fe85f89a-8ad6-4d74-b017-0445a14f595f" name="69f6d907-ce1a-48da-afe9-e9864026fce3" type="radio">
+</input><label class="tabbed-label" for="fe85f89a-8ad6-4d74-b017-0445a14f595f">
 Python</label><div class="tabbed-content docutils">
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pysradb.search</span> <span class="kn">import</span> <span class="n">EnaSearch</span>
 <span class="n">instance</span> <span class="o">=</span> <span class="n">EnaSearch</span><span class="p">(</span><span class="n">return_max</span><span class="o">=</span><span class="mi">10000</span><span class="p">,</span> <span class="n">organism</span><span class="o">=</span><span class="s2">&quot;Severe acute respiratory syndrome coronavirus 2&quot;</span><span class="p">)</span>
@@ -930,15 +932,15 @@ Python</label><div class="tabbed-content docutils">
 <div class="section" id="plotting">
 <h3>Plotting<a class="headerlink" href="#plotting" title="Permalink to this headline">¶</a></h3>
 <div class="tabbed-set docutils">
-<input checked="checked" id="44a21c96-53a1-4dfa-8b5a-d10e972c7817" name="cfe93e1b-532d-498d-8946-63d74fb1e1b3" type="radio">
-</input><label class="tabbed-label" for="44a21c96-53a1-4dfa-8b5a-d10e972c7817">
+<input checked="checked" id="0d69459d-1283-4c72-89ca-d564d813922c" name="31efaeec-b52c-424e-8cf4-656ab48a10f9" type="radio">
+</input><label class="tabbed-label" for="0d69459d-1283-4c72-89ca-d564d813922c">
 Console</label><div class="tabbed-content docutils">
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ pysradb search --db ena -q e --max <span class="m">500000</span> -g
 </pre></div>
 </div>
 </div>
-<input id="b9504cef-2de9-4c96-af44-c8d2a9a194a5" name="cfe93e1b-532d-498d-8946-63d74fb1e1b3" type="radio">
-</input><label class="tabbed-label" for="b9504cef-2de9-4c96-af44-c8d2a9a194a5">
+<input id="d3325fa3-9fe0-4910-8e27-a7ae4a6cbbd3" name="31efaeec-b52c-424e-8cf4-656ab48a10f9" type="radio">
+</input><label class="tabbed-label" for="d3325fa3-9fe0-4910-8e27-a7ae4a6cbbd3">
 Python</label><div class="tabbed-content docutils">
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pysradb.search</span> <span class="kn">import</span> <span class="n">EnaSearch</span>
 
@@ -1029,7 +1031,7 @@ subcommands:
               
               
               <!-- Previous / next buttons -->
-<div class='prev-next-area'> 
+<div class='prev-next-area'>
     <a class='left-prev' id="prev-link" href="installation.html" title="previous page">
         <i class="fas fa-angle-left"></i>
         <div class="prev-next-info">
@@ -1052,8 +1054,8 @@ subcommands:
       </div>
     </div>
   
-  <script src="_static/js/index.be7d3bbb2ef33a8344ce.js"></script>
-<footer class="footer mt-5 mt-md-0">
+    <script src="_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf"></script>
+  <footer class="footer mt-5 mt-md-0">
   <div class="container">
     
     <div class="footer-item">
@@ -1064,7 +1066,7 @@ subcommands:
     
     <div class="footer-item">
       <p class="sphinx-version">
-Created using <a href="http://sphinx-doc.org/">Sphinx</a> 4.3.2.<br>
+Created using <a href="http://sphinx-doc.org/">Sphinx</a> 4.4.0.<br>
 </p>
     </div>
     
