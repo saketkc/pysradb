@@ -70,9 +70,9 @@ source_suffix = ".rst"
 master_doc = "index"
 
 # General information about the project.
-project = u"pysradb"
-copyright = u"2021, Saket Choudhary"
-author = u"Saket Choudhary"
+project = "pysradb"
+copyright = "2021, Saket Choudhary"
+author = "Saket Choudhary"
 # The version info for the project you're documenting, acts as replacement
 # for |version| and |release|, also used in various other places throughout
 # the built documents.
@@ -147,7 +147,7 @@ latex_elements = {
 # (source start file, target name, title, author, documentclass
 # [howto, manual, or own class]).
 latex_documents = [
-    (master_doc, "pysradb.tex", u"pysradb Documentation", u"Saket Choudhary", "manual")
+    (master_doc, "pysradb.tex", "pysradb Documentation", "Saket Choudhary", "manual")
 ]
 
 
@@ -155,7 +155,7 @@ latex_documents = [
 
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
-man_pages = [(master_doc, "pysradb", u"pysradb Documentation", [author], 1)]
+man_pages = [(master_doc, "pysradb", "pysradb Documentation", [author], 1)]
 
 
 # -- Options for Texinfo output ----------------------------------------
@@ -167,7 +167,7 @@ texinfo_documents = [
     (
         master_doc,
         "pysradb",
-        u"pysradb Documentation",
+        "pysradb Documentation",
         author,
         "pysradb",
         "One line description of project.",
