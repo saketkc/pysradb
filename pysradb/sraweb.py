@@ -357,14 +357,26 @@ class SRAweb(SRAdb):
                 # print("Encountered: {}".format(request_json))
                 # print("Headers: {}".format(request.headers))
                 # Handle API-rate limit exceeding
-                retry_after = request.headers["Retry-After"]
+                try:
+                    retry_after = request.headers["Retry-After"]
+                except KeyError:
+                    print("Except")
+                    if request_json["error"] == "error forwarding request":
+                        sys.stderr.write("Encountered error while making request.\n")
+                        sys.exit(1)
                 time.sleep(int(retry_after))
                 # try again
                 request = requests.get(
                     self.base_url["efetch"], params=OrderedDict(payload)
                 )
                 request_text = request.text.strip()
-
+                try:
+                    request_json = request.json()
+                    if request_json["error"] == "error forwarding request":
+                        sys.stderr.write("Encountered error while making request.\n")
+                        return
+                except:
+                    request_json = {}  # eval(request_text)
             try:
                 xml_response = xmltodict.parse(request_text)
 
@@ -522,8 +534,13 @@ class SRAweb(SRAdb):
         time.sleep(self.sleep_time)
         efetch_result = self.get_efetch_response("sra", srp)
         if not isinstance(efetch_result, list):
-            efetch_result = [efetch_result]
+            if efetch_result:
+                efetch_result = [efetch_result]
+            else:
+                return None
+
         detailed_records = []
+        print(efetch_result)
         for record in efetch_result:
             if "SAMPLE_ATTRIBUTES" in record["SAMPLE"]:
                 sample_attributes = record["SAMPLE"]["SAMPLE_ATTRIBUTES"][
