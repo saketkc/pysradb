@@ -15,7 +15,7 @@
             
         </script>
     
-    <title>Metadata Search &#8212; pysradb 1.2.0 documentation</title>
+    <title>Metadata Search &#8212; pysradb 1.3.0 documentation</title>
     
     <link href="../_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
 <link href="../_static/styles/pydata-sphinx-theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
@@ -545,15 +545,15 @@ corresponding tab below.</p>
 <p>Let’s take for example we are interested in coronavirus sequences published
 on Short Reads Archive (SRA) in the first week of August 2020.</p>
 <div class="tabbed-set docutils">
-<input checked="checked" id="8b2aaaa4-32fc-4f01-aacb-58ac30adc7ea" name="43696ac4-818b-468f-9e9b-26db9f1c586b" type="radio">
-</input><label class="tabbed-label" for="8b2aaaa4-32fc-4f01-aacb-58ac30adc7ea">
+<input checked="checked" id="19cb0fb4-7851-4e31-aa80-3176e1917df8" name="51411ff1-5bb9-4a40-a501-d12b50d4816a" type="radio">
+</input><label class="tabbed-label" for="19cb0fb4-7851-4e31-aa80-3176e1917df8">
 Console</label><div class="tabbed-content docutils">
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ pysradb search -q coronavirus --publication-date <span class="m">01</span>-08-2020:07-08-2020
 </pre></div>
 </div>
 </div>
-<input id="31d34b37-35f9-47fc-8485-247739dff195" name="43696ac4-818b-468f-9e9b-26db9f1c586b" type="radio">
-</input><label class="tabbed-label" for="31d34b37-35f9-47fc-8485-247739dff195">
+<input id="4d5ba419-52ab-488d-b39e-aebf02ada144" name="51411ff1-5bb9-4a40-a501-d12b50d4816a" type="radio">
+</input><label class="tabbed-label" for="4d5ba419-52ab-488d-b39e-aebf02ada144">
 Python</label><div class="tabbed-content docutils">
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pysradb.search</span> <span class="kn">import</span> <span class="n">SraSearch</span>
 
@@ -596,15 +596,15 @@ Python</label><div class="tabbed-content docutils">
 <h2>Searching ENA database and retrieving metadata<a class="headerlink" href="#searching-ena-database-and-retrieving-metadata" title="Permalink to this headline">¶</a></h2>
 <p>To query European Nucleotide Archive (ENA) instead:</p>
 <div class="tabbed-set docutils">
-<input checked="checked" id="afccbd67-974e-4d7c-83d0-d124a30845b6" name="d84817a0-cf58-47cf-b097-0c13912e1730" type="radio">
-</input><label class="tabbed-label" for="afccbd67-974e-4d7c-83d0-d124a30845b6">
+<input checked="checked" id="1ed8e075-2951-4e0c-a1ef-e23ea6a022b8" name="6a868a29-062e-4db1-a557-1a83c85fd2b3" type="radio">
+</input><label class="tabbed-label" for="1ed8e075-2951-4e0c-a1ef-e23ea6a022b8">
 Console</label><div class="tabbed-content docutils">
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ pysradb search --db ena -q coronavirus --publication-date <span class="m">01</span>-08-2020:07-08-2020
 </pre></div>
 </div>
 </div>
-<input id="23eef7d6-462e-4e31-84e4-39f9e80862a4" name="d84817a0-cf58-47cf-b097-0c13912e1730" type="radio">
-</input><label class="tabbed-label" for="23eef7d6-462e-4e31-84e4-39f9e80862a4">
+<input id="414e9e6a-f5ec-4751-b475-b089ee30365d" name="6a868a29-062e-4db1-a557-1a83c85fd2b3" type="radio">
+</input><label class="tabbed-label" for="414e9e6a-f5ec-4751-b475-b089ee30365d">
 Python</label><div class="tabbed-content docutils">
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pysradb.search</span> <span class="kn">import</span> <span class="n">EnaSearch</span>
 
@@ -647,15 +647,15 @@ Python</label><div class="tabbed-content docutils">
 <h2>Searching GEO Datasets database and retrieving metadata<a class="headerlink" href="#searching-geo-datasets-database-and-retrieving-metadata" title="Permalink to this headline">¶</a></h2>
 <p>To query GEO Datasets instead:</p>
 <div class="tabbed-set docutils">
-<input checked="checked" id="4c548ff8-58be-43ae-b43a-1726cf0267c1" name="f3cf198b-7039-478f-9bf9-0f9cb4c2fab4" type="radio">
-</input><label class="tabbed-label" for="4c548ff8-58be-43ae-b43a-1726cf0267c1">
+<input checked="checked" id="f103f663-1fac-4176-8ece-be59ce6f07df" name="604be8df-863c-4d63-b833-fc7196fcfaf7" type="radio">
+</input><label class="tabbed-label" for="f103f663-1fac-4176-8ece-be59ce6f07df">
 Console</label><div class="tabbed-content docutils">
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ pysradb search --db geo -q coronavirus --publication-date <span class="m">01</span>-08-2020:07-08-2020
 </pre></div>
 </div>
 </div>
-<input id="0d686d82-9c7a-446f-b65d-df6dab0fb15f" name="f3cf198b-7039-478f-9bf9-0f9cb4c2fab4" type="radio">
-</input><label class="tabbed-label" for="0d686d82-9c7a-446f-b65d-df6dab0fb15f">
+<input id="7f15b57c-49a9-4a15-b054-3775f8e2945e" name="604be8df-863c-4d63-b833-fc7196fcfaf7" type="radio">
+</input><label class="tabbed-label" for="7f15b57c-49a9-4a15-b054-3775f8e2945e">
 Python</label><div class="tabbed-content docutils">
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pysradb.search</span> <span class="kn">import</span> <span class="n">GeoSearch</span>
 
@@ -680,15 +680,15 @@ Python</label><div class="tabbed-content docutils">
 <p>We can control the maximum number of result entries to retrieve using the
 <cite>-m</cite> / <cite>–max</cite> flag or the <cite>return_max</cite> parameter:</p>
 <div class="tabbed-set docutils">
-<input checked="checked" id="e673838d-0721-4dba-b709-8131ed00f316" name="aa2f07c6-0785-4fd0-b52e-fe714e1d12da" type="radio">
-</input><label class="tabbed-label" for="e673838d-0721-4dba-b709-8131ed00f316">
+<input checked="checked" id="6c2d806f-745e-4b72-ab8b-f245956faac3" name="165d9f27-b8b9-461b-a7f2-f61e893b85fb" type="radio">
+</input><label class="tabbed-label" for="6c2d806f-745e-4b72-ab8b-f245956faac3">
 Console</label><div class="tabbed-content docutils">
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ pysradb search -q coronavirus --publication-date <span class="m">01</span>-08-2020:07-08-2020 -m <span class="m">5</span>
 </pre></div>
 </div>
 </div>
-<input id="375ef802-a96e-41f0-9796-049de9aaf5ae" name="aa2f07c6-0785-4fd0-b52e-fe714e1d12da" type="radio">
-</input><label class="tabbed-label" for="375ef802-a96e-41f0-9796-049de9aaf5ae">
+<input id="edfbf282-fb93-4d03-8ccb-35e5c73c145c" name="165d9f27-b8b9-461b-a7f2-f61e893b85fb" type="radio">
+</input><label class="tabbed-label" for="edfbf282-fb93-4d03-8ccb-35e5c73c145c">
 Python</label><div class="tabbed-content docutils">
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pysradb.search</span> <span class="kn">import</span> <span class="n">SraSearch</span>
 
@@ -718,15 +718,15 @@ verbosity, which is shown above, is 2.</p>
 On the command-line, we can use the more intuitive  <code class="docutils literal notranslate"><span class="pre">--run-description</span></code> flag
 in place of the more obscure <code class="docutils literal notranslate"><span class="pre">-v</span> <span class="pre">1</span></code> as shown below:</p>
 <div class="tabbed-set docutils">
-<input checked="checked" id="ecee5ba7-7342-45a6-9701-0e1c463dfe1a" name="bc34867e-ec5f-48eb-a87b-684caafb665c" type="radio">
-</input><label class="tabbed-label" for="ecee5ba7-7342-45a6-9701-0e1c463dfe1a">
+<input checked="checked" id="9b113f11-bd65-48c4-9dcf-407edbd53467" name="795a96a3-3a62-430a-8bd5-36526093db01" type="radio">
+</input><label class="tabbed-label" for="9b113f11-bd65-48c4-9dcf-407edbd53467">
 Console</label><div class="tabbed-content docutils">
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ pysradb search -v <span class="m">1</span> -q coronavirus --publication-date <span class="m">01</span>-08-2020:07-08-2020
 </pre></div>
 </div>
 </div>
-<input id="74b55c1c-67d6-4541-9582-b764b21b0b32" name="bc34867e-ec5f-48eb-a87b-684caafb665c" type="radio">
-</input><label class="tabbed-label" for="74b55c1c-67d6-4541-9582-b764b21b0b32">
+<input id="7e2382c5-e960-4254-88ec-16863e0b62ba" name="795a96a3-3a62-430a-8bd5-36526093db01" type="radio">
+</input><label class="tabbed-label" for="7e2382c5-e960-4254-88ec-16863e0b62ba">
 Python</label><div class="tabbed-content docutils">
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pysradb.search</span> <span class="kn">import</span> <span class="n">SraSearch</span>
 
@@ -769,15 +769,15 @@ attributes, we can set verbosity to be 3. Similar to the previous example,
 we can use the more intuitive <code class="docutils literal notranslate"><span class="pre">--detailed</span></code> flag in place of the more
 obscure <code class="docutils literal notranslate"><span class="pre">-v</span> <span class="pre">3</span></code> as shown below:</p>
 <div class="tabbed-set docutils">
-<input checked="checked" id="e0ab5a03-934a-4f5e-ae24-8a84c37bdae2" name="95020ae3-90b1-4fc0-846c-b23be375b6f6" type="radio">
-</input><label class="tabbed-label" for="e0ab5a03-934a-4f5e-ae24-8a84c37bdae2">
+<input checked="checked" id="35833f7f-8a0a-4868-ae76-95150b01df84" name="b35ad268-d359-4407-83e2-943ccbbab6f0" type="radio">
+</input><label class="tabbed-label" for="35833f7f-8a0a-4868-ae76-95150b01df84">
 Console</label><div class="tabbed-content docutils">
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ pysradb search -v <span class="m">3</span> -q coronavirus --publication-date <span class="m">01</span>-08-2020:07-08-2020
 </pre></div>
 </div>
 </div>
-<input id="8587c1a5-6c7d-4282-b80f-00b62cd843c1" name="95020ae3-90b1-4fc0-846c-b23be375b6f6" type="radio">
-</input><label class="tabbed-label" for="8587c1a5-6c7d-4282-b80f-00b62cd843c1">
+<input id="50619f09-4776-4a26-99a6-113984c172db" name="b35ad268-d359-4407-83e2-943ccbbab6f0" type="radio">
+</input><label class="tabbed-label" for="50619f09-4776-4a26-99a6-113984c172db">
 Python</label><div class="tabbed-content docutils">
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pysradb.search</span> <span class="kn">import</span> <span class="n">SraSearch</span>
 
@@ -822,15 +822,15 @@ SRP253798       SRX8677872      Severe acute respiratory syndrome coronavirus 2 
 <p>Metadata retrieved can be saved in either a comma separated format or as a tab
 separated format.</p>
 <div class="tabbed-set docutils">
-<input checked="checked" id="e4c68426-cf2b-4785-b77d-0c1abeaf6fb5" name="92878618-72f4-4956-a13a-6a3dad4fdd2a" type="radio">
-</input><label class="tabbed-label" for="e4c68426-cf2b-4785-b77d-0c1abeaf6fb5">
+<input checked="checked" id="c4d65ff6-d869-4189-8231-f9af04cc7cac" name="b11bc8a3-c640-4c92-836d-856ea1618425" type="radio">
+</input><label class="tabbed-label" for="c4d65ff6-d869-4189-8231-f9af04cc7cac">
 Console</label><div class="tabbed-content docutils">
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ pysradb search --db ena -q coronavirus --publication-date <span class="m">01</span>-08-2020:07-08-2020 --saveto coronavirus.csv
 </pre></div>
 </div>
 </div>
-<input id="dc81d21b-c7a7-4523-bf63-e0e9c67a6889" name="92878618-72f4-4956-a13a-6a3dad4fdd2a" type="radio">
-</input><label class="tabbed-label" for="dc81d21b-c7a7-4523-bf63-e0e9c67a6889">
+<input id="942dd396-cee8-426f-9cfc-5d963c3937b0" name="b11bc8a3-c640-4c92-836d-856ea1618425" type="radio">
+</input><label class="tabbed-label" for="942dd396-cee8-426f-9cfc-5d963c3937b0">
 Python
 .. code-block:: python</label><div class="tabbed-content docutils">
 <blockquote>
@@ -856,15 +856,15 @@ statistics and graphs for the search result:</p>
 </div>
 <p>Statistics:</p>
 <div class="tabbed-set docutils">
-<input checked="checked" id="ae164968-7600-469b-9488-c14ead04977e" name="57873f59-fdca-4f1b-804f-6fa75c2ba644" type="radio">
-</input><label class="tabbed-label" for="ae164968-7600-469b-9488-c14ead04977e">
+<input checked="checked" id="fc663dd4-b930-4248-9074-35e7307dd648" name="7a26f90c-dfb9-48b0-be8b-12d285c00fe0" type="radio">
+</input><label class="tabbed-label" for="fc663dd4-b930-4248-9074-35e7307dd648">
 Console</label><div class="tabbed-content docutils">
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ pysradb search --db ena --organism <span class="s2">&quot;Severe acute respiratory syndrome coronavirus 2&quot;</span> --max <span class="m">10000</span> -s
 </pre></div>
 </div>
 </div>
-<input id="2e366214-a1e7-4568-b6c5-ba46f4071453" name="57873f59-fdca-4f1b-804f-6fa75c2ba644" type="radio">
-</input><label class="tabbed-label" for="2e366214-a1e7-4568-b6c5-ba46f4071453">
+<input id="292ce385-19b0-453b-8891-e6cc890446d1" name="7a26f90c-dfb9-48b0-be8b-12d285c00fe0" type="radio">
+</input><label class="tabbed-label" for="292ce385-19b0-453b-8891-e6cc890446d1">
 Python</label><div class="tabbed-content docutils">
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pysradb.search</span> <span class="kn">import</span> <span class="n">EnaSearch</span>
 
@@ -925,15 +925,15 @@ Python</label><div class="tabbed-content docutils">
 </div>
 <p>Graphs:</p>
 <div class="tabbed-set docutils">
-<input checked="checked" id="6d51611e-7c10-4383-baca-0b1d44aa2155" name="4143935a-0e29-4f71-8f01-4cc1d117b8fb" type="radio">
-</input><label class="tabbed-label" for="6d51611e-7c10-4383-baca-0b1d44aa2155">
+<input checked="checked" id="d80e2150-ad73-4451-8dd8-c86d8ff596b2" name="b32998d3-dd9c-4718-b1fd-a9613fd79099" type="radio">
+</input><label class="tabbed-label" for="d80e2150-ad73-4451-8dd8-c86d8ff596b2">
 Console</label><div class="tabbed-content docutils">
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ pysradb search --db ena -q e --max <span class="m">500000</span> -g
 </pre></div>
 </div>
 </div>
-<input id="7cdded0a-31a0-402e-a6fd-f41556835b00" name="4143935a-0e29-4f71-8f01-4cc1d117b8fb" type="radio">
-</input><label class="tabbed-label" for="7cdded0a-31a0-402e-a6fd-f41556835b00">
+<input id="007133e8-47a0-46c7-86bb-206a6e8c9e5b" name="b32998d3-dd9c-4718-b1fd-a9613fd79099" type="radio">
+</input><label class="tabbed-label" for="007133e8-47a0-46c7-86bb-206a6e8c9e5b">
 Python</label><div class="tabbed-content docutils">
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pysradb.search</span> <span class="kn">import</span> <span class="n">EnaSearch</span>
 
