@@ -40,7 +40,11 @@ class GEOweb(GEOdb):
         link_objects = html.fromstring(requests.get(url).content).xpath("//a")
         links = [i.attrib["href"] for i in link_objects]
         # remove vulnerability link
-        links = [link for link in links if link!="https://www.hhs.gov/vulnerability-disclosure-policy/index.html"]
+        links = [
+            link
+            for link in links
+            if link != "https://www.hhs.gov/vulnerability-disclosure-policy/index.html"
+        ]
         # Check if returned results are a valid page - a link to the
         # home page only exists where the GSE ID dow not exist
         if "/" in links:
