@@ -46,7 +46,7 @@ def _print_save_df(df, saveto=None):
         else:
             df.to_csv(saveto, index=False, header=True, sep="\t")
     else:
-        if not df:
+        if df is None:
             print
         elif len(df.index):
             to_print = (

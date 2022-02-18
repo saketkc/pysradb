@@ -360,7 +360,6 @@ class SRAweb(SRAdb):
                 try:
                     retry_after = request.headers["Retry-After"]
                 except KeyError:
-                    print("Except")
                     if request_json["error"] == "error forwarding request":
                         sys.stderr.write("Encountered error while making request.\n")
                         sys.exit(1)
@@ -443,6 +442,8 @@ class SRAweb(SRAdb):
             if not isinstance(runs, list):
                 runs = [runs]
             exp_title = exp_json["Summary"]["Title"]
+            # print(exp_json["Summary"].keys())
+            # study_title = exp_json["DESCRIPTOR"]["STUDY_TITLE"]
             exp_platform = exp_json["Summary"]["Platform"]
             if isinstance(exp_platform, OrderedDict):
                 exp_platform_model = exp_platform.get("@instrument_model", pd.NA)
@@ -496,6 +497,7 @@ class SRAweb(SRAdb):
             for run_record in runs:
                 experiment_record = OrderedDict()
                 experiment_record["study_accession"] = exp_json["Study"]["@acc"]
+                experiment_record["study_title"] = exp_json["Study"]["@name"]
                 experiment_record["experiment_accession"] = exp_ID
                 experiment_record["experiment_title"] = exp_name
                 experiment_record["experiment_desc"] = exp_title
@@ -540,7 +542,7 @@ class SRAweb(SRAdb):
                 return None
 
         detailed_records = []
-        print(efetch_result)
+        # print(efetch_result)
         for record in efetch_result:
             if "SAMPLE_ATTRIBUTES" in record["SAMPLE"]:
                 sample_attributes = record["SAMPLE"]["SAMPLE_ATTRIBUTES"][
