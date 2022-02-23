@@ -8,6 +8,9 @@ A Python package for retrieving metadata and downloading datasets from SRA/ENA/G
 .. image:: https://anaconda.org/bioconda/pysradb/badges/version.svg
     :target: https://anaconda.org/bioconda/pysradb/badges/version.svg
     
+.. image:: https://static.pepy.tech/personalized-badge/pysradb?period=month&units=international_system&left_color=black&right_color=brightgreen&left_text=Downloads/month
+ :target: https://pepy.tech/project/pysradb   
+    
 .. image:: https://img.shields.io/badge/install%20with-bioconda-brightgreen.svg?style=flat-square
     :target: http://bioconda.github.io/recipes/pysradb/README.html
 
@@ -17,8 +20,6 @@ A Python package for retrieving metadata and downloading datasets from SRA/ENA/G
 .. image:: https://github.com/saketkc/pysradb/workflows/push/badge.svg
     :target: https://github.com/saketkc/pysradb/actions
 
-.. image:: https://static.pepy.tech/personalized-badge/pysradb?period=month&units=international_system&left_color=black&right_color=brightgreen&left_text=Downloads/month
- :target: https://pepy.tech/project/pysradb
 
 
 *************
