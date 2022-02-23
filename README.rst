@@ -17,8 +17,8 @@ A Python package for retrieving metadata and downloading datasets from SRA/ENA/G
 .. image:: https://github.com/saketkc/pysradb/workflows/push/badge.svg
     :target: https://github.com/saketkc/pysradb/actions
    
-.. image:: https://anaconda.org/bioconda/pysradb/badges/downloads.svg
-    :target: http://bioconda.github.io/recipes/pysradb/README.html
+.. image:: https://static.pepy.tech/personalized-badge/pysradb?period=total&units=international_system&left_color=black&right_color=brightgreen&left_text=Downloads
+ :target: https://pepy.tech/project/pysradb
 
 
 
