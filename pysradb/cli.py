@@ -101,6 +101,7 @@ def download(
     geoweb = GEOweb()
     # This block is triggered only if no -p or -g arguments are provided.
     # In this case, the input is taken from the pipe and assumed to be SRA, not GEO
+    # TODO: at some point, we need to fix this
     if not srp and not geo:
         text = ""
         for index, line in enumerate(sys.stdin):
