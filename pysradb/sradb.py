@@ -1338,7 +1338,9 @@ class SRAdb(BASEdb):
             missing_columns.clear()
             accession_columns[-1] = "run_1_accession"
         if url_column and url_column in df_columns:
-            formatted_df = df.loc[:, df.columns.isin(accession_columns + [url_column])]
+            formatted_df = df.loc[
+                :, df.columns.isin(accession_columns + [url_column])
+            ].copy()
             formatted_df.rename(
                 {"run_1_accession": "run_accession"},
                 inplace=True,
@@ -1355,9 +1357,11 @@ class SRAdb(BASEdb):
             for col in possible_aspera_cols:
                 if col in df_columns:
                     aspera_cols.append(col)
-            formatted_df = df.loc[
-                :, df.columns.isin(accession_columns + aspera_cols)
-            ].rename({"run_1_accession": "run_accession"})
+            formatted_df = (
+                df.loc[:, df.columns.isin(accession_columns + aspera_cols)]
+                .rename({"run_1_accession": "run_accession"})
+                .copy()
+            )
 
         else:
             run_dfs = []
@@ -1390,7 +1394,7 @@ class SRAdb(BASEdb):
                     f"run_{i}_accession",
                     "recommended_url",
                 ] + url_list
-                run_df = df.loc[:, df.columns.isin(expected_columns)]
+                run_df = df.loc[:, df.columns.isin(expected_columns)].copy()
                 run_df = run_df.rename(columns={f"run_{i}_accession": "run_accession"})
                 run_dfs.append(run_df)
             if run_count == 1:
@@ -1403,9 +1407,9 @@ class SRAdb(BASEdb):
                 df["recommended_url"] = df.apply(
                     lambda row: self._select_best_url(matched_cols, row, use_ascp),
                     axis=1,
-                )
+                ).tolist()
 
-                run_dfs = [df.loc[:, df.columns.isin(expected_columns)]]
+                run_dfs = [df.loc[:, df.columns.isin(expected_columns)].copy()]
             formatted_df = pd.concat(run_dfs)
             formatted_df.dropna(axis=1, how="all")
             if not matched_cols:
@@ -1505,8 +1509,8 @@ class SRAdb(BASEdb):
             if isinstance(filter_by_srx, str):
                 filter_by_srx = [filter_by_srx]
         if filter_by_srx:
-            df = df[df.experiment_accession.isin(filter_by_srx)]
-        df.loc[:, "download_url"] = (
+            df = df.loc[df.experiment_accession.isin(filter_by_srx)]
+        df["download_url"] = (
             FTP_PREFIX["ftp"]
             + "/sra/sra-instant/reads/ByRun/sra/"
             + df["run_accession"].str[:3]
@@ -1517,7 +1521,7 @@ class SRAdb(BASEdb):
             + "/"
             + df["run_accession"]
             + ".sra"
-        )
+        ).tolist()
         ena_columns = [col for col in df.columns if "ena" in col]
         df["out_dir"] = out_dir
         if not len(df.index):
@@ -1525,10 +1529,12 @@ class SRAdb(BASEdb):
             sys.exit(0)
         if not use_ascp:
             print("Checking download URLs", flush=True)
-            df["filesize"] = df.apply(lambda x: get_file_size(x, url_col), axis=1)
+            df["filesize"] = df.apply(
+                lambda x: get_file_size(x, url_col), axis=1
+            ).tolist()
             df.dropna(subset=["filesize"])
             total_file_size = millify(np.sum(df["filesize"]))
-            df["filesize"] = df["filesize"].apply(lambda x: millify(x))
+            df["filesize"] = df["filesize"].apply(lambda x: millify(x)).tolist()
             print("The following files will be downloaded: \n")
             pd.set_option("display.max_colwidth", -1)
             print(df.to_string(index=False, justify="left", col_space=0))
@@ -1538,7 +1544,7 @@ class SRAdb(BASEdb):
             if not skip_confirmation:
                 if not confirm("Start download? "):
                     sys.exit(0)
-        df["srapath_url"] = df[url_col]
+        df["srapath_url"] = df[url_col].tolist()
         thread_map(
             partial(
                 _handle_download,
