@@ -4,7 +4,8 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
         <script async src="https://www.googletagmanager.com/gtag/js?id=G-CKQZFCEENZ"></script>
         <script>
             window.dataLayer = window.dataLayer || [];
@@ -255,9 +256,9 @@
               
               <div>
                 
-  <div class="section" id="python-api">
+  <section id="python-api">
 <span id="apiusage"></span><h1>Python API<a class="headerlink" href="#python-api" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="use-case-1-fetch-the-metadata-table-sra-runtable">
+<section id="use-case-1-fetch-the-metadata-table-sra-runtable">
 <h2>Use Case 1: Fetch the metadata table (SRA-runtable)<a class="headerlink" href="#use-case-1-fetch-the-metadata-table-sra-runtable" title="Permalink to this headline">¶</a></h2>
 <p>The simplest use case of <cite>pysradb</cite> is when you know the SRA project ID (SRP)
 and would simply want to fetch the metadata associated with it. This is generally
@@ -282,8 +283,8 @@ SRP098789        SRX2536407            GSM2476001: 0.3 Ã‚ÂµM PF-067446846, 
 </div>
 <p>The metadata is returned as a <cite>pandas</cite> dataframe and hence allows you to perform
 all regular select/query operations available through <cite>pandas</cite>.</p>
-</div>
-<div class="section" id="use-case-2-downloading-an-entire-project-arranged-experiment-wise">
+</section>
+<section id="use-case-2-downloading-an-entire-project-arranged-experiment-wise">
 <h2>Use Case 2: Downloading an entire project arranged experiment wise<a class="headerlink" href="#use-case-2-downloading-an-entire-project-arranged-experiment-wise" title="Permalink to this headline">¶</a></h2>
 <p>Once you have fetched the metadata and made sure, this is the project
 you were looking for, you would want to download everything at once.
@@ -300,8 +301,8 @@ can handle such cases easily, without worrying about which runs (SRR) need to be
 <span class="n">db</span><span class="o">.</span><span class="n">download</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
 </pre></div>
 </div>
-</div>
-<div class="section" id="use-case-3-downloading-a-subset-of-experiments">
+</section>
+<section id="use-case-3-downloading-a-subset-of-experiments">
 <h2>Use Case 3: Downloading a subset of experiments<a class="headerlink" href="#use-case-3-downloading-a-subset-of-experiments" title="Permalink to this headline">¶</a></h2>
 <p>Often, you need to process only a smaller set of samples from a project (SRP).
 Consider this project which has data spanning four assays.</p>
@@ -317,8 +318,8 @@ pandas.</p>
 <span class="n">db</span><span class="o">.</span><span class="n">download</span><span class="p">(</span><span class="n">df</span><span class="o">=</span><span class="n">df_rna</span><span class="p">,</span> <span class="n">out_dir</span><span class="o">=</span><span class="s1">&#39;/pysradb_downloads&#39;</span><span class="p">)()</span>
 </pre></div>
 </div>
-</div>
-<div class="section" id="use-case-4-getting-cell-type-treatment-information-from-sample-attributes">
+</section>
+<section id="use-case-4-getting-cell-type-treatment-information-from-sample-attributes">
 <h2>Use Case 4: Getting cell-type/treatment information from sample_attributes<a class="headerlink" href="#use-case-4-getting-cell-type-treatment-information-from-sample-attributes" title="Permalink to this headline">¶</a></h2>
 <p>Cell type/tissue informations is usually hidden in the <cite>sample_attributes</cite> column,
 which can be expanded:</p>
@@ -488,8 +489,8 @@ which can be expanded:</p>
 </tr>
 </tbody>
 </table>
-</div>
-<div class="section" id="use-case-5-searching-for-datasets">
+</section>
+<section id="use-case-5-searching-for-datasets">
 <h2>Use Case 5: Searching for datasets<a class="headerlink" href="#use-case-5-searching-for-datasets" title="Permalink to this headline">¶</a></h2>
 <p>Another common operation that we do on SRA is seach, plain text search.</p>
 <p>If you want to look up for all projects where <cite>ribosome profiling</cite> appears somewhere
@@ -599,8 +600,8 @@ in the description:</p>
 <p>Again, the results are available as a <cite>pandas</cite> dataframe and hence
 you can perform all subset operations post your query. Your query doesn’t need
 to be exact.</p>
-</div>
-</div>
+</section>
+</section>
 
 
               </div>

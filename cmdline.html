@@ -4,7 +4,8 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
         <script async src="https://www.googletagmanager.com/gtag/js?id=G-CKQZFCEENZ"></script>
         <script>
             window.dataLayer = window.dataLayer || [];
@@ -270,7 +271,7 @@
               
               <div>
                 
-  <div class="section" id="cli">
+  <section id="cli">
 <span id="clitutorial"></span><h1>CLI<a class="headerlink" href="#cli" title="Permalink to this headline">¶</a></h1>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ pysradb
 usage: pysradb [-h] [--version] [--citation]
@@ -312,7 +313,7 @@ subcommands:
     srx-to-srs          Get SRS for a SRX
 </pre></div>
 </div>
-<div class="section" id="getting-metadata-for-a-sra-project-srp">
+<section id="getting-metadata-for-a-sra-project-srp">
 <h2>Getting metadata for a SRA project (SRP)<a class="headerlink" href="#getting-metadata-for-a-sra-project-srp" title="Permalink to this headline">¶</a></h2>
 <p>The most basic information associated with any SRA project is its list of experiments
 and run accessions.</p>
@@ -362,8 +363,8 @@ SRP098789       SRX2536428           SRR5227313    RNA-Seq          SINGLE -
  28 WGS
 </pre></div>
 </div>
-</div>
-<div class="section" id="experiment-accessions-for-a-project-srp-srx">
+</section>
+<section id="experiment-accessions-for-a-project-srp-srx">
 <h2>Experiment accessions for a project (SRP =&gt; SRX)<a class="headerlink" href="#experiment-accessions-for-a-project-srp-srx" title="Permalink to this headline">¶</a></h2>
 <p>A frequently encountered task involves getting all the
 experiments (SRX) for a particular study accession (SRP).
@@ -371,8 +372,8 @@ Consider project <cite>SRP048759</cite>:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ pysradb srp-to-srx SRP048759
 </pre></div>
 </div>
-</div>
-<div class="section" id="sample-accessions-for-a-project-srp-srs">
+</section>
+<section id="sample-accessions-for-a-project-srp-srs">
 <h2>Sample accessions for a project (SRP =&gt; SRS)<a class="headerlink" href="#sample-accessions-for-a-project-srp-srs" title="Permalink to this headline">¶</a></h2>
 <p>Each experiment involves one or multiple biological samples (SRS),
 that are put through different experiments (SRX).</p>
@@ -403,8 +404,8 @@ SRP048759       SRS718879       SRX729553       SRR1608494      GSE62190        
 SRP048759       SRS718879       SRX729553       SRR1608495      GSE62190        GSM1521544      GSM1521544      GSM1521544_r2
 </pre></div>
 </div>
-</div>
-<div class="section" id="run-accessions-for-experiments-srx-srr">
+</section>
+<section id="run-accessions-for-experiments-srx-srr">
 <h2>Run accessions for experiments (SRX =&gt; SRR)<a class="headerlink" href="#run-accessions-for-experiments-srx-srr" title="Permalink to this headline">¶</a></h2>
 <p>Another frequently encountered task involves fetching the run accessions (SRR)
 for a particular experiment (SRX). Consider experiments <cite>SRX217956</cite> and
@@ -417,8 +418,8 @@ SRX217956            SRR649752     SRP017942       source_name: 3T3 cells || tre
 SRX2536403           SRR5227288    SRP098789       source_name: Huh7_1.5 Ã‚ÂµM PF-067446846_10 min_ribo-seq || cell line: Huh7 || treatment time: 10 min || library type: ribo-seq
 </pre></div>
 </div>
-</div>
-<div class="section" id="experiment-accessions-for-runs-srr-srx">
+</section>
+<section id="experiment-accessions-for-runs-srr-srx">
 <h2>Experiment accessions for runs (SRR =&gt; SRX)<a class="headerlink" href="#experiment-accessions-for-runs-srr-srx" title="Permalink to this headline">¶</a></h2>
 <p>For fetching experiment accessions (SRX) for one or multiple
 run accessions (SRR):</p>
@@ -428,14 +429,14 @@ SRR649752     SRP017942       SRX217956            source_name: 3T3 cells || tre
 SRR5227288    SRP098789       SRX2536403           source_name: Huh7_1.5 Ã‚ÂµM PF-067446846_10 min_ribo-seq || cell line: Huh7 || treatment time: 10 min || library type: ribo-seq
 </pre></div>
 </div>
-</div>
-<div class="section" id="downaloading-entire-project">
+</section>
+<section id="downaloading-entire-project">
 <h2>Downaloading entire project<a class="headerlink" href="#downaloading-entire-project" title="Permalink to this headline">¶</a></h2>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ pysradb metadata --detailed SRP098789 | pysradb download
 </pre></div>
 </div>
-</div>
-<div class="section" id="geo-accessions-for-studies-srp-gse">
+</section>
+<section id="geo-accessions-for-studies-srp-gse">
 <h2>GEO accessions for studies (SRP =&gt; GSE)<a class="headerlink" href="#geo-accessions-for-studies-srp-gse" title="Permalink to this headline">¶</a></h2>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ pysradb srp-to-gse SRP090415
 
@@ -450,8 +451,8 @@ study_accession study_alias
 SRP029589       PRJNA218051
 </pre></div>
 </div>
-</div>
-<div class="section" id="sra-accessions-for-geo-studies-gse-srp">
+</section>
+<section id="sra-accessions-for-geo-studies-gse-srp">
 <h2>SRA accessions for GEO studies (GSE =&gt; SRP)<a class="headerlink" href="#sra-accessions-for-geo-studies-gse-srp" title="Permalink to this headline">¶</a></h2>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ pysradb gse-to-srp GSE87328i
 
@@ -460,8 +461,8 @@ GSE87328    SRP090415
 </pre></div>
 </div>
 <p>Please see <a class="reference external" href="https://www.saket-choudhary.me/pysradb/quickstart.html#the-full-list-of-possible-pysradb-operations">quickstart</a> for all possible operations available through <code class="docutils literal notranslate"><span class="pre">pysradb</span></code>.</p>
-</div>
-</div>
+</section>
+</section>
 
 
               </div>

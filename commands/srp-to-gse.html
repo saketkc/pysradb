@@ -4,7 +4,8 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
         <script async src="https://www.googletagmanager.com/gtag/js?id=G-CKQZFCEENZ"></script>
         <script>
             window.dataLayer = window.dataLayer || [];
@@ -317,10 +318,10 @@
               
               <div>
                 
-  <div class="section" id="srp-to-gse">
+  <section id="srp-to-gse">
 <span id="srptogse"></span><h1>srp-to-gse<a class="headerlink" href="#srp-to-gse" title="Permalink to this headline">¶</a></h1>
 <p><code class="docutils literal notranslate"><span class="pre">srp-to-gse</span></code> converts a SRA study accession ID (SRP) to GEO accession ID (GSE).</p>
-<div class="section" id="usage-and-options">
+<section id="usage-and-options">
 <h2>Usage and options<a class="headerlink" href="#usage-and-options" title="Permalink to this headline">¶</a></h2>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ pysradb srp-to-gse -h
 Usage: pysradb srp-to-gse [OPTIONS] SRP_ID
@@ -333,8 +334,8 @@ Options:
   -h, --help     Show this message and exit.
 </pre></div>
 </div>
-</div>
-<div class="section" id="convert-sra-study-accession-srp-to-geo-accession-id-gse">
+</section>
+<section id="convert-sra-study-accession-srp-to-geo-accession-id-gse">
 <h2>Convert SRA study accession (SRP) to GEO accession ID (GSE)<a class="headerlink" href="#convert-sra-study-accession-srp-to-geo-accession-id-gse" title="Permalink to this headline">¶</a></h2>
 <p>Gene Expression Omnibus or GEO hosts processed sequencing datasets.
 The raw data is available through SRA and hence we often need to
@@ -351,8 +352,8 @@ SRP098789       GSE94454
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ pysradb srp-to-gse --detailed SRP098789
 </pre></div>
 </div>
-</div>
-<div class="section" id="saving-metadata-to-a-file">
+</section>
+<section id="saving-metadata-to-a-file">
 <h2>Saving metadata to a file<a class="headerlink" href="#saving-metadata-to-a-file" title="Permalink to this headline">¶</a></h2>
 <p><code class="docutils literal notranslate"><span class="pre">pysradb</span></code> follows a consistent pattern for providing
 an option to save output of any of its subcommands to a file
@@ -360,8 +361,8 @@ using the <code class="docutils literal notranslate"><span class="pre">--saveto<
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ pysradb srp-to-gse --detailed --saveto SRP098789_metadata.tsv SRP098789
 </pre></div>
 </div>
-</div>
-</div>
+</section>
+</section>
 
 
               </div>

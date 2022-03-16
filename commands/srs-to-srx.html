@@ -4,7 +4,8 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
         <script async src="https://www.googletagmanager.com/gtag/js?id=G-CKQZFCEENZ"></script>
         <script>
             window.dataLayer = window.dataLayer || [];
@@ -317,11 +318,11 @@
               
               <div>
                 
-  <div class="section" id="srs-to-srx">
+  <section id="srs-to-srx">
 <span id="srstosrx"></span><h1>srs-to-srx<a class="headerlink" href="#srs-to-srx" title="Permalink to this headline">¶</a></h1>
 <p><code class="docutils literal notranslate"><span class="pre">srs-to-srx</span></code> converts a SRA sample accession (SRS) to corresponding
 SRA experiment accession (SRX).</p>
-<div class="section" id="usage-and-options">
+<section id="usage-and-options">
 <h2>Usage and options<a class="headerlink" href="#usage-and-options" title="Permalink to this headline">¶</a></h2>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ pysradb srs-to-srx -h
 
@@ -335,8 +336,8 @@ Options:
   -h, --help     Show this message and exit.
 </pre></div>
 </div>
-</div>
-<div class="section" id="convert-sra-sample-accession-srs-to-sra-experiment-accession-srx">
+</section>
+<section id="convert-sra-sample-accession-srs-to-sra-experiment-accession-srx">
 <h2>Convert SRA sample accession (SRS) to SRA experiment accession (SRX)<a class="headerlink" href="#convert-sra-sample-accession-srs-to-sra-experiment-accession-srx" title="Permalink to this headline">¶</a></h2>
 <p>To convert a SRA sample accession of the form <code class="docutils literal notranslate"><span class="pre">SRSmmmmm</span></code> to its
 corresponding SRA experiment accession(s) of the form <code class="docutils literal notranslate"><span class="pre">SRXnnnn</span></code>:</p>
@@ -350,8 +351,8 @@ SRS718880        SRX729554
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ pysradb srs-to-srx --detailed SRP098789
 </pre></div>
 </div>
-</div>
-<div class="section" id="saving-metadata-to-a-file">
+</section>
+<section id="saving-metadata-to-a-file">
 <h2>Saving metadata to a file<a class="headerlink" href="#saving-metadata-to-a-file" title="Permalink to this headline">¶</a></h2>
 <p><code class="docutils literal notranslate"><span class="pre">pysradb</span></code> follows a consistent pattern for providing
 an option to save output of any of its subcommands to a file
@@ -359,8 +360,8 @@ using the <code class="docutils literal notranslate"><span class="pre">--saveto<
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ pysradb srs-to-srx --detailed --saveto SRP098789_metadata.tsv SRP098789
 </pre></div>
 </div>
-</div>
-</div>
+</section>
+</section>
 
 
               </div>

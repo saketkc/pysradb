@@ -4,7 +4,8 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
         <script async src="https://www.googletagmanager.com/gtag/js?id=G-CKQZFCEENZ"></script>
         <script>
             window.dataLayer = window.dataLayer || [];
@@ -322,11 +323,11 @@
               
               <div>
                 
-  <div class="section" id="gse-to-srp">
+  <section id="gse-to-srp">
 <span id="gsetosrp"></span><h1>gse-to-srp<a class="headerlink" href="#gse-to-srp" title="Permalink to this headline">¶</a></h1>
 <p><code class="docutils literal notranslate"><span class="pre">gse-to-srp</span></code> converts a GEO accession ID (GSE) to SRA
 study accession (SRP).</p>
-<div class="section" id="usage-and-options">
+<section id="usage-and-options">
 <h2>Usage and options<a class="headerlink" href="#usage-and-options" title="Permalink to this headline">¶</a></h2>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ pysradb gse-to-srp -h
 
@@ -343,8 +344,8 @@ Options:
   -h, --help     Show this message and exit.
 </pre></div>
 </div>
-</div>
-<div class="section" id="convert-geo-accession-id-gse-to-sra-study-accession-srp">
+</section>
+<section id="convert-geo-accession-id-gse-to-sra-study-accession-srp">
 <h2>Convert GEO accession ID (GSE) to SRA study accession (SRP)<a class="headerlink" href="#convert-geo-accession-id-gse-to-sra-study-accession-srp" title="Permalink to this headline">¶</a></h2>
 <p>Gene Expression Omnibus or GEO hosts processed sequencing datasets.
 The raw data is available through SRA and hence we often need to
@@ -357,8 +358,8 @@ study_alias study_accession
 GSE41637    SRP016501
 </pre></div>
 </div>
-</div>
-<div class="section" id="getting-sample-attributes">
+</section>
+<section id="getting-sample-attributes">
 <h2>Getting sample attributes<a class="headerlink" href="#getting-sample-attributes" title="Permalink to this headline">¶</a></h2>
 <p>Often, the most useful information is in the expanded metadata.
 For example, what cell` types do
@@ -367,8 +368,8 @@ applied to them? This can be obtained by using the <code class="docutils literal
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ pysradb gse-to-srp --detailed GSE41637
 </pre></div>
 </div>
-</div>
-<div class="section" id="saving-metadata-to-a-file">
+</section>
+<section id="saving-metadata-to-a-file">
 <h2>Saving metadata to a file<a class="headerlink" href="#saving-metadata-to-a-file" title="Permalink to this headline">¶</a></h2>
 <p><code class="docutils literal notranslate"><span class="pre">pysradb</span></code> follows a consistent pattern for providing
 an option to save output of any of its subcommands to a file
@@ -376,8 +377,8 @@ using the <code class="docutils literal notranslate"><span class="pre">--saveto<
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ pysradb gse-to-srp --detailed --saveto GSE41637_metadata.tsv GSE41637
 </pre></div>
 </div>
-</div>
-</div>
+</section>
+</section>
 
 
               </div>

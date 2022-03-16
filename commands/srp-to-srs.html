@@ -4,7 +4,8 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
         <script async src="https://www.googletagmanager.com/gtag/js?id=G-CKQZFCEENZ"></script>
         <script>
             window.dataLayer = window.dataLayer || [];
@@ -317,11 +318,11 @@
               
               <div>
                 
-  <div class="section" id="srp-to-srs">
+  <section id="srp-to-srs">
 <span id="srptosrs"></span><h1>srp-to-srs<a class="headerlink" href="#srp-to-srs" title="Permalink to this headline">¶</a></h1>
 <p><code class="docutils literal notranslate"><span class="pre">srp-to-srs</span></code> converts a SRA study accession (SRP) to corresponding
 SRA sample accession(s) (SRS).</p>
-<div class="section" id="usage-and-options">
+<section id="usage-and-options">
 <h2>Usage and options<a class="headerlink" href="#usage-and-options" title="Permalink to this headline">¶</a></h2>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Usage</span><span class="p">:</span> <span class="n">pysradb</span> <span class="n">srp</span><span class="o">-</span><span class="n">to</span><span class="o">-</span><span class="n">srs</span> <span class="p">[</span><span class="n">OPTIONS</span><span class="p">]</span> <span class="n">SRP_ID</span>
 
@@ -338,8 +339,8 @@ SRA sample accession(s) (SRS).</p>
   <span class="o">-</span><span class="n">h</span><span class="p">,</span> <span class="o">--</span><span class="n">help</span>     <span class="n">Show</span> <span class="n">this</span> <span class="n">message</span> <span class="ow">and</span> <span class="n">exit</span><span class="o">.</span>
 </pre></div>
 </div>
-</div>
-<div class="section" id="convert-sra-study-accession-srp-to-sra-sample-accession-srs">
+</section>
+<section id="convert-sra-study-accession-srp-to-sra-sample-accession-srs">
 <h2>Convert SRA study accession (SRP) to SRA sample accession (SRS)<a class="headerlink" href="#convert-sra-study-accession-srp-to-sra-sample-accession-srs" title="Permalink to this headline">¶</a></h2>
 <p>To convert a SRA study accession of the form <code class="docutils literal notranslate"><span class="pre">SRPmmmmm</span></code> to its
 corresponding SRA run accessions of the form <code class="docutils literal notranslate"><span class="pre">SRRnnnn</span></code>:</p>
@@ -361,8 +362,8 @@ SRP048759       SRS718886
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ pysradb srp-to-srs --detailed SRP048759 | head
 </pre></div>
 </div>
-</div>
-<div class="section" id="saving-metadata-to-a-file">
+</section>
+<section id="saving-metadata-to-a-file">
 <h2>Saving metadata to a file<a class="headerlink" href="#saving-metadata-to-a-file" title="Permalink to this headline">¶</a></h2>
 <p><code class="docutils literal notranslate"><span class="pre">pysradb</span></code> follows a consistent pattern for providing
 an option to save output of any of its subcommands to a file
@@ -370,8 +371,8 @@ using the <code class="docutils literal notranslate"><span class="pre">--saveto<
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ pysradb srp-to-srs --detailed --saveto SRP048759_metadata.tsv SRP048759
 </pre></div>
 </div>
-</div>
-</div>
+</section>
+</section>
 
 
               </div>
