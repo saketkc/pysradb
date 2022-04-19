@@ -18,30 +18,27 @@
     
     <title>CLI &#8212; pysradb 1.3.0 documentation</title>
     
-    <link href="_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
 <link href="_static/styles/pydata-sphinx-theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
-  
+
     
-    <link rel="stylesheet"
-      href="_static/vendor/fontawesome/5.13.0/css/all.min.css">
-    <link rel="preload" as="font" type="font/woff2" crossorigin
-      href="_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
-    <link rel="preload" as="font" type="font/woff2" crossorigin
-      href="_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
-  
-    
-      
-  
-    
+  <link rel="stylesheet"
+    href="_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
     <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="_static/styles/pydata-sphinx-theme.css" />
     <link rel="stylesheet" type="text/css" href="_static/graphviz.css" />
     <link rel="stylesheet" type="text/css" href="_static/tabs.css" />
     <link rel="stylesheet" type="text/css" href="_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
     <link rel="stylesheet" type="text/css" href="_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
     
-    <link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf">
-  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf">
+
     <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
     <script src="_static/jquery.js"></script>
     <script src="_static/underscore.js"></script>
@@ -65,7 +62,7 @@
                 </script>
 
   </head>
-  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="60">
     
     <div class="container-fluid" id="banner"></div>
 
@@ -204,7 +201,7 @@
               
               <div class="toc-item">
                 
-<div class="tocsection onthispage pt-5 pb-3">
+<div class="tocsection onthispage mt-5 pt-1 pb-3">
     <i class="fas fa-list"></i> On this page
 </div>
 
@@ -272,7 +269,7 @@
               <div>
                 
   <section id="cli">
-<span id="clitutorial"></span><h1>CLI<a class="headerlink" href="#cli" title="Permalink to this headline">¶</a></h1>
+<span id="clitutorial"></span><h1>CLI<a class="headerlink" href="#cli" title="Permalink to this headline">#</a></h1>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ pysradb
 usage: pysradb [-h] [--version] [--citation]
                {metadb,metadata,download,search,gse-to-gsm,gse-to-srp,gsm-to-gse,gsm-to-srp,gsm-to-srr,gsm-to-srs,gsm-to-srx,srp-to-gse,srp-to-srr,srp-to-srs,srp-to-srx,srr-to-gsm,srr-to-srp,srr-to-srs,srr-to-srx,srs-to-gsm,srs-to-srx,srx-to-srp,srx-to-srr,srx-to-srs}
@@ -314,7 +311,7 @@ subcommands:
 </pre></div>
 </div>
 <section id="getting-metadata-for-a-sra-project-srp">
-<h2>Getting metadata for a SRA project (SRP)<a class="headerlink" href="#getting-metadata-for-a-sra-project-srp" title="Permalink to this headline">¶</a></h2>
+<h2>Getting metadata for a SRA project (SRP)<a class="headerlink" href="#getting-metadata-for-a-sra-project-srp" title="Permalink to this headline">#</a></h2>
 <p>The most basic information associated with any SRA project is its list of experiments
 and run accessions.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ pysradb metadata SRP098789
@@ -365,7 +362,7 @@ SRP098789       SRX2536428           SRR5227313    RNA-Seq          SINGLE -
 </div>
 </section>
 <section id="experiment-accessions-for-a-project-srp-srx">
-<h2>Experiment accessions for a project (SRP =&gt; SRX)<a class="headerlink" href="#experiment-accessions-for-a-project-srp-srx" title="Permalink to this headline">¶</a></h2>
+<h2>Experiment accessions for a project (SRP =&gt; SRX)<a class="headerlink" href="#experiment-accessions-for-a-project-srp-srx" title="Permalink to this headline">#</a></h2>
 <p>A frequently encountered task involves getting all the
 experiments (SRX) for a particular study accession (SRP).
 Consider project <cite>SRP048759</cite>:</p>
@@ -374,7 +371,7 @@ Consider project <cite>SRP048759</cite>:</p>
 </div>
 </section>
 <section id="sample-accessions-for-a-project-srp-srs">
-<h2>Sample accessions for a project (SRP =&gt; SRS)<a class="headerlink" href="#sample-accessions-for-a-project-srp-srs" title="Permalink to this headline">¶</a></h2>
+<h2>Sample accessions for a project (SRP =&gt; SRS)<a class="headerlink" href="#sample-accessions-for-a-project-srp-srs" title="Permalink to this headline">#</a></h2>
 <p>Each experiment involves one or multiple biological samples (SRS),
 that are put through different experiments (SRX).</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ pysradb srp-to-srs --detailed SRP048759
@@ -406,7 +403,7 @@ SRP048759       SRS718879       SRX729553       SRR1608495      GSE62190        
 </div>
 </section>
 <section id="run-accessions-for-experiments-srx-srr">
-<h2>Run accessions for experiments (SRX =&gt; SRR)<a class="headerlink" href="#run-accessions-for-experiments-srx-srr" title="Permalink to this headline">¶</a></h2>
+<h2>Run accessions for experiments (SRX =&gt; SRR)<a class="headerlink" href="#run-accessions-for-experiments-srx-srr" title="Permalink to this headline">#</a></h2>
 <p>Another frequently encountered task involves fetching the run accessions (SRR)
 for a particular experiment (SRX). Consider experiments <cite>SRX217956</cite> and
 <cite>SRX2536403</cite>. We want to be able to resolve the run accessions for these
@@ -420,7 +417,7 @@ SRX2536403           SRR5227288    SRP098789       source_name: Huh7_1.5 Ã‚Â
 </div>
 </section>
 <section id="experiment-accessions-for-runs-srr-srx">
-<h2>Experiment accessions for runs (SRR =&gt; SRX)<a class="headerlink" href="#experiment-accessions-for-runs-srr-srx" title="Permalink to this headline">¶</a></h2>
+<h2>Experiment accessions for runs (SRR =&gt; SRX)<a class="headerlink" href="#experiment-accessions-for-runs-srr-srx" title="Permalink to this headline">#</a></h2>
 <p>For fetching experiment accessions (SRX) for one or multiple
 run accessions (SRR):</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ pysradb srr-to-srx SRR5227288 SRR649752 --detailed
@@ -431,13 +428,13 @@ SRR5227288    SRP098789       SRX2536403           source_name: Huh7_1.5 Ã‚Â
 </div>
 </section>
 <section id="downaloading-entire-project">
-<h2>Downaloading entire project<a class="headerlink" href="#downaloading-entire-project" title="Permalink to this headline">¶</a></h2>
+<h2>Downaloading entire project<a class="headerlink" href="#downaloading-entire-project" title="Permalink to this headline">#</a></h2>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ pysradb metadata --detailed SRP098789 | pysradb download
 </pre></div>
 </div>
 </section>
 <section id="geo-accessions-for-studies-srp-gse">
-<h2>GEO accessions for studies (SRP =&gt; GSE)<a class="headerlink" href="#geo-accessions-for-studies-srp-gse" title="Permalink to this headline">¶</a></h2>
+<h2>GEO accessions for studies (SRP =&gt; GSE)<a class="headerlink" href="#geo-accessions-for-studies-srp-gse" title="Permalink to this headline">#</a></h2>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ pysradb srp-to-gse SRP090415
 
 study_accession study_alias
@@ -453,7 +450,7 @@ SRP029589       PRJNA218051
 </div>
 </section>
 <section id="sra-accessions-for-geo-studies-gse-srp">
-<h2>SRA accessions for GEO studies (GSE =&gt; SRP)<a class="headerlink" href="#sra-accessions-for-geo-studies-gse-srp" title="Permalink to this headline">¶</a></h2>
+<h2>SRA accessions for GEO studies (GSE =&gt; SRP)<a class="headerlink" href="#sra-accessions-for-geo-studies-gse-srp" title="Permalink to this headline">#</a></h2>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ pysradb gse-to-srp GSE87328i
 
 study_alias study_accession
@@ -492,8 +489,9 @@ GSE87328    SRP090415
       </div>
     </div>
   
-    <script src="_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf"></script>
-  <footer class="footer mt-5 mt-md-0">
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf"></script>
+<footer class="footer mt-5 mt-md-0">
   <div class="container">
     
     <div class="footer-item">
@@ -504,7 +502,7 @@ GSE87328    SRP090415
     
     <div class="footer-item">
       <p class="sphinx-version">
-Created using <a href="http://sphinx-doc.org/">Sphinx</a> 4.4.0.<br>
+Created using <a href="http://sphinx-doc.org/">Sphinx</a> 4.5.0.<br>
 </p>
     </div>
     
