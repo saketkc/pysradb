@@ -1,5 +1,7 @@
 """Methods to interact with SRA"""
 
+# This is now defunct and will be removed in a future release.
+
 import gzip
 import os
 import re
