@@ -139,7 +139,12 @@ class SRAweb(SRAdb):
                   Parsed xml as dict
         """
         try:
-            json = xmltodict.parse(xml, process_namespaces=True)["root"]
+            xmldict = xmltodict.parse(
+                xml,
+                process_namespaces=True,
+                dict_constructor=OrderedDict
+            )
+            json = xmldict["root"]
         except ExpatError:
             raise RuntimeError("Unable to parse xml: {}".format(xml))
         return json
@@ -377,7 +382,7 @@ class SRAweb(SRAdb):
                 except:
                     request_json = {}  # eval(request_text)
             try:
-                xml_response = xmltodict.parse(request_text)
+                xml_response = xmltodict.parse(request_text, dict_constructor=OrderedDict)
 
                 exp_response = xml_response.get("EXPERIMENT_PACKAGE_SET", {})
                 response = exp_response.get("EXPERIMENT_PACKAGE", {})
