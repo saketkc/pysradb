@@ -140,9 +140,7 @@ class SRAweb(SRAdb):
         """
         try:
             xmldict = xmltodict.parse(
-                xml,
-                process_namespaces=True,
-                dict_constructor=OrderedDict
+                xml, process_namespaces=True, dict_constructor=OrderedDict
             )
             json = xmldict["root"]
         except ExpatError:
@@ -382,7 +380,9 @@ class SRAweb(SRAdb):
                 except:
                     request_json = {}  # eval(request_text)
             try:
-                xml_response = xmltodict.parse(request_text, dict_constructor=OrderedDict)
+                xml_response = xmltodict.parse(
+                    request_text, dict_constructor=OrderedDict
+                )
 
                 exp_response = xml_response.get("EXPERIMENT_PACKAGE_SET", {})
                 response = exp_response.get("EXPERIMENT_PACKAGE", {})
