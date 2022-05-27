@@ -453,6 +453,10 @@ class SRAweb(SRAdb):
             if isinstance(exp_platform, OrderedDict):
                 exp_platform_model = exp_platform.get("@instrument_model", pd.NA)
                 exp_platform_desc = exp_platform.get("#text", pd.NA)
+            else:
+                exp_platform_model = pd.NA
+                exp_platform_desc = pd.NA
+
             exp_total_runs = exp_json["Summary"]["Statistics"]["@total_runs"]
             exp_total_spots = exp_json["Summary"]["Statistics"]["@total_spots"]
             exp_total_size = exp_json["Summary"]["Statistics"]["@total_size"]
