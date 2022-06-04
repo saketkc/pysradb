@@ -3,6 +3,15 @@ History
 #######
 
 ******************
+1.4.0 (Unreleased)
+******************
+
+* Added ability to fetch alternative URLs (GCP/AWS) for metadata (`#161 <https://github.com/saketkc/pysradb/issues/161>`)
+* Fix for xmldict 0.13.0 no longer defaulting to OrderedDict (`#159 <https://github.com/saketkc/pysradb/pull/159>`)
+* Fix for missing experiment model and description in metadata (`#160 <https://github.com/saketkc/pysradb/issues/160>`)
+
+
+******************
 1.3.0 (02-18-2022)
 ******************
 

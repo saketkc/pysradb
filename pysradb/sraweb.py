@@ -447,8 +447,6 @@ class SRAweb(SRAdb):
             if not isinstance(runs, list):
                 runs = [runs]
             exp_title = exp_json["Summary"]["Title"]
-            # print(exp_json["Summary"].keys())
-            # study_title = exp_json["DESCRIPTOR"]["STUDY_TITLE"]
             exp_platform = exp_json["Summary"]["Platform"]
             if isinstance(exp_platform, OrderedDict):
                 exp_platform_model = exp_platform.get("@instrument_model", pd.NA)
@@ -587,7 +585,16 @@ class SRAweb(SRAdb):
                 sra_files = run_set.get("SRAFiles", {})
                 sra_files = sra_files.get("SRAFile", {})
                 if isinstance(sra_files, OrderedDict):
-                    detailed_record["sra_url"] = sra_files["@url"]
+                    detailed_record["sra_url"] = sra_files.get("@url", "")
+                    if "Alternatives" in sra_files.keys():
+                        alternatives = sra_files["Alternatives"]
+                        org = alternatives["@org"]
+                        for key in alternatives.keys():
+                            if key == "@org":
+                                continue
+                            detailed_record[
+                                "{}_{}".format(org, key.replace("@", ""))
+                            ] = alternatives[key]
                 else:
                     for sra_file in sra_files:
                         # Multiple download URLs
