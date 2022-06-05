@@ -231,10 +231,10 @@ def test_xmlns_id(sraweb_connection):
 
 
 def test_GCP_url(sraweb_connection):
-    df = sraweb_connection.sra_metadata(["SRP002605"])
+    df = sraweb_connection.sra_metadata(["SRP002605"], detailed=True)
     assert df["GCP_url"].tolist()[-1] == "gs://sra-pub-crun-1/SRR057512/SRR057512.2"
 
 
 def test_GCP_url2(sraweb_connection):
-    df = sraweb_connection.sra_metadata(["DRR138929"])
+    df = sraweb_connection.sra_metadata(["DRR138929"], detailed=True)
     assert df["GCP_url"].tolist()[-1] == "gs://sra-pub-crun-6/DRR138929/DRR138929.1"
