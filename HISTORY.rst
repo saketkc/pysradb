@@ -3,7 +3,7 @@ History
 #######
 
 ******************
-1.4.0 (Unreleased)
+1.4.0 (06-04-2022)
 ******************
 
 * Added ability to fetch alternative URLs (GCP/AWS) for metadata (`#161 <https://github.com/saketkc/pysradb/issues/161>`)
