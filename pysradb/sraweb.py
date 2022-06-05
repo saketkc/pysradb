@@ -588,6 +588,9 @@ class SRAweb(SRAdb):
                     detailed_record["sra_url"] = sra_files.get("@url", pd.NA)
                     if "Alternatives" in sra_files.keys():
                         alternatives = sra_files["Alternatives"]
+                        if isinstance(alternatives, list):
+                            # TODO: Only handles single alternate urls
+                            alternatives = alternatives[0]
                         org = alternatives["@org"]
                         for key in alternatives.keys():
                             if key == "@org":
