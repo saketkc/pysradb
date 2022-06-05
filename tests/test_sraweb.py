@@ -228,3 +228,13 @@ def test_srx_to_srs(sraweb_connection):
 def test_xmlns_id(sraweb_connection):
     df = sraweb_connection.sra_metadata(["GSM1013144", "GSM2520660"])
     assert list(df["library_layout"]) == ["PAIRED", "SINGLE"]
+
+
+def test_GCP_url(sraweb_connection):
+    df = sraweb_connection.sra_metadata(["SRP002605"])
+    assert df["GCP_url"].tolist()[-1] == "gs://sra-pub-crun-1/SRR057512/SRR057512.2"
+
+
+def test_GCP_url2(sraweb_connection):
+    df = sraweb_connection.sra_metadata(["DRR138929"])
+    assert df["GCP_url"].tolist()[-1] == "gs://sra-pub-crun-6/DRR138929/DRR138929.1"

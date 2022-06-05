@@ -585,7 +585,7 @@ class SRAweb(SRAdb):
                 sra_files = run_set.get("SRAFiles", {})
                 sra_files = sra_files.get("SRAFile", {})
                 if isinstance(sra_files, OrderedDict):
-                    detailed_record["sra_url"] = sra_files.get("@url", "")
+                    detailed_record["sra_url"] = sra_files.get("@url", pd.NA)
                     if "Alternatives" in sra_files.keys():
                         alternatives = sra_files["Alternatives"]
                         org = alternatives["@org"]
@@ -604,7 +604,19 @@ class SRAweb(SRAdb):
                         #    print("record : {}".format(sra_file))
                         if "@filename" in sra_file:
                             if sra_file["@filename"] == run_set["@accession"]:
-                                detailed_record["sra_url"] = sra_file["@url"]
+                                detailed_record["sra_url"] = sra_file.get("@url", pd.NA)
+                                if "Alternatives" in sra_file.keys():
+                                    alternatives = sra_file["Alternatives"]
+                                    if isinstance(alternatives, list):
+                                        # TODO: Only handles single alternate urls
+                                        alternatives = alternatives[0]
+                                    org = alternatives.get("@org", "")
+                                    for key in alternatives.keys():
+                                        if key == "@org":
+                                            continue
+                                        detailed_record[
+                                            "{}_{}".format(org, key.replace("@", ""))
+                                        ] = alternatives[key]
                                 break
                         if "Alternatives" in sra_file:
                             # Example: SRP184142
