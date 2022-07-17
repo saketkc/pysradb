@@ -25,7 +25,7 @@ def test_valid_download_links(geoweb_connection):
 def test_invalid_download_links(geoweb_connection):
     """Test if invalid GEO ID raises the expected error"""
     with pytest.raises(KeyError):
-        links, url = geoweb_connection.get_download_links("GSE161709")
+        links, url = geoweb_connection.get_download_links("GSE1691709")
 
 
 def test_file_download(geoweb_connection):
