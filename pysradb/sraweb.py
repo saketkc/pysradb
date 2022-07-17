@@ -79,7 +79,7 @@ class SRAweb(SRAdb):
         ] = "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi"
 
         self.ena_fastq_search_url = (
-            "https://www.ebi.ac.uk/ena/data/warehouse/filereport"
+            "https://www.ebi.ac.uk/ena/portal/api/filereport"
         )
         self.ena_params = [("result", "read_run"), ("fields", "fastq_ftp")]
 
@@ -164,7 +164,6 @@ class SRAweb(SRAdb):
         payload += [("accession", srp)]
         request = requests.get(self.ena_fastq_search_url, params=OrderedDict(payload))
         request_text = request.text.strip()
-
         urls = []
         for line in request_text.split("\n"):
             if "fastq_ftp" in line:
