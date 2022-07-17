@@ -78,9 +78,7 @@ class SRAweb(SRAdb):
             "efetch"
         ] = "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi"
 
-        self.ena_fastq_search_url = (
-            "https://www.ebi.ac.uk/ena/portal/api/filereport"
-        )
+        self.ena_fastq_search_url = "https://www.ebi.ac.uk/ena/portal/api/filereport"
         self.ena_params = [("result", "read_run"), ("fields", "fastq_ftp")]
 
         self.esearch_params = {}
