@@ -506,7 +506,7 @@ class SRAweb(SRAdb):
                 experiment_record["experiment_title"] = exp_name
                 experiment_record["experiment_desc"] = exp_title
 
-                experiment_record["organism_taxid "] = exp_taxid
+                experiment_record["organism_taxid"] = exp_taxid
                 experiment_record["organism_name"] = exp_organism_name
 
                 experiment_record["library_name"] = exp_library_name
