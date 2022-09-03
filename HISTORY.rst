@@ -2,6 +2,13 @@
 History
 #######
 
+******************
+1.4.3 (Unreleased)
+******************
+
+* Fix extra space in "organism_taxid" column 
+
+
 
 ******************
 1.4.2 (06-17-2022)
