@@ -1,10 +1,10 @@
 
 <!DOCTYPE html>
 
-<html>
+<html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
         <script async src="https://www.googletagmanager.com/gtag/js?id=G-CKQZFCEENZ"></script>
         <script>
@@ -16,152 +16,226 @@
             
         </script>
     
-    <title>pysradb package &#8212; pysradb 1.4.0 documentation</title>
-    
+    <title>pysradb package &#8212; pysradb 1.4.2 documentation</title>
+  <script>
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
   <!-- Loaded before other Sphinx assets -->
-  <link href="_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
-<link href="_static/styles/pydata-sphinx-theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+  <link href="_static/styles/theme.css?digest=9b1a4fa89bdd0e95b23b" rel="stylesheet">
+<link href="_static/styles/pydata-sphinx-theme.css?digest=9b1a4fa89bdd0e95b23b" rel="stylesheet">
 
-    
+  
   <link rel="stylesheet"
-    href="_static/vendor/fontawesome/5.13.0/css/all.min.css">
+    href="_static/vendor/fontawesome/6.1.2/css/all.min.css">
   <link rel="preload" as="font" type="font/woff2" crossorigin
-    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+    href="_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2">
   <link rel="preload" as="font" type="font/woff2" crossorigin
-    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+    href="_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2">
 
     <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="_static/graphviz.css" />
     <link rel="stylesheet" type="text/css" href="_static/tabs.css" />
-    <link rel="stylesheet" type="text/css" href="_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
-    <link rel="stylesheet" type="text/css" href="_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
-    
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-dropdown.css" />
+    <link rel="stylesheet" type="text/css" href="_static/panels-bootstrap.min.css" />
+  
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf">
+  <link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=9b1a4fa89bdd0e95b23b">
 
     <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
     <script src="_static/jquery.js"></script>
     <script src="_static/underscore.js"></script>
+    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="_static/doctools.js"></script>
-    <link rel="index" title="Index" href="genindex.html" />
-    <link rel="search" title="Search" href="search.html" />
-    <link rel="prev" title="pysradb" href="modules.html" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="docsearch:language" content="None">
-    
-
-    <!-- Google Analytics -->
-    
-<script async="" src="https://www.googletagmanager.com/gtag/js?id=G-CKQZFCEENZ"></script>
-<script>
+    <script async="async" src="https://www.googletagmanager.com/gtag/js?id=G-CKQZFCEENZ"></script>
+    <script>
                     window.dataLayer = window.dataLayer || [];
                     function gtag(){ dataLayer.push(arguments); }
                     gtag('js', new Date());
                     gtag('config', 'G-CKQZFCEENZ');
                 </script>
-
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="pysradb" href="modules.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="docsearch:language" content="en">
   </head>
-  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="60">
-    
-    <div class="container-fluid" id="banner"></div>
+  
+  
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="180" data-default-mode="">
 
-    
-    <nav class="navbar navbar-light navbar-expand-lg bg-light fixed-top bd-navbar" id="navbar-main"><div class="container-xl">
+  
+  <input type="checkbox" class="sidebar-toggle" name="__primary" id="__primary">
+  <label class="overlay overlay-primary" for="__primary"></label>
 
+  
+  <input type="checkbox" class="sidebar-toggle" name="__secondary" id="__secondary">
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+      
+<form class="bd-search d-flex align-items-center" action="search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+    </div>
+  </div>
+
+  
+  <nav class="bd-header navbar navbar-expand-lg bd-navbar" id="navbar-main"><div class="bd-header__inner bd-page-width">
+  <label class="sidebar-toggle primary-toggle" for="__primary">
+      <span class="fas fa-bars"></span>
+  </label>
   <div id="navbar-start">
     
     
+  
 
-<a class="navbar-brand" href="index.html">
-  <img src="_static/pysradb_v3.png" class="logo" alt="logo">
+
+<a class="navbar-brand logo" href="index.html">
+
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <img src="_static/pysradb_v3.png" class="logo__image only-light" alt="Logo image">
+    <img src="_static/pysradb_v3.png" class="logo__image only-dark" alt="Logo image">
+  
+  
 </a>
-
-
     
   </div>
 
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-collapsible" aria-controls="navbar-collapsible" aria-expanded="false" aria-label="Toggle navigation">
-    <span class="navbar-toggler-icon"></span>
-  </button>
-
   
-  <div id="navbar-collapsible" class="col-lg-9 collapse navbar-collapse">
+  <div class="col-lg-9 navbar-header-items">
     <div id="navbar-center" class="mr-auto">
       
       <div class="navbar-center-item">
-        <ul id="navbar-main-elements" class="navbar-nav">
-    <li class="toctree-l1 nav-item">
- <a class="reference internal nav-link" href="installation.html">
-  Installation
- </a>
-</li>
+        <nav class="navbar-nav">
+    <p class="sidebar-header-items__title" role="heading" aria-level="1" aria-label="Site Navigation">
+        Site Navigation
+    </p>
+    <ul id="navbar-main-elements" class="navbar-nav">
+        
+                <li class="nav-item">
+                    <a class="nav-link" href="installation.html">
+                        Installation
+                    </a>
+                </li>
+                
 
-<li class="toctree-l1 nav-item">
- <a class="reference internal nav-link" href="quickstart.html">
-  Quickstart
- </a>
-</li>
+                <li class="nav-item">
+                    <a class="nav-link" href="quickstart.html">
+                        Quickstart
+                    </a>
+                </li>
+                
 
-<li class="toctree-l1 nav-item">
- <a class="reference internal nav-link" href="cmdline.html">
-  CLI
- </a>
-</li>
+                <li class="nav-item">
+                    <a class="nav-link" href="cmdline.html">
+                        CLI
+                    </a>
+                </li>
+                
 
-<li class="toctree-l1 nav-item">
- <a class="reference internal nav-link" href="python-api-usage.html">
-  Python API
- </a>
-</li>
+                <li class="nav-item">
+                    <a class="nav-link" href="python-api-usage.html">
+                        Python API
+                    </a>
+                </li>
+                
 
-<li class="toctree-l1 nav-item">
- <a class="reference internal nav-link" href="case_studies.html">
-  Case Studies
- </a>
-</li>
+                <li class="nav-item">
+                    <a class="nav-link" href="case_studies.html">
+                        Case Studies
+                    </a>
+                </li>
+                
+            <div class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    More
+                </button>
+                <div class="dropdown-menu">
+                    
+                <li class="nav-item">
+                    <a class="nav-link" href="commands.html">
+                        API Documentation
+                    </a>
+                </li>
+                
 
-<li class="toctree-l1 nav-item">
- <a class="reference internal nav-link" href="commands.html">
-  API Documentation
- </a>
-</li>
+                <li class="nav-item">
+                    <a class="nav-link" href="contributing.html">
+                        Contributing
+                    </a>
+                </li>
+                
 
-<li class="toctree-l1 nav-item">
- <a class="reference internal nav-link" href="contributing.html">
-  Contributing
- </a>
-</li>
+                <li class="nav-item">
+                    <a class="nav-link" href="authors.html">
+                        Credits
+                    </a>
+                </li>
+                
 
-<li class="toctree-l1 nav-item">
- <a class="reference internal nav-link" href="authors.html">
-  Credits
- </a>
-</li>
+                <li class="nav-item">
+                    <a class="nav-link" href="history.html">
+                        History
+                    </a>
+                </li>
+                
 
-<li class="toctree-l1 nav-item">
- <a class="reference internal nav-link" href="history.html">
-  History
- </a>
-</li>
-
-<li class="toctree-l1 current active nav-item">
- <a class="reference internal nav-link" href="modules.html">
-  pysradb
- </a>
-</li>
-
-    
-</ul>
+                <li class="nav-item current active">
+                    <a class="nav-link" href="modules.html">
+                        pysradb
+                    </a>
+                </li>
+                
+                </div>
+            </div>
+            
+    </ul>
+</nav>
       </div>
       
     </div>
 
     <div id="navbar-end">
+      <div class="navbar-end-item navbar-end__search-button-container">
+        
+<button class="btn btn-sm navbar-btn search-button search-button__button" title="Search">
+  <i class="fas fa-search"></i>
+</button>
+      </div>
+      
+      <div class="navbar-end-item">
+        <span class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle">
+    <a class="theme-switch" data-mode="light"><i class="fas fa-sun"></i></a>
+    <a class="theme-switch" data-mode="dark"><i class="far fa-moon"></i></a>
+    <a class="theme-switch" data-mode="auto"><i class="fas fa-adjust"></i></a>
+</span>
+      </div>
       
       <div class="navbar-end-item">
         <ul id="navbar-icon-links" class="navbar-nav" aria-label="Icon Links">
         <li class="nav-item">
-          <a class="nav-link" href="https://github.com/saketkc/pysradb" rel="noopener" target="_blank" title="GitHub"><span><i class="fab fa-github-square"></i></span>
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/saketkc/pysradb" title="GitHub" class="nav-link" rel="noopener" target="_blank"><span><i class="fab fa-github-square"></i></span>
             <label class="sr-only">GitHub</label></a>
         </li>
       </ul>
@@ -169,21 +243,165 @@
       
     </div>
   </div>
+
+
+  
+  <div class="search-button-container--mobile">
+<button class="btn btn-sm navbar-btn search-button search-button__button" title="Search">
+  <i class="fas fa-search"></i>
+</button>
+  </div>
+
+  
+  <label class="sidebar-toggle secondary-toggle" for="__secondary">
+      <span class="fas fa-outdent"></span>
+  </label>
+  
+
 </div>
-    </nav>
+  </nav>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+      
+      <div class="navbar-center-item">
+        <nav class="navbar-nav">
+    <p class="sidebar-header-items__title" role="heading" aria-level="1" aria-label="Site Navigation">
+        Site Navigation
+    </p>
+    <ul id="navbar-main-elements" class="navbar-nav">
+        
+                <li class="nav-item">
+                    <a class="nav-link" href="installation.html">
+                        Installation
+                    </a>
+                </li>
+                
+
+                <li class="nav-item">
+                    <a class="nav-link" href="quickstart.html">
+                        Quickstart
+                    </a>
+                </li>
+                
+
+                <li class="nav-item">
+                    <a class="nav-link" href="cmdline.html">
+                        CLI
+                    </a>
+                </li>
+                
+
+                <li class="nav-item">
+                    <a class="nav-link" href="python-api-usage.html">
+                        Python API
+                    </a>
+                </li>
+                
+
+                <li class="nav-item">
+                    <a class="nav-link" href="case_studies.html">
+                        Case Studies
+                    </a>
+                </li>
+                
+            <div class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    More
+                </button>
+                <div class="dropdown-menu">
+                    
+                <li class="nav-item">
+                    <a class="nav-link" href="commands.html">
+                        API Documentation
+                    </a>
+                </li>
+                
+
+                <li class="nav-item">
+                    <a class="nav-link" href="contributing.html">
+                        Contributing
+                    </a>
+                </li>
+                
+
+                <li class="nav-item">
+                    <a class="nav-link" href="authors.html">
+                        Credits
+                    </a>
+                </li>
+                
+
+                <li class="nav-item">
+                    <a class="nav-link" href="history.html">
+                        History
+                    </a>
+                </li>
+                
+
+                <li class="nav-item current active">
+                    <a class="nav-link" href="modules.html">
+                        pysradb
+                    </a>
+                </li>
+                
+                </div>
+            </div>
+            
+    </ul>
+</nav>
+      </div>
+      
+      </div>
     
 
-    <div class="container-xl">
-      <div class="row">
+    
+    
+    <div class="sidebar-header-items__end">
+      
+      <div class="navbar-end-item">
+        <span class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle">
+    <a class="theme-switch" data-mode="light"><i class="fas fa-sun"></i></a>
+    <a class="theme-switch" data-mode="dark"><i class="far fa-moon"></i></a>
+    <a class="theme-switch" data-mode="auto"><i class="fas fa-adjust"></i></a>
+</span>
+      </div>
+      
+      <div class="navbar-end-item">
+        <ul id="navbar-icon-links" class="navbar-nav" aria-label="Icon Links">
+        <li class="nav-item">
           
-            
-            <!-- Only show if we have sidebars configured, else just a small margin  -->
-            <div class="col-12 col-md-3 bd-sidebar">
-              <div class="sidebar-start-items"><form class="bd-search d-flex align-items-center" action="search.html" method="get">
-  <i class="icon fas fa-search"></i>
-  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off" >
-</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
-  <div class="bd-toc-item active">
+          
+          
+          
+          
+          
+          <a href="https://github.com/saketkc/pysradb" title="GitHub" class="nav-link" rel="noopener" target="_blank"><span><i class="fab fa-github-square"></i></span>
+            <label class="sr-only">GitHub</label></a>
+        </li>
+      </ul>
+      </div>
+      
+    </div>
+    
+  </div>
+
+  
+  <div class="sidebar-start-items sidebar-primary__section">
+    <div class="sidebar-start-items__item"><nav class="bd-links" id="bd-docs-nav" aria-label="Section navigation">
+  <p class="bd-links__title" role="heading" aria-level="1">
+    Section Navigation
+  </p>
+  <div class="bd-toc-item navbar-nav">
     <ul class="current nav bd-sidenav">
  <li class="toctree-l1 current active">
   <a class="current reference internal" href="#">
@@ -194,118 +412,37 @@
 
   </div>
 </nav>
-              </div>
-              <div class="sidebar-end-items">
-              </div>
+    </div>
+  </div>
+  
+
+  
+  <div class="sidebar-end-items sidebar-primary__section">
+    <div class="sidebar-end-items__item">
+    </div>
+  </div>
+
+      </div>
+      <main class="bd-main">
+        
+        
+        <div class="bd-content">
+          <div class="bd-article-container">
+            
+            <div class="bd-header-article">
+                
             </div>
             
-          
-
-          
-          <div class="d-none d-xl-block col-xl-2 bd-toc">
             
+            <article class="bd-article" role="main">
               
-              <div class="toc-item">
-                
-<div class="tocsection onthispage mt-5 pt-1 pb-3">
-    <i class="fas fa-list"></i> On this page
-</div>
-
-<nav id="bd-toc-nav">
-    <ul class="visible nav section-nav flex-column">
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#submodules">
-   Submodules
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#module-pysradb.basedb">
-   pysradb.basedb module
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#module-pysradb.cli">
-   pysradb.cli module
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#module-pysradb.download">
-   pysradb.download module
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#module-pysradb.exceptions">
-   pysradb.exceptions module
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#module-pysradb.filter_attrs">
-   pysradb.filter_attrs module
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#module-pysradb.geodb">
-   pysradb.geodb module
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#module-pysradb.search">
-   pysradb.search module
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#module-pysradb.sradb">
-   pysradb.sradb module
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#module-pysradb.sraweb">
-   pysradb.sraweb module
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#module-pysradb.taxid2name">
-   pysradb.taxid2name module
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#module-pysradb.utils">
-   pysradb.utils module
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#module-pysradb">
-   Module contents
-  </a>
- </li>
-</ul>
-
-</nav>
-              </div>
-              
-              <div class="toc-item">
-                
-              </div>
-              
-            
-          </div>
-          
-
-          
-          
-            
-          
-          <main class="col-12 col-md-9 col-xl-7 py-md-5 pl-md-5 pr-md-4 bd-content" role="main">
-              
-              <div>
-                
   <section id="pysradb-package">
-<h1>pysradb package<a class="headerlink" href="#pysradb-package" title="Permalink to this headline">#</a></h1>
+<h1>pysradb package<a class="headerlink" href="#pysradb-package" title="Permalink to this heading">#</a></h1>
 <section id="submodules">
-<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">#</a></h2>
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this heading">#</a></h2>
 </section>
 <section id="module-pysradb.basedb">
-<span id="pysradb-basedb-module"></span><h2>pysradb.basedb module<a class="headerlink" href="#module-pysradb.basedb" title="Permalink to this headline">#</a></h2>
+<span id="pysradb-basedb-module"></span><h2>pysradb.basedb module<a class="headerlink" href="#module-pysradb.basedb" title="Permalink to this heading">#</a></h2>
 <dl class="py class">
 <dt class="sig sig-object py" id="pysradb.basedb.BASEdb">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pysradb.basedb.</span></span><span class="sig-name descname"><span class="pre">BASEdb</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sqlite_file</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysradb/basedb.html#BASEdb"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysradb.basedb.BASEdb" title="Permalink to this definition">#</a></dt>
@@ -315,7 +452,7 @@
 <span class="sig-name descname"><span class="pre">all_row_counts</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysradb/basedb.html#BASEdb.all_row_counts"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysradb.basedb.BASEdb.all_row_counts" title="Permalink to this definition">#</a></dt>
 <dd><p>Get row counts of all tables in the db file.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
 <dt>row_counts: DataFrame</dt><dd><p>A dataframe with table names and corresponding
 row count.</p>
@@ -336,14 +473,14 @@ row count.</p>
 <span class="sig-name descname"><span class="pre">desc_table</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">table</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysradb/basedb.html#BASEdb.desc_table"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysradb.basedb.BASEdb.desc_table" title="Permalink to this definition">#</a></dt>
 <dd><p>Describe all fields in a table.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
 <dt><strong>table: string</strong></dt><dd><p>Table name.
 See <cite>list_tables</cite> for getting all table names</p>
 </dd>
 </dl>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><dl class="simple">
 <dt>table_desc: DataFrame</dt><dd><p>A DataFrame with field name and its
 schema description</p>
@@ -358,14 +495,14 @@ schema description</p>
 <span class="sig-name descname"><span class="pre">get_row_count</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">table</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysradb/basedb.html#BASEdb.get_row_count"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysradb.basedb.BASEdb.get_row_count" title="Permalink to this definition">#</a></dt>
 <dd><p>Get row counts for a table.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
 <dt><strong>table: string</strong></dt><dd><p>Table name.
 See <cite>list_tables</cite> for getting all table names</p>
 </dd>
 </dl>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><dl class="simple">
 <dt>row_count: int</dt><dd><p>Number of rows in table</p>
 </dd>
@@ -379,14 +516,14 @@ See <cite>list_tables</cite> for getting all table names</p>
 <span class="sig-name descname"><span class="pre">list_fields</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">table</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysradb/basedb.html#BASEdb.list_fields"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysradb.basedb.BASEdb.list_fields" title="Permalink to this definition">#</a></dt>
 <dd><p>List all fields in a given table.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
 <dt><strong>table: string</strong></dt><dd><p>Table name.
 See <cite>list_tables</cite> for getting all table names</p>
 </dd>
 </dl>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><dl class="simple">
 <dt>field_list: list</dt><dd><p>A list of field names for the table</p>
 </dd>
@@ -400,7 +537,7 @@ See <cite>list_tables</cite> for getting all table names</p>
 <span class="sig-name descname"><span class="pre">list_tables</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysradb/basedb.html#BASEdb.list_tables"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysradb.basedb.BASEdb.list_tables" title="Permalink to this definition">#</a></dt>
 <dd><p>List all tables in the sqlite file.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
 <dt>table_list: list</dt><dd><p>List of all table names</p>
 </dd>
@@ -420,13 +557,13 @@ See <cite>list_tables</cite> for getting all table names</p>
 <span class="sig-name descname"><span class="pre">query</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sql_query</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysradb/basedb.html#BASEdb.query"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysradb.basedb.BASEdb.query" title="Permalink to this definition">#</a></dt>
 <dd><p>Run SQL query.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
 <dt><strong>sql_query: string</strong></dt><dd><p>SQL query string</p>
 </dd>
 </dl>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><dl class="simple">
 <dt>results: DataFrame</dt><dd><p>Query results formatted as dataframe</p>
 </dd>
@@ -439,12 +576,12 @@ See <cite>list_tables</cite> for getting all table names</p>
 
 </section>
 <section id="module-pysradb.cli">
-<span id="pysradb-cli-module"></span><h2>pysradb.cli module<a class="headerlink" href="#module-pysradb.cli" title="Permalink to this headline">#</a></h2>
+<span id="pysradb-cli-module"></span><h2>pysradb.cli module<a class="headerlink" href="#module-pysradb.cli" title="Permalink to this heading">#</a></h2>
 <p>Command line interface for pysradb</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="pysradb.cli.ArgParser">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pysradb.cli.</span></span><span class="sig-name descname"><span class="pre">ArgParser</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">prog=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">usage=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">description=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">epilog=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parents=[]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">formatter_class=&lt;class</span> <span class="pre">'argparse.HelpFormatter'&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prefix_chars='-'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fromfile_prefix_chars=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">argument_default=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">conflict_handler='error'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">add_help=True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">allow_abbrev=True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysradb/cli.html#ArgParser"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysradb.cli.ArgParser" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">argparse.ArgumentParser</span></code></p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ArgumentParser</span></code></p>
 <dl class="py method">
 <dt class="sig sig-object py" id="pysradb.cli.ArgParser.error">
 <span class="sig-name descname"><span class="pre">error</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">message</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">string</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysradb/cli.html#ArgParser.error"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysradb.cli.ArgParser.error" title="Permalink to this definition">#</a></dt>
@@ -459,7 +596,7 @@ should either exit or raise an exception.</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="pysradb.cli.CustomFormatterArgP">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pysradb.cli.</span></span><span class="sig-name descname"><span class="pre">CustomFormatterArgP</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">prog</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">indent_increment</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_help_position</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">24</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">width</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysradb/cli.html#CustomFormatterArgP"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysradb.cli.CustomFormatterArgP" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">argparse.ArgumentDefaultsHelpFormatter</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">argparse.RawDescriptionHelpFormatter</span></code></p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ArgumentDefaultsHelpFormatter</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">RawDescriptionHelpFormatter</span></code></p>
 </dd></dl>
 
 <dl class="py function">
@@ -590,7 +727,7 @@ should either exit or raise an exception.</p>
 
 </section>
 <section id="module-pysradb.download">
-<span id="pysradb-download-module"></span><h2>pysradb.download module<a class="headerlink" href="#module-pysradb.download" title="Permalink to this headline">#</a></h2>
+<span id="pysradb-download-module"></span><h2>pysradb.download module<a class="headerlink" href="#module-pysradb.download" title="Permalink to this heading">#</a></h2>
 <p>Utility function to download data</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="pysradb.download.download_file">
@@ -598,7 +735,7 @@ should either exit or raise an exception.</p>
 <dd><p>Resumable download.
 Expect the server to support byte ranges.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
 <dt><strong>url: string</strong></dt><dd><p>URL</p>
 </dd>
@@ -622,14 +759,14 @@ Expect the server to support byte ranges.</p>
 <span class="sig-prename descclassname"><span class="pre">pysradb.download.</span></span><span class="sig-name descname"><span class="pre">get_file_size</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">row</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">url_col</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysradb/download.html#get_file_size"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysradb.download.get_file_size" title="Permalink to this definition">#</a></dt>
 <dd><p>Get size of file to be downloaded.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
 <dt><strong>row: pd.DataFrame row</strong></dt><dd></dd>
 <dt><strong>url_col: str</strong></dt><dd><p>url_column</p>
 </dd>
 </dl>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><dl class="simple">
 <dt>content_length: int</dt><dd></dd>
 </dl>
@@ -642,7 +779,7 @@ Expect the server to support byte ranges.</p>
 <span class="sig-prename descclassname"><span class="pre">pysradb.download.</span></span><span class="sig-name descname"><span class="pre">md5_validate_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">md5_hash</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysradb/download.html#md5_validate_file"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysradb.download.md5_validate_file" title="Permalink to this definition">#</a></dt>
 <dd><p>Check file containt against an MD5.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
 <dt><strong>file_path: string</strong></dt><dd><p>Path to file</p>
 </dd>
@@ -650,7 +787,7 @@ Expect the server to support byte ranges.</p>
 </dd>
 </dl>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><dl class="simple">
 <dt>valid: bool</dt><dd><p>True if expected and observed md5 match</p>
 </dd>
@@ -664,12 +801,12 @@ Expect the server to support byte ranges.</p>
 <span class="sig-prename descclassname"><span class="pre">pysradb.download.</span></span><span class="sig-name descname"><span class="pre">millify</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysradb/download.html#millify"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysradb.download.millify" title="Permalink to this definition">#</a></dt>
 <dd><p>Convert integer to human readable format.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
 <dt><strong>n</strong><span class="classifier">int</span></dt><dd></dd>
 </dl>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><dl class="simple">
 <dt><strong>millidx</strong><span class="classifier">str</span></dt><dd><p>Formatted integer</p>
 </dd>
@@ -680,7 +817,7 @@ Expect the server to support byte ranges.</p>
 
 </section>
 <section id="module-pysradb.exceptions">
-<span id="pysradb-exceptions-module"></span><h2>pysradb.exceptions module<a class="headerlink" href="#module-pysradb.exceptions" title="Permalink to this headline">#</a></h2>
+<span id="pysradb-exceptions-module"></span><h2>pysradb.exceptions module<a class="headerlink" href="#module-pysradb.exceptions" title="Permalink to this heading">#</a></h2>
 <p>This file contains custom Exceptions for pysradb</p>
 <dl class="py exception">
 <dt class="sig sig-object py" id="pysradb.exceptions.IncorrectFieldException">
@@ -705,7 +842,7 @@ Expect the server to support byte ranges.</p>
 
 </section>
 <section id="module-pysradb.filter_attrs">
-<span id="pysradb-filter-attrs-module"></span><h2>pysradb.filter_attrs module<a class="headerlink" href="#module-pysradb.filter_attrs" title="Permalink to this headline">#</a></h2>
+<span id="pysradb-filter-attrs-module"></span><h2>pysradb.filter_attrs module<a class="headerlink" href="#module-pysradb.filter_attrs" title="Permalink to this heading">#</a></h2>
 <dl class="py function">
 <dt class="sig sig-object py" id="pysradb.filter_attrs.expand_sample_attribute_columns">
 <span class="sig-prename descclassname"><span class="pre">pysradb.filter_attrs.</span></span><span class="sig-name descname"><span class="pre">expand_sample_attribute_columns</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">metadata_df</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysradb/filter_attrs.html#expand_sample_attribute_columns"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysradb.filter_attrs.expand_sample_attribute_columns" title="Permalink to this definition">#</a></dt>
@@ -715,14 +852,14 @@ for differnt rows even if coming from the same project (SRP),
 we explicitly iterate through the rows to first determine
 what additional columns need to be created.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
 <dt><strong>metadata_df: DataFrame</strong></dt><dd><p>Dataframe as obtained from sra_metadata
 or equivalent</p>
 </dd>
 </dl>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><dl class="simple">
 <dt>expanded_df: DataFrame</dt><dd><p>Dataframe with additionals columns pertaining
 to sample_attribute appended</p>
@@ -737,13 +874,13 @@ to sample_attribute appended</p>
 <span class="sig-prename descclassname"><span class="pre">pysradb.filter_attrs.</span></span><span class="sig-name descname"><span class="pre">guess_cell_type</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sample_attribute</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysradb/filter_attrs.html#guess_cell_type"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysradb.filter_attrs.guess_cell_type" title="Permalink to this definition">#</a></dt>
 <dd><p>Guess possible cell line from sample_attribute data.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
 <dt><strong>sample_attribute: string</strong></dt><dd><p>sample_attribute string as in the metadata column</p>
 </dd>
 </dl>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><dl class="simple">
 <dt>cell_type: string</dt><dd><p>Possible cell type of sample.
 Returns None if no match found.</p>
@@ -758,13 +895,13 @@ Returns None if no match found.</p>
 <span class="sig-prename descclassname"><span class="pre">pysradb.filter_attrs.</span></span><span class="sig-name descname"><span class="pre">guess_strain_type</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sample_attribute</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysradb/filter_attrs.html#guess_strain_type"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysradb.filter_attrs.guess_strain_type" title="Permalink to this definition">#</a></dt>
 <dd><p>Guess strain type from sample_attribute data.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
 <dt><strong>sample_attribute: string</strong></dt><dd><p>sample_attribute string as in the metadata column</p>
 </dd>
 </dl>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><dl class="simple">
 <dt>strain_type: string</dt><dd><p>Possible cell type of sample.
 Returns None if no match found.</p>
@@ -779,13 +916,13 @@ Returns None if no match found.</p>
 <span class="sig-prename descclassname"><span class="pre">pysradb.filter_attrs.</span></span><span class="sig-name descname"><span class="pre">guess_tissue_type</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sample_attribute</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysradb/filter_attrs.html#guess_tissue_type"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysradb.filter_attrs.guess_tissue_type" title="Permalink to this definition">#</a></dt>
 <dd><p>Guess tissue type from sample_attribute data.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
 <dt><strong>sample_attribute: string</strong></dt><dd><p>sample_attribute string as in the metadata column</p>
 </dd>
 </dl>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><dl class="simple">
 <dt>tissue_type: string</dt><dd><p>Possible cell type of sample.
 Returns None if no match found.</p>
@@ -797,24 +934,24 @@ Returns None if no match found.</p>
 
 </section>
 <section id="module-pysradb.geodb">
-<span id="pysradb-geodb-module"></span><h2>pysradb.geodb module<a class="headerlink" href="#module-pysradb.geodb" title="Permalink to this headline">#</a></h2>
+<span id="pysradb-geodb-module"></span><h2>pysradb.geodb module<a class="headerlink" href="#module-pysradb.geodb" title="Permalink to this heading">#</a></h2>
 <p>Methods to interact with SRA</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="pysradb.geodb.GEOdb">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pysradb.geodb.</span></span><span class="sig-name descname"><span class="pre">GEOdb</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sqlite_file</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysradb/geodb.html#GEOdb"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysradb.geodb.GEOdb" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#pysradb.basedb.BASEdb" title="pysradb.basedb.BASEdb"><code class="xref py py-class docutils literal notranslate"><span class="pre">pysradb.basedb.BASEdb</span></code></a></p>
+<dd><p>Bases: <a class="reference internal" href="#pysradb.basedb.BASEdb" title="pysradb.basedb.BASEdb"><code class="xref py py-class docutils literal notranslate"><span class="pre">BASEdb</span></code></a></p>
 <dl class="py method">
 <dt class="sig sig-object py" id="pysradb.geodb.GEOdb.geo_convert">
 <span class="sig-name descname"><span class="pre">geo_convert</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">from_acc</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysradb/geodb.html#GEOdb.geo_convert"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysradb.geodb.GEOdb.geo_convert" title="Permalink to this definition">#</a></dt>
 <dd><p>Convert one GEO accession to other.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
 <dt><strong>from_acc: string</strong></dt><dd><p>GPL/GSE/GSM accession ID</p>
 </dd>
 </dl>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><dl class="simple">
 <dt>mapping_df: DataFrame</dt><dd><p>A dataframe with relevant mappings</p>
 </dd>
@@ -828,13 +965,13 @@ Returns None if no match found.</p>
 <span class="sig-name descname"><span class="pre">gse_metadata</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">gse</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysradb/geodb.html#GEOdb.gse_metadata"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysradb.geodb.GEOdb.gse_metadata" title="Permalink to this definition">#</a></dt>
 <dd><p>Get metadata for GSE ID.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
 <dt><strong>gse: string</strong></dt><dd><p>GSE ID</p>
 </dd>
 </dl>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><dl class="simple">
 <dt>metadata_df: DataFrame</dt><dd><p>A dataframe with relevant fields</p>
 </dd>
@@ -848,13 +985,13 @@ Returns None if no match found.</p>
 <span class="sig-name descname"><span class="pre">gse_to_gsm</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">gse</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysradb/geodb.html#GEOdb.gse_to_gsm"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysradb.geodb.GEOdb.gse_to_gsm" title="Permalink to this definition">#</a></dt>
 <dd><p>Fetch GSMs for a GSE.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
 <dt><strong>gse: string</strong></dt><dd><p>GSE ID</p>
 </dd>
 </dl>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><dl class="simple">
 <dt>mapping_df: DataFrame</dt><dd><p>A dataframe with relevant mappings</p>
 </dd>
@@ -868,13 +1005,13 @@ Returns None if no match found.</p>
 <span class="sig-name descname"><span class="pre">gsm_metadata</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">gsm</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysradb/geodb.html#GEOdb.gsm_metadata"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysradb.geodb.GEOdb.gsm_metadata" title="Permalink to this definition">#</a></dt>
 <dd><p>Get metadata for GSM ID.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
 <dt><strong>gsm: string</strong></dt><dd><p>GSM ID</p>
 </dd>
 </dl>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><dl class="simple">
 <dt>metadata_df: DataFrame</dt><dd><p>A dataframe with relevant fields</p>
 </dd>
@@ -888,13 +1025,13 @@ Returns None if no match found.</p>
 <span class="sig-name descname"><span class="pre">gsm_to_gse</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">gsm</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysradb/geodb.html#GEOdb.gsm_to_gse"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysradb.geodb.GEOdb.gsm_to_gse" title="Permalink to this definition">#</a></dt>
 <dd><p>Fetch GSE for a GSM.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
 <dt><strong>gsm: string</strong></dt><dd><p>GSM ID</p>
 </dd>
 </dl>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><dl class="simple">
 <dt>mapping_df: DataFrame</dt><dd><p>A dataframe with relevant mappings</p>
 </dd>
@@ -908,13 +1045,13 @@ Returns None if no match found.</p>
 <span class="sig-name descname"><span class="pre">guess_srp_from_gse</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">gse</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysradb/geodb.html#GEOdb.guess_srp_from_gse"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysradb.geodb.GEOdb.guess_srp_from_gse" title="Permalink to this definition">#</a></dt>
 <dd><p>Convert GSE to SRP id.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
 <dt><strong>gse: string</strong></dt><dd><p>GSE ID</p>
 </dd>
 </dl>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><dl class="simple">
 <dt>srp: string</dt><dd><p>SRP ID</p>
 </dd>
@@ -930,7 +1067,7 @@ Returns None if no match found.</p>
 <span class="sig-prename descclassname"><span class="pre">pysradb.geodb.</span></span><span class="sig-name descname"><span class="pre">download_geodb_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">download_dir</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'/github/workspace/docs'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">overwrite</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysradb/geodb.html#download_geodb_file"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysradb.geodb.download_geodb_file" title="Permalink to this definition">#</a></dt>
 <dd><p>Download GEOmetadb.sqlite file.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
 <dt><strong>download_dir: string</strong></dt><dd><p>Directory to download SRAmetadb.sqlite</p>
 </dd>
@@ -944,12 +1081,12 @@ Set to True by default.</p>
 
 </section>
 <section id="module-pysradb.search">
-<span id="pysradb-search-module"></span><h2>pysradb.search module<a class="headerlink" href="#module-pysradb.search" title="Permalink to this headline">#</a></h2>
+<span id="pysradb-search-module"></span><h2>pysradb.search module<a class="headerlink" href="#module-pysradb.search" title="Permalink to this heading">#</a></h2>
 <p>This file contains the search classes for the search feature.</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="pysradb.search.EnaSearch">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pysradb.search.</span></span><span class="sig-name descname"><span class="pre">EnaSearch</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">verbosity</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">return_max</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">20</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">query</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">accession</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">organism</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">layout</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mbases</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">publication_date</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">platform</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">selection</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">source</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">strategy</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">title</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">suppress_validation</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysradb/search.html#EnaSearch"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysradb.search.EnaSearch" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#pysradb.search.QuerySearch" title="pysradb.search.QuerySearch"><code class="xref py py-class docutils literal notranslate"><span class="pre">pysradb.search.QuerySearch</span></code></a></p>
+<dd><p>Bases: <a class="reference internal" href="#pysradb.search.QuerySearch" title="pysradb.search.QuerySearch"><code class="xref py py-class docutils literal notranslate"><span class="pre">QuerySearch</span></code></a></p>
 <p>Subclass of QuerySearch that implements search via querying ENA API</p>
 <div class="admonition seealso">
 <p class="admonition-title">See also</p>
@@ -960,10 +1097,6 @@ Set to True by default.</p>
 </div>
 <p class="rubric">Methods</p>
 <table class="table">
-<colgroup>
-<col style="width: 18%" />
-<col style="width: 82%" />
-</colgroup>
 <tbody>
 <tr class="row-odd"><td><p><strong>search()</strong></p></td>
 <td><p>sends the user query via requests to ENA API and stores search result as an instance attribute in the form of a pandas dataframe</p></td>
@@ -998,7 +1131,7 @@ Set to True by default.</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="pysradb.search.GeoSearch">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pysradb.search.</span></span><span class="sig-name descname"><span class="pre">GeoSearch</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">verbosity</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">return_max</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">20</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">query</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">accession</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">organism</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">layout</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mbases</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">publication_date</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">platform</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">selection</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">source</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">strategy</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">title</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">geo_query</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">geo_dataset_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">geo_entry_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">suppress_validation</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysradb/search.html#GeoSearch"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysradb.search.GeoSearch" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#pysradb.search.SraSearch" title="pysradb.search.SraSearch"><code class="xref py py-class docutils literal notranslate"><span class="pre">pysradb.search.SraSearch</span></code></a></p>
+<dd><p>Bases: <a class="reference internal" href="#pysradb.search.SraSearch" title="pysradb.search.SraSearch"><code class="xref py py-class docutils literal notranslate"><span class="pre">SraSearch</span></code></a></p>
 <p>Subclass of SraSearch that can query both GEO DataSets and SRA API.</p>
 <div class="admonition seealso">
 <p class="admonition-title">See also</p>
@@ -1013,10 +1146,6 @@ Set to True by default.</p>
 </div>
 <p class="rubric">Methods</p>
 <table class="table">
-<colgroup>
-<col style="width: 14%" />
-<col style="width: 86%" />
-</colgroup>
 <tbody>
 <tr class="row-odd"><td><p><strong>search()</strong></p></td>
 <td><p>sends the user query via requests to SRA, GEO DataSets, or both depending on the search query. If query is sent to both APIs, the intersection of the two sets of query results are returned.</p></td>
@@ -1049,7 +1178,7 @@ Set to True by default.</p>
 GeoSearch, including accepted inputs for geo_query,
 geo_dataset_type and geo_entry_type.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
 <dt>info: str</dt><dd><p>Information on how to use GeoSearch.</p>
 </dd>
@@ -1075,7 +1204,7 @@ tokenized by the ArgParser. The query will be sent to either SRA or ENA
 depending on the user’s input, and the results will be returned as a
 pandas dataframe.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
 <dt><strong>verbosity</strong><span class="classifier">integer</span></dt><dd><p>The level of details of the search result.</p>
 </dd>
@@ -1116,7 +1245,7 @@ format check.</p>
 </dd>
 </dl>
 </dd>
-<dt class="field-even">Attributes</dt>
+<dt class="field-even">Attributes<span class="colon">:</span></dt>
 <dd class="field-even"><dl class="simple">
 <dt><strong>self.df: Pandas DataFrame</strong></dt><dd><p>The search result belonging to this search instance</p>
 </dd>
@@ -1125,10 +1254,6 @@ format check.</p>
 </dl>
 <p class="rubric">Methods</p>
 <table class="table">
-<colgroup>
-<col style="width: 36%" />
-<col style="width: 64%" />
-</colgroup>
 <tbody>
 <tr class="row-odd"><td><p><strong>get_df()</strong></p></td>
 <td><p>Returns the dataframe storing this search result.</p></td>
@@ -1177,7 +1302,7 @@ format check.</p>
 <p>This method will only work if the optional dependency, matplotlib,
 is installed in the system.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
 <dt><strong>graph_types</strong><span class="classifier">tuple</span></dt><dd><p>tuple containing strings representing types of graphs to
 generate.
@@ -1198,7 +1323,7 @@ basecount</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="pysradb.search.SraSearch">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pysradb.search.</span></span><span class="sig-name descname"><span class="pre">SraSearch</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">verbosity</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">return_max</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">20</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">query</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">accession</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">organism</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">layout</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mbases</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">publication_date</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">platform</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">selection</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">source</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">strategy</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">title</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">suppress_validation</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysradb/search.html#SraSearch"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysradb.search.SraSearch" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#pysradb.search.QuerySearch" title="pysradb.search.QuerySearch"><code class="xref py py-class docutils literal notranslate"><span class="pre">pysradb.search.QuerySearch</span></code></a></p>
+<dd><p>Bases: <a class="reference internal" href="#pysradb.search.QuerySearch" title="pysradb.search.QuerySearch"><code class="xref py py-class docutils literal notranslate"><span class="pre">QuerySearch</span></code></a></p>
 <p>Subclass of QuerySearch that implements search by querying
 NCBI Entrez API</p>
 <div class="admonition seealso">
@@ -1210,10 +1335,6 @@ NCBI Entrez API</p>
 </div>
 <p class="rubric">Methods</p>
 <table class="table">
-<colgroup>
-<col style="width: 22%" />
-<col style="width: 78%" />
-</colgroup>
 <tbody>
 <tr class="row-odd"><td><p><strong>search()</strong></p></td>
 <td><p>sends the user query via requests to NCBI Entrez API and returns search results as a pandas dataframe.</p></td>
@@ -1258,18 +1379,18 @@ the search result output (Refer to #88)</p>
 
 </section>
 <section id="module-pysradb.sradb">
-<span id="pysradb-sradb-module"></span><h2>pysradb.sradb module<a class="headerlink" href="#module-pysradb.sradb" title="Permalink to this headline">#</a></h2>
+<span id="pysradb-sradb-module"></span><h2>pysradb.sradb module<a class="headerlink" href="#module-pysradb.sradb" title="Permalink to this heading">#</a></h2>
 <p>Methods to interact with SRA</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="pysradb.sradb.SRAdb">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pysradb.sradb.</span></span><span class="sig-name descname"><span class="pre">SRAdb</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sqlite_file</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysradb/sradb.html#SRAdb"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysradb.sradb.SRAdb" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#pysradb.basedb.BASEdb" title="pysradb.basedb.BASEdb"><code class="xref py py-class docutils literal notranslate"><span class="pre">pysradb.basedb.BASEdb</span></code></a></p>
+<dd><p>Bases: <a class="reference internal" href="#pysradb.basedb.BASEdb" title="pysradb.basedb.BASEdb"><code class="xref py py-class docutils literal notranslate"><span class="pre">BASEdb</span></code></a></p>
 <dl class="py method">
 <dt class="sig sig-object py" id="pysradb.sradb.SRAdb.download">
 <span class="sig-name descname"><span class="pre">download</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">srp</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">df</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">url_col</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'sra_url'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">out_dir</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filter_by_srx</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_ascp</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ascp_dir</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ascp_bin</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">skip_confirmation</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">threads</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysradb/sradb.html#SRAdb.download"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysradb.sradb.SRAdb.download" title="Permalink to this definition">#</a></dt>
 <dd><p>Download SRA files.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
 <dt><strong>srp: string</strong></dt><dd><p>SRP ID (optional)</p>
 </dd>
@@ -1295,13 +1416,13 @@ the search result output (Refer to #88)</p>
 <span class="sig-name descname"><span class="pre">gse_to_gsm</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">gses</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sample_attribute</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">detailed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">expand_sample_attributes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysradb/sradb.html#SRAdb.gse_to_gsm"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysradb.sradb.SRAdb.gse_to_gsm" title="Permalink to this definition">#</a></dt>
 <dd><p>Convert GSE to GSM</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
 <dt><strong>gses: string or list</strong></dt><dd><p>List of GSE ID</p>
 </dd>
 </dl>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><dl class="simple">
 <dt>gse_to_gsm_df: DataFrame</dt><dd></dd>
 </dl>
@@ -1314,13 +1435,13 @@ the search result output (Refer to #88)</p>
 <span class="sig-name descname"><span class="pre">gse_to_srp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">gses</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sample_attribute</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">detailed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">expand_sample_attributes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysradb/sradb.html#SRAdb.gse_to_srp"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysradb.sradb.SRAdb.gse_to_srp" title="Permalink to this definition">#</a></dt>
 <dd><p>Convert SRP to GSE</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
 <dt><strong>gses: string or list</strong></dt><dd><p>List of GSE ID</p>
 </dd>
 </dl>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><dl class="simple">
 <dt>gse_to_srp_df: DataFrame</dt><dd></dd>
 </dl>
@@ -1333,13 +1454,13 @@ the search result output (Refer to #88)</p>
 <span class="sig-name descname"><span class="pre">gsm_to_gse</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">gsms</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sample_attribute</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">detailed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">expand_sample_attributes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysradb/sradb.html#SRAdb.gsm_to_gse"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysradb.sradb.SRAdb.gsm_to_gse" title="Permalink to this definition">#</a></dt>
 <dd><p>Convert GSM to GSE</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
 <dt><strong>gsms: string or list</strong></dt><dd><p>List of GSM ID</p>
 </dd>
 </dl>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><dl class="simple">
 <dt>gsm_to_gse_df: DataFrame</dt><dd></dd>
 </dl>
@@ -1352,13 +1473,13 @@ the search result output (Refer to #88)</p>
 <span class="sig-name descname"><span class="pre">gsm_to_srp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">gsms</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sample_attribute</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">detailed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">expand_sample_attributes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysradb/sradb.html#SRAdb.gsm_to_srp"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysradb.sradb.SRAdb.gsm_to_srp" title="Permalink to this definition">#</a></dt>
 <dd><p>Convert GSM to SRP.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
 <dt><strong>gsms: string or list</strong></dt><dd><p>List of GSM ID</p>
 </dd>
 </dl>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><dl class="simple">
 <dt>gsm_to_srp_df: DataFrame</dt><dd></dd>
 </dl>
@@ -1371,7 +1492,7 @@ the search result output (Refer to #88)</p>
 <span class="sig-name descname"><span class="pre">gsm_to_srr</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">gsms</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sample_attribute</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">detailed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">expand_sample_attributes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysradb/sradb.html#SRAdb.gsm_to_srr"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysradb.sradb.SRAdb.gsm_to_srr" title="Permalink to this definition">#</a></dt>
 <dd><p>Convert GSMs to SRR.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
 <dt><strong>gsms: string or list</strong></dt><dd><p>List of GSM id</p>
 </dd>
@@ -1379,7 +1500,7 @@ the search result output (Refer to #88)</p>
 </dd>
 </dl>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><dl class="simple">
 <dt>gsm_to_srr_df: DataFrame</dt><dd><p>DataFrame with two columns for GSM/SRR</p>
 </dd>
@@ -1393,13 +1514,13 @@ the search result output (Refer to #88)</p>
 <span class="sig-name descname"><span class="pre">gsm_to_srs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">gsms</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sample_attribute</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">detailed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">expand_sample_attributes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysradb/sradb.html#SRAdb.gsm_to_srs"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysradb.sradb.SRAdb.gsm_to_srs" title="Permalink to this definition">#</a></dt>
 <dd><p>Convert GSM to SRS.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
 <dt><strong>gsms: list or string</strong></dt><dd><p>List of gsms</p>
 </dd>
 </dl>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><dl class="simple">
 <dt>gsm_to_srs_df: DataFrame</dt><dd></dd>
 </dl>
@@ -1412,13 +1533,13 @@ the search result output (Refer to #88)</p>
 <span class="sig-name descname"><span class="pre">gsm_to_srx</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">gsms</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sample_attribute</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">detailed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">expand_sample_attributes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysradb/sradb.html#SRAdb.gsm_to_srx"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysradb.sradb.SRAdb.gsm_to_srx" title="Permalink to this definition">#</a></dt>
 <dd><p>Convert GSM to SRX.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
 <dt><strong>srx: string</strong></dt><dd><p>SRX ID</p>
 </dd>
 </dl>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><dl class="simple">
 <dt>srs_to_srx_df: DataFrame</dt><dd></dd>
 </dl>
@@ -1431,13 +1552,13 @@ the search result output (Refer to #88)</p>
 <span class="sig-name descname"><span class="pre">search_by_expt_id</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">srx</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysradb/sradb.html#SRAdb.search_by_expt_id"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysradb.sradb.SRAdb.search_by_expt_id" title="Permalink to this definition">#</a></dt>
 <dd><p>Search for a SRX/GSM id in the experiments.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
 <dt><strong>srx: string</strong></dt><dd><p>SRX (experiment_accession) ID</p>
 </dd>
 </dl>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><dl class="simple">
 <dt>results: dict</dt><dd><p>Dictionary with relevant hits</p>
 </dd>
@@ -1451,7 +1572,7 @@ the search result output (Refer to #88)</p>
 <span class="sig-name descname"><span class="pre">search_sra</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">search_str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">out_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">['study_accession',</span> <span class="pre">'experiment_accession',</span> <span class="pre">'sample_accession',</span> <span class="pre">'run_accession']</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">assay</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sample_attribute</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">detailed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">expand_sample_attributes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_read_lengths</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysradb/sradb.html#SRAdb.search_sra"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysradb.sradb.SRAdb.search_sra" title="Permalink to this definition">#</a></dt>
 <dd><p>Search SRA for any search term.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
 <dt><strong>search_str: string</strong></dt><dd><p>SQL like text string to search.
 SQL like text =&gt; For example,
@@ -1459,7 +1580,7 @@ terms in quotes “” enforce an exact search.</p>
 </dd>
 </dl>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><dl class="simple">
 <dt>query_df: DataFrame</dt><dd><p>Dataframe with relevant query results</p>
 </dd>
@@ -1473,7 +1594,7 @@ terms in quotes “” enforce an exact search.</p>
 <span class="sig-name descname"><span class="pre">sra_metadata</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">acc</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">out_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">['study_accession',</span> <span class="pre">'experiment_accession',</span> <span class="pre">'sample_accession',</span> <span class="pre">'run_accession']</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">assay</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sample_attribute</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">detailed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">expand_sample_attributes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_read_lengths</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">acc_is_searchstr</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysradb/sradb.html#SRAdb.sra_metadata"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysradb.sradb.SRAdb.sra_metadata" title="Permalink to this definition">#</a></dt>
 <dd><p>Get metadata for the provided SRA accession.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
 <dt><strong>acc: string or list</strong></dt><dd><p>SRA accession ID</p>
 </dd>
@@ -1493,7 +1614,7 @@ terms in quotes “” enforce an exact search.</p>
 </dd>
 </dl>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><dl class="simple">
 <dt>metadata_df: DataFrame</dt><dd><p>A dataframe with all relevant columns</p>
 </dd>
@@ -1507,13 +1628,13 @@ terms in quotes “” enforce an exact search.</p>
 <span class="sig-name descname"><span class="pre">srp_to_gse</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">srp</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sample_attribute</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">detailed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">expand_sample_attributes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysradb/sradb.html#SRAdb.srp_to_gse"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysradb.sradb.SRAdb.srp_to_gse" title="Permalink to this definition">#</a></dt>
 <dd><p>Convert SRP to GSE</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
 <dt><strong>srp: string</strong></dt><dd><p>SRP ID</p>
 </dd>
 </dl>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><dl class="simple">
 <dt>srp_to_srr_df: DataFrame</dt><dd></dd>
 </dl>
@@ -1526,13 +1647,13 @@ terms in quotes “” enforce an exact search.</p>
 <span class="sig-name descname"><span class="pre">srp_to_srr</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">srp</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sample_attribute</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">detailed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">expand_sample_attributes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysradb/sradb.html#SRAdb.srp_to_srr"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysradb.sradb.SRAdb.srp_to_srr" title="Permalink to this definition">#</a></dt>
 <dd><p>Convert SRP to SRR.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
 <dt><strong>srp: string</strong></dt><dd><p>SRP ID</p>
 </dd>
 </dl>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><dl class="simple">
 <dt>srp_to_srr_df: DataFrame</dt><dd></dd>
 </dl>
@@ -1545,13 +1666,13 @@ terms in quotes “” enforce an exact search.</p>
 <span class="sig-name descname"><span class="pre">srp_to_srs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">srp</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sample_attribute</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">detailed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">expand_sample_attributes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysradb/sradb.html#SRAdb.srp_to_srs"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysradb.sradb.SRAdb.srp_to_srs" title="Permalink to this definition">#</a></dt>
 <dd><p>Convert SRP to SRS.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
 <dt><strong>srp: string</strong></dt><dd><p>SRP ID</p>
 </dd>
 </dl>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><dl class="simple">
 <dt>srp_to_srs_df: DataFrame</dt><dd><p>DataFrame with two columns for SRS</p>
 </dd>
@@ -1565,13 +1686,13 @@ terms in quotes “” enforce an exact search.</p>
 <span class="sig-name descname"><span class="pre">srp_to_srx</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">srp</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sample_attribute</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">detailed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">expand_sample_attributes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysradb/sradb.html#SRAdb.srp_to_srx"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysradb.sradb.SRAdb.srp_to_srx" title="Permalink to this definition">#</a></dt>
 <dd><p>Convert SRP to SRX/SRR.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
 <dt><strong>srp: string</strong></dt><dd><p>SRP ID</p>
 </dd>
 </dl>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><dl class="simple">
 <dt>srp_to_srx_df: DataFrame</dt><dd><p>DataFrame with two columns for SRX/SRR</p>
 </dd>
@@ -1585,13 +1706,13 @@ terms in quotes “” enforce an exact search.</p>
 <span class="sig-name descname"><span class="pre">srr_to_gsm</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">srrs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sample_attribute</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">detailed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">expand_sample_attributes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysradb/sradb.html#SRAdb.srr_to_gsm"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysradb.sradb.SRAdb.srr_to_gsm" title="Permalink to this definition">#</a></dt>
 <dd><p>Convert SRR to GSM</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
 <dt><strong>gses: string or list</strong></dt><dd><p>List of SRR</p>
 </dd>
 </dl>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><dl class="simple">
 <dt>srr_to_gsm_df: DataFrame</dt><dd></dd>
 </dl>
@@ -1604,13 +1725,13 @@ terms in quotes “” enforce an exact search.</p>
 <span class="sig-name descname"><span class="pre">srr_to_srp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">srrs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sample_attribute</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">detailed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">expand_sample_attributes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysradb/sradb.html#SRAdb.srr_to_srp"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysradb.sradb.SRAdb.srr_to_srp" title="Permalink to this definition">#</a></dt>
 <dd><p>Convert SRR to SRP.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
 <dt><strong>srr: list of string</strong></dt><dd><p>List of SRR IDs</p>
 </dd>
 </dl>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><dl class="simple">
 <dt>srr_to_srp_df: DataFrame</dt><dd></dd>
 </dl>
@@ -1623,13 +1744,13 @@ terms in quotes “” enforce an exact search.</p>
 <span class="sig-name descname"><span class="pre">srr_to_srs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">srrs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sample_attribute</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">detailed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">expand_sample_attributes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysradb/sradb.html#SRAdb.srr_to_srs"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysradb.sradb.SRAdb.srr_to_srs" title="Permalink to this definition">#</a></dt>
 <dd><p>Convert SRR to SRS.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
 <dt><strong>srr: list of string</strong></dt><dd><p>List of SRR IDs</p>
 </dd>
 </dl>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><dl class="simple">
 <dt>srp_to_srs_df: DataFrame</dt><dd></dd>
 </dl>
@@ -1642,7 +1763,7 @@ terms in quotes “” enforce an exact search.</p>
 <span class="sig-name descname"><span class="pre">srr_to_srx</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">srrs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sample_attribute</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">detailed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">expand_sample_attributes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysradb/sradb.html#SRAdb.srr_to_srx"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysradb.sradb.SRAdb.srr_to_srx" title="Permalink to this definition">#</a></dt>
 <dd><p>Convert SRR to SRX.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
 <dt><strong>srrs: string or list</strong></dt><dd><p>List of SRR id</p>
 </dd>
@@ -1650,7 +1771,7 @@ terms in quotes “” enforce an exact search.</p>
 </dd>
 </dl>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><dl class="simple">
 <dt>srr_to_srx_df: DataFrame</dt><dd><p>DataFrame with two columns for SRX/SRR</p>
 </dd>
@@ -1664,13 +1785,13 @@ terms in quotes “” enforce an exact search.</p>
 <span class="sig-name descname"><span class="pre">srs_to_gsm</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">srss</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sample_attribute</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">detailed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">expand_sample_attributes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysradb/sradb.html#SRAdb.srs_to_gsm"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysradb.sradb.SRAdb.srs_to_gsm" title="Permalink to this definition">#</a></dt>
 <dd><p>Convert SRS to GSM.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
 <dt><strong>srss: list or string</strong></dt><dd><p>List of SRS ID</p>
 </dd>
 </dl>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><dl class="simple">
 <dt>srs_to_gsm_df: DataFrame</dt><dd></dd>
 </dl>
@@ -1683,13 +1804,13 @@ terms in quotes “” enforce an exact search.</p>
 <span class="sig-name descname"><span class="pre">srs_to_srx</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">srss</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sample_attribute</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">detailed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">expand_sample_attributes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysradb/sradb.html#SRAdb.srs_to_srx"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysradb.sradb.SRAdb.srs_to_srx" title="Permalink to this definition">#</a></dt>
 <dd><p>Convert SRS to SRX.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
 <dt><strong>srx: string</strong></dt><dd><p>SRX ID</p>
 </dd>
 </dl>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><dl class="simple">
 <dt>srs_to_srx_df: DataFrame</dt><dd></dd>
 </dl>
@@ -1702,7 +1823,7 @@ terms in quotes “” enforce an exact search.</p>
 <span class="sig-name descname"><span class="pre">srx_to_srp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">srxs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sample_attribute</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">detailed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">expand_sample_attributes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysradb/sradb.html#SRAdb.srx_to_srp"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysradb.sradb.SRAdb.srx_to_srp" title="Permalink to this definition">#</a></dt>
 <dd><p>Convert SRXs to SRP.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
 <dt><strong>srxs: string or list</strong></dt><dd><p>List of SRX id</p>
 </dd>
@@ -1710,7 +1831,7 @@ terms in quotes “” enforce an exact search.</p>
 </dd>
 </dl>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><dl class="simple">
 <dt>srx_to_srp_df: DataFrame</dt><dd><p>DataFrame with two columns for SRX</p>
 </dd>
@@ -1724,7 +1845,7 @@ terms in quotes “” enforce an exact search.</p>
 <span class="sig-name descname"><span class="pre">srx_to_srr</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">srxs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sample_attribute</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">detailed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">expand_sample_attributes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysradb/sradb.html#SRAdb.srx_to_srr"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysradb.sradb.SRAdb.srx_to_srr" title="Permalink to this definition">#</a></dt>
 <dd><p>Convert SRXs to SRR/SRP.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
 <dt><strong>srxs: string or list</strong></dt><dd><p>List of SRX id</p>
 </dd>
@@ -1732,7 +1853,7 @@ terms in quotes “” enforce an exact search.</p>
 </dd>
 </dl>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><dl class="simple">
 <dt>srx_to_srp_df: DataFrame</dt><dd><p>DataFrame with two columns for SRX/SRR</p>
 </dd>
@@ -1746,13 +1867,13 @@ terms in quotes “” enforce an exact search.</p>
 <span class="sig-name descname"><span class="pre">srx_to_srs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">srxs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sample_attribute</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">detailed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">expand_sample_attributes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysradb/sradb.html#SRAdb.srx_to_srs"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysradb.sradb.SRAdb.srx_to_srs" title="Permalink to this definition">#</a></dt>
 <dd><p>Convert SRX to SRS.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
 <dt><strong>srx: string</strong></dt><dd><p>SRX ID</p>
 </dd>
 </dl>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><dl class="simple">
 <dt>srp_to_srs_df: DataFrame</dt><dd></dd>
 </dl>
@@ -1767,7 +1888,7 @@ terms in quotes “” enforce an exact search.</p>
 <span class="sig-prename descclassname"><span class="pre">pysradb.sradb.</span></span><span class="sig-name descname"><span class="pre">download_sradb_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">download_dir</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'/github/workspace/docs'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">overwrite</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">keep_gz</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysradb/sradb.html#download_sradb_file"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysradb.sradb.download_sradb_file" title="Permalink to this definition">#</a></dt>
 <dd><p>Download SRAdb.sqlite file.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
 <dt><strong>download_dir: string</strong></dt><dd><p>Directory to download SRAmetadb.sqlite</p>
 </dd>
@@ -1783,12 +1904,12 @@ Set to True by default.</p>
 
 </section>
 <section id="module-pysradb.sraweb">
-<span id="pysradb-sraweb-module"></span><h2>pysradb.sraweb module<a class="headerlink" href="#module-pysradb.sraweb" title="Permalink to this headline">#</a></h2>
+<span id="pysradb-sraweb-module"></span><h2>pysradb.sraweb module<a class="headerlink" href="#module-pysradb.sraweb" title="Permalink to this heading">#</a></h2>
 <p>Utilities to interact with SRA online</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="pysradb.sraweb.SRAweb">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pysradb.sraweb.</span></span><span class="sig-name descname"><span class="pre">SRAweb</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">api_key</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysradb/sraweb.html#SRAweb"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysradb.sraweb.SRAweb" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#pysradb.sradb.SRAdb" title="pysradb.sradb.SRAdb"><code class="xref py py-class docutils literal notranslate"><span class="pre">pysradb.sradb.SRAdb</span></code></a></p>
+<dd><p>Bases: <a class="reference internal" href="#pysradb.sradb.SRAdb" title="pysradb.sradb.SRAdb"><code class="xref py py-class docutils literal notranslate"><span class="pre">SRAdb</span></code></a></p>
 <dl class="py method">
 <dt class="sig sig-object py" id="pysradb.sraweb.SRAweb.close">
 <span class="sig-name descname"><span class="pre">close</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysradb/sraweb.html#SRAweb.close"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysradb.sraweb.SRAweb.close" title="Permalink to this definition">#</a></dt>
@@ -1805,13 +1926,13 @@ Set to True by default.</p>
 <span class="sig-name descname"><span class="pre">fetch_ena_fastq</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">srp</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysradb/sraweb.html#SRAweb.fetch_ena_fastq"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysradb.sraweb.SRAweb.fetch_ena_fastq" title="Permalink to this definition">#</a></dt>
 <dd><p>Fetch FASTQ records from ENA (EXPERIMENTAL)</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
 <dt><strong>srp: string</strong></dt><dd><p>Srudy accession</p>
 </dd>
 </dl>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><dl class="simple">
 <dt>srr_url: list</dt><dd><p>List of SRR fastq urls</p>
 </dd>
@@ -1830,12 +1951,12 @@ Set to True by default.</p>
 <em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">format_xml</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">string</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysradb/sraweb.html#SRAweb.format_xml"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysradb.sraweb.SRAweb.format_xml" title="Permalink to this definition">#</a></dt>
 <dd><p>Create a fake root to make ‘string’ a valid xml</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
 <dt><strong>string: str</strong></dt><dd></dd>
 </dl>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><dl class="simple">
 <dt>xml: str</dt><dd></dd>
 </dl>
@@ -1858,13 +1979,13 @@ Set to True by default.</p>
 <span class="sig-name descname"><span class="pre">gse_to_gsm</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">gse</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysradb/sraweb.html#SRAweb.gse_to_gsm"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysradb.sraweb.SRAweb.gse_to_gsm" title="Permalink to this definition">#</a></dt>
 <dd><p>Convert GSE to GSM</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
 <dt><strong>gses: string or list</strong></dt><dd><p>List of GSE ID</p>
 </dd>
 </dl>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><dl class="simple">
 <dt>gse_to_gsm_df: DataFrame</dt><dd></dd>
 </dl>
@@ -1877,13 +1998,13 @@ Set to True by default.</p>
 <span class="sig-name descname"><span class="pre">gse_to_srp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">gse</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysradb/sraweb.html#SRAweb.gse_to_srp"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysradb.sraweb.SRAweb.gse_to_srp" title="Permalink to this definition">#</a></dt>
 <dd><p>Convert SRP to GSE</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
 <dt><strong>gses: string or list</strong></dt><dd><p>List of GSE ID</p>
 </dd>
 </dl>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><dl class="simple">
 <dt>gse_to_srp_df: DataFrame</dt><dd></dd>
 </dl>
@@ -1896,13 +2017,13 @@ Set to True by default.</p>
 <span class="sig-name descname"><span class="pre">gsm_to_gse</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">gsm</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysradb/sraweb.html#SRAweb.gsm_to_gse"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysradb.sraweb.SRAweb.gsm_to_gse" title="Permalink to this definition">#</a></dt>
 <dd><p>Convert GSM to GSE</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
 <dt><strong>gsms: string or list</strong></dt><dd><p>List of GSM ID</p>
 </dd>
 </dl>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><dl class="simple">
 <dt>gsm_to_gse_df: DataFrame</dt><dd></dd>
 </dl>
@@ -1915,13 +2036,13 @@ Set to True by default.</p>
 <span class="sig-name descname"><span class="pre">gsm_to_srp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">gsm</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysradb/sraweb.html#SRAweb.gsm_to_srp"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysradb.sraweb.SRAweb.gsm_to_srp" title="Permalink to this definition">#</a></dt>
 <dd><p>Convert GSM to SRP.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
 <dt><strong>gsms: string or list</strong></dt><dd><p>List of GSM ID</p>
 </dd>
 </dl>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><dl class="simple">
 <dt>gsm_to_srp_df: DataFrame</dt><dd></dd>
 </dl>
@@ -1934,7 +2055,7 @@ Set to True by default.</p>
 <span class="sig-name descname"><span class="pre">gsm_to_srr</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">gsm</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysradb/sraweb.html#SRAweb.gsm_to_srr"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysradb.sraweb.SRAweb.gsm_to_srr" title="Permalink to this definition">#</a></dt>
 <dd><p>Convert GSMs to SRR.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
 <dt><strong>gsms: string or list</strong></dt><dd><p>List of GSM id</p>
 </dd>
@@ -1942,7 +2063,7 @@ Set to True by default.</p>
 </dd>
 </dl>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><dl class="simple">
 <dt>gsm_to_srr_df: DataFrame</dt><dd><p>DataFrame with two columns for GSM/SRR</p>
 </dd>
@@ -1973,7 +2094,7 @@ Set to True by default.</p>
 <span class="sig-name descname"><span class="pre">sra_metadata</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">srp</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sample_attribute</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">detailed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">expand_sample_attributes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_read_lengths</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysradb/sraweb.html#SRAweb.sra_metadata"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysradb.sraweb.SRAweb.sra_metadata" title="Permalink to this definition">#</a></dt>
 <dd><p>Get metadata for the provided SRA accession.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
 <dt><strong>acc: string or list</strong></dt><dd><p>SRA accession ID</p>
 </dd>
@@ -1993,7 +2114,7 @@ Set to True by default.</p>
 </dd>
 </dl>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><dl class="simple">
 <dt>metadata_df: DataFrame</dt><dd><p>A dataframe with all relevant columns</p>
 </dd>
@@ -2090,13 +2211,13 @@ Set to True by default.</p>
 <em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">xml_to_json</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">xml</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysradb/sraweb.html#SRAweb.xml_to_json"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysradb.sraweb.SRAweb.xml_to_json" title="Permalink to this definition">#</a></dt>
 <dd><p>Convert xml to json.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
 <dt><strong>xml: str</strong></dt><dd><p>Input XML</p>
 </dd>
 </dl>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><dl class="simple">
 <dt>xml_dict: dict</dt><dd><p>Parsed xml as dict</p>
 </dd>
@@ -2120,14 +2241,14 @@ Set to True by default.</p>
 
 </section>
 <section id="module-pysradb.taxid2name">
-<span id="pysradb-taxid2name-module"></span><h2>pysradb.taxid2name module<a class="headerlink" href="#module-pysradb.taxid2name" title="Permalink to this headline">#</a></h2>
+<span id="pysradb-taxid2name-module"></span><h2>pysradb.taxid2name module<a class="headerlink" href="#module-pysradb.taxid2name" title="Permalink to this heading">#</a></h2>
 </section>
 <section id="module-pysradb.utils">
-<span id="pysradb-utils-module"></span><h2>pysradb.utils module<a class="headerlink" href="#module-pysradb.utils" title="Permalink to this headline">#</a></h2>
+<span id="pysradb-utils-module"></span><h2>pysradb.utils module<a class="headerlink" href="#module-pysradb.utils" title="Permalink to this heading">#</a></h2>
 <dl class="py class">
 <dt class="sig sig-object py" id="pysradb.utils.TqdmUpTo">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pysradb.utils.</span></span><span class="sig-name descname"><span class="pre">TqdmUpTo</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">_</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">__</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysradb/utils.html#TqdmUpTo"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysradb.utils.TqdmUpTo" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">tqdm.std.tqdm</span></code></p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">tqdm</span></code></p>
 <p>Alternative Class-based version of the above.
 Provides <cite>update_to(n)</cite> which uses <cite>tqdm.update(delta_n)</cite>.
 Inspired by [twine#242](<a class="reference external" href="https://github.com/pypa/twine/pull/242">https://github.com/pypa/twine/pull/242</a>),
@@ -2154,13 +2275,13 @@ Inspired by [twine#242](<a class="reference external" href="https://github.com/p
 <span class="sig-prename descclassname"><span class="pre">pysradb.utils.</span></span><span class="sig-name descname"><span class="pre">confirm</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">preceeding_text</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysradb/utils.html#confirm"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysradb.utils.confirm" title="Permalink to this definition">#</a></dt>
 <dd><p>Confirm user input.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
 <dt><strong>preceeding_text: str</strong></dt><dd><p>Text to print</p>
 </dd>
 </dl>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><dl class="simple">
 <dt>response: bool</dt><dd></dd>
 </dl>
@@ -2173,7 +2294,7 @@ Inspired by [twine#242](<a class="reference external" href="https://github.com/p
 <span class="sig-prename descclassname"><span class="pre">pysradb.utils.</span></span><span class="sig-name descname"><span class="pre">copyfileobj</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fsrc</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fdst</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bufsize</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">16384</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filesize</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">desc</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysradb/utils.html#copyfileobj"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysradb.utils.copyfileobj" title="Permalink to this definition">#</a></dt>
 <dd><p>Copy file object with a progress bar.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
 <dt><strong>fsrc: filehandle</strong></dt><dd><p>Input file handle</p>
 </dd>
@@ -2195,13 +2316,13 @@ Inspired by [twine#242](<a class="reference external" href="https://github.com/p
 <span class="sig-prename descclassname"><span class="pre">pysradb.utils.</span></span><span class="sig-name descname"><span class="pre">get_gzip_uncompressed_size</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filepath</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysradb/utils.html#get_gzip_uncompressed_size"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysradb.utils.get_gzip_uncompressed_size" title="Permalink to this definition">#</a></dt>
 <dd><p>Get uncompressed size of a .gz file</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
 <dt><strong>filepath: string</strong></dt><dd><p>Path to input file</p>
 </dd>
 </dl>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><dl class="simple">
 <dt>filesize: int</dt><dd><p>Uncompressed file size</p>
 </dd>
@@ -2215,7 +2336,7 @@ Inspired by [twine#242](<a class="reference external" href="https://github.com/p
 <span class="sig-prename descclassname"><span class="pre">pysradb.utils.</span></span><span class="sig-name descname"><span class="pre">mkdir_p</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysradb/utils.html#mkdir_p"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysradb.utils.mkdir_p" title="Permalink to this definition">#</a></dt>
 <dd><p>Python version mkdir -p</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
 <dt><strong>path</strong><span class="classifier">string</span></dt><dd><p>Path to directory to create</p>
 </dd>
@@ -2230,7 +2351,7 @@ Inspired by [twine#242](<a class="reference external" href="https://github.com/p
 <dd><p>Order a dataframe</p>
 <p>Order a dataframe by moving the <cite>columns</cite> in the front</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
 <dt><strong>df: Dataframe</strong></dt><dd><p>Dataframe</p>
 </dd>
@@ -2246,13 +2367,13 @@ Inspired by [twine#242](<a class="reference external" href="https://github.com/p
 <span class="sig-prename descclassname"><span class="pre">pysradb.utils.</span></span><span class="sig-name descname"><span class="pre">path_leaf</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysradb/utils.html#path_leaf"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysradb.utils.path_leaf" title="Permalink to this definition">#</a></dt>
 <dd><p>Get path’s tail from a filepath.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
 <dt><strong>path: string</strong></dt><dd><p>Filepath</p>
 </dd>
 </dl>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><dl class="simple">
 <dt>tail: string</dt><dd><p>Filename</p>
 </dd>
@@ -2266,7 +2387,7 @@ Inspired by [twine#242](<a class="reference external" href="https://github.com/p
 <span class="sig-prename descclassname"><span class="pre">pysradb.utils.</span></span><span class="sig-name descname"><span class="pre">requests_3_retries</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysradb/utils.html#requests_3_retries"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysradb.utils.requests_3_retries" title="Permalink to this definition">#</a></dt>
 <dd><p>Generates a requests session object that allows 3 retries.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
 <dt>session: requests.Session</dt><dd><p>requests session object that allows 3 retries for server-side
 errors.</p>
@@ -2287,19 +2408,19 @@ errors.</p>
 <span class="sig-prename descclassname"><span class="pre">pysradb.utils.</span></span><span class="sig-name descname"><span class="pre">scientific_name_to_taxid</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysradb/utils.html#scientific_name_to_taxid"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysradb.utils.scientific_name_to_taxid" title="Permalink to this definition">#</a></dt>
 <dd><p>Converts a scientific name to its corresponding taxonomy ID.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
 <dt><strong>name: str</strong></dt><dd><p>Scientific name of interest.</p>
 </dd>
 </dl>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><dl class="simple">
 <dt>taxid: str</dt><dd><p>Taxonomy Id of the Scientific name.</p>
 </dd>
 </dl>
 </dd>
-<dt class="field-odd">Raises</dt>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
 <dt>IncorrectFieldException</dt><dd><p>If the scientific name cannot be found.</p>
 </dd>
@@ -2313,12 +2434,12 @@ errors.</p>
 <span class="sig-prename descclassname"><span class="pre">pysradb.utils.</span></span><span class="sig-name descname"><span class="pre">unique</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sequence</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysradb/utils.html#unique"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysradb.utils.unique" title="Permalink to this definition">#</a></dt>
 <dd><p>Get unique elements from a list maintaining the order.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
 <dt><strong>input_list: list</strong></dt><dd></dd>
 </dl>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><dl class="simple">
 <dt>unique_list: list</dt><dd><p>List with unique elements maintaining the order</p>
 </dd>
@@ -2329,50 +2450,166 @@ errors.</p>
 
 </section>
 <section id="module-pysradb">
-<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-pysradb" title="Permalink to this headline">#</a></h2>
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-pysradb" title="Permalink to this heading">#</a></h2>
 <p>Top-level package for pysradb.</p>
 </section>
 </section>
 
 
-              </div>
-              
-              
-              <!-- Previous / next buttons -->
+            </article>
+            
+            
+            
+            <footer class="bd-footer-article">
+                <!-- Previous / next buttons -->
 <div class='prev-next-area'>
-    <a class='left-prev' id="prev-link" href="modules.html" title="previous page">
-        <i class="fas fa-angle-left"></i>
-        <div class="prev-next-info">
-            <p class="prev-next-subtitle">previous</p>
-            <p class="prev-next-title">pysradb</p>
-        </div>
+  <a class='left-prev' id="prev-link" href="modules.html" title="previous page">
+      <i class="fas fa-angle-left"></i>
+      <div class="prev-next-info">
+          <p class="prev-next-subtitle">previous</p>
+          <p class="prev-next-title">pysradb</p>
+      </div>
+  </a>
+</div>
+            </footer>
+            
+          </div>
+          
+          
+          
+            <div class="bd-sidebar-secondary bd-toc">
+              
+<div class="toc-item">
+  
+<div class="tocsection onthispage">
+    <i class="fas fa-list"></i> On this page
+</div>
+<nav id="bd-toc-nav" class="page-toc">
+    <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#submodules">
+   Submodules
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#module-pysradb.basedb">
+   pysradb.basedb module
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#module-pysradb.cli">
+   pysradb.cli module
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#module-pysradb.download">
+   pysradb.download module
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#module-pysradb.exceptions">
+   pysradb.exceptions module
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#module-pysradb.filter_attrs">
+   pysradb.filter_attrs module
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#module-pysradb.geodb">
+   pysradb.geodb module
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#module-pysradb.search">
+   pysradb.search module
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#module-pysradb.sradb">
+   pysradb.sradb module
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#module-pysradb.sraweb">
+   pysradb.sraweb module
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#module-pysradb.taxid2name">
+   pysradb.taxid2name module
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#module-pysradb.utils">
+   pysradb.utils module
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#module-pysradb">
+   Module contents
+  </a>
+ </li>
+</ul>
+
+</nav>
+</div>
+
+<div class="toc-item">
+  
+</div>
+
+<div class="toc-item">
+  
+<div class="tocsection sourcelink">
+    <a href="_sources/pysradb.rst.txt">
+        <i class="fas fa-file-alt"></i> Show Source
     </a>
 </div>
-              
-          </main>
-          
 
-      </div>
+</div>
+
+            </div>
+          
+          
+        </div>
+        <footer class="bd-footer-content">
+          <div class="bd-footer-content__inner">
+            
+          </div>
+        </footer>
+        
+      </main>
     </div>
-  
-  <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script src="_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf"></script>
-<footer class="footer mt-5 mt-md-0">
-  <div class="container">
-    
-    <div class="footer-item">
-      <p class="copyright">
-    &copy; Copyright 2021, Saket Choudhary.<br>
-</p>
-    </div>
-    
-    <div class="footer-item">
-      <p class="sphinx-version">
-Created using <a href="http://sphinx-doc.org/">Sphinx</a> 4.5.0.<br>
-</p>
-    </div>
-    
   </div>
-</footer>
+
+  
+    
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="_static/scripts/pydata-sphinx-theme.js?digest=9b1a4fa89bdd0e95b23b"></script>
+
+  <footer class="bd-footer"><div class="bd-footer__inner container">
+  
+  <div class="footer-item">
+    
+<p class="copyright">
+
+    &copy; Copyright 2021, Saket Choudhary.<br>
+
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+<p class="sphinx-version">
+Created using <a href="http://sphinx-doc.org/">Sphinx</a> 5.1.1.<br>
+</p>
+
+  </div>
+  
+</div>
+  </footer>
   </body>
 </html>
