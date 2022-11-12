@@ -426,7 +426,6 @@ class SRAweb(SRAdb):
 
         exps_json = OrderedDict()
         runs_json = OrderedDict()
-
         for uid in uids:
             exps_xml[uid] = self.format_xml(esummary_result[uid]["expxml"])
             runs_xml[uid] = self.format_xml(esummary_result[uid]["runs"])
@@ -438,11 +437,6 @@ class SRAweb(SRAdb):
         sra_record = []
         for uid, run_json in runs_json.items():
             exp_json = exps_json[uid]
-            if not run_json:
-                continue
-            runs = run_json["Run"]
-            if not isinstance(runs, list):
-                runs = [runs]
             exp_title = exp_json["Summary"]["Title"]
             exp_platform = exp_json["Summary"]["Platform"]
             if isinstance(exp_platform, OrderedDict):
@@ -497,30 +491,41 @@ class SRAweb(SRAdb):
             exp_library_layout = list(exp_library_descriptor["LIBRARY_LAYOUT"].keys())[
                 0
             ]
+            experiment_record = OrderedDict()
+            experiment_record["study_accession"] = exp_json["Study"]["@acc"]
+            experiment_record["study_title"] = exp_json["Study"]["@name"]
+            experiment_record["experiment_accession"] = exp_ID
+            experiment_record["experiment_title"] = exp_name
+            experiment_record["experiment_desc"] = exp_title
 
+            experiment_record["organism_taxid"] = exp_taxid
+            experiment_record["organism_name"] = exp_organism_name
+
+            experiment_record["library_name"] = exp_library_name
+            experiment_record["library_strategy"] = exp_library_strategy
+            experiment_record["library_source"] = exp_library_source
+            experiment_record["library_selection"] = exp_library_selection
+            experiment_record["library_layout"] = exp_library_layout
+            experiment_record["sample_accession"] = exp_sample_ID
+            experiment_record["sample_title"] = exp_sample_name
+            experiment_record["instrument"] = exp_instrument
+            experiment_record["instrument_model"] = exp_platform_model
+            experiment_record["instrument_model_desc"] = exp_platform_desc
+            experiment_record["total_spots"] = exp_total_spots
+            experiment_record["total_size"] = exp_total_size
+            if not run_json:
+                # Sometimes the run_accession is not populated by NCBI:
+                #df2 = self.srx_to_srr(exp_ID)
+                #extra_fields = set(experiment_record.keys()).difference(df2.columns.tolist())
+                #for idx, row in df2.iterrows():
+                #    for field in extra_fields:
+                #        experiment_record[field] = row[field]
+                sra_record.append(experiment_record)
+                continue
+            runs = run_json["Run"]
+            if not isinstance(runs, list):
+                runs = [runs]
             for run_record in runs:
-                experiment_record = OrderedDict()
-                experiment_record["study_accession"] = exp_json["Study"]["@acc"]
-                experiment_record["study_title"] = exp_json["Study"]["@name"]
-                experiment_record["experiment_accession"] = exp_ID
-                experiment_record["experiment_title"] = exp_name
-                experiment_record["experiment_desc"] = exp_title
-
-                experiment_record["organism_taxid"] = exp_taxid
-                experiment_record["organism_name"] = exp_organism_name
-
-                experiment_record["library_name"] = exp_library_name
-                experiment_record["library_strategy"] = exp_library_strategy
-                experiment_record["library_source"] = exp_library_source
-                experiment_record["library_selection"] = exp_library_selection
-                experiment_record["library_layout"] = exp_library_layout
-                experiment_record["sample_accession"] = exp_sample_ID
-                experiment_record["sample_title"] = exp_sample_name
-                experiment_record["instrument"] = exp_instrument
-                experiment_record["instrument_model"] = exp_platform_model
-                experiment_record["instrument_model_desc"] = exp_platform_desc
-                experiment_record["total_spots"] = exp_total_spots
-                experiment_record["total_size"] = exp_total_size
                 run_accession = run_record["@acc"]
                 run_total_spots = run_record["@total_spots"]
                 run_total_bases = run_record["@total_bases"]
@@ -546,7 +551,6 @@ class SRAweb(SRAdb):
                 return None
 
         detailed_records = []
-        # print(efetch_result)
         for record in efetch_result:
             if "SAMPLE_ATTRIBUTES" in record["SAMPLE"]:
                 sample_attributes = record["SAMPLE"]["SAMPLE_ATTRIBUTES"][
@@ -563,10 +567,11 @@ class SRAweb(SRAdb):
                 run_sets = [run_sets]
 
             for run_set in run_sets:
-                # print(run_set)
                 detailed_record = OrderedDict()
-                # detailed_record["experiment_accession"] = exp_record["@accession"]
-                # detailed_record["experiment_title"] = exp_record["TITLE"]
+                if not run_json:
+                    # Add experiment accession if no run info found earlier
+                    detailed_record["experiment_accession"] = exp_record["@accession"]
+                 #detailed_record["experiment_title"] = exp_record["TITLE"]
 
                 lib_record = exp_record["DESIGN"]["LIBRARY_DESCRIPTOR"]
                 for key, value in lib_record.items():
@@ -648,11 +653,16 @@ class SRAweb(SRAdb):
                         # but no value
                         pass
                 detailed_records.append(detailed_record)
-                # print(detailed_record)
         detailed_record_df = pd.DataFrame(detailed_records).drop_duplicates()
-        metadata_df = metadata_df.merge(
-            detailed_record_df, on="run_accession", how="outer"
-        )
+        if "run_accession" in metadata_df.keys() and "run_accession" in detailed_record_df.keys():
+            metadata_df = metadata_df.merge(
+                detailed_record_df, on="run_accession", how="outer"
+            )
+        else:
+            metadata_df = metadata_df.merge(
+                detailed_record_df, on="experiment_accession", how="outer"
+            )
+
         metadata_df = metadata_df[metadata_df.columns.dropna()]
         metadata_df = metadata_df.drop_duplicates()
         metadata_df = metadata_df.replace(r"^\s*$", np.nan, regex=True)
