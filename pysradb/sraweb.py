@@ -437,8 +437,10 @@ class SRAweb(SRAdb):
         sra_record = []
         for uid, run_json in runs_json.items():
             exp_json = exps_json[uid]
-            exp_title = exp_json["Summary"]["Title"]
-            exp_platform = exp_json["Summary"]["Platform"]
+            exp_summary = exp_json["Summary"]
+            exp_title = exp_summary.get("Title", pd.NA)
+            exp_platform = exp_summary.get("Platform", {})
+            statistics = exp_summary.get("Statistics", {})
             if isinstance(exp_platform, OrderedDict):
                 exp_platform_model = exp_platform.get("@instrument_model", pd.NA)
                 exp_platform_desc = exp_platform.get("#text", pd.NA)
@@ -446,9 +448,9 @@ class SRAweb(SRAdb):
                 exp_platform_model = pd.NA
                 exp_platform_desc = pd.NA
 
-            exp_total_runs = exp_json["Summary"]["Statistics"]["@total_runs"]
-            exp_total_spots = exp_json["Summary"]["Statistics"]["@total_spots"]
-            exp_total_size = exp_json["Summary"]["Statistics"]["@total_size"]
+            exp_total_runs = statistics.get("@total_runs", pd.NA)
+            exp_total_spots = statistics.get("@total_spots", pd.NA)
+            exp_total_size = statistics.get("@total_size", pd.NA)
 
             # experiment_accession
             exp_ID = exp_json["Experiment"]["@acc"]
@@ -561,7 +563,7 @@ class SRAweb(SRAdb):
             if isinstance(sample_attributes, OrderedDict):
                 sample_attributes = [sample_attributes]
             exp_record = record["EXPERIMENT"]
-            run_sets = record["RUN_SET"]["RUN"]
+            run_sets = record["RUN_SET"].get("RUN", [])
 
             if not isinstance(run_sets, list):
                 run_sets = [run_sets]
@@ -674,7 +676,9 @@ class SRAweb(SRAdb):
             "ena_fastq_ftp_1",
             "ena_fastq_ftp_2",
         ]
-        metadata_df[ena_cols] = np.nan
+        empty_df = pd.DataFrame(columns=ena_cols)
+        metadata_df = pd.concat((metadata_df, empty_df), axis=0)
+        # metadata_df[ena_cols] = np.nan
 
         metadata_df = metadata_df.set_index("run_accession")
         # multithreading lookup on ENA, since a lot of time is spent waiting
