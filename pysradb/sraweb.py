@@ -517,9 +517,9 @@ class SRAweb(SRAdb):
             experiment_record["total_size"] = exp_total_size
             if not run_json:
                 # Sometimes the run_accession is not populated by NCBI:
-                #df2 = self.srx_to_srr(exp_ID)
-                #extra_fields = set(experiment_record.keys()).difference(df2.columns.tolist())
-                #for idx, row in df2.iterrows():
+                # df2 = self.srx_to_srr(exp_ID)
+                # extra_fields = set(experiment_record.keys()).difference(df2.columns.tolist())
+                # for idx, row in df2.iterrows():
                 #    for field in extra_fields:
                 #        experiment_record[field] = row[field]
                 sra_record.append(experiment_record)
@@ -573,7 +573,7 @@ class SRAweb(SRAdb):
                 if not run_json:
                     # Add experiment accession if no run info found earlier
                     detailed_record["experiment_accession"] = exp_record["@accession"]
-                 #detailed_record["experiment_title"] = exp_record["TITLE"]
+                # detailed_record["experiment_title"] = exp_record["TITLE"]
 
                 lib_record = exp_record["DESIGN"]["LIBRARY_DESCRIPTOR"]
                 for key, value in lib_record.items():
@@ -656,7 +656,10 @@ class SRAweb(SRAdb):
                         pass
                 detailed_records.append(detailed_record)
         detailed_record_df = pd.DataFrame(detailed_records).drop_duplicates()
-        if "run_accession" in metadata_df.keys() and "run_accession" in detailed_record_df.keys():
+        if (
+            "run_accession" in metadata_df.keys()
+            and "run_accession" in detailed_record_df.keys()
+        ):
             metadata_df = metadata_df.merge(
                 detailed_record_df, on="run_accession", how="outer"
             )
