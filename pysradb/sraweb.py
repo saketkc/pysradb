@@ -15,6 +15,7 @@ import requests
 import xmltodict
 
 from .sradb import SRAdb
+from .utils import fix_link_mismatches
 
 warnings.simplefilter(action="ignore", category=FutureWarning)
 
@@ -700,6 +701,7 @@ class SRAweb(SRAdb):
                     metadata_df.update(ena_results)
         metadata_df = metadata_df.reset_index()
         metadata_df = metadata_df.fillna(pd.NA)
+        metadata_df = fix_link_mismatches(metadata_df)
         return metadata_df
 
     def fetch_gds_results(self, gse, **kwargs):

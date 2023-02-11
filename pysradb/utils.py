@@ -304,3 +304,26 @@ def copyfileobj(fsrc, fdst, bufsize=16384, filesize=None, desc=""):
                 break
             fdst.write(buf)
             pbar.update(len(buf))
+
+
+def fix_link_mismatches(df):
+    """Fixes mismatched AWS/SRA/GCP links.
+
+    Parameters
+    ----------
+    df: dataframe
+                     
+    Returns
+    -------
+    df: dataframe
+    """
+    sra_url_columns = [
+        "sra_url_alt1",
+        "sra_url_alt2",
+        "sra_url"]
+    for col in sra_url_columns:
+        index_1 = df[col].str.contains("amazonaws.com")
+        df.loc[index_1, col] = ""
+        index_2 = df[col].str.contains("storage.googleapis.com")
+        df.loc[index_2, col] = ""
+    return df
