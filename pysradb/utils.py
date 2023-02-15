@@ -12,6 +12,7 @@ import requests
 from requests.adapters import HTTPAdapter
 from requests.packages.urllib3.util.retry import Retry
 from tqdm.autonotebook import tqdm
+import numpy as np
 
 from .exceptions import IncorrectFieldException
 
@@ -312,18 +313,22 @@ def fix_link_mismatches(df):
     Parameters
     ----------
     df: dataframe
-                     
+
     Returns
     -------
     df: dataframe
     """
     sra_url_columns = [
         "sra_url_alt1",
-        "sra_url_alt2",
-        "sra_url"]
+        "sra_url_alt2"]
+
+    df["sra_url_aws"] = np.nan
+    df["sra_url_gcp"] = np.nan
     for col in sra_url_columns:
         index_1 = df[col].str.contains("amazonaws.com")
+        df.loc[index_1, "sra_url_aws"] = df.loc[index_1, col]
         df.loc[index_1, col] = ""
         index_2 = df[col].str.contains("storage.googleapis.com")
+        df.loc[index_2, "sra_url_gcp"] = df.loc[index_2, col]
         df.loc[index_2, col] = ""
     return df
