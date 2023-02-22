@@ -542,6 +542,7 @@ class SRAweb(SRAdb):
         # TODO: the detailed call below does redundant operations
         # the code above this can be completeley done away with
         metadata_df = pd.DataFrame(sra_record).drop_duplicates()
+        metadata_df.columns = [x.lower().strip() for x in metadata_df.columns]
         if not detailed:
             return metadata_df
 
@@ -564,6 +565,7 @@ class SRAweb(SRAdb):
             if isinstance(sample_attributes, OrderedDict):
                 sample_attributes = [sample_attributes]
             exp_record = record["EXPERIMENT"]
+            exp_attributes = exp_record.get("EXPERIMENT_ATTRIBUTES", {})
             run_sets = record["RUN_SET"].get("RUN", [])
 
             if not isinstance(run_sets, list):
@@ -575,7 +577,12 @@ class SRAweb(SRAdb):
                     # Add experiment accession if no run info found earlier
                     detailed_record["experiment_accession"] = exp_record["@accession"]
                 # detailed_record["experiment_title"] = exp_record["TITLE"]
-
+                for key, values in exp_attributes.items():
+                    key = key.lower()
+                    for value_x in values:
+                        tag = value_x["TAG"].lower()
+                        value = value_x["VALUE"]
+                        detailed_record[tag] = value
                 lib_record = exp_record["DESIGN"]["LIBRARY_DESCRIPTOR"]
                 for key, value in lib_record.items():
                     key = key.lower()
@@ -702,6 +709,7 @@ class SRAweb(SRAdb):
         metadata_df = metadata_df.reset_index()
         metadata_df = metadata_df.fillna(pd.NA)
         metadata_df = fix_link_mismatches(metadata_df)
+        metadata_df.columns = [x.lower().strip() for x in metadata_df.columns]
         return metadata_df
 
     def fetch_gds_results(self, gse, **kwargs):

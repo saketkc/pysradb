@@ -7,7 +7,7 @@ History
 ******************
 
 * Fix extra space in "organism_taxid" column 
-
+* Added support for Experiment attributes (`#89 <https://github.com/saketkc/pysradb/issues/89#issuecomment-1439319532>`)
 
 
 ******************
