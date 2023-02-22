@@ -74,7 +74,6 @@ def _print_save_df(df, saveto=None):
 
 ###################### metadata ##############################
 def metadata(srp_id, assay, desc, detailed, expand, saveto):
-
     sradb = SRAweb()
     df = sradb.sra_metadata(
         srp_id,
@@ -94,7 +93,6 @@ def metadata(srp_id, assay, desc, detailed, expand, saveto):
 def download(
     out_dir, srx, srp, geo, skip_confirmation, col="sra_url", use_ascp=False, threads=1
 ):
-
     if out_dir is None:
         out_dir = os.path.join(os.getcwd(), "pysradb_downloads")
     sradb = SRAweb()
@@ -224,7 +222,6 @@ def get_geo_search_info():
 
 ######################### gse-to-gsm ###############################
 def gse_to_gsm(gse_ids, saveto, detailed, desc, expand):
-
     sradb = SRAweb()
     df = sradb.gse_to_gsm(
         gse_ids,
@@ -241,7 +238,6 @@ def gse_to_gsm(gse_ids, saveto, detailed, desc, expand):
 
 ######################## gse-to-srp ################################
 def gse_to_srp(gse_ids, saveto, detailed, desc, expand):
-
     sradb = SRAweb()
     df = sradb.gse_to_srp(
         gse_ids,
@@ -258,7 +254,6 @@ def gse_to_srp(gse_ids, saveto, detailed, desc, expand):
 
 ######################### gsm-to-gse #################################
 def gsm_to_gse(gsm_ids, saveto, detailed, desc, expand):
-
     sradb = SRAweb()
     df = sradb.gsm_to_gse(
         gsm_ids,
@@ -275,7 +270,6 @@ def gsm_to_gse(gsm_ids, saveto, detailed, desc, expand):
 
 ############################ gsm-to-srp ################################
 def gsm_to_srp(gsm_ids, saveto, detailed, desc, expand):
-
     sradb = SRAweb()
     df = sradb.gsm_to_srp(
         gsm_ids,
@@ -292,7 +286,6 @@ def gsm_to_srp(gsm_ids, saveto, detailed, desc, expand):
 
 ############################ gsm-to-srr ################################
 def gsm_to_srr(gsm_ids, saveto, detailed, desc, expand):
-
     sradb = SRAweb()
     df = sradb.gsm_to_srr(
         gsm_ids,
@@ -309,7 +302,6 @@ def gsm_to_srr(gsm_ids, saveto, detailed, desc, expand):
 
 ############################ gsm-to-srs ################################
 def gsm_to_srs(gsm_ids, saveto, detailed, desc, expand):
-
     sradb = SRAweb()
     df = sradb.gsm_to_srs(
         gsm_ids,
@@ -326,7 +318,6 @@ def gsm_to_srs(gsm_ids, saveto, detailed, desc, expand):
 
 ############################# gsm-to-srx ###############################
 def gsm_to_srx(gsm_ids, saveto, detailed, desc, expand):
-
     sradb = SRAweb()
     df = sradb.gsm_to_srx(
         gsm_ids,
@@ -343,7 +334,6 @@ def gsm_to_srx(gsm_ids, saveto, detailed, desc, expand):
 
 ########################### srp-to-gse ##################################
 def srp_to_gse(srp_id, saveto, detailed, desc, expand):
-
     sradb = SRAweb()
     df = sradb.srp_to_gse(
         srp_id,
@@ -360,7 +350,6 @@ def srp_to_gse(srp_id, saveto, detailed, desc, expand):
 
 ########################### srp-to-srr ##################################
 def srp_to_srr(srp_id, saveto, detailed, desc, expand):
-
     sradb = SRAweb()
     df = sradb.srp_to_srr(
         srp_id,
@@ -377,7 +366,6 @@ def srp_to_srr(srp_id, saveto, detailed, desc, expand):
 
 ########################### srp-to-srs ##################################
 def srp_to_srs(srp_id, saveto, detailed, desc, expand):
-
     sradb = SRAweb()
     df = sradb.srp_to_srs(
         srp_id,
@@ -394,7 +382,6 @@ def srp_to_srs(srp_id, saveto, detailed, desc, expand):
 
 ########################### srp-to-srx ##################################
 def srp_to_srx(srp_id, saveto, detailed, desc, expand):
-
     sradb = SRAweb()
     df = sradb.srp_to_srx(
         srp_id,
@@ -411,7 +398,6 @@ def srp_to_srx(srp_id, saveto, detailed, desc, expand):
 
 ########################### srr-to-gsm ##################################
 def srr_to_gsm(srr_ids, saveto, detailed, desc, expand):
-
     sradb = SRAweb()
     df = sradb.srr_to_gsm(
         srr_ids,
@@ -428,7 +414,6 @@ def srr_to_gsm(srr_ids, saveto, detailed, desc, expand):
 
 ########################### srr-to-srp ##################################
 def srr_to_srp(srr_ids, saveto, detailed, desc, expand):
-
     sradb = SRAweb()
     df = sradb.srr_to_srp(
         srr_ids,
@@ -445,7 +430,6 @@ def srr_to_srp(srr_ids, saveto, detailed, desc, expand):
 
 ########################### srr-to-srs ##################################
 def srr_to_srs(srr_ids, saveto, detailed, desc, expand):
-
     sradb = SRAweb()
     df = sradb.srr_to_srs(
         srr_ids,
@@ -462,7 +446,6 @@ def srr_to_srs(srr_ids, saveto, detailed, desc, expand):
 
 ########################### srr-to-srx ##################################
 def srr_to_srx(srr_ids, saveto, detailed, desc, expand):
-
     sradb = SRAweb()
     df = sradb.srr_to_srx(
         srr_ids,
@@ -479,7 +462,6 @@ def srr_to_srx(srr_ids, saveto, detailed, desc, expand):
 
 ########################### srs-to-gsm ##################################
 def srs_to_gsm(srs_ids, saveto, detailed, desc, expand):
-
     sradb = SRAweb()
     df = sradb.srs_to_gsm(
         srs_ids,
@@ -496,7 +478,6 @@ def srs_to_gsm(srs_ids, saveto, detailed, desc, expand):
 
 ########################### srs-to-srx ##################################
 def srs_to_srx(srs_ids, saveto, detailed, desc, expand):
-
     sradb = SRAweb()
     df = sradb.srs_to_srx(
         srs_ids,
@@ -513,7 +494,6 @@ def srs_to_srx(srs_ids, saveto, detailed, desc, expand):
 
 ########################### srx-to-srp ##################################
 def srx_to_srp(srx_ids, saveto, detailed, desc, expand):
-
     sradb = SRAweb()
     df = sradb.srx_to_srp(
         srx_ids,
@@ -530,7 +510,6 @@ def srx_to_srp(srx_ids, saveto, detailed, desc, expand):
 
 ########################### srx-to-srr ##################################
 def srx_to_srr(srx_ids, saveto, detailed, desc, expand):
-
     sradb = SRAweb()
     df = sradb.srx_to_srr(
         srx_ids,
@@ -547,7 +526,6 @@ def srx_to_srr(srx_ids, saveto, detailed, desc, expand):
 
 ########################### srx-to-srs ##################################
 def srx_to_srs(srx_ids, saveto, detailed, desc, expand):
-
     sradb = SRAweb()
     df = sradb.srx_to_srs(
         srx_ids,
