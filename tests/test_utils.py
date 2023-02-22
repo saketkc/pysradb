@@ -6,6 +6,7 @@ from pysradb.utils import scientific_name_to_taxid, fix_link_mismatches
 from pysradb.sraweb import SRAweb
 from pysradb.exceptions import IncorrectFieldException
 
+
 @pytest.fixture(scope="module")
 def invalid_name():
     return "Red blood cells"

@@ -981,7 +981,11 @@ def test_valid_search_query_2_sra(valid_search_inputs_2):
 
 
 def test_sra_search_format_request():
-    assert SraSearch(0, 1000, query="covid-19",)._format_request() == {
+    assert SraSearch(
+        0,
+        1000,
+        query="covid-19",
+    )._format_request() == {
         "db": "sra",
         "term": "covid-19",
         "retmode": "json",
@@ -1210,7 +1214,11 @@ def test_valid_search_query_geo(valid_search_inputs_geo):
 
 
 def test_geo_search_format_request():
-    assert GeoSearch(0, 1000, query="covid-19",)._format_request() == {
+    assert GeoSearch(
+        0,
+        1000,
+        query="covid-19",
+    )._format_request() == {
         "db": "sra",
         "term": "covid-19 AND sra gds[Filter]",
         "retmode": "json",

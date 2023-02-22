@@ -246,7 +246,6 @@ class SRAweb(SRAdb):
         ]
 
     def get_esummary_response(self, db, term, usehistory="y"):
-
         assert db in ["sra", "geo"]
 
         payload = self.esearch_params[db].copy()
@@ -290,7 +289,6 @@ class SRAweb(SRAdb):
 
         results = {}
         for retstart in get_retmax(n_records):
-
             payload = self.esearch_params[db].copy()
             payload += self.create_esummary_params(esearch_response["esearchresult"])
             payload = OrderedDict(payload)
@@ -319,7 +317,6 @@ class SRAweb(SRAdb):
         return results
 
     def get_efetch_response(self, db, term, usehistory="y"):
-
         assert db in ["sra", "geo"]
 
         payload = self.esearch_params[db].copy()
@@ -342,7 +339,6 @@ class SRAweb(SRAdb):
 
         results = {}
         for retstart in get_retmax(n_records):
-
             payload = self.efetch_params.copy()
             payload += self.create_esummary_params(esearch_response["esearchresult"])
             payload = OrderedDict(payload)
@@ -414,7 +410,6 @@ class SRAweb(SRAdb):
         output_read_lengths=False,
         **kwargs
     ):
-
         esummary_result = self.get_esummary_response("sra", srp)
         try:
             uids = esummary_result["uids"]
@@ -658,7 +653,6 @@ class SRAweb(SRAdb):
                     if len(dict_values) > 1:
                         detailed_record[dict_values[0]] = dict_values[1]
                     else:
-
                         # TODO: Investigate why these fields have just the key
                         # but no value
                         pass

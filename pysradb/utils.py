@@ -318,9 +318,7 @@ def fix_link_mismatches(df):
     -------
     df: dataframe
     """
-    sra_url_columns = [
-        "sra_url_alt1",
-        "sra_url_alt2"]
+    sra_url_columns = ["sra_url_alt1", "sra_url_alt2"]
 
     df["sra_url_aws"] = np.nan
     df["sra_url_gcp"] = np.nan
