@@ -3,7 +3,7 @@ History
 #######
 
 ******************
-2.0.0 (Unreleased)
+2.0.0 (2023-02-23)
 ******************
 
 * BREAKING change: Overhaul of how urls and associated metadata are returned (not backward compatible); all column names are lower cased by default
