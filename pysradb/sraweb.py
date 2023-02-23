@@ -220,11 +220,11 @@ class SRAweb(SRAdb):
                     "ena_fastq_ftp_1",
                     "ena_fastq_ftp_2",
                 ],
-            )
+            ).sort_values(by="run_accession")
         else:
             return pd.DataFrame(
                 urls, columns=["run_accession", "ena_fastq_http", "ena_fastq_ftp"]
-            )
+            ).sort_values(by="run_accession")
 
     def create_esummary_params(self, esearchresult, db="sra"):
         query_key = esearchresult["querykey"]
@@ -245,7 +245,6 @@ class SRAweb(SRAdb):
         ]
 
     def get_esummary_response(self, db, term, usehistory="y"):
-
         assert db in ["sra", "geo"]
 
         payload = self.esearch_params[db].copy()
@@ -289,7 +288,6 @@ class SRAweb(SRAdb):
 
         results = {}
         for retstart in get_retmax(n_records):
-
             payload = self.esearch_params[db].copy()
             payload += self.create_esummary_params(esearch_response["esearchresult"])
             payload = OrderedDict(payload)
@@ -318,7 +316,6 @@ class SRAweb(SRAdb):
         return results
 
     def get_efetch_response(self, db, term, usehistory="y"):
-
         assert db in ["sra", "geo"]
 
         payload = self.esearch_params[db].copy()
@@ -341,7 +338,6 @@ class SRAweb(SRAdb):
 
         results = {}
         for retstart in get_retmax(n_records):
-
             payload = self.efetch_params.copy()
             payload += self.create_esummary_params(esearch_response["esearchresult"])
             payload = OrderedDict(payload)
@@ -413,7 +409,6 @@ class SRAweb(SRAdb):
         output_read_lengths=False,
         **kwargs
     ):
-
         esummary_result = self.get_esummary_response("sra", srp)
         try:
             uids = esummary_result["uids"]
@@ -426,7 +421,6 @@ class SRAweb(SRAdb):
 
         exps_json = OrderedDict()
         runs_json = OrderedDict()
-
         for uid in uids:
             exps_xml[uid] = self.format_xml(esummary_result[uid]["expxml"])
             runs_xml[uid] = self.format_xml(esummary_result[uid]["runs"])
@@ -438,13 +432,10 @@ class SRAweb(SRAdb):
         sra_record = []
         for uid, run_json in runs_json.items():
             exp_json = exps_json[uid]
-            if not run_json:
-                continue
-            runs = run_json["Run"]
-            if not isinstance(runs, list):
-                runs = [runs]
-            exp_title = exp_json["Summary"]["Title"]
-            exp_platform = exp_json["Summary"]["Platform"]
+            exp_summary = exp_json["Summary"]
+            exp_title = exp_summary.get("Title", pd.NA)
+            exp_platform = exp_summary.get("Platform", {})
+            statistics = exp_summary.get("Statistics", {})
             if isinstance(exp_platform, OrderedDict):
                 exp_platform_model = exp_platform.get("@instrument_model", pd.NA)
                 exp_platform_desc = exp_platform.get("#text", pd.NA)
@@ -452,9 +443,9 @@ class SRAweb(SRAdb):
                 exp_platform_model = pd.NA
                 exp_platform_desc = pd.NA
 
-            exp_total_runs = exp_json["Summary"]["Statistics"]["@total_runs"]
-            exp_total_spots = exp_json["Summary"]["Statistics"]["@total_spots"]
-            exp_total_size = exp_json["Summary"]["Statistics"]["@total_size"]
+            exp_total_runs = statistics.get("@total_runs", pd.NA)
+            exp_total_spots = statistics.get("@total_spots", pd.NA)
+            exp_total_size = statistics.get("@total_size", pd.NA)
 
             # experiment_accession
             exp_ID = exp_json["Experiment"]["@acc"]
@@ -497,30 +488,41 @@ class SRAweb(SRAdb):
             exp_library_layout = list(exp_library_descriptor["LIBRARY_LAYOUT"].keys())[
                 0
             ]
+            experiment_record = OrderedDict()
+            experiment_record["study_accession"] = exp_json["Study"]["@acc"]
+            experiment_record["study_title"] = exp_json["Study"]["@name"]
+            experiment_record["experiment_accession"] = exp_ID
+            experiment_record["experiment_title"] = exp_name
+            experiment_record["experiment_desc"] = exp_title
 
+            experiment_record["organism_taxid"] = exp_taxid
+            experiment_record["organism_name"] = exp_organism_name
+
+            experiment_record["library_name"] = exp_library_name
+            experiment_record["library_strategy"] = exp_library_strategy
+            experiment_record["library_source"] = exp_library_source
+            experiment_record["library_selection"] = exp_library_selection
+            experiment_record["library_layout"] = exp_library_layout
+            experiment_record["sample_accession"] = exp_sample_ID
+            experiment_record["sample_title"] = exp_sample_name
+            experiment_record["instrument"] = exp_instrument
+            experiment_record["instrument_model"] = exp_platform_model
+            experiment_record["instrument_model_desc"] = exp_platform_desc
+            experiment_record["total_spots"] = exp_total_spots
+            experiment_record["total_size"] = exp_total_size
+            if not run_json:
+                # Sometimes the run_accession is not populated by NCBI:
+                # df2 = self.srx_to_srr(exp_ID)
+                # extra_fields = set(experiment_record.keys()).difference(df2.columns.tolist())
+                # for idx, row in df2.iterrows():
+                #    for field in extra_fields:
+                #        experiment_record[field] = row[field]
+                sra_record.append(experiment_record)
+                continue
+            runs = run_json["Run"]
+            if not isinstance(runs, list):
+                runs = [runs]
             for run_record in runs:
-                experiment_record = OrderedDict()
-                experiment_record["study_accession"] = exp_json["Study"]["@acc"]
-                experiment_record["study_title"] = exp_json["Study"]["@name"]
-                experiment_record["experiment_accession"] = exp_ID
-                experiment_record["experiment_title"] = exp_name
-                experiment_record["experiment_desc"] = exp_title
-
-                experiment_record["organism_taxid"] = exp_taxid
-                experiment_record["organism_name"] = exp_organism_name
-
-                experiment_record["library_name"] = exp_library_name
-                experiment_record["library_strategy"] = exp_library_strategy
-                experiment_record["library_source"] = exp_library_source
-                experiment_record["library_selection"] = exp_library_selection
-                experiment_record["library_layout"] = exp_library_layout
-                experiment_record["sample_accession"] = exp_sample_ID
-                experiment_record["sample_title"] = exp_sample_name
-                experiment_record["instrument"] = exp_instrument
-                experiment_record["instrument_model"] = exp_platform_model
-                experiment_record["instrument_model_desc"] = exp_platform_desc
-                experiment_record["total_spots"] = exp_total_spots
-                experiment_record["total_size"] = exp_total_size
                 run_accession = run_record["@acc"]
                 run_total_spots = run_record["@total_spots"]
                 run_total_bases = run_record["@total_bases"]
@@ -533,7 +535,10 @@ class SRAweb(SRAdb):
 
         # TODO: the detailed call below does redundant operations
         # the code above this can be completeley done away with
-        metadata_df = pd.DataFrame(sra_record).drop_duplicates()
+        metadata_df = (
+            pd.DataFrame(sra_record).drop_duplicates().sort_values(by="run_accession")
+        )
+        metadata_df.columns = [x.lower().strip() for x in metadata_df.columns]
         if not detailed:
             return metadata_df
 
@@ -546,7 +551,6 @@ class SRAweb(SRAdb):
                 return None
 
         detailed_records = []
-        # print(efetch_result)
         for record in efetch_result:
             if "SAMPLE_ATTRIBUTES" in record["SAMPLE"]:
                 sample_attributes = record["SAMPLE"]["SAMPLE_ATTRIBUTES"][
@@ -557,17 +561,26 @@ class SRAweb(SRAdb):
             if isinstance(sample_attributes, OrderedDict):
                 sample_attributes = [sample_attributes]
             exp_record = record["EXPERIMENT"]
-            run_sets = record["RUN_SET"]["RUN"]
+            exp_attributes = exp_record.get("EXPERIMENT_ATTRIBUTES", {})
+            run_sets = record["RUN_SET"].get("RUN", [])
 
             if not isinstance(run_sets, list):
                 run_sets = [run_sets]
 
             for run_set in run_sets:
-                # print(run_set)
                 detailed_record = OrderedDict()
-                # detailed_record["experiment_accession"] = exp_record["@accession"]
+                if not run_json:
+                    # Add experiment accession if no run info found earlier
+                    detailed_record["experiment_accession"] = exp_record["@accession"]
                 # detailed_record["experiment_title"] = exp_record["TITLE"]
-
+                for key, values in exp_attributes.items():
+                    key = key.lower()
+                    for value_x in values:
+                        if not isinstance(value_x, dict):
+                            continue
+                        tag = value_x["TAG"].lower()
+                        value = value_x["VALUE"]
+                        detailed_record[tag] = value
                 lib_record = exp_record["DESIGN"]["LIBRARY_DESCRIPTOR"]
                 for key, value in lib_record.items():
                     key = key.lower()
@@ -582,58 +595,48 @@ class SRAweb(SRAdb):
                 sra_files = run_set.get("SRAFiles", {})
                 sra_files = sra_files.get("SRAFile", {})
                 if isinstance(sra_files, OrderedDict):
-                    detailed_record["sra_url"] = sra_files.get("@url", pd.NA)
+                    # detailed_record["sra_url"] = sra_files.get("@url", pd.NA)
                     if "Alternatives" in sra_files.keys():
                         alternatives = sra_files["Alternatives"]
-                        if isinstance(alternatives, list):
-                            # TODO: Only handles single alternate urls
-                            alternatives = alternatives[0]
-                        org = alternatives["@org"]
-                        for key in alternatives.keys():
-                            if key == "@org":
-                                continue
-                            detailed_record[
-                                "{}_{}".format(org, key.replace("@", ""))
-                            ] = alternatives[key]
+                        if not isinstance(alternatives, list):
+                            alternatives = [alternatives]
+                        for alternative in alternatives:
+                            org = alternative["@org"].lower()
+                            for key in alternative.keys():
+                                if key == "@org":
+                                    continue
+                                detailed_record[
+                                    "{}_{}".format(org, key.replace("@", ""))
+                                ] = alternative[key]
+
                 else:
                     for sra_file in sra_files:
                         # Multiple download URLs
                         # Use the one where the download filename corresponds to the SRR
-                        # if "@filename" not in sra_file:
-                        #    print("record keys: {}".format(sra_file.keys()))
-                        #    print("record : {}".format(sra_file))
-                        if "@filename" in sra_file:
-                            if sra_file["@filename"] == run_set["@accession"]:
-                                detailed_record["sra_url"] = sra_file.get("@url", pd.NA)
-                                if "Alternatives" in sra_file.keys():
-                                    alternatives = sra_file["Alternatives"]
-                                    if isinstance(alternatives, list):
-                                        # TODO: Only handles single alternate urls
-                                        alternatives = alternatives[0]
-                                    org = alternatives.get("@org", "")
-                                    for key in alternatives.keys():
+                        cluster = sra_file.get("@cluster", None).lower().strip()
+                        if cluster is None:
+                            continue
+                        for key in sra_file.keys():
+                            if key == "@cluster":
+                                continue
+                            if key == "Alternatives":
+                                # Example: SRP184142
+                                alternatives = sra_file["Alternatives"]
+                                if not isinstance(alternatives, list):
+                                    alternatives = [alternatives]
+                                for alternative in alternatives:
+                                    org = alternative["@org"].lower()
+                                    for key in alternative.keys():
                                         if key == "@org":
                                             continue
                                         detailed_record[
                                             "{}_{}".format(org, key.replace("@", ""))
-                                        ] = alternatives[key]
-                                break
-                        if "Alternatives" in sra_file:
-                            # Example: SRP184142
-                            alternatives = sra_file["Alternatives"]
-                            if isinstance(alternatives, OrderedDict):
-                                detailed_record["sra_url_alt"] = alternatives["@url"]
-                            elif isinstance(alternatives, list):
-                                for alt_index, alternative in enumerate(alternatives):
-                                    detailed_record[
-                                        "sra_url_alt{}".format(alt_index + 1)
-                                    ] = alternative["@url"]
+                                        ] = alternative[key]
                             else:
-                                sys.stderr.write(
-                                    "Unable to determine sra_url. This is a bug. Please report upstream.\n {}".format(
-                                        alternatives
-                                    )
-                                )
+                                detailed_record[
+                                    "{}_{}".format(cluster, key.replace("@", ""))
+                                ] = sra_file[key]
+
                 expt_ref = run_set["EXPERIMENT_REF"]
                 detailed_record["experiment_alias"] = expt_ref.get("@refname", "")
                 # detailed_record["run_total_bases"] = run_set["@total_bases"]
@@ -643,16 +646,23 @@ class SRAweb(SRAdb):
                     if len(dict_values) > 1:
                         detailed_record[dict_values[0]] = dict_values[1]
                     else:
-
                         # TODO: Investigate why these fields have just the key
                         # but no value
                         pass
                 detailed_records.append(detailed_record)
-                # print(detailed_record)
         detailed_record_df = pd.DataFrame(detailed_records).drop_duplicates()
-        metadata_df = metadata_df.merge(
-            detailed_record_df, on="run_accession", how="outer"
-        )
+        if (
+            "run_accession" in metadata_df.keys()
+            and "run_accession" in detailed_record_df.keys()
+        ):
+            metadata_df = metadata_df.merge(
+                detailed_record_df, on="run_accession", how="outer"
+            )
+        else:
+            metadata_df = metadata_df.merge(
+                detailed_record_df, on="experiment_accession", how="outer"
+            )
+
         metadata_df = metadata_df[metadata_df.columns.dropna()]
         metadata_df = metadata_df.drop_duplicates()
         metadata_df = metadata_df.replace(r"^\s*$", np.nan, regex=True)
@@ -664,7 +674,9 @@ class SRAweb(SRAdb):
             "ena_fastq_ftp_1",
             "ena_fastq_ftp_2",
         ]
-        metadata_df[ena_cols] = np.nan
+        empty_df = pd.DataFrame(columns=ena_cols)
+        metadata_df = pd.concat((metadata_df, empty_df), axis=0)
+        # metadata_df[ena_cols] = np.nan
 
         metadata_df = metadata_df.set_index("run_accession")
         # multithreading lookup on ENA, since a lot of time is spent waiting
@@ -683,7 +695,8 @@ class SRAweb(SRAdb):
                     metadata_df.update(ena_results)
         metadata_df = metadata_df.reset_index()
         metadata_df = metadata_df.fillna(pd.NA)
-        return metadata_df
+        metadata_df.columns = [x.lower().strip() for x in metadata_df.columns]
+        return metadata_df.sort_values(by="run_accession")
 
     def fetch_gds_results(self, gse, **kwargs):
         result = self.get_esummary_response("geo", gse)
@@ -829,7 +842,8 @@ class SRAweb(SRAdb):
     def srr_to_gsm(self, srr, **kwargs):
         """Get GSM for a SRR"""
         srr_df = self.srr_to_srp(srr, detailed=True)
-        srp = srr_df.study_accession.tolist()
+        # remove NAs
+        srp = [x for x in srr_df.study_accession.tolist() if not x is pd.NA]
         gse_df = self.fetch_gds_results(srp, **kwargs)
         gse_df = gse_df[gse_df.entrytype == "GSE"].rename(
             columns={"SRA": "project_accession", "accession": "project_alias"}
