@@ -80,8 +80,8 @@ def test_srp_to_gse(sraweb_connection):
 
 def test_srp_to_srr(sraweb_connection):
     """Test if srp is converted to srr correctly"""
-    df = sraweb_connection.srp_to_srr("SRP002605").sort_values(by="run_accession")
-    assert sorted(list(df["run_accession"]))[:5] == [
+    df = sraweb_connection.srp_to_srr("SRP002605")
+    assert df["run_accession"].tolist()[:5] == [
         "SRR057511",
         "SRR057512",
         "SRR057513",
@@ -106,10 +106,7 @@ def test_srp_to_srs(sraweb_connection):
 def test_srp_to_srx(sraweb_connection):
     """Test if srp is converted to srx correctly"""
     df = sraweb_connection.srp_to_srx("SRP044932")
-    assert list(df["experiment_accession"]) == [
-        "SRX663254",
-        "SRX663253",
-    ]
+    assert list(df["experiment_accession"]) == ["SRX663253", "SRX663254"]
 
 
 def test_gse_to_gsm(sraweb_connection):
