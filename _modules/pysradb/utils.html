@@ -15,46 +15,43 @@
             
         </script>
     
-    <title>pysradb.utils &#8212; pysradb 1.4.2 documentation</title>
-  <script>
+    <title>pysradb.utils &#8212; pysradb 2.0.0-dev0 documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
     document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
     document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
   </script>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="../../_static/styles/theme.css?digest=9b1a4fa89bdd0e95b23b" rel="stylesheet">
-<link href="../../_static/styles/pydata-sphinx-theme.css?digest=9b1a4fa89bdd0e95b23b" rel="stylesheet">
+  <link href="../../_static/styles/theme.css?digest=796348d33e8b1d947c94" rel="stylesheet">
+<link href="../../_static/styles/bootstrap.css?digest=796348d33e8b1d947c94" rel="stylesheet">
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=796348d33e8b1d947c94" rel="stylesheet">
 
   
-  <link rel="stylesheet"
-    href="../../_static/vendor/fontawesome/6.1.2/css/all.min.css">
-  <link rel="preload" as="font" type="font/woff2" crossorigin
-    href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2">
-  <link rel="preload" as="font" type="font/woff2" crossorigin
-    href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2">
+  <link href="../../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=796348d33e8b1d947c94" rel="stylesheet">
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2">
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2">
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2">
 
     <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/tabs.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-dropdown.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/panels-bootstrap.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=9b1a4fa89bdd0e95b23b">
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=796348d33e8b1d947c94">
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=796348d33e8b1d947c94">
 
     <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
     <script src="../../_static/jquery.js"></script>
     <script src="../../_static/underscore.js"></script>
     <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/sphinx_highlight.js"></script>
     <script src="../../_static/tabs.js"></script>
-    <script async="async" src="https://www.googletagmanager.com/gtag/js?id=G-CKQZFCEENZ"></script>
-    <script>
-                    window.dataLayer = window.dataLayer || [];
-                    function gtag(){ dataLayer.push(arguments); }
-                    gtag('js', new Date());
-                    gtag('config', 'G-CKQZFCEENZ');
-                </script>
     <script>DOCUMENTATION_OPTIONS.pagename = '_modules/pysradb/utils';</script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
@@ -64,6 +61,10 @@
   
   
   <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="180" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
 
   
   <input type="checkbox" class="sidebar-toggle" name="__primary" id="__primary">
@@ -79,7 +80,7 @@
     <div class="search-button__search-container">
       
 <form class="bd-search d-flex align-items-center" action="../../search.html" method="get">
-  <i class="icon fas fa-search"></i>
+  <i class="fa-solid fa-magnifying-glass"></i>
   <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
   <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
 </form>
@@ -89,7 +90,7 @@
   
   <nav class="bd-header navbar navbar-expand-lg bd-navbar" id="navbar-main"><div class="bd-header__inner bd-page-width">
   <label class="sidebar-toggle primary-toggle" for="__primary">
-      <span class="fas fa-bars"></span>
+      <span class="fa-solid fa-bars"></span>
   </label>
   <div id="navbar-start">
     
@@ -127,39 +128,39 @@
     </p>
     <ul id="navbar-main-elements" class="navbar-nav">
         
-                <li class="nav-item">
-                    <a class="nav-link" href="../../installation.html">
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../installation.html">
                         Installation
-                    </a>
-                </li>
+                      </a>
+                    </li>
                 
 
-                <li class="nav-item">
-                    <a class="nav-link" href="../../quickstart.html">
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../quickstart.html">
                         Quickstart
-                    </a>
-                </li>
+                      </a>
+                    </li>
                 
 
-                <li class="nav-item">
-                    <a class="nav-link" href="../../cmdline.html">
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../cmdline.html">
                         CLI
-                    </a>
-                </li>
+                      </a>
+                    </li>
                 
 
-                <li class="nav-item">
-                    <a class="nav-link" href="../../python-api-usage.html">
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../python-api-usage.html">
                         Python API
-                    </a>
-                </li>
+                      </a>
+                    </li>
                 
 
-                <li class="nav-item">
-                    <a class="nav-link" href="../../case_studies.html">
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../case_studies.html">
                         Case Studies
-                    </a>
-                </li>
+                      </a>
+                    </li>
                 
             <div class="nav-item dropdown">
                 <button class="btn dropdown-toggle nav-item" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -167,39 +168,39 @@
                 </button>
                 <div class="dropdown-menu">
                     
-                <li class="nav-item">
-                    <a class="nav-link" href="../../commands.html">
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../commands.html">
                         API Documentation
-                    </a>
-                </li>
+                      </a>
+                    </li>
                 
 
-                <li class="nav-item">
-                    <a class="nav-link" href="../../contributing.html">
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../contributing.html">
                         Contributing
-                    </a>
-                </li>
+                      </a>
+                    </li>
                 
 
-                <li class="nav-item">
-                    <a class="nav-link" href="../../authors.html">
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../authors.html">
                         Credits
-                    </a>
-                </li>
+                      </a>
+                    </li>
                 
 
-                <li class="nav-item">
-                    <a class="nav-link" href="../../history.html">
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../history.html">
                         History
-                    </a>
-                </li>
+                      </a>
+                    </li>
                 
 
-                <li class="nav-item">
-                    <a class="nav-link" href="../../modules.html">
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../modules.html">
                         pysradb
-                    </a>
-                </li>
+                      </a>
+                    </li>
                 
                 </div>
             </div>
@@ -211,19 +212,21 @@
     </div>
 
     <div id="navbar-end">
-      <div class="navbar-end-item navbar-end__search-button-container">
-        
-<button class="btn btn-sm navbar-btn search-button search-button__button" title="Search">
-  <i class="fas fa-search"></i>
+      
+        <div class="navbar-end-item navbar-persistent--container">
+          
+<button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-toggle="tooltip">
+  <i class="fa-solid fa-magnifying-glass"></i>
 </button>
-      </div>
+        </div>
+      
       
       <div class="navbar-end-item">
-        <span class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle">
-    <a class="theme-switch" data-mode="light"><i class="fas fa-sun"></i></a>
-    <a class="theme-switch" data-mode="dark"><i class="far fa-moon"></i></a>
-    <a class="theme-switch" data-mode="auto"><i class="fas fa-adjust"></i></a>
-</span>
+        <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+</button>
       </div>
       
       <div class="navbar-end-item">
@@ -235,7 +238,8 @@
           
           
           
-          <a href="https://github.com/saketkc/pysradb" title="GitHub" class="nav-link" rel="noopener" target="_blank"><span><i class="fab fa-github-square"></i></span>
+          
+          <a href="https://github.com/saketkc/pysradb" title="GitHub" class="nav-link" rel="noopener" target="_blank" data-toggle="tooltip"><span><i class="fa-brands fa-square-github"></i></span>
             <label class="sr-only">GitHub</label></a>
         </li>
       </ul>
@@ -246,15 +250,17 @@
 
 
   
-  <div class="search-button-container--mobile">
-<button class="btn btn-sm navbar-btn search-button search-button__button" title="Search">
-  <i class="fas fa-search"></i>
+  
+    <div class="navbar-persistent--mobile">
+<button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-toggle="tooltip">
+  <i class="fa-solid fa-magnifying-glass"></i>
 </button>
-  </div>
+    </div>
+  
 
   
   <label class="sidebar-toggle secondary-toggle" for="__secondary">
-      <span class="fas fa-outdent"></span>
+      <span class="fa-solid fa-outdent"></span>
   </label>
   
 
@@ -280,39 +286,39 @@
     </p>
     <ul id="navbar-main-elements" class="navbar-nav">
         
-                <li class="nav-item">
-                    <a class="nav-link" href="../../installation.html">
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../installation.html">
                         Installation
-                    </a>
-                </li>
+                      </a>
+                    </li>
                 
 
-                <li class="nav-item">
-                    <a class="nav-link" href="../../quickstart.html">
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../quickstart.html">
                         Quickstart
-                    </a>
-                </li>
+                      </a>
+                    </li>
                 
 
-                <li class="nav-item">
-                    <a class="nav-link" href="../../cmdline.html">
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../cmdline.html">
                         CLI
-                    </a>
-                </li>
+                      </a>
+                    </li>
                 
 
-                <li class="nav-item">
-                    <a class="nav-link" href="../../python-api-usage.html">
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../python-api-usage.html">
                         Python API
-                    </a>
-                </li>
+                      </a>
+                    </li>
                 
 
-                <li class="nav-item">
-                    <a class="nav-link" href="../../case_studies.html">
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../case_studies.html">
                         Case Studies
-                    </a>
-                </li>
+                      </a>
+                    </li>
                 
             <div class="nav-item dropdown">
                 <button class="btn dropdown-toggle nav-item" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -320,39 +326,39 @@
                 </button>
                 <div class="dropdown-menu">
                     
-                <li class="nav-item">
-                    <a class="nav-link" href="../../commands.html">
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../commands.html">
                         API Documentation
-                    </a>
-                </li>
+                      </a>
+                    </li>
                 
 
-                <li class="nav-item">
-                    <a class="nav-link" href="../../contributing.html">
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../contributing.html">
                         Contributing
-                    </a>
-                </li>
+                      </a>
+                    </li>
                 
 
-                <li class="nav-item">
-                    <a class="nav-link" href="../../authors.html">
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../authors.html">
                         Credits
-                    </a>
-                </li>
+                      </a>
+                    </li>
                 
 
-                <li class="nav-item">
-                    <a class="nav-link" href="../../history.html">
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../history.html">
                         History
-                    </a>
-                </li>
+                      </a>
+                    </li>
                 
 
-                <li class="nav-item">
-                    <a class="nav-link" href="../../modules.html">
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../modules.html">
                         pysradb
-                    </a>
-                </li>
+                      </a>
+                    </li>
                 
                 </div>
             </div>
@@ -369,11 +375,11 @@
     <div class="sidebar-header-items__end">
       
       <div class="navbar-end-item">
-        <span class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle">
-    <a class="theme-switch" data-mode="light"><i class="fas fa-sun"></i></a>
-    <a class="theme-switch" data-mode="dark"><i class="far fa-moon"></i></a>
-    <a class="theme-switch" data-mode="auto"><i class="fas fa-adjust"></i></a>
-</span>
+        <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+</button>
       </div>
       
       <div class="navbar-end-item">
@@ -385,7 +391,8 @@
           
           
           
-          <a href="https://github.com/saketkc/pysradb" title="GitHub" class="nav-link" rel="noopener" target="_blank"><span><i class="fab fa-github-square"></i></span>
+          
+          <a href="https://github.com/saketkc/pysradb" title="GitHub" class="nav-link" rel="noopener" target="_blank" data-toggle="tooltip"><span><i class="fa-brands fa-square-github"></i></span>
             <label class="sr-only">GitHub</label></a>
         </li>
       </ul>
@@ -403,8 +410,11 @@
     </div>
   </div>
 
+  
+  <div id="rtd-footer-container"></div>
+
       </div>
-      <main class="bd-main">
+      <main id="main-content" class="bd-main">
         
         
         <div class="bd-content">
@@ -442,7 +452,7 @@
 
 
 <div class="viewcode-block" id="path_leaf"><a class="viewcode-back" href="../../pysradb.html#pysradb.utils.path_leaf">[docs]</a><span class="k">def</span> <span class="nf">path_leaf</span><span class="p">(</span><span class="n">path</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Get path&#39;s tail from a filepath.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Get path&#39;s tail from a filepath.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -459,7 +469,7 @@
 
 
 <div class="viewcode-block" id="requests_3_retries"><a class="viewcode-back" href="../../pysradb.html#pysradb.utils.requests_3_retries">[docs]</a><span class="k">def</span> <span class="nf">requests_3_retries</span><span class="p">():</span>
-    <span class="sd">&quot;&quot;&quot;Generates a requests session object that allows 3 retries.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Generates a requests session object that allows 3 retries.</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
@@ -480,7 +490,7 @@
 
 
 <div class="viewcode-block" id="scientific_name_to_taxid"><a class="viewcode-back" href="../../pysradb.html#pysradb.utils.scientific_name_to_taxid">[docs]</a><span class="k">def</span> <span class="nf">scientific_name_to_taxid</span><span class="p">(</span><span class="n">name</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Converts a scientific name to its corresponding taxonomy ID.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Converts a scientific name to its corresponding taxonomy ID.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -510,7 +520,7 @@
 
 
 <div class="viewcode-block" id="unique"><a class="viewcode-back" href="../../pysradb.html#pysradb.utils.unique">[docs]</a><span class="k">def</span> <span class="nf">unique</span><span class="p">(</span><span class="n">sequence</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Get unique elements from a list maintaining the order.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Get unique elements from a list maintaining the order.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -526,7 +536,7 @@
 
 
 <div class="viewcode-block" id="TqdmUpTo"><a class="viewcode-back" href="../../pysradb.html#pysradb.utils.TqdmUpTo">[docs]</a><span class="k">class</span> <span class="nc">TqdmUpTo</span><span class="p">(</span><span class="n">tqdm</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Alternative Class-based version of the above.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Alternative Class-based version of the above.</span>
 <span class="sd">    Provides `update_to(n)` which uses `tqdm.update(delta_n)`.</span>
 <span class="sd">    Inspired by [twine#242](https://github.com/pypa/twine/pull/242),</span>
 <span class="sd">    [here](https://github.com/pypa/twine/commit/42e55e06).</span>
@@ -536,7 +546,7 @@
 <span class="sd">    &quot;&quot;&quot;</span>
 
 <div class="viewcode-block" id="TqdmUpTo.update_to"><a class="viewcode-back" href="../../pysradb.html#pysradb.utils.TqdmUpTo.update_to">[docs]</a>    <span class="k">def</span> <span class="nf">update_to</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">b</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">bsize</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">tsize</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        b  : int, optional</span>
 <span class="sd">            Number of blocks transferred so far [default: 1].</span>
 <span class="sd">        bsize  : int, optional</span>
@@ -550,12 +560,12 @@
 
 
 <span class="k">def</span> <span class="nf">_extract_first_field</span><span class="p">(</span><span class="n">data</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Extract first field from a list of fields.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Extract first field from a list of fields.&quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="nb">next</span><span class="p">(</span><span class="nb">iter</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="o">*</span><span class="n">data</span><span class="p">))))</span>
 
 
 <span class="k">def</span> <span class="nf">_find_aspera_keypath</span><span class="p">(</span><span class="n">aspera_dir</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Locate aspera key.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Locate aspera key.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -577,7 +587,7 @@
 
 
 <div class="viewcode-block" id="mkdir_p"><a class="viewcode-back" href="../../pysradb.html#pysradb.utils.mkdir_p">[docs]</a><span class="k">def</span> <span class="nf">mkdir_p</span><span class="p">(</span><span class="n">path</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Python version mkdir -p</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Python version mkdir -p</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -595,7 +605,7 @@
 
 
 <div class="viewcode-block" id="order_dataframe"><a class="viewcode-back" href="../../pysradb.html#pysradb.utils.order_dataframe">[docs]</a><span class="k">def</span> <span class="nf">order_dataframe</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">columns</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Order a dataframe</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Order a dataframe</span>
 
 <span class="sd">    Order a dataframe by moving the `columns` in the front</span>
 
@@ -612,7 +622,7 @@
 
 
 <span class="k">def</span> <span class="nf">_get_url</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">download_to</span><span class="p">,</span> <span class="n">show_progress</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Download anything at a given url.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Download anything at a given url.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -637,7 +647,7 @@
 
 
 <div class="viewcode-block" id="run_command"><a class="viewcode-back" href="../../pysradb.html#pysradb.utils.run_command">[docs]</a><span class="k">def</span> <span class="nf">run_command</span><span class="p">(</span><span class="n">command</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Run a shell command&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Run a shell command&quot;&quot;&quot;</span>
     <span class="n">process</span> <span class="o">=</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">Popen</span><span class="p">(</span>
         <span class="n">shlex</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">command</span><span class="p">),</span> <span class="n">stdout</span><span class="o">=</span><span class="n">subprocess</span><span class="o">.</span><span class="n">PIPE</span><span class="p">,</span> <span class="n">stderr</span><span class="o">=</span><span class="n">subprocess</span><span class="o">.</span><span class="n">STDOUT</span>
     <span class="p">)</span>
@@ -655,7 +665,7 @@
 
 
 <div class="viewcode-block" id="get_gzip_uncompressed_size"><a class="viewcode-back" href="../../pysradb.html#pysradb.utils.get_gzip_uncompressed_size">[docs]</a><span class="k">def</span> <span class="nf">get_gzip_uncompressed_size</span><span class="p">(</span><span class="n">filepath</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Get uncompressed size of a .gz file</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Get uncompressed size of a .gz file</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -672,7 +682,7 @@
 
 
 <div class="viewcode-block" id="confirm"><a class="viewcode-back" href="../../pysradb.html#pysradb.utils.confirm">[docs]</a><span class="k">def</span> <span class="nf">confirm</span><span class="p">(</span><span class="n">preceeding_text</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Confirm user input.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Confirm user input.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -695,7 +705,7 @@
 
 
 <div class="viewcode-block" id="copyfileobj"><a class="viewcode-back" href="../../pysradb.html#pysradb.utils.copyfileobj">[docs]</a><span class="k">def</span> <span class="nf">copyfileobj</span><span class="p">(</span><span class="n">fsrc</span><span class="p">,</span> <span class="n">fdst</span><span class="p">,</span> <span class="n">bufsize</span><span class="o">=</span><span class="mi">16384</span><span class="p">,</span> <span class="n">filesize</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">desc</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Copy file object with a progress bar.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Copy file object with a progress bar.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -744,6 +754,11 @@
               
 <div class="toc-item">
   
+<div id="searchbox"></div>
+</div>
+
+<div class="toc-item">
+  
 </div>
 
 <div class="toc-item">
@@ -767,7 +782,8 @@
   
     
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script src="../../_static/scripts/pydata-sphinx-theme.js?digest=9b1a4fa89bdd0e95b23b"></script>
+  <script src="../../_static/scripts/bootstrap.js?digest=796348d33e8b1d947c94"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=796348d33e8b1d947c94"></script>
 
   <footer class="bd-footer"><div class="bd-footer__inner container">
   
@@ -782,9 +798,19 @@
   </div>
   
   <div class="footer-item">
+    <p class="theme-version">
+    Built with the
+    <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">
+        PyData Sphinx Theme
+    </a>
+    0.12.0.
+</p>
+  </div>
+  
+  <div class="footer-item">
     
 <p class="sphinx-version">
-Created using <a href="http://sphinx-doc.org/">Sphinx</a> 5.1.1.<br>
+Created using <a href="http://sphinx-doc.org/">Sphinx</a> 5.3.0.<br>
 </p>
 
   </div>

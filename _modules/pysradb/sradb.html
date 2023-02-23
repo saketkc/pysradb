@@ -15,46 +15,43 @@
             
         </script>
     
-    <title>pysradb.sradb &#8212; pysradb 1.4.2 documentation</title>
-  <script>
+    <title>pysradb.sradb &#8212; pysradb 2.0.0-dev0 documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
     document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
     document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
   </script>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="../../_static/styles/theme.css?digest=9b1a4fa89bdd0e95b23b" rel="stylesheet">
-<link href="../../_static/styles/pydata-sphinx-theme.css?digest=9b1a4fa89bdd0e95b23b" rel="stylesheet">
+  <link href="../../_static/styles/theme.css?digest=796348d33e8b1d947c94" rel="stylesheet">
+<link href="../../_static/styles/bootstrap.css?digest=796348d33e8b1d947c94" rel="stylesheet">
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=796348d33e8b1d947c94" rel="stylesheet">
 
   
-  <link rel="stylesheet"
-    href="../../_static/vendor/fontawesome/6.1.2/css/all.min.css">
-  <link rel="preload" as="font" type="font/woff2" crossorigin
-    href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2">
-  <link rel="preload" as="font" type="font/woff2" crossorigin
-    href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2">
+  <link href="../../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=796348d33e8b1d947c94" rel="stylesheet">
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2">
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2">
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2">
 
     <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/tabs.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-dropdown.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/panels-bootstrap.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=9b1a4fa89bdd0e95b23b">
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=796348d33e8b1d947c94">
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=796348d33e8b1d947c94">
 
     <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
     <script src="../../_static/jquery.js"></script>
     <script src="../../_static/underscore.js"></script>
     <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/sphinx_highlight.js"></script>
     <script src="../../_static/tabs.js"></script>
-    <script async="async" src="https://www.googletagmanager.com/gtag/js?id=G-CKQZFCEENZ"></script>
-    <script>
-                    window.dataLayer = window.dataLayer || [];
-                    function gtag(){ dataLayer.push(arguments); }
-                    gtag('js', new Date());
-                    gtag('config', 'G-CKQZFCEENZ');
-                </script>
     <script>DOCUMENTATION_OPTIONS.pagename = '_modules/pysradb/sradb';</script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
@@ -64,6 +61,10 @@
   
   
   <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="180" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
 
   
   <input type="checkbox" class="sidebar-toggle" name="__primary" id="__primary">
@@ -79,7 +80,7 @@
     <div class="search-button__search-container">
       
 <form class="bd-search d-flex align-items-center" action="../../search.html" method="get">
-  <i class="icon fas fa-search"></i>
+  <i class="fa-solid fa-magnifying-glass"></i>
   <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
   <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
 </form>
@@ -89,7 +90,7 @@
   
   <nav class="bd-header navbar navbar-expand-lg bd-navbar" id="navbar-main"><div class="bd-header__inner bd-page-width">
   <label class="sidebar-toggle primary-toggle" for="__primary">
-      <span class="fas fa-bars"></span>
+      <span class="fa-solid fa-bars"></span>
   </label>
   <div id="navbar-start">
     
@@ -127,39 +128,39 @@
     </p>
     <ul id="navbar-main-elements" class="navbar-nav">
         
-                <li class="nav-item">
-                    <a class="nav-link" href="../../installation.html">
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../installation.html">
                         Installation
-                    </a>
-                </li>
+                      </a>
+                    </li>
                 
 
-                <li class="nav-item">
-                    <a class="nav-link" href="../../quickstart.html">
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../quickstart.html">
                         Quickstart
-                    </a>
-                </li>
+                      </a>
+                    </li>
                 
 
-                <li class="nav-item">
-                    <a class="nav-link" href="../../cmdline.html">
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../cmdline.html">
                         CLI
-                    </a>
-                </li>
+                      </a>
+                    </li>
                 
 
-                <li class="nav-item">
-                    <a class="nav-link" href="../../python-api-usage.html">
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../python-api-usage.html">
                         Python API
-                    </a>
-                </li>
+                      </a>
+                    </li>
                 
 
-                <li class="nav-item">
-                    <a class="nav-link" href="../../case_studies.html">
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../case_studies.html">
                         Case Studies
-                    </a>
-                </li>
+                      </a>
+                    </li>
                 
             <div class="nav-item dropdown">
                 <button class="btn dropdown-toggle nav-item" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -167,39 +168,39 @@
                 </button>
                 <div class="dropdown-menu">
                     
-                <li class="nav-item">
-                    <a class="nav-link" href="../../commands.html">
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../commands.html">
                         API Documentation
-                    </a>
-                </li>
+                      </a>
+                    </li>
                 
 
-                <li class="nav-item">
-                    <a class="nav-link" href="../../contributing.html">
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../contributing.html">
                         Contributing
-                    </a>
-                </li>
+                      </a>
+                    </li>
                 
 
-                <li class="nav-item">
-                    <a class="nav-link" href="../../authors.html">
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../authors.html">
                         Credits
-                    </a>
-                </li>
+                      </a>
+                    </li>
                 
 
-                <li class="nav-item">
-                    <a class="nav-link" href="../../history.html">
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../history.html">
                         History
-                    </a>
-                </li>
+                      </a>
+                    </li>
                 
 
-                <li class="nav-item">
-                    <a class="nav-link" href="../../modules.html">
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../modules.html">
                         pysradb
-                    </a>
-                </li>
+                      </a>
+                    </li>
                 
                 </div>
             </div>
@@ -211,19 +212,21 @@
     </div>
 
     <div id="navbar-end">
-      <div class="navbar-end-item navbar-end__search-button-container">
-        
-<button class="btn btn-sm navbar-btn search-button search-button__button" title="Search">
-  <i class="fas fa-search"></i>
+      
+        <div class="navbar-end-item navbar-persistent--container">
+          
+<button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-toggle="tooltip">
+  <i class="fa-solid fa-magnifying-glass"></i>
 </button>
-      </div>
+        </div>
+      
       
       <div class="navbar-end-item">
-        <span class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle">
-    <a class="theme-switch" data-mode="light"><i class="fas fa-sun"></i></a>
-    <a class="theme-switch" data-mode="dark"><i class="far fa-moon"></i></a>
-    <a class="theme-switch" data-mode="auto"><i class="fas fa-adjust"></i></a>
-</span>
+        <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+</button>
       </div>
       
       <div class="navbar-end-item">
@@ -235,7 +238,8 @@
           
           
           
-          <a href="https://github.com/saketkc/pysradb" title="GitHub" class="nav-link" rel="noopener" target="_blank"><span><i class="fab fa-github-square"></i></span>
+          
+          <a href="https://github.com/saketkc/pysradb" title="GitHub" class="nav-link" rel="noopener" target="_blank" data-toggle="tooltip"><span><i class="fa-brands fa-square-github"></i></span>
             <label class="sr-only">GitHub</label></a>
         </li>
       </ul>
@@ -246,15 +250,17 @@
 
 
   
-  <div class="search-button-container--mobile">
-<button class="btn btn-sm navbar-btn search-button search-button__button" title="Search">
-  <i class="fas fa-search"></i>
+  
+    <div class="navbar-persistent--mobile">
+<button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-toggle="tooltip">
+  <i class="fa-solid fa-magnifying-glass"></i>
 </button>
-  </div>
+    </div>
+  
 
   
   <label class="sidebar-toggle secondary-toggle" for="__secondary">
-      <span class="fas fa-outdent"></span>
+      <span class="fa-solid fa-outdent"></span>
   </label>
   
 
@@ -280,39 +286,39 @@
     </p>
     <ul id="navbar-main-elements" class="navbar-nav">
         
-                <li class="nav-item">
-                    <a class="nav-link" href="../../installation.html">
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../installation.html">
                         Installation
-                    </a>
-                </li>
+                      </a>
+                    </li>
                 
 
-                <li class="nav-item">
-                    <a class="nav-link" href="../../quickstart.html">
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../quickstart.html">
                         Quickstart
-                    </a>
-                </li>
+                      </a>
+                    </li>
                 
 
-                <li class="nav-item">
-                    <a class="nav-link" href="../../cmdline.html">
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../cmdline.html">
                         CLI
-                    </a>
-                </li>
+                      </a>
+                    </li>
                 
 
-                <li class="nav-item">
-                    <a class="nav-link" href="../../python-api-usage.html">
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../python-api-usage.html">
                         Python API
-                    </a>
-                </li>
+                      </a>
+                    </li>
                 
 
-                <li class="nav-item">
-                    <a class="nav-link" href="../../case_studies.html">
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../case_studies.html">
                         Case Studies
-                    </a>
-                </li>
+                      </a>
+                    </li>
                 
             <div class="nav-item dropdown">
                 <button class="btn dropdown-toggle nav-item" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -320,39 +326,39 @@
                 </button>
                 <div class="dropdown-menu">
                     
-                <li class="nav-item">
-                    <a class="nav-link" href="../../commands.html">
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../commands.html">
                         API Documentation
-                    </a>
-                </li>
+                      </a>
+                    </li>
                 
 
-                <li class="nav-item">
-                    <a class="nav-link" href="../../contributing.html">
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../contributing.html">
                         Contributing
-                    </a>
-                </li>
+                      </a>
+                    </li>
                 
 
-                <li class="nav-item">
-                    <a class="nav-link" href="../../authors.html">
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../authors.html">
                         Credits
-                    </a>
-                </li>
+                      </a>
+                    </li>
                 
 
-                <li class="nav-item">
-                    <a class="nav-link" href="../../history.html">
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../history.html">
                         History
-                    </a>
-                </li>
+                      </a>
+                    </li>
                 
 
-                <li class="nav-item">
-                    <a class="nav-link" href="../../modules.html">
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../modules.html">
                         pysradb
-                    </a>
-                </li>
+                      </a>
+                    </li>
                 
                 </div>
             </div>
@@ -369,11 +375,11 @@
     <div class="sidebar-header-items__end">
       
       <div class="navbar-end-item">
-        <span class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle">
-    <a class="theme-switch" data-mode="light"><i class="fas fa-sun"></i></a>
-    <a class="theme-switch" data-mode="dark"><i class="far fa-moon"></i></a>
-    <a class="theme-switch" data-mode="auto"><i class="fas fa-adjust"></i></a>
-</span>
+        <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+</button>
       </div>
       
       <div class="navbar-end-item">
@@ -385,7 +391,8 @@
           
           
           
-          <a href="https://github.com/saketkc/pysradb" title="GitHub" class="nav-link" rel="noopener" target="_blank"><span><i class="fab fa-github-square"></i></span>
+          
+          <a href="https://github.com/saketkc/pysradb" title="GitHub" class="nav-link" rel="noopener" target="_blank" data-toggle="tooltip"><span><i class="fa-brands fa-square-github"></i></span>
             <label class="sr-only">GitHub</label></a>
         </li>
       </ul>
@@ -403,8 +410,11 @@
     </div>
   </div>
 
+  
+  <div id="rtd-footer-container"></div>
+
       </div>
-      <main class="bd-main">
+      <main id="main-content" class="bd-main">
         
         
         <div class="bd-content">
@@ -490,7 +500,6 @@
         <span class="n">srr_location</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">srx_dir</span><span class="p">,</span> <span class="n">download_filename</span><span class="p">)</span>
     <span class="n">mkdir_p</span><span class="p">(</span><span class="n">srx_dir</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">use_ascp</span><span class="p">:</span>
-
         <span class="n">ascp</span> <span class="o">=</span> <span class="n">ASCP_CMD_PREFIX</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;ascp&quot;</span><span class="p">,</span> <span class="n">ascp_bin</span><span class="p">)</span>
         <span class="n">ena_cols</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">record</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span> <span class="k">if</span> <span class="s2">&quot;ena_fastq_ftp&quot;</span> <span class="ow">in</span> <span class="n">x</span><span class="p">]</span>
         <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">ena_cols</span><span class="p">:</span>
@@ -532,7 +541,7 @@
 
 
 <span class="k">def</span> <span class="nf">_listify</span><span class="p">(</span><span class="n">ids</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;convert string to list of unit length&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;convert string to list of unit length&quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">ids</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
         <span class="n">ids</span> <span class="o">=</span> <span class="p">[</span><span class="n">ids</span><span class="p">]</span>
     <span class="k">return</span> <span class="n">ids</span>
@@ -547,7 +556,7 @@
 
 
 <div class="viewcode-block" id="download_sradb_file"><a class="viewcode-back" href="../../pysradb.html#pysradb.sradb.download_sradb_file">[docs]</a><span class="k">def</span> <span class="nf">download_sradb_file</span><span class="p">(</span><span class="n">download_dir</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">(),</span> <span class="n">overwrite</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">keep_gz</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Download SRAdb.sqlite file.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Download SRAdb.sqlite file.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -611,7 +620,7 @@
 
 
 <span class="k">def</span> <span class="nf">_verify_srametadb</span><span class="p">(</span><span class="n">filepath</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Check if supplied SQLite is valid&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Check if supplied SQLite is valid&quot;&quot;&quot;</span>
     <span class="k">try</span><span class="p">:</span>
         <span class="n">db</span> <span class="o">=</span> <span class="n">BASEdb</span><span class="p">(</span><span class="n">filepath</span><span class="p">)</span>
     <span class="k">except</span><span class="p">:</span>
@@ -632,7 +641,7 @@
 
 <div class="viewcode-block" id="SRAdb"><a class="viewcode-back" href="../../pysradb.html#pysradb.sradb.SRAdb">[docs]</a><span class="k">class</span> <span class="nc">SRAdb</span><span class="p">(</span><span class="n">BASEdb</span><span class="p">):</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sqlite_file</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Initialize SRAdb.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialize SRAdb.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -696,7 +705,7 @@
         <span class="n">output_read_lengths</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
         <span class="n">acc_is_searchstr</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
     <span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Get metadata for the provided SRA accession.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get metadata for the provided SRA accession.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -808,7 +817,7 @@
         <span class="n">detailed</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
         <span class="n">expand_sample_attributes</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
     <span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Convert SRP to SRX/SRR.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Convert SRP to SRX/SRR.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -846,7 +855,7 @@
         <span class="n">detailed</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
         <span class="n">expand_sample_attributes</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
     <span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Convert SRP to SRS.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Convert SRP to SRS.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -884,7 +893,7 @@
         <span class="n">detailed</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
         <span class="n">expand_sample_attributes</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
     <span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Convert SRP to SRR.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Convert SRP to SRR.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -921,7 +930,7 @@
         <span class="n">detailed</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
         <span class="n">expand_sample_attributes</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
     <span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Convert SRP to GSE</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Convert SRP to GSE</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -957,7 +966,7 @@
         <span class="n">detailed</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
         <span class="n">expand_sample_attributes</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
     <span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Convert SRP to GSE</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Convert SRP to GSE</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -992,7 +1001,7 @@
         <span class="n">detailed</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
         <span class="n">expand_sample_attributes</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
     <span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Convert GSM to SRP.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Convert GSM to SRP.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -1030,7 +1039,7 @@
         <span class="n">detailed</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
         <span class="n">expand_sample_attributes</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
     <span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Convert GSMs to SRR.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Convert GSMs to SRR.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -1072,7 +1081,7 @@
         <span class="n">detailed</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
         <span class="n">expand_sample_attributes</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
     <span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Convert GSM to SRS.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Convert GSM to SRS.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -1111,7 +1120,7 @@
         <span class="n">detailed</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
         <span class="n">expand_sample_attributes</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
     <span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Convert GSM to SRX.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Convert GSM to SRX.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -1149,7 +1158,7 @@
         <span class="n">detailed</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
         <span class="n">expand_sample_attributes</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
     <span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Convert GSE to GSM</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Convert GSE to GSM</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -1185,7 +1194,7 @@
         <span class="n">detailed</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
         <span class="n">expand_sample_attributes</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
     <span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Convert GSM to GSE</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Convert GSM to GSE</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -1221,7 +1230,7 @@
         <span class="n">detailed</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
         <span class="n">expand_sample_attributes</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
     <span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Convert SRR to SRP.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Convert SRR to SRP.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -1259,7 +1268,7 @@
         <span class="n">detailed</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
         <span class="n">expand_sample_attributes</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
     <span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Convert SRR to SRS.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Convert SRR to SRS.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -1296,7 +1305,7 @@
         <span class="n">detailed</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
         <span class="n">expand_sample_attributes</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
     <span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Convert SRX to SRS.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Convert SRX to SRS.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -1333,7 +1342,7 @@
         <span class="n">detailed</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
         <span class="n">expand_sample_attributes</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
     <span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Convert SRS to GSM.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Convert SRS to GSM.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -1370,7 +1379,7 @@
         <span class="n">detailed</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
         <span class="n">expand_sample_attributes</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
     <span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Convert SRS to SRX.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Convert SRS to SRX.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -1407,7 +1416,7 @@
         <span class="n">detailed</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
         <span class="n">expand_sample_attributes</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
     <span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Convert SRR to SRX.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Convert SRR to SRX.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -1449,7 +1458,7 @@
         <span class="n">detailed</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
         <span class="n">expand_sample_attributes</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
     <span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Convert SRXs to SRP.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Convert SRXs to SRP.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -1490,7 +1499,7 @@
         <span class="n">detailed</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
         <span class="n">expand_sample_attributes</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
     <span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Convert SRR to GSM</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Convert SRR to GSM</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -1526,7 +1535,7 @@
         <span class="n">detailed</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
         <span class="n">expand_sample_attributes</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
     <span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Convert SRXs to SRR/SRP.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Convert SRXs to SRR/SRP.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -1575,7 +1584,7 @@
         <span class="n">expand_sample_attributes</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
         <span class="n">output_read_lengths</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
     <span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Search SRA for any search term.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Search SRA for any search term.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -1602,7 +1611,7 @@
         <span class="p">)</span></div>
 
 <div class="viewcode-block" id="SRAdb.search_by_expt_id"><a class="viewcode-back" href="../../pysradb.html#pysradb.sradb.SRAdb.search_by_expt_id">[docs]</a>    <span class="k">def</span> <span class="nf">search_by_expt_id</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">srx</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Search for a SRX/GSM id in the experiments.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Search for a SRX/GSM id in the experiments.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -1630,7 +1639,7 @@
 
     <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">_srapath_url</span><span class="p">(</span><span class="n">sacc</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Get srapath URL for a SRP/SRR.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get srapath URL for a SRP/SRR.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -1659,7 +1668,7 @@
 
     <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">_srapath_url_srr</span><span class="p">(</span><span class="n">srr</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Get srapath URL for a SRR.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get srapath URL for a SRR.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -1698,7 +1707,7 @@
         <span class="k">return</span> <span class="kc">None</span>
 
     <span class="k">def</span> <span class="nf">_format_dataframe_for_download</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">df</span><span class="p">,</span> <span class="n">url_column</span><span class="p">,</span> <span class="n">use_ascp</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Format a dataframe as input for pysradb download.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Format a dataframe as input for pysradb download.</span>
 
 <span class="sd">        This method formats the input dataframe into the sradb.download</span>
 <span class="sd">        method.</span>
@@ -1872,7 +1881,7 @@
         <span class="n">skip_confirmation</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
         <span class="n">threads</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
     <span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Download SRA files.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Download SRA files.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -1997,6 +2006,11 @@
               
 <div class="toc-item">
   
+<div id="searchbox"></div>
+</div>
+
+<div class="toc-item">
+  
 </div>
 
 <div class="toc-item">
@@ -2020,7 +2034,8 @@
   
     
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script src="../../_static/scripts/pydata-sphinx-theme.js?digest=9b1a4fa89bdd0e95b23b"></script>
+  <script src="../../_static/scripts/bootstrap.js?digest=796348d33e8b1d947c94"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=796348d33e8b1d947c94"></script>
 
   <footer class="bd-footer"><div class="bd-footer__inner container">
   
@@ -2035,9 +2050,19 @@
   </div>
   
   <div class="footer-item">
+    <p class="theme-version">
+    Built with the
+    <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">
+        PyData Sphinx Theme
+    </a>
+    0.12.0.
+</p>
+  </div>
+  
+  <div class="footer-item">
     
 <p class="sphinx-version">
-Created using <a href="http://sphinx-doc.org/">Sphinx</a> 5.1.1.<br>
+Created using <a href="http://sphinx-doc.org/">Sphinx</a> 5.3.0.<br>
 </p>
 
   </div>

@@ -16,45 +16,42 @@
             
         </script>
     
-    <title>srr-to-srx &#8212; pysradb 1.4.2 documentation</title>
-  <script>
+    <title>srr-to-srx &#8212; pysradb 2.0.0-dev0 documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
     document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
     document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
   </script>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="../_static/styles/theme.css?digest=9b1a4fa89bdd0e95b23b" rel="stylesheet">
-<link href="../_static/styles/pydata-sphinx-theme.css?digest=9b1a4fa89bdd0e95b23b" rel="stylesheet">
+  <link href="../_static/styles/theme.css?digest=796348d33e8b1d947c94" rel="stylesheet">
+<link href="../_static/styles/bootstrap.css?digest=796348d33e8b1d947c94" rel="stylesheet">
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=796348d33e8b1d947c94" rel="stylesheet">
 
   
-  <link rel="stylesheet"
-    href="../_static/vendor/fontawesome/6.1.2/css/all.min.css">
-  <link rel="preload" as="font" type="font/woff2" crossorigin
-    href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2">
-  <link rel="preload" as="font" type="font/woff2" crossorigin
-    href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2">
+  <link href="../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=796348d33e8b1d947c94" rel="stylesheet">
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2">
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2">
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2">
 
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../_static/graphviz.css" />
     <link rel="stylesheet" type="text/css" href="../_static/tabs.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/sphinx-dropdown.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/panels-bootstrap.min.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=9b1a4fa89bdd0e95b23b">
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=796348d33e8b1d947c94">
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=796348d33e8b1d947c94">
 
     <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
     <script src="../_static/jquery.js"></script>
     <script src="../_static/underscore.js"></script>
     <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="../_static/doctools.js"></script>
-    <script async="async" src="https://www.googletagmanager.com/gtag/js?id=G-CKQZFCEENZ"></script>
-    <script>
-                    window.dataLayer = window.dataLayer || [];
-                    function gtag(){ dataLayer.push(arguments); }
-                    gtag('js', new Date());
-                    gtag('config', 'G-CKQZFCEENZ');
-                </script>
+    <script src="../_static/sphinx_highlight.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="srs-to-srx" href="srs-to-srx.html" />
@@ -65,6 +62,10 @@
   
   
   <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="180" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
 
   
   <input type="checkbox" class="sidebar-toggle" name="__primary" id="__primary">
@@ -80,7 +81,7 @@
     <div class="search-button__search-container">
       
 <form class="bd-search d-flex align-items-center" action="../search.html" method="get">
-  <i class="icon fas fa-search"></i>
+  <i class="fa-solid fa-magnifying-glass"></i>
   <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
   <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
 </form>
@@ -90,7 +91,7 @@
   
   <nav class="bd-header navbar navbar-expand-lg bd-navbar" id="navbar-main"><div class="bd-header__inner bd-page-width">
   <label class="sidebar-toggle primary-toggle" for="__primary">
-      <span class="fas fa-bars"></span>
+      <span class="fa-solid fa-bars"></span>
   </label>
   <div id="navbar-start">
     
@@ -128,39 +129,39 @@
     </p>
     <ul id="navbar-main-elements" class="navbar-nav">
         
-                <li class="nav-item">
-                    <a class="nav-link" href="../installation.html">
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../installation.html">
                         Installation
-                    </a>
-                </li>
+                      </a>
+                    </li>
                 
 
-                <li class="nav-item current active">
-                    <a class="nav-link" href="../quickstart.html">
+                    <li class="nav-item current active">
+                      <a class="nav-link nav-internal" href="../quickstart.html">
                         Quickstart
-                    </a>
-                </li>
+                      </a>
+                    </li>
                 
 
-                <li class="nav-item">
-                    <a class="nav-link" href="../cmdline.html">
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../cmdline.html">
                         CLI
-                    </a>
-                </li>
+                      </a>
+                    </li>
                 
 
-                <li class="nav-item">
-                    <a class="nav-link" href="../python-api-usage.html">
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../python-api-usage.html">
                         Python API
-                    </a>
-                </li>
+                      </a>
+                    </li>
                 
 
-                <li class="nav-item">
-                    <a class="nav-link" href="../case_studies.html">
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../case_studies.html">
                         Case Studies
-                    </a>
-                </li>
+                      </a>
+                    </li>
                 
             <div class="nav-item dropdown">
                 <button class="btn dropdown-toggle nav-item" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -168,39 +169,39 @@
                 </button>
                 <div class="dropdown-menu">
                     
-                <li class="nav-item">
-                    <a class="nav-link" href="../commands.html">
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../commands.html">
                         API Documentation
-                    </a>
-                </li>
+                      </a>
+                    </li>
                 
 
-                <li class="nav-item">
-                    <a class="nav-link" href="../contributing.html">
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../contributing.html">
                         Contributing
-                    </a>
-                </li>
+                      </a>
+                    </li>
                 
 
-                <li class="nav-item">
-                    <a class="nav-link" href="../authors.html">
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../authors.html">
                         Credits
-                    </a>
-                </li>
+                      </a>
+                    </li>
                 
 
-                <li class="nav-item">
-                    <a class="nav-link" href="../history.html">
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../history.html">
                         History
-                    </a>
-                </li>
+                      </a>
+                    </li>
                 
 
-                <li class="nav-item">
-                    <a class="nav-link" href="../modules.html">
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../modules.html">
                         pysradb
-                    </a>
-                </li>
+                      </a>
+                    </li>
                 
                 </div>
             </div>
@@ -212,19 +213,21 @@
     </div>
 
     <div id="navbar-end">
-      <div class="navbar-end-item navbar-end__search-button-container">
-        
-<button class="btn btn-sm navbar-btn search-button search-button__button" title="Search">
-  <i class="fas fa-search"></i>
+      
+        <div class="navbar-end-item navbar-persistent--container">
+          
+<button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-toggle="tooltip">
+  <i class="fa-solid fa-magnifying-glass"></i>
 </button>
-      </div>
+        </div>
+      
       
       <div class="navbar-end-item">
-        <span class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle">
-    <a class="theme-switch" data-mode="light"><i class="fas fa-sun"></i></a>
-    <a class="theme-switch" data-mode="dark"><i class="far fa-moon"></i></a>
-    <a class="theme-switch" data-mode="auto"><i class="fas fa-adjust"></i></a>
-</span>
+        <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+</button>
       </div>
       
       <div class="navbar-end-item">
@@ -236,7 +239,8 @@
           
           
           
-          <a href="https://github.com/saketkc/pysradb" title="GitHub" class="nav-link" rel="noopener" target="_blank"><span><i class="fab fa-github-square"></i></span>
+          
+          <a href="https://github.com/saketkc/pysradb" title="GitHub" class="nav-link" rel="noopener" target="_blank" data-toggle="tooltip"><span><i class="fa-brands fa-square-github"></i></span>
             <label class="sr-only">GitHub</label></a>
         </li>
       </ul>
@@ -247,15 +251,17 @@
 
 
   
-  <div class="search-button-container--mobile">
-<button class="btn btn-sm navbar-btn search-button search-button__button" title="Search">
-  <i class="fas fa-search"></i>
+  
+    <div class="navbar-persistent--mobile">
+<button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-toggle="tooltip">
+  <i class="fa-solid fa-magnifying-glass"></i>
 </button>
-  </div>
+    </div>
+  
 
   
   <label class="sidebar-toggle secondary-toggle" for="__secondary">
-      <span class="fas fa-outdent"></span>
+      <span class="fa-solid fa-outdent"></span>
   </label>
   
 
@@ -281,39 +287,39 @@
     </p>
     <ul id="navbar-main-elements" class="navbar-nav">
         
-                <li class="nav-item">
-                    <a class="nav-link" href="../installation.html">
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../installation.html">
                         Installation
-                    </a>
-                </li>
+                      </a>
+                    </li>
                 
 
-                <li class="nav-item current active">
-                    <a class="nav-link" href="../quickstart.html">
+                    <li class="nav-item current active">
+                      <a class="nav-link nav-internal" href="../quickstart.html">
                         Quickstart
-                    </a>
-                </li>
+                      </a>
+                    </li>
                 
 
-                <li class="nav-item">
-                    <a class="nav-link" href="../cmdline.html">
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../cmdline.html">
                         CLI
-                    </a>
-                </li>
+                      </a>
+                    </li>
                 
 
-                <li class="nav-item">
-                    <a class="nav-link" href="../python-api-usage.html">
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../python-api-usage.html">
                         Python API
-                    </a>
-                </li>
+                      </a>
+                    </li>
                 
 
-                <li class="nav-item">
-                    <a class="nav-link" href="../case_studies.html">
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../case_studies.html">
                         Case Studies
-                    </a>
-                </li>
+                      </a>
+                    </li>
                 
             <div class="nav-item dropdown">
                 <button class="btn dropdown-toggle nav-item" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -321,39 +327,39 @@
                 </button>
                 <div class="dropdown-menu">
                     
-                <li class="nav-item">
-                    <a class="nav-link" href="../commands.html">
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../commands.html">
                         API Documentation
-                    </a>
-                </li>
+                      </a>
+                    </li>
                 
 
-                <li class="nav-item">
-                    <a class="nav-link" href="../contributing.html">
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../contributing.html">
                         Contributing
-                    </a>
-                </li>
+                      </a>
+                    </li>
                 
 
-                <li class="nav-item">
-                    <a class="nav-link" href="../authors.html">
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../authors.html">
                         Credits
-                    </a>
-                </li>
+                      </a>
+                    </li>
                 
 
-                <li class="nav-item">
-                    <a class="nav-link" href="../history.html">
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../history.html">
                         History
-                    </a>
-                </li>
+                      </a>
+                    </li>
                 
 
-                <li class="nav-item">
-                    <a class="nav-link" href="../modules.html">
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../modules.html">
                         pysradb
-                    </a>
-                </li>
+                      </a>
+                    </li>
                 
                 </div>
             </div>
@@ -370,11 +376,11 @@
     <div class="sidebar-header-items__end">
       
       <div class="navbar-end-item">
-        <span class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle">
-    <a class="theme-switch" data-mode="light"><i class="fas fa-sun"></i></a>
-    <a class="theme-switch" data-mode="dark"><i class="far fa-moon"></i></a>
-    <a class="theme-switch" data-mode="auto"><i class="fas fa-adjust"></i></a>
-</span>
+        <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+</button>
       </div>
       
       <div class="navbar-end-item">
@@ -386,7 +392,8 @@
           
           
           
-          <a href="https://github.com/saketkc/pysradb" title="GitHub" class="nav-link" rel="noopener" target="_blank"><span><i class="fab fa-github-square"></i></span>
+          
+          <a href="https://github.com/saketkc/pysradb" title="GitHub" class="nav-link" rel="noopener" target="_blank" data-toggle="tooltip"><span><i class="fa-brands fa-square-github"></i></span>
             <label class="sr-only">GitHub</label></a>
         </li>
       </ul>
@@ -404,76 +411,20 @@
   </p>
   <div class="bd-toc-item navbar-nav">
     <ul class="current nav bd-sidenav">
- <li class="toctree-l1">
-  <a class="reference internal" href="download.html">
-   download
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="metadata.html">
-   metadata
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="search.html">
-   Metadata Search
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="gse-to-gsm.html">
-   gse-to-gsm
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="gse-to-srp.html">
-   gse-to-srp
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="srp-to-gse.html">
-   srp-to-gse
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="srp-to-srr.html">
-   srp-to-srr
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="srp-to-srs.html">
-   srp-to-srs
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="srp-to-srx.html">
-   srp-to-srx
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="srr-to-srs.html">
-   srr-to-srs
-  </a>
- </li>
- <li class="toctree-l1 current active">
-  <a class="current reference internal" href="#">
-   srr-to-srx
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="srs-to-srx.html">
-   srs-to-srx
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="srx-to-srr.html">
-   srx-to-srr
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="srx-to-srs.html">
-   srx-to-srs
-  </a>
- </li>
+<li class="toctree-l1"><a class="reference internal" href="download.html">download</a></li>
+<li class="toctree-l1"><a class="reference internal" href="metadata.html">metadata</a></li>
+<li class="toctree-l1"><a class="reference internal" href="search.html">Metadata Search</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gse-to-gsm.html">gse-to-gsm</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gse-to-srp.html">gse-to-srp</a></li>
+<li class="toctree-l1"><a class="reference internal" href="srp-to-gse.html">srp-to-gse</a></li>
+<li class="toctree-l1"><a class="reference internal" href="srp-to-srr.html">srp-to-srr</a></li>
+<li class="toctree-l1"><a class="reference internal" href="srp-to-srs.html">srp-to-srs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="srp-to-srx.html">srp-to-srx</a></li>
+<li class="toctree-l1"><a class="reference internal" href="srr-to-srs.html">srr-to-srs</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">srr-to-srx</a></li>
+<li class="toctree-l1"><a class="reference internal" href="srs-to-srx.html">srs-to-srx</a></li>
+<li class="toctree-l1"><a class="reference internal" href="srx-to-srr.html">srx-to-srr</a></li>
+<li class="toctree-l1"><a class="reference internal" href="srx-to-srs.html">srx-to-srs</a></li>
 </ul>
 
   </div>
@@ -488,8 +439,11 @@
     </div>
   </div>
 
+  
+  <div id="rtd-footer-container"></div>
+
       </div>
-      <main class="bd-main">
+      <main id="main-content" class="bd-main">
         
         
         <div class="bd-content">
@@ -562,7 +516,7 @@ using the <code class="docutils literal notranslate"><span class="pre">--saveto<
                 <!-- Previous / next buttons -->
 <div class='prev-next-area'>
   <a class='left-prev' id="prev-link" href="srr-to-srs.html" title="previous page">
-      <i class="fas fa-angle-left"></i>
+      <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
           <p class="prev-next-subtitle">previous</p>
           <p class="prev-next-title">srr-to-srs</p>
@@ -573,7 +527,7 @@ using the <code class="docutils literal notranslate"><span class="pre">--saveto<
       <p class="prev-next-subtitle">next</p>
       <p class="prev-next-title">srs-to-srx</p>
   </div>
-  <i class="fas fa-angle-right"></i>
+  <i class="fa-solid fa-angle-right"></i>
   </a>
 </div>
             </footer>
@@ -587,7 +541,7 @@ using the <code class="docutils literal notranslate"><span class="pre">--saveto<
 <div class="toc-item">
   
 <div class="tocsection onthispage">
-    <i class="fas fa-list"></i> On this page
+    <i class="fa-solid fa-list"></i> On this page
 </div>
 <nav id="bd-toc-nav" class="page-toc">
     <ul class="visible nav section-nav flex-column">
@@ -615,13 +569,18 @@ using the <code class="docutils literal notranslate"><span class="pre">--saveto<
 
 <div class="toc-item">
   
+<div id="searchbox"></div>
+</div>
+
+<div class="toc-item">
+  
 </div>
 
 <div class="toc-item">
   
 <div class="tocsection sourcelink">
     <a href="../_sources/commands/srr-to-srx.rst.txt">
-        <i class="fas fa-file-alt"></i> Show Source
+        <i class="fa-solid fa-file-lines"></i> Show Source
     </a>
 </div>
 
@@ -644,7 +603,8 @@ using the <code class="docutils literal notranslate"><span class="pre">--saveto<
   
     
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script src="../_static/scripts/pydata-sphinx-theme.js?digest=9b1a4fa89bdd0e95b23b"></script>
+  <script src="../_static/scripts/bootstrap.js?digest=796348d33e8b1d947c94"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=796348d33e8b1d947c94"></script>
 
   <footer class="bd-footer"><div class="bd-footer__inner container">
   
@@ -659,9 +619,19 @@ using the <code class="docutils literal notranslate"><span class="pre">--saveto<
   </div>
   
   <div class="footer-item">
+    <p class="theme-version">
+    Built with the
+    <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">
+        PyData Sphinx Theme
+    </a>
+    0.12.0.
+</p>
+  </div>
+  
+  <div class="footer-item">
     
 <p class="sphinx-version">
-Created using <a href="http://sphinx-doc.org/">Sphinx</a> 5.1.1.<br>
+Created using <a href="http://sphinx-doc.org/">Sphinx</a> 5.3.0.<br>
 </p>
 
   </div>

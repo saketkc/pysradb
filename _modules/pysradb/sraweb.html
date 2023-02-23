@@ -15,46 +15,43 @@
             
         </script>
     
-    <title>pysradb.sraweb &#8212; pysradb 1.4.2 documentation</title>
-  <script>
+    <title>pysradb.sraweb &#8212; pysradb 2.0.0-dev0 documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
     document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
     document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
   </script>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="../../_static/styles/theme.css?digest=9b1a4fa89bdd0e95b23b" rel="stylesheet">
-<link href="../../_static/styles/pydata-sphinx-theme.css?digest=9b1a4fa89bdd0e95b23b" rel="stylesheet">
+  <link href="../../_static/styles/theme.css?digest=796348d33e8b1d947c94" rel="stylesheet">
+<link href="../../_static/styles/bootstrap.css?digest=796348d33e8b1d947c94" rel="stylesheet">
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=796348d33e8b1d947c94" rel="stylesheet">
 
   
-  <link rel="stylesheet"
-    href="../../_static/vendor/fontawesome/6.1.2/css/all.min.css">
-  <link rel="preload" as="font" type="font/woff2" crossorigin
-    href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2">
-  <link rel="preload" as="font" type="font/woff2" crossorigin
-    href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2">
+  <link href="../../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=796348d33e8b1d947c94" rel="stylesheet">
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2">
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2">
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2">
 
     <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/tabs.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-dropdown.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/panels-bootstrap.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=9b1a4fa89bdd0e95b23b">
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=796348d33e8b1d947c94">
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=796348d33e8b1d947c94">
 
     <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
     <script src="../../_static/jquery.js"></script>
     <script src="../../_static/underscore.js"></script>
     <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/sphinx_highlight.js"></script>
     <script src="../../_static/tabs.js"></script>
-    <script async="async" src="https://www.googletagmanager.com/gtag/js?id=G-CKQZFCEENZ"></script>
-    <script>
-                    window.dataLayer = window.dataLayer || [];
-                    function gtag(){ dataLayer.push(arguments); }
-                    gtag('js', new Date());
-                    gtag('config', 'G-CKQZFCEENZ');
-                </script>
     <script>DOCUMENTATION_OPTIONS.pagename = '_modules/pysradb/sraweb';</script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
@@ -64,6 +61,10 @@
   
   
   <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="180" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
 
   
   <input type="checkbox" class="sidebar-toggle" name="__primary" id="__primary">
@@ -79,7 +80,7 @@
     <div class="search-button__search-container">
       
 <form class="bd-search d-flex align-items-center" action="../../search.html" method="get">
-  <i class="icon fas fa-search"></i>
+  <i class="fa-solid fa-magnifying-glass"></i>
   <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
   <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
 </form>
@@ -89,7 +90,7 @@
   
   <nav class="bd-header navbar navbar-expand-lg bd-navbar" id="navbar-main"><div class="bd-header__inner bd-page-width">
   <label class="sidebar-toggle primary-toggle" for="__primary">
-      <span class="fas fa-bars"></span>
+      <span class="fa-solid fa-bars"></span>
   </label>
   <div id="navbar-start">
     
@@ -127,39 +128,39 @@
     </p>
     <ul id="navbar-main-elements" class="navbar-nav">
         
-                <li class="nav-item">
-                    <a class="nav-link" href="../../installation.html">
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../installation.html">
                         Installation
-                    </a>
-                </li>
+                      </a>
+                    </li>
                 
 
-                <li class="nav-item">
-                    <a class="nav-link" href="../../quickstart.html">
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../quickstart.html">
                         Quickstart
-                    </a>
-                </li>
+                      </a>
+                    </li>
                 
 
-                <li class="nav-item">
-                    <a class="nav-link" href="../../cmdline.html">
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../cmdline.html">
                         CLI
-                    </a>
-                </li>
+                      </a>
+                    </li>
                 
 
-                <li class="nav-item">
-                    <a class="nav-link" href="../../python-api-usage.html">
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../python-api-usage.html">
                         Python API
-                    </a>
-                </li>
+                      </a>
+                    </li>
                 
 
-                <li class="nav-item">
-                    <a class="nav-link" href="../../case_studies.html">
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../case_studies.html">
                         Case Studies
-                    </a>
-                </li>
+                      </a>
+                    </li>
                 
             <div class="nav-item dropdown">
                 <button class="btn dropdown-toggle nav-item" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -167,39 +168,39 @@
                 </button>
                 <div class="dropdown-menu">
                     
-                <li class="nav-item">
-                    <a class="nav-link" href="../../commands.html">
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../commands.html">
                         API Documentation
-                    </a>
-                </li>
+                      </a>
+                    </li>
                 
 
-                <li class="nav-item">
-                    <a class="nav-link" href="../../contributing.html">
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../contributing.html">
                         Contributing
-                    </a>
-                </li>
+                      </a>
+                    </li>
                 
 
-                <li class="nav-item">
-                    <a class="nav-link" href="../../authors.html">
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../authors.html">
                         Credits
-                    </a>
-                </li>
+                      </a>
+                    </li>
                 
 
-                <li class="nav-item">
-                    <a class="nav-link" href="../../history.html">
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../history.html">
                         History
-                    </a>
-                </li>
+                      </a>
+                    </li>
                 
 
-                <li class="nav-item">
-                    <a class="nav-link" href="../../modules.html">
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../modules.html">
                         pysradb
-                    </a>
-                </li>
+                      </a>
+                    </li>
                 
                 </div>
             </div>
@@ -211,19 +212,21 @@
     </div>
 
     <div id="navbar-end">
-      <div class="navbar-end-item navbar-end__search-button-container">
-        
-<button class="btn btn-sm navbar-btn search-button search-button__button" title="Search">
-  <i class="fas fa-search"></i>
+      
+        <div class="navbar-end-item navbar-persistent--container">
+          
+<button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-toggle="tooltip">
+  <i class="fa-solid fa-magnifying-glass"></i>
 </button>
-      </div>
+        </div>
+      
       
       <div class="navbar-end-item">
-        <span class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle">
-    <a class="theme-switch" data-mode="light"><i class="fas fa-sun"></i></a>
-    <a class="theme-switch" data-mode="dark"><i class="far fa-moon"></i></a>
-    <a class="theme-switch" data-mode="auto"><i class="fas fa-adjust"></i></a>
-</span>
+        <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+</button>
       </div>
       
       <div class="navbar-end-item">
@@ -235,7 +238,8 @@
           
           
           
-          <a href="https://github.com/saketkc/pysradb" title="GitHub" class="nav-link" rel="noopener" target="_blank"><span><i class="fab fa-github-square"></i></span>
+          
+          <a href="https://github.com/saketkc/pysradb" title="GitHub" class="nav-link" rel="noopener" target="_blank" data-toggle="tooltip"><span><i class="fa-brands fa-square-github"></i></span>
             <label class="sr-only">GitHub</label></a>
         </li>
       </ul>
@@ -246,15 +250,17 @@
 
 
   
-  <div class="search-button-container--mobile">
-<button class="btn btn-sm navbar-btn search-button search-button__button" title="Search">
-  <i class="fas fa-search"></i>
+  
+    <div class="navbar-persistent--mobile">
+<button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-toggle="tooltip">
+  <i class="fa-solid fa-magnifying-glass"></i>
 </button>
-  </div>
+    </div>
+  
 
   
   <label class="sidebar-toggle secondary-toggle" for="__secondary">
-      <span class="fas fa-outdent"></span>
+      <span class="fa-solid fa-outdent"></span>
   </label>
   
 
@@ -280,39 +286,39 @@
     </p>
     <ul id="navbar-main-elements" class="navbar-nav">
         
-                <li class="nav-item">
-                    <a class="nav-link" href="../../installation.html">
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../installation.html">
                         Installation
-                    </a>
-                </li>
+                      </a>
+                    </li>
                 
 
-                <li class="nav-item">
-                    <a class="nav-link" href="../../quickstart.html">
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../quickstart.html">
                         Quickstart
-                    </a>
-                </li>
+                      </a>
+                    </li>
                 
 
-                <li class="nav-item">
-                    <a class="nav-link" href="../../cmdline.html">
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../cmdline.html">
                         CLI
-                    </a>
-                </li>
+                      </a>
+                    </li>
                 
 
-                <li class="nav-item">
-                    <a class="nav-link" href="../../python-api-usage.html">
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../python-api-usage.html">
                         Python API
-                    </a>
-                </li>
+                      </a>
+                    </li>
                 
 
-                <li class="nav-item">
-                    <a class="nav-link" href="../../case_studies.html">
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../case_studies.html">
                         Case Studies
-                    </a>
-                </li>
+                      </a>
+                    </li>
                 
             <div class="nav-item dropdown">
                 <button class="btn dropdown-toggle nav-item" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -320,39 +326,39 @@
                 </button>
                 <div class="dropdown-menu">
                     
-                <li class="nav-item">
-                    <a class="nav-link" href="../../commands.html">
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../commands.html">
                         API Documentation
-                    </a>
-                </li>
+                      </a>
+                    </li>
                 
 
-                <li class="nav-item">
-                    <a class="nav-link" href="../../contributing.html">
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../contributing.html">
                         Contributing
-                    </a>
-                </li>
+                      </a>
+                    </li>
                 
 
-                <li class="nav-item">
-                    <a class="nav-link" href="../../authors.html">
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../authors.html">
                         Credits
-                    </a>
-                </li>
+                      </a>
+                    </li>
                 
 
-                <li class="nav-item">
-                    <a class="nav-link" href="../../history.html">
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../history.html">
                         History
-                    </a>
-                </li>
+                      </a>
+                    </li>
                 
 
-                <li class="nav-item">
-                    <a class="nav-link" href="../../modules.html">
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../modules.html">
                         pysradb
-                    </a>
-                </li>
+                      </a>
+                    </li>
                 
                 </div>
             </div>
@@ -369,11 +375,11 @@
     <div class="sidebar-header-items__end">
       
       <div class="navbar-end-item">
-        <span class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle">
-    <a class="theme-switch" data-mode="light"><i class="fas fa-sun"></i></a>
-    <a class="theme-switch" data-mode="dark"><i class="far fa-moon"></i></a>
-    <a class="theme-switch" data-mode="auto"><i class="fas fa-adjust"></i></a>
-</span>
+        <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+</button>
       </div>
       
       <div class="navbar-end-item">
@@ -385,7 +391,8 @@
           
           
           
-          <a href="https://github.com/saketkc/pysradb" title="GitHub" class="nav-link" rel="noopener" target="_blank"><span><i class="fab fa-github-square"></i></span>
+          
+          <a href="https://github.com/saketkc/pysradb" title="GitHub" class="nav-link" rel="noopener" target="_blank" data-toggle="tooltip"><span><i class="fa-brands fa-square-github"></i></span>
             <label class="sr-only">GitHub</label></a>
         </li>
       </ul>
@@ -403,8 +410,11 @@
     </div>
   </div>
 
+  
+  <div id="rtd-footer-container"></div>
+
       </div>
-      <main class="bd-main">
+      <main id="main-content" class="bd-main">
         
         
         <div class="bd-content">
@@ -456,7 +466,7 @@
 
 
 <span class="k">def</span> <span class="nf">_retry_response</span><span class="p">(</span><span class="n">base_url</span><span class="p">,</span> <span class="n">payload</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">max_retries</span><span class="o">=</span><span class="mi">10</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Rerty fetching esummary if API rate limit exceeeds&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Rerty fetching esummary if API rate limit exceeeds&quot;&quot;&quot;</span>
     <span class="k">for</span> <span class="n">index</span><span class="p">,</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">max_retries</span><span class="p">)):</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="n">request</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">base_url</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="n">OrderedDict</span><span class="p">(</span><span class="n">payload</span><span class="p">))</span>
@@ -471,14 +481,14 @@
 
 
 <div class="viewcode-block" id="get_retmax"><a class="viewcode-back" href="../../pysradb.html#pysradb.sraweb.get_retmax">[docs]</a><span class="k">def</span> <span class="nf">get_retmax</span><span class="p">(</span><span class="n">n_records</span><span class="p">,</span> <span class="n">retmax</span><span class="o">=</span><span class="mi">500</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Get retstart and retmax till n_records are exhausted&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Get retstart and retmax till n_records are exhausted&quot;&quot;&quot;</span>
     <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">n_records</span><span class="p">,</span> <span class="n">retmax</span><span class="p">):</span>
         <span class="k">yield</span> <span class="n">i</span></div>
 
 
 <div class="viewcode-block" id="SRAweb"><a class="viewcode-back" href="../../pysradb.html#pysradb.sraweb.SRAweb">[docs]</a><span class="k">class</span> <span class="nc">SRAweb</span><span class="p">(</span><span class="n">SRAdb</span><span class="p">):</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">api_key</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Initialize a SRAwebdb.</span>
 
 <span class="sd">        Parameters</span>
@@ -528,7 +538,7 @@
 
 <div class="viewcode-block" id="SRAweb.format_xml"><a class="viewcode-back" href="../../pysradb.html#pysradb.sraweb.SRAweb.format_xml">[docs]</a>    <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">format_xml</span><span class="p">(</span><span class="n">string</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Create a fake root to make &#39;string&#39; a valid xml</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Create a fake root to make &#39;string&#39; a valid xml</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -544,7 +554,7 @@
 
 <div class="viewcode-block" id="SRAweb.xml_to_json"><a class="viewcode-back" href="../../pysradb.html#pysradb.sraweb.SRAweb.xml_to_json">[docs]</a>    <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">xml_to_json</span><span class="p">(</span><span class="n">xml</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Convert xml to json.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Convert xml to json.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -566,7 +576,7 @@
         <span class="k">return</span> <span class="n">json</span></div>
 
 <div class="viewcode-block" id="SRAweb.fetch_ena_fastq"><a class="viewcode-back" href="../../pysradb.html#pysradb.sraweb.SRAweb.fetch_ena_fastq">[docs]</a>    <span class="k">def</span> <span class="nf">fetch_ena_fastq</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">srp</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Fetch FASTQ records from ENA (EXPERIMENTAL)</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Fetch FASTQ records from ENA (EXPERIMENTAL)</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -640,11 +650,11 @@
                     <span class="s2">&quot;ena_fastq_ftp_1&quot;</span><span class="p">,</span>
                     <span class="s2">&quot;ena_fastq_ftp_2&quot;</span><span class="p">,</span>
                 <span class="p">],</span>
-            <span class="p">)</span>
+            <span class="p">)</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="s2">&quot;run_accession&quot;</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
                 <span class="n">urls</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;run_accession&quot;</span><span class="p">,</span> <span class="s2">&quot;ena_fastq_http&quot;</span><span class="p">,</span> <span class="s2">&quot;ena_fastq_ftp&quot;</span><span class="p">]</span>
-            <span class="p">)</span></div>
+            <span class="p">)</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="s2">&quot;run_accession&quot;</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="SRAweb.create_esummary_params"><a class="viewcode-back" href="../../pysradb.html#pysradb.sraweb.SRAweb.create_esummary_params">[docs]</a>    <span class="k">def</span> <span class="nf">create_esummary_params</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">esearchresult</span><span class="p">,</span> <span class="n">db</span><span class="o">=</span><span class="s2">&quot;sra&quot;</span><span class="p">):</span>
         <span class="n">query_key</span> <span class="o">=</span> <span class="n">esearchresult</span><span class="p">[</span><span class="s2">&quot;querykey&quot;</span><span class="p">]</span>
@@ -665,7 +675,6 @@
         <span class="p">]</span></div>
 
 <div class="viewcode-block" id="SRAweb.get_esummary_response"><a class="viewcode-back" href="../../pysradb.html#pysradb.sraweb.SRAweb.get_esummary_response">[docs]</a>    <span class="k">def</span> <span class="nf">get_esummary_response</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">db</span><span class="p">,</span> <span class="n">term</span><span class="p">,</span> <span class="n">usehistory</span><span class="o">=</span><span class="s2">&quot;y&quot;</span><span class="p">):</span>
-
         <span class="k">assert</span> <span class="n">db</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;sra&quot;</span><span class="p">,</span> <span class="s2">&quot;geo&quot;</span><span class="p">]</span>
 
         <span class="n">payload</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">esearch_params</span><span class="p">[</span><span class="n">db</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
@@ -709,7 +718,6 @@
 
         <span class="n">results</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="k">for</span> <span class="n">retstart</span> <span class="ow">in</span> <span class="n">get_retmax</span><span class="p">(</span><span class="n">n_records</span><span class="p">):</span>
-
             <span class="n">payload</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">esearch_params</span><span class="p">[</span><span class="n">db</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
             <span class="n">payload</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">create_esummary_params</span><span class="p">(</span><span class="n">esearch_response</span><span class="p">[</span><span class="s2">&quot;esearchresult&quot;</span><span class="p">])</span>
             <span class="n">payload</span> <span class="o">=</span> <span class="n">OrderedDict</span><span class="p">(</span><span class="n">payload</span><span class="p">)</span>
@@ -738,7 +746,6 @@
         <span class="k">return</span> <span class="n">results</span></div>
 
 <div class="viewcode-block" id="SRAweb.get_efetch_response"><a class="viewcode-back" href="../../pysradb.html#pysradb.sraweb.SRAweb.get_efetch_response">[docs]</a>    <span class="k">def</span> <span class="nf">get_efetch_response</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">db</span><span class="p">,</span> <span class="n">term</span><span class="p">,</span> <span class="n">usehistory</span><span class="o">=</span><span class="s2">&quot;y&quot;</span><span class="p">):</span>
-
         <span class="k">assert</span> <span class="n">db</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;sra&quot;</span><span class="p">,</span> <span class="s2">&quot;geo&quot;</span><span class="p">]</span>
 
         <span class="n">payload</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">esearch_params</span><span class="p">[</span><span class="n">db</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
@@ -761,7 +768,6 @@
 
         <span class="n">results</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="k">for</span> <span class="n">retstart</span> <span class="ow">in</span> <span class="n">get_retmax</span><span class="p">(</span><span class="n">n_records</span><span class="p">):</span>
-
             <span class="n">payload</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">efetch_params</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
             <span class="n">payload</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">create_esummary_params</span><span class="p">(</span><span class="n">esearch_response</span><span class="p">[</span><span class="s2">&quot;esearchresult&quot;</span><span class="p">])</span>
             <span class="n">payload</span> <span class="o">=</span> <span class="n">OrderedDict</span><span class="p">(</span><span class="n">payload</span><span class="p">)</span>
@@ -833,7 +839,6 @@
         <span class="n">output_read_lengths</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
         <span class="o">**</span><span class="n">kwargs</span>
     <span class="p">):</span>
-
         <span class="n">esummary_result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_esummary_response</span><span class="p">(</span><span class="s2">&quot;sra&quot;</span><span class="p">,</span> <span class="n">srp</span><span class="p">)</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="n">uids</span> <span class="o">=</span> <span class="n">esummary_result</span><span class="p">[</span><span class="s2">&quot;uids&quot;</span><span class="p">]</span>
@@ -846,7 +851,6 @@
 
         <span class="n">exps_json</span> <span class="o">=</span> <span class="n">OrderedDict</span><span class="p">()</span>
         <span class="n">runs_json</span> <span class="o">=</span> <span class="n">OrderedDict</span><span class="p">()</span>
-
         <span class="k">for</span> <span class="n">uid</span> <span class="ow">in</span> <span class="n">uids</span><span class="p">:</span>
             <span class="n">exps_xml</span><span class="p">[</span><span class="n">uid</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">format_xml</span><span class="p">(</span><span class="n">esummary_result</span><span class="p">[</span><span class="n">uid</span><span class="p">][</span><span class="s2">&quot;expxml&quot;</span><span class="p">])</span>
             <span class="n">runs_xml</span><span class="p">[</span><span class="n">uid</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">format_xml</span><span class="p">(</span><span class="n">esummary_result</span><span class="p">[</span><span class="n">uid</span><span class="p">][</span><span class="s2">&quot;runs&quot;</span><span class="p">])</span>
@@ -858,13 +862,10 @@
         <span class="n">sra_record</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">uid</span><span class="p">,</span> <span class="n">run_json</span> <span class="ow">in</span> <span class="n">runs_json</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
             <span class="n">exp_json</span> <span class="o">=</span> <span class="n">exps_json</span><span class="p">[</span><span class="n">uid</span><span class="p">]</span>
-            <span class="k">if</span> <span class="ow">not</span> <span class="n">run_json</span><span class="p">:</span>
-                <span class="k">continue</span>
-            <span class="n">runs</span> <span class="o">=</span> <span class="n">run_json</span><span class="p">[</span><span class="s2">&quot;Run&quot;</span><span class="p">]</span>
-            <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">runs</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
-                <span class="n">runs</span> <span class="o">=</span> <span class="p">[</span><span class="n">runs</span><span class="p">]</span>
-            <span class="n">exp_title</span> <span class="o">=</span> <span class="n">exp_json</span><span class="p">[</span><span class="s2">&quot;Summary&quot;</span><span class="p">][</span><span class="s2">&quot;Title&quot;</span><span class="p">]</span>
-            <span class="n">exp_platform</span> <span class="o">=</span> <span class="n">exp_json</span><span class="p">[</span><span class="s2">&quot;Summary&quot;</span><span class="p">][</span><span class="s2">&quot;Platform&quot;</span><span class="p">]</span>
+            <span class="n">exp_summary</span> <span class="o">=</span> <span class="n">exp_json</span><span class="p">[</span><span class="s2">&quot;Summary&quot;</span><span class="p">]</span>
+            <span class="n">exp_title</span> <span class="o">=</span> <span class="n">exp_summary</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;Title&quot;</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">NA</span><span class="p">)</span>
+            <span class="n">exp_platform</span> <span class="o">=</span> <span class="n">exp_summary</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;Platform&quot;</span><span class="p">,</span> <span class="p">{})</span>
+            <span class="n">statistics</span> <span class="o">=</span> <span class="n">exp_summary</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;Statistics&quot;</span><span class="p">,</span> <span class="p">{})</span>
             <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">exp_platform</span><span class="p">,</span> <span class="n">OrderedDict</span><span class="p">):</span>
                 <span class="n">exp_platform_model</span> <span class="o">=</span> <span class="n">exp_platform</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;@instrument_model&quot;</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">NA</span><span class="p">)</span>
                 <span class="n">exp_platform_desc</span> <span class="o">=</span> <span class="n">exp_platform</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;#text&quot;</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">NA</span><span class="p">)</span>
@@ -872,9 +873,9 @@
                 <span class="n">exp_platform_model</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">NA</span>
                 <span class="n">exp_platform_desc</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">NA</span>
 
-            <span class="n">exp_total_runs</span> <span class="o">=</span> <span class="n">exp_json</span><span class="p">[</span><span class="s2">&quot;Summary&quot;</span><span class="p">][</span><span class="s2">&quot;Statistics&quot;</span><span class="p">][</span><span class="s2">&quot;@total_runs&quot;</span><span class="p">]</span>
-            <span class="n">exp_total_spots</span> <span class="o">=</span> <span class="n">exp_json</span><span class="p">[</span><span class="s2">&quot;Summary&quot;</span><span class="p">][</span><span class="s2">&quot;Statistics&quot;</span><span class="p">][</span><span class="s2">&quot;@total_spots&quot;</span><span class="p">]</span>
-            <span class="n">exp_total_size</span> <span class="o">=</span> <span class="n">exp_json</span><span class="p">[</span><span class="s2">&quot;Summary&quot;</span><span class="p">][</span><span class="s2">&quot;Statistics&quot;</span><span class="p">][</span><span class="s2">&quot;@total_size&quot;</span><span class="p">]</span>
+            <span class="n">exp_total_runs</span> <span class="o">=</span> <span class="n">statistics</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;@total_runs&quot;</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">NA</span><span class="p">)</span>
+            <span class="n">exp_total_spots</span> <span class="o">=</span> <span class="n">statistics</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;@total_spots&quot;</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">NA</span><span class="p">)</span>
+            <span class="n">exp_total_size</span> <span class="o">=</span> <span class="n">statistics</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;@total_size&quot;</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">NA</span><span class="p">)</span>
 
             <span class="c1"># experiment_accession</span>
             <span class="n">exp_ID</span> <span class="o">=</span> <span class="n">exp_json</span><span class="p">[</span><span class="s2">&quot;Experiment&quot;</span><span class="p">][</span><span class="s2">&quot;@acc&quot;</span><span class="p">]</span>
@@ -917,30 +918,41 @@
             <span class="n">exp_library_layout</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">exp_library_descriptor</span><span class="p">[</span><span class="s2">&quot;LIBRARY_LAYOUT&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">())[</span>
                 <span class="mi">0</span>
             <span class="p">]</span>
+            <span class="n">experiment_record</span> <span class="o">=</span> <span class="n">OrderedDict</span><span class="p">()</span>
+            <span class="n">experiment_record</span><span class="p">[</span><span class="s2">&quot;study_accession&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">exp_json</span><span class="p">[</span><span class="s2">&quot;Study&quot;</span><span class="p">][</span><span class="s2">&quot;@acc&quot;</span><span class="p">]</span>
+            <span class="n">experiment_record</span><span class="p">[</span><span class="s2">&quot;study_title&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">exp_json</span><span class="p">[</span><span class="s2">&quot;Study&quot;</span><span class="p">][</span><span class="s2">&quot;@name&quot;</span><span class="p">]</span>
+            <span class="n">experiment_record</span><span class="p">[</span><span class="s2">&quot;experiment_accession&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">exp_ID</span>
+            <span class="n">experiment_record</span><span class="p">[</span><span class="s2">&quot;experiment_title&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">exp_name</span>
+            <span class="n">experiment_record</span><span class="p">[</span><span class="s2">&quot;experiment_desc&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">exp_title</span>
 
+            <span class="n">experiment_record</span><span class="p">[</span><span class="s2">&quot;organism_taxid&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">exp_taxid</span>
+            <span class="n">experiment_record</span><span class="p">[</span><span class="s2">&quot;organism_name&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">exp_organism_name</span>
+
+            <span class="n">experiment_record</span><span class="p">[</span><span class="s2">&quot;library_name&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">exp_library_name</span>
+            <span class="n">experiment_record</span><span class="p">[</span><span class="s2">&quot;library_strategy&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">exp_library_strategy</span>
+            <span class="n">experiment_record</span><span class="p">[</span><span class="s2">&quot;library_source&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">exp_library_source</span>
+            <span class="n">experiment_record</span><span class="p">[</span><span class="s2">&quot;library_selection&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">exp_library_selection</span>
+            <span class="n">experiment_record</span><span class="p">[</span><span class="s2">&quot;library_layout&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">exp_library_layout</span>
+            <span class="n">experiment_record</span><span class="p">[</span><span class="s2">&quot;sample_accession&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">exp_sample_ID</span>
+            <span class="n">experiment_record</span><span class="p">[</span><span class="s2">&quot;sample_title&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">exp_sample_name</span>
+            <span class="n">experiment_record</span><span class="p">[</span><span class="s2">&quot;instrument&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">exp_instrument</span>
+            <span class="n">experiment_record</span><span class="p">[</span><span class="s2">&quot;instrument_model&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">exp_platform_model</span>
+            <span class="n">experiment_record</span><span class="p">[</span><span class="s2">&quot;instrument_model_desc&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">exp_platform_desc</span>
+            <span class="n">experiment_record</span><span class="p">[</span><span class="s2">&quot;total_spots&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">exp_total_spots</span>
+            <span class="n">experiment_record</span><span class="p">[</span><span class="s2">&quot;total_size&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">exp_total_size</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">run_json</span><span class="p">:</span>
+                <span class="c1"># Sometimes the run_accession is not populated by NCBI:</span>
+                <span class="c1"># df2 = self.srx_to_srr(exp_ID)</span>
+                <span class="c1"># extra_fields = set(experiment_record.keys()).difference(df2.columns.tolist())</span>
+                <span class="c1"># for idx, row in df2.iterrows():</span>
+                <span class="c1">#    for field in extra_fields:</span>
+                <span class="c1">#        experiment_record[field] = row[field]</span>
+                <span class="n">sra_record</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">experiment_record</span><span class="p">)</span>
+                <span class="k">continue</span>
+            <span class="n">runs</span> <span class="o">=</span> <span class="n">run_json</span><span class="p">[</span><span class="s2">&quot;Run&quot;</span><span class="p">]</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">runs</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+                <span class="n">runs</span> <span class="o">=</span> <span class="p">[</span><span class="n">runs</span><span class="p">]</span>
             <span class="k">for</span> <span class="n">run_record</span> <span class="ow">in</span> <span class="n">runs</span><span class="p">:</span>
-                <span class="n">experiment_record</span> <span class="o">=</span> <span class="n">OrderedDict</span><span class="p">()</span>
-                <span class="n">experiment_record</span><span class="p">[</span><span class="s2">&quot;study_accession&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">exp_json</span><span class="p">[</span><span class="s2">&quot;Study&quot;</span><span class="p">][</span><span class="s2">&quot;@acc&quot;</span><span class="p">]</span>
-                <span class="n">experiment_record</span><span class="p">[</span><span class="s2">&quot;study_title&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">exp_json</span><span class="p">[</span><span class="s2">&quot;Study&quot;</span><span class="p">][</span><span class="s2">&quot;@name&quot;</span><span class="p">]</span>
-                <span class="n">experiment_record</span><span class="p">[</span><span class="s2">&quot;experiment_accession&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">exp_ID</span>
-                <span class="n">experiment_record</span><span class="p">[</span><span class="s2">&quot;experiment_title&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">exp_name</span>
-                <span class="n">experiment_record</span><span class="p">[</span><span class="s2">&quot;experiment_desc&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">exp_title</span>
-
-                <span class="n">experiment_record</span><span class="p">[</span><span class="s2">&quot;organism_taxid&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">exp_taxid</span>
-                <span class="n">experiment_record</span><span class="p">[</span><span class="s2">&quot;organism_name&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">exp_organism_name</span>
-
-                <span class="n">experiment_record</span><span class="p">[</span><span class="s2">&quot;library_name&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">exp_library_name</span>
-                <span class="n">experiment_record</span><span class="p">[</span><span class="s2">&quot;library_strategy&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">exp_library_strategy</span>
-                <span class="n">experiment_record</span><span class="p">[</span><span class="s2">&quot;library_source&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">exp_library_source</span>
-                <span class="n">experiment_record</span><span class="p">[</span><span class="s2">&quot;library_selection&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">exp_library_selection</span>
-                <span class="n">experiment_record</span><span class="p">[</span><span class="s2">&quot;library_layout&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">exp_library_layout</span>
-                <span class="n">experiment_record</span><span class="p">[</span><span class="s2">&quot;sample_accession&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">exp_sample_ID</span>
-                <span class="n">experiment_record</span><span class="p">[</span><span class="s2">&quot;sample_title&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">exp_sample_name</span>
-                <span class="n">experiment_record</span><span class="p">[</span><span class="s2">&quot;instrument&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">exp_instrument</span>
-                <span class="n">experiment_record</span><span class="p">[</span><span class="s2">&quot;instrument_model&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">exp_platform_model</span>
-                <span class="n">experiment_record</span><span class="p">[</span><span class="s2">&quot;instrument_model_desc&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">exp_platform_desc</span>
-                <span class="n">experiment_record</span><span class="p">[</span><span class="s2">&quot;total_spots&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">exp_total_spots</span>
-                <span class="n">experiment_record</span><span class="p">[</span><span class="s2">&quot;total_size&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">exp_total_size</span>
                 <span class="n">run_accession</span> <span class="o">=</span> <span class="n">run_record</span><span class="p">[</span><span class="s2">&quot;@acc&quot;</span><span class="p">]</span>
                 <span class="n">run_total_spots</span> <span class="o">=</span> <span class="n">run_record</span><span class="p">[</span><span class="s2">&quot;@total_spots&quot;</span><span class="p">]</span>
                 <span class="n">run_total_bases</span> <span class="o">=</span> <span class="n">run_record</span><span class="p">[</span><span class="s2">&quot;@total_bases&quot;</span><span class="p">]</span>
@@ -953,7 +965,10 @@
 
         <span class="c1"># TODO: the detailed call below does redundant operations</span>
         <span class="c1"># the code above this can be completeley done away with</span>
-        <span class="n">metadata_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">sra_record</span><span class="p">)</span><span class="o">.</span><span class="n">drop_duplicates</span><span class="p">()</span>
+        <span class="n">metadata_df</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">sra_record</span><span class="p">)</span><span class="o">.</span><span class="n">drop_duplicates</span><span class="p">()</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="s2">&quot;run_accession&quot;</span><span class="p">)</span>
+        <span class="p">)</span>
+        <span class="n">metadata_df</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">metadata_df</span><span class="o">.</span><span class="n">columns</span><span class="p">]</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">detailed</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">metadata_df</span>
 
@@ -966,7 +981,6 @@
                 <span class="k">return</span> <span class="kc">None</span>
 
         <span class="n">detailed_records</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="c1"># print(efetch_result)</span>
         <span class="k">for</span> <span class="n">record</span> <span class="ow">in</span> <span class="n">efetch_result</span><span class="p">:</span>
             <span class="k">if</span> <span class="s2">&quot;SAMPLE_ATTRIBUTES&quot;</span> <span class="ow">in</span> <span class="n">record</span><span class="p">[</span><span class="s2">&quot;SAMPLE&quot;</span><span class="p">]:</span>
                 <span class="n">sample_attributes</span> <span class="o">=</span> <span class="n">record</span><span class="p">[</span><span class="s2">&quot;SAMPLE&quot;</span><span class="p">][</span><span class="s2">&quot;SAMPLE_ATTRIBUTES&quot;</span><span class="p">][</span>
@@ -977,17 +991,26 @@
             <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">sample_attributes</span><span class="p">,</span> <span class="n">OrderedDict</span><span class="p">):</span>
                 <span class="n">sample_attributes</span> <span class="o">=</span> <span class="p">[</span><span class="n">sample_attributes</span><span class="p">]</span>
             <span class="n">exp_record</span> <span class="o">=</span> <span class="n">record</span><span class="p">[</span><span class="s2">&quot;EXPERIMENT&quot;</span><span class="p">]</span>
-            <span class="n">run_sets</span> <span class="o">=</span> <span class="n">record</span><span class="p">[</span><span class="s2">&quot;RUN_SET&quot;</span><span class="p">][</span><span class="s2">&quot;RUN&quot;</span><span class="p">]</span>
+            <span class="n">exp_attributes</span> <span class="o">=</span> <span class="n">exp_record</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;EXPERIMENT_ATTRIBUTES&quot;</span><span class="p">,</span> <span class="p">{})</span>
+            <span class="n">run_sets</span> <span class="o">=</span> <span class="n">record</span><span class="p">[</span><span class="s2">&quot;RUN_SET&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;RUN&quot;</span><span class="p">,</span> <span class="p">[])</span>
 
             <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">run_sets</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
                 <span class="n">run_sets</span> <span class="o">=</span> <span class="p">[</span><span class="n">run_sets</span><span class="p">]</span>
 
             <span class="k">for</span> <span class="n">run_set</span> <span class="ow">in</span> <span class="n">run_sets</span><span class="p">:</span>
-                <span class="c1"># print(run_set)</span>
                 <span class="n">detailed_record</span> <span class="o">=</span> <span class="n">OrderedDict</span><span class="p">()</span>
-                <span class="c1"># detailed_record[&quot;experiment_accession&quot;] = exp_record[&quot;@accession&quot;]</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">run_json</span><span class="p">:</span>
+                    <span class="c1"># Add experiment accession if no run info found earlier</span>
+                    <span class="n">detailed_record</span><span class="p">[</span><span class="s2">&quot;experiment_accession&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">exp_record</span><span class="p">[</span><span class="s2">&quot;@accession&quot;</span><span class="p">]</span>
                 <span class="c1"># detailed_record[&quot;experiment_title&quot;] = exp_record[&quot;TITLE&quot;]</span>
-
+                <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">values</span> <span class="ow">in</span> <span class="n">exp_attributes</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                    <span class="n">key</span> <span class="o">=</span> <span class="n">key</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+                    <span class="k">for</span> <span class="n">value_x</span> <span class="ow">in</span> <span class="n">values</span><span class="p">:</span>
+                        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value_x</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+                            <span class="k">continue</span>
+                        <span class="n">tag</span> <span class="o">=</span> <span class="n">value_x</span><span class="p">[</span><span class="s2">&quot;TAG&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+                        <span class="n">value</span> <span class="o">=</span> <span class="n">value_x</span><span class="p">[</span><span class="s2">&quot;VALUE&quot;</span><span class="p">]</span>
+                        <span class="n">detailed_record</span><span class="p">[</span><span class="n">tag</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
                 <span class="n">lib_record</span> <span class="o">=</span> <span class="n">exp_record</span><span class="p">[</span><span class="s2">&quot;DESIGN&quot;</span><span class="p">][</span><span class="s2">&quot;LIBRARY_DESCRIPTOR&quot;</span><span class="p">]</span>
                 <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">lib_record</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
                     <span class="n">key</span> <span class="o">=</span> <span class="n">key</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
@@ -1002,58 +1025,48 @@
                 <span class="n">sra_files</span> <span class="o">=</span> <span class="n">run_set</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;SRAFiles&quot;</span><span class="p">,</span> <span class="p">{})</span>
                 <span class="n">sra_files</span> <span class="o">=</span> <span class="n">sra_files</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;SRAFile&quot;</span><span class="p">,</span> <span class="p">{})</span>
                 <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">sra_files</span><span class="p">,</span> <span class="n">OrderedDict</span><span class="p">):</span>
-                    <span class="n">detailed_record</span><span class="p">[</span><span class="s2">&quot;sra_url&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">sra_files</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;@url&quot;</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">NA</span><span class="p">)</span>
+                    <span class="c1"># detailed_record[&quot;sra_url&quot;] = sra_files.get(&quot;@url&quot;, pd.NA)</span>
                     <span class="k">if</span> <span class="s2">&quot;Alternatives&quot;</span> <span class="ow">in</span> <span class="n">sra_files</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
                         <span class="n">alternatives</span> <span class="o">=</span> <span class="n">sra_files</span><span class="p">[</span><span class="s2">&quot;Alternatives&quot;</span><span class="p">]</span>
-                        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">alternatives</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
-                            <span class="c1"># TODO: Only handles single alternate urls</span>
-                            <span class="n">alternatives</span> <span class="o">=</span> <span class="n">alternatives</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-                        <span class="n">org</span> <span class="o">=</span> <span class="n">alternatives</span><span class="p">[</span><span class="s2">&quot;@org&quot;</span><span class="p">]</span>
-                        <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">alternatives</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
-                            <span class="k">if</span> <span class="n">key</span> <span class="o">==</span> <span class="s2">&quot;@org&quot;</span><span class="p">:</span>
-                                <span class="k">continue</span>
-                            <span class="n">detailed_record</span><span class="p">[</span>
-                                <span class="s2">&quot;</span><span class="si">{}</span><span class="s2">_</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">org</span><span class="p">,</span> <span class="n">key</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;@&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">))</span>
-                            <span class="p">]</span> <span class="o">=</span> <span class="n">alternatives</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
+                        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">alternatives</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+                            <span class="n">alternatives</span> <span class="o">=</span> <span class="p">[</span><span class="n">alternatives</span><span class="p">]</span>
+                        <span class="k">for</span> <span class="n">alternative</span> <span class="ow">in</span> <span class="n">alternatives</span><span class="p">:</span>
+                            <span class="n">org</span> <span class="o">=</span> <span class="n">alternative</span><span class="p">[</span><span class="s2">&quot;@org&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+                            <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">alternative</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+                                <span class="k">if</span> <span class="n">key</span> <span class="o">==</span> <span class="s2">&quot;@org&quot;</span><span class="p">:</span>
+                                    <span class="k">continue</span>
+                                <span class="n">detailed_record</span><span class="p">[</span>
+                                    <span class="s2">&quot;</span><span class="si">{}</span><span class="s2">_</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">org</span><span class="p">,</span> <span class="n">key</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;@&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">))</span>
+                                <span class="p">]</span> <span class="o">=</span> <span class="n">alternative</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
+
                 <span class="k">else</span><span class="p">:</span>
                     <span class="k">for</span> <span class="n">sra_file</span> <span class="ow">in</span> <span class="n">sra_files</span><span class="p">:</span>
                         <span class="c1"># Multiple download URLs</span>
                         <span class="c1"># Use the one where the download filename corresponds to the SRR</span>
-                        <span class="c1"># if &quot;@filename&quot; not in sra_file:</span>
-                        <span class="c1">#    print(&quot;record keys: {}&quot;.format(sra_file.keys()))</span>
-                        <span class="c1">#    print(&quot;record : {}&quot;.format(sra_file))</span>
-                        <span class="k">if</span> <span class="s2">&quot;@filename&quot;</span> <span class="ow">in</span> <span class="n">sra_file</span><span class="p">:</span>
-                            <span class="k">if</span> <span class="n">sra_file</span><span class="p">[</span><span class="s2">&quot;@filename&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="n">run_set</span><span class="p">[</span><span class="s2">&quot;@accession&quot;</span><span class="p">]:</span>
-                                <span class="n">detailed_record</span><span class="p">[</span><span class="s2">&quot;sra_url&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">sra_file</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;@url&quot;</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">NA</span><span class="p">)</span>
-                                <span class="k">if</span> <span class="s2">&quot;Alternatives&quot;</span> <span class="ow">in</span> <span class="n">sra_file</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
-                                    <span class="n">alternatives</span> <span class="o">=</span> <span class="n">sra_file</span><span class="p">[</span><span class="s2">&quot;Alternatives&quot;</span><span class="p">]</span>
-                                    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">alternatives</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
-                                        <span class="c1"># TODO: Only handles single alternate urls</span>
-                                        <span class="n">alternatives</span> <span class="o">=</span> <span class="n">alternatives</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-                                    <span class="n">org</span> <span class="o">=</span> <span class="n">alternatives</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;@org&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
-                                    <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">alternatives</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+                        <span class="n">cluster</span> <span class="o">=</span> <span class="n">sra_file</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;@cluster&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+                        <span class="k">if</span> <span class="n">cluster</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                            <span class="k">continue</span>
+                        <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">sra_file</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+                            <span class="k">if</span> <span class="n">key</span> <span class="o">==</span> <span class="s2">&quot;@cluster&quot;</span><span class="p">:</span>
+                                <span class="k">continue</span>
+                            <span class="k">if</span> <span class="n">key</span> <span class="o">==</span> <span class="s2">&quot;Alternatives&quot;</span><span class="p">:</span>
+                                <span class="c1"># Example: SRP184142</span>
+                                <span class="n">alternatives</span> <span class="o">=</span> <span class="n">sra_file</span><span class="p">[</span><span class="s2">&quot;Alternatives&quot;</span><span class="p">]</span>
+                                <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">alternatives</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+                                    <span class="n">alternatives</span> <span class="o">=</span> <span class="p">[</span><span class="n">alternatives</span><span class="p">]</span>
+                                <span class="k">for</span> <span class="n">alternative</span> <span class="ow">in</span> <span class="n">alternatives</span><span class="p">:</span>
+                                    <span class="n">org</span> <span class="o">=</span> <span class="n">alternative</span><span class="p">[</span><span class="s2">&quot;@org&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+                                    <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">alternative</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
                                         <span class="k">if</span> <span class="n">key</span> <span class="o">==</span> <span class="s2">&quot;@org&quot;</span><span class="p">:</span>
                                             <span class="k">continue</span>
                                         <span class="n">detailed_record</span><span class="p">[</span>
                                             <span class="s2">&quot;</span><span class="si">{}</span><span class="s2">_</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">org</span><span class="p">,</span> <span class="n">key</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;@&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">))</span>
-                                        <span class="p">]</span> <span class="o">=</span> <span class="n">alternatives</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
-                                <span class="k">break</span>
-                        <span class="k">if</span> <span class="s2">&quot;Alternatives&quot;</span> <span class="ow">in</span> <span class="n">sra_file</span><span class="p">:</span>
-                            <span class="c1"># Example: SRP184142</span>
-                            <span class="n">alternatives</span> <span class="o">=</span> <span class="n">sra_file</span><span class="p">[</span><span class="s2">&quot;Alternatives&quot;</span><span class="p">]</span>
-                            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">alternatives</span><span class="p">,</span> <span class="n">OrderedDict</span><span class="p">):</span>
-                                <span class="n">detailed_record</span><span class="p">[</span><span class="s2">&quot;sra_url_alt&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">alternatives</span><span class="p">[</span><span class="s2">&quot;@url&quot;</span><span class="p">]</span>
-                            <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">alternatives</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
-                                <span class="k">for</span> <span class="n">alt_index</span><span class="p">,</span> <span class="n">alternative</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">alternatives</span><span class="p">):</span>
-                                    <span class="n">detailed_record</span><span class="p">[</span>
-                                        <span class="s2">&quot;sra_url_alt</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">alt_index</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
-                                    <span class="p">]</span> <span class="o">=</span> <span class="n">alternative</span><span class="p">[</span><span class="s2">&quot;@url&quot;</span><span class="p">]</span>
+                                        <span class="p">]</span> <span class="o">=</span> <span class="n">alternative</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
                             <span class="k">else</span><span class="p">:</span>
-                                <span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="o">.</span><span class="n">write</span><span class="p">(</span>
-                                    <span class="s2">&quot;Unable to determine sra_url. This is a bug. Please report upstream.</span><span class="se">\n</span><span class="s2"> </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-                                        <span class="n">alternatives</span>
-                                    <span class="p">)</span>
-                                <span class="p">)</span>
+                                <span class="n">detailed_record</span><span class="p">[</span>
+                                    <span class="s2">&quot;</span><span class="si">{}</span><span class="s2">_</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">cluster</span><span class="p">,</span> <span class="n">key</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;@&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">))</span>
+                                <span class="p">]</span> <span class="o">=</span> <span class="n">sra_file</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
+
                 <span class="n">expt_ref</span> <span class="o">=</span> <span class="n">run_set</span><span class="p">[</span><span class="s2">&quot;EXPERIMENT_REF&quot;</span><span class="p">]</span>
                 <span class="n">detailed_record</span><span class="p">[</span><span class="s2">&quot;experiment_alias&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">expt_ref</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;@refname&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
                 <span class="c1"># detailed_record[&quot;run_total_bases&quot;] = run_set[&quot;@total_bases&quot;]</span>
@@ -1063,16 +1076,23 @@
                     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">dict_values</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
                         <span class="n">detailed_record</span><span class="p">[</span><span class="n">dict_values</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span> <span class="o">=</span> <span class="n">dict_values</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
                     <span class="k">else</span><span class="p">:</span>
-
                         <span class="c1"># TODO: Investigate why these fields have just the key</span>
                         <span class="c1"># but no value</span>
                         <span class="k">pass</span>
                 <span class="n">detailed_records</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">detailed_record</span><span class="p">)</span>
-                <span class="c1"># print(detailed_record)</span>
         <span class="n">detailed_record_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">detailed_records</span><span class="p">)</span><span class="o">.</span><span class="n">drop_duplicates</span><span class="p">()</span>
-        <span class="n">metadata_df</span> <span class="o">=</span> <span class="n">metadata_df</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span>
-            <span class="n">detailed_record_df</span><span class="p">,</span> <span class="n">on</span><span class="o">=</span><span class="s2">&quot;run_accession&quot;</span><span class="p">,</span> <span class="n">how</span><span class="o">=</span><span class="s2">&quot;outer&quot;</span>
-        <span class="p">)</span>
+        <span class="k">if</span> <span class="p">(</span>
+            <span class="s2">&quot;run_accession&quot;</span> <span class="ow">in</span> <span class="n">metadata_df</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
+            <span class="ow">and</span> <span class="s2">&quot;run_accession&quot;</span> <span class="ow">in</span> <span class="n">detailed_record_df</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
+        <span class="p">):</span>
+            <span class="n">metadata_df</span> <span class="o">=</span> <span class="n">metadata_df</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span>
+                <span class="n">detailed_record_df</span><span class="p">,</span> <span class="n">on</span><span class="o">=</span><span class="s2">&quot;run_accession&quot;</span><span class="p">,</span> <span class="n">how</span><span class="o">=</span><span class="s2">&quot;outer&quot;</span>
+            <span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">metadata_df</span> <span class="o">=</span> <span class="n">metadata_df</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span>
+                <span class="n">detailed_record_df</span><span class="p">,</span> <span class="n">on</span><span class="o">=</span><span class="s2">&quot;experiment_accession&quot;</span><span class="p">,</span> <span class="n">how</span><span class="o">=</span><span class="s2">&quot;outer&quot;</span>
+            <span class="p">)</span>
+
         <span class="n">metadata_df</span> <span class="o">=</span> <span class="n">metadata_df</span><span class="p">[</span><span class="n">metadata_df</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">dropna</span><span class="p">()]</span>
         <span class="n">metadata_df</span> <span class="o">=</span> <span class="n">metadata_df</span><span class="o">.</span><span class="n">drop_duplicates</span><span class="p">()</span>
         <span class="n">metadata_df</span> <span class="o">=</span> <span class="n">metadata_df</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;^\s*$&quot;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span> <span class="n">regex</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
@@ -1084,7 +1104,9 @@
             <span class="s2">&quot;ena_fastq_ftp_1&quot;</span><span class="p">,</span>
             <span class="s2">&quot;ena_fastq_ftp_2&quot;</span><span class="p">,</span>
         <span class="p">]</span>
-        <span class="n">metadata_df</span><span class="p">[</span><span class="n">ena_cols</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+        <span class="n">empty_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="n">ena_cols</span><span class="p">)</span>
+        <span class="n">metadata_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">((</span><span class="n">metadata_df</span><span class="p">,</span> <span class="n">empty_df</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+        <span class="c1"># metadata_df[ena_cols] = np.nan</span>
 
         <span class="n">metadata_df</span> <span class="o">=</span> <span class="n">metadata_df</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="s2">&quot;run_accession&quot;</span><span class="p">)</span>
         <span class="c1"># multithreading lookup on ENA, since a lot of time is spent waiting</span>
@@ -1103,7 +1125,8 @@
                     <span class="n">metadata_df</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">ena_results</span><span class="p">)</span>
         <span class="n">metadata_df</span> <span class="o">=</span> <span class="n">metadata_df</span><span class="o">.</span><span class="n">reset_index</span><span class="p">()</span>
         <span class="n">metadata_df</span> <span class="o">=</span> <span class="n">metadata_df</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">NA</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">metadata_df</span></div>
+        <span class="n">metadata_df</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">metadata_df</span><span class="o">.</span><span class="n">columns</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">metadata_df</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="s2">&quot;run_accession&quot;</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="SRAweb.fetch_gds_results"><a class="viewcode-back" href="../../pysradb.html#pysradb.sraweb.SRAweb.fetch_gds_results">[docs]</a>    <span class="k">def</span> <span class="nf">fetch_gds_results</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">gse</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_esummary_response</span><span class="p">(</span><span class="s2">&quot;geo&quot;</span><span class="p">,</span> <span class="n">gse</span><span class="p">)</span>
@@ -1192,7 +1215,7 @@
         <span class="k">return</span> <span class="n">gsm_df</span><span class="p">[[</span><span class="s2">&quot;experiment_alias&quot;</span><span class="p">,</span> <span class="s2">&quot;run_accession&quot;</span><span class="p">]]</span></div>
 
 <div class="viewcode-block" id="SRAweb.gsm_to_srs"><a class="viewcode-back" href="../../pysradb.html#pysradb.sraweb.SRAweb.gsm_to_srs">[docs]</a>    <span class="k">def</span> <span class="nf">gsm_to_srs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">gsm</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Get SRS for a GSM&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get SRS for a GSM&quot;&quot;&quot;</span>
         <span class="n">gsm_df</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fetch_gds_results</span><span class="p">(</span><span class="n">gsm</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="n">gsm_df</span> <span class="o">=</span> <span class="n">gsm_df</span><span class="p">[</span><span class="n">gsm_df</span><span class="o">.</span><span class="n">entrytype</span> <span class="o">==</span> <span class="s2">&quot;GSM&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span>
             <span class="n">columns</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;SRA&quot;</span><span class="p">:</span> <span class="s2">&quot;experiment_accession&quot;</span><span class="p">,</span> <span class="s2">&quot;accession&quot;</span><span class="p">:</span> <span class="s2">&quot;experiment_alias&quot;</span><span class="p">}</span>
@@ -1206,7 +1229,7 @@
         <span class="k">return</span> <span class="n">gsm_df</span><span class="o">.</span><span class="n">drop_duplicates</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="SRAweb.gsm_to_srx"><a class="viewcode-back" href="../../pysradb.html#pysradb.sraweb.SRAweb.gsm_to_srx">[docs]</a>    <span class="k">def</span> <span class="nf">gsm_to_srx</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">gsm</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Get SRX for a GSM&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get SRX for a GSM&quot;&quot;&quot;</span>
         <span class="n">gsm_df</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fetch_gds_results</span><span class="p">(</span><span class="n">gsm</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="n">gsm_df</span> <span class="o">=</span> <span class="n">gsm_df</span><span class="p">[</span><span class="n">gsm_df</span><span class="o">.</span><span class="n">entrytype</span> <span class="o">==</span> <span class="s2">&quot;GSM&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span>
             <span class="n">columns</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;SRA&quot;</span><span class="p">:</span> <span class="s2">&quot;experiment_accession&quot;</span><span class="p">,</span> <span class="s2">&quot;accession&quot;</span><span class="p">:</span> <span class="s2">&quot;experiment_alias&quot;</span><span class="p">}</span>
@@ -1222,7 +1245,7 @@
         <span class="k">return</span> <span class="n">gsm_df</span><span class="p">[[</span><span class="s2">&quot;study_alias&quot;</span><span class="p">,</span> <span class="s2">&quot;study_accession&quot;</span><span class="p">]]</span></div>
 
 <div class="viewcode-block" id="SRAweb.srp_to_gse"><a class="viewcode-back" href="../../pysradb.html#pysradb.sraweb.SRAweb.srp_to_gse">[docs]</a>    <span class="k">def</span> <span class="nf">srp_to_gse</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">srp</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Get GSE for a SRP&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get GSE for a SRP&quot;&quot;&quot;</span>
         <span class="n">srp_df</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fetch_gds_results</span><span class="p">(</span><span class="n">srp</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="n">srp_df</span> <span class="o">=</span> <span class="n">srp_df</span><span class="p">[</span><span class="n">srp_df</span><span class="o">.</span><span class="n">entrytype</span> <span class="o">==</span> <span class="s2">&quot;GSE&quot;</span><span class="p">]</span>
         <span class="n">srp_df</span> <span class="o">=</span> <span class="n">srp_df</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span>
@@ -1231,25 +1254,26 @@
         <span class="k">return</span> <span class="n">srp_df</span><span class="p">[[</span><span class="s2">&quot;study_accession&quot;</span><span class="p">,</span> <span class="s2">&quot;study_alias&quot;</span><span class="p">]]</span><span class="o">.</span><span class="n">drop_duplicates</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="SRAweb.srp_to_srr"><a class="viewcode-back" href="../../pysradb.html#pysradb.sraweb.SRAweb.srp_to_srr">[docs]</a>    <span class="k">def</span> <span class="nf">srp_to_srr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">srp</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Get SRR for a SRP&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get SRR for a SRP&quot;&quot;&quot;</span>
         <span class="n">srp_df</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sra_metadata</span><span class="p">(</span><span class="n">srp</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">_order_first</span><span class="p">(</span><span class="n">srp_df</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;study_accession&quot;</span><span class="p">,</span> <span class="s2">&quot;run_accession&quot;</span><span class="p">])</span></div>
 
 <div class="viewcode-block" id="SRAweb.srp_to_srs"><a class="viewcode-back" href="../../pysradb.html#pysradb.sraweb.SRAweb.srp_to_srs">[docs]</a>    <span class="k">def</span> <span class="nf">srp_to_srs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">srp</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Get SRS for a SRP&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get SRS for a SRP&quot;&quot;&quot;</span>
         <span class="n">srp_df</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sra_metadata</span><span class="p">(</span><span class="n">srp</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">_order_first</span><span class="p">(</span><span class="n">srp_df</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;study_accession&quot;</span><span class="p">,</span> <span class="s2">&quot;sample_accession&quot;</span><span class="p">])</span></div>
 
 <div class="viewcode-block" id="SRAweb.srp_to_srx"><a class="viewcode-back" href="../../pysradb.html#pysradb.sraweb.SRAweb.srp_to_srx">[docs]</a>    <span class="k">def</span> <span class="nf">srp_to_srx</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">srp</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Get SRX for a SRP&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get SRX for a SRP&quot;&quot;&quot;</span>
         <span class="n">srp_df</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sra_metadata</span><span class="p">(</span><span class="n">srp</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="n">srp_df</span><span class="p">[</span><span class="s2">&quot;study_accesssion&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">srp</span>
         <span class="k">return</span> <span class="n">_order_first</span><span class="p">(</span><span class="n">srp_df</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;study_accession&quot;</span><span class="p">,</span> <span class="s2">&quot;experiment_accession&quot;</span><span class="p">])</span></div>
 
 <div class="viewcode-block" id="SRAweb.srr_to_gsm"><a class="viewcode-back" href="../../pysradb.html#pysradb.sraweb.SRAweb.srr_to_gsm">[docs]</a>    <span class="k">def</span> <span class="nf">srr_to_gsm</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">srr</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Get GSM for a SRR&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get GSM for a SRR&quot;&quot;&quot;</span>
         <span class="n">srr_df</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">srr_to_srp</span><span class="p">(</span><span class="n">srr</span><span class="p">,</span> <span class="n">detailed</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-        <span class="n">srp</span> <span class="o">=</span> <span class="n">srr_df</span><span class="o">.</span><span class="n">study_accession</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+        <span class="c1"># remove NAs</span>
+        <span class="n">srp</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">srr_df</span><span class="o">.</span><span class="n">study_accession</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">x</span> <span class="ow">is</span> <span class="n">pd</span><span class="o">.</span><span class="n">NA</span><span class="p">]</span>
         <span class="n">gse_df</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fetch_gds_results</span><span class="p">(</span><span class="n">srp</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="n">gse_df</span> <span class="o">=</span> <span class="n">gse_df</span><span class="p">[</span><span class="n">gse_df</span><span class="o">.</span><span class="n">entrytype</span> <span class="o">==</span> <span class="s2">&quot;GSE&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span>
             <span class="n">columns</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;SRA&quot;</span><span class="p">:</span> <span class="s2">&quot;project_accession&quot;</span><span class="p">,</span> <span class="s2">&quot;accession&quot;</span><span class="p">:</span> <span class="s2">&quot;project_alias&quot;</span><span class="p">}</span>
@@ -1262,24 +1286,24 @@
         <span class="k">return</span> <span class="n">_order_first</span><span class="p">(</span><span class="n">joined_df</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;run_accession&quot;</span><span class="p">,</span> <span class="s2">&quot;experiment_alias&quot;</span><span class="p">])</span></div>
 
 <div class="viewcode-block" id="SRAweb.srr_to_srp"><a class="viewcode-back" href="../../pysradb.html#pysradb.sraweb.SRAweb.srr_to_srp">[docs]</a>    <span class="k">def</span> <span class="nf">srr_to_srp</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">srr</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Get SRP for a SRR&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get SRP for a SRR&quot;&quot;&quot;</span>
         <span class="n">srr_df</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sra_metadata</span><span class="p">(</span><span class="n">srr</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">kwargs</span> <span class="ow">and</span> <span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;detailed&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="kc">True</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">srr_df</span>
         <span class="k">return</span> <span class="n">_order_first</span><span class="p">(</span><span class="n">srr_df</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;run_accession&quot;</span><span class="p">,</span> <span class="s2">&quot;study_accession&quot;</span><span class="p">])</span></div>
 
 <div class="viewcode-block" id="SRAweb.srr_to_srs"><a class="viewcode-back" href="../../pysradb.html#pysradb.sraweb.SRAweb.srr_to_srs">[docs]</a>    <span class="k">def</span> <span class="nf">srr_to_srs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">srr</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Get SRS for a SRR&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get SRS for a SRR&quot;&quot;&quot;</span>
         <span class="n">srr_df</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sra_metadata</span><span class="p">(</span><span class="n">srr</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">_order_first</span><span class="p">(</span><span class="n">srr_df</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;run_accession&quot;</span><span class="p">,</span> <span class="s2">&quot;sample_accession&quot;</span><span class="p">])</span></div>
 
 <div class="viewcode-block" id="SRAweb.srr_to_srx"><a class="viewcode-back" href="../../pysradb.html#pysradb.sraweb.SRAweb.srr_to_srx">[docs]</a>    <span class="k">def</span> <span class="nf">srr_to_srx</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">srr</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Get SRX for a SRR&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get SRX for a SRR&quot;&quot;&quot;</span>
         <span class="n">srr_df</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sra_metadata</span><span class="p">(</span><span class="n">srr</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">_order_first</span><span class="p">(</span><span class="n">srr_df</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;run_accession&quot;</span><span class="p">,</span> <span class="s2">&quot;experiment_accession&quot;</span><span class="p">])</span></div>
 
 <div class="viewcode-block" id="SRAweb.srs_to_gsm"><a class="viewcode-back" href="../../pysradb.html#pysradb.sraweb.SRAweb.srs_to_gsm">[docs]</a>    <span class="k">def</span> <span class="nf">srs_to_gsm</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">srs</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Get GSM for a SRS&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get GSM for a SRS&quot;&quot;&quot;</span>
         <span class="n">srx_df</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">srs_to_srx</span><span class="p">(</span><span class="n">srs</span><span class="p">)</span>
         <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sleep_time</span><span class="p">)</span>
         <span class="n">gsm_df</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">srx_to_gsm</span><span class="p">(</span><span class="n">srx_df</span><span class="o">.</span><span class="n">experiment_accession</span><span class="o">.</span><span class="n">tolist</span><span class="p">(),</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
@@ -1294,22 +1318,22 @@
         <span class="k">return</span> <span class="n">gsm_df</span><span class="p">[[</span><span class="s2">&quot;experiment_accession&quot;</span><span class="p">,</span> <span class="s2">&quot;experiment_alias&quot;</span><span class="p">]]</span></div>
 
 <div class="viewcode-block" id="SRAweb.srs_to_srx"><a class="viewcode-back" href="../../pysradb.html#pysradb.sraweb.SRAweb.srs_to_srx">[docs]</a>    <span class="k">def</span> <span class="nf">srs_to_srx</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">srs</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Get SRX for a SRS&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get SRX for a SRS&quot;&quot;&quot;</span>
         <span class="n">srs_df</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sra_metadata</span><span class="p">(</span><span class="n">srs</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">_order_first</span><span class="p">(</span><span class="n">srs_df</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;sample_accession&quot;</span><span class="p">,</span> <span class="s2">&quot;experiment_accession&quot;</span><span class="p">])</span></div>
 
 <div class="viewcode-block" id="SRAweb.srx_to_srp"><a class="viewcode-back" href="../../pysradb.html#pysradb.sraweb.SRAweb.srx_to_srp">[docs]</a>    <span class="k">def</span> <span class="nf">srx_to_srp</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">srx</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Get SRP for a SRX&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get SRP for a SRX&quot;&quot;&quot;</span>
         <span class="n">srx_df</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sra_metadata</span><span class="p">(</span><span class="n">srx</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">_order_first</span><span class="p">(</span><span class="n">srx_df</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;experiment_accession&quot;</span><span class="p">,</span> <span class="s2">&quot;study_accession&quot;</span><span class="p">])</span></div>
 
 <div class="viewcode-block" id="SRAweb.srx_to_srr"><a class="viewcode-back" href="../../pysradb.html#pysradb.sraweb.SRAweb.srx_to_srr">[docs]</a>    <span class="k">def</span> <span class="nf">srx_to_srr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">srx</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Get SRR for a SRX&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get SRR for a SRX&quot;&quot;&quot;</span>
         <span class="n">srx_df</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sra_metadata</span><span class="p">(</span><span class="n">srx</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">_order_first</span><span class="p">(</span><span class="n">srx_df</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;experiment_accession&quot;</span><span class="p">,</span> <span class="s2">&quot;run_accession&quot;</span><span class="p">])</span></div>
 
 <div class="viewcode-block" id="SRAweb.srx_to_srs"><a class="viewcode-back" href="../../pysradb.html#pysradb.sraweb.SRAweb.srx_to_srs">[docs]</a>    <span class="k">def</span> <span class="nf">srx_to_srs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">srx</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Get SRS for a SRX&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get SRS for a SRX&quot;&quot;&quot;</span>
         <span class="n">srx_df</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sra_metadata</span><span class="p">(</span><span class="n">srx</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">_order_first</span><span class="p">(</span><span class="n">srx_df</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;experiment_accession&quot;</span><span class="p">,</span> <span class="s2">&quot;sample_accession&quot;</span><span class="p">])</span></div>
 
@@ -1340,6 +1364,11 @@
               
 <div class="toc-item">
   
+<div id="searchbox"></div>
+</div>
+
+<div class="toc-item">
+  
 </div>
 
 <div class="toc-item">
@@ -1363,7 +1392,8 @@
   
     
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script src="../../_static/scripts/pydata-sphinx-theme.js?digest=9b1a4fa89bdd0e95b23b"></script>
+  <script src="../../_static/scripts/bootstrap.js?digest=796348d33e8b1d947c94"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=796348d33e8b1d947c94"></script>
 
   <footer class="bd-footer"><div class="bd-footer__inner container">
   
@@ -1378,9 +1408,19 @@
   </div>
   
   <div class="footer-item">
+    <p class="theme-version">
+    Built with the
+    <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">
+        PyData Sphinx Theme
+    </a>
+    0.12.0.
+</p>
+  </div>
+  
+  <div class="footer-item">
     
 <p class="sphinx-version">
-Created using <a href="http://sphinx-doc.org/">Sphinx</a> 5.1.1.<br>
+Created using <a href="http://sphinx-doc.org/">Sphinx</a> 5.3.0.<br>
 </p>
 
   </div>

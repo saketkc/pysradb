@@ -16,45 +16,42 @@
             
         </script>
     
-    <title>Metadata Search &#8212; pysradb 1.4.2 documentation</title>
-  <script>
+    <title>Metadata Search &#8212; pysradb 2.0.0-dev0 documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
     document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
     document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
   </script>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="../_static/styles/theme.css?digest=9b1a4fa89bdd0e95b23b" rel="stylesheet">
-<link href="../_static/styles/pydata-sphinx-theme.css?digest=9b1a4fa89bdd0e95b23b" rel="stylesheet">
+  <link href="../_static/styles/theme.css?digest=796348d33e8b1d947c94" rel="stylesheet">
+<link href="../_static/styles/bootstrap.css?digest=796348d33e8b1d947c94" rel="stylesheet">
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=796348d33e8b1d947c94" rel="stylesheet">
 
   
-  <link rel="stylesheet"
-    href="../_static/vendor/fontawesome/6.1.2/css/all.min.css">
-  <link rel="preload" as="font" type="font/woff2" crossorigin
-    href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2">
-  <link rel="preload" as="font" type="font/woff2" crossorigin
-    href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2">
+  <link href="../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=796348d33e8b1d947c94" rel="stylesheet">
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2">
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2">
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2">
 
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../_static/graphviz.css" />
     <link rel="stylesheet" type="text/css" href="../_static/tabs.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/sphinx-dropdown.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/panels-bootstrap.min.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=9b1a4fa89bdd0e95b23b">
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=796348d33e8b1d947c94">
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=796348d33e8b1d947c94">
 
     <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
     <script src="../_static/jquery.js"></script>
     <script src="../_static/underscore.js"></script>
     <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="../_static/doctools.js"></script>
-    <script async="async" src="https://www.googletagmanager.com/gtag/js?id=G-CKQZFCEENZ"></script>
-    <script>
-                    window.dataLayer = window.dataLayer || [];
-                    function gtag(){ dataLayer.push(arguments); }
-                    gtag('js', new Date());
-                    gtag('config', 'G-CKQZFCEENZ');
-                </script>
+    <script src="../_static/sphinx_highlight.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="gse-to-gsm" href="gse-to-gsm.html" />
@@ -65,6 +62,10 @@
   
   
   <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="180" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
 
   
   <input type="checkbox" class="sidebar-toggle" name="__primary" id="__primary">
@@ -80,7 +81,7 @@
     <div class="search-button__search-container">
       
 <form class="bd-search d-flex align-items-center" action="../search.html" method="get">
-  <i class="icon fas fa-search"></i>
+  <i class="fa-solid fa-magnifying-glass"></i>
   <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
   <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
 </form>
@@ -90,7 +91,7 @@
   
   <nav class="bd-header navbar navbar-expand-lg bd-navbar" id="navbar-main"><div class="bd-header__inner bd-page-width">
   <label class="sidebar-toggle primary-toggle" for="__primary">
-      <span class="fas fa-bars"></span>
+      <span class="fa-solid fa-bars"></span>
   </label>
   <div id="navbar-start">
     
@@ -128,39 +129,39 @@
     </p>
     <ul id="navbar-main-elements" class="navbar-nav">
         
-                <li class="nav-item">
-                    <a class="nav-link" href="../installation.html">
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../installation.html">
                         Installation
-                    </a>
-                </li>
+                      </a>
+                    </li>
                 
 
-                <li class="nav-item current active">
-                    <a class="nav-link" href="../quickstart.html">
+                    <li class="nav-item current active">
+                      <a class="nav-link nav-internal" href="../quickstart.html">
                         Quickstart
-                    </a>
-                </li>
+                      </a>
+                    </li>
                 
 
-                <li class="nav-item">
-                    <a class="nav-link" href="../cmdline.html">
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../cmdline.html">
                         CLI
-                    </a>
-                </li>
+                      </a>
+                    </li>
                 
 
-                <li class="nav-item">
-                    <a class="nav-link" href="../python-api-usage.html">
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../python-api-usage.html">
                         Python API
-                    </a>
-                </li>
+                      </a>
+                    </li>
                 
 
-                <li class="nav-item">
-                    <a class="nav-link" href="../case_studies.html">
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../case_studies.html">
                         Case Studies
-                    </a>
-                </li>
+                      </a>
+                    </li>
                 
             <div class="nav-item dropdown">
                 <button class="btn dropdown-toggle nav-item" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -168,39 +169,39 @@
                 </button>
                 <div class="dropdown-menu">
                     
-                <li class="nav-item">
-                    <a class="nav-link" href="../commands.html">
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../commands.html">
                         API Documentation
-                    </a>
-                </li>
+                      </a>
+                    </li>
                 
 
-                <li class="nav-item">
-                    <a class="nav-link" href="../contributing.html">
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../contributing.html">
                         Contributing
-                    </a>
-                </li>
+                      </a>
+                    </li>
                 
 
-                <li class="nav-item">
-                    <a class="nav-link" href="../authors.html">
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../authors.html">
                         Credits
-                    </a>
-                </li>
+                      </a>
+                    </li>
                 
 
-                <li class="nav-item">
-                    <a class="nav-link" href="../history.html">
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../history.html">
                         History
-                    </a>
-                </li>
+                      </a>
+                    </li>
                 
 
-                <li class="nav-item">
-                    <a class="nav-link" href="../modules.html">
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../modules.html">
                         pysradb
-                    </a>
-                </li>
+                      </a>
+                    </li>
                 
                 </div>
             </div>
@@ -212,19 +213,21 @@
     </div>
 
     <div id="navbar-end">
-      <div class="navbar-end-item navbar-end__search-button-container">
-        
-<button class="btn btn-sm navbar-btn search-button search-button__button" title="Search">
-  <i class="fas fa-search"></i>
+      
+        <div class="navbar-end-item navbar-persistent--container">
+          
+<button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-toggle="tooltip">
+  <i class="fa-solid fa-magnifying-glass"></i>
 </button>
-      </div>
+        </div>
+      
       
       <div class="navbar-end-item">
-        <span class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle">
-    <a class="theme-switch" data-mode="light"><i class="fas fa-sun"></i></a>
-    <a class="theme-switch" data-mode="dark"><i class="far fa-moon"></i></a>
-    <a class="theme-switch" data-mode="auto"><i class="fas fa-adjust"></i></a>
-</span>
+        <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+</button>
       </div>
       
       <div class="navbar-end-item">
@@ -236,7 +239,8 @@
           
           
           
-          <a href="https://github.com/saketkc/pysradb" title="GitHub" class="nav-link" rel="noopener" target="_blank"><span><i class="fab fa-github-square"></i></span>
+          
+          <a href="https://github.com/saketkc/pysradb" title="GitHub" class="nav-link" rel="noopener" target="_blank" data-toggle="tooltip"><span><i class="fa-brands fa-square-github"></i></span>
             <label class="sr-only">GitHub</label></a>
         </li>
       </ul>
@@ -247,15 +251,17 @@
 
 
   
-  <div class="search-button-container--mobile">
-<button class="btn btn-sm navbar-btn search-button search-button__button" title="Search">
-  <i class="fas fa-search"></i>
+  
+    <div class="navbar-persistent--mobile">
+<button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-toggle="tooltip">
+  <i class="fa-solid fa-magnifying-glass"></i>
 </button>
-  </div>
+    </div>
+  
 
   
   <label class="sidebar-toggle secondary-toggle" for="__secondary">
-      <span class="fas fa-outdent"></span>
+      <span class="fa-solid fa-outdent"></span>
   </label>
   
 
@@ -281,39 +287,39 @@
     </p>
     <ul id="navbar-main-elements" class="navbar-nav">
         
-                <li class="nav-item">
-                    <a class="nav-link" href="../installation.html">
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../installation.html">
                         Installation
-                    </a>
-                </li>
+                      </a>
+                    </li>
                 
 
-                <li class="nav-item current active">
-                    <a class="nav-link" href="../quickstart.html">
+                    <li class="nav-item current active">
+                      <a class="nav-link nav-internal" href="../quickstart.html">
                         Quickstart
-                    </a>
-                </li>
+                      </a>
+                    </li>
                 
 
-                <li class="nav-item">
-                    <a class="nav-link" href="../cmdline.html">
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../cmdline.html">
                         CLI
-                    </a>
-                </li>
+                      </a>
+                    </li>
                 
 
-                <li class="nav-item">
-                    <a class="nav-link" href="../python-api-usage.html">
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../python-api-usage.html">
                         Python API
-                    </a>
-                </li>
+                      </a>
+                    </li>
                 
 
-                <li class="nav-item">
-                    <a class="nav-link" href="../case_studies.html">
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../case_studies.html">
                         Case Studies
-                    </a>
-                </li>
+                      </a>
+                    </li>
                 
             <div class="nav-item dropdown">
                 <button class="btn dropdown-toggle nav-item" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -321,39 +327,39 @@
                 </button>
                 <div class="dropdown-menu">
                     
-                <li class="nav-item">
-                    <a class="nav-link" href="../commands.html">
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../commands.html">
                         API Documentation
-                    </a>
-                </li>
+                      </a>
+                    </li>
                 
 
-                <li class="nav-item">
-                    <a class="nav-link" href="../contributing.html">
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../contributing.html">
                         Contributing
-                    </a>
-                </li>
+                      </a>
+                    </li>
                 
 
-                <li class="nav-item">
-                    <a class="nav-link" href="../authors.html">
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../authors.html">
                         Credits
-                    </a>
-                </li>
+                      </a>
+                    </li>
                 
 
-                <li class="nav-item">
-                    <a class="nav-link" href="../history.html">
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../history.html">
                         History
-                    </a>
-                </li>
+                      </a>
+                    </li>
                 
 
-                <li class="nav-item">
-                    <a class="nav-link" href="../modules.html">
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../modules.html">
                         pysradb
-                    </a>
-                </li>
+                      </a>
+                    </li>
                 
                 </div>
             </div>
@@ -370,11 +376,11 @@
     <div class="sidebar-header-items__end">
       
       <div class="navbar-end-item">
-        <span class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle">
-    <a class="theme-switch" data-mode="light"><i class="fas fa-sun"></i></a>
-    <a class="theme-switch" data-mode="dark"><i class="far fa-moon"></i></a>
-    <a class="theme-switch" data-mode="auto"><i class="fas fa-adjust"></i></a>
-</span>
+        <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+</button>
       </div>
       
       <div class="navbar-end-item">
@@ -386,7 +392,8 @@
           
           
           
-          <a href="https://github.com/saketkc/pysradb" title="GitHub" class="nav-link" rel="noopener" target="_blank"><span><i class="fab fa-github-square"></i></span>
+          
+          <a href="https://github.com/saketkc/pysradb" title="GitHub" class="nav-link" rel="noopener" target="_blank" data-toggle="tooltip"><span><i class="fa-brands fa-square-github"></i></span>
             <label class="sr-only">GitHub</label></a>
         </li>
       </ul>
@@ -404,76 +411,20 @@
   </p>
   <div class="bd-toc-item navbar-nav">
     <ul class="current nav bd-sidenav">
- <li class="toctree-l1">
-  <a class="reference internal" href="download.html">
-   download
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="metadata.html">
-   metadata
-  </a>
- </li>
- <li class="toctree-l1 current active">
-  <a class="current reference internal" href="#">
-   Metadata Search
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="gse-to-gsm.html">
-   gse-to-gsm
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="gse-to-srp.html">
-   gse-to-srp
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="srp-to-gse.html">
-   srp-to-gse
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="srp-to-srr.html">
-   srp-to-srr
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="srp-to-srs.html">
-   srp-to-srs
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="srp-to-srx.html">
-   srp-to-srx
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="srr-to-srs.html">
-   srr-to-srs
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="srr-to-srx.html">
-   srr-to-srx
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="srs-to-srx.html">
-   srs-to-srx
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="srx-to-srr.html">
-   srx-to-srr
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="srx-to-srs.html">
-   srx-to-srs
-  </a>
- </li>
+<li class="toctree-l1"><a class="reference internal" href="download.html">download</a></li>
+<li class="toctree-l1"><a class="reference internal" href="metadata.html">metadata</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Metadata Search</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gse-to-gsm.html">gse-to-gsm</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gse-to-srp.html">gse-to-srp</a></li>
+<li class="toctree-l1"><a class="reference internal" href="srp-to-gse.html">srp-to-gse</a></li>
+<li class="toctree-l1"><a class="reference internal" href="srp-to-srr.html">srp-to-srr</a></li>
+<li class="toctree-l1"><a class="reference internal" href="srp-to-srs.html">srp-to-srs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="srp-to-srx.html">srp-to-srx</a></li>
+<li class="toctree-l1"><a class="reference internal" href="srr-to-srs.html">srr-to-srs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="srr-to-srx.html">srr-to-srx</a></li>
+<li class="toctree-l1"><a class="reference internal" href="srs-to-srx.html">srs-to-srx</a></li>
+<li class="toctree-l1"><a class="reference internal" href="srx-to-srr.html">srx-to-srr</a></li>
+<li class="toctree-l1"><a class="reference internal" href="srx-to-srs.html">srx-to-srs</a></li>
 </ul>
 
   </div>
@@ -488,8 +439,11 @@
     </div>
   </div>
 
+  
+  <div id="rtd-footer-container"></div>
+
       </div>
-      <main class="bd-main">
+      <main id="main-content" class="bd-main">
         
         
         <div class="bd-content">
@@ -594,77 +548,77 @@ The two lists of uids are then unioned together and used to retrieve metadata fr
 </div>
 <section id="command-line-documentation">
 <h4>Command-line Documentation<a class="headerlink" href="#command-line-documentation" title="Permalink to this heading">#</a></h4>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ pysradb search -h
-usage: pysradb search <span class="o">[</span>-h<span class="o">]</span> <span class="o">[</span>-o SAVETO<span class="o">]</span> <span class="o">[</span>-s<span class="o">]</span> <span class="o">[</span>-g <span class="o">[</span>GRAPHS<span class="o">]]</span> <span class="o">[</span>-d <span class="o">{</span>ena,geo,sra<span class="o">}]</span>
-                      <span class="o">[</span>-v <span class="o">{</span><span class="m">0</span>,1,2,3<span class="o">}]</span> <span class="o">[</span>--run-description<span class="o">]</span> <span class="o">[</span>--detailed<span class="o">]</span> <span class="o">[</span>-m MAX<span class="o">]</span>
-                      <span class="o">[</span>-q QUERY <span class="o">[</span>QUERY ...<span class="o">]]</span> <span class="o">[</span>-A ACCESSION<span class="o">]</span>
-                      <span class="o">[</span>-O ORGANISM <span class="o">[</span>ORGANISM ...<span class="o">]]</span> <span class="o">[</span>-L <span class="o">{</span>SINGLE,PAIRED<span class="o">}]</span>
-                      <span class="o">[</span>-M MBASES<span class="o">]</span> <span class="o">[</span>-D PUBLICATION_DATE<span class="o">]</span>
-                      <span class="o">[</span>-P PLATFORM <span class="o">[</span>PLATFORM ...<span class="o">]]</span>
-                      <span class="o">[</span>-E SELECTION <span class="o">[</span>SELECTION ...<span class="o">]]</span> <span class="o">[</span>-C SOURCE <span class="o">[</span>SOURCE ...<span class="o">]]</span>
-                      <span class="o">[</span>-S STRATEGY <span class="o">[</span>STRATEGY ...<span class="o">]]</span> <span class="o">[</span>-T TITLE <span class="o">[</span>TITLE ...<span class="o">]]</span>
-                      <span class="o">[</span>-G GEO_QUERY <span class="o">[</span>GEO_QUERY ...<span class="o">]]</span>
-                      <span class="o">[</span>-Y GEO_DATASET_TYPE <span class="o">[</span>GEO_DATASET_TYPE ...<span class="o">]]</span>
-                      <span class="o">[</span>-Z GEO_ENTRY_TYPE <span class="o">[</span>GEO_ENTRY_TYPE ...<span class="o">]]</span>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>pysradb<span class="w"> </span>search<span class="w"> </span>-h
+usage:<span class="w"> </span>pysradb<span class="w"> </span>search<span class="w"> </span><span class="o">[</span>-h<span class="o">]</span><span class="w"> </span><span class="o">[</span>-o<span class="w"> </span>SAVETO<span class="o">]</span><span class="w"> </span><span class="o">[</span>-s<span class="o">]</span><span class="w"> </span><span class="o">[</span>-g<span class="w"> </span><span class="o">[</span>GRAPHS<span class="o">]]</span><span class="w"> </span><span class="o">[</span>-d<span class="w"> </span><span class="o">{</span>ena,geo,sra<span class="o">}]</span>
+<span class="w">                      </span><span class="o">[</span>-v<span class="w"> </span><span class="o">{</span><span class="m">0</span>,1,2,3<span class="o">}]</span><span class="w"> </span><span class="o">[</span>--run-description<span class="o">]</span><span class="w"> </span><span class="o">[</span>--detailed<span class="o">]</span><span class="w"> </span><span class="o">[</span>-m<span class="w"> </span>MAX<span class="o">]</span>
+<span class="w">                      </span><span class="o">[</span>-q<span class="w"> </span>QUERY<span class="w"> </span><span class="o">[</span>QUERY<span class="w"> </span>...<span class="o">]]</span><span class="w"> </span><span class="o">[</span>-A<span class="w"> </span>ACCESSION<span class="o">]</span>
+<span class="w">                      </span><span class="o">[</span>-O<span class="w"> </span>ORGANISM<span class="w"> </span><span class="o">[</span>ORGANISM<span class="w"> </span>...<span class="o">]]</span><span class="w"> </span><span class="o">[</span>-L<span class="w"> </span><span class="o">{</span>SINGLE,PAIRED<span class="o">}]</span>
+<span class="w">                      </span><span class="o">[</span>-M<span class="w"> </span>MBASES<span class="o">]</span><span class="w"> </span><span class="o">[</span>-D<span class="w"> </span>PUBLICATION_DATE<span class="o">]</span>
+<span class="w">                      </span><span class="o">[</span>-P<span class="w"> </span>PLATFORM<span class="w"> </span><span class="o">[</span>PLATFORM<span class="w"> </span>...<span class="o">]]</span>
+<span class="w">                      </span><span class="o">[</span>-E<span class="w"> </span>SELECTION<span class="w"> </span><span class="o">[</span>SELECTION<span class="w"> </span>...<span class="o">]]</span><span class="w"> </span><span class="o">[</span>-C<span class="w"> </span>SOURCE<span class="w"> </span><span class="o">[</span>SOURCE<span class="w"> </span>...<span class="o">]]</span>
+<span class="w">                      </span><span class="o">[</span>-S<span class="w"> </span>STRATEGY<span class="w"> </span><span class="o">[</span>STRATEGY<span class="w"> </span>...<span class="o">]]</span><span class="w"> </span><span class="o">[</span>-T<span class="w"> </span>TITLE<span class="w"> </span><span class="o">[</span>TITLE<span class="w"> </span>...<span class="o">]]</span>
+<span class="w">                      </span><span class="o">[</span>-G<span class="w"> </span>GEO_QUERY<span class="w"> </span><span class="o">[</span>GEO_QUERY<span class="w"> </span>...<span class="o">]]</span>
+<span class="w">                      </span><span class="o">[</span>-Y<span class="w"> </span>GEO_DATASET_TYPE<span class="w"> </span><span class="o">[</span>GEO_DATASET_TYPE<span class="w"> </span>...<span class="o">]]</span>
+<span class="w">                      </span><span class="o">[</span>-Z<span class="w"> </span>GEO_ENTRY_TYPE<span class="w"> </span><span class="o">[</span>GEO_ENTRY_TYPE<span class="w"> </span>...<span class="o">]]</span>
 
-optional arguments:
-  -h, --help            show this <span class="nb">help</span> message and <span class="nb">exit</span>
-  -o SAVETO, --saveto SAVETO
-                        Save search result dataframe to file
-  -s, --stats           Displays some useful statistics <span class="k">for</span> the search
-                        results.
-  -g <span class="o">[</span>GRAPHS<span class="o">]</span>, --graphs <span class="o">[</span>GRAPHS<span class="o">]</span>
-                        Generates graphs to illustrate the search result. By
-                        default all graphs are generated. Alternatively,
-                        <span class="k">select</span> a subset from the options below <span class="k">in</span> a space-
-                        separated string: daterange, organism, source,
-                        selection, platform, basecount
-  -d <span class="o">{</span>ena,geo,sra<span class="o">}</span>, --db <span class="o">{</span>ena,geo,sra<span class="o">}</span>
-                        Select the db API <span class="o">(</span>sra, ena, or geo<span class="o">)</span> to query, <span class="nv">default</span>
-                        <span class="o">=</span> sra
-  -v <span class="o">{</span><span class="m">0</span>,1,2,3<span class="o">}</span>, --verbosity <span class="o">{</span><span class="m">0</span>,1,2,3<span class="o">}</span>
-                        Level of search result details <span class="o">(</span><span class="m">0</span>, <span class="m">1</span>, <span class="m">2</span> or <span class="m">3</span><span class="o">)</span>, <span class="nv">default</span>
-                        <span class="o">=</span> <span class="m">2</span>
-  --run-description     Displays run accessions and descriptions only.
-                        Equivalent to --verbosity <span class="m">1</span>
-  --detailed            Displays detailed search results. Equivalent to
-                        --verbosity <span class="m">3</span>.
-  -m MAX, --max MAX     Maximum number of entries to <span class="k">return</span>, <span class="nv">default</span> <span class="o">=</span> <span class="m">20</span>
-  -q QUERY <span class="o">[</span>QUERY ...<span class="o">]</span>, --query QUERY <span class="o">[</span>QUERY ...<span class="o">]</span>
-                        Main query string. Note that <span class="k">if</span> no query is supplied,
-                        at least one of the following flags must be present:
-  -A ACCESSION, --accession ACCESSION
-                        Accession number
-  -O ORGANISM <span class="o">[</span>ORGANISM ...<span class="o">]</span>, --organism ORGANISM <span class="o">[</span>ORGANISM ...<span class="o">]</span>
-                        Scientific name of the sample organism
-  -L <span class="o">{</span>SINGLE,PAIRED<span class="o">}</span>, --layout <span class="o">{</span>SINGLE,PAIRED<span class="o">}</span>
-                        Library layout
-  -M MBASES, --mbases MBASES
-                        Size of the sample rounded to the nearest megabase
-  -D PUBLICATION_DATE, --publication-date PUBLICATION_DATE
-                        Publication date of the run <span class="k">in</span> the format dd-mm-yyyy.
-                        If a date range is desired, enter the start date,
-                        followed by end date, separated by a colon <span class="s1">&#39;:&#39;</span>.
-                        Example: <span class="m">01</span>-01-2010:31-12-2010
-  -P PLATFORM <span class="o">[</span>PLATFORM ...<span class="o">]</span>, --platform PLATFORM <span class="o">[</span>PLATFORM ...<span class="o">]</span>
-                        Sequencing platform
-  -E SELECTION <span class="o">[</span>SELECTION ...<span class="o">]</span>, --selection SELECTION <span class="o">[</span>SELECTION ...<span class="o">]</span>
-                        Library selection
-  -C SOURCE <span class="o">[</span>SOURCE ...<span class="o">]</span>, --source SOURCE <span class="o">[</span>SOURCE ...<span class="o">]</span>
-                        Library <span class="nb">source</span>
-  -S STRATEGY <span class="o">[</span>STRATEGY ...<span class="o">]</span>, --strategy STRATEGY <span class="o">[</span>STRATEGY ...<span class="o">]</span>
-                        Library preparation strategy
-  -T TITLE <span class="o">[</span>TITLE ...<span class="o">]</span>, --title TITLE <span class="o">[</span>TITLE ...<span class="o">]</span>
-                        Experiment title
-  -G GEO_QUERY <span class="o">[</span>GEO_QUERY ...<span class="o">]</span>, --geo-query GEO_QUERY <span class="o">[</span>GEO_QUERY ...<span class="o">]</span>
-                        Main query string <span class="k">for</span> GEO DataSet. This flag is only
-                        used when db is <span class="nb">set</span> to be geo.
-  -Y GEO_DATASET_TYPE <span class="o">[</span>GEO_DATASET_TYPE ...<span class="o">]</span>, --geo-dataset-type GEO_DATASET_TYPE <span class="o">[</span>GEO_DATASET_TYPE ...<span class="o">]</span>
-                        GEO DataSet Type. This flag is only used when --db is
-                        <span class="nb">set</span> to be geo.
-  -Z GEO_ENTRY_TYPE <span class="o">[</span>GEO_ENTRY_TYPE ...<span class="o">]</span>, --geo-entry-type GEO_ENTRY_TYPE <span class="o">[</span>GEO_ENTRY_TYPE ...<span class="o">]</span>
-                        GEO Entry Type. This flag is only used when --db is
-                        <span class="nb">set</span> to be geo.
+optional<span class="w"> </span>arguments:
+<span class="w">  </span>-h,<span class="w"> </span>--help<span class="w">            </span>show<span class="w"> </span>this<span class="w"> </span><span class="nb">help</span><span class="w"> </span>message<span class="w"> </span>and<span class="w"> </span><span class="nb">exit</span>
+<span class="w">  </span>-o<span class="w"> </span>SAVETO,<span class="w"> </span>--saveto<span class="w"> </span>SAVETO
+<span class="w">                        </span>Save<span class="w"> </span>search<span class="w"> </span>result<span class="w"> </span>dataframe<span class="w"> </span>to<span class="w"> </span>file
+<span class="w">  </span>-s,<span class="w"> </span>--stats<span class="w">           </span>Displays<span class="w"> </span>some<span class="w"> </span>useful<span class="w"> </span>statistics<span class="w"> </span><span class="k">for</span><span class="w"> </span>the<span class="w"> </span>search
+<span class="w">                        </span>results.
+<span class="w">  </span>-g<span class="w"> </span><span class="o">[</span>GRAPHS<span class="o">]</span>,<span class="w"> </span>--graphs<span class="w"> </span><span class="o">[</span>GRAPHS<span class="o">]</span>
+<span class="w">                        </span>Generates<span class="w"> </span>graphs<span class="w"> </span>to<span class="w"> </span>illustrate<span class="w"> </span>the<span class="w"> </span>search<span class="w"> </span>result.<span class="w"> </span>By
+<span class="w">                        </span>default<span class="w"> </span>all<span class="w"> </span>graphs<span class="w"> </span>are<span class="w"> </span>generated.<span class="w"> </span>Alternatively,
+<span class="w">                        </span><span class="k">select</span><span class="w"> </span>a<span class="w"> </span>subset<span class="w"> </span>from<span class="w"> </span>the<span class="w"> </span>options<span class="w"> </span>below<span class="w"> </span><span class="k">in</span><span class="w"> </span>a<span class="w"> </span>space-
+<span class="w">                        </span>separated<span class="w"> </span>string:<span class="w"> </span>daterange,<span class="w"> </span>organism,<span class="w"> </span>source,
+<span class="w">                        </span>selection,<span class="w"> </span>platform,<span class="w"> </span>basecount
+<span class="w">  </span>-d<span class="w"> </span><span class="o">{</span>ena,geo,sra<span class="o">}</span>,<span class="w"> </span>--db<span class="w"> </span><span class="o">{</span>ena,geo,sra<span class="o">}</span>
+<span class="w">                        </span>Select<span class="w"> </span>the<span class="w"> </span>db<span class="w"> </span>API<span class="w"> </span><span class="o">(</span>sra,<span class="w"> </span>ena,<span class="w"> </span>or<span class="w"> </span>geo<span class="o">)</span><span class="w"> </span>to<span class="w"> </span>query,<span class="w"> </span><span class="nv">default</span>
+<span class="w">                        </span><span class="o">=</span><span class="w"> </span>sra
+<span class="w">  </span>-v<span class="w"> </span><span class="o">{</span><span class="m">0</span>,1,2,3<span class="o">}</span>,<span class="w"> </span>--verbosity<span class="w"> </span><span class="o">{</span><span class="m">0</span>,1,2,3<span class="o">}</span>
+<span class="w">                        </span>Level<span class="w"> </span>of<span class="w"> </span>search<span class="w"> </span>result<span class="w"> </span>details<span class="w"> </span><span class="o">(</span><span class="m">0</span>,<span class="w"> </span><span class="m">1</span>,<span class="w"> </span><span class="m">2</span><span class="w"> </span>or<span class="w"> </span><span class="m">3</span><span class="o">)</span>,<span class="w"> </span><span class="nv">default</span>
+<span class="w">                        </span><span class="o">=</span><span class="w"> </span><span class="m">2</span>
+<span class="w">  </span>--run-description<span class="w">     </span>Displays<span class="w"> </span>run<span class="w"> </span>accessions<span class="w"> </span>and<span class="w"> </span>descriptions<span class="w"> </span>only.
+<span class="w">                        </span>Equivalent<span class="w"> </span>to<span class="w"> </span>--verbosity<span class="w"> </span><span class="m">1</span>
+<span class="w">  </span>--detailed<span class="w">            </span>Displays<span class="w"> </span>detailed<span class="w"> </span>search<span class="w"> </span>results.<span class="w"> </span>Equivalent<span class="w"> </span>to
+<span class="w">                        </span>--verbosity<span class="w"> </span><span class="m">3</span>.
+<span class="w">  </span>-m<span class="w"> </span>MAX,<span class="w"> </span>--max<span class="w"> </span>MAX<span class="w">     </span>Maximum<span class="w"> </span>number<span class="w"> </span>of<span class="w"> </span>entries<span class="w"> </span>to<span class="w"> </span><span class="k">return</span>,<span class="w"> </span><span class="nv">default</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">20</span>
+<span class="w">  </span>-q<span class="w"> </span>QUERY<span class="w"> </span><span class="o">[</span>QUERY<span class="w"> </span>...<span class="o">]</span>,<span class="w"> </span>--query<span class="w"> </span>QUERY<span class="w"> </span><span class="o">[</span>QUERY<span class="w"> </span>...<span class="o">]</span>
+<span class="w">                        </span>Main<span class="w"> </span>query<span class="w"> </span>string.<span class="w"> </span>Note<span class="w"> </span>that<span class="w"> </span><span class="k">if</span><span class="w"> </span>no<span class="w"> </span>query<span class="w"> </span>is<span class="w"> </span>supplied,
+<span class="w">                        </span>at<span class="w"> </span>least<span class="w"> </span>one<span class="w"> </span>of<span class="w"> </span>the<span class="w"> </span>following<span class="w"> </span>flags<span class="w"> </span>must<span class="w"> </span>be<span class="w"> </span>present:
+<span class="w">  </span>-A<span class="w"> </span>ACCESSION,<span class="w"> </span>--accession<span class="w"> </span>ACCESSION
+<span class="w">                        </span>Accession<span class="w"> </span>number
+<span class="w">  </span>-O<span class="w"> </span>ORGANISM<span class="w"> </span><span class="o">[</span>ORGANISM<span class="w"> </span>...<span class="o">]</span>,<span class="w"> </span>--organism<span class="w"> </span>ORGANISM<span class="w"> </span><span class="o">[</span>ORGANISM<span class="w"> </span>...<span class="o">]</span>
+<span class="w">                        </span>Scientific<span class="w"> </span>name<span class="w"> </span>of<span class="w"> </span>the<span class="w"> </span>sample<span class="w"> </span>organism
+<span class="w">  </span>-L<span class="w"> </span><span class="o">{</span>SINGLE,PAIRED<span class="o">}</span>,<span class="w"> </span>--layout<span class="w"> </span><span class="o">{</span>SINGLE,PAIRED<span class="o">}</span>
+<span class="w">                        </span>Library<span class="w"> </span>layout
+<span class="w">  </span>-M<span class="w"> </span>MBASES,<span class="w"> </span>--mbases<span class="w"> </span>MBASES
+<span class="w">                        </span>Size<span class="w"> </span>of<span class="w"> </span>the<span class="w"> </span>sample<span class="w"> </span>rounded<span class="w"> </span>to<span class="w"> </span>the<span class="w"> </span>nearest<span class="w"> </span>megabase
+<span class="w">  </span>-D<span class="w"> </span>PUBLICATION_DATE,<span class="w"> </span>--publication-date<span class="w"> </span>PUBLICATION_DATE
+<span class="w">                        </span>Publication<span class="w"> </span>date<span class="w"> </span>of<span class="w"> </span>the<span class="w"> </span>run<span class="w"> </span><span class="k">in</span><span class="w"> </span>the<span class="w"> </span>format<span class="w"> </span>dd-mm-yyyy.
+<span class="w">                        </span>If<span class="w"> </span>a<span class="w"> </span>date<span class="w"> </span>range<span class="w"> </span>is<span class="w"> </span>desired,<span class="w"> </span>enter<span class="w"> </span>the<span class="w"> </span>start<span class="w"> </span>date,
+<span class="w">                        </span>followed<span class="w"> </span>by<span class="w"> </span>end<span class="w"> </span>date,<span class="w"> </span>separated<span class="w"> </span>by<span class="w"> </span>a<span class="w"> </span>colon<span class="w"> </span><span class="s1">&#39;:&#39;</span>.
+<span class="w">                        </span>Example:<span class="w"> </span><span class="m">01</span>-01-2010:31-12-2010
+<span class="w">  </span>-P<span class="w"> </span>PLATFORM<span class="w"> </span><span class="o">[</span>PLATFORM<span class="w"> </span>...<span class="o">]</span>,<span class="w"> </span>--platform<span class="w"> </span>PLATFORM<span class="w"> </span><span class="o">[</span>PLATFORM<span class="w"> </span>...<span class="o">]</span>
+<span class="w">                        </span>Sequencing<span class="w"> </span>platform
+<span class="w">  </span>-E<span class="w"> </span>SELECTION<span class="w"> </span><span class="o">[</span>SELECTION<span class="w"> </span>...<span class="o">]</span>,<span class="w"> </span>--selection<span class="w"> </span>SELECTION<span class="w"> </span><span class="o">[</span>SELECTION<span class="w"> </span>...<span class="o">]</span>
+<span class="w">                        </span>Library<span class="w"> </span>selection
+<span class="w">  </span>-C<span class="w"> </span>SOURCE<span class="w"> </span><span class="o">[</span>SOURCE<span class="w"> </span>...<span class="o">]</span>,<span class="w"> </span>--source<span class="w"> </span>SOURCE<span class="w"> </span><span class="o">[</span>SOURCE<span class="w"> </span>...<span class="o">]</span>
+<span class="w">                        </span>Library<span class="w"> </span><span class="nb">source</span>
+<span class="w">  </span>-S<span class="w"> </span>STRATEGY<span class="w"> </span><span class="o">[</span>STRATEGY<span class="w"> </span>...<span class="o">]</span>,<span class="w"> </span>--strategy<span class="w"> </span>STRATEGY<span class="w"> </span><span class="o">[</span>STRATEGY<span class="w"> </span>...<span class="o">]</span>
+<span class="w">                        </span>Library<span class="w"> </span>preparation<span class="w"> </span>strategy
+<span class="w">  </span>-T<span class="w"> </span>TITLE<span class="w"> </span><span class="o">[</span>TITLE<span class="w"> </span>...<span class="o">]</span>,<span class="w"> </span>--title<span class="w"> </span>TITLE<span class="w"> </span><span class="o">[</span>TITLE<span class="w"> </span>...<span class="o">]</span>
+<span class="w">                        </span>Experiment<span class="w"> </span>title
+<span class="w">  </span>-G<span class="w"> </span>GEO_QUERY<span class="w"> </span><span class="o">[</span>GEO_QUERY<span class="w"> </span>...<span class="o">]</span>,<span class="w"> </span>--geo-query<span class="w"> </span>GEO_QUERY<span class="w"> </span><span class="o">[</span>GEO_QUERY<span class="w"> </span>...<span class="o">]</span>
+<span class="w">                        </span>Main<span class="w"> </span>query<span class="w"> </span>string<span class="w"> </span><span class="k">for</span><span class="w"> </span>GEO<span class="w"> </span>DataSet.<span class="w"> </span>This<span class="w"> </span>flag<span class="w"> </span>is<span class="w"> </span>only
+<span class="w">                        </span>used<span class="w"> </span>when<span class="w"> </span>db<span class="w"> </span>is<span class="w"> </span><span class="nb">set</span><span class="w"> </span>to<span class="w"> </span>be<span class="w"> </span>geo.
+<span class="w">  </span>-Y<span class="w"> </span>GEO_DATASET_TYPE<span class="w"> </span><span class="o">[</span>GEO_DATASET_TYPE<span class="w"> </span>...<span class="o">]</span>,<span class="w"> </span>--geo-dataset-type<span class="w"> </span>GEO_DATASET_TYPE<span class="w"> </span><span class="o">[</span>GEO_DATASET_TYPE<span class="w"> </span>...<span class="o">]</span>
+<span class="w">                        </span>GEO<span class="w"> </span>DataSet<span class="w"> </span>Type.<span class="w"> </span>This<span class="w"> </span>flag<span class="w"> </span>is<span class="w"> </span>only<span class="w"> </span>used<span class="w"> </span>when<span class="w"> </span>--db<span class="w"> </span>is
+<span class="w">                        </span><span class="nb">set</span><span class="w"> </span>to<span class="w"> </span>be<span class="w"> </span>geo.
+<span class="w">  </span>-Z<span class="w"> </span>GEO_ENTRY_TYPE<span class="w"> </span><span class="o">[</span>GEO_ENTRY_TYPE<span class="w"> </span>...<span class="o">]</span>,<span class="w"> </span>--geo-entry-type<span class="w"> </span>GEO_ENTRY_TYPE<span class="w"> </span><span class="o">[</span>GEO_ENTRY_TYPE<span class="w"> </span>...<span class="o">]</span>
+<span class="w">                        </span>GEO<span class="w"> </span>Entry<span class="w"> </span>Type.<span class="w"> </span>This<span class="w"> </span>flag<span class="w"> </span>is<span class="w"> </span>only<span class="w"> </span>used<span class="w"> </span>when<span class="w"> </span>--db<span class="w"> </span>is
+<span class="w">                        </span><span class="nb">set</span><span class="w"> </span>to<span class="w"> </span>be<span class="w"> </span>geo.
 </pre></div>
 </div>
 <hr class="docutils" />
@@ -686,6 +640,26 @@ corresponding tab below.</p>
 <h2>Searching SRA database and retrieving metadata<a class="headerlink" href="#searching-sra-database-and-retrieving-metadata" title="Permalink to this heading">#</a></h2>
 <p>Let’s take for example we are interested in coronavirus sequences published
 on Short Reads Archive (SRA) in the first week of August 2020.</p>
+<div class="tabbed-set docutils">
+<input checked="checked" id="fae02b1c-42da-49fb-a828-efa09ac7ef1d" name="04d297ed-aa4b-4822-b34d-26665db886fa" type="radio">
+</input><label class="tabbed-label" for="fae02b1c-42da-49fb-a828-efa09ac7ef1d">
+Console</label><div class="tabbed-content docutils">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>pysradb<span class="w"> </span>search<span class="w"> </span>-q<span class="w"> </span>coronavirus<span class="w"> </span>--publication-date<span class="w"> </span><span class="m">01</span>-08-2020:07-08-2020
+</pre></div>
+</div>
+</div>
+<input id="757e7406-6ef4-43b0-a83c-069b58185e74" name="04d297ed-aa4b-4822-b34d-26665db886fa" type="radio">
+</input><label class="tabbed-label" for="757e7406-6ef4-43b0-a83c-069b58185e74">
+Python</label><div class="tabbed-content docutils">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pysradb.search</span> <span class="kn">import</span> <span class="n">SraSearch</span>
+
+<span class="n">instance</span> <span class="o">=</span> <span class="n">SraSearch</span><span class="p">(</span><span class="n">query</span><span class="o">=</span><span class="s2">&quot;coronavirus&quot;</span><span class="p">,</span> <span class="n">publication_date</span><span class="o">=</span><span class="s2">&quot;01-08-2020:07-08-2020&quot;</span><span class="p">)</span>
+<span class="n">instance</span><span class="o">.</span><span class="n">search</span><span class="p">()</span>
+<span class="n">instance</span><span class="o">.</span><span class="n">get_df</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
 <p>Output:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">study_accession</span>  <span class="n">experiment_accession</span>    <span class="n">experiment_title</span>        <span class="n">sample_taxon_id</span> <span class="n">sample_scientific_name</span>  <span class="n">experiment_library_strategy</span>     <span class="n">experiment_library_source</span>       <span class="n">experiment_library_selection</span>    <span class="n">sample_accession</span>        <span class="n">sample_alias</span>    <span class="n">experiment_instrument_model</span>     <span class="n">pool_member_spots</span>       <span class="n">run_1_size</span>     <span class="n">run_1_accession</span>  <span class="n">run_1_total_spots</span>       <span class="n">run_1_total_bases</span>       <span class="n">pmid</span>
 <span class="n">SRP270658</span>       <span class="n">SRX8679965</span>      <span class="n">GSM4658808</span><span class="p">:</span> <span class="n">SARS</span><span class="o">-</span><span class="n">CoV</span><span class="o">-</span><span class="mi">2</span><span class="o">-</span><span class="n">infected</span> <span class="mi">24</span><span class="n">h</span> <span class="mi">3</span><span class="p">;</span> <span class="n">Chlorocebus</span> <span class="n">sabaeus</span><span class="p">;</span> <span class="n">Severe</span> <span class="n">acute</span> <span class="n">respiratory</span> <span class="n">syndrome</span> <span class="n">coronavirus</span> <span class="mi">2</span><span class="p">;</span> <span class="n">RNA</span><span class="o">-</span><span class="n">Seq</span>    <span class="mi">60711</span>   <span class="n">Chlorocebus</span> <span class="n">sabaeus</span>     <span class="n">RNA</span><span class="o">-</span><span class="n">Seq</span> <span class="n">TRANSCRIPTOMIC</span>  <span class="n">cDNA</span>    <span class="n">SRS6959042</span>      <span class="n">GSM4658808</span>      <span class="n">NextSeq</span> <span class="mi">500</span>     <span class="mi">104223040</span>       <span class="mi">9743267247</span>      <span class="n">SRR12164500</span>     <span class="mi">104223040</span>       <span class="mi">31475358080</span>     <span class="mi">11295714</span>
@@ -717,6 +691,26 @@ on Short Reads Archive (SRA) in the first week of August 2020.</p>
 <section id="searching-ena-database-and-retrieving-metadata">
 <h2>Searching ENA database and retrieving metadata<a class="headerlink" href="#searching-ena-database-and-retrieving-metadata" title="Permalink to this heading">#</a></h2>
 <p>To query European Nucleotide Archive (ENA) instead:</p>
+<div class="tabbed-set docutils">
+<input checked="checked" id="f3ec7c1c-1cef-4c95-b4c9-02c09b053be4" name="7a94ee0e-301a-418d-8f07-cdbf24c3a41a" type="radio">
+</input><label class="tabbed-label" for="f3ec7c1c-1cef-4c95-b4c9-02c09b053be4">
+Console</label><div class="tabbed-content docutils">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>pysradb<span class="w"> </span>search<span class="w"> </span>--db<span class="w"> </span>ena<span class="w"> </span>-q<span class="w"> </span>coronavirus<span class="w"> </span>--publication-date<span class="w"> </span><span class="m">01</span>-08-2020:07-08-2020
+</pre></div>
+</div>
+</div>
+<input id="eeea7293-f503-4231-959c-53413d3f12fa" name="7a94ee0e-301a-418d-8f07-cdbf24c3a41a" type="radio">
+</input><label class="tabbed-label" for="eeea7293-f503-4231-959c-53413d3f12fa">
+Python</label><div class="tabbed-content docutils">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pysradb.search</span> <span class="kn">import</span> <span class="n">EnaSearch</span>
+
+<span class="n">instance</span> <span class="o">=</span> <span class="n">EnaSearch</span><span class="p">(</span><span class="n">query</span><span class="o">=</span><span class="s2">&quot;coronavirus&quot;</span><span class="p">,</span> <span class="n">publication_date</span><span class="o">=</span><span class="s2">&quot;01-08-2020:07-08-2020&quot;</span><span class="p">)</span>
+<span class="n">instance</span><span class="o">.</span><span class="n">search</span><span class="p">()</span>
+<span class="n">instance</span><span class="o">.</span><span class="n">get_df</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
 <p>Output:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">study_accession</span> <span class="n">experiment_accession</span>    <span class="n">experiment_title</span>        <span class="n">description</span>     <span class="n">tax_id</span>  <span class="n">scientific_name</span> <span class="n">library_strategylibrary_source</span>  <span class="n">library_selection</span>       <span class="n">sample_accession</span>        <span class="n">sample_title</span>    <span class="n">instrument_model</span>        <span class="n">run_accession</span>  <span class="n">read_count</span>       <span class="n">base_count</span>
 <span class="n">PRJEB12126</span>      <span class="n">ERX1264364</span>      <span class="n">Illumina</span> <span class="n">HiSeq</span> <span class="mi">2000</span> <span class="n">sequencing</span><span class="p">;</span> <span class="n">Analysis</span> <span class="n">of</span> <span class="n">coronavirus</span> <span class="ow">and</span> <span class="n">infected</span> <span class="n">host</span><span class="o">-</span><span class="n">cell</span> <span class="n">gene</span> <span class="n">expression</span> <span class="n">through</span> <span class="n">RNA</span> <span class="n">sequencing</span> <span class="ow">and</span> <span class="n">ribosome</span> <span class="n">profiling</span>    <span class="n">Illumina</span> <span class="n">HiSeq</span> <span class="mi">2000</span> <span class="n">sequencing</span><span class="p">;</span> <span class="n">Analysis</span> <span class="n">of</span> <span class="n">coronavirus</span> <span class="ow">and</span> <span class="n">infected</span> <span class="n">host</span><span class="o">-</span><span class="n">cell</span> <span class="n">gene</span> <span class="n">expression</span> <span class="n">through</span> <span class="n">RNA</span> <span class="n">sequencing</span> <span class="ow">and</span> <span class="n">ribosome</span> <span class="n">profiling</span>    <span class="mi">10090</span>   <span class="n">Mus</span> <span class="n">musculus</span>    <span class="n">OTHER</span>   <span class="n">TRANSCRIPTOMIC</span>  <span class="n">other</span>   <span class="n">SAMEA3708907</span>    <span class="n">Sample</span> <span class="mi">1</span>        <span class="n">Illumina</span> <span class="n">HiSeq</span> <span class="mi">2000</span>     <span class="n">ERR1190989</span>      <span class="mi">38883498</span>        <span class="mi">1161289538</span>
@@ -748,6 +742,26 @@ on Short Reads Archive (SRA) in the first week of August 2020.</p>
 <section id="searching-geo-datasets-database-and-retrieving-metadata">
 <h2>Searching GEO Datasets database and retrieving metadata<a class="headerlink" href="#searching-geo-datasets-database-and-retrieving-metadata" title="Permalink to this heading">#</a></h2>
 <p>To query GEO Datasets instead:</p>
+<div class="tabbed-set docutils">
+<input checked="checked" id="431a9105-80b5-4456-ae4d-2841af857292" name="703a1b35-72e8-4566-a79b-a5f597811ce7" type="radio">
+</input><label class="tabbed-label" for="431a9105-80b5-4456-ae4d-2841af857292">
+Console</label><div class="tabbed-content docutils">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>pysradb<span class="w"> </span>search<span class="w"> </span>--db<span class="w"> </span>geo<span class="w"> </span>-q<span class="w"> </span>coronavirus<span class="w"> </span>--publication-date<span class="w"> </span><span class="m">01</span>-08-2020:07-08-2020
+</pre></div>
+</div>
+</div>
+<input id="5696e2fc-7969-4891-9427-241e562234d0" name="703a1b35-72e8-4566-a79b-a5f597811ce7" type="radio">
+</input><label class="tabbed-label" for="5696e2fc-7969-4891-9427-241e562234d0">
+Python</label><div class="tabbed-content docutils">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pysradb.search</span> <span class="kn">import</span> <span class="n">GeoSearch</span>
+
+<span class="n">instance</span> <span class="o">=</span> <span class="n">GeoSearch</span><span class="p">(</span><span class="n">query</span><span class="o">=</span><span class="s2">&quot;coronavirus&quot;</span><span class="p">,</span> <span class="n">publication_date</span><span class="o">=</span><span class="s2">&quot;01-08-2020:07-08-2020&quot;</span><span class="p">)</span>
+<span class="n">instance</span><span class="o">.</span><span class="n">search</span><span class="p">()</span>
+<span class="n">instance</span><span class="o">.</span><span class="n">get_df</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
 <p>Output:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">study_accession</span>    <span class="n">experiment_accession</span>    <span class="n">experiment_title</span>        <span class="n">sample_taxon_id</span> <span class="n">sample_scientific_name</span>  <span class="n">experiment_library_strategy</span>     <span class="n">experiment_library_source</span>       <span class="n">experiment_library_selection</span>    <span class="n">sample_accession</span>        <span class="n">sample_alias</span>    <span class="n">experiment_instrument_model</span>     <span class="n">pool_member_spots</span>       <span class="n">run_1_size</span>     <span class="n">run_1_accession</span>  <span class="n">run_1_total_spots</span>       <span class="n">run_1_total_bases</span>
 <span class="n">SRP270658</span>       <span class="n">SRX8679965</span>      <span class="n">GSM4658808</span><span class="p">:</span> <span class="n">SARS</span><span class="o">-</span><span class="n">CoV</span><span class="o">-</span><span class="mi">2</span><span class="o">-</span><span class="n">infected</span> <span class="mi">24</span><span class="n">h</span> <span class="mi">3</span><span class="p">;</span> <span class="n">Chlorocebus</span> <span class="n">sabaeus</span><span class="p">;</span> <span class="n">Severe</span> <span class="n">acute</span> <span class="n">respiratory</span> <span class="n">syndrome</span> <span class="n">coronavirus</span> <span class="mi">2</span><span class="p">;</span> <span class="n">RNA</span><span class="o">-</span><span class="n">Seq</span>    <span class="mi">60711</span>   <span class="n">Chlorocebus</span> <span class="n">sabaeus</span>     <span class="n">RNA</span><span class="o">-</span><span class="n">Seq</span> <span class="n">TRANSCRIPTOMIC</span>  <span class="n">cDNA</span>    <span class="n">SRS6959042</span>      <span class="n">GSM4658808</span>      <span class="n">NextSeq</span> <span class="mi">500</span>     <span class="mi">104223040</span>       <span class="mi">9743267247</span>      <span class="n">SRR12164500</span>     <span class="mi">104223040</span>       <span class="mi">31475358080</span>
@@ -761,6 +775,26 @@ on Short Reads Archive (SRA) in the first week of August 2020.</p>
 <h3>Controlling the level of detail of the metadata retrieved<a class="headerlink" href="#controlling-the-level-of-detail-of-the-metadata-retrieved" title="Permalink to this heading">#</a></h3>
 <p>We can control the maximum number of result entries to retrieve using the
 <cite>-m</cite> / <cite>–max</cite> flag or the <cite>return_max</cite> parameter:</p>
+<div class="tabbed-set docutils">
+<input checked="checked" id="784166f6-8af2-48ff-956f-4b98635a8364" name="a31dbb59-d030-48b4-99c6-6870c1e599fe" type="radio">
+</input><label class="tabbed-label" for="784166f6-8af2-48ff-956f-4b98635a8364">
+Console</label><div class="tabbed-content docutils">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>pysradb<span class="w"> </span>search<span class="w"> </span>-q<span class="w"> </span>coronavirus<span class="w"> </span>--publication-date<span class="w"> </span><span class="m">01</span>-08-2020:07-08-2020<span class="w"> </span>-m<span class="w"> </span><span class="m">5</span>
+</pre></div>
+</div>
+</div>
+<input id="764030c7-a846-403f-8d6b-9c05c0986dfe" name="a31dbb59-d030-48b4-99c6-6870c1e599fe" type="radio">
+</input><label class="tabbed-label" for="764030c7-a846-403f-8d6b-9c05c0986dfe">
+Python</label><div class="tabbed-content docutils">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pysradb.search</span> <span class="kn">import</span> <span class="n">SraSearch</span>
+
+<span class="n">instance</span> <span class="o">=</span> <span class="n">SraSearch</span><span class="p">(</span><span class="n">return_max</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">query</span><span class="o">=</span><span class="s2">&quot;coronavirus&quot;</span><span class="p">,</span> <span class="n">publication_date</span><span class="o">=</span><span class="s2">&quot;01-08-2020:07-08-2020&quot;</span><span class="p">)</span>
+<span class="n">instance</span><span class="o">.</span><span class="n">search</span><span class="p">()</span>
+<span class="n">instance</span><span class="o">.</span><span class="n">get_df</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
 <p>Output:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">study_accession</span>    <span class="n">experiment_accession</span>    <span class="n">experiment_title</span>        <span class="n">sample_taxon_id</span> <span class="n">sample_scientific_name</span>  <span class="n">experiment_library_strategy</span>     <span class="n">experiment_library_source</span>       <span class="n">experiment_library_selection</span>    <span class="n">sample_accession</span>        <span class="n">sample_alias</span>    <span class="n">experiment_instrument_model</span>     <span class="n">pool_member_spots</span>       <span class="n">run_1_size</span>     <span class="n">run_1_accession</span>  <span class="n">run_1_total_spots</span>       <span class="n">run_1_total_bases</span>       <span class="n">pmid</span>
 <span class="n">SRP270658</span>       <span class="n">SRX8679965</span>      <span class="n">GSM4658808</span><span class="p">:</span> <span class="n">SARS</span><span class="o">-</span><span class="n">CoV</span><span class="o">-</span><span class="mi">2</span><span class="o">-</span><span class="n">infected</span> <span class="mi">24</span><span class="n">h</span> <span class="mi">3</span><span class="p">;</span> <span class="n">Chlorocebus</span> <span class="n">sabaeus</span><span class="p">;</span> <span class="n">Severe</span> <span class="n">acute</span> <span class="n">respiratory</span> <span class="n">syndrome</span> <span class="n">coronavirus</span> <span class="mi">2</span><span class="p">;</span> <span class="n">RNA</span><span class="o">-</span><span class="n">Seq</span>    <span class="mi">60711</span>   <span class="n">Chlorocebus</span> <span class="n">sabaeus</span>     <span class="n">RNA</span><span class="o">-</span><span class="n">Seq</span> <span class="n">TRANSCRIPTOMIC</span>  <span class="n">cDNA</span>    <span class="n">SRS6959042</span>      <span class="n">GSM4658808</span>      <span class="n">NextSeq</span> <span class="mi">500</span>     <span class="mi">104223040</span>       <span class="mi">9743267247</span>      <span class="n">SRR12164500</span>     <span class="mi">104223040</span>       <span class="mi">31475358080</span>     <span class="mi">11295714</span>
@@ -779,6 +813,26 @@ verbosity, which is shown above, is 2.</p>
 <p>We can set verbosity to be 1 to only see run_accession and experiment title.
 On the command-line, we can use the more intuitive  <code class="docutils literal notranslate"><span class="pre">--run-description</span></code> flag
 in place of the more obscure <code class="docutils literal notranslate"><span class="pre">-v</span> <span class="pre">1</span></code> as shown below:</p>
+<div class="tabbed-set docutils">
+<input checked="checked" id="9b216f85-775c-4f4a-8349-5f7564760bdc" name="226937c1-e876-4bf1-bd68-defe2ee957e2" type="radio">
+</input><label class="tabbed-label" for="9b216f85-775c-4f4a-8349-5f7564760bdc">
+Console</label><div class="tabbed-content docutils">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>pysradb<span class="w"> </span>search<span class="w"> </span>-v<span class="w"> </span><span class="m">1</span><span class="w"> </span>-q<span class="w"> </span>coronavirus<span class="w"> </span>--publication-date<span class="w"> </span><span class="m">01</span>-08-2020:07-08-2020
+</pre></div>
+</div>
+</div>
+<input id="03032dc1-8984-4979-bb48-feb8d7cd78ef" name="226937c1-e876-4bf1-bd68-defe2ee957e2" type="radio">
+</input><label class="tabbed-label" for="03032dc1-8984-4979-bb48-feb8d7cd78ef">
+Python</label><div class="tabbed-content docutils">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pysradb.search</span> <span class="kn">import</span> <span class="n">SraSearch</span>
+
+<span class="n">instance</span> <span class="o">=</span> <span class="n">SraSearch</span><span class="p">(</span><span class="n">verbosity</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">query</span><span class="o">=</span><span class="s2">&quot;coronavirus&quot;</span><span class="p">,</span> <span class="n">publication_date</span><span class="o">=</span><span class="s2">&quot;01-08-2020:07-08-2020&quot;</span><span class="p">)</span>
+<span class="n">instance</span><span class="o">.</span><span class="n">search</span><span class="p">()</span>
+<span class="n">instance</span><span class="o">.</span><span class="n">get_df</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
 <p>Output:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">run_accession</span>    <span class="n">experiment_title</span>
 <span class="n">SRR12164500</span>     <span class="n">GSM4658808</span><span class="p">:</span> <span class="n">SARS</span><span class="o">-</span><span class="n">CoV</span><span class="o">-</span><span class="mi">2</span><span class="o">-</span><span class="n">infected</span> <span class="mi">24</span><span class="n">h</span> <span class="mi">3</span><span class="p">;</span> <span class="n">Chlorocebus</span> <span class="n">sabaeus</span><span class="p">;</span> <span class="n">Severe</span> <span class="n">acute</span> <span class="n">respiratory</span> <span class="n">syndrome</span> <span class="n">coronavirus</span> <span class="mi">2</span><span class="p">;</span> <span class="n">RNA</span><span class="o">-</span><span class="n">Seq</span>
@@ -810,6 +864,26 @@ in place of the more obscure <code class="docutils literal notranslate"><span cl
 attributes, we can set verbosity to be 3. Similar to the previous example,
 we can use the more intuitive <code class="docutils literal notranslate"><span class="pre">--detailed</span></code> flag in place of the more
 obscure <code class="docutils literal notranslate"><span class="pre">-v</span> <span class="pre">3</span></code> as shown below:</p>
+<div class="tabbed-set docutils">
+<input checked="checked" id="ab575527-a972-43f1-b858-9822b663b8d1" name="17292fd3-867b-43a8-8252-a278f42717e2" type="radio">
+</input><label class="tabbed-label" for="ab575527-a972-43f1-b858-9822b663b8d1">
+Console</label><div class="tabbed-content docutils">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>pysradb<span class="w"> </span>search<span class="w"> </span>-v<span class="w"> </span><span class="m">3</span><span class="w"> </span>-q<span class="w"> </span>coronavirus<span class="w"> </span>--publication-date<span class="w"> </span><span class="m">01</span>-08-2020:07-08-2020
+</pre></div>
+</div>
+</div>
+<input id="dea984b4-83ea-4042-9fef-d005bfe4b887" name="17292fd3-867b-43a8-8252-a278f42717e2" type="radio">
+</input><label class="tabbed-label" for="dea984b4-83ea-4042-9fef-d005bfe4b887">
+Python</label><div class="tabbed-content docutils">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pysradb.search</span> <span class="kn">import</span> <span class="n">SraSearch</span>
+
+<span class="n">instance</span> <span class="o">=</span> <span class="n">SraSearch</span><span class="p">(</span><span class="n">verbosity</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">query</span><span class="o">=</span><span class="s2">&quot;coronavirus&quot;</span><span class="p">,</span> <span class="n">publication_date</span><span class="o">=</span><span class="s2">&quot;01-08-2020:07-08-2020&quot;</span><span class="p">)</span>
+<span class="n">instance</span><span class="o">.</span><span class="n">search</span><span class="p">()</span>
+<span class="n">instance</span><span class="o">.</span><span class="n">get_df</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
 <p>Output:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>study_accession  experiment_accession    experiment_title        sample_taxon_id sample_scientific_name  experiment_library_strategy     experiment_library_source       experiment_library_selection    sample_accession        sample_alias    experiment_instrument_model     pool_member_spots       run_1_size     run_1_accession  run_1_total_spots       run_1_total_bases       experiment_alias        experiment_attributes_1_tag    experiment_attributes_1_value    experiment_design_description   experiment_external_id  experiment_library_construction_protocol        experiment_library_name experiment_link_1_type  experiment_link_1_value_1       experiment_link_1_value_2       experiment_link_1_value_3       experiment_platform     experiment_sample_descriptor_accession  library_layout pool_external_id pool_member_accession   pool_member_bases       pool_member_member_name pool_member_organism    pool_member_sample_name pool_member_sample_title        pool_member_tax_id      run_1_alias     run_1_base_A_count      run_1_base_C_count      run_1_base_G_count      run_1_base_N_count      run_1_base_T_count      run_1_cloudfile_1_filetype     run_1_cloudfile_1_location       run_1_cloudfile_1_provider      run_1_cloudfile_2_filetype      run_1_cloudfile_2_location      run_1_cloudfile_2_provider      run_1_cloudfile_3_filetype      run_1_cloudfile_3_location      run_1_cloudfile_3_provider      run_1_cloudfile_4_filetype      run_1_cloudfile_4_location      run_1_cloudfile_4_provider      run_1_cluster_name      run_1_database_1        run_1_is_public run_1_load_done run_1_published run_1_srafile_1_alternative_1_access_type       run_1_srafile_1_alternative_1_free_egress       run_1_srafile_1_alternative_1_org       run_1_srafile_1_alternative_1_url       run_1_srafile_1_alternative_2_access_type       run_1_srafile_1_alternative_2_free_egress      run_1_srafile_1_alternative_2_org        run_1_srafile_1_alternative_2_url       run_1_srafile_1_alternative_3_access_type       run_1_srafile_1_alternative_3_free_egress       run_1_srafile_1_alternative_3_org       run_1_srafile_1_alternative_3_url       run_1_srafile_1_cluster run_1_srafile_1_date    run_1_srafile_1_filename        run_1_srafile_1_md5    run_1_srafile_1_semantic_name    run_1_srafile_1_size    run_1_srafile_1_sratoolkit      run_1_srafile_1_supertype      run_1_srafile_1_url      run_1_srafile_2_alternative_1_access_type       run_1_srafile_2_alternative_1_free_egress      run_1_srafile_2_alternative_1_org        run_1_srafile_2_alternative_1_url       run_1_srafile_2_alternative_2_access_type       run_1_srafile_2_alternative_2_free_egress       run_1_srafile_2_alternative_2_org       run_1_srafile_2_alternative_2_url       run_1_srafile_2_alternative_3_access_type       run_1_srafile_2_alternative_3_free_egress       run_1_srafile_2_alternative_3_org       run_1_srafile_2_alternative_3_url       run_1_srafile_2_cluster run_1_srafile_2_date   run_1_srafile_2_filename run_1_srafile_2_md5     run_1_srafile_2_semantic_name   run_1_srafile_2_size    run_1_srafile_2_sratoolkit      run_1_srafile_2_supertype       run_1_srafile_2_url     run_1_srafile_3_alternative_1_access_type      run_1_srafile_3_alternative_1_free_egress        run_1_srafile_3_alternative_1_org       run_1_srafile_3_alternative_1_url       run_1_srafile_3_alternative_2_access_type       run_1_srafile_3_alternative_2_free_egress       run_1_srafile_3_alternative_2_org       run_1_srafile_3_alternative_2_url       run_1_srafile_3_alternative_3_access_type       run_1_srafile_3_alternative_3_free_egress       run_1_srafile_3_alternative_3_org       run_1_srafile_3_alternative_3_url      run_1_srafile_3_alternative_4_access_type        run_1_srafile_3_alternative_4_free_egress       run_1_srafile_3_alternative_4_org       run_1_srafile_3_alternative_4_url       run_1_srafile_3_cluster run_1_srafile_3_date    run_1_srafile_3_filename        run_1_srafile_3_md5     run_1_srafile_3_semantic_name   run_1_srafile_3_size    run_1_srafile_3_sratoolkit      run_1_srafile_3_supertype       run_1_srafile_3_url     run_1_static_data_available     run_1_total_base_count run_1_total_base_cs_native       sample_attributes_10_tag        sample_attributes_10_value      sample_attributes_11_tagsample_attributes_11_value      sample_attributes_12_tag        sample_attributes_12_value      sample_attributes_1_tagsample_attributes_1_value        sample_attributes_2_tag sample_attributes_2_value       sample_attributes_3_tag sample_attributes_3_value       sample_attributes_4_tag sample_attributes_4_value       sample_attributes_5_tag sample_attributes_5_value       sample_attributes_6_tag sample_attributes_6_value       sample_attributes_7_tag sample_attributes_7_value       sample_attributes_8_tag sample_attributes_8_value       sample_attributes_9_tag sample_attributes_9_value      sample_description       sample_external_id_1    sample_external_id_1_namespace  sample_link_1_type      sample_link_1_value_1   sample_link_1_value_2   sample_link_1_value_3   sample_taxon_id sample_title    study_alias     study_center_name       study_center_project_name       study_external_id_1     study_external_id_1_namespace   study_study_abstract   study_study_title        study_study_type_existing_study_type    submission_accession    submission_alias        submission_broker_name  submission_center_name  submission_lab_name     submission_submission_comment   pmid
 SRP270658       SRX8679965      GSM4658808: SARS-CoV-2-infected 24h 3; Chlorocebus sabaeus; Severe acute respiratory syndrome coronavirus 2; RNA-Seq    60711   Chlorocebus sabaeus     RNA-Seq TRANSCRIPTOMIC  cDNA    SRS6959042      GSM4658808      NextSeq 500     104223040       9743267247      SRR12164500     104223040       31475358080     GSM4658808     GEO Accession    GSM4658808      N/A     GSM4658808      Cells were harvested, and total RNA was extracted using the Qiagen RNeasy Plus Mini Kit. The quality of the extracted RNA was assessed with the Agilent 2100 Bioanalyzer. RNA libraries were prepared for sequencing using standard Illumina protocols. N/A     XREF_LINK       DB: gds ID: 304658808   LABEL: GSM4658808       ILLUMINA        SRS6959042      PAIRED  SAMN15464189    SRS6959042      31475358080     N/A     Chlorocebus sabaeus     GSM4658808      SARS-CoV-2-infected 24h 3       60711   GSM4658808_r1   7955582672      7851434515     7958217565       273003  7709850325      fastq   gs.US   gs      fastq   s3.us-east-1    s3      run     gs.US   gs     run      s3.us-east-1    s3      public  &lt;Database&gt;&lt;Table name=&quot;SEQUENCE&quot;&gt;&lt;Statistics source=&quot;meta&quot;&gt;&lt;Rows count=&quot;104223040&quot; /&gt;&lt;Elements count=&quot;31475358080&quot; /&gt;&lt;/Statistics&gt;&lt;/Table&gt;&lt;/Database&gt;   true    true    2020-07-08 18:19:30     Use Cloud Data Delivery -       GCP     gs://sra-pub-src-12/SRR12164500/6_CoV2_24h_3_S5_R1_001.fastq.gz.1       Use Cloud Data Delivery -       AWS     s3://sra-pub-src-12/SRR12164500/6_CoV2_24h_3_S5_R1_001.fastq.gz.1       N/A     N/A     N/A    N/A      public  2020-07-07 13:36:52     N/A     9ca5526761cf0716bfb6802c0fb31297        fastq   7139762726      0      Original N/A     Use Cloud Data Delivery -       GCP     gs://sra-pub-src-12/SRR12164500/6_CoV2_24h_3_S5_R2_001.fastq.gz.1       Use Cloud Data Delivery -       AWS     s3://sra-pub-src-12/SRR12164500/6_CoV2_24h_3_S5_R2_001.fastq.gz.1      N/A      N/A     N/A     N/A     public  2020-07-07 13:36:20     N/A     d2c92af7effd76563a8133011ec2275e        fastq  7448441689       0       Original        N/A     anonymous       worldwide       NCBI    https://sra-download.ncbi.nlm.nih.gov/traces/sra76/SRR/011879/SRR12164500       aws identity    s3.us-east-1    AWS     s3://sra-pub-run-8/SRR12164500/SRR12164500.1    gcp identity    gs.US   GCP     gs://sra-pub-run-9/SRR12164500/SRR12164500.1    N/A     N/A     N/A    N/A      public  2020-07-07 13:38:09     SRR12164500     2e349fddeeed6377a84638e8a6f3b055        run     9743268772     1Primary ETL     https://sra-download.ncbi.nlm.nih.gov/traces/sra76/SRR/011879/SRR12164500       1       31475358080    false    N/A     N/A     N/A     N/A     N/A     N/A     source_name     SARS-CoV-2-infected Vero E6 cells       cell   Vero E6 cells    treatment       SARS-CoV-2 infection    time    24h     N/A     N/A     N/A     N/A     N/A     N/A    N/A      N/A     N/A     N/A     N/A     SAMN15464189    BioSample       XREF_LINK       DB: bioproject  ID: 644588     LABEL: PRJNA644588       60711   SARS-CoV-2-infected 24h 3       GSE153940       GEO     GSE153940       PRJNA644588    BioProject       We conducted a high-throughput drug repositioning screen using the LOPAC?1280 and the ReFRAME drug libraries to identify existing drugs that harbor antiviral activity against SARS-CoV-2, in a Vero E6 cell-based assay. We additionally performed RNA sequencing on control and SARS-CoV-2 infected Vero E6 cells to study the biological changes after SARS-CoV-2 infection and to elucidate the potential mechanisms underlying the positive hits identified from our high-throughput screen. Vero E6 cells were either mock-infected or infected with SARS-CoV-2 USA-WA1/2020 (MOI = 0.3) with three replicates. Cells were harvested 24 hours after infection, and total RNA was extracted using the Qiagen? RNeasy? Plus Mini Kit. The quality of the extracted RNA was assessed with the Agilent? 2100 Bioanalyzer. Libraries were prepared from total RNA following ribosome RNA depletion using standard protocol according to Illumina?. Total RNA sequencing was then performed on the Illumina? NextSeq system; 150bp paired-end runs were performed and 100 million raw reads per sample were generated. Overall design: mRNA profiles of control (mock-infected) and 24h post-SARS-CoV-2-infection Vero E6 cells with three replicates.  Gene expression of SARS-CoV-2-infected Vero E6 cells    Other   SRA1095806      GEO: GSE153940 GEO      GEO     N/A     submission brokered by GEO      11295714
@@ -843,6 +917,26 @@ SRP253798       SRX8677872      Severe acute respiratory syndrome coronavirus 2 
 <h2>Saving Metadata to File<a class="headerlink" href="#saving-metadata-to-file" title="Permalink to this heading">#</a></h2>
 <p>Metadata retrieved can be saved in either a comma separated format or as a tab
 separated format.</p>
+<div class="tabbed-set docutils">
+<input checked="checked" id="1be4018e-5fb4-4211-96a1-57c67cff53ed" name="7b700ce4-6580-49ae-9448-07952d0f2cf6" type="radio">
+</input><label class="tabbed-label" for="1be4018e-5fb4-4211-96a1-57c67cff53ed">
+Console</label><div class="tabbed-content docutils">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>pysradb<span class="w"> </span>search<span class="w"> </span>--db<span class="w"> </span>ena<span class="w"> </span>-q<span class="w"> </span>coronavirus<span class="w"> </span>--publication-date<span class="w"> </span><span class="m">01</span>-08-2020:07-08-2020<span class="w"> </span>--saveto<span class="w"> </span>coronavirus.csv
+</pre></div>
+</div>
+</div>
+<input id="34745d46-cb07-42d0-a332-a3d951d161d4" name="7b700ce4-6580-49ae-9448-07952d0f2cf6" type="radio">
+</input><label class="tabbed-label" for="34745d46-cb07-42d0-a332-a3d951d161d4">
+Python
+.. code-block:: python</label><div class="tabbed-content docutils">
+<blockquote>
+<div><p>from pysradb.search import EnaSearch</p>
+<p>instance = EnaSearch(verbosity=3, query=”coronavirus”, publication_date=”01-08-2020:07-08-2020”)
+instance.search()
+instance.get_df().to_csv(“coronavirus.csv”, index=False)</p>
+</div></blockquote>
+</div>
+</div>
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
@@ -857,6 +951,26 @@ statistics and graphs for the search result:</p>
 <div class="line"><br /></div>
 </div>
 <p>Statistics:</p>
+<div class="tabbed-set docutils">
+<input checked="checked" id="2b1cf547-0b97-43aa-a26b-a8852a332f00" name="9dd35273-24dc-418b-9944-a7505b0e0706" type="radio">
+</input><label class="tabbed-label" for="2b1cf547-0b97-43aa-a26b-a8852a332f00">
+Console</label><div class="tabbed-content docutils">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>pysradb<span class="w"> </span>search<span class="w"> </span>--db<span class="w"> </span>ena<span class="w"> </span>--organism<span class="w"> </span><span class="s2">&quot;Severe acute respiratory syndrome coronavirus 2&quot;</span><span class="w"> </span>--max<span class="w"> </span><span class="m">10000</span><span class="w"> </span>-s
+</pre></div>
+</div>
+</div>
+<input id="051d2053-78f3-411d-8976-aba9768d370c" name="9dd35273-24dc-418b-9944-a7505b0e0706" type="radio">
+</input><label class="tabbed-label" for="051d2053-78f3-411d-8976-aba9768d370c">
+Python</label><div class="tabbed-content docutils">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pysradb.search</span> <span class="kn">import</span> <span class="n">EnaSearch</span>
+
+<span class="n">instance</span> <span class="o">=</span> <span class="n">EnaSearch</span><span class="p">(</span><span class="n">return_max</span><span class="o">=</span><span class="mi">10000</span><span class="p">,</span> <span class="n">organism</span><span class="o">=</span><span class="s2">&quot;Severe acute respiratory syndrome coronavirus 2&quot;</span><span class="p">)</span>
+<span class="n">instance</span><span class="o">.</span><span class="n">search</span><span class="p">()</span>
+<span class="n">instance</span><span class="o">.</span><span class="n">show_result_statistics</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
 <p>Output:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Statistics</span> <span class="k">for</span> <span class="n">the</span> <span class="n">search</span> <span class="n">query</span><span class="p">:</span>
 <span class="o">=================================</span>
@@ -906,6 +1020,26 @@ statistics and graphs for the search result:</p>
 <div class="line"><br /></div>
 </div>
 <p>Graphs:</p>
+<div class="tabbed-set docutils">
+<input checked="checked" id="5a55942a-a150-4ad4-b0fd-57f3c60b4439" name="95401e51-ae8a-4e3f-aeec-0045cc65fe7e" type="radio">
+</input><label class="tabbed-label" for="5a55942a-a150-4ad4-b0fd-57f3c60b4439">
+Console</label><div class="tabbed-content docutils">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>pysradb<span class="w"> </span>search<span class="w"> </span>--db<span class="w"> </span>ena<span class="w"> </span>-q<span class="w"> </span>e<span class="w"> </span>--max<span class="w"> </span><span class="m">500000</span><span class="w"> </span>-g
+</pre></div>
+</div>
+</div>
+<input id="8eecd3cd-941a-468c-8cf7-d5f7d4111cea" name="95401e51-ae8a-4e3f-aeec-0045cc65fe7e" type="radio">
+</input><label class="tabbed-label" for="8eecd3cd-941a-468c-8cf7-d5f7d4111cea">
+Python</label><div class="tabbed-content docutils">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pysradb.search</span> <span class="kn">import</span> <span class="n">EnaSearch</span>
+
+<span class="n">instance</span> <span class="o">=</span> <span class="n">EnaSearch</span><span class="p">(</span><span class="n">return_max</span><span class="o">=</span><span class="mi">500000</span><span class="p">,</span> <span class="s2">&quot;e&quot;</span><span class="p">)</span>
+<span class="n">instance</span><span class="o">.</span><span class="n">search</span><span class="p">()</span>
+<span class="n">instance</span><span class="o">.</span><span class="n">visualise_results</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
 <p>Output: Graphs generated will automatically be saved under <cite>./search_plots/</cite>.
 Optionally, graphs can be shown in python by including the argument <cite>show=True</cite>.
 You may refer to this <a class="reference external" href="https://colab.research.google.com/drive/1EIXwL31aqnIjfSZXKbm3SdE7K1ULQQ54?usp=sharing">Colab Notebook</a>.
@@ -926,7 +1060,7 @@ for the full set of graphs.</p>
                 <!-- Previous / next buttons -->
 <div class='prev-next-area'>
   <a class='left-prev' id="prev-link" href="metadata.html" title="previous page">
-      <i class="fas fa-angle-left"></i>
+      <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
           <p class="prev-next-subtitle">previous</p>
           <p class="prev-next-title">metadata</p>
@@ -937,7 +1071,7 @@ for the full set of graphs.</p>
       <p class="prev-next-subtitle">next</p>
       <p class="prev-next-title">gse-to-gsm</p>
   </div>
-  <i class="fas fa-angle-right"></i>
+  <i class="fa-solid fa-angle-right"></i>
   </a>
 </div>
             </footer>
@@ -951,7 +1085,7 @@ for the full set of graphs.</p>
 <div class="toc-item">
   
 <div class="tocsection onthispage">
-    <i class="fas fa-list"></i> On this page
+    <i class="fa-solid fa-list"></i> On this page
 </div>
 <nav id="bd-toc-nav" class="page-toc">
     <ul class="visible nav section-nav flex-column">
@@ -1020,13 +1154,18 @@ for the full set of graphs.</p>
 
 <div class="toc-item">
   
+<div id="searchbox"></div>
+</div>
+
+<div class="toc-item">
+  
 </div>
 
 <div class="toc-item">
   
 <div class="tocsection sourcelink">
     <a href="../_sources/commands/search.rst.txt">
-        <i class="fas fa-file-alt"></i> Show Source
+        <i class="fa-solid fa-file-lines"></i> Show Source
     </a>
 </div>
 
@@ -1049,7 +1188,8 @@ for the full set of graphs.</p>
   
     
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script src="../_static/scripts/pydata-sphinx-theme.js?digest=9b1a4fa89bdd0e95b23b"></script>
+  <script src="../_static/scripts/bootstrap.js?digest=796348d33e8b1d947c94"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=796348d33e8b1d947c94"></script>
 
   <footer class="bd-footer"><div class="bd-footer__inner container">
   
@@ -1064,9 +1204,19 @@ for the full set of graphs.</p>
   </div>
   
   <div class="footer-item">
+    <p class="theme-version">
+    Built with the
+    <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">
+        PyData Sphinx Theme
+    </a>
+    0.12.0.
+</p>
+  </div>
+  
+  <div class="footer-item">
     
 <p class="sphinx-version">
-Created using <a href="http://sphinx-doc.org/">Sphinx</a> 5.1.1.<br>
+Created using <a href="http://sphinx-doc.org/">Sphinx</a> 5.3.0.<br>
 </p>
 
   </div>

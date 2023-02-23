@@ -15,46 +15,43 @@
             
         </script>
     
-    <title>pysradb.search &#8212; pysradb 1.4.2 documentation</title>
-  <script>
+    <title>pysradb.search &#8212; pysradb 2.0.0-dev0 documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
     document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
     document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
   </script>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="../../_static/styles/theme.css?digest=9b1a4fa89bdd0e95b23b" rel="stylesheet">
-<link href="../../_static/styles/pydata-sphinx-theme.css?digest=9b1a4fa89bdd0e95b23b" rel="stylesheet">
+  <link href="../../_static/styles/theme.css?digest=796348d33e8b1d947c94" rel="stylesheet">
+<link href="../../_static/styles/bootstrap.css?digest=796348d33e8b1d947c94" rel="stylesheet">
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=796348d33e8b1d947c94" rel="stylesheet">
 
   
-  <link rel="stylesheet"
-    href="../../_static/vendor/fontawesome/6.1.2/css/all.min.css">
-  <link rel="preload" as="font" type="font/woff2" crossorigin
-    href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2">
-  <link rel="preload" as="font" type="font/woff2" crossorigin
-    href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2">
+  <link href="../../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=796348d33e8b1d947c94" rel="stylesheet">
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2">
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2">
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2">
 
     <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/tabs.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-dropdown.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/panels-bootstrap.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=9b1a4fa89bdd0e95b23b">
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=796348d33e8b1d947c94">
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=796348d33e8b1d947c94">
 
     <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
     <script src="../../_static/jquery.js"></script>
     <script src="../../_static/underscore.js"></script>
     <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/sphinx_highlight.js"></script>
     <script src="../../_static/tabs.js"></script>
-    <script async="async" src="https://www.googletagmanager.com/gtag/js?id=G-CKQZFCEENZ"></script>
-    <script>
-                    window.dataLayer = window.dataLayer || [];
-                    function gtag(){ dataLayer.push(arguments); }
-                    gtag('js', new Date());
-                    gtag('config', 'G-CKQZFCEENZ');
-                </script>
     <script>DOCUMENTATION_OPTIONS.pagename = '_modules/pysradb/search';</script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
@@ -64,6 +61,10 @@
   
   
   <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="180" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
 
   
   <input type="checkbox" class="sidebar-toggle" name="__primary" id="__primary">
@@ -79,7 +80,7 @@
     <div class="search-button__search-container">
       
 <form class="bd-search d-flex align-items-center" action="../../search.html" method="get">
-  <i class="icon fas fa-search"></i>
+  <i class="fa-solid fa-magnifying-glass"></i>
   <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
   <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
 </form>
@@ -89,7 +90,7 @@
   
   <nav class="bd-header navbar navbar-expand-lg bd-navbar" id="navbar-main"><div class="bd-header__inner bd-page-width">
   <label class="sidebar-toggle primary-toggle" for="__primary">
-      <span class="fas fa-bars"></span>
+      <span class="fa-solid fa-bars"></span>
   </label>
   <div id="navbar-start">
     
@@ -127,39 +128,39 @@
     </p>
     <ul id="navbar-main-elements" class="navbar-nav">
         
-                <li class="nav-item">
-                    <a class="nav-link" href="../../installation.html">
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../installation.html">
                         Installation
-                    </a>
-                </li>
+                      </a>
+                    </li>
                 
 
-                <li class="nav-item">
-                    <a class="nav-link" href="../../quickstart.html">
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../quickstart.html">
                         Quickstart
-                    </a>
-                </li>
+                      </a>
+                    </li>
                 
 
-                <li class="nav-item">
-                    <a class="nav-link" href="../../cmdline.html">
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../cmdline.html">
                         CLI
-                    </a>
-                </li>
+                      </a>
+                    </li>
                 
 
-                <li class="nav-item">
-                    <a class="nav-link" href="../../python-api-usage.html">
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../python-api-usage.html">
                         Python API
-                    </a>
-                </li>
+                      </a>
+                    </li>
                 
 
-                <li class="nav-item">
-                    <a class="nav-link" href="../../case_studies.html">
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../case_studies.html">
                         Case Studies
-                    </a>
-                </li>
+                      </a>
+                    </li>
                 
             <div class="nav-item dropdown">
                 <button class="btn dropdown-toggle nav-item" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -167,39 +168,39 @@
                 </button>
                 <div class="dropdown-menu">
                     
-                <li class="nav-item">
-                    <a class="nav-link" href="../../commands.html">
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../commands.html">
                         API Documentation
-                    </a>
-                </li>
+                      </a>
+                    </li>
                 
 
-                <li class="nav-item">
-                    <a class="nav-link" href="../../contributing.html">
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../contributing.html">
                         Contributing
-                    </a>
-                </li>
+                      </a>
+                    </li>
                 
 
-                <li class="nav-item">
-                    <a class="nav-link" href="../../authors.html">
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../authors.html">
                         Credits
-                    </a>
-                </li>
+                      </a>
+                    </li>
                 
 
-                <li class="nav-item">
-                    <a class="nav-link" href="../../history.html">
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../history.html">
                         History
-                    </a>
-                </li>
+                      </a>
+                    </li>
                 
 
-                <li class="nav-item">
-                    <a class="nav-link" href="../../modules.html">
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../modules.html">
                         pysradb
-                    </a>
-                </li>
+                      </a>
+                    </li>
                 
                 </div>
             </div>
@@ -211,19 +212,21 @@
     </div>
 
     <div id="navbar-end">
-      <div class="navbar-end-item navbar-end__search-button-container">
-        
-<button class="btn btn-sm navbar-btn search-button search-button__button" title="Search">
-  <i class="fas fa-search"></i>
+      
+        <div class="navbar-end-item navbar-persistent--container">
+          
+<button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-toggle="tooltip">
+  <i class="fa-solid fa-magnifying-glass"></i>
 </button>
-      </div>
+        </div>
+      
       
       <div class="navbar-end-item">
-        <span class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle">
-    <a class="theme-switch" data-mode="light"><i class="fas fa-sun"></i></a>
-    <a class="theme-switch" data-mode="dark"><i class="far fa-moon"></i></a>
-    <a class="theme-switch" data-mode="auto"><i class="fas fa-adjust"></i></a>
-</span>
+        <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+</button>
       </div>
       
       <div class="navbar-end-item">
@@ -235,7 +238,8 @@
           
           
           
-          <a href="https://github.com/saketkc/pysradb" title="GitHub" class="nav-link" rel="noopener" target="_blank"><span><i class="fab fa-github-square"></i></span>
+          
+          <a href="https://github.com/saketkc/pysradb" title="GitHub" class="nav-link" rel="noopener" target="_blank" data-toggle="tooltip"><span><i class="fa-brands fa-square-github"></i></span>
             <label class="sr-only">GitHub</label></a>
         </li>
       </ul>
@@ -246,15 +250,17 @@
 
 
   
-  <div class="search-button-container--mobile">
-<button class="btn btn-sm navbar-btn search-button search-button__button" title="Search">
-  <i class="fas fa-search"></i>
+  
+    <div class="navbar-persistent--mobile">
+<button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-toggle="tooltip">
+  <i class="fa-solid fa-magnifying-glass"></i>
 </button>
-  </div>
+    </div>
+  
 
   
   <label class="sidebar-toggle secondary-toggle" for="__secondary">
-      <span class="fas fa-outdent"></span>
+      <span class="fa-solid fa-outdent"></span>
   </label>
   
 
@@ -280,39 +286,39 @@
     </p>
     <ul id="navbar-main-elements" class="navbar-nav">
         
-                <li class="nav-item">
-                    <a class="nav-link" href="../../installation.html">
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../installation.html">
                         Installation
-                    </a>
-                </li>
+                      </a>
+                    </li>
                 
 
-                <li class="nav-item">
-                    <a class="nav-link" href="../../quickstart.html">
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../quickstart.html">
                         Quickstart
-                    </a>
-                </li>
+                      </a>
+                    </li>
                 
 
-                <li class="nav-item">
-                    <a class="nav-link" href="../../cmdline.html">
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../cmdline.html">
                         CLI
-                    </a>
-                </li>
+                      </a>
+                    </li>
                 
 
-                <li class="nav-item">
-                    <a class="nav-link" href="../../python-api-usage.html">
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../python-api-usage.html">
                         Python API
-                    </a>
-                </li>
+                      </a>
+                    </li>
                 
 
-                <li class="nav-item">
-                    <a class="nav-link" href="../../case_studies.html">
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../case_studies.html">
                         Case Studies
-                    </a>
-                </li>
+                      </a>
+                    </li>
                 
             <div class="nav-item dropdown">
                 <button class="btn dropdown-toggle nav-item" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -320,39 +326,39 @@
                 </button>
                 <div class="dropdown-menu">
                     
-                <li class="nav-item">
-                    <a class="nav-link" href="../../commands.html">
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../commands.html">
                         API Documentation
-                    </a>
-                </li>
+                      </a>
+                    </li>
                 
 
-                <li class="nav-item">
-                    <a class="nav-link" href="../../contributing.html">
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../contributing.html">
                         Contributing
-                    </a>
-                </li>
+                      </a>
+                    </li>
                 
 
-                <li class="nav-item">
-                    <a class="nav-link" href="../../authors.html">
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../authors.html">
                         Credits
-                    </a>
-                </li>
+                      </a>
+                    </li>
                 
 
-                <li class="nav-item">
-                    <a class="nav-link" href="../../history.html">
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../history.html">
                         History
-                    </a>
-                </li>
+                      </a>
+                    </li>
                 
 
-                <li class="nav-item">
-                    <a class="nav-link" href="../../modules.html">
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../modules.html">
                         pysradb
-                    </a>
-                </li>
+                      </a>
+                    </li>
                 
                 </div>
             </div>
@@ -369,11 +375,11 @@
     <div class="sidebar-header-items__end">
       
       <div class="navbar-end-item">
-        <span class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle">
-    <a class="theme-switch" data-mode="light"><i class="fas fa-sun"></i></a>
-    <a class="theme-switch" data-mode="dark"><i class="far fa-moon"></i></a>
-    <a class="theme-switch" data-mode="auto"><i class="fas fa-adjust"></i></a>
-</span>
+        <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+</button>
       </div>
       
       <div class="navbar-end-item">
@@ -385,7 +391,8 @@
           
           
           
-          <a href="https://github.com/saketkc/pysradb" title="GitHub" class="nav-link" rel="noopener" target="_blank"><span><i class="fab fa-github-square"></i></span>
+          
+          <a href="https://github.com/saketkc/pysradb" title="GitHub" class="nav-link" rel="noopener" target="_blank" data-toggle="tooltip"><span><i class="fa-brands fa-square-github"></i></span>
             <label class="sr-only">GitHub</label></a>
         </li>
       </ul>
@@ -403,8 +410,11 @@
     </div>
   </div>
 
+  
+  <div id="rtd-footer-container"></div>
+
       </div>
-      <main class="bd-main">
+      <main id="main-content" class="bd-main">
         
         
         <div class="bd-content">
@@ -442,7 +452,7 @@
 
 
 <div class="viewcode-block" id="QuerySearch"><a class="viewcode-back" href="../../pysradb.html#pysradb.search.QuerySearch">[docs]</a><span class="k">class</span> <span class="nc">QuerySearch</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;This is the base class for the search feature.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;This is the base class for the search feature.</span>
 
 <span class="sd">    This class takes as input the user&#39;s search query, which has been</span>
 <span class="sd">    tokenized by the ArgParser. The query will be sent to either SRA or ENA</span>
@@ -591,7 +601,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">plot_objects</span> <span class="o">=</span> <span class="p">{}</span>
 
     <span class="k">def</span> <span class="nf">_input_multi_regex_checker</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">regex_matcher</span><span class="p">,</span> <span class="n">input_query</span><span class="p">,</span> <span class="n">error_message</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Checks if the user input match exactly 1 of the possible regex.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Checks if the user input match exactly 1 of the possible regex.</span>
 
 <span class="sd">        This is a helper method for _validate_fields. It takes as input a</span>
 <span class="sd">        dictionary of regex expression : accepted string by API pairs, and</span>
@@ -638,7 +648,7 @@
             <span class="k">return</span> <span class="n">input_query</span><span class="p">,</span> <span class="n">message</span>
 
     <span class="k">def</span> <span class="nf">_validate_fields</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Verifies that user input format is correct.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Verifies that user input format is correct.</span>
 
 <span class="sd">        This helper function tries to match the input query strings from</span>
 <span class="sd">        the user to the exact string that is accepted by both SRA and ENA</span>
@@ -881,7 +891,7 @@
         <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;  </span><span class="si">{</span><span class="n">stat_header</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">stat_breakdown</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span>
 
 <div class="viewcode-block" id="QuerySearch.show_result_statistics"><a class="viewcode-back" href="../../pysradb.html#pysradb.search.QuerySearch.show_result_statistics">[docs]</a>    <span class="k">def</span> <span class="nf">show_result_statistics</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Shows search result statistics.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Shows search result statistics.&quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">df</span><span class="o">.</span><span class="n">empty</span><span class="p">:</span>
             <span class="nb">print</span><span class="p">(</span>
                 <span class="s2">&quot;No results are found for the current search query, hence no statistics can be generated.&quot;</span>
@@ -916,7 +926,7 @@
 <div class="viewcode-block" id="QuerySearch.visualise_results"><a class="viewcode-back" href="../../pysradb.html#pysradb.search.QuerySearch.visualise_results">[docs]</a>    <span class="k">def</span> <span class="nf">visualise_results</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">graph_types</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;all&quot;</span><span class="p">,),</span> <span class="n">show</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">saveto</span><span class="o">=</span><span class="s2">&quot;./search_plots/&quot;</span>
     <span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Generate graphs that visualise the search results.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Generate graphs that visualise the search results.</span>
 
 <span class="sd">        This method will only work if the optional dependency, matplotlib,</span>
 <span class="sd">        is installed in the system.</span>
@@ -999,15 +1009,15 @@
         <span class="k">pass</span></div>
 
 <div class="viewcode-block" id="QuerySearch.get_df"><a class="viewcode-back" href="../../pysradb.html#pysradb.search.QuerySearch.get_df">[docs]</a>    <span class="k">def</span> <span class="nf">get_df</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Getter for the search result dataframe.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Getter for the search result dataframe.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">df</span></div>
 
 <div class="viewcode-block" id="QuerySearch.get_plot_objects"><a class="viewcode-back" href="../../pysradb.html#pysradb.search.QuerySearch.get_plot_objects">[docs]</a>    <span class="k">def</span> <span class="nf">get_plot_objects</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Get the plot objects for plots generated.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get the plot objects for plots generated.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">plot_objects</span></div>
 
     <span class="k">def</span> <span class="nf">_plot_graph</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">plt</span><span class="p">,</span> <span class="n">axes</span><span class="p">,</span> <span class="n">show</span><span class="p">,</span> <span class="n">savedir</span><span class="p">,</span> <span class="n">too_many_organisms</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Plots a graph based on data from self.stats</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Plots a graph based on data from self.stats</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -1101,7 +1111,7 @@
 
 
 <div class="viewcode-block" id="SraSearch"><a class="viewcode-back" href="../../pysradb.html#pysradb.search.SraSearch">[docs]</a><span class="k">class</span> <span class="nc">SraSearch</span><span class="p">(</span><span class="n">QuerySearch</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Subclass of QuerySearch that implements search by querying</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Subclass of QuerySearch that implements search by querying</span>
 <span class="sd">    NCBI Entrez API</span>
 
 <span class="sd">    Methods</span>
@@ -1223,7 +1233,7 @@
             <span class="p">)</span></div>
 
 <div class="viewcode-block" id="SraSearch.get_uids"><a class="viewcode-back" href="../../pysradb.html#pysradb.search.SraSearch.get_uids">[docs]</a>    <span class="k">def</span> <span class="nf">get_uids</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Get NCBI uids retrieved during this search query.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get NCBI uids retrieved during this search query.</span>
 
 <span class="sd">        Note: There is a chance that some uids retrieved do not appear in</span>
 <span class="sd">        the search result output (Refer to #88)</span>
@@ -1351,7 +1361,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">df</span><span class="o">.</span><span class="n">dropna</span><span class="p">(</span><span class="n">how</span><span class="o">=</span><span class="s2">&quot;all&quot;</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">_parse_entry</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">entry_root</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Parses a subset of the XML tree from request stream</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Parses a subset of the XML tree from request stream</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -1516,7 +1526,7 @@
                             <span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">_update_entry</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">field_name</span><span class="p">,</span> <span class="n">field_content</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Adds information from a field into the entries dictionary</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Adds information from a field into the entries dictionary</span>
 
 <span class="sd">        This is a helper function that adds information parsed from the XML</span>
 <span class="sd">        output from SRA into a dictionary of lists, for easier conversion</span>
@@ -1637,7 +1647,7 @@
 
 
 <div class="viewcode-block" id="EnaSearch"><a class="viewcode-back" href="../../pysradb.html#pysradb.search.EnaSearch">[docs]</a><span class="k">class</span> <span class="nc">EnaSearch</span><span class="p">(</span><span class="n">QuerySearch</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Subclass of QuerySearch that implements search via querying ENA API</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Subclass of QuerySearch that implements search via querying ENA API</span>
 
 
 <span class="sd">    Methods</span>
@@ -1919,7 +1929,7 @@
 
 
 <div class="viewcode-block" id="GeoSearch"><a class="viewcode-back" href="../../pysradb.html#pysradb.search.GeoSearch">[docs]</a><span class="k">class</span> <span class="nc">GeoSearch</span><span class="p">(</span><span class="n">SraSearch</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Subclass of SraSearch that can query both GEO DataSets and SRA API.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Subclass of SraSearch that can query both GEO DataSets and SRA API.</span>
 
 <span class="sd">    Methods</span>
 <span class="sd">    -------</span>
@@ -2166,7 +2176,7 @@
 
 <div class="viewcode-block" id="GeoSearch.info"><a class="viewcode-back" href="../../pysradb.html#pysradb.search.GeoSearch.info">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">info</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Information on how to use GeoSearch.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Information on how to use GeoSearch.</span>
 
 <span class="sd">        Displays information on how to query GEO DataSets / SRA via</span>
 <span class="sd">        GeoSearch, including accepted inputs for geo_query,</span>
@@ -2252,6 +2262,11 @@
               
 <div class="toc-item">
   
+<div id="searchbox"></div>
+</div>
+
+<div class="toc-item">
+  
 </div>
 
 <div class="toc-item">
@@ -2275,7 +2290,8 @@
   
     
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script src="../../_static/scripts/pydata-sphinx-theme.js?digest=9b1a4fa89bdd0e95b23b"></script>
+  <script src="../../_static/scripts/bootstrap.js?digest=796348d33e8b1d947c94"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=796348d33e8b1d947c94"></script>
 
   <footer class="bd-footer"><div class="bd-footer__inner container">
   
@@ -2290,9 +2306,19 @@
   </div>
   
   <div class="footer-item">
+    <p class="theme-version">
+    Built with the
+    <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">
+        PyData Sphinx Theme
+    </a>
+    0.12.0.
+</p>
+  </div>
+  
+  <div class="footer-item">
     
 <p class="sphinx-version">
-Created using <a href="http://sphinx-doc.org/">Sphinx</a> 5.1.1.<br>
+Created using <a href="http://sphinx-doc.org/">Sphinx</a> 5.3.0.<br>
 </p>
 
   </div>
