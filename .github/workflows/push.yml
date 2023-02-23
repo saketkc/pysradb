@@ -8,7 +8,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: [3.7, 3.8, 3.9, '3.10']
+        python-version: [3.7, 3.8, 3.9, '3.10', '3.11']
 
     steps:
     - uses: actions/checkout@v2
@@ -39,7 +39,7 @@ jobs:
         codecov
     - uses: ammaraskar/sphinx-action@master
       with:
-        pre-build-command: "pip install -U pip && pip install -r requirements.txt && pip install . && pip install -U sphinx sphinxcontrib-gtagjs ipython numpydoc sphinx-tabs sphinx_rtd_theme sphinx nbsphinx ipython pydata-sphinx-theme nbsphinx-link sphinx-panels"
+        pre-build-command: "pip install -r requirements.txt && pip install . && pip install sphinx==5.3.0 && pip install sphinxcontrib-gtagjs ipython numpydoc sphinx-tabs sphinx_rtd_theme nbsphinx ipython pydata-sphinx-theme nbsphinx-link sphinx-panels"
         docs-folder: "docs/"
     - name: Deploy
       uses: peaceiris/actions-gh-pages@v3

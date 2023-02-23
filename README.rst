@@ -48,7 +48,7 @@ CLI Usage
                    ...
 
     pysradb: Query NGS metadata and data from NCBI Sequence Read Archive.
-    version: 1.0.1
+    version: 1.4.2
     Citation: 10.12688/f1000research.18676.1
 
     optional arguments:

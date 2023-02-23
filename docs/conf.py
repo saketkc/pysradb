@@ -71,7 +71,7 @@ master_doc = "index"
 
 # General information about the project.
 project = "pysradb"
-copyright = "2021, Saket Choudhary"
+copyright = "2023, Saket Choudhary"
 author = "Saket Choudhary"
 # The version info for the project you're documenting, acts as replacement
 # for |version| and |release|, also used in various other places throughout

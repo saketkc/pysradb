@@ -28,6 +28,8 @@ setup(
         "Programming Language :: Python :: 3.7",
         "Programming Language :: Python :: 3.8",
         "Programming Language :: Python :: 3.9",
+        "Programming Language :: Python :: 3.10",
+        "Programming Language :: Python :: 3.11",
         "Topic :: Scientific/Engineering :: Bio-Informatics",
     ],
     description="A Python package for interacting with SRAdb and downloading datasets from SRA/ENA/GEO",
@@ -44,6 +46,6 @@ setup(
     test_suite="tests",
     tests_require=test_requirements,
     url="https://github.com/saketkc/pysradb",
-    version="1.4.2",
+    version="2.0.0",
     zip_safe=False,
 )
