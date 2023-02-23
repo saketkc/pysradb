@@ -539,8 +539,6 @@ class SRAweb(SRAdb):
             pd.DataFrame(sra_record).drop_duplicates().sort_values(by="run_accession")
         )
         metadata_df.columns = [x.lower().strip() for x in metadata_df.columns]
-        # sometimes study_Accession is null
-        metadata_df["study_accession"] = srp
         if not detailed:
             return metadata_df
 
@@ -698,8 +696,6 @@ class SRAweb(SRAdb):
         metadata_df = metadata_df.reset_index()
         metadata_df = metadata_df.fillna(pd.NA)
         metadata_df.columns = [x.lower().strip() for x in metadata_df.columns]
-        # sometimes study_Accession is null
-        metadata_df["study_accession"] = srp
         return metadata_df.sort_values(by="run_accession")
 
     def fetch_gds_results(self, gse, **kwargs):

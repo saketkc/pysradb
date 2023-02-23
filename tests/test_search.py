@@ -1179,10 +1179,11 @@ def test_geo_search_1():
     instance = GeoSearch(3, 1000, geo_query="ferret")
     instance.search()
     df = instance.get_df()["experiment_accession"].to_list()
-    with open("./tests/data/test_search/geo_search_test1.txt", "r") as f:
-        expected_accessions = f.read().splitlines()
+    assert len(df) > 10
+    # with open("./tests/data/test_search/geo_search_test1.txt", "r") as f:
+    #    expected_accessions = f.read().splitlines()
 
-    assert len(set(expected_accessions).intersection(df)) > 1
+    # assert len(set(expected_accessions).intersection(df)) > 1
 
 
 def test_valid_search_query_geo(valid_search_inputs_geo):

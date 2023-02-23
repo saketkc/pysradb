@@ -80,7 +80,7 @@ def test_srp_to_gse(sraweb_connection):
 
 def test_srp_to_srr(sraweb_connection):
     """Test if srp is converted to srr correctly"""
-    df = sraweb_connection.srp_to_srr("SRP002605")
+    df = sraweb_connection.srp_to_srr("SRP002605", detailed=True)
     assert df["run_accession"].tolist()[:5] == [
         "SRR057511",
         "SRR057512",
