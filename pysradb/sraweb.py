@@ -574,6 +574,8 @@ class SRAweb(SRAdb):
                 for key, values in exp_attributes.items():
                     key = key.lower()
                     for value_x in values:
+                        if not isinstance(value_x, dict):
+                            continue
                         tag = value_x["TAG"].lower()
                         value = value_x["VALUE"]
                         detailed_record[tag] = value
@@ -591,58 +593,48 @@ class SRAweb(SRAdb):
                 sra_files = run_set.get("SRAFiles", {})
                 sra_files = sra_files.get("SRAFile", {})
                 if isinstance(sra_files, OrderedDict):
-                    detailed_record["sra_url"] = sra_files.get("@url", pd.NA)
+                    # detailed_record["sra_url"] = sra_files.get("@url", pd.NA)
                     if "Alternatives" in sra_files.keys():
                         alternatives = sra_files["Alternatives"]
-                        if isinstance(alternatives, list):
-                            # TODO: Only handles single alternate urls
-                            alternatives = alternatives[0]
-                        org = alternatives["@org"]
-                        for key in alternatives.keys():
-                            if key == "@org":
-                                continue
-                            detailed_record[
-                                "{}_{}".format(org, key.replace("@", ""))
-                            ] = alternatives[key]
+                        if not isinstance(alternatives, list):
+                            alternatives = [alternatives]
+                        for alternative in alternatives:
+                            org = alternative["@org"].lower()
+                            for key in alternative.keys():
+                                if key == "@org":
+                                    continue
+                                detailed_record[
+                                    "{}_{}".format(org, key.replace("@", ""))
+                                ] = alternative[key]
+
                 else:
                     for sra_file in sra_files:
                         # Multiple download URLs
                         # Use the one where the download filename corresponds to the SRR
-                        # if "@filename" not in sra_file:
-                        #    print("record keys: {}".format(sra_file.keys()))
-                        #    print("record : {}".format(sra_file))
-                        if "@filename" in sra_file:
-                            if sra_file["@filename"] == run_set["@accession"]:
-                                detailed_record["sra_url"] = sra_file.get("@url", pd.NA)
-                                if "Alternatives" in sra_file.keys():
-                                    alternatives = sra_file["Alternatives"]
-                                    if isinstance(alternatives, list):
-                                        # TODO: Only handles single alternate urls
-                                        alternatives = alternatives[0]
-                                    org = alternatives.get("@org", "")
-                                    for key in alternatives.keys():
+                        cluster = sra_file.get("@cluster", None).lower().strip()
+                        if cluster is None:
+                            continue
+                        for key in sra_file.keys():
+                            if key == "@cluster":
+                                continue
+                            if key == "Alternatives":
+                                # Example: SRP184142
+                                alternatives = sra_file["Alternatives"]
+                                if not isinstance(alternatives, list):
+                                    alternatives = [alternatives]
+                                for alternative in alternatives:
+                                    org = alternative["@org"].lower()
+                                    for key in alternative.keys():
                                         if key == "@org":
                                             continue
                                         detailed_record[
                                             "{}_{}".format(org, key.replace("@", ""))
-                                        ] = alternatives[key]
-                                break
-                        if "Alternatives" in sra_file:
-                            # Example: SRP184142
-                            alternatives = sra_file["Alternatives"]
-                            if isinstance(alternatives, OrderedDict):
-                                detailed_record["sra_url_alt"] = alternatives["@url"]
-                            elif isinstance(alternatives, list):
-                                for alt_index, alternative in enumerate(alternatives):
-                                    detailed_record[
-                                        "sra_url_alt{}".format(alt_index + 1)
-                                    ] = alternative["@url"]
+                                        ] = alternative[key]
                             else:
-                                sys.stderr.write(
-                                    "Unable to determine sra_url. This is a bug. Please report upstream.\n {}".format(
-                                        alternatives
-                                    )
-                                )
+                                detailed_record[
+                                    "{}_{}".format(cluster, key.replace("@", ""))
+                                ] = sra_file[key]
+
                 expt_ref = run_set["EXPERIMENT_REF"]
                 detailed_record["experiment_alias"] = expt_ref.get("@refname", "")
                 # detailed_record["run_total_bases"] = run_set["@total_bases"]

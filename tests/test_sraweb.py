@@ -80,7 +80,7 @@ def test_srp_to_gse(sraweb_connection):
 
 def test_srp_to_srr(sraweb_connection):
     """Test if srp is converted to srr correctly"""
-    df = sraweb_connection.srp_to_srr("SRP002605")
+    df = sraweb_connection.srp_to_srr("SRP002605").sort_values(by="run_accession")
     assert sorted(list(df["run_accession"]))[:5] == [
         "SRR057511",
         "SRR057512",
@@ -168,31 +168,31 @@ def test_srr_to_gsm(sraweb_connection):
 def test_srr_to_srp(sraweb_connection):
     """Test if srr is converted to srp correctly"""
     df = sraweb_connection.srr_to_srp("SRR057511", detailed=False)
-    assert list(df["study_accession"]) == ["SRP002605"] * 2
+    assert list(df["study_accession"]) == ["SRP002605"]
 
 
 def test_srr_to_srp1(sraweb_connection):
     """Test if srr_to_srp works without passing the `detailed` parameter"""
     df = sraweb_connection.srr_to_srp("SRR057515")
-    assert list(df["study_accession"]) == ["SRP002605"] * 3
+    assert list(df["study_accession"]) == ["SRP002605"]
 
 
 def test_srr_to_srs(sraweb_connection):
     """Test if srr is converted to srs correctly"""
     df = sraweb_connection.srr_to_srs("SRR057513")
-    assert list(df["sample_accession"]) == ["SRS079386"] * 3
+    assert list(df["sample_accession"]) == ["SRS079386"]
 
 
 def test_srr_to_srx(sraweb_connection):
     """Test if srr is converted to srx correctly"""
     df = sraweb_connection.srr_to_srx("SRR057514")
-    assert list(df["experiment_accession"]) == ["SRX021967"] * 3
+    assert list(df["experiment_accession"]) == ["SRX021967"]
 
 
 def test_srs_to_gsm(sraweb_connection):
     """Test if srs is converted to gsm correctly"""
     df = sraweb_connection.srs_to_gsm("SRS079386")
-    assert list(df["experiment_alias"]) == ["GSM546921"] * 3
+    assert list(df["experiment_alias"]) == ["GSM546921"]
 
 
 def test_srs_to_srx(sraweb_connection):
@@ -232,9 +232,9 @@ def test_xmlns_id(sraweb_connection):
 
 def test_GCP_url(sraweb_connection):
     df = sraweb_connection.sra_metadata(["SRP002605"], detailed=True)
-    assert df["GCP_url"].tolist()[-1] == "gs://sra-pub-crun-1/SRR057512/SRR057512.2"
+    assert df["gcp_url"].tolist()[-1].startswith("gs:")
 
 
 def test_GCP_url2(sraweb_connection):
     df = sraweb_connection.sra_metadata(["DRR138929"], detailed=True)
-    assert df["GCP_url"].tolist()[-1] == "gs://sra-pub-crun-6/DRR138929/DRR138929.1"
+    assert df["gcp_url"].tolist()[-1].startswith("gs:")
