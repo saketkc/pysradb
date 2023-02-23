@@ -220,11 +220,11 @@ class SRAweb(SRAdb):
                     "ena_fastq_ftp_1",
                     "ena_fastq_ftp_2",
                 ],
-            )
+            ).sort_values(by="run_accession")
         else:
             return pd.DataFrame(
                 urls, columns=["run_accession", "ena_fastq_http", "ena_fastq_ftp"]
-            )
+            ).sort_values(by="run_accession")
 
     def create_esummary_params(self, esearchresult, db="sra"):
         query_key = esearchresult["querykey"]
@@ -535,8 +535,12 @@ class SRAweb(SRAdb):
 
         # TODO: the detailed call below does redundant operations
         # the code above this can be completeley done away with
-        metadata_df = pd.DataFrame(sra_record).drop_duplicates()
+        metadata_df = (
+            pd.DataFrame(sra_record).drop_duplicates().sort_values(by="run_accession")
+        )
         metadata_df.columns = [x.lower().strip() for x in metadata_df.columns]
+        # sometimes study_Accession is null
+        metadata_df["study_accession"] = srp
         if not detailed:
             return metadata_df
 
@@ -694,7 +698,9 @@ class SRAweb(SRAdb):
         metadata_df = metadata_df.reset_index()
         metadata_df = metadata_df.fillna(pd.NA)
         metadata_df.columns = [x.lower().strip() for x in metadata_df.columns]
-        return metadata_df
+        # sometimes study_Accession is null
+        metadata_df["study_accession"] = srp
+        return metadata_df.sort_values(by="run_accession")
 
     def fetch_gds_results(self, gse, **kwargs):
         result = self.get_esummary_response("geo", gse)
@@ -840,7 +846,8 @@ class SRAweb(SRAdb):
     def srr_to_gsm(self, srr, **kwargs):
         """Get GSM for a SRR"""
         srr_df = self.srr_to_srp(srr, detailed=True)
-        srp = srr_df.study_accession.tolist()
+        # remove NAs
+        srp = [x for x in srr_df.study_accession.tolist() if not x is pd.NA]
         gse_df = self.fetch_gds_results(srp, **kwargs)
         gse_df = gse_df[gse_df.entrytype == "GSE"].rename(
             columns={"SRA": "project_accession", "accession": "project_alias"}
