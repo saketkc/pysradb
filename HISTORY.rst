@@ -8,7 +8,7 @@ History
 
 * Fix extra space in "organism_taxid" column 
 * Added support for Experiment attributes (`#89 <https://github.com/saketkc/pysradb/issues/89#issuecomment-1439319532>`)
-
+* Overhaul of how urls and associated metadata are returned (not backward compatible)
 
 ******************
 1.4.2 (06-17-2022)
