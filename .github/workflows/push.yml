@@ -39,7 +39,7 @@ jobs:
         codecov
     - uses: ammaraskar/sphinx-action@master
       with:
-        pre-build-command: "pip install -r requirements.txt && pip install . && pip install sphinx<6 && pip install sphinxcontrib-gtagjs ipython numpydoc sphinx-tabs sphinx_rtd_theme nbsphinx ipython pydata-sphinx-theme nbsphinx-link sphinx-panels"
+        pre-build-command: "pip install -r requirements.txt && pip install . && pip install sphinx==5.3.0 && pip install sphinxcontrib-gtagjs ipython numpydoc sphinx-tabs sphinx_rtd_theme nbsphinx ipython pydata-sphinx-theme nbsphinx-link sphinx-panels"
         docs-folder: "docs/"
     - name: Deploy
       uses: peaceiris/actions-gh-pages@v3
