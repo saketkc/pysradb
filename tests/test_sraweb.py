@@ -189,7 +189,7 @@ def test_srr_to_srx(sraweb_connection):
 def test_srs_to_gsm(sraweb_connection):
     """Test if srs is converted to gsm correctly"""
     df = sraweb_connection.srs_to_gsm("SRS079386")
-    assert list(df["experiment_alias"]) == ["GSM546921"]
+    assert list(df["experiment_alias"]) == ["GSM546921"] * 3
 
 
 def test_srs_to_srx(sraweb_connection):
@@ -214,6 +214,12 @@ def test_srx_to_srr(sraweb_connection):
     """Test if srx is converted to srr correctly"""
     df = sraweb_connection.srx_to_srr("SRX2705123")
     assert list(df["run_accession"]) == ["SRR5413172"]
+
+
+def test_srx_to_srr1(sraweb_connection):
+    """Test if srx is converted to srr correctly, including multiple srrs"""
+    df = sraweb_connection.srx_to_srr("SRX8998846")
+    assert list(df["run_accession"]) == ["SRR12508064", "SRR12508065"]
 
 
 def test_srx_to_srs(sraweb_connection):
