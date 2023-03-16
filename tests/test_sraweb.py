@@ -216,6 +216,12 @@ def test_srx_to_srr(sraweb_connection):
     assert list(df["run_accession"]) == ["SRR5413172"]
 
 
+def test_srx_to_srr1(sraweb_connection):
+    """Test if srx is converted to srr correctly, including multiple srrs"""
+    df = sraweb_connection.srx_to_srr("SRX8998846")
+    assert list(df["run_accession"]) == ["SRR12508064", "SRR12508065"]
+
+
 def test_srx_to_srs(sraweb_connection):
     """Test if srx is converted to srs correctly"""
     df = sraweb_connection.srx_to_srs("SRX663253")

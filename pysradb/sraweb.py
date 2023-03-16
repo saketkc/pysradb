@@ -531,7 +531,7 @@ class SRAweb(SRAdb):
                 experiment_record["run_total_spots"] = run_total_spots
                 experiment_record["run_total_bases"] = run_total_bases
 
-                sra_record.append(experiment_record)
+                sra_record.append(experiment_record.copy())
 
         # TODO: the detailed call below does redundant operations
         # the code above this can be completeley done away with
@@ -853,11 +853,15 @@ class SRAweb(SRAdb):
             set(srr_df.columns.tolist()).difference(gsm_df.columns.tolist())
         ) + ["experiment_accession"]
         joined_df = gsm_df.merge(srr_df[srr_cols], on="experiment_accession")
+        # ensure that only the requested SRR is returned
+        joined_df = joined_df[joined_df["run_accession"] == srr]
         return _order_first(joined_df, ["run_accession", "experiment_alias"])
 
     def srr_to_srp(self, srr, **kwargs):
         """Get SRP for a SRR"""
         srr_df = self.sra_metadata(srr, **kwargs)
+        # ensure that only the requested SRR is returned
+        srr_df = srr_df[srr_df["run_accession"] == srr]
         if kwargs and kwargs["detailed"] == True:
             return srr_df
         return _order_first(srr_df, ["run_accession", "study_accession"])
@@ -865,11 +869,15 @@ class SRAweb(SRAdb):
     def srr_to_srs(self, srr, **kwargs):
         """Get SRS for a SRR"""
         srr_df = self.sra_metadata(srr, **kwargs)
+        # ensure that only the requested SRR is returned
+        srr_df = srr_df[srr_df["run_accession"] == srr]
         return _order_first(srr_df, ["run_accession", "sample_accession"])
 
     def srr_to_srx(self, srr, **kwargs):
         """Get SRX for a SRR"""
         srr_df = self.sra_metadata(srr)
+        # ensure that only the requested SRR is returned
+        srr_df = srr_df[srr_df["run_accession"] == srr]
         return _order_first(srr_df, ["run_accession", "experiment_accession"])
 
     def srs_to_gsm(self, srs, **kwargs):
@@ -878,6 +886,8 @@ class SRAweb(SRAdb):
         time.sleep(self.sleep_time)
         gsm_df = self.srx_to_gsm(srx_df.experiment_accession.tolist(), **kwargs)
         srs_df = srx_df.merge(gsm_df, on="experiment_accession")
+        # ensure that only the requested SRS is returned
+        srs_df = srs_df[srs_df["sample_accession"] == srs]
         return _order_first(srs_df, ["sample_accession", "experiment_alias"])
 
     def srx_to_gsm(self, srx, **kwargs):
