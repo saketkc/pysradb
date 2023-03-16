@@ -32,6 +32,8 @@ def _order_first(df, column_order_list):
     # check if all columns do exist in the dataframe
     if len(set(columns).intersection(df.columns)) == len(columns):
         df = df.loc[:, columns]
+    df = df.mask(df.applymap(str).eq("[]"))
+    df = df.fillna(pd.NA)
     return df
 
 
@@ -841,6 +843,8 @@ class SRAweb(SRAdb):
 
     def srr_to_gsm(self, srr, **kwargs):
         """Get GSM for a SRR"""
+        if isinstance(srr, str):
+            srr = [srr]
         srr_df = self.srr_to_srp(srr, detailed=True)
         # remove NAs
         srp = [x for x in srr_df.study_accession.tolist() if not x is pd.NA]
@@ -853,49 +857,56 @@ class SRAweb(SRAdb):
             set(srr_df.columns.tolist()).difference(gsm_df.columns.tolist())
         ) + ["experiment_accession"]
         joined_df = gsm_df.merge(srr_df[srr_cols], on="experiment_accession")
-        # ensure that only the requested SRR is returned
-        joined_df = joined_df[joined_df["run_accession"] == srr]
-        return _order_first(joined_df, ["run_accession", "experiment_alias"])
+        df = _order_first(joined_df, ["run_accession", "experiment_alias"])
+        df = df.loc[df["run_accession"].isin(srr)]
+        return df
 
     def srr_to_srp(self, srr, **kwargs):
         """Get SRP for a SRR"""
+        if isinstance(srr, str):
+            srr = [srr]
         srr_df = self.sra_metadata(srr, **kwargs)
-        # ensure that only the requested SRR is returned
-        srr_df = srr_df[srr_df["run_accession"] == srr]
         if kwargs and kwargs["detailed"] == True:
             return srr_df
+        srr_df = srr_df.loc[srr_df["run_accession"].isin(srr)]
         return _order_first(srr_df, ["run_accession", "study_accession"])
 
     def srr_to_srs(self, srr, **kwargs):
         """Get SRS for a SRR"""
+        if isinstance(srr, str):
+            srr = [srr]
         srr_df = self.sra_metadata(srr, **kwargs)
-        # ensure that only the requested SRR is returned
-        srr_df = srr_df[srr_df["run_accession"] == srr]
+        srr_df = srr_df.loc[srr_df["run_accession"].isin(srr)]
         return _order_first(srr_df, ["run_accession", "sample_accession"])
 
     def srr_to_srx(self, srr, **kwargs):
         """Get SRX for a SRR"""
+        if isinstance(srr, str):
+            srr = [srr]
         srr_df = self.sra_metadata(srr)
-        # ensure that only the requested SRR is returned
-        srr_df = srr_df[srr_df["run_accession"] == srr]
+        srr_df = srr_df.loc[srr_df["run_accession"].isin(srr)]
         return _order_first(srr_df, ["run_accession", "experiment_accession"])
 
     def srs_to_gsm(self, srs, **kwargs):
         """Get GSM for a SRS"""
+        if isinstance(srs, str):
+            srs = [srs]
         srx_df = self.srs_to_srx(srs)
         time.sleep(self.sleep_time)
         gsm_df = self.srx_to_gsm(srx_df.experiment_accession.tolist(), **kwargs)
         srs_df = srx_df.merge(gsm_df, on="experiment_accession")
-        # ensure that only the requested SRS is returned
-        srs_df = srs_df[srs_df["sample_accession"] == srs]
+        srs_df = srs_df.loc[srs_df["sample_accession"].isin(srs)]
         return _order_first(srs_df, ["sample_accession", "experiment_alias"])
 
     def srx_to_gsm(self, srx, **kwargs):
+        if isinstance(srx, str):
+            srx = [srx]
         gsm_df = self.fetch_gds_results(srx, **kwargs)
         gsm_df = gsm_df[gsm_df.entrytype == "GSM"].rename(
             columns={"SRA": "experiment_accession", "accession": "experiment_alias"}
         )
-        return gsm_df[["experiment_accession", "experiment_alias"]]
+        gsm_df = gsm_df.loc[gsm_df["experiment_accession"].isin(srx)]
+        return gsm_df[["experiment_accession", "experiment_alias"]].drop_duplicates()
 
     def srs_to_srx(self, srs, **kwargs):
         """Get SRX for a SRS"""
