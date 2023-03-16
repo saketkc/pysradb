@@ -7,6 +7,8 @@ History
 ******************
 
 * Fix for `pysradb download` - using `public_url`
+* Fix for SRX -> SRR and related conversions (`#183 <https://github.com/saketkc/pysradb/pull/183>`)
+
 
 ******************
 2.0.0 (2023-02-23)
