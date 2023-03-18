@@ -3,7 +3,15 @@ History
 #######
 
 ******************
-2.0.0 (Unreleased)
+2.0.1 (2023-03-18)
+******************
+
+* Fix for `pysradb download` - using `public_url`
+* Fix for SRX -> SRR and related conversions (`#183 <https://github.com/saketkc/pysradb/pull/183>`)
+
+
+******************
+2.0.0 (2023-02-23)
 ******************
 
 * BREAKING change: Overhaul of how urls and associated metadata are returned (not backward compatible); all column names are lower cased by default
