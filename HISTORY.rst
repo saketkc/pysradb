@@ -3,7 +3,7 @@ History
 #######
 
 ******************
-2.0.1 (Unreleased)
+2.0.1 (2023-03-18)
 ******************
 
 * Fix for `pysradb download` - using `public_url`
