@@ -1442,7 +1442,7 @@ class SRAdb(BASEdb):
         self,
         srp=None,
         df=None,
-        url_col="sra_url",
+        url_col="public_url",
         out_dir=None,
         filter_by_srx=[],
         use_ascp=False,
