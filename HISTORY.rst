@@ -3,6 +3,15 @@ History
 #######
 
 ******************
+Unreleased
+******************
+
+* Fix for `gse-to-srp` to handle cases where a project uis missing but SRXs
+  are reutned (`#186 <https://github.com/saketkc/pysradb/issues/186>`)
+
+
+
+******************
 2.0.1 (2023-03-18)
 ******************
 
