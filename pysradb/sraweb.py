@@ -843,13 +843,26 @@ class SRAweb(SRAdb):
     def srp_to_gse(self, srp, **kwargs):
         """Get GSE for a SRP"""
         srp_df = self.fetch_gds_results(srp, **kwargs)
+        if srp_df is None:
+            srp_df = pd.DataFrame(
+                {"study_alias": [], "study_accession": [], "entrytype": []}
+            )
+
         srp_df = srp_df.rename(
             columns={"accession": "study_alias", "SRA": "study_accession"}
         )
         srp_df_gse = srp_df[srp_df.entrytype == "GSE"]
+        missing_srp = list(set(srp).difference(srp_df_gse.study_accession.tolist()))
         srp_df_nongse = srp_df[srp_df.entrytype != "GSE"]
-        print(srp_df_gse)
-
+        if srp_df_nongse.shape[0] >= 1:
+            srp_df_nongse = pd.DataFrame(
+                {
+                    "study_accession": missing_srp,
+                    "study_alias": [pd.NA] * len(missing_srp),
+                    "entrytpe": ["GSE"] * len(missing_srp),
+                }
+            )
+        srp_df = pd.concat([srp_df_gse, srp_df_nongse])
         return srp_df[["study_accession", "study_alias"]].drop_duplicates()
 
     def srp_to_srr(self, srp, **kwargs):
