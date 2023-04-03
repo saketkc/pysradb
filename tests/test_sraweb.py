@@ -196,7 +196,7 @@ def test_srr_to_srx(sraweb_connection):
 def test_srs_to_gsm(sraweb_connection):
     """Test if srs is converted to gsm correctly"""
     df = sraweb_connection.srs_to_gsm("SRS079386")
-    assert list(df["experiment_alias"][0]) == ["GSM546921"]
+    assert df["experiment_alias"][0] == ["GSM546921"]
 
 
 def test_srs_to_srx(sraweb_connection):
