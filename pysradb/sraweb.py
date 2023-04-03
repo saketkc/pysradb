@@ -757,11 +757,35 @@ class SRAweb(SRAdb):
 
     def gse_to_srp(self, gse, **kwargs):
         gse_df = self.fetch_gds_results(gse, **kwargs)
-        gse_df = gse_df[gse_df.entrytype == "GSE"]
         gse_df = gse_df.rename(
             columns={"accession": "study_alias", "SRA": "study_accession"}
         )
-        return gse_df[["study_alias", "study_accession"]].drop_duplicates()
+        gse_df_subset = None
+        if "GSE" in gse_df.entrytype.unique():
+            gse_df_subset = gse_df[gse_df.entrytype == "GSE"]
+            common_gses = set(gse_df.study_alias.unique()).intersection(gse)
+            if len(common_gses) < len(gse):
+                gse_df_subset = None
+        if gse_df_subset is None:
+            # sometimes SRX ids ar ereturned instead of an entire project
+            # see https://github.com/saketkc/pysradb/issues/186
+            # GSE: GSE209835; SRP =SRP388275
+            gse_df_subset_gse = gse_df[gse_df.entrytype == "GSE"]
+            gse_of_interest = list(set(gse).difference(gse_df.study_alias.unique()))
+            gse_df_subset_other = gse_df[gse_df.entrytype != "GSE"]
+            srx = gse_df_subset_other.study_accession.tolist()
+            srp_df = self.srx_to_srp(srx)
+            srp_unique = list(
+                set(srp_df.study_accession.unique()).difference(
+                    gse_df_subset_gse.study_accession.tolist()
+                )
+            )
+            new_gse_df = pd.DataFrame(
+                {"study_alias": gse_of_interest, "study_accession": srp_unique}
+            )
+            gse_df_subset = pd.concat([gse_df_subset_gse, new_gse_df])
+
+        return gse_df_subset[["study_alias", "study_accession"]].drop_duplicates()
 
     def gsm_to_srp(self, gsm, **kwargs):
         gsm_df = self.fetch_gds_results(gsm, **kwargs)
@@ -819,10 +843,13 @@ class SRAweb(SRAdb):
     def srp_to_gse(self, srp, **kwargs):
         """Get GSE for a SRP"""
         srp_df = self.fetch_gds_results(srp, **kwargs)
-        srp_df = srp_df[srp_df.entrytype == "GSE"]
         srp_df = srp_df.rename(
             columns={"accession": "study_alias", "SRA": "study_accession"}
         )
+        srp_df_gse = srp_df[srp_df.entrytype == "GSE"]
+        srp_df_nongse = srp_df[srp_df.entrytype != "GSE"]
+        print(srp_df_gse)
+
         return srp_df[["study_accession", "study_alias"]].drop_duplicates()
 
     def srp_to_srr(self, srp, **kwargs):
