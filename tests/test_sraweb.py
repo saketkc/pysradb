@@ -127,6 +127,13 @@ def test_gse_to_srp(sraweb_connection):
     assert df["study_accession"][0] == "SRP050548"
 
 
+def test_gse_to_srp2(sraweb_connection):
+    """Test if gse is converted to srp correctly"""
+    df = sraweb_connection.gse_to_srp(["GSE168880", "GSE209835"])
+    assert df["study_accession"][0] == "SRP310566"
+    assert df["study_accession"][1] == "SRP388275"
+
+
 def test_gsm_to_srp(sraweb_connection):
     """Test if gsm is converted to srp correctly"""
     df = sraweb_connection.gsm_to_srp("GSM1371490")
