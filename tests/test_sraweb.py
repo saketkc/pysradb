@@ -130,32 +130,32 @@ def test_gse_to_srp(sraweb_connection):
 def test_gse_to_srp2(sraweb_connection):
     """Test if gse is converted to srp correctly"""
     df = sraweb_connection.gse_to_srp(["GSE168880", "GSE209835"])
-    assert df["study_accession"][0] == "SRP310566"
-    assert df["study_accession"][1] == "SRP388275"
+    assert df["study_accession"].tolist()[0] == "SRP310566"
+    assert df["study_accession"].tolist()[1] == "SRP388275"
 
 
 def test_gsm_to_srp(sraweb_connection):
     """Test if gsm is converted to srp correctly"""
     df = sraweb_connection.gsm_to_srp("GSM1371490")
-    assert df["study_accession"][0] == "SRP041298"
+    assert df["study_accession"].tolist()[0] == "SRP041298"
 
 
 def test_gsm_to_gse(sraweb_connection):
     """Test if gsm is converted to gse correctly"""
     df = sraweb_connection.gsm_to_gse("GSM1371490")
-    assert df["study_alias"][0] == "GSE56924"
+    assert df["study_alias"].tolist()[0] == "GSE56924"
 
 
 def test_gsm_to_srr(sraweb_connection):
     """Test if gsm is converted to srr correctly"""
     df = sraweb_connection.gsm_to_srr("GSM1371489")
-    assert df["run_accession"][0] == "SRR1257271"
+    assert df["run_accession"].tolist()[0] == "SRR1257271"
 
 
 def test_gsm_to_srs(sraweb_connection):
     """Test if gsm is converted to srs correctly"""
     df = sraweb_connection.gsm_to_srs("GSM1371469")
-    assert df["sample_accession"][0] == "SRS594838"
+    assert df["sample_accession"].tolist()[0] == "SRS594838"
 
 
 def test_gsm_to_srx(sraweb_connection):
