@@ -115,6 +115,12 @@ def test_gse_to_gsm(sraweb_connection):
     assert df.shape[0] == 96
 
 
+def test_gse_to_gsm2(sraweb_connection):
+    """Test for gse to gsm"""
+    df = sraweb_connection.gse_to_gsm("GSE200028", detailed=False)
+    assert df.shape[0] == 15
+
+
 def test_gse_to_gsm1(sraweb_connection):
     """Test if gse_to_gsm works without passing `detailed` parameter"""
     df = sraweb_connection.gse_to_gsm("GSE63858")
