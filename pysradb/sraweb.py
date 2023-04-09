@@ -537,9 +537,9 @@ class SRAweb(SRAdb):
 
         # TODO: the detailed call below does redundant operations
         # the code above this can be completeley done away with
-        metadata_df = (
-            pd.DataFrame(sra_record).drop_duplicates().sort_values(by="run_accession")
-        )
+        metadata_df = pd.DataFrame(sra_record).drop_duplicates()
+        if "run_accession" in metadata_df.columns:
+            metadata_df = metadata_df.sort_values(by="run_accession")
         metadata_df.columns = [x.lower().strip() for x in metadata_df.columns]
         if not detailed:
             return metadata_df
@@ -554,7 +554,7 @@ class SRAweb(SRAdb):
 
         detailed_records = []
         for record in efetch_result:
-            if "SAMPLE_ATTRIBUTES" in record["SAMPLE"]:
+            if "SAMPLE" in record.keys() and "SAMPLE_ATTRIBUTES" in record["SAMPLE"]:
                 sample_attributes = record["SAMPLE"]["SAMPLE_ATTRIBUTES"][
                     "SAMPLE_ATTRIBUTE"
                 ]
@@ -660,7 +660,7 @@ class SRAweb(SRAdb):
             metadata_df = metadata_df.merge(
                 detailed_record_df, on="run_accession", how="outer"
             )
-        else:
+        elif "experiment_accession" in detailed_record_df.keys():
             metadata_df = metadata_df.merge(
                 detailed_record_df, on="experiment_accession", how="outer"
             )
@@ -680,7 +680,8 @@ class SRAweb(SRAdb):
         metadata_df = pd.concat((metadata_df, empty_df), axis=0)
         # metadata_df[ena_cols] = np.nan
 
-        metadata_df = metadata_df.set_index("run_accession")
+        if "run_accession" in metadata_df.columns:
+            metadata_df = metadata_df.set_index("run_accession")
         # multithreading lookup on ENA, since a lot of time is spent waiting
         # for its reply
         with concurrent.futures.ThreadPoolExecutor(max_workers=5) as executor:
@@ -698,7 +699,9 @@ class SRAweb(SRAdb):
         metadata_df = metadata_df.reset_index()
         metadata_df = metadata_df.fillna(pd.NA)
         metadata_df.columns = [x.lower().strip() for x in metadata_df.columns]
-        return metadata_df.sort_values(by="run_accession")
+        if "run_accession" in metadata_df.columns:
+            return metadata_df.sort_values(by="run_accession")
+        return metadata_df
 
     def fetch_gds_results(self, gse, **kwargs):
         result = self.get_esummary_response("geo", gse)
