@@ -1210,9 +1210,9 @@ class SraSearch(QuerySearch):
         elif len(columns) == 1:
             series = self.df[columns[0]]
         else:
-            series = self.df[columns[0]].append(
-                [self.df[c] for c in columns[1:]], ignore_index=True
-            )
+            series = self.df[columns[0]]
+            for c in columns[1:]:
+                series = pd.concat([series, self.df[c]])
         return series[~pd.isna(series)]
 
 

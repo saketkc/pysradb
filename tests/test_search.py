@@ -1176,8 +1176,9 @@ def missing_query_test_geo(empty_search_inputs_geo):
 
 
 def test_geo_search_1():
-    instance = GeoSearch(3, 1000, geo_query="ferret")
+    instance = GeoSearch(3, 1000, geo_query="human")
     instance.search()
+    df = instance.get_df()
     df = instance.get_df()["experiment_accession"].to_list()
     assert len(df) > 10
     # with open("./tests/data/test_search/geo_search_test1.txt", "r") as f:
