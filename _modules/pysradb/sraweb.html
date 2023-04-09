@@ -28,12 +28,12 @@
   </script>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="../../_static/styles/theme.css?digest=12da95d707ffb74b382d" rel="stylesheet" />
-<link href="../../_static/styles/bootstrap.css?digest=12da95d707ffb74b382d" rel="stylesheet" />
-<link href="../../_static/styles/pydata-sphinx-theme.css?digest=12da95d707ffb74b382d" rel="stylesheet" />
+  <link href="../../_static/styles/theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=e353d410970836974a52" rel="stylesheet" />
 
   
-  <link href="../../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=12da95d707ffb74b382d" rel="stylesheet" />
+  <link href="../../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=e353d410970836974a52" rel="stylesheet" />
   <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
 <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
 <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
@@ -45,8 +45,8 @@
     <link rel="stylesheet" type="text/css" href="../../_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=12da95d707ffb74b382d" />
-<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=12da95d707ffb74b382d" />
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=e353d410970836974a52" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52" />
 
     <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
     <script src="../../_static/jquery.js"></script>
@@ -1213,6 +1213,8 @@ document.write(`
         <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">gse_records</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="SRAweb.gse_to_gsm"><a class="viewcode-back" href="../../pysradb.html#pysradb.sraweb.SRAweb.gse_to_gsm">[docs]</a>    <span class="k">def</span> <span class="nf">gse_to_gsm</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">gse</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">gse</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+            <span class="n">gse</span> <span class="o">=</span> <span class="p">[</span><span class="n">gse</span><span class="p">]</span>
         <span class="n">gse_df</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fetch_gds_results</span><span class="p">(</span><span class="n">gse</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="n">gse_df</span> <span class="o">=</span> <span class="n">gse_df</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span>
             <span class="n">columns</span><span class="o">=</span><span class="p">{</span>
@@ -1224,6 +1226,8 @@ document.write(`
         <span class="p">)</span>
         <span class="c1"># TODO: Fix for multiple GSEs?</span>
         <span class="n">gse_df</span><span class="p">[</span><span class="s2">&quot;study_alias&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">gse</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">study_alias</span> <span class="o">=</span> <span class="n">gse</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
         <span class="k">for</span> <span class="n">index</span><span class="p">,</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">gse_df</span><span class="o">.</span><span class="n">iterrows</span><span class="p">():</span>
             <span class="k">if</span> <span class="n">row</span><span class="o">.</span><span class="n">entrytype</span> <span class="o">==</span> <span class="s2">&quot;GSE&quot;</span><span class="p">:</span>
                 <span class="n">study_alias</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="s2">&quot;experiment_accession&quot;</span><span class="p">]</span>
@@ -1239,12 +1243,38 @@ document.write(`
         <span class="p">]</span><span class="o">.</span><span class="n">drop_duplicates</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="SRAweb.gse_to_srp"><a class="viewcode-back" href="../../pysradb.html#pysradb.sraweb.SRAweb.gse_to_srp">[docs]</a>    <span class="k">def</span> <span class="nf">gse_to_srp</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">gse</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">gse</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+            <span class="n">gse</span> <span class="o">=</span> <span class="p">[</span><span class="n">gse</span><span class="p">]</span>
         <span class="n">gse_df</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fetch_gds_results</span><span class="p">(</span><span class="n">gse</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-        <span class="n">gse_df</span> <span class="o">=</span> <span class="n">gse_df</span><span class="p">[</span><span class="n">gse_df</span><span class="o">.</span><span class="n">entrytype</span> <span class="o">==</span> <span class="s2">&quot;GSE&quot;</span><span class="p">]</span>
         <span class="n">gse_df</span> <span class="o">=</span> <span class="n">gse_df</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span>
             <span class="n">columns</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;accession&quot;</span><span class="p">:</span> <span class="s2">&quot;study_alias&quot;</span><span class="p">,</span> <span class="s2">&quot;SRA&quot;</span><span class="p">:</span> <span class="s2">&quot;study_accession&quot;</span><span class="p">}</span>
         <span class="p">)</span>
-        <span class="k">return</span> <span class="n">gse_df</span><span class="p">[[</span><span class="s2">&quot;study_alias&quot;</span><span class="p">,</span> <span class="s2">&quot;study_accession&quot;</span><span class="p">]]</span><span class="o">.</span><span class="n">drop_duplicates</span><span class="p">()</span></div>
+        <span class="n">gse_df_subset</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">if</span> <span class="s2">&quot;GSE&quot;</span> <span class="ow">in</span> <span class="n">gse_df</span><span class="o">.</span><span class="n">entrytype</span><span class="o">.</span><span class="n">unique</span><span class="p">():</span>
+            <span class="n">gse_df_subset</span> <span class="o">=</span> <span class="n">gse_df</span><span class="p">[</span><span class="n">gse_df</span><span class="o">.</span><span class="n">entrytype</span> <span class="o">==</span> <span class="s2">&quot;GSE&quot;</span><span class="p">]</span>
+            <span class="n">common_gses</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">gse_df</span><span class="o">.</span><span class="n">study_alias</span><span class="o">.</span><span class="n">unique</span><span class="p">())</span><span class="o">.</span><span class="n">intersection</span><span class="p">(</span><span class="n">gse</span><span class="p">)</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">common_gses</span><span class="p">)</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">gse</span><span class="p">):</span>
+                <span class="n">gse_df_subset</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">if</span> <span class="n">gse_df_subset</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="c1"># sometimes SRX ids ar ereturned instead of an entire project</span>
+            <span class="c1"># see https://github.com/saketkc/pysradb/issues/186</span>
+            <span class="c1"># GSE: GSE209835; SRP =SRP388275</span>
+            <span class="n">gse_df_subset_gse</span> <span class="o">=</span> <span class="n">gse_df</span><span class="p">[</span><span class="n">gse_df</span><span class="o">.</span><span class="n">entrytype</span> <span class="o">==</span> <span class="s2">&quot;GSE&quot;</span><span class="p">]</span>
+            <span class="n">gse_of_interest</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">gse</span><span class="p">)</span><span class="o">.</span><span class="n">difference</span><span class="p">(</span><span class="n">gse_df</span><span class="o">.</span><span class="n">study_alias</span><span class="o">.</span><span class="n">unique</span><span class="p">()))</span>
+            <span class="n">gse_df_subset_other</span> <span class="o">=</span> <span class="n">gse_df</span><span class="p">[</span><span class="n">gse_df</span><span class="o">.</span><span class="n">entrytype</span> <span class="o">!=</span> <span class="s2">&quot;GSE&quot;</span><span class="p">]</span>
+            <span class="n">srx</span> <span class="o">=</span> <span class="n">gse_df_subset_other</span><span class="o">.</span><span class="n">study_accession</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+            <span class="n">srp_df</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">srx_to_srp</span><span class="p">(</span><span class="n">srx</span><span class="p">)</span>
+            <span class="n">srp_unique</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span>
+                <span class="nb">set</span><span class="p">(</span><span class="n">srp_df</span><span class="o">.</span><span class="n">study_accession</span><span class="o">.</span><span class="n">unique</span><span class="p">())</span><span class="o">.</span><span class="n">difference</span><span class="p">(</span>
+                    <span class="n">gse_df_subset_gse</span><span class="o">.</span><span class="n">study_accession</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+                <span class="p">)</span>
+            <span class="p">)</span>
+            <span class="n">new_gse_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
+                <span class="p">{</span><span class="s2">&quot;study_alias&quot;</span><span class="p">:</span> <span class="n">gse_of_interest</span><span class="p">,</span> <span class="s2">&quot;study_accession&quot;</span><span class="p">:</span> <span class="n">srp_unique</span><span class="p">}</span>
+            <span class="p">)</span>
+            <span class="n">gse_df_subset</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">gse_df_subset_gse</span><span class="p">,</span> <span class="n">new_gse_df</span><span class="p">])</span>
+
+        <span class="k">return</span> <span class="n">gse_df_subset</span><span class="p">[[</span><span class="s2">&quot;study_alias&quot;</span><span class="p">,</span> <span class="s2">&quot;study_accession&quot;</span><span class="p">]]</span><span class="o">.</span><span class="n">drop_duplicates</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="SRAweb.gsm_to_srp"><a class="viewcode-back" href="../../pysradb.html#pysradb.sraweb.SRAweb.gsm_to_srp">[docs]</a>    <span class="k">def</span> <span class="nf">gsm_to_srp</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">gsm</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="n">gsm_df</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fetch_gds_results</span><span class="p">(</span><span class="n">gsm</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
@@ -1302,10 +1332,26 @@ document.write(`
 <div class="viewcode-block" id="SRAweb.srp_to_gse"><a class="viewcode-back" href="../../pysradb.html#pysradb.sraweb.SRAweb.srp_to_gse">[docs]</a>    <span class="k">def</span> <span class="nf">srp_to_gse</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">srp</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Get GSE for a SRP&quot;&quot;&quot;</span>
         <span class="n">srp_df</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fetch_gds_results</span><span class="p">(</span><span class="n">srp</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-        <span class="n">srp_df</span> <span class="o">=</span> <span class="n">srp_df</span><span class="p">[</span><span class="n">srp_df</span><span class="o">.</span><span class="n">entrytype</span> <span class="o">==</span> <span class="s2">&quot;GSE&quot;</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">srp_df</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">srp_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
+                <span class="p">{</span><span class="s2">&quot;study_alias&quot;</span><span class="p">:</span> <span class="p">[],</span> <span class="s2">&quot;study_accession&quot;</span><span class="p">:</span> <span class="p">[],</span> <span class="s2">&quot;entrytype&quot;</span><span class="p">:</span> <span class="p">[]}</span>
+            <span class="p">)</span>
+
         <span class="n">srp_df</span> <span class="o">=</span> <span class="n">srp_df</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span>
             <span class="n">columns</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;accession&quot;</span><span class="p">:</span> <span class="s2">&quot;study_alias&quot;</span><span class="p">,</span> <span class="s2">&quot;SRA&quot;</span><span class="p">:</span> <span class="s2">&quot;study_accession&quot;</span><span class="p">}</span>
         <span class="p">)</span>
+        <span class="n">srp_df_gse</span> <span class="o">=</span> <span class="n">srp_df</span><span class="p">[</span><span class="n">srp_df</span><span class="o">.</span><span class="n">entrytype</span> <span class="o">==</span> <span class="s2">&quot;GSE&quot;</span><span class="p">]</span>
+        <span class="n">missing_srp</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">srp</span><span class="p">)</span><span class="o">.</span><span class="n">difference</span><span class="p">(</span><span class="n">srp_df_gse</span><span class="o">.</span><span class="n">study_accession</span><span class="o">.</span><span class="n">tolist</span><span class="p">()))</span>
+        <span class="n">srp_df_nongse</span> <span class="o">=</span> <span class="n">srp_df</span><span class="p">[</span><span class="n">srp_df</span><span class="o">.</span><span class="n">entrytype</span> <span class="o">!=</span> <span class="s2">&quot;GSE&quot;</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">srp_df_nongse</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">srp_df_nongse</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
+                <span class="p">{</span>
+                    <span class="s2">&quot;study_accession&quot;</span><span class="p">:</span> <span class="n">missing_srp</span><span class="p">,</span>
+                    <span class="s2">&quot;study_alias&quot;</span><span class="p">:</span> <span class="p">[</span><span class="n">pd</span><span class="o">.</span><span class="n">NA</span><span class="p">]</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">missing_srp</span><span class="p">),</span>
+                    <span class="s2">&quot;entrytpe&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;GSE&quot;</span><span class="p">]</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">missing_srp</span><span class="p">),</span>
+                <span class="p">}</span>
+            <span class="p">)</span>
+        <span class="n">srp_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">srp_df_gse</span><span class="p">,</span> <span class="n">srp_df_nongse</span><span class="p">])</span>
         <span class="k">return</span> <span class="n">srp_df</span><span class="p">[[</span><span class="s2">&quot;study_accession&quot;</span><span class="p">,</span> <span class="s2">&quot;study_alias&quot;</span><span class="p">]]</span><span class="o">.</span><span class="n">drop_duplicates</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="SRAweb.srp_to_srr"><a class="viewcode-back" href="../../pysradb.html#pysradb.sraweb.SRAweb.srp_to_srr">[docs]</a>    <span class="k">def</span> <span class="nf">srp_to_srr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">srp</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
@@ -1425,9 +1471,15 @@ document.write(`
               
               
                 <footer class="bd-footer-article">
-                  <!-- Previous / next buttons -->
+                  
+<div class="footer-article-items footer-article__inner">
+  
+    <div class="footer-article-item"><!-- Previous / next buttons -->
 <div class="prev-next-area">
+</div></div>
+  
 </div>
+
                 </footer>
               
             </div>
@@ -1437,7 +1489,7 @@ document.write(`
             
           </div>
           <footer class="bd-footer-content">
-            <div class="bd-footer-content__inner"></div>
+            
           </footer>
         
       </main>
@@ -1445,8 +1497,8 @@ document.write(`
   </div>
   
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script src="../../_static/scripts/bootstrap.js?digest=12da95d707ffb74b382d"></script>
-<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=12da95d707ffb74b382d"></script>
+  <script src="../../_static/scripts/bootstrap.js?digest=e353d410970836974a52"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52"></script>
 
   <footer class="bd-footer">
 <div class="bd-footer__inner bd-page-width">
@@ -1464,7 +1516,7 @@ document.write(`
       
         <div class="footer-item">
   <p class="sphinx-version">
-    Created using <a href="https://sphinx-doc.org/">Sphinx</a> 5.3.0.
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 5.3.0.
     <br/>
   </p>
 </div>
@@ -1475,7 +1527,7 @@ document.write(`
     <div class="footer-items__end">
       
         <div class="footer-item"><p class="theme-version">
-  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.13.1.
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.13.3.
 </p></div>
       
     </div>
