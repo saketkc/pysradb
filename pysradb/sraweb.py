@@ -730,6 +730,8 @@ class SRAweb(SRAdb):
         return pd.DataFrame(gse_records)
 
     def gse_to_gsm(self, gse, **kwargs):
+        if isinstance(gse, str):
+            gse = [gse]
         gse_df = self.fetch_gds_results(gse, **kwargs)
         gse_df = gse_df.rename(
             columns={
@@ -741,6 +743,8 @@ class SRAweb(SRAdb):
         )
         # TODO: Fix for multiple GSEs?
         gse_df["study_alias"] = ""
+        if len(gse) == 1:
+            study_alias = gse[0]
         for index, row in gse_df.iterrows():
             if row.entrytype == "GSE":
                 study_alias = row["experiment_accession"]
@@ -756,6 +760,8 @@ class SRAweb(SRAdb):
         ].drop_duplicates()
 
     def gse_to_srp(self, gse, **kwargs):
+        if isinstance(gse, str):
+            gse = [gse]
         gse_df = self.fetch_gds_results(gse, **kwargs)
         gse_df = gse_df.rename(
             columns={"accession": "study_alias", "SRA": "study_accession"}
