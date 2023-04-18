@@ -1020,9 +1020,9 @@ document.write(`
 
         <span class="c1"># TODO: the detailed call below does redundant operations</span>
         <span class="c1"># the code above this can be completeley done away with</span>
-        <span class="n">metadata_df</span> <span class="o">=</span> <span class="p">(</span>
-            <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">sra_record</span><span class="p">)</span><span class="o">.</span><span class="n">drop_duplicates</span><span class="p">()</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="s2">&quot;run_accession&quot;</span><span class="p">)</span>
-        <span class="p">)</span>
+        <span class="n">metadata_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">sra_record</span><span class="p">)</span><span class="o">.</span><span class="n">drop_duplicates</span><span class="p">()</span>
+        <span class="k">if</span> <span class="s2">&quot;run_accession&quot;</span> <span class="ow">in</span> <span class="n">metadata_df</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
+            <span class="n">metadata_df</span> <span class="o">=</span> <span class="n">metadata_df</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="s2">&quot;run_accession&quot;</span><span class="p">)</span>
         <span class="n">metadata_df</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">metadata_df</span><span class="o">.</span><span class="n">columns</span><span class="p">]</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">detailed</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">metadata_df</span>
@@ -1037,7 +1037,7 @@ document.write(`
 
         <span class="n">detailed_records</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">record</span> <span class="ow">in</span> <span class="n">efetch_result</span><span class="p">:</span>
-            <span class="k">if</span> <span class="s2">&quot;SAMPLE_ATTRIBUTES&quot;</span> <span class="ow">in</span> <span class="n">record</span><span class="p">[</span><span class="s2">&quot;SAMPLE&quot;</span><span class="p">]:</span>
+            <span class="k">if</span> <span class="s2">&quot;SAMPLE&quot;</span> <span class="ow">in</span> <span class="n">record</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span> <span class="ow">and</span> <span class="s2">&quot;SAMPLE_ATTRIBUTES&quot;</span> <span class="ow">in</span> <span class="n">record</span><span class="p">[</span><span class="s2">&quot;SAMPLE&quot;</span><span class="p">]:</span>
                 <span class="n">sample_attributes</span> <span class="o">=</span> <span class="n">record</span><span class="p">[</span><span class="s2">&quot;SAMPLE&quot;</span><span class="p">][</span><span class="s2">&quot;SAMPLE_ATTRIBUTES&quot;</span><span class="p">][</span>
                     <span class="s2">&quot;SAMPLE_ATTRIBUTE&quot;</span>
                 <span class="p">]</span>
@@ -1143,7 +1143,7 @@ document.write(`
             <span class="n">metadata_df</span> <span class="o">=</span> <span class="n">metadata_df</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span>
                 <span class="n">detailed_record_df</span><span class="p">,</span> <span class="n">on</span><span class="o">=</span><span class="s2">&quot;run_accession&quot;</span><span class="p">,</span> <span class="n">how</span><span class="o">=</span><span class="s2">&quot;outer&quot;</span>
             <span class="p">)</span>
-        <span class="k">else</span><span class="p">:</span>
+        <span class="k">elif</span> <span class="s2">&quot;experiment_accession&quot;</span> <span class="ow">in</span> <span class="n">detailed_record_df</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
             <span class="n">metadata_df</span> <span class="o">=</span> <span class="n">metadata_df</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span>
                 <span class="n">detailed_record_df</span><span class="p">,</span> <span class="n">on</span><span class="o">=</span><span class="s2">&quot;experiment_accession&quot;</span><span class="p">,</span> <span class="n">how</span><span class="o">=</span><span class="s2">&quot;outer&quot;</span>
             <span class="p">)</span>
@@ -1163,7 +1163,8 @@ document.write(`
         <span class="n">metadata_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">((</span><span class="n">metadata_df</span><span class="p">,</span> <span class="n">empty_df</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
         <span class="c1"># metadata_df[ena_cols] = np.nan</span>
 
-        <span class="n">metadata_df</span> <span class="o">=</span> <span class="n">metadata_df</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="s2">&quot;run_accession&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="s2">&quot;run_accession&quot;</span> <span class="ow">in</span> <span class="n">metadata_df</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
+            <span class="n">metadata_df</span> <span class="o">=</span> <span class="n">metadata_df</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="s2">&quot;run_accession&quot;</span><span class="p">)</span>
         <span class="c1"># multithreading lookup on ENA, since a lot of time is spent waiting</span>
         <span class="c1"># for its reply</span>
         <span class="k">with</span> <span class="n">concurrent</span><span class="o">.</span><span class="n">futures</span><span class="o">.</span><span class="n">ThreadPoolExecutor</span><span class="p">(</span><span class="n">max_workers</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span> <span class="k">as</span> <span class="n">executor</span><span class="p">:</span>
@@ -1181,7 +1182,9 @@ document.write(`
         <span class="n">metadata_df</span> <span class="o">=</span> <span class="n">metadata_df</span><span class="o">.</span><span class="n">reset_index</span><span class="p">()</span>
         <span class="n">metadata_df</span> <span class="o">=</span> <span class="n">metadata_df</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">NA</span><span class="p">)</span>
         <span class="n">metadata_df</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">metadata_df</span><span class="o">.</span><span class="n">columns</span><span class="p">]</span>
-        <span class="k">return</span> <span class="n">metadata_df</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="s2">&quot;run_accession&quot;</span><span class="p">)</span></div>
+        <span class="k">if</span> <span class="s2">&quot;run_accession&quot;</span> <span class="ow">in</span> <span class="n">metadata_df</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">metadata_df</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="s2">&quot;run_accession&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">metadata_df</span></div>
 
 <div class="viewcode-block" id="SRAweb.fetch_gds_results"><a class="viewcode-back" href="../../pysradb.html#pysradb.sraweb.SRAweb.fetch_gds_results">[docs]</a>    <span class="k">def</span> <span class="nf">fetch_gds_results</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">gse</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_esummary_response</span><span class="p">(</span><span class="s2">&quot;geo&quot;</span><span class="p">,</span> <span class="n">gse</span><span class="p">)</span>
