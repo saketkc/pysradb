@@ -130,7 +130,7 @@ def test_gse_to_gsm1(sraweb_connection):
 def test_gse_to_srp(sraweb_connection):
     """Test if gse is converted to srp correctly"""
     df = sraweb_connection.gse_to_srp("GSE63858")
-    assert df["study_accession"][0] == "SRP050548"
+    assert df["study_accession"].tolist()[0] == "SRP050548"
 
 
 def test_gse_to_srp2(sraweb_connection):
@@ -254,3 +254,9 @@ def test_GCP_url(sraweb_connection):
 def test_GCP_url2(sraweb_connection):
     df = sraweb_connection.sra_metadata(["DRR138929"], detailed=True)
     assert df["gcp_url"].tolist()[-1].startswith("gs:")
+
+
+def test_gse_to_srp3(sraweb_connection):
+    # https://github.com/saketkc/pysradb/issues/190
+    df = sraweb_connection.gse_to_srp(["GSE89545"])
+    assert df["study_accession"].tolist()[0] == "SRP093251"
