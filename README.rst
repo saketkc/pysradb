@@ -126,7 +126,7 @@ Please consider creating a new enviroment for ``pysradb``:
 
 .. code-block:: bash
 
-   conda create -c bioconda -n pysradb PYTHON=3.7 pysradb
+   conda create -c bioconda -n pysradb PYTHON=3.10 pysradb
 
 Dependencies
 ============
