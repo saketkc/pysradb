@@ -793,7 +793,7 @@ class SRAweb(SRAdb):
                 {"study_alias": gse_of_interest, "study_accession": srp_unique}
             )
             gse_df_subset = pd.concat([gse_df_subset_gse, new_gse_df])
-
+        gse_df_subset = gse_df_subset.loc[gse_df_subset.study_alias.isin(gse)]
         return gse_df_subset[["study_alias", "study_accession"]].drop_duplicates()
 
     def gsm_to_srp(self, gsm, **kwargs):
