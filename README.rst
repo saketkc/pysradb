@@ -10,9 +10,9 @@ A Python package for retrieving metadata from SRA/ENA/GEO
 
 .. image:: https://img.shields.io/badge/install%20with-bioconda-brightgreen.svg?style=flat-square
     :target: http://bioconda.github.io/recipes/pysradb/README.html
-    
+
 .. image:: https://static.pepy.tech/personalized-badge/pysradb?period=month&units=international_system&left_color=black&right_color=brightgreen&left_text=Downloads/month
-    :target: https://pepy.tech/project/pysradb   
+    :target: https://pepy.tech/project/pysradb
 
 .. image:: https://anaconda.org/bioconda/pysradb/badges/downloads.svg
     :target: https://anaconda.org/bioconda/pysradb
@@ -37,7 +37,7 @@ CLI Usage
 *********
 
 ``pysradb`` supports command line usage. See `CLI <https://saket-choudhary.me/pysradb/cmdline.html>`_ instructions or  `quickstart guide <https://www.saket-choudhary.me/pysradb/quickstart.html>`_.
- 
+
 
 
 ::
@@ -131,7 +131,7 @@ Please consider creating a new enviroment for ``pysradb``:
 Dependencies
 ============
 
-.. code-block:: bash
+::
 
    pandas
    requests
@@ -142,7 +142,7 @@ Dependencies
 Installing pysradb in development mode
 ======================================
 
-.. code-block:: bash
+::
 
    git clone https://github.com/saketkc/pysradb.git
    cd pysradb && pip install -r requirements.txt
@@ -256,7 +256,7 @@ Downloading supplementary files from GEO
 ::
 
     $ pysradb download -g GSE161707
-    
+
 
 Downloading an entire SRA/ENA project (multithreaded)
 =====================================================
