@@ -16,7 +16,7 @@ from .utils import requests_3_retries
 
 requests_ftp.monkeypatch_session()
 warnings.simplefilter(action="ignore", category=FutureWarning)
-
+import pandas as pd
 
 tqdm.pandas()
 
@@ -64,6 +64,10 @@ def get_file_size(row, url_col):
         url = row[url_col]
     else:
         url = row.download_url
+    if url is pd.NA:
+        return 0
+    if not isinstance(url, str):
+        return 0
     if url.startswith("ftp."):
         url = "ftp://" + url
     try:
