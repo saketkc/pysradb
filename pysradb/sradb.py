@@ -1494,7 +1494,7 @@ class SRAdb(BASEdb):
             print(f'The supplied url column "{url_col}" cannot be found.\n')
             url_col = "recommended_url"
             if not skip_confirmation:
-                pd.set_option("display.max_colwidth", -1)
+                pd.set_option("display.max_colwidth", None)
                 print(df.to_string(index=False, justify="left", col_space=0))
                 print(os.linesep, flush=True)
                 if not confirm("Use recommended_url instead?"):
@@ -1535,7 +1535,7 @@ class SRAdb(BASEdb):
             total_file_size = millify(np.sum(df["filesize"]))
             df["filesize"] = df["filesize"].apply(lambda x: millify(x)).tolist()
             print("The following files will be downloaded: \n")
-            pd.set_option("display.max_colwidth", -1)
+            pd.set_option("display.max_colwidth", None)
             print(df.to_string(index=False, justify="left", col_space=0))
             print(os.linesep)
             print("Total size: {}".format(total_file_size))
