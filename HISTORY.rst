@@ -7,7 +7,7 @@ Unreleased
 ******************
 
 * Fix for `gse-to-srp` returning unrequested GSEs (`#186 <https://github.com/saketkc/pysradb/issues/190>`)
-
+* Fix for `download` using `public_urls`
 
 ******************
 2.0.2 (2023-04-09)
