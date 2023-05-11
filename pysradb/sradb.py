@@ -1490,7 +1490,7 @@ class SRAdb(BASEdb):
                 ascp_bin = os.path.join(ascp_dir, "connect", "bin", "ascp")
         # Does the necessary column formatting for the dataframe
         df = self._format_dataframe_for_download(df.copy(), url_col, use_ascp)
-        if url_col not in df.columns:
+        if url_col not in df.columns.tolist():
             print(f'The supplied url column "{url_col}" cannot be found.\n')
             url_col = "recommended_url"
             if not skip_confirmation:

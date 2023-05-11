@@ -22,6 +22,9 @@ from .sradb import download_sradb_file
 from .sraweb import SRAweb
 from .utils import confirm
 
+pd.set_option("display.max_rows", None)
+pd.set_option("display.max_columns", None)
+
 warnings.simplefilter(action="ignore", category=FutureWarning)
 
 
@@ -38,6 +41,13 @@ class ArgParser(argparse.ArgumentParser):
         sys.exit(2)
 
 
+def pretty_print_df(df, include_header=True):
+    if include_header:
+        print("\t".join(map(str, [""] + list(df.columns))))
+    for index, row in df.iterrows():
+        print("\t".join(map(str, [index] + row.tolist())))
+
+
 def _print_save_df(df, saveto=None):
     if saveto:
         if saveto.lower().endswith(".csv"):
@@ -49,27 +59,8 @@ def _print_save_df(df, saveto=None):
         if df is None:
             print
         elif len(df.index):
-            to_print = (
-                df.replace(r"[\s]{2,}|\t", " ", regex=True)
-                .to_string(
-                    index=False,
-                    justify="left",
-                    header=False,
-                    col_space=0,
-                )
-                .lstrip()
-            )
-            to_print_split = to_print.split("\n")
-            to_print_split = map(lambda x: re.sub(r"\s\s+", "\t", x), to_print_split)
-            to_print = ["\t".join(df.columns)]
-            for line in to_print_split:
-                to_print.append(line.lstrip())
-            to_print = list(
-                map(lambda line: line.encode("ascii", "replace").decode(), to_print)
-            )
-            for line in to_print:
-                sys.stdout.write(line + os.linesep)
-            sys.stdout.flush()
+            print(pretty_print_df(df))
+            return
 
 
 ###################### metadata ##############################
@@ -91,7 +82,14 @@ def metadata(srp_id, assay, desc, detailed, expand, saveto):
 
 ################# download ##########################
 def download(
-    out_dir, srx, srp, geo, skip_confirmation, col="sra_url", use_ascp=False, threads=1
+    out_dir,
+    srx,
+    srp,
+    geo,
+    skip_confirmation,
+    col="public_url",
+    use_ascp=False,
+    threads=1,
 ):
     if out_dir is None:
         out_dir = os.path.join(os.getcwd(), "pysradb_downloads")
@@ -101,14 +99,7 @@ def download(
     # In this case, the input is taken from the pipe and assumed to be SRA, not GEO
     # TODO: at some point, we need to fix this
     if not srp and not geo:
-        text = ""
-        for index, line in enumerate(sys.stdin):
-            line = line.strip(" \t\n\r")
-            line = re.sub(r"\s*\t+\s*", "\t", line)
-            if not line:
-                continue
-            text += "{}\n".format(line)
-        df = pd.read_csv(StringIO(text), sep="\t")
+        df = pd.read_csv(sys.stdin, sep="\t")
         sradb.download(
             df=df,
             out_dir=out_dir,
@@ -621,7 +612,9 @@ def parse_args(args=None):
     subparser.add_argument(
         "--use_ascp", "-a", action="store_true", help="Use aspera instead of wget"
     )
-    subparser.add_argument("--col", help="Specify column to download")
+    subparser.add_argument(
+        "--col", help="Specify column to download", default="public_url"
+    )
     subparser.add_argument(
         "--threads", "-t", help="Number of threads", default=1, type=int
     )
