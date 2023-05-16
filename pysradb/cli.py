@@ -43,10 +43,9 @@ class ArgParser(argparse.ArgumentParser):
 
 def pretty_print_df(df, include_header=True):
     if include_header:
-        print("\t".join(map(str, [""] + list(df.columns))))
+        print("\t".join(map(str, list(df.columns))))
     for index, row in df.iterrows():
-        print("\t".join(map(str, [index] + row.tolist())))
-
+        print("\t".join(map(str, row.tolist())))
 
 def _print_save_df(df, saveto=None):
     if saveto:
@@ -59,8 +58,8 @@ def _print_save_df(df, saveto=None):
         if df is None:
             print
         elif len(df.index):
-            print(pretty_print_df(df))
-            return
+            pretty_print_df(df)
+            #return
 
 
 ###################### metadata ##############################
