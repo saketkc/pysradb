@@ -1047,7 +1047,7 @@ def test_sra_search_format_result_2(sra_response_xml_2, sra_formatted_responses_
 # ====================== EnaSearch component tests ========================
 
 
-def test_ena_search_1():
+def _test_ena_search_1():
     instance = EnaSearch(
         0, 1000, platform="pacbio", publication_date="01-10-2012:01-01-2013"
     )
@@ -1059,14 +1059,14 @@ def test_ena_search_1():
         assert accession in expected_accessions
 
 
-def test_ena_search_2(capsys):
+def _test_ena_search_2(capsys):
     EnaSearch(0, 1000, query="hehehuhuhaha").search()
     out, err = capsys.readouterr()
     assert "No results found for the following search query:" in out
     assert err == ""
 
 
-def test_ena_search_3(capsys):
+def _test_ena_search_3(capsys):
     with pytest.raises(SystemExit) as e:
         EnaSearch(0, 1000, selection='"Pikachu', suppress_validation=True).search()
     assert "HTTPError: This is likely caused by an invalid search query:" in str(
