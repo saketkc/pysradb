@@ -47,6 +47,7 @@ def pretty_print_df(df, include_header=True):
     for index, row in df.iterrows():
         print("\t".join(map(str, row.tolist())))
 
+
 def _print_save_df(df, saveto=None):
     if saveto:
         if saveto.lower().endswith(".csv"):
@@ -59,7 +60,6 @@ def _print_save_df(df, saveto=None):
             print
         elif len(df.index):
             pretty_print_df(df)
-            #return
 
 
 ###################### metadata ##############################
