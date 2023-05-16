@@ -835,10 +835,13 @@ class SRAweb(SRAdb):
 
     def gsm_to_srx(self, gsm, **kwargs):
         """Get SRX for a GSM"""
+        if isinstance(gsm, str):
+            gsm = [gsm]
         gsm_df = self.fetch_gds_results(gsm, **kwargs)
         gsm_df = gsm_df[gsm_df.entrytype == "GSM"].rename(
             columns={"SRA": "experiment_accession", "accession": "experiment_alias"}
         )
+        gsm_df = gsm_df.loc[gsm_df["experiment_alias"].isin(gsm)]
         return gsm_df[["experiment_alias", "experiment_accession"]].drop_duplicates()
 
     def gsm_to_gse(self, gsm, **kwargs):
