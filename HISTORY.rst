@@ -3,12 +3,15 @@ History
 #######
 
 ******************
-Unreleased
+2.1.0 (2023-05-16)
 ******************
 
 * Fix for `gse-to-srp` returning unrequested GSEs (`#186 <https://github.com/saketkc/pysradb/issues/190>`)
 * Fix for `download` using `public_urls`
-
+* Fix for `gsm-to-srx` returning false positives (`#165 <https://github.com/saketkc/pysradb/issues/165>`)
+* Fix for delimiter not being consistent when metadata is printed on terminal (`#147 <https://github.com/saketkc/pysradb/issues/147>`)
+* NOTE: ENA search is currently broken because of an API change
+  
 ******************
 2.0.2 (2023-04-09)
 ******************
