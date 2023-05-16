@@ -10,13 +10,12 @@ History
 * Fix for `download` using `public_urls`
 * Fix for `gsm-to-srx` returning false positives (`#165 <https://github.com/saketkc/pysradb/issues/165>`)
 * Fix for delimiter not being consistent when metadata is printed on terminal (`#147 <https://github.com/saketkc/pysradb/issues/147>`)
-* NOTE: ENA search is currently broken because of an API change
+* ENA search is currently broken because of an API change
   
 ******************
 2.0.2 (2023-04-09)
 ******************
 
-<<<<<<< HEAD
 * Fix for `gse-to-srp` to handle cases where a project is missing but SRXs
   are returned (`#186 <https://github.com/saketkc/pysradb/issues/186>`)
 * Fix gse-to-gsm (`#187 <https://github.com/saketkc/pysradb/issues/187>`) 
