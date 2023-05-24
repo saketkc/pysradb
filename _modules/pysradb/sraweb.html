@@ -18,7 +18,7 @@
             
         </script>
     
-    <title>pysradb.sraweb &#8212; pysradb 2.0.2 documentation</title>
+    <title>pysradb.sraweb &#8212; pysradb 2.1.0 documentation</title>
   
   
   
@@ -1318,10 +1318,13 @@ document.write(`
 
 <div class="viewcode-block" id="SRAweb.gsm_to_srx"><a class="viewcode-back" href="../../pysradb.html#pysradb.sraweb.SRAweb.gsm_to_srx">[docs]</a>    <span class="k">def</span> <span class="nf">gsm_to_srx</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">gsm</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Get SRX for a GSM&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">gsm</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+            <span class="n">gsm</span> <span class="o">=</span> <span class="p">[</span><span class="n">gsm</span><span class="p">]</span>
         <span class="n">gsm_df</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fetch_gds_results</span><span class="p">(</span><span class="n">gsm</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="n">gsm_df</span> <span class="o">=</span> <span class="n">gsm_df</span><span class="p">[</span><span class="n">gsm_df</span><span class="o">.</span><span class="n">entrytype</span> <span class="o">==</span> <span class="s2">&quot;GSM&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span>
             <span class="n">columns</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;SRA&quot;</span><span class="p">:</span> <span class="s2">&quot;experiment_accession&quot;</span><span class="p">,</span> <span class="s2">&quot;accession&quot;</span><span class="p">:</span> <span class="s2">&quot;experiment_alias&quot;</span><span class="p">}</span>
         <span class="p">)</span>
+        <span class="n">gsm_df</span> <span class="o">=</span> <span class="n">gsm_df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">gsm_df</span><span class="p">[</span><span class="s2">&quot;experiment_alias&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">gsm</span><span class="p">)]</span>
         <span class="k">return</span> <span class="n">gsm_df</span><span class="p">[[</span><span class="s2">&quot;experiment_alias&quot;</span><span class="p">,</span> <span class="s2">&quot;experiment_accession&quot;</span><span class="p">]]</span><span class="o">.</span><span class="n">drop_duplicates</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="SRAweb.gsm_to_gse"><a class="viewcode-back" href="../../pysradb.html#pysradb.sraweb.SRAweb.gsm_to_gse">[docs]</a>    <span class="k">def</span> <span class="nf">gsm_to_gse</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">gsm</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
