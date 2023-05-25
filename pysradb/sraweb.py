@@ -2,6 +2,7 @@
 
 import concurrent.futures
 import os
+import pandas as pd
 import sys
 import time
 import warnings
@@ -667,7 +668,7 @@ class SRAweb(SRAdb):
 
         metadata_df = metadata_df[metadata_df.columns.dropna()]
         metadata_df = metadata_df.drop_duplicates()
-        metadata_df = metadata_df.replace(r"^\s*$", np.nan, regex=True)
+        metadata_df = metadata_df.replace(r"^\s*$", pd.NA, regex=True)
         ena_cols = [
             "ena_fastq_http",
             "ena_fastq_http_1",
@@ -678,7 +679,6 @@ class SRAweb(SRAdb):
         ]
         empty_df = pd.DataFrame(columns=ena_cols)
         metadata_df = pd.concat((metadata_df, empty_df), axis=0)
-        # metadata_df[ena_cols] = np.nan
 
         if "run_accession" in metadata_df.columns:
             metadata_df = metadata_df.set_index("run_accession")
