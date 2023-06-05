@@ -50,6 +50,7 @@ extensions = [
     "sphinx_tabs.tabs",
     "sphinx_panels",
     "sphinxcontrib.gtagjs",
+    "myst_parser",
 ]
 gtagjs_ids = [
     "G-CKQZFCEENZ",
@@ -63,8 +64,8 @@ templates_path = ["_templates"]
 # The suffix(es) of source filenames.
 # You can specify multiple suffix as a list of string:
 #
-# source_suffix = ['.rst', '.md']
-source_suffix = ".rst"
+source_suffix = ['.rst', '.md']
+#source_suffix = ".md"
 
 # The master toctree document.
 master_doc = "index"
