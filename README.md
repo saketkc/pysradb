@@ -1,17 +1,11 @@
 # A Python package for retrieving metadata from SRA/ENA/GEO
 
 [![image](https://img.shields.io/pypi/v/pysradb.svg?style=flat-square)](https://pypi.python.org/pypi/pysradb)
-
 [![image](https://anaconda.org/bioconda/pysradb/badges/version.svg)](https://anaconda.org/bioconda/pysradb/badges/version.svg)
-
 [![image](https://img.shields.io/badge/install%20with-bioconda-brightgreen.svg?style=flat-square)](http://bioconda.github.io/recipes/pysradb/README.html)
-
 [![image](https://static.pepy.tech/personalized-badge/pysradb?period=month&units=international_system&left_color=black&right_color=brightgreen&left_text=Downloads/month)](https://pepy.tech/project/pysradb)
-
 [![image](https://anaconda.org/bioconda/pysradb/badges/downloads.svg)](https://anaconda.org/bioconda/pysradb)
-
 [![image](https://zenodo.org/badge/159590788.svg)](https://zenodo.org/badge/latestdoi/159590788)
-
 [![image](https://github.com/saketkc/pysradb/workflows/push/badge.svg)](https://github.com/saketkc/pysradb/actions)
 
 ## Documentation
