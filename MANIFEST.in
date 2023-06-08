@@ -1,8 +1,8 @@
-include AUTHORS.rst
-include CONTRIBUTING.rst
-include HISTORY.rst
+include AUTHORS.md
+include CONTRIBUTING.md
+include HISTORY.md
 include LICENSE
-include README.rst
+include README.md
 include requirements.txt
 
 recursive-include tests *
@@ -11,4 +11,4 @@ recursive-exclude * *.py[co]
 recursive-exclude * *.sqlite
 recursive-exclude * *.sqlite.gz
 
-recursive-include docs *.rst conf.py Makefile make.bat *.jpg *.png *.gif
+recursive-include docs *.md conf.py Makefile make.bat *.jpg *.png *.gif *.rst
