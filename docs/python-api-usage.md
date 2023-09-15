@@ -10,8 +10,8 @@ with it. This is generally reflected in the
 SraRunTable.
 
 ``` python
-from pysradb import SRAWeb
-db = SRAWeb()
+from pysradb import SRAweb
+db = SRAweb()
 df = db.sra_metadata('SRP098789')
 df.head()
 ```
@@ -47,8 +47,8 @@ We strongly recommend installing [aspera-client]{.title-ref} which uses
 UDP and is [designed to be faster](http://www.skullbox.net/tcpudp.php).
 
 ``` python
-from pysradb import SRAWeb
-db = SRAWeb()
+from pysradb import SRAweb
+db = SRAweb()
 df = db.sra_metadata('SRP017942')
 db.download(df)
 ```
