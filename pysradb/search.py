@@ -1660,6 +1660,7 @@ class GeoSearch(SraSearch):
         return payload
 
     def search(self):
+        """Sends the user query via requests to SRA, GEO DataSets, or both"""
         if not self.search_geo:
             super().search()
         else:
@@ -1679,7 +1680,7 @@ class GeoSearch(SraSearch):
                 elink_payload = {
                     "dbfrom": "gds",
                     "db": "sra",
-                    "retmode": "json",
+                    "retmode": "xml",
                     "query_key": query_key,
                     "WebEnv": web_env,
                 }
@@ -1690,9 +1691,11 @@ class GeoSearch(SraSearch):
                 )
                 r.raise_for_status()
                 try:
-                    data = r.json()
-                    uids_from_geo = data["linksets"][0]["linksetdbs"][0]["links"]
-                except (JSONDecodeError, KeyError, IndexError):
+                    root = Et.fromstring(r.text)
+                    uids_from_geo = [
+                        elem.text for elem in root.findall(".//LinkSet/LinkSetDb/Link/Id")
+                    ]
+                except (Et.ParseError, TypeError, ValueError):
                     uids_from_geo = []
                 # Step 2: Retrieve list of uids from SRA and
                 # Find the intersection of both lists of uids
