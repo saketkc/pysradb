@@ -1693,7 +1693,8 @@ class GeoSearch(SraSearch):
                 try:
                     root = Et.fromstring(r.text)
                     uids_from_geo = [
-                        elem.text for elem in root.findall(".//LinkSet/LinkSetDb/Link/Id")
+                        elem.text
+                        for elem in root.findall(".//LinkSet/LinkSetDb/Link/Id")
                     ]
                 except (Et.ParseError, TypeError, ValueError):
                     uids_from_geo = []

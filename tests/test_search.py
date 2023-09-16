@@ -1180,7 +1180,7 @@ def test_geo_search_1():
     instance.search()
     df = instance.get_df()
     assert not df.empty
-    
+
     experiment_accessions = instance.get_df()["experiment_accession"].to_list()
     assert len(experiment_accessions) > 10
     # with open("./tests/data/test_search/geo_search_test1.txt", "r") as f:
