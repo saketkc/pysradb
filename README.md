@@ -93,13 +93,13 @@ The following notebooks document all the possible features of
 
 To install stable version using \`pip\`:
 
-``` bash
+```bash
 pip install pysradb
 ```
 
 Alternatively, if you use conda:
 
-``` bash
+```bash
 conda install -c bioconda pysradb
 ```
 
@@ -108,7 +108,7 @@ environment with a lot of pre-installed packages, conda might be
 [slow](https://github.com/bioconda/bioconda-recipes/issues/13774).
 Please consider creating a new enviroment for `pysradb`:
 
-``` bash
+```bash
 conda create -c bioconda -n pysradb PYTHON=3.10 pysradb
 ```
 
