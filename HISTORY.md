@@ -1,5 +1,11 @@
 # History
 
+# 2.2.0 (2023-09-17)
+
+- Add support for Biosamples and bioproject [#199](https://github.com/saketkc/pysradb/pull/198)
+- Use retmode xml for Geo search [#200](https://github.com/saketkc/pysradb/pull/200)
+- Documentation fixes
+
 ## 2.1.0 (2023-05-16)
 
 -   Fix for [gse-to-srp]{.title-ref} returning unrequested GSEs ([#186
