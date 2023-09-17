@@ -491,6 +491,11 @@ class SRAweb(SRAdb):
             exp_library_layout = list(exp_library_descriptor["LIBRARY_LAYOUT"].keys())[
                 0
             ]
+            # biosample
+            exp_biosample = exp_json.get('Biosample', pd.NA)
+            # bioproject
+            exp_bioproject = exp_json.get('Bioproject', pd.NA)
+            
             experiment_record = OrderedDict()
             experiment_record["study_accession"] = exp_json["Study"]["@acc"]
             experiment_record["study_title"] = exp_json["Study"]["@name"]
@@ -508,6 +513,8 @@ class SRAweb(SRAdb):
             experiment_record["library_layout"] = exp_library_layout
             experiment_record["sample_accession"] = exp_sample_ID
             experiment_record["sample_title"] = exp_sample_name
+            experiment_record["biosample"] = exp_biosample
+            experiment_record["bioproject"] = exp_bioproject
             experiment_record["instrument"] = exp_instrument
             experiment_record["instrument_model"] = exp_platform_model
             experiment_record["instrument_model_desc"] = exp_platform_desc
