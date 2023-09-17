@@ -108,3 +108,5 @@ venv.bak/
 .mypy_cache/
 *.sqlite
 *.sqlite.gz
+
+geoweb_downloads/
