@@ -492,10 +492,10 @@ class SRAweb(SRAdb):
                 0
             ]
             # biosample
-            exp_biosample = exp_json.get('Biosample', pd.NA)
+            exp_biosample = exp_json.get("Biosample", pd.NA)
             # bioproject
-            exp_bioproject = exp_json.get('Bioproject', pd.NA)
-            
+            exp_bioproject = exp_json.get("Bioproject", pd.NA)
+
             experiment_record = OrderedDict()
             experiment_record["study_accession"] = exp_json["Study"]["@acc"]
             experiment_record["study_title"] = exp_json["Study"]["@name"]
