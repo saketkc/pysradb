@@ -1,5 +1,10 @@
 # History
 
+# 2.2.1 (2024-08-21)
+- Fix for handling ENA urls
+- Migrated to pyproject.toml
+
+
 # 2.2.0 (2023-09-17)
 
 - Add support for Biosamples and bioproject [#199](https://github.com/saketkc/pysradb/pull/198)
