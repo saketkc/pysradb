@@ -1,0 +1,53 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "pysradb"
+dynamic = ["version"]
+description = "A Python package for interacting with SRAdb and downloading datasets from SRA/ENA/GEO"
+readme = "README.md"
+license = {file = "LICENSE"}
+requires-python = ">=3.7"
+authors = [
+    { name = "Saket Choudhary", email = "saketkc@gmail.com" },
+]
+keywords = [
+    "pysradb",
+]
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Intended Audience :: Healthcare Industry",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: BSD License",
+    "Natural Language :: English",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.7",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Topic :: Scientific/Engineering :: Bio-Informatics",
+]
+dependencies = [
+    "lxml>=4.6.3",
+    "pandas>=1.3.2",
+    "requests-ftp>=0.3.1",
+    "requests>=2.26.0",
+    "tqdm>=4.62.1",
+    "xmltodict>=0.12.0",
+]
+
+[project.scripts]
+pysradb = "pysradb.cli:parse_args"
+
+[project.urls]
+Homepage = "https://github.com/saketkc/pysradb"
+
+[tool.hatch.version]
+path = "pysradb/__init__.py"
+
+[tool.hatch.build.targets.sdist]
+include = [
+    "/pysradb",
+]
