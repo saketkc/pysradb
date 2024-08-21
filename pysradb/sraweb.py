@@ -173,7 +173,7 @@ class SRAweb(SRAdb):
             line_split = line.split("\t")
             if len(line_split) != 2:
                 continue
-            srr, url = line.split("\t")
+            url, srr = line.split("\t")
             http_url = "http://{}".format(url)
             ftp_url = url.replace("ftp.sra.ebi.ac.uk/", "era-fasp@fasp.sra.ebi.ac.uk:")
             urls += [(srr, http_url, ftp_url)]
@@ -214,7 +214,7 @@ class SRAweb(SRAdb):
                     url1_2 = ""
                     url2_2 = ""
                 urls_expanded.append((srr, url1_1, url1_2, url2_1, url2_2))
-            return pd.DataFrame(
+            df = pd.DataFrame(
                 urls_expanded,
                 columns=[
                     "run_accession",
@@ -224,6 +224,7 @@ class SRAweb(SRAdb):
                     "ena_fastq_ftp_2",
                 ],
             ).sort_values(by="run_accession")
+            return df
         else:
             return pd.DataFrame(
                 urls, columns=["run_accession", "ena_fastq_http", "ena_fastq_ftp"]
