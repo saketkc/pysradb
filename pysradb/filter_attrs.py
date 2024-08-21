@@ -108,9 +108,9 @@ def expand_sample_attribute_columns(metadata_df):
         if sample_attribute_keys:
             sample_attribute_keys = list(
                 map(
-                    lambda x: x
-                    if x not in metadata_df.columns.tolist()
-                    else x + "_expanded",
+                    lambda x: (
+                        x if x not in metadata_df.columns.tolist() else x + "_expanded"
+                    ),
                     sample_attribute_keys,
                 )
             )
