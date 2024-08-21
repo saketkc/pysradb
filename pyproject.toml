@@ -42,7 +42,10 @@ dependencies = [
 pysradb = "pysradb.cli:parse_args"
 
 [project.urls]
-Homepage = "https://github.com/saketkc/pysradb"
+Homepage = "https://saket-choudhary.me/pysradb"
+
+[tool.distutils.bdist_wheel]
+universal = true
 
 [tool.hatch.version]
 path = "pysradb/__init__.py"
