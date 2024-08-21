@@ -71,15 +71,15 @@ class SRAweb(SRAdb):
                  API key for ncbi eutils.
         """
         self.base_url = dict()
-        self.base_url[
-            "esummary"
-        ] = "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esummary.fcgi"
-        self.base_url[
-            "esearch"
-        ] = "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi"
-        self.base_url[
-            "efetch"
-        ] = "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi"
+        self.base_url["esummary"] = (
+            "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esummary.fcgi"
+        )
+        self.base_url["esearch"] = (
+            "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi"
+        )
+        self.base_url["efetch"] = (
+            "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi"
+        )
 
         self.ena_fastq_search_url = "https://www.ebi.ac.uk/ena/portal/api/filereport"
         self.ena_params = [("result", "read_run"), ("fields", "fastq_ftp")]
@@ -411,7 +411,7 @@ class SRAweb(SRAdb):
         detailed=False,
         expand_sample_attributes=False,
         output_read_lengths=False,
-        **kwargs
+        **kwargs,
     ):
         esummary_result = self.get_esummary_response("sra", srp)
         try:
