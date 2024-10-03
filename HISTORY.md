@@ -1,5 +1,8 @@
 # History
 
+# 2.2.2 (2024-10-03)
+- Fix for handling ENA urls for paired end data
+
 # 2.2.1 (2024-08-21)
 - Fix for handling ENA urls
 - Migrated to pyproject.toml
