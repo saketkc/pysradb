@@ -174,6 +174,9 @@ class SRAweb(SRAdb):
             if len(line_split) != 2:
                 continue
             url, srr = line.split("\t")
+            # sometimes this needs to be flipped
+            if "sra.ebi.ac.uk" in srr:
+                url, srr = srr, url
             http_url = "http://{}".format(url)
             ftp_url = url.replace("ftp.sra.ebi.ac.uk/", "era-fasp@fasp.sra.ebi.ac.uk:")
             urls += [(srr, http_url, ftp_url)]
