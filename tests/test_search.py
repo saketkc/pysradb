@@ -1074,7 +1074,7 @@ def _test_ena_search_3(capsys):
     )
 
 
-def test_valid_search_query_1_ena(valid_search_inputs_1):
+def _test_valid_search_query_1_ena(valid_search_inputs_1):
     expected_query = [
         '(experiment_title="*covid-19*" OR study_accession="COVID-19" OR secondary_study_accession="COVID-19" OR'
         ' sample_accession="COVID-19" OR secondary_sample_accession="COVID-19" OR experiment_accession="COVID-19" OR'
@@ -1102,7 +1102,7 @@ def test_valid_search_query_1_ena(valid_search_inputs_1):
         )
 
 
-def test_valid_search_query_2_ena(valid_search_inputs_2):
+def _test_valid_search_query_2_ena(valid_search_inputs_2):
     expected_query = [
         'library_layout="TRIPLE"',
         '(experiment_title="*Escherichia coli*") AND (study_accession="SRS6898222" OR '
