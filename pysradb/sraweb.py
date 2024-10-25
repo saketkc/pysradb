@@ -593,7 +593,7 @@ class SRAweb(SRAdb):
                         if not isinstance(value_x, dict):
                             continue
                         tag = value_x["TAG"].lower()
-                        value = value_x["VALUE"]
+                        value = value_x["VALUE"] if "VALUE" in value_x else None
                         detailed_record[tag] = value
                 lib_record = exp_record["DESIGN"]["LIBRARY_DESCRIPTOR"]
                 for key, value in lib_record.items():

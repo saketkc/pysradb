@@ -1,5 +1,8 @@
 # History
 
+# UNRELEASED
+- Fix for handling missing metadata keys [#223](https://github.com/saketkc/pysradb/pull/223). Thanks [@andrewdavidsmith](https://github.com/andrewdavidsmith)
+
 # 2.2.2 (2024-10-03)
 - Fix for handling ENA urls for paired end data
 
