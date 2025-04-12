@@ -1,4 +1,4 @@
-# Python API 
+# Python API
 
 ## Use Case 1: Fetch the metadata table (SRA-runtable)
 
@@ -9,8 +9,9 @@ with it. This is generally reflected in the
 [example](https://www.ncbi.nlm.nih.gov/Traces/study/?acc=SRP098789) of a
 SraRunTable.
 
-``` python
-from pysradb import SRAweb
+```python
+from pysradb.sraweb import SRAweb
+
 db = SRAweb()
 df = db.sra_metadata('SRP098789')
 df.head()
@@ -46,7 +47,7 @@ cases easily, without worrying about which runs (SRR) need to be merged.
 We strongly recommend installing [aspera-client]{.title-ref} which uses
 UDP and is [designed to be faster](http://www.skullbox.net/tcpudp.php).
 
-``` python
+```python
 from pysradb import SRAweb
 db = SRAweb()
 df = db.sra_metadata('SRP017942')
@@ -58,7 +59,7 @@ db.download(df)
 Often, you need to process only a smaller set of samples from a project
 (SRP). Consider this project which has data spanning four assays.
 
-``` python
+```python
 df = db.sra_metadata('SRP000941')
 print(df.library_strategy.unique())
 ['ChIP-Seq' 'Bisulfite-Seq' 'RNA-Seq' 'WGS' 'OTHER']
@@ -69,7 +70,7 @@ samples and would just want to download that subset. This is simple
 using [pysradb]{.title-ref} since the metadata can be subset just as you
 would subset a dataframe in pandas.
 
-``` python
+```python
 df_rna = df[df.library_strategy == 'RNA-Seq']
 db.download(df=df_rna, out_dir='/pysradb_downloads')()
 ```
@@ -79,7 +80,7 @@ db.download(df=df_rna, out_dir='/pysradb_downloads')()
 Cell type/tissue informations is usually hidden in the
 [sample_attributes]{.title-ref} column, which can be expanded:
 
-``` python
+```python
 from pysradb.filter_attrs import expand_sample_attribute_columns
 df = db.sra_metadata('SRP017942')
 expand_sample_attribute_columns(df).head()
@@ -173,7 +174,7 @@ Another common operation that we do on SRA is seach, plain text search.
 If you want to look up for all projects where [ribosome
 profiling]{.title-ref} appears somewhere in the description:
 
-``` python
+```python
 df = db.search_sra(search_str='"ribosome profiling"')
 df.head()
 ```
