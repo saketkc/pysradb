@@ -108,3 +108,41 @@ class GEOweb(GEOdb):
             download_file(
                 root_url.lstrip("https://") + link, geo_path, show_progress=True
             )
+
+    def download_matrix(self, gse, out_dir=None, verbose=False):
+
+        prefix = gse[:-3]
+        # FTP URL pattern for matrix files:
+        url = f"https://ftp.ncbi.nlm.nih.gov/geo/series/{prefix}nnn/{gse}/matrix/"
+
+        try:
+            page = requests.get(url)
+            tree = html.fromstring(page.content)
+        except Exception as e:
+            raise Exception(f"Error accessing {url}: {e}")
+
+        # Extract links containing "series_matrix" (typically our target file)
+        link_objects = tree.xpath("//a")
+        links = [link.attrib["href"] for link in link_objects if "series_matrix" in link.attrib.get("href", "")]
+
+        if not links:
+            raise Exception(f"No matrix files found for {gse} at {url}")
+
+        # Select the first matching matrix file link.
+        matrix_file = links[0]
+        file_url = url + matrix_file
+
+        if out_dir in (None, "."):
+            out_dir = os.path.join(os.getcwd(), "pysradb_downloads")
+        out_dir = os.path.join(out_dir, gse)
+        os.makedirs(out_dir, exist_ok=True)
+
+        matrix_path = os.path.join(out_dir, matrix_file)
+
+        # Download the file using the existing download_file utility.
+        download_file(file_url, matrix_path, show_progress=True)
+
+        if verbose:
+            print(f"Downloaded matrix file from {file_url} to {matrix_path}")
+
+        return matrix_path

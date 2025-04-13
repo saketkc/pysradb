@@ -1,4 +1,4 @@
-# CLI 
+# CLI
 
     $ pysradb
     usage: pysradb [-h] [--version] [--citation]
@@ -175,6 +175,13 @@ But not all SRPs will have an associated GEO id (GSE):
 
     study_alias study_accession
     GSE87328    SRP090415
+
+## Geo Matrix Command
+
+The `geo-matrix` command allows you to download and parse a GEO Matrix file for a given GEO Series accession. This command retrieves the processed gene expression data from GEO and can optionally convert it to a clean TSV file.
+
+    $ pysradb geo-matrix --gse GSE10072 [--out-dir OUTPUT_DIR] [--show-rows N] [--to-tsv]
+
 
 Please see
 [quickstart](https://www.saket-choudhary.me/pysradb/quickstart.html#the-full-list-of-possible-pysradb-operations)

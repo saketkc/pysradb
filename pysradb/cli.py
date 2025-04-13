@@ -528,6 +528,43 @@ def srx_to_srs(srx_ids, saveto, detailed, desc, expand):
     sradb.close()
 
 
+def geo_matrix(gse, out_dir=None, show_rows=None, to_tsv=False):
+
+    geo = GEOweb()
+
+    try:
+        matrix_path = geo.download_matrix(gse, out_dir, verbose=True)
+    except Exception as e:
+        print(f"Failed to download matrix file for {gse}: {e}")
+        return
+
+    print(f"Downloaded matrix file: {matrix_path}")
+
+    try:
+        df = pd.read_csv(
+            matrix_path,
+            sep="\t",
+            comment="!",
+            low_memory=False
+        )
+        print("Parsed the matrix file successfully.\n")
+        print("[Preview]:")
+        print(df.head(show_rows))
+    except Exception as e:
+        print(f"Error parsing the matrix file: {e}")
+        return
+
+    if to_tsv:
+        tsv_path = matrix_path
+        if tsv_path.endswith(".gz"):
+            tsv_path = tsv_path[:-3]
+        tsv_path = tsv_path.replace(".txt", "_clean.tsv")
+        try:
+            df.to_csv(tsv_path, sep="\t", index=False)
+            print(f"\nClean TSV file saved as: {tsv_path}")
+        except Exception as e:
+            print(f"Failed to save TSV file: {e}")
+
 #########################################################################
 
 
@@ -1168,6 +1205,24 @@ def parse_args(args=None):
     subparser.add_argument("srx_ids", nargs="+")
     subparser.set_defaults(func=srx_to_srs)
 
+    #pysradb geo-matrix
+    subparser = subparsers.add_parser(
+        "geo-matrix",
+        help="Download and parse GEO Matrix file for a GEO Series accession."
+    )
+    subparser.add_argument(
+        "--gse", required=True, help="GEO Series accession (e.g., GSE10072)"
+    )
+    subparser.add_argument(
+        "--out-dir", default="pysradb_downloads", help="Output directory for the downloaded matrix file (default: pysradb_downloads)"
+    )
+    subparser.add_argument(
+        "--show-rows", type=int, default=3, help="Number of rows to display in preview"
+    )
+    subparser.add_argument(
+        "--to-tsv", action="store_true", help="If set, convert and save a clean TSV file from the parsed data"
+    )
+
     args = parser.parse_args(args=None if sys.argv[1:] else ["--help"])
     if args.command == "metadata":
         metadata(
@@ -1241,6 +1296,8 @@ def parse_args(args=None):
         srx_to_srr(args.srx_ids, args.saveto, args.detailed, args.desc, args.expand)
     elif args.command == "srx-to-srs":
         srx_to_srs(args.srx_ids, args.saveto, args.detailed, args.desc, args.expand)
+    elif args.command == "geo-matrix":
+        geo_matrix(args.gse, args.out_dir, args.show_rows, args.to_tsv)
 
 
 if __name__ == "__main__":
