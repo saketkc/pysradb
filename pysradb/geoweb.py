@@ -88,7 +88,8 @@ class GEOweb(GEOdb):
             links = [
                 link
                 for link in links
-                if link != "https://www.hhs.gov/vulnerability-disclosure-policy/index.html"
+                if link
+                != "https://www.hhs.gov/vulnerability-disclosure-policy/index.html"
                 and "geo/series/" not in link
                 and link != "/"
             ]
@@ -140,15 +141,15 @@ class GEOweb(GEOdb):
         for link in matrix_files:
             file_path = os.path.join(out_dir, link)
             download_file(
-                matrix_url.lstrip("https://") + link,
-                file_path,
-                show_progress=True
+                matrix_url.lstrip("https://") + link, file_path, show_progress=True
             )
             downloaded_files.append(file_path)
 
         return downloaded_files
 
-    def download(self, links, root_url, gse, verbose=False, out_dir=None, matrix_only=False):
+    def download(
+        self, links, root_url, gse, verbose=False, out_dir=None, matrix_only=False
+    ):
         """Download GEO files.
 
         Parameters

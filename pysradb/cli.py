@@ -1,5 +1,4 @@
-"""Command line interface for pysradb
-"""
+"""Command line interface for pysradb"""
 
 import argparse
 import os
@@ -123,7 +122,9 @@ def geo_matrix(accession, out_dir, to_tsv, output_file):
     if to_tsv:
         if output_file is None:
             if out_dir is None:
-                out_dir = os.path.join(os.getcwd(), "pysradb_downloads", accession, "matrix")
+                out_dir = os.path.join(
+                    os.getcwd(), "pysradb_downloads", accession, "matrix"
+                )
             output_file = os.path.join(out_dir, f"{accession}_matrix.tsv")
 
         matrix.to_tsv(output_file)
@@ -179,7 +180,13 @@ def download(
                 geoweb.download_matrix(geo_x, out_dir=out_dir)
             else:
                 links, root_url = geoweb.get_download_links(geo_x)
-                geoweb.download(links=links, root_url=root_url, gse=geo_x, out_dir=out_dir, matrix_only=matrix_only)
+                geoweb.download(
+                    links=links,
+                    root_url=root_url,
+                    gse=geo_x,
+                    out_dir=out_dir,
+                    matrix_only=matrix_only,
+                )
     sradb.close()
 
 
@@ -655,7 +662,9 @@ def parse_args(args=None):
     subparser.set_defaults(func=metadata)
 
     # pysradb download
-    subparser = subparsers.add_parser("download", help="Download SRA project (SRPnnnn) or GEO files")
+    subparser = subparsers.add_parser(
+        "download", help="Download SRA project (SRPnnnn) or GEO files"
+    )
     subparser.add_argument("--out-dir", help="Output directory root")
     subparser.add_argument("--srx", "-x", help="Download only these SRX(s)", nargs="+")
     subparser.add_argument("--srp", "-p", help="SRP ID", nargs="+")
@@ -673,16 +682,29 @@ def parse_args(args=None):
         "--threads", "-t", help="Number of threads", default=1, type=int
     )
     subparser.add_argument(
-        "--matrix-only", "-m", action="store_true", help="Download only matrix files (for GEO)"
+        "--matrix-only",
+        "-m",
+        action="store_true",
+        help="Download only matrix files (for GEO)",
     )
     subparser.set_defaults(func=download)
 
     # pysradb geo-matrix
-    subparser = subparsers.add_parser("geo-matrix", help="Download and process GEO Matrix files")
-    subparser.add_argument("--accession", "-a", required=True, help="GEO accession ID (e.g., GSE234190)")
-    subparser.add_argument("--out-dir", "-o", help="Output directory for downloaded files")
-    subparser.add_argument("--to-tsv", "-t", action="store_true", help="Convert matrix file to TSV format")
-    subparser.add_argument("--output-file", "-f", help="Path to output TSV file (used with --to-tsv)")
+    subparser = subparsers.add_parser(
+        "geo-matrix", help="Download and process GEO Matrix files"
+    )
+    subparser.add_argument(
+        "--accession", "-a", required=True, help="GEO accession ID (e.g., GSE234190)"
+    )
+    subparser.add_argument(
+        "--out-dir", "-o", help="Output directory for downloaded files"
+    )
+    subparser.add_argument(
+        "--to-tsv", "-t", action="store_true", help="Convert matrix file to TSV format"
+    )
+    subparser.add_argument(
+        "--output-file", "-f", help="Path to output TSV file (used with --to-tsv)"
+    )
     subparser.set_defaults(func=geo_matrix)
 
     # pysradb search
