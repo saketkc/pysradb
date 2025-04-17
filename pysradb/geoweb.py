@@ -12,6 +12,7 @@ from .geodb import GEOdb
 from .utils import _get_url
 from .utils import copyfileobj
 from .utils import get_gzip_uncompressed_size
+from .utils import mkdir_p
 
 PY3 = True
 if sys.version_info[0] < 3:
@@ -59,7 +60,95 @@ class GEOweb(GEOdb):
 
         return links, url
 
-    def download(self, links, root_url, gse, verbose=False, out_dir=None):
+    def get_matrix_links(self, gse):
+        """Obtain links to matrix files from the GEO FTP matrix directory.
+
+        Parameters
+        ----------
+        gse: string
+             GSE ID
+
+        Returns
+        -------
+        links: list
+               List of all valid matrix file links present for a GEO ID
+        url: string
+             URL of the matrix directory
+        """
+        prefix = gse[:-3]
+        url = f"https://ftp.ncbi.nlm.nih.gov/geo/series/{prefix}nnn/{gse}/matrix/"
+
+        try:
+            response = requests.get(url)
+            response.raise_for_status()
+            link_objects = html.fromstring(response.content).xpath("//a")
+            links = [i.attrib["href"] for i in link_objects]
+
+            # Remove vulnerability link and parent directory link
+            links = [
+                link
+                for link in links
+                if link != "https://www.hhs.gov/vulnerability-disclosure-policy/index.html"
+                and "geo/series/" not in link
+                and link != "/"
+            ]
+
+            # Filter for matrix files (typically .txt.gz)
+            matrix_files = [link for link in links if "_series_matrix.txt.gz" in link]
+
+            if not matrix_files:
+                print(f"No matrix files found for {gse}")
+
+            return matrix_files, url
+
+        except requests.exceptions.HTTPError:
+            print(f"No matrix directory found for {gse}")
+            return [], None
+
+    def download_matrix(self, gse, out_dir=None):
+        """Download matrix files for a GEO accession.
+
+        Parameters
+        ----------
+        gse: string
+             GSE ID
+        out_dir: string, optional
+                 Directory location for download
+
+        Returns
+        -------
+        downloaded_files: list
+                         Paths to downloaded matrix files
+        """
+        matrix_files, matrix_url = self.get_matrix_links(gse)
+
+        if not matrix_files:
+            return []
+
+        if out_dir is None:
+            out_dir = os.path.join(os.getcwd(), "pysradb_downloads", gse, "matrix")
+
+        mkdir_p(out_dir)
+
+        downloaded_files = []
+
+        print("\nThe following matrix files will be downloaded: \n")
+        for link in matrix_files:
+            print(link)
+        print(os.linesep)
+
+        for link in matrix_files:
+            file_path = os.path.join(out_dir, link)
+            download_file(
+                matrix_url.lstrip("https://") + link,
+                file_path,
+                show_progress=True
+            )
+            downloaded_files.append(file_path)
+
+        return downloaded_files
+
+    def download(self, links, root_url, gse, verbose=False, out_dir=None, matrix_only=False):
         """Download GEO files.
 
         Parameters
@@ -74,7 +163,12 @@ class GEOweb(GEOdb):
                  Print file list
         out_dir: string
                  Directory location for download
+        matrix_only: bool
+                    If True, only download matrix files
         """
+        if matrix_only:
+            return self.download_matrix(gse, out_dir)
+
         if out_dir is None:
             out_dir = os.path.join(os.getcwd(), "pysradb_downloads")
 
