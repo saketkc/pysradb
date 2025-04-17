@@ -36,13 +36,13 @@ def test_parse_matrix(geomatrix_connection, tmp_path):
     """Test if matrix files are parsed correctly"""
     out_dir = str(tmp_path / "matrix_parse_test")
     downloaded_files = geomatrix_connection.download_matrix(out_dir=out_dir)
-    
+
     metadata, data = geomatrix_connection.parse_matrix()
-    
+
     # Check metadata
     assert isinstance(metadata, dict)
     assert len(metadata) > 0
-    
+
     # Check data
     assert isinstance(data, pd.DataFrame)
     assert data.shape[0] > 0
@@ -53,9 +53,9 @@ def test_to_dataframe(geomatrix_connection, tmp_path):
     """Test if matrix files are converted to DataFrame correctly"""
     out_dir = str(tmp_path / "matrix_df_test")
     downloaded_files = geomatrix_connection.download_matrix(out_dir=out_dir)
-    
+
     df = geomatrix_connection.to_dataframe()
-    
+
     assert isinstance(df, pd.DataFrame)
     assert df.shape[0] > 0
     assert df.shape[1] > 0
@@ -65,14 +65,14 @@ def test_to_tsv(geomatrix_connection, tmp_path):
     """Test if matrix files are converted to TSV correctly"""
     out_dir = str(tmp_path / "matrix_tsv_test")
     downloaded_files = geomatrix_connection.download_matrix(out_dir=out_dir)
-    
+
     output_file = str(tmp_path / "matrix_tsv_test" / "output.tsv")
     geomatrix_connection.to_tsv(output_file)
-    
+
     assert os.path.exists(output_file)
     assert os.path.getsize(output_file) > 0
-    
+
     # Check if the TSV file can be read as a DataFrame
-    df = pd.read_csv(output_file, sep='\t', index_col=0)
+    df = pd.read_csv(output_file, sep="\t", index_col=0)
     assert df.shape[0] > 0
     assert df.shape[1] > 0

@@ -1,5 +1,4 @@
-"""Tests for cli.py
-"""
+"""Tests for cli.py"""
 
 import os
 import subprocess

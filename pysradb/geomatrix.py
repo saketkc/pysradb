@@ -3,9 +3,7 @@
 import gzip
 import os
 import pandas as pd
-import re
 import requests
-import sys
 from lxml import html
 
 from .download import download_file
