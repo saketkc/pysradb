@@ -206,6 +206,14 @@ Using 8 threads to download:
 Downloads are organized by `SRP/SRX/SRR` mimicking the hierarchy of SRA
 projects.
 
+### GEO Matrix Downloads
+
+You can download and convert GEO matrix files to TSV using:
+
+    $ pysradb geo-matrix --accession GSE234190 --to-tsv --output-dir ./output
+
+
+
 ### Downloading only certain samples of interest
 
     $ pysradb metadata SRP000941 --detailed | grep 'study\|RNA-Seq' | pysradb download
