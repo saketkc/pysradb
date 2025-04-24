@@ -8,6 +8,8 @@ import sys
 import warnings
 from io import StringIO
 from textwrap import dedent
+import gzip
+
 
 import pandas as pd
 
@@ -22,6 +24,7 @@ from .sradb import SRAdb
 from .sradb import download_sradb_file
 from .sraweb import SRAweb
 from .utils import confirm
+
 
 pd.set_option("display.max_rows", None)
 pd.set_option("display.max_columns", None)
@@ -209,6 +212,42 @@ def get_geo_search_info():
 
 
 ####################################################################
+
+######################### download-gematrix and convert to .tsv ###########################
+
+def geo_matrix(accession, to_tsv, out_dir):
+    from pathlib import Path
+    import requests
+
+    if out_dir is None:
+        out_dir = os.getcwd()
+    Path(out_dir).mkdir(parents=True, exist_ok=True)
+
+    for acc in accession:
+        url = f"https://ftp.ncbi.nlm.nih.gov/geo/series/{acc[:-3]}nnn/{acc}/matrix/{acc}_series_matrix.txt.gz"
+        file_path = os.path.join(out_dir, f"{acc}_series_matrix.txt.gz")
+        tsv_path = os.path.join(out_dir, f"{acc}_series_matrix.tsv")
+
+        print(f"Downloading {url}")
+        with requests.get(url, stream=True) as r:
+            r.raise_for_status()
+            with open(file_path, 'wb') as f:
+                for chunk in r.iter_content(chunk_size=8192):
+                    f.write(chunk)
+
+        print(f"Converting {file_path} to {tsv_path}")
+        with gzip.open(file_path, 'rt') as f_in, open(tsv_path, 'w') as f_out:
+            for line in f_in:
+                if not line.startswith("!"):  # Skip metadata/header lines
+                    f_out.write(line)
+
+        if not to_tsv:
+            print(f"Downloaded matrix file: {file_path}")
+        else:
+            print(f"Saved converted TSV file: {tsv_path}")
+
+
+############################################################################
 
 
 ######################### gse-to-gsm ###############################
@@ -754,6 +793,31 @@ def parse_args(args=None):
 
     subparser.set_defaults(func=search)
 
+
+        # pysradb geo-matrix
+    subparser = subparsers.add_parser(
+        "geo-matrix", help="Download and convert GEO matrix file to TSV"
+    )
+    subparser.add_argument(
+        "--accession",
+        "-a",
+        nargs="+",
+        required=True,
+        help="GSE accession(s) like GSE12345",
+    )
+    subparser.add_argument(
+        "--to-tsv",
+        action="store_true",
+        help="Convert downloaded GEO matrix file to TSV format",
+    )
+    subparser.add_argument(
+        "--out-dir",
+        help="Directory to save downloaded and converted files",
+        default=os.getcwd(),
+    )
+    subparser.set_defaults(func=lambda args: geo_matrix(args.accession, args.to_tsv, args.out_dir))
+
+
     # pysradb gse-to-gsm
     subparser = subparsers.add_parser("gse-to-gsm", help="Get GSM for a GSE")
     subparser.add_argument("--saveto", help="Save output to file")
@@ -796,6 +860,12 @@ def parse_args(args=None):
     )
     subparser.add_argument("gse_ids", nargs="+")
     subparser.set_defaults(func=gse_to_gsm)
+
+
+
+
+
+
 
     # pysradb gsm-to-gse
     subparser = subparsers.add_parser("gsm-to-gse", help="Get GSE for a GSM")
@@ -1241,6 +1311,8 @@ def parse_args(args=None):
         srx_to_srr(args.srx_ids, args.saveto, args.detailed, args.desc, args.expand)
     elif args.command == "srx-to-srs":
         srx_to_srs(args.srx_ids, args.saveto, args.detailed, args.desc, args.expand)
+    elif args.command == "geo-matrix":
+        geo_matrix(args.accession, args.to_tsv, args.out_dir)
 
 
 if __name__ == "__main__":
