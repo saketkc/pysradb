@@ -1,5 +1,4 @@
-"""Command line interface for pysradb
-"""
+"""Command line interface for pysradb"""
 
 import argparse
 import os
@@ -215,6 +214,7 @@ def get_geo_search_info():
 
 ######################### download-gematrix and convert to .tsv ###########################
 
+
 def geo_matrix(accession, to_tsv, out_dir):
     from pathlib import Path
     import requests
@@ -231,12 +231,12 @@ def geo_matrix(accession, to_tsv, out_dir):
         print(f"Downloading {url}")
         with requests.get(url, stream=True) as r:
             r.raise_for_status()
-            with open(file_path, 'wb') as f:
+            with open(file_path, "wb") as f:
                 for chunk in r.iter_content(chunk_size=8192):
                     f.write(chunk)
 
         print(f"Converting {file_path} to {tsv_path}")
-        with gzip.open(file_path, 'rt') as f_in, open(tsv_path, 'w') as f_out:
+        with gzip.open(file_path, "rt") as f_in, open(tsv_path, "w") as f_out:
             for line in f_in:
                 if not line.startswith("!"):  # Skip metadata/header lines
                     f_out.write(line)
@@ -793,8 +793,7 @@ def parse_args(args=None):
 
     subparser.set_defaults(func=search)
 
-
-        # pysradb geo-matrix
+    # pysradb geo-matrix
     subparser = subparsers.add_parser(
         "geo-matrix", help="Download and convert GEO matrix file to TSV"
     )
@@ -815,8 +814,9 @@ def parse_args(args=None):
         help="Directory to save downloaded and converted files",
         default=os.getcwd(),
     )
-    subparser.set_defaults(func=lambda args: geo_matrix(args.accession, args.to_tsv, args.out_dir))
-
+    subparser.set_defaults(
+        func=lambda args: geo_matrix(args.accession, args.to_tsv, args.out_dir)
+    )
 
     # pysradb gse-to-gsm
     subparser = subparsers.add_parser("gse-to-gsm", help="Get GSM for a GSE")
@@ -860,12 +860,6 @@ def parse_args(args=None):
     )
     subparser.add_argument("gse_ids", nargs="+")
     subparser.set_defaults(func=gse_to_gsm)
-
-
-
-
-
-
 
     # pysradb gsm-to-gse
     subparser = subparsers.add_parser("gsm-to-gse", help="Get GSE for a GSM")
