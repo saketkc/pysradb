@@ -1,5 +1,3 @@
-"""Utility function to download data"""
-
 import hashlib
 import math
 import os
@@ -9,17 +7,7 @@ import warnings
 
 import numpy as np
 import requests
-import requests_ftp
-from tqdm.autonotebook import tqdm
-
-from .utils import requests_3_retries
-
-requests_ftp.monkeypatch_session()
-warnings.simplefilter(action="ignore", category=FutureWarning)
-import pandas as pd
-
-tqdm.pandas()
-
+from tqdm import tqdm
 
 def millify(n):
     """Convert integer to human readable format.
@@ -34,7 +22,6 @@ def millify(n):
               Formatted integer
     """
     millnames = ["", " KB", " MB", " GB", " TB"]
-    # Source: http://stackoverflow.com/a/3155023/756986
     n = float(n)
     millidx = max(
         0,
@@ -44,7 +31,6 @@ def millify(n):
     )
 
     return "{:.1f}{}".format(n / 10 ** (3 * millidx), millnames[millidx])
-
 
 def get_file_size(row, url_col):
     """Get size of file to be downloaded.
@@ -60,18 +46,21 @@ def get_file_size(row, url_col):
     -------
     content_length: int
     """
+    import requests
+    import numpy as np
+    import sys
     if row[url_col] is not None:
         url = row[url_col]
     else:
         url = row.download_url
-    if url is pd.NA:
+    if url is None or url is np.nan:
         return 0
     if not isinstance(url, str):
         return 0
     if url.startswith("ftp."):
         url = "ftp://" + url
     try:
-        r = requests_3_retries().head(url)
+        r = requests.head(url)
         size = int(r.headers["content-length"])
         r.raise_for_status()
     except requests.exceptions.Timeout:
@@ -79,7 +68,7 @@ def get_file_size(row, url_col):
     except requests.exceptions.HTTPError:
         print(
             f"The download URL:  {url}  is likely invalid.\n"
-            f"Removing {row.run_accession} from the download list\n",
+            f"Removing {getattr(row, 'run_accession', '')} from the download list\n",
             flush=True,
         )
         return np.NaN
@@ -88,9 +77,8 @@ def get_file_size(row, url_col):
         return 0
     return size
 
-
 def md5_validate_file(file_path, md5_hash):
-    """Check file containt against an MD5.
+    """Check file content against an MD5.
 
     Parameters
     ----------
@@ -106,14 +94,9 @@ def md5_validate_file(file_path, md5_hash):
     """
     observed_md5 = hashlib.md5()
     with open(file_path, "rb") as f:
-        while True:
-            # read 1MB
-            chunk = f.read(1000 * 1000)
-            if not chunk:
-                break
+        for chunk in iter(lambda: f.read(1000 * 1000), b""):
             observed_md5.update(chunk)
     return observed_md5.hexdigest() == md5_hash
-
 
 def download_file(
     url,
@@ -137,50 +120,39 @@ def download_file(
     timeout: int
              Seconds to wait before terminating request
     block_size: int
-                Chunkx of bytes to read (default: 1024 * 1024 = 1MB)
+                Chunk of bytes to read (default: 1024 * 1024 = 1MB)
     show_progress: bool
                    Show progress bar
     """
-    if url.startswith("ftp."):
-        url = "ftp://" + url
-        session = requests.Session()
-    else:
-        session = requests
     if os.path.exists(file_path) and os.path.getsize(file_path):
         return
     tmp_file_path = file_path + ".part"
     first_byte = os.path.getsize(tmp_file_path) if os.path.exists(tmp_file_path) else 0
     file_mode = "ab" if first_byte else "wb"
-    file_size = -1
+    headers = {"Range": f"bytes={first_byte}-"} if first_byte else None
+
     try:
-        file_size = int(session.head(url).headers["Content-length"])
-        headers = {"Range": "bytes=%s-" % first_byte}
-        r = session.get(url, headers=headers, stream=True)
-        if show_progress:
-            desc = "Downloading {}".format(url.split("/")[-1])
-            pbar = tqdm(
-                total=file_size,
-                initial=first_byte,
-                unit="B",
-                unit_scale=True,
-                desc=desc,
-            )
-        with open(tmp_file_path, file_mode) as f:
-            for chunk in r.iter_content(chunk_size=block_size):
-                if chunk:  # filter out keep-alive new chunks
-                    f.write(chunk)
-                    if show_progress:
-                        pbar.update(block_size)
-        if show_progress:
-            pbar.close()
+        with requests.get(url, headers=headers, stream=True, timeout=timeout) as r:
+            r.raise_for_status()
+            # Fallback to 0 if Content-Length is missing
+            file_size = int(r.headers.get("Content-Length", 0))
+            if show_progress:
+                desc = f"Downloading {os.path.basename(file_path)}"
+                pbar = tqdm(total=file_size, initial=first_byte, unit="B", unit_scale=True, desc=desc)
+            with open(tmp_file_path, file_mode) as f:
+                for chunk in r.iter_content(chunk_size=block_size):
+                    if chunk:
+                        f.write(chunk)
+                        if show_progress:
+                            pbar.update(len(chunk))
+            if show_progress:
+                pbar.close()
     except IOError as e:
-        sys.stderr.write("IO Error - {}\n".format(e))
-    finally:
-        # Move the temp file to desired location
-        if file_size == os.path.getsize(tmp_file_path):
-            # if there's a hash value, validate the file
-            if md5_hash and not md5_validate_file(tmp_file_path, md5_hash):
-                raise Exception("Error validating the file against its MD5 hash")
-            shutil.move(tmp_file_path, file_path)
-        elif file_size == -1:
-            raise Exception("Error getting Content-Length from server: %s" % url)
+        sys.stderr.write(f"IO Error - {e}\n")
+        raise
+
+    # Move the temp file to desired location
+    if os.path.exists(tmp_file_path):
+        if md5_hash and not md5_validate_file(tmp_file_path, md5_hash):
+            raise Exception("Error validating the file against its MD5 hash")
+        shutil.move(tmp_file_path, file_path)

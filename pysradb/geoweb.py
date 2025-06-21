@@ -108,3 +108,84 @@ class GEOweb(GEOdb):
             download_file(
                 root_url.lstrip("https://") + link, geo_path, show_progress=True
             )
+
+    def get_matrix_links(self, gse):
+        """
+        Obtain GEO Matrix file links from the GEO FTP matrix folder for a GEO accession.
+
+        Parameters
+        ----------
+        gse: string
+             GEO accession ID
+
+        Returns
+        -------
+        links: list
+               List of GEO matrix file names (not full URLs)
+        url: str
+             The root matrix folder URL
+        """
+        prefix = gse[:-3]
+        url = f"https://ftp.ncbi.nlm.nih.gov/geo/series/{prefix}nnn/{gse}/matrix/"
+        response = requests.get(url)
+        if response.status_code != 200:
+            raise KeyError(f"Matrix folder not found for {gse}")
+        # Search for href="..." for .txt or .gz files
+        links = re.findall(r'href="([^"]+\.(?:txt|gz))"', response.text)
+        if not links:
+            raise FileNotFoundError(f"No GEO matrix files found for {gse}")
+        return links, url
+
+    def download_matrix(self, links, root_url, gse, out_dir=None):
+        """
+        Download GEO matrix files for a given GSE accession.
+
+        Parameters
+        ----------
+        links: list
+               List of GEO matrix file names (not full URLs)
+        root_url: str
+                  The root matrix folder URL
+        gse: string
+             GEO accession ID
+        out_dir: string or None
+                 Directory location for download
+
+        Returns
+        -------
+        downloaded_files: list
+                          List of downloaded file paths
+        """
+        if out_dir is None:
+            out_dir = os.path.join(os.getcwd(), "pysradb_downloads")
+        out_dir = os.path.join(out_dir, gse)
+        os.makedirs(out_dir, exist_ok=True)
+        downloaded_files = []
+        print("\nThe following GEO matrix files will be downloaded:\n")
+        for link in links:
+            print(link)
+        print(os.linesep)
+        if not root_url.endswith('/'):
+            root_url += '/'
+        for link in links:
+            matrix_path = os.path.join(out_dir, link)
+            download_file(root_url + link, matrix_path, show_progress=True)
+            downloaded_files.append(matrix_path)
+        return downloaded_files
+
+    def parse_matrix_to_tsv(self, matrix_file, tsv_file):
+        """
+        Parse a GEO matrix file and output as a clean TSV file (skipping metadata lines).
+
+        Parameters
+        ----------
+        matrix_file: str
+                     Path to the downloaded matrix file (.txt or .gz)
+        tsv_file:    str
+                     Path to output .tsv file
+        """
+        open_func = gzip.open if matrix_file.endswith(".gz") else open
+        with open_func(matrix_file, "rt") as infile, open(tsv_file, "w") as outfile:
+            for line in infile:
+                if not line.startswith("!"):
+                    outfile.write(line)
