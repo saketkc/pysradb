@@ -205,6 +205,7 @@ def get_geo_search_info():
 # (metadata, download, search, gse_to_gsm, gse_to_srp, gsm_to_gse, etc.)
 # For brevity, I have omitted the rest of the conversion functions here but they should be included.
 
+
 # --- GEO matrix CLI support ---
 def geo_matrix(accession, to_tsv, out_dir):
     """
