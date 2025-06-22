@@ -43,6 +43,7 @@ import requests
 
 # ... other code and tests ...
 
+
 def test_sra_metadata_multiple_detailed(sraweb_connection):
     """Test if metadata has right number of entries"""
     try:
