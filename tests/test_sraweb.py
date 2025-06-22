@@ -69,10 +69,6 @@ def test_tissue_column(sraweb_connection):
     assert list(df["tissue"]) == ["Kidney"] * 4
 
 
-import pytest
-import requests
-
-
 def test_metadata_exp_accession(sraweb_connection):
     """Test if experiment_accession column is correct"""
     try:
@@ -96,14 +92,20 @@ def test_srp_to_gse(sraweb_connection):
 
 def test_srp_to_srr(sraweb_connection):
     """Test if srp is converted to srr correctly"""
-    df = sraweb_connection.srp_to_srr("SRP002605", detailed=True)
-    assert df["run_accession"].tolist()[:5] == [
-        "SRR057511",
-        "SRR057512",
-        "SRR057513",
-        "SRR057514",
-        "SRR057515",
-    ]
+    import pytest
+    import requests
+
+    try:
+        df = sraweb_connection.srp_to_srr("SRP002605", detailed=True)
+        assert df["run_accession"].tolist()[:5] == [
+            "SRR057511",
+            "SRR057512",
+            "SRR057513",
+            "SRR057514",
+            "SRR057515",
+        ]
+    except requests.exceptions.ConnectionError:
+        pytest.skip("Skipping test due to network ConnectionError")
 
 
 def test_srp_to_srs(sraweb_connection):
