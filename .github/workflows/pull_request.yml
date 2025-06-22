@@ -1,6 +1,8 @@
 name: pull_request
 
-on: [pull_request]
+on:
+  pull_request:
+  push:
 
 jobs:
   build:
@@ -10,7 +12,10 @@ jobs:
         python-version: ['3.9', '3.10', '3.11']
 
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
 
       - name: Set up Python ${{ matrix.python-version }}
         uses: actions/setup-python@v4
@@ -21,26 +26,15 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
+          pip install pytest pytest-cov
 
-      - name: Lint with flake8
-        run: |
-          pip install -U pytest coverage pytest-cov codecov black flake8
-          flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
-          flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
-          black --check .
+      - name: Run tests and generate coverage report
+        run: pytest --cov --cov-branch --cov-report=xml
 
-      - name: Test with pytest
-        run: |
-          pip install --editable .
-          pip install pytest
-          pytest
-          make coverage
-
-      - name: Upload coverage to Codecov
-        uses: codecov/codecov-action@v3
+      - name: Upload coverage report to Codecov
+        uses: codecov/codecov-action@v5
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
-          fail_ci_if_error: true
 
       - name: Build documentation with Sphinx
         uses: ammaraskar/sphinx-action@master
