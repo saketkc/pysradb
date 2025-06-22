@@ -1,5 +1,4 @@
-"""Command line interface for pysradb
-"""
+"""Command line interface for pysradb"""
 
 import argparse
 import os
@@ -215,7 +214,10 @@ def geo_matrix(accession, to_tsv, out_dir):
     try:
         result = geo.get_matrix_links(accession)
         if not result or not isinstance(result, tuple) or len(result) != 2:
-            print(f"Could not find matrix files or folder for {accession}.", file=sys.stderr)
+            print(
+                f"Could not find matrix files or folder for {accession}.",
+                file=sys.stderr,
+            )
             return
         links, url = result
         if not links:
@@ -240,6 +242,7 @@ def geo_matrix(accession, to_tsv, out_dir):
             except Exception as e:
                 print(f"Error parsing {f}: {e}", file=sys.stderr)
 
+
 def parse_args(args=None):
     """Argument parser"""
     parser = ArgParser(
@@ -261,32 +264,33 @@ def parse_args(args=None):
 
     # pysradb geo-matrix
     subparser = subparsers.add_parser(
-        "geo-matrix", help="Download and parse GEO matrix file(s) for a given GEO accession."
+        "geo-matrix",
+        help="Download and parse GEO matrix file(s) for a given GEO accession.",
     )
     subparser.add_argument(
-        "--accession",
-        "-a",
-        required=True,
-        help="GEO accession (e.g., GSE12345)"
+        "--accession", "-a", required=True, help="GEO accession (e.g., GSE12345)"
     )
     subparser.add_argument(
         "--to-tsv",
         action="store_true",
         default=False,
-        help="Parse the matrix file to a clean .tsv file after downloading."
+        help="Parse the matrix file to a clean .tsv file after downloading.",
     )
     subparser.add_argument(
         "--out-dir",
         default=None,
-        help="Output directory for downloads and parsed files."
+        help="Output directory for downloads and parsed files.",
     )
-    subparser.set_defaults(func=lambda args: geo_matrix(args.accession, args.to_tsv, args.out_dir))
+    subparser.set_defaults(
+        func=lambda args: geo_matrix(args.accession, args.to_tsv, args.out_dir)
+    )
 
     args = parser.parse_args(args=None if sys.argv[1:] else ["--help"])
-    if hasattr(args, 'func'):
+    if hasattr(args, "func"):
         args.func(args)
     else:
         parser.print_help()
+
 
 if __name__ == "__main__":
     parse_args(sys.argv[1:])

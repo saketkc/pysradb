@@ -165,8 +165,8 @@ class GEOweb(GEOdb):
         for link in links:
             print(link)
         print(os.linesep)
-        if not root_url.endswith('/'):
-            root_url += '/'
+        if not root_url.endswith("/"):
+            root_url += "/"
         for link in links:
             matrix_path = os.path.join(out_dir, link)
             download_file(root_url + link, matrix_path, show_progress=True)

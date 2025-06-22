@@ -1,5 +1,4 @@
-"""Tests for utils.py
-"""
+"""Tests for utils.py"""
 
 import pytest
 

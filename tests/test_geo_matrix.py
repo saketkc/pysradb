@@ -2,6 +2,7 @@ import os
 import pytest
 from pysradb.geoweb import GEOweb
 
+
 def test_get_matrix_links_and_download(tmp_path):
     geo = GEOweb()
     accession = "GSE234190"
@@ -12,6 +13,7 @@ def test_get_matrix_links_and_download(tmp_path):
         assert os.path.exists(f)
         # Check that file is not empty
         assert os.path.getsize(f) > 0
+
 
 def test_parse_matrix_to_tsv(tmp_path):
     geo = GEOweb()

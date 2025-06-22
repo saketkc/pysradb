@@ -20,6 +20,7 @@ import pandas as pd
 
 tqdm.pandas()
 
+
 def millify(n):
     """Convert integer to human readable format.
 
@@ -43,6 +44,7 @@ def millify(n):
     )
 
     return "{:.1f}{}".format(n / 10 ** (3 * millidx), millnames[millidx])
+
 
 def get_file_size(row, url_col):
     """Get size of file to be downloaded.
@@ -86,6 +88,7 @@ def get_file_size(row, url_col):
         return 0
     return size
 
+
 def md5_validate_file(file_path, md5_hash):
     """Check file containt against an MD5.
 
@@ -110,6 +113,7 @@ def md5_validate_file(file_path, md5_hash):
                 break
             observed_md5.update(chunk)
     return observed_md5.hexdigest() == md5_hash
+
 
 def download_file(
     url,
