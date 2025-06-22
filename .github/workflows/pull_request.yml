@@ -36,7 +36,6 @@ jobs:
         pip install pytest
         pytest
         make coverage
-        codecov -t ${{ secrets.CODECOV_TOKEN }}
 
     - name: Upload coverage to Codecov
       uses: codecov/codecov-action@v3
