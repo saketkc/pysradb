@@ -18,9 +18,6 @@ jobs:
       - name: Install documentation dependencies
         run: pip install -r docs/requirements.txt
 
-      - name: Install test dependencies
-        run: pip install -r requirements-dev.txt
-
       - name: Install pysradb (editable mode)
         run: pip install -e .
 
