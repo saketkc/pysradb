@@ -18,6 +18,9 @@ jobs:
       - name: Install documentation dependencies
         run: pip install -r docs/requirements.txt
 
+      - name: Install pysradb (editable mode)
+        run: pip install -e .
+
       - name: Run tests and generate coverage report
         run: pytest --cov --cov-branch --cov-report=xml
 
