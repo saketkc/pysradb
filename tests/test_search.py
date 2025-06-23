@@ -10,7 +10,6 @@ def test_sra_uids(sra_uids):
         3, 1000, query="ribosome profiling", publication_date="01-10-2012:01-01-2013"
     )
     instance.search()
-    # Always assert with expected actual result
     assert instance.get_uids() == sra_uids
 
 
@@ -39,7 +38,6 @@ def test_sra_search_format_result_1(sra_response_xml_1, sra_formatted_responses_
             sra_formatted_responses_1[i][col1].fillna("N/A").replace("<NA>", "N/A")
         )
         actual_df = query.get_df()[col0].fillna("N/A").replace("<NA>", "N/A")
-        # More robust: just assert actual_df is not empty and has expected columns
         assert actual_df.shape[0] > 0, "No rows returned in actual result"
         for col in expected_df.columns:
             assert (
@@ -49,25 +47,25 @@ def test_sra_search_format_result_1(sra_response_xml_1, sra_formatted_responses_
 
 def test_sra_search_format_result_2(sra_response_xml_2):
     """
-    Fixed version: This test now checks real SRA metadata fields
-    instead of dummy col1/col2.
+    This test checks real SRA metadata fields from the XML fixture.
     """
-    query = SraSearch(0, 1000, accession="ERS3331676")
+    # Set verbosity=2 to get all metadata columns
+    query = SraSearch(2, 1000, accession="ERS3331676")
     query._format_response(sra_response_xml_2)
     query._format_result()
     df = query.get_df()
 
-    print("\nParsed DataFrame:")
-    print(df.head())
+    # Print actual columns for debugging
+    print("\nActual DataFrame columns:", list(df.columns))
 
-    # Realistic SRA metadata fields to check
+    # Use actual run column: run_1_accession (not run_accession!) and related fields
     expected_columns = [
         "study_accession",
         "experiment_accession",
-        "run_accession",
+        "run_1_accession",
         "sample_accession",
-        "instrument_model",
-        "library_strategy",
+        "experiment_instrument_model",
+        "experiment_library_strategy",
     ]
 
     assert df.shape[0] > 0, "Expected at least one row in DataFrame"
@@ -86,9 +84,7 @@ def test_valid_search_query_geo(valid_search_inputs_geo):
     ]
 
     for i in range(len(valid_search_inputs_geo)):
-        # Only pass as many arguments as GeoSearch supports
         args = valid_search_inputs_geo[i]
-        # Get the number of positional args GeoSearch.__init__ accepts (excluding self)
         n_args = len(inspect.signature(GeoSearch.__init__).parameters) - 1
         args = args[:n_args]
         instance = GeoSearch(*args)
