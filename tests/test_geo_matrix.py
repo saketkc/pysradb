@@ -5,7 +5,7 @@ from pysradb.geoweb import GEOweb
 
 def test_get_matrix_links_and_download(tmp_path):
     geo = GEOweb()
-    accession = "GSE234190"
+    accession = "GSE64489"
     links, url = geo.get_matrix_links(accession)
     assert any(l.endswith(".txt.gz") or l.endswith(".txt") for l in links)
     files = geo.download_matrix(links, url, accession, out_dir=tmp_path)
@@ -17,7 +17,7 @@ def test_get_matrix_links_and_download(tmp_path):
 
 def test_parse_matrix_to_tsv(tmp_path):
     geo = GEOweb()
-    accession = "GSE234190"
+    accession = "GSE64489"
     links, url = geo.get_matrix_links(accession)
     files = geo.download_matrix(links, url, accession, out_dir=tmp_path)
     for f in files:

@@ -1,4 +1,5 @@
 import os
+
 import pandas as pd
 import pytest
 
@@ -145,3 +146,57 @@ def sra_formatted_responses_2():
     # Must have at least 4 DataFrames for safe indexing in tests
     df = pd.DataFrame({"col1": [1], "col2": [2]})
     return [df, df, df, df]
+
+
+# --- MISSING FIXTURES: Add these for test_search.py to work! ---
+
+
+@pytest.fixture(scope="module")
+def empty_search_inputs():
+    return [
+        [],
+        [
+            2,
+            20,
+            None,
+            None,
+            None,
+            None,
+            None,
+            None,
+            None,
+            None,
+            None,
+            None,
+            None,
+            False,
+        ],
+        [2, 20, [], [], [], [], [], [], [], [], [], [], []],
+    ]
+
+
+@pytest.fixture(scope="module")
+def empty_search_inputs_geo():
+    return [
+        [],
+        [
+            2,
+            20,
+            None,
+            None,
+            None,
+            None,
+            None,
+            None,
+            None,
+            None,
+            None,
+            None,
+            None,
+            None,
+            None,
+            None,
+            False,
+        ],
+        [2, 20, [], [], [], [], [], [], [], [], [], [], []],
+    ]

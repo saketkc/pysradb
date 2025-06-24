@@ -1,9 +1,9 @@
 """Tests for SRAweb"""
 
 import time
-
 import pandas as pd
 import pytest
+import requests
 
 from pysradb.sraweb import SRAweb
 
@@ -38,14 +38,8 @@ def test_sra_metadata_multiple(sraweb_connection):
     ]
 
 
-import pytest
-import requests
-
-# ... other code and tests ...
-
-
 def test_sra_metadata_multiple_detailed(sraweb_connection):
-    """Test if metadata has right number of entries"""
+    """Test if metadata has right number of entries and detailed columns"""
     try:
         df = sraweb_connection.sra_metadata(["SRP002605", "SRP098789"], detailed=True)
         columns = ["treatment time", "library type", "transfection", "time"]
@@ -65,14 +59,14 @@ def test_sra_metadata_multiple_detailed(sraweb_connection):
 
 def test_tissue_column(sraweb_connection):
     """Test if tissue column exists"""
-    df = sraweb_connection.sra_metadata("SRP096025", detailed="True")
+    df = sraweb_connection.sra_metadata("SRP096025", detailed=True)
     assert list(df["tissue"]) == ["Kidney"] * 4
 
 
 def test_metadata_exp_accession(sraweb_connection):
     """Test if experiment_accession column is correct"""
     try:
-        df = sraweb_connection.sra_metadata("SRP103009", detailed="True")
+        df = sraweb_connection.sra_metadata("SRP103009", detailed=True)
         assert "SRX2705123" in list(df["experiment_accession"])
     except requests.exceptions.ConnectionError:
         pytest.skip("Skipping test due to network ConnectionError")
@@ -92,9 +86,6 @@ def test_srp_to_gse(sraweb_connection):
 
 def test_srp_to_srr(sraweb_connection):
     """Test if srp is converted to srr correctly"""
-    import pytest
-    import requests
-
     try:
         df = sraweb_connection.srp_to_srr("SRP002605", detailed=True)
         assert df["run_accession"].tolist()[:5] == [

@@ -6,7 +6,6 @@ import re
 import requests
 import sys
 from lxml import html
-
 from .download import download_file
 from .geodb import GEOdb
 from .utils import _get_url
@@ -21,15 +20,14 @@ if sys.version_info[0] < 3:
 class GEOweb(GEOdb):
     def __init__(self):
         """Initialize GEOweb without any database."""
+        pass
 
     def get_download_links(self, gse):
         """Obtain all links from the GEO FTP page.
-
         Parameters
         ----------
         gse: string
              GSE ID
-
         Returns
         -------
         links: list
@@ -46,22 +44,18 @@ class GEOweb(GEOdb):
             if link != "https://www.hhs.gov/vulnerability-disclosure-policy/index.html"
         ]
         # Check if returned results are a valid page - a link to the
-        # home page only exists where the GSE ID dow not exist
+        # home page only exists where the GSE ID does not exist
         if "/" in links:
             raise KeyError(f"The provided GEO ID {gse} does not exist.")
-
         # The list of links for a valid GSE ID also contains a link to
         # the parent directory - we do not want that
         links = [i for i in links if "geo/series/" not in i]
-
         # The links are relative, we need absolute links to download
         links = [i for i in links]
-
         return links, url
 
     def download(self, links, root_url, gse, verbose=False, out_dir=None):
         """Download GEO files.
-
         Parameters
         ----------
         links: list
@@ -77,11 +71,9 @@ class GEOweb(GEOdb):
         """
         if out_dir is None:
             out_dir = os.path.join(os.getcwd(), "pysradb_downloads")
-
         # store output in a separate directory
         out_dir = os.path.join(out_dir, gse)
         os.makedirs(out_dir, exist_ok=True)
-
         # Display files to be downloaded
         print("\nThe following files will be downloaded: \n")
         for link in links:
@@ -97,7 +89,6 @@ class GEOweb(GEOdb):
                     root_url + "filelist.txt"
                 ).content.decode("utf-8")
                 print(file_list_contents)
-
         # Download files
         for link in links:
             # add a prefix to distinguish filelist.txt from different downloads
@@ -112,12 +103,10 @@ class GEOweb(GEOdb):
     def get_matrix_links(self, gse):
         """
         Obtain GEO Matrix file links from the GEO FTP matrix folder for a GEO accession.
-
         Parameters
         ----------
         gse: string
              GEO accession ID
-
         Returns
         -------
         links: list
@@ -139,7 +128,6 @@ class GEOweb(GEOdb):
     def download_matrix(self, links, root_url, gse, out_dir=None):
         """
         Download GEO matrix files for a given GSE accession.
-
         Parameters
         ----------
         links: list
@@ -150,7 +138,6 @@ class GEOweb(GEOdb):
              GEO accession ID
         out_dir: string or None
                  Directory location for download
-
         Returns
         -------
         downloaded_files: list
@@ -176,7 +163,6 @@ class GEOweb(GEOdb):
     def parse_matrix_to_tsv(self, matrix_file, tsv_file):
         """
         Parse a GEO matrix file and output as a clean TSV file (skipping metadata lines).
-
         Parameters
         ----------
         matrix_file: str
