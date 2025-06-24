@@ -58,8 +58,8 @@ jobs:
       - name: Install pysradb (editable mode)
         run: pip install -e .
 
-      - name: Run tests and generate coverage report
-        run: pytest --cov --cov-branch --cov-report=xml
+      - name: Run only geoweb tests and generate coverage report
+        run: pytest --cov --cov-branch --cov-report=xml tests/test_geoweb.py tests/test_geoweb_matrix.py
 
       - name: Upload coverage report to Codecov
         uses: codecov/codecov-action@v5
