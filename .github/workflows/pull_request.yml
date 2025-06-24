@@ -50,7 +50,7 @@ jobs:
           python-version: '3.9'
 
       - name: Install main dependencies
-        run: pip install -r requirements.txt
+        run: pip install -r requirements.txt pytest-cov
 
       - name: Install documentation dependencies
         run: pip install -r docs/requirements.txt
