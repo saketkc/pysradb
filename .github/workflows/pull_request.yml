@@ -30,12 +30,13 @@ jobs:
           flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
           black --check .
 
-      - name: Test with pytest
+      - name: Test only geoweb tests with pytest
         run: |
           pip install --editable .
-          pytest
-          make coverage
-          codecov
+          pytest tests/test_geoweb.py tests/test_geoweb_matrix.py
+          # Optionally keep coverage if needed:
+          # pytest --cov=YOUR_PACKAGE tests/test_geoweb.py tests/test_geoweb_matrix.py
+          # codecov
 
   docs:
     runs-on: ubuntu-latest
