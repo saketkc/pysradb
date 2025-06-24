@@ -1,5 +1,4 @@
-"""This file contains the search classes for the search feature.
-"""
+"""This file contains the search classes for the search feature."""
 
 import os
 import re

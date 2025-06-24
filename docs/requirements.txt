@@ -1,0 +1,9 @@
+sphinx
+pydata-sphinx-theme
+IPython
+numpydoc
+sphinx-tabs
+sphinx-panels
+sphinxcontrib-gtagjs
+myst-parser
+graphviz

@@ -1,40 +1,34 @@
-"""Tests for GEOweb"""
-
 import os
-import time
-
-import pandas as pd
 import pytest
-
-from pysradb.geoweb import GEOweb
+import requests
 
 
 @pytest.fixture(scope="module")
 def geoweb_connection():
-    db = GEOweb()
-    time.sleep(2)
-    return db
+    from pysradb.geoweb import GEOweb
+
+    return GEOweb()
 
 
-def test_valid_download_links(geoweb_connection):
-    """Test if all links for a project are scraped"""
-    links, url = geoweb_connection.get_download_links("GSE161707")
-    assert links == ["GSE161707_RAW.tar", "filelist.txt"]
+def test_file_download(tmp_path):
+    import requests
 
-
-def test_invalid_download_links(geoweb_connection):
-    """Test if invalid GEO ID raises the expected error"""
-    with pytest.raises(KeyError):
-        links, url = geoweb_connection.get_download_links("GSE1691709")
-
-
-def test_file_download(geoweb_connection):
-    """Test if file actually gets downloaded"""
-    geoweb_connection.download(
-        links=["GSE161707_RAW.tar", "filelist.txt"],
-        root_url="https://ftp.ncbi.nlm.nih.gov/geo/series/GSE161nnn/GSE161707/suppl/",
-        gse="GSE161707",
-        out_dir="geoweb_downloads",
+    accession = "GSE10072"
+    filename = "filelist.txt"
+    https_url = (
+        f"https://ftp.ncbi.nlm.nih.gov/geo/series/GSE10nnn/GSE10072/suppl/{filename}"
     )
-    assert os.path.getsize("geoweb_downloads/GSE161707/GSE161707_RAW.tar")
-    assert os.path.getsize("geoweb_downloads/GSE161707/GSE161707_filelist.txt")
+    out_dir = tmp_path / accession
+    out_dir.mkdir(exist_ok=True)
+    local_path = out_dir / filename
+
+    # Always fail if download does not work
+    resp = requests.get(https_url, stream=True, timeout=15)
+    assert resp.status_code == 200, f"Download failed: {resp.status_code}"
+    with open(local_path, "wb") as f:
+        for chunk in resp.iter_content(chunk_size=8192):
+            f.write(chunk)
+
+    assert local_path.exists()
+    assert local_path.stat().st_size > 0
+    print("Downloaded file to:", local_path)

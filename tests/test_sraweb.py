@@ -4,6 +4,7 @@ import time
 
 import pandas as pd
 import pytest
+import requests
 
 from pysradb.sraweb import SRAweb
 
@@ -39,31 +40,38 @@ def test_sra_metadata_multiple(sraweb_connection):
 
 
 def test_sra_metadata_multiple_detailed(sraweb_connection):
-    """Test if metadata has right number of entries"""
-    df = sraweb_connection.sra_metadata(["SRP002605", "SRP098789"], detailed=True)
-    columns = ["treatment time", "library type", "transfection", "time"]
-    assert len(set(columns).intersection(set(df.columns))) == 4
-    ftp_cols = [
-        "ena_fastq_http",
-        "ena_fastq_http_1",
-        "ena_fastq_http_2",
-        "ena_fastq_ftp",
-        "ena_fastq_ftp_1",
-        "ena_fastq_ftp_2",
-    ]
-    assert len(set(ftp_cols).intersection(set(df.columns))) == 6
+    """Test if metadata has right number of entries and detailed columns"""
+    try:
+        df = sraweb_connection.sra_metadata(["SRP002605", "SRP098789"], detailed=True)
+        columns = ["treatment time", "library type", "transfection", "time"]
+        assert len(set(columns).intersection(set(df.columns))) == 4
+        ftp_cols = [
+            "ena_fastq_http",
+            "ena_fastq_http_1",
+            "ena_fastq_http_2",
+            "ena_fastq_ftp",
+            "ena_fastq_ftp_1",
+            "ena_fastq_ftp_2",
+        ]
+        assert len(set(ftp_cols).intersection(set(df.columns))) == 6
+    except requests.exceptions.ConnectionError:
+        pytest.skip("Skipping test due to network ConnectionError")
 
 
 def test_tissue_column(sraweb_connection):
     """Test if tissue column exists"""
     df = sraweb_connection.sra_metadata("SRP096025", detailed="True")
+    df = sraweb_connection.sra_metadata("SRP096025", detailed=True)
     assert list(df["tissue"]) == ["Kidney"] * 4
 
 
 def test_metadata_exp_accession(sraweb_connection):
     """Test if experiment_accession column is correct"""
-    df = sraweb_connection.sra_metadata("SRP103009", detailed="True")
-    assert "SRX2705123" in list(df["experiment_accession"])
+    try:
+        df = sraweb_connection.sra_metadata("SRP103009", detailed=True)
+        assert "SRX2705123" in list(df["experiment_accession"])
+    except requests.exceptions.ConnectionError:
+        pytest.skip("Skipping test due to network ConnectionError")
 
 
 def test_fetch_gds_results(sraweb_connection):
@@ -80,14 +88,17 @@ def test_srp_to_gse(sraweb_connection):
 
 def test_srp_to_srr(sraweb_connection):
     """Test if srp is converted to srr correctly"""
-    df = sraweb_connection.srp_to_srr("SRP002605", detailed=True)
-    assert df["run_accession"].tolist()[:5] == [
-        "SRR057511",
-        "SRR057512",
-        "SRR057513",
-        "SRR057514",
-        "SRR057515",
-    ]
+    try:
+        df = sraweb_connection.srp_to_srr("SRP002605", detailed=True)
+        assert df["run_accession"].tolist()[:5] == [
+            "SRR057511",
+            "SRR057512",
+            "SRR057513",
+            "SRR057514",
+            "SRR057515",
+        ]
+    except requests.exceptions.ConnectionError:
+        pytest.skip("Skipping test due to network ConnectionError")
 
 
 def test_srp_to_srs(sraweb_connection):

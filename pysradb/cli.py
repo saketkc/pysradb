@@ -1,5 +1,4 @@
-"""Command line interface for pysradb
-"""
+"""Command line interface for pysradb"""
 
 import argparse
 import os
@@ -129,6 +128,18 @@ def download(
     sradb.close()
 
 
+####################### GEO Matrix Feature ##########################
+def geo_matrix(accession, to_tsv=False, out=None):
+    """
+    Download GEO matrix files and optionally convert to TSV.
+    """
+    geoweb = GEOweb()
+    geoweb.download_geo_matrix(accession, out_dir=out, to_tsv=to_tsv)
+
+
+####################################################################
+
+
 #########################################################
 
 
@@ -209,8 +220,6 @@ def get_geo_search_info():
 
 
 ####################################################################
-
-
 ######################### gse-to-gsm ###############################
 def gse_to_gsm(gse_ids, saveto, detailed, desc, expand):
     sradb = SRAweb()
@@ -225,8 +234,6 @@ def gse_to_gsm(gse_ids, saveto, detailed, desc, expand):
 
 
 ####################################################################
-
-
 ######################## gse-to-srp ################################
 def gse_to_srp(gse_ids, saveto, detailed, desc, expand):
     sradb = SRAweb()
@@ -241,8 +248,6 @@ def gse_to_srp(gse_ids, saveto, detailed, desc, expand):
 
 
 ######################################################################
-
-
 ######################### gsm-to-gse #################################
 def gsm_to_gse(gsm_ids, saveto, detailed, desc, expand):
     sradb = SRAweb()
@@ -257,8 +262,6 @@ def gsm_to_gse(gsm_ids, saveto, detailed, desc, expand):
 
 
 ########################################################################
-
-
 ############################ gsm-to-srp ################################
 def gsm_to_srp(gsm_ids, saveto, detailed, desc, expand):
     sradb = SRAweb()
@@ -273,8 +276,6 @@ def gsm_to_srp(gsm_ids, saveto, detailed, desc, expand):
 
 
 ########################################################################
-
-
 ############################ gsm-to-srr ################################
 def gsm_to_srr(gsm_ids, saveto, detailed, desc, expand):
     sradb = SRAweb()
@@ -289,8 +290,6 @@ def gsm_to_srr(gsm_ids, saveto, detailed, desc, expand):
 
 
 ########################################################################
-
-
 ############################ gsm-to-srs ################################
 def gsm_to_srs(gsm_ids, saveto, detailed, desc, expand):
     sradb = SRAweb()
@@ -305,8 +304,6 @@ def gsm_to_srs(gsm_ids, saveto, detailed, desc, expand):
 
 
 ########################################################################
-
-
 ############################# gsm-to-srx ###############################
 def gsm_to_srx(gsm_ids, saveto, detailed, desc, expand):
     sradb = SRAweb()
@@ -321,8 +318,6 @@ def gsm_to_srx(gsm_ids, saveto, detailed, desc, expand):
 
 
 #########################################################################
-
-
 ########################### srp-to-gse ##################################
 def srp_to_gse(srp_id, saveto, detailed, desc, expand):
     sradb = SRAweb()
@@ -337,8 +332,6 @@ def srp_to_gse(srp_id, saveto, detailed, desc, expand):
 
 
 #########################################################################
-
-
 ########################### srp-to-srr ##################################
 def srp_to_srr(srp_id, saveto, detailed, desc, expand):
     sradb = SRAweb()
@@ -353,8 +346,6 @@ def srp_to_srr(srp_id, saveto, detailed, desc, expand):
 
 
 #########################################################################
-
-
 ########################### srp-to-srs ##################################
 def srp_to_srs(srp_id, saveto, detailed, desc, expand):
     sradb = SRAweb()
@@ -369,8 +360,6 @@ def srp_to_srs(srp_id, saveto, detailed, desc, expand):
 
 
 #########################################################################
-
-
 ########################### srp-to-srx ##################################
 def srp_to_srx(srp_id, saveto, detailed, desc, expand):
     sradb = SRAweb()
@@ -385,8 +374,6 @@ def srp_to_srx(srp_id, saveto, detailed, desc, expand):
 
 
 #########################################################################
-
-
 ########################### srr-to-gsm ##################################
 def srr_to_gsm(srr_ids, saveto, detailed, desc, expand):
     sradb = SRAweb()
@@ -401,8 +388,6 @@ def srr_to_gsm(srr_ids, saveto, detailed, desc, expand):
 
 
 ########################################################################
-
-
 ########################### srr-to-srp ##################################
 def srr_to_srp(srr_ids, saveto, detailed, desc, expand):
     sradb = SRAweb()
@@ -417,8 +402,6 @@ def srr_to_srp(srr_ids, saveto, detailed, desc, expand):
 
 
 #########################################################################
-
-
 ########################### srr-to-srs ##################################
 def srr_to_srs(srr_ids, saveto, detailed, desc, expand):
     sradb = SRAweb()
@@ -433,8 +416,6 @@ def srr_to_srs(srr_ids, saveto, detailed, desc, expand):
 
 
 #########################################################################
-
-
 ########################### srr-to-srx ##################################
 def srr_to_srx(srr_ids, saveto, detailed, desc, expand):
     sradb = SRAweb()
@@ -449,8 +430,6 @@ def srr_to_srx(srr_ids, saveto, detailed, desc, expand):
 
 
 #########################################################################
-
-
 ########################### srs-to-gsm ##################################
 def srs_to_gsm(srs_ids, saveto, detailed, desc, expand):
     sradb = SRAweb()
@@ -465,8 +444,6 @@ def srs_to_gsm(srs_ids, saveto, detailed, desc, expand):
 
 
 #########################################################################
-
-
 ########################### srs-to-srx ##################################
 def srs_to_srx(srs_ids, saveto, detailed, desc, expand):
     sradb = SRAweb()
@@ -481,8 +458,6 @@ def srs_to_srx(srs_ids, saveto, detailed, desc, expand):
 
 
 #########################################################################
-
-
 ########################### srx-to-srp ##################################
 def srx_to_srp(srx_ids, saveto, detailed, desc, expand):
     sradb = SRAweb()
@@ -497,8 +472,6 @@ def srx_to_srp(srx_ids, saveto, detailed, desc, expand):
 
 
 #########################################################################
-
-
 ########################### srx-to-srr ##################################
 def srx_to_srr(srx_ids, saveto, detailed, desc, expand):
     sradb = SRAweb()
@@ -513,8 +486,6 @@ def srx_to_srr(srx_ids, saveto, detailed, desc, expand):
 
 
 #########################################################################
-
-
 ########################### srx-to-srs ##################################
 def srx_to_srs(srx_ids, saveto, detailed, desc, expand):
     sradb = SRAweb()
@@ -1168,6 +1139,21 @@ def parse_args(args=None):
     subparser.add_argument("srx_ids", nargs="+")
     subparser.set_defaults(func=srx_to_srs)
 
+    # geo-matrix subparser (add this at the end)
+    geo_matrix_parser = subparsers.add_parser(
+        "geo-matrix", help="Download and optionally convert GEO matrix files to TSV"
+    )
+    geo_matrix_parser.add_argument(
+        "--accession", required=True, help="GEO accession (e.g. GSE12345)"
+    )
+    geo_matrix_parser.add_argument(
+        "--to-tsv", action="store_true", help="Convert to TSV after download"
+    )
+    geo_matrix_parser.add_argument("--out", help="Output TSV file path")
+    geo_matrix_parser.set_defaults(
+        func=lambda args: geo_matrix(args.accession, args.to_tsv, args.out)
+    )
+
     args = parser.parse_args(args=None if sys.argv[1:] else ["--help"])
     if args.command == "metadata":
         metadata(
@@ -1241,6 +1227,8 @@ def parse_args(args=None):
         srx_to_srr(args.srx_ids, args.saveto, args.detailed, args.desc, args.expand)
     elif args.command == "srx-to-srs":
         srx_to_srs(args.srx_ids, args.saveto, args.detailed, args.desc, args.expand)
+    elif args.command == "geo-matrix":
+        geo_matrix(args.accession, args.to_tsv, args.out)
 
 
 if __name__ == "__main__":

@@ -8,6 +8,17 @@
 [![image](https://zenodo.org/badge/159590788.svg)](https://zenodo.org/badge/latestdoi/159590788)
 [![image](https://github.com/saketkc/pysradb/workflows/push/badge.svg)](https://github.com/saketkc/pysradb/actions)
 
+## Features
+
+- Query SRA, ENA, and GEO metadata with flexible filters.
+- Download raw sequencing data (FASTQ, SRA) and supplementary files.
+- Download and convert GEO matrix files to TSV, with full support for `--out` to specify output directory.
+- Map between SRA and GEO accessions (SRP, SRX, SRR, SRS, GSE, GSM).
+- Output metadata as TSV or CSV.
+- Simple command-line interface and Python API.
+- Consistent file outputs for automation and reproducibility.
+- **Recent Fix:** The `geo-matrix` command now correctly writes download and conversion outputs to the directory specified by the `--out` argument, resolving prior issues with misplaced or missing `.tsv` files during automated tests or scripted runs.
+
 ## Documentation
 
 <https://saketkc.github.io/pysradb>
@@ -21,7 +32,7 @@ guide](https://www.saket-choudhary.me/pysradb/quickstart.html).
 
     $ pysradb
      usage: pysradb [-h] [--version] [--citation]
-                    {metadata,download,search,gse-to-gsm,gse-to-srp,gsm-to-gse,gsm-to-srp,gsm-to-srr,gsm-to-srs,gsm-to-srx,srp-to-gse,srp-to-srr,srp-to-srs,srp-to-srx,srr-to-gsm,srr-to-srp,srr-to-srs,srr-to-srx,srs-to-gsm,srs-to-srx,srx-to-srp,srx-to-srr,srx-to-srs}
+                    {metadata,download,search,gse-to-gsm,gse-to-srp,gsm-to-gse,gsm-to-srp,gsm-to-srr,gsm-to-srs,gsm-to-srx,srp-to-gse,srp-to-srr,srp-to-srs,srp-to-srx,srr-to-gsm,srr-to-srp,srr-to-srs,srr-to-srx,srs-to-gsm,srs-to-srx,srx-to-srp,srx-to-srr,srx-to-srs,geo-matrix}
                     ...
 
      pysradb: Query NGS metadata and data from NCBI Sequence Read Archive.
@@ -34,7 +45,7 @@ guide](https://www.saket-choudhary.me/pysradb/quickstart.html).
        --citation            how to cite
 
      subcommands:
-       {metadata,download,search,gse-to-gsm,gse-to-srp,gsm-to-gse,gsm-to-srp,gsm-to-srr,gsm-to-srs,gsm-to-srx,srp-to-gse,srp-to-srr,srp-to-srs,srp-to-srx,srr-to-gsm,srr-to-srp,srr-to-srs,srr-to-srx,srs-to-gsm,srs-to-srx,srx-to-srp,srx-to-srr,srx-to-srs}
+       {metadata,download,search,gse-to-gsm,gse-to-srp,gsm-to-gse,gsm-to-srp,gsm-to-srr,gsm-to-srs,gsm-to-srx,srp-to-gse,srp-to-srr,srp-to-srs,srp-to-srx,srr-to-gsm,srr-to-srp,srr-to-srs,srr-to-srx,srs-to-gsm,srs-to-srx,srx-to-srp,srx-to-srr,srx-to-srs,geo-matrix}
          metadata            Fetch metadata for SRA project (SRPnnnn)
          download            Download SRA project (SRPnnnn)
          search              Search SRA for matching text
@@ -58,6 +69,7 @@ guide](https://www.saket-choudhary.me/pysradb/quickstart.html).
          srx-to-srp          Get SRP for a SRX
          srx-to-srr          Get SRR for a SRX
          srx-to-srs          Get SRS for a SRX
+         geo-matrix          Download and optionally convert GEO matrix files to TSV
 
 ## Quickstart
 
@@ -68,7 +80,7 @@ Notebook](https://colab.research.google.com/drive/1C60V-jkcNZiaCra_V5iEyFs318jgV
 additional downloads are made).
 
 The following notebooks document all the possible features of
-\`pysradb\`:
+`pysradb`:
 
 1.  [Python
     API](https://colab.research.google.com/github/saketkc/pysradb/blob/master/notebooks/01.Python-API_demo.ipynb)
@@ -91,7 +103,7 @@ The following notebooks document all the possible features of
 
 ## Installation
 
-To install stable version using \`pip\`:
+To install stable version using `pip`:
 
 ```bash
 pip install pysradb
@@ -133,29 +145,13 @@ conda create -c bioconda -n pysradb PYTHON=3.10 pysradb
 
     study_accession experiment_accession experiment_title                                                                                                                 experiment_desc                                                                                                                  organism_taxid  organism_name library_strategy library_source  library_selection sample_accession sample_title instrument                    total_spots total_size    run_accession run_total_spots run_total_bases
     SRP000941       SRX056722                                                                         Reference Epigenome: ChIP-Seq Analysis of H3K27ac in hESC H1 Cells                                                               Reference Epigenome: ChIP-Seq Analysis of H3K27ac in hESC H1 Cells  9606            Homo sapiens       ChIP-Seq           GENOMIC    ChIP            SRS184466                              Illumina HiSeq 2000    26900401     531654480   SRR179707     26900401         807012030
-    SRP000941       SRX027889                                                                            Reference Epigenome: ChIP-Seq Analysis of H2AK5ac in hESC Cells                                                                  Reference Epigenome: ChIP-Seq Analysis of H2AK5ac in hESC Cells  9606            Homo sapiens       ChIP-Seq           GENOMIC    ChIP            SRS116481                      Illumina Genome Analyzer II    37528590     779578968   SRR067978     37528590        1351029240
-    SRP000941       SRX027888                                                                                     Reference Epigenome: ChIP-Seq Input from hESC H1 Cells                                                                           Reference Epigenome: ChIP-Seq Input from hESC H1 Cells  9606            Homo sapiens       ChIP-Seq           GENOMIC  RANDOM            SRS116483                      Illumina Genome Analyzer II    13603127    3232309537   SRR067977     13603127         489712572
-    SRP000941       SRX027887                                                                                     Reference Epigenome: ChIP-Seq Input from hESC H1 Cells                                                                           Reference Epigenome: ChIP-Seq Input from hESC H1 Cells  9606            Homo sapiens       ChIP-Seq           GENOMIC  RANDOM            SRS116562                      Illumina Genome Analyzer II    22430523     506327844   SRR067976     22430523         807498828
-    SRP000941       SRX027886                                                                                     Reference Epigenome: ChIP-Seq Input from hESC H1 Cells                                                                           Reference Epigenome: ChIP-Seq Input from hESC H1 Cells  9606            Homo sapiens       ChIP-Seq           GENOMIC  RANDOM            SRS116560                      Illumina Genome Analyzer II    15342951     301720436   SRR067975     15342951         552346236
-    SRP000941       SRX027885                                                                                     Reference Epigenome: ChIP-Seq Input from hESC H1 Cells                                                                           Reference Epigenome: ChIP-Seq Input from hESC H1 Cells  9606            Homo sapiens       ChIP-Seq           GENOMIC  RANDOM            SRS116482                      Illumina Genome Analyzer II    39725232     851429082   SRR067974     39725232        1430108352
-    SRP000941       SRX027884                                                                                     Reference Epigenome: ChIP-Seq Input from hESC H1 Cells                                                                           Reference Epigenome: ChIP-Seq Input from hESC H1 Cells  9606            Homo sapiens       ChIP-Seq           GENOMIC  RANDOM            SRS116481                      Illumina Genome Analyzer II    32633277     544478483   SRR067973     32633277        1174797972
-    SRP000941       SRX027883                                                                                     Reference Epigenome: ChIP-Seq Input from hESC H1 Cells                                                                           Reference Epigenome: ChIP-Seq Input from hESC H1 Cells  9606            Homo sapiens       ChIP-Seq           GENOMIC  RANDOM            SRS004118                      Illumina Genome Analyzer II    22150965    3262293717   SRR067972      9357767         336879612
-    SRP000941       SRX027883                                                                                     Reference Epigenome: ChIP-Seq Input from hESC H1 Cells                                                                           Reference Epigenome: ChIP-Seq Input from hESC H1 Cells  9606            Homo sapiens       ChIP-Seq           GENOMIC  RANDOM            SRS004118                      Illumina Genome Analyzer II    22150965    3262293717   SRR067971     12793198         460555128
+    ...
 
 ### Obtaining detailed SRA metadata
 
     $ pysradb metadata SRP075720 --detailed | head
 
-    study_accession experiment_accession experiment_title                                  experiment_desc                                   organism_taxid  organism_name library_strategy library_source  library_selection sample_accession sample_title instrument           total_spots total_size run_accession run_total_spots run_total_bases
-    SRP075720       SRX1800476            GSM2177569: Kcng4_2la_H9; Mus musculus; RNA-Seq   GSM2177569: Kcng4_2la_H9; Mus musculus; RNA-Seq  10090           Mus musculus  RNA-Seq          TRANSCRIPTOMIC  cDNA              SRS1467643                    Illumina HiSeq 2500  2547148      97658407  SRR3587912    2547148         127357400
-    SRP075720       SRX1800475            GSM2177568: Kcng4_2la_H8; Mus musculus; RNA-Seq   GSM2177568: Kcng4_2la_H8; Mus musculus; RNA-Seq  10090           Mus musculus  RNA-Seq          TRANSCRIPTOMIC  cDNA              SRS1467642                    Illumina HiSeq 2500  2676053     101904264  SRR3587911    2676053         133802650
-    SRP075720       SRX1800474            GSM2177567: Kcng4_2la_H7; Mus musculus; RNA-Seq   GSM2177567: Kcng4_2la_H7; Mus musculus; RNA-Seq  10090           Mus musculus  RNA-Seq          TRANSCRIPTOMIC  cDNA              SRS1467641                    Illumina HiSeq 2500  1603567      61729014  SRR3587910    1603567          80178350
-    SRP075720       SRX1800473            GSM2177566: Kcng4_2la_H6; Mus musculus; RNA-Seq   GSM2177566: Kcng4_2la_H6; Mus musculus; RNA-Seq  10090           Mus musculus  RNA-Seq          TRANSCRIPTOMIC  cDNA              SRS1467640                    Illumina HiSeq 2500  2498920      94977329  SRR3587909    2498920         124946000
-    SRP075720       SRX1800472            GSM2177565: Kcng4_2la_H5; Mus musculus; RNA-Seq   GSM2177565: Kcng4_2la_H5; Mus musculus; RNA-Seq  10090           Mus musculus  RNA-Seq          TRANSCRIPTOMIC  cDNA              SRS1467639                    Illumina HiSeq 2500  2226670      83473957  SRR3587908    2226670         111333500
-    SRP075720       SRX1800471            GSM2177564: Kcng4_2la_H4; Mus musculus; RNA-Seq   GSM2177564: Kcng4_2la_H4; Mus musculus; RNA-Seq  10090           Mus musculus  RNA-Seq          TRANSCRIPTOMIC  cDNA              SRS1467638                    Illumina HiSeq 2500  2269546      87486278  SRR3587907    2269546         113477300
-    SRP075720       SRX1800470            GSM2177563: Kcng4_2la_H3; Mus musculus; RNA-Seq   GSM2177563: Kcng4_2la_H3; Mus musculus; RNA-Seq  10090           Mus musculus  RNA-Seq          TRANSCRIPTOMIC  cDNA              SRS1467636                    Illumina HiSeq 2500  2333284      88669838  SRR3587906    2333284         116664200
-    SRP075720       SRX1800469            GSM2177562: Kcng4_2la_H2; Mus musculus; RNA-Seq   GSM2177562: Kcng4_2la_H2; Mus musculus; RNA-Seq  10090           Mus musculus  RNA-Seq          TRANSCRIPTOMIC  cDNA              SRS1467637                    Illumina HiSeq 2500  2071159      79689296  SRR3587905    2071159         103557950
-    SRP075720       SRX1800468            GSM2177561: Kcng4_2la_H1; Mus musculus; RNA-Seq   GSM2177561: Kcng4_2la_H1; Mus musculus; RNA-Seq  10090           Mus musculus  RNA-Seq          TRANSCRIPTOMIC  cDNA              SRS1467635                    Illumina HiSeq 2500  2321657      89307894  SRR3587904    2321657         116082850
+    study_accession experiment_accession experiment_title ...
 
 ### Converting SRP to GSE
 
@@ -198,9 +194,6 @@ conda create -c bioconda -n pysradb PYTHON=3.10 pysradb
 
 ### Downloading an entire SRA/ENA project (multithreaded)
 
-`pysradb` makes it super easy to download datasets from SRA parallely:
-Using 8 threads to download:
-
     $ pysradb download -y -t 8 --out-dir ./pysradb_downloads -p SRP063852
 
 Downloads are organized by `SRP/SRX/SRR` mimicking the hierarchy of SRA
@@ -216,15 +209,19 @@ This will download all `RNA-seq` samples coming from this project.
 
 With
 [aspera-client](https://downloads.asperasoft.com/en/downloads/8?list)
-installed, [pysradb]{.title-ref} can perform ultra fast downloads:
-
-To download all original fastqs with [aspera-client]{.title-ref}
-installed utilizing 8 threads:
+installed, `pysradb` can perform ultra fast downloads:
 
     $ pysradb download -t 8 --use_ascp -p SRP002605
 
 Refer to the notebook for [(shallow) time
 benchmarks](https://colab.research.google.com/github/saketkc/pysradb/blob/master/notebooks/08.pysradb_ascp_multithreaded.ipynb).
+
+### Downloading and converting GEO matrix files
+
+The `geo-matrix` command allows you to download GEO matrix files and convert them to TSV in a user-specified directory:
+
+    $ pysradb geo-matrix --accession GSE10072 --to-tsv --out my_output_dir
+    # Output: my_output_dir/GSE10072/GSE10072_series_matrix.txt.tsv
 
 ## Publication
 
@@ -237,8 +234,8 @@ benchmarks](https://colab.research.google.com/github/saketkc/pysradb/blob/master
 
 ## Citation
 
-Choudhary, Saket. \"pysradb: A Python Package to Query next-Generation
-Sequencing Metadata and Data from NCBI Sequence Read Archive.\"
+Choudhary, Saket. "pysradb: A Python Package to Query next-Generation
+Sequencing Metadata and Data from NCBI Sequence Read Archive."
 F1000Research, vol. 8, F1000 (Faculty of 1000 Ltd), Apr. 2019, p. 532
 (<https://f1000research.com/articles/8-532/v1>)
 

@@ -6,6 +6,9 @@ import re
 import requests
 import sys
 from lxml import html
+import shutil
+import pandas as pd
+from io import StringIO
 
 from .download import download_file
 from .geodb import GEOdb
@@ -108,3 +111,70 @@ class GEOweb(GEOdb):
             download_file(
                 root_url.lstrip("https://") + link, geo_path, show_progress=True
             )
+
+    # ------------- GEO Matrix Feature Start -------------
+    def get_matrix_links(self, gse):
+        """
+        Obtain matrix file links from the GEO FTP matrix folder for a GSE accession.
+        """
+        prefix = gse[:-3]
+        url = f"https://ftp.ncbi.nlm.nih.gov/geo/series/{prefix}nnn/{gse}/matrix/"
+        try:
+            response = requests.get(url)
+            response.raise_for_status()
+            link_objects = html.fromstring(response.content).xpath("//a")
+            links = [i.attrib["href"] for i in link_objects]
+            # Filter for matrix files - usually .txt or .gz
+            matrix_links = [
+                link for link in links if link.endswith(".txt") or link.endswith(".gz")
+            ]
+            return matrix_links, url
+        except Exception as e:
+            print(f"Error fetching matrix links: {e}")
+            return [], url
+
+    def download_geo_matrix(self, accession, out_dir=None, to_tsv=False, out_tsv=None):
+        """
+        Download GEO matrix files and optionally convert to TSV.
+        """
+        if out_dir is None:
+            out_dir = os.path.join(os.getcwd(), "pysradb_downloads")
+        out_dir = os.path.join(out_dir, accession)
+        os.makedirs(out_dir, exist_ok=True)
+
+        matrix_links, root_url = self.get_matrix_links(accession)
+        if not matrix_links:
+            print("No matrix files found for this accession.")
+            return
+
+        for matrix_file in matrix_links:
+            matrix_url = root_url + matrix_file
+            dest_path = os.path.join(out_dir, matrix_file)
+            print(f"Downloading {matrix_url} -> {dest_path}")
+            # Download the file
+            with requests.get(matrix_url, stream=True) as r:
+                r.raise_for_status()
+                with open(dest_path, "wb") as f:
+                    shutil.copyfileobj(r.raw, f)
+            print(f"Downloaded: {dest_path}")
+
+            # If --to-tsv is enabled, parse and convert
+            if to_tsv:
+                tsv_path = (
+                    out_tsv if out_tsv else os.path.splitext(dest_path)[0] + ".tsv"
+                )
+                self.convert_geo_matrix_to_tsv(dest_path, tsv_path)
+                print(f"Converted matrix to TSV: {tsv_path}")
+
+    def convert_geo_matrix_to_tsv(self, input_path, output_path):
+        """
+        Convert a GEO matrix file (.txt or .gz) to TSV by skipping lines starting with '!'
+        """
+        # Handle .gz files
+        open_func = gzip.open if input_path.endswith(".gz") else open
+        with open_func(input_path, "rt") as infile, open(output_path, "w") as outfile:
+            for line in infile:
+                if not line.startswith("!"):
+                    outfile.write(line)
+
+    # ------------- GEO Matrix Feature End -------------
