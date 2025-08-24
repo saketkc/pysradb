@@ -277,17 +277,25 @@ def download_file(
                 if chunk:  # filter out keep-alive new chunks
                     f.write(chunk)
                     if show_progress:
-                        pbar.update(block_size)
+                        pbar.update(len(chunk))
         if show_progress:
             pbar.close()
     except IOError as e:
         sys.stderr.write("IO Error - {}\n".format(e))
     finally:
         # Move the temp file to desired location
-        if file_size == os.path.getsize(tmp_file_path):
-            # if there's a hash value, validate the file
-            if md5_hash and not md5_validate_file(tmp_file_path, md5_hash):
-                raise Exception("Error validating the file against its MD5 hash")
-            shutil.move(tmp_file_path, file_path)
-        elif file_size == -1:
-            raise Exception("Error getting Content-Length from server: %s" % url)
+        if os.path.exists(tmp_file_path):
+            actual_size = os.path.getsize(tmp_file_path)
+            if file_size == actual_size:
+                if md5_hash and not md5_validate_file(tmp_file_path, md5_hash):
+                    raise Exception("Error validating the file against its MD5 hash")
+                shutil.move(tmp_file_path, file_path)
+            elif file_size == -1:
+                # Server didn't provide Content-Length, move the file anyway
+                shutil.move(tmp_file_path, file_path)
+            else:
+                print(
+                    f"Warning: File size mismatch for {url}. Expected: {file_size}, Got: {actual_size}"
+                )
+                if actual_size > 0:
+                    shutil.move(tmp_file_path, file_path)

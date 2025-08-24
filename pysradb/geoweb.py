@@ -105,6 +105,4 @@ class GEOweb(GEOdb):
             if link == "filelist.txt":
                 prefix = gse + "_"
             geo_path = os.path.join(out_dir, prefix + link)
-            download_file(
-                root_url.lstrip("https://") + link, geo_path, show_progress=True
-            )
+            download_file(root_url + link, geo_path, show_progress=True)
