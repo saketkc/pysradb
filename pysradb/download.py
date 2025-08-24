@@ -6,19 +6,115 @@ import os
 import shutil
 import sys
 import warnings
+from urllib.parse import urlparse
+from ftplib import FTP
 
 import numpy as np
 import requests
-import requests_ftp
 from tqdm.autonotebook import tqdm
 
 from .utils import requests_3_retries
 
-requests_ftp.monkeypatch_session()
 warnings.simplefilter(action="ignore", category=FutureWarning)
 import pandas as pd
 
 tqdm.pandas()
+
+
+def _get_ftp_file_size(url):
+    """Get file size from FTP server.
+
+    Parameters
+    ----------
+    url : str
+        FTP URL
+
+    Returns
+    -------
+    size : int
+        File size in bytes, or 0 if unable to determine
+    """
+    try:
+        parsed = urlparse(url)
+        ftp = FTP(parsed.netloc)
+        ftp.login()
+        size = ftp.size(parsed.path)
+        ftp.quit()
+        return size if size is not None else 0
+    except Exception:
+        return 0
+
+
+def _download_ftp_file(
+    url, file_path, timeout=10, block_size=1024 * 1024, show_progress=False
+):
+    """Download file from FTP server.
+
+    Parameters
+    ----------
+    url : str
+        FTP URL
+    file_path : str
+        Local file path to store the downloaded file
+    timeout : int
+        Timeout in seconds
+    block_size : int
+        Block size for downloading
+    show_progress : bool
+        Show progress bar
+    """
+    parsed = urlparse(url)
+    tmp_file_path = file_path + ".part"
+
+    # Check if partial file exists
+    first_byte = os.path.getsize(tmp_file_path) if os.path.exists(tmp_file_path) else 0
+    file_mode = "ab" if first_byte else "wb"
+
+    try:
+        ftp = FTP(parsed.netloc, timeout=timeout)
+        ftp.login()
+
+        file_size = ftp.size(parsed.path)
+        if file_size is None:
+            file_size = -1
+
+        if show_progress and file_size > 0:
+            desc = "Downloading {}".format(url.split("/")[-1])
+            pbar = tqdm(
+                total=file_size,
+                initial=first_byte,
+                unit="B",
+                unit_scale=True,
+                desc=desc,
+            )
+
+        with open(tmp_file_path, file_mode) as f:
+            if first_byte > 0:
+                ftp.voidcmd(f"REST {first_byte}")
+
+            def callback(data):
+                f.write(data)
+                if show_progress and file_size > 0:
+                    pbar.update(len(data))
+
+            ftp.retrbinary(f"RETR {parsed.path}", callback, blocksize=block_size)
+
+        if show_progress and file_size > 0:
+            pbar.close()
+
+        ftp.quit()
+
+        if file_size == -1 or file_size == os.path.getsize(tmp_file_path):
+            shutil.move(tmp_file_path, file_path)
+        else:
+            raise Exception(
+                f"Download incomplete: expected {file_size} bytes, got {os.path.getsize(tmp_file_path)} bytes"
+            )
+
+    except Exception as e:
+        if show_progress and "pbar" in locals():
+            pbar.close()
+        raise Exception(f"FTP download failed: {e}")
 
 
 def millify(n):
@@ -70,6 +166,10 @@ def get_file_size(row, url_col):
         return 0
     if url.startswith("ftp."):
         url = "ftp://" + url
+
+    if url.startswith("ftp://"):
+        return _get_ftp_file_size(url)
+
     try:
         r = requests_3_retries().head(url)
         size = int(r.headers["content-length"])
@@ -143,11 +243,18 @@ def download_file(
     """
     if url.startswith("ftp."):
         url = "ftp://" + url
-        session = requests.Session()
-    else:
-        session = requests
+
     if os.path.exists(file_path) and os.path.getsize(file_path):
         return
+
+    if url.startswith("ftp://"):
+        _download_ftp_file(url, file_path, timeout, block_size, show_progress)
+        # if there's a hash value, validate the file
+        if md5_hash and not md5_validate_file(file_path, md5_hash):
+            raise Exception("Error validating the file against its MD5 hash")
+        return
+
+    session = requests
     tmp_file_path = file_path + ".part"
     first_byte = os.path.getsize(tmp_file_path) if os.path.exists(tmp_file_path) else 0
     file_mode = "ab" if first_byte else "wb"
