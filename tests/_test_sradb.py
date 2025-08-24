@@ -1,5 +1,4 @@
-"""Tests for sradb.py
-"""
+"""Tests for sradb.py"""
 
 import os
 from sqlite3 import OperationalError

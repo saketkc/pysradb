@@ -1,5 +1,4 @@
-"""Command line interface for pysradb
-"""
+"""Command line interface for pysradb"""
 
 import argparse
 import os

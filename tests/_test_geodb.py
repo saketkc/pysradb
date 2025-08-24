@@ -1,5 +1,4 @@
-"""Tests for geodb.py
-"""
+"""Tests for geodb.py"""
 
 import pytest
 
