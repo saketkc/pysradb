@@ -21,7 +21,7 @@ guide](https://www.saket-choudhary.me/pysradb/quickstart.html).
 
     $ pysradb
      usage: pysradb [-h] [--version] [--citation]
-                    {metadata,download,search,gse-to-gsm,gse-to-srp,gsm-to-gse,gsm-to-srp,gsm-to-srr,gsm-to-srs,gsm-to-srx,srp-to-gse,srp-to-srr,srp-to-srs,srp-to-srx,srr-to-gsm,srr-to-srp,srr-to-srs,srr-to-srx,srs-to-gsm,srs-to-srx,srx-to-srp,srx-to-srr,srx-to-srs}
+                    {metadata,download,geo-matrix,search,gse-to-gsm,gse-to-srp,gsm-to-gse,gsm-to-srp,gsm-to-srr,gsm-to-srs,gsm-to-srx,srp-to-gse,srp-to-srr,srp-to-srs,srp-to-srx,srr-to-gsm,srr-to-srp,srr-to-srs,srr-to-srx,srs-to-gsm,srs-to-srx,srx-to-srp,srx-to-srr,srx-to-srs}
                     ...
 
      pysradb: Query NGS metadata and data from NCBI Sequence Read Archive.
@@ -34,9 +34,10 @@ guide](https://www.saket-choudhary.me/pysradb/quickstart.html).
        --citation            how to cite
 
      subcommands:
-       {metadata,download,search,gse-to-gsm,gse-to-srp,gsm-to-gse,gsm-to-srp,gsm-to-srr,gsm-to-srs,gsm-to-srx,srp-to-gse,srp-to-srr,srp-to-srs,srp-to-srx,srr-to-gsm,srr-to-srp,srr-to-srs,srr-to-srx,srs-to-gsm,srs-to-srx,srx-to-srp,srx-to-srr,srx-to-srs}
+       {metadata,download,geo-matrix,search,gse-to-gsm,gse-to-srp,gsm-to-gse,gsm-to-srp,gsm-to-srr,gsm-to-srs,gsm-to-srx,srp-to-gse,srp-to-srr,srp-to-srs,srp-to-srx,srr-to-gsm,srr-to-srp,srr-to-srs,srr-to-srx,srs-to-gsm,srs-to-srx,srx-to-srp,srx-to-srr,srx-to-srs}
          metadata            Fetch metadata for SRA project (SRPnnnn)
-         download            Download SRA project (SRPnnnn)
+         download            Download SRA project (SRPnnnn) or GEO files
+         geo-matrix          Download and process GEO Matrix files
          search              Search SRA for matching text
          gse-to-gsm          Get GSM for a GSE
          gse-to-srp          Get SRP for a GSE
@@ -88,6 +89,7 @@ The following notebooks document all the possible features of
     Client](https://colab.research.google.com/github/saketkc/pysradb/blob/master/notebooks/08.pysradb_ascp_multithreaded.ipynb)
 9.  [Searching
     SRA/GEO/ENA](https://colab.research.google.com/github/saketkc/pysradb/blob/master/notebooks/09.Query_Search.ipynb)
+10. [Working with GEO Matrix Files](https://colab.research.google.com/github/saketkc/pysradb/blob/master/notebooks/10.GEO_Matrix_Files.ipynb)
 
 ## Installation
 
@@ -195,6 +197,14 @@ conda create -c bioconda -n pysradb PYTHON=3.10 pysradb
 ### Downloading supplementary files from GEO
 
     $ pysradb download -g GSE161707
+
+### Downloading and processing GEO Matrix files
+
+    $ pysradb geo-matrix --accession GSE234190 --to-tsv
+
+### Downloading only matrix files from GEO
+
+    $ pysradb download -g GSE234190 --matrix-only
 
 ### Downloading an entire SRA/ENA project (multithreaded)
 
