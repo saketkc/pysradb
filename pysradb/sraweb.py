@@ -1118,8 +1118,8 @@ class SRAweb(SRAdb):
                 time.sleep(self.sleep_time)
 
             except Exception as e:
-                print(
-                    f"Warning: Failed to fetch PMIDs for BioProject {bioproject}: {e}"
+                warnings.warn(
+                    f"Failed to fetch PMIDs for BioProject {bioproject}: {e}"
                 )
                 bioproject_pmids[bioproject] = []
 
