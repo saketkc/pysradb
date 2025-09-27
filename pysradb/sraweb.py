@@ -29,8 +29,14 @@ def xmlescape(data):
 def _make_hashable(obj):
     """Convert unhashable types to hashable ones for pandas operations"""
     if isinstance(obj, (OrderedDict, dict)):
-        # Convert dict/OrderedDict to a string representation
-        return str(obj)
+        # Extract text content from XML parsed dict/OrderedDict
+        if "#text" in obj:
+            return obj["#text"]  # Extract the actual text content
+        elif len(obj) == 1 and "@xmlns" in obj:
+            return pd.NA  # Handle xmlns-only dicts as missing data
+        else:
+            # Fallback to string representation for other dict structures
+            return str(obj)
     elif isinstance(obj, list):
         # Convert list to tuple
         return tuple(_make_hashable(item) for item in obj)
@@ -45,7 +51,9 @@ def _order_first(df, column_order_list):
     # check if all columns do exist in the dataframe
     if len(set(columns).intersection(df.columns)) == len(columns):
         df = df.loc[:, columns]
-    df = df.mask(df.applymap(str).eq("[]"))
+    df = df.mask(df.map(str).eq("[]"))
+    # Filter out XML namespace artifacts
+    df = df.replace(regex=r"^@xmlns.*", value=pd.NA)
     df = df.fillna(pd.NA)
     return df
 
@@ -153,7 +161,7 @@ class SRAweb(SRAdb):
         """
         try:
             xmldict = xmltodict.parse(
-                xml, process_namespaces=True, dict_constructor=OrderedDict
+                xml, process_namespaces=False, dict_constructor=OrderedDict
             )
             json = xmldict["root"]
         except ExpatError:
@@ -393,7 +401,7 @@ class SRAweb(SRAdb):
                     request_json = {}  # eval(request_text)
             try:
                 xml_response = xmltodict.parse(
-                    request_text, dict_constructor=OrderedDict
+                    request_text, process_namespaces=False, dict_constructor=OrderedDict
                 )
 
                 exp_response = xml_response.get("EXPERIMENT_PACKAGE_SET", {})
@@ -573,6 +581,8 @@ class SRAweb(SRAdb):
         if "run_accession" in metadata_df.columns:
             metadata_df = metadata_df.sort_values(by="run_accession")
         metadata_df.columns = [x.lower().strip() for x in metadata_df.columns]
+        # Filter out XML namespace artifacts and replace with NA
+        metadata_df = metadata_df.replace(regex=r"^@xmlns.*", value=pd.NA)
         if not detailed:
             return metadata_df
 
@@ -759,6 +769,9 @@ class SRAweb(SRAdb):
 
             except Exception as e:
                 metadata_df["pmid"] = pd.NA
+
+        # Filter out XML namespace artifacts and replace with NA
+        metadata_df = metadata_df.replace(regex=r"^@xmlns.*", value=pd.NA)
 
         if "run_accession" in metadata_df.columns:
             return metadata_df.sort_values(by="run_accession")
@@ -1084,7 +1097,9 @@ class SRAweb(SRAdb):
                 # Parse XML to extract Publication IDs
                 pmids = []
                 try:
-                    xml_dict = xmltodict.parse(xml_text, dict_constructor=OrderedDict)
+                    xml_dict = xmltodict.parse(
+                        xml_text, process_namespaces=False, dict_constructor=OrderedDict
+                    )
 
                     # Navigate through the XML structure
                     if "RecordSet" in xml_dict:
@@ -1148,20 +1163,10 @@ class SRAweb(SRAdb):
         unique_bioprojects = metadata_df["bioproject"].dropna().unique().tolist()
         bioproject_pmids = self.fetch_bioproject_pmids(unique_bioprojects)
 
-        # For each accession, if its BioProject has no PMIDs, try fallback search
+        # If no BioProject PMIDs found, try fallback search
         external_pmids = []
-        for accession in sra_accessions:
-            bioproject = metadata_df.loc[
-                metadata_df["sra_accession"] == accession, "bioproject"
-            ].values
-            if len(bioproject) == 0 or bioproject[0] is None:
-                # No BioProject found for this accession, fallback search
-                external_pmids.extend(self._search_fallback_pmids([accession]))
-            else:
-                pmids = bioproject_pmids.get(bioproject[0], [])
-                if not pmids:
-                    # BioProject has no PMIDs, fallback search
-                    external_pmids.extend(self._search_fallback_pmids([accession]))
+        if not any(pmids for pmids in bioproject_pmids.values()):
+            external_pmids = self._search_fallback_pmids(sra_accessions)
 
         # Build results - one row per unique SRA accession
         results = []
