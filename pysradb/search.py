@@ -12,10 +12,8 @@ import pandas as pd
 import requests
 from tqdm import tqdm
 
-from .exceptions import IncorrectFieldException
-from .exceptions import MissingQueryException
-from .utils import requests_3_retries
-from .utils import scientific_name_to_taxid
+from .exceptions import IncorrectFieldException, MissingQueryException
+from .utils import requests_3_retries, scientific_name_to_taxid
 
 SEARCH_REQUEST_TIMEOUT = 20
 SRA_SEARCH_GROUP_SIZE = 300

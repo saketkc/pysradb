@@ -6,8 +6,8 @@ import os
 import shutil
 import sys
 import warnings
-from urllib.parse import urlparse
 from ftplib import FTP
+from urllib.parse import urlparse
 
 import numpy as np
 import requests

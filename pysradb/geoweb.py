@@ -3,15 +3,14 @@
 import gzip
 import os
 import re
-import requests
 import sys
+
+import requests
 from lxml import html
 
 from .download import download_file
 from .geodb import GEOdb
-from .utils import _get_url
-from .utils import copyfileobj
-from .utils import get_gzip_uncompressed_size
+from .utils import _get_url, copyfileobj, get_gzip_uncompressed_size
 
 PY3 = True
 if sys.version_info[0] < 3:
