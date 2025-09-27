@@ -3,8 +3,7 @@
 import os
 import subprocess
 import sys
-from shlex import quote
-from shlex import split
+from shlex import quote, split
 
 import pytest
 

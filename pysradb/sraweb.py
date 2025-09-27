@@ -2,7 +2,7 @@
 
 import concurrent.futures
 import os
-import pandas as pd
+import re
 import sys
 import time
 import warnings
@@ -26,6 +26,24 @@ def xmlescape(data):
     return escape(data, entities={"'": "&apos;", '"': "&quot;"})
 
 
+def _make_hashable(obj):
+    """Convert unhashable types to hashable ones for pandas operations"""
+    if isinstance(obj, (OrderedDict, dict)):
+        # Extract text content from XML parsed dict/OrderedDict
+        if "#text" in obj:
+            return obj["#text"]  # Extract the actual text content
+        elif len(obj) == 1 and "@xmlns" in obj:
+            return pd.NA  # Handle xmlns-only dicts as missing data
+        else:
+            # Fallback to string representation for other dict structures
+            return str(obj)
+    elif isinstance(obj, list):
+        # Convert list to tuple
+        return tuple(_make_hashable(item) for item in obj)
+    else:
+        return obj
+
+
 def _order_first(df, column_order_list):
     columns = column_order_list + [
         col for col in df.columns.tolist() if col not in column_order_list
@@ -33,7 +51,9 @@ def _order_first(df, column_order_list):
     # check if all columns do exist in the dataframe
     if len(set(columns).intersection(df.columns)) == len(columns):
         df = df.loc[:, columns]
-    df = df.mask(df.applymap(str).eq("[]"))
+    df = df.mask(df.map(str).eq("[]"))
+    # Filter out XML namespace artifacts
+    df = df.replace(regex=r"^@xmlns.*", value=pd.NA).infer_objects(copy=False)
     df = df.fillna(pd.NA)
     return df
 
@@ -141,7 +161,7 @@ class SRAweb(SRAdb):
         """
         try:
             xmldict = xmltodict.parse(
-                xml, process_namespaces=True, dict_constructor=OrderedDict
+                xml, process_namespaces=False, dict_constructor=OrderedDict
             )
             json = xmldict["root"]
         except ExpatError:
@@ -381,7 +401,7 @@ class SRAweb(SRAdb):
                     request_json = {}  # eval(request_text)
             try:
                 xml_response = xmltodict.parse(
-                    request_text, dict_constructor=OrderedDict
+                    request_text, process_namespaces=False, dict_constructor=OrderedDict
                 )
 
                 exp_response = xml_response.get("EXPERIMENT_PACKAGE_SET", {})
@@ -414,6 +434,7 @@ class SRAweb(SRAdb):
         detailed=False,
         expand_sample_attributes=False,
         output_read_lengths=False,
+        include_pmids=False,
         **kwargs,
     ):
         esummary_result = self.get_esummary_response("sra", srp)
@@ -549,10 +570,21 @@ class SRAweb(SRAdb):
 
         # TODO: the detailed call below does redundant operations
         # the code above this can be completeley done away with
-        metadata_df = pd.DataFrame(sra_record).drop_duplicates()
+
+        # Convert any unhashable types to hashable ones before creating DataFrame
+        hashable_records = []
+        for record in sra_record:
+            hashable_record = {k: _make_hashable(v) for k, v in record.items()}
+            hashable_records.append(hashable_record)
+
+        metadata_df = pd.DataFrame(hashable_records).drop_duplicates()
         if "run_accession" in metadata_df.columns:
             metadata_df = metadata_df.sort_values(by="run_accession")
         metadata_df.columns = [x.lower().strip() for x in metadata_df.columns]
+        # Filter out XML namespace artifacts and replace with NA
+        metadata_df = metadata_df.replace(
+            regex=r"^@xmlns.*", value=pd.NA
+        ).infer_objects(copy=False)
         if not detailed:
             return metadata_df
 
@@ -710,6 +742,41 @@ class SRAweb(SRAdb):
         metadata_df = metadata_df.reset_index()
         metadata_df = metadata_df.fillna(pd.NA)
         metadata_df.columns = [x.lower().strip() for x in metadata_df.columns]
+
+        # Add PMID column when detailed=True and include_pmids=True
+        if include_pmids:
+            try:
+                sra_accessions = [srp] if isinstance(srp, str) else srp
+                pmid_df = self.sra_to_pmid(sra_accessions)
+
+                if pmid_df is not None and not pmid_df.empty:
+                    pmid_map = {}
+                    for _, row in pmid_df.iterrows():
+                        study_acc = row.get("sra_accession", None)
+                        pmid = row.get("pmid")
+                        if not pd.isna(pmid):
+                            if study_acc not in pmid_map:
+                                pmid_map[study_acc] = []
+                            pmid_map[study_acc].append(str(pmid))
+
+                    metadata_df["pmid"] = metadata_df.apply(
+                        lambda row: ",".join(
+                            pmid_map.get(row.get("study_accession", ""), [""])
+                        ),
+                        axis=1,
+                    )
+                    metadata_df["pmid"] = metadata_df["pmid"].replace("", pd.NA)
+                else:
+                    metadata_df["pmid"] = pd.NA
+
+            except Exception as e:
+                metadata_df["pmid"] = pd.NA
+
+        # Filter out XML namespace artifacts and replace with NA
+        metadata_df = metadata_df.replace(
+            regex=r"^@xmlns.*", value=pd.NA
+        ).infer_objects(copy=False)
+
         if "run_accession" in metadata_df.columns:
             return metadata_df.sort_values(by="run_accession")
         return metadata_df
@@ -787,7 +854,7 @@ class SRAweb(SRAdb):
             if len(common_gses) < len(gse):
                 gse_df_subset = None
         if gse_df_subset is None:
-            # sometimes SRX ids ar ereturned instead of an entire project
+            # sometimes SRX ids are returned instead of an entire project
             # see https://github.com/saketkc/pysradb/issues/186
             # GSE: GSE209835; SRP =SRP388275
             gse_df_subset_gse = gse_df[gse_df.entrytype == "GSE"]
@@ -994,7 +1061,324 @@ class SRAweb(SRAdb):
     def search(self, *args, **kwargs):
         raise NotImplementedError("Search not yet implemented for Web")
 
+    def fetch_bioproject_pmids(self, bioprojects):
+        """Fetch PMIDs for given BioProject accessions
+
+        Parameters
+        ----------
+        bioprojects: list or str
+                    BioProject accession(s)
+
+        Returns
+        -------
+        bioproject_pmids: dict
+                         Mapping of BioProject to list of PMIDs
+        """
+        if isinstance(bioprojects, str):
+            bioprojects = [bioprojects]
+
+        bioproject_pmids = {}
+        for bioproject in bioprojects:
+            if pd.isna(bioproject) or not bioproject:
+                bioproject_pmids[bioproject] = []
+                continue
+
+            try:
+                # Use efetch to get BioProject XML
+                payload = self.efetch_params.copy()
+                payload = [param for param in payload if param[0] != "retmode"]
+                payload += [
+                    ("db", "bioproject"),
+                    ("id", bioproject),
+                    ("retmode", "xml"),
+                ]
+
+                request = requests.get(
+                    self.base_url["efetch"], params=OrderedDict(payload)
+                )
+                xml_text = request.text.strip()
+
+                # Parse XML to extract Publication IDs
+                pmids = []
+                try:
+                    xml_dict = xmltodict.parse(
+                        xml_text, process_namespaces=False, dict_constructor=OrderedDict
+                    )
+
+                    # Navigate through the XML structure
+                    if "RecordSet" in xml_dict:
+                        records = xml_dict["RecordSet"].get("DocumentSummary", [])
+                        if not isinstance(records, list):
+                            records = [records]
+
+                        for record in records:
+                            project_descr = record.get("Project", {}).get(
+                                "ProjectDescr", {}
+                            )
+                            publications = project_descr.get("Publication", [])
+
+                            if not isinstance(publications, list):
+                                publications = [publications]
+
+                            for pub in publications:
+                                pub_id = pub.get("@id", "")
+                                if pub_id and pub_id.isdigit():
+                                    pmids.append(pub_id)
+
+                except ExpatError:
+                    # XML parsing failed --> Look for PMID patterns in the raw text
+                    pmid_pattern = r'id="(\d+)"'
+                    matches = re.findall(pmid_pattern, xml_text)
+                    pmids = [
+                        match for match in matches if len(match) >= 7
+                    ]  # PMIDs are typically 7+ digits
+
+                bioproject_pmids[bioproject] = list(set(pmids))  # Remove duplicates
+                time.sleep(self.sleep_time)
+
+            except Exception as e:
+                warnings.warn(f"Failed to fetch PMIDs for BioProject {bioproject}: {e}")
+                bioproject_pmids[bioproject] = []
+
+        return bioproject_pmids
+
+    def sra_to_pmid(self, sra_accessions):
+        """Get PMIDs associated with SRA accessions
+
+        Parameters
+        ----------
+        sra_accessions: list or str
+                       SRA accession(s) - can be SRP, SRR, SRX, or SRS
+
+        Returns
+        -------
+        sra_pmid_df: pandas.DataFrame
+                    DataFrame with SRA accessions and associated PMIDs
+        """
+        if isinstance(sra_accessions, str):
+            sra_accessions = [sra_accessions]
+
+        # Get metadata to extract BioProject information
+        metadata_df = self.sra_metadata(sra_accessions)
+        if metadata_df is None or metadata_df.empty:
+            return pd.DataFrame(columns=["sra_accession", "bioproject", "pmid"])
+
+        # Try to get PMIDs via BioProject first
+        unique_bioprojects = metadata_df["bioproject"].dropna().unique().tolist()
+        bioproject_pmids = self.fetch_bioproject_pmids(unique_bioprojects)
+
+        # If no BioProject PMIDs found, try fallback search
+        external_pmids = []
+        if not any(pmids for pmids in bioproject_pmids.values()):
+            external_pmids = self._search_fallback_pmids(sra_accessions)
+
+        # Build results - one row per unique SRA accession
+        results = []
+        for _, row in metadata_df.iterrows():
+            sra_acc = self._extract_sra_accession(row)
+            bioproject = row.get("bioproject", "")
+
+            # Get PMIDs (BioProject takes priority over external)
+            pmids = bioproject_pmids.get(bioproject, [])
+            if not pmids and external_pmids:
+                pmids = external_pmids
+
+            # Add result with smallest PMID (if any found)
+            smallest_pmid = self._get_smallest_pmid(pmids) if pmids else pd.NA
+            results.append(
+                {
+                    "sra_accession": sra_acc,
+                    "bioproject": bioproject,
+                    "pmid": smallest_pmid,
+                }
+            )
+
+        return pd.DataFrame(results).drop_duplicates()
+
+    def _search_fallback_pmids(self, sra_accessions):
+        """Search for PMIDs using fallback strategies (external sources + direct SRA search)"""
+        try:
+            original_sleep = self.sleep_time
+            self.sleep_time = max(0.1, self.sleep_time * 0.5)
+
+            # Strategy 1: Search via external source identifiers
+            # Example: ERP018009
+            detailed_metadata = self.sra_metadata(
+                sra_accessions, detailed=True, include_pmids=False
+            )
+            if detailed_metadata is not None and not detailed_metadata.empty:
+                if external_sources := self.extract_external_sources(detailed_metadata):
+                    pmids = self.search_pmc_for_external_sources([external_sources[0]])
+                    if pmids:
+                        return pmids
+            # Strategy 2: Direct SRA ID search
+            # Example: SRP047086
+            pmids = self.search_pmc_for_external_sources(sra_accessions)
+            return pmids
+
+        except Exception as e:
+            return []
+        finally:
+            # Restore original sleep time
+            self.sleep_time = original_sleep
+
+    def _extract_sra_accession(self, row):
+        """Extract SRA accession from metadata row"""
+        return row.get(
+            "study_accession",
+            row.get(
+                "run_accession",
+                row.get("experiment_accession", row.get("sample_accession", "")),
+            ),
+        )
+
+    def _get_smallest_pmid(self, pmids):
+        """Get the numerically smallest PMID from a list"""
+        if not pmids:
+            return pd.NA
+
+        # Convert to integers for proper numeric sorting
+        pmid_ints = []
+        for pmid in pmids:
+            try:
+                pmid_ints.append(int(pmid))
+            except ValueError:
+                pmid_ints.append(pmid)  # Keep non-numeric as-is
+
+        return str(min(pmid_ints))
+
+    def extract_external_sources(self, metadata_df):
+        """Extract external source identifiers from SRA metadata
+
+        Parameters
+        ----------
+        metadata_df: pandas.DataFrame
+                    DataFrame containing SRA metadata
+
+        Returns
+        -------
+        external_sources: list
+                         List of external source identifiers found
+        """
+        external_sources = []
+
+        # Common external database patterns
+        patterns = [
+            r"E-MTAB-\d+",  # ArrayExpress
+            r"GSE\d+",  # GEO Series
+            r"E-GEOD-\d+",  # GEO in ArrayExpress
+            r"E-MEXP-\d+",  # MEXP in ArrayExpress
+            r"E-TABM-\d+",  # TABM in ArrayExpress
+        ]
+
+        # Fields that commonly contain external source identifiers
+        source_fields = ["run_alias", "submitter id", "sample name", "experiment_alias"]
+
+        for field in source_fields:
+            if field in metadata_df.columns:
+                values = metadata_df[field].dropna().unique()
+                for value in values:
+                    value_str = str(value)
+                    for pattern in patterns:
+                        matches = re.findall(pattern, value_str)
+                        external_sources.extend(
+                            match for match in matches if match not in external_sources
+                        )
+
+        return external_sources
+
+    def search_pmc_for_external_sources(self, external_sources):
+        """Search PubMed Central for PMIDs using external source identifiers
+
+        Parameters
+        ----------
+        external_sources: list
+                         List of external source identifiers
+
+        Returns
+        -------
+        pmids: list
+              List of PMIDs found
+        """
+        if not external_sources:
+            return []
+
+        all_pmids = []
+
+        for source in external_sources:
+            try:
+
+                # Search PMC for this external source
+                search_url = (
+                    "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi"
+                )
+                search_params = {
+                    "db": "pmc",
+                    "term": source,
+                    "retmode": "json",
+                    "retmax": "10",
+                }
+
+                response = requests.get(search_url, params=search_params, timeout=60)
+                response.raise_for_status()
+                result = response.json()
+
+                pmc_ids = result["esearchresult"]["idlist"]
+                if not pmc_ids:
+                    continue
+
+                # Get primary PMIDs for each PMC article
+                summary_url = (
+                    "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esummary.fcgi"
+                )
+                summary_params = {
+                    "db": "pmc",
+                    "id": ",".join(pmc_ids),
+                    "retmode": "json",
+                }
+
+                summary_response = requests.get(
+                    summary_url, params=summary_params, timeout=60
+                )
+                summary_result = summary_response.json()
+
+                # Extract primary PMID for each PMC article
+                for pmc_id in pmc_ids:
+                    if pmc_id in summary_result["result"]:
+                        article = summary_result["result"][pmc_id]
+                        articleids = article.get("articleids", [])
+
+                        # Find the primary PMID
+                        for aid in articleids:
+                            if aid.get("idtype") == "pmid":
+                                primary_pmid = aid.get("value")
+                                if primary_pmid and primary_pmid not in all_pmids:
+                                    all_pmids.append(primary_pmid)
+                                break
+
+                time.sleep(self.sleep_time)  # Rate limiting
+
+            except Exception as e:
+                continue
+
+        return list(set(all_pmids))  # Remove duplicates
+
+    def srp_to_pmid(self, srp):
+        """Get PMIDs for Study Accessions (SRP)"""
+        return self.sra_to_pmid(srp)
+
+    def srr_to_pmid(self, srr):
+        """Get PMIDs for Run Accessions (SRR)"""
+        return self.sra_to_pmid(srr)
+
+    def srx_to_pmid(self, srx):
+        """Get PMIDs for Experiment Accessions (SRX)"""
+        return self.sra_to_pmid(srx)
+
+    def srs_to_pmid(self, srs):
+        """Get PMIDs for Sample Accessions (SRS)"""
+        return self.sra_to_pmid(srs)
+
     def close(self):
         # Dummy method to mimick SRAdb() object
-        # TODO: fix this
         pass
