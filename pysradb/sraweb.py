@@ -1150,10 +1150,18 @@ class SRAweb(SRAdb):
         unique_bioprojects = metadata_df["bioproject"].dropna().unique().tolist()
         bioproject_pmids = self.fetch_bioproject_pmids(unique_bioprojects)
 
-        # If no BioProject PMIDs found, try fallback search
+        # For each accession, if its BioProject has no PMIDs, try fallback search
         external_pmids = []
-        if not any(pmids for pmids in bioproject_pmids.values()):
-            external_pmids = self._search_fallback_pmids(sra_accessions)
+        for accession in sra_accessions:
+            bioproject = metadata_df.loc[metadata_df["sra_accession"] == accession, "bioproject"].values
+            if len(bioproject) == 0 or bioproject[0] is None:
+                # No BioProject found for this accession, fallback search
+                external_pmids.extend(self._search_fallback_pmids([accession]))
+            else:
+                pmids = bioproject_pmids.get(bioproject[0], [])
+                if not pmids:
+                    # BioProject has no PMIDs, fallback search
+                    external_pmids.extend(self._search_fallback_pmids([accession]))
 
         # Build results - one row per unique SRA accession
         results = []
