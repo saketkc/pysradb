@@ -3,6 +3,7 @@
 import concurrent.futures
 import os
 import pandas as pd
+import re
 import sys
 import time
 import warnings
@@ -993,6 +994,161 @@ class SRAweb(SRAdb):
 
     def search(self, *args, **kwargs):
         raise NotImplementedError("Search not yet implemented for Web")
+
+    def fetch_bioproject_pmids(self, bioprojects):
+        """Fetch PMIDs for given BioProject accessions
+
+        Parameters
+        ----------
+        bioprojects: list or str
+                    BioProject accession(s)
+
+        Returns
+        -------
+        bioproject_pmids: dict
+                         Mapping of BioProject to list of PMIDs
+        """
+        if isinstance(bioprojects, str):
+            bioprojects = [bioprojects]
+
+        bioproject_pmids = {}
+        for bioproject in bioprojects:
+            if pd.isna(bioproject) or not bioproject:
+                bioproject_pmids[bioproject] = []
+                continue
+
+            try:
+                # Use efetch to get BioProject XML
+                payload = self.efetch_params.copy()
+                payload = [param for param in payload if param[0] != "retmode"]
+                payload += [
+                    ("db", "bioproject"),
+                    ("id", bioproject),
+                    ("retmode", "xml"),
+                ]
+
+                request = requests.get(
+                    self.base_url["efetch"], params=OrderedDict(payload)
+                )
+                xml_text = request.text.strip()
+
+                # Parse XML to extract Publication IDs
+                pmids = []
+                try:
+                    xml_dict = xmltodict.parse(xml_text, dict_constructor=OrderedDict)
+
+                    # Navigate through the XML structure
+                    if "RecordSet" in xml_dict:
+                        records = xml_dict["RecordSet"].get("DocumentSummary", [])
+                        if not isinstance(records, list):
+                            records = [records]
+
+                        for record in records:
+                            project_descr = record.get("Project", {}).get(
+                                "ProjectDescr", {}
+                            )
+                            publications = project_descr.get("Publication", [])
+
+                            if not isinstance(publications, list):
+                                publications = [publications]
+
+                            for pub in publications:
+                                pub_id = pub.get("@id", "")
+                                if pub_id and pub_id.isdigit():
+                                    pmids.append(pub_id)
+
+                except ExpatError:
+                    # If XML parsing fails, try alternative approach
+                    # Look for PMID patterns in the raw text
+                    pmid_pattern = r'id="(\d+)"'
+                    matches = re.findall(pmid_pattern, xml_text)
+                    pmids = [
+                        match for match in matches if len(match) >= 7
+                    ]  # PMIDs are typically 7+ digits
+
+                bioproject_pmids[bioproject] = list(set(pmids))  # Remove duplicates
+                time.sleep(self.sleep_time)
+
+            except Exception as e:
+                print(
+                    f"Warning: Failed to fetch PMIDs for BioProject {bioproject}: {e}"
+                )
+                bioproject_pmids[bioproject] = []
+
+        return bioproject_pmids
+
+    def sra_to_pmid(self, sra_accessions):
+        """Get PMIDs associated with SRA accessions
+
+        Parameters
+        ----------
+        sra_accessions: list or str
+                       SRA accession(s) - can be SRP, SRR, SRX, or SRS
+
+        Returns
+        -------
+        sra_pmid_df: pandas.DataFrame
+                    DataFrame with SRA accessions and associated PMIDs
+        """
+        if isinstance(sra_accessions, str):
+            sra_accessions = [sra_accessions]
+
+        # Get metadata to extract BioProject information
+        metadata_df = self.sra_metadata(sra_accessions)
+        if metadata_df is None or metadata_df.empty:
+            return pd.DataFrame(columns=["sra_accession", "bioproject", "pmid"])
+
+        # Get unique BioProjects
+        unique_bioprojects = metadata_df["bioproject"].dropna().unique().tolist()
+
+        # Fetch PMIDs for these BioProjects
+        bioproject_pmids = self.fetch_bioproject_pmids(unique_bioprojects)
+
+        # Create result DataFrame
+        results = []
+        for _, row in metadata_df.iterrows():
+            sra_acc = row.get(
+                "study_accession",
+                row.get(
+                    "run_accession",
+                    row.get("experiment_accession", row.get("sample_accession", "")),
+                ),
+            )
+            bioproject = row.get("bioproject", "")
+
+            pmids = bioproject_pmids.get(bioproject, [])
+
+            if pmids:
+                for pmid in pmids:
+                    results.append(
+                        {
+                            "sra_accession": sra_acc,
+                            "bioproject": bioproject,
+                            "pmid": pmid,
+                        }
+                    )
+            else:
+                results.append(
+                    {"sra_accession": sra_acc, "bioproject": bioproject, "pmid": pd.NA}
+                )
+
+        return pd.DataFrame(results).drop_duplicates()
+
+    def srp_to_pmid(self, srp):
+        """Get PMIDs for Study Accessions (SRP)"""
+        return self.sra_to_pmid(srp)
+
+    def srr_to_pmid(self, srr):
+        """Get PMIDs for Run Accessions (SRR)"""
+        return self.sra_to_pmid(srr)
+
+    def srx_to_pmid(self, srx):
+        """Get PMIDs for Experiment Accessions (SRX)"""
+        return self.sra_to_pmid(srx)
+
+    def srs_to_pmid(self, srs):
+        """Get PMIDs for Sample Accessions (SRS)"""
+        return self.sra_to_pmid(srs)
 
     def close(self):
         # Dummy method to mimick SRAdb() object
