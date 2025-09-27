@@ -15,11 +15,11 @@ def valid_name():
     return "Homo sapiens"
 
 
-def invalid_scientific_name_to_taxid(invalid_name):
+def test_invalid_scientific_name_to_taxid(invalid_name):
     with pytest.raises(IncorrectFieldException) as e:
         scientific_name_to_taxid(invalid_name)
     assert "Unknown scientific name" in str(e.value)
 
 
-def valid_scientific_name_to_taxid(valid_name):
+def test_valid_scientific_name_to_taxid(valid_name):
     assert scientific_name_to_taxid(valid_name) == "9606"
