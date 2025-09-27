@@ -740,7 +740,7 @@ class SRAweb(SRAdb):
                 if pmid_df is not None and not pmid_df.empty:
                     pmid_map = {}
                     for _, row in pmid_df.iterrows():
-                        study_acc = row.get("sra_accession", "")
+                        study_acc = row.get("sra_accession", None)
                         pmid = row.get("pmid")
                         if not pd.isna(pmid):
                             if study_acc not in pmid_map:
