@@ -1118,9 +1118,7 @@ class SRAweb(SRAdb):
                 time.sleep(self.sleep_time)
 
             except Exception as e:
-                warnings.warn(
-                    f"Failed to fetch PMIDs for BioProject {bioproject}: {e}"
-                )
+                warnings.warn(f"Failed to fetch PMIDs for BioProject {bioproject}: {e}")
                 bioproject_pmids[bioproject] = []
 
         return bioproject_pmids
@@ -1153,7 +1151,9 @@ class SRAweb(SRAdb):
         # For each accession, if its BioProject has no PMIDs, try fallback search
         external_pmids = []
         for accession in sra_accessions:
-            bioproject = metadata_df.loc[metadata_df["sra_accession"] == accession, "bioproject"].values
+            bioproject = metadata_df.loc[
+                metadata_df["sra_accession"] == accession, "bioproject"
+            ].values
             if len(bioproject) == 0 or bioproject[0] is None:
                 # No BioProject found for this accession, fallback search
                 external_pmids.extend(self._search_fallback_pmids([accession]))
@@ -1198,9 +1198,7 @@ class SRAweb(SRAdb):
                 sra_accessions, detailed=True, include_pmids=False
             )
             if detailed_metadata is not None and not detailed_metadata.empty:
-                if external_sources := self.extract_external_sources(
-                    detailed_metadata
-                ):
+                if external_sources := self.extract_external_sources(detailed_metadata):
                     pmids = self.search_pmc_for_external_sources([external_sources[0]])
                     if pmids:
                         return pmids
@@ -1330,7 +1328,9 @@ class SRAweb(SRAdb):
                     "retmode": "json",
                 }
 
-                summary_response = requests.get(summary_url, params=summary_params, timeout=60)
+                summary_response = requests.get(
+                    summary_url, params=summary_params, timeout=60
+                )
                 summary_result = summary_response.json()
 
                 # Extract primary PMID for each PMC article
