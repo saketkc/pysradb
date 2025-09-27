@@ -53,7 +53,7 @@ def _order_first(df, column_order_list):
         df = df.loc[:, columns]
     df = df.mask(df.map(str).eq("[]"))
     # Filter out XML namespace artifacts
-    df = df.replace(regex=r"^@xmlns.*", value=pd.NA)
+    df = df.replace(regex=r"^@xmlns.*", value=pd.NA).infer_objects(copy=False)
     df = df.fillna(pd.NA)
     return df
 
@@ -582,7 +582,7 @@ class SRAweb(SRAdb):
             metadata_df = metadata_df.sort_values(by="run_accession")
         metadata_df.columns = [x.lower().strip() for x in metadata_df.columns]
         # Filter out XML namespace artifacts and replace with NA
-        metadata_df = metadata_df.replace(regex=r"^@xmlns.*", value=pd.NA)
+        metadata_df = metadata_df.replace(regex=r"^@xmlns.*", value=pd.NA).infer_objects(copy=False)
         if not detailed:
             return metadata_df
 
@@ -771,7 +771,7 @@ class SRAweb(SRAdb):
                 metadata_df["pmid"] = pd.NA
 
         # Filter out XML namespace artifacts and replace with NA
-        metadata_df = metadata_df.replace(regex=r"^@xmlns.*", value=pd.NA)
+        metadata_df = metadata_df.replace(regex=r"^@xmlns.*", value=pd.NA).infer_objects(copy=False)
 
         if "run_accession" in metadata_df.columns:
             return metadata_df.sort_values(by="run_accession")
