@@ -13,25 +13,24 @@ from subprocess import PIPE
 import numpy as np
 import pandas as pd
 from tqdm.autonotebook import tqdm
-from tqdm.contrib.concurrent import process_map
-from tqdm.contrib.concurrent import thread_map
+from tqdm.contrib.concurrent import process_map, thread_map
 
 from .basedb import BASEdb
-from .download import download_file
-from .download import get_file_size
-from .download import millify
+from .download import download_file, get_file_size, millify
 from .filter_attrs import expand_sample_attribute_columns
 from .taxid2name import TAXID_TO_NAME
-from .utils import _find_aspera_keypath
-from .utils import _get_url
-from .utils import confirm
-from .utils import copyfileobj
-from .utils import get_gzip_uncompressed_size
-from .utils import mkdir_p
-from .utils import order_dataframe
-from .utils import path_leaf
-from .utils import run_command
-from .utils import unique
+from .utils import (
+    _find_aspera_keypath,
+    _get_url,
+    confirm,
+    copyfileobj,
+    get_gzip_uncompressed_size,
+    mkdir_p,
+    order_dataframe,
+    path_leaf,
+    run_command,
+    unique,
+)
 
 warnings.simplefilter(action="ignore", category=FutureWarning)
 

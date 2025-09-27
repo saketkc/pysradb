@@ -288,3 +288,51 @@ df.head()
 Again, the results are available as a [pandas]{.title-ref} dataframe and
 hence you can perform all subset operations post your query. Your query
 doesn\'t need to be exact.
+
+## Use Case 8: Finding publications (PMIDs) associated with SRA data
+
+Sometimes you have SRA accessions and want to find the publications that describe the data generation.
+
+``` python
+from pysradb import SRAweb
+db = SRAweb()
+
+# Get PMIDs for a study accession (SRP)
+pmids_df = db.srp_to_pmid('SRP002605')
+pmids_df.head()
+```
+
+    sra_accession   bioproject      pmid
+    SRP002605      PRJNA129385   20703300
+
+You can also get PMIDs for other SRA accession types:
+
+``` python
+# Get PMIDs for run accessions (SRR)
+srr_pmids = db.srr_to_pmid('SRR057511')
+
+# Get PMIDs for experiment accessions (SRX) 
+srx_pmids = db.srx_to_pmid('SRX021967')
+
+# Get PMIDs for sample accessions (SRS)
+srs_pmids = db.srs_to_pmid('SRS079386')
+
+# Get PMIDs for multiple accessions at once
+multi_pmids = db.sra_to_pmid(['SRP002605', 'SRP016501'])
+```
+
+You can also directly query BioProject accessions for their associated publications:
+
+``` python  
+# Get PMIDs directly from BioProject accessions
+bioproject_pmids = db.fetch_bioproject_pmids(['PRJNA257197', 'PRJNA129385'])
+print(bioproject_pmids)
+# Output: {'PRJNA257197': ['25214632'], 'PRJNA129385': ['20703300']}
+```
+
+**Note**: This functionality relies on the cross-references maintained between BioProjects and PubMed. Not all SRA datasets have associated publications, and some publications may not be properly cross-referenced in the NCBI databases. The success rate depends on:
+
+- Whether the authors included SRA/BioProject accessions in their manuscript
+- Whether NCBI has established the cross-references 
+- The publication date relative to data submission
+
