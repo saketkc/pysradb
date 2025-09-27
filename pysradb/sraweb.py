@@ -1330,7 +1330,7 @@ class SRAweb(SRAdb):
                     "retmode": "json",
                 }
 
-                summary_response = requests.get(summary_url, params=summary_params)
+                summary_response = requests.get(summary_url, params=summary_params, timeout=30)
                 summary_result = summary_response.json()
 
                 # Extract primary PMID for each PMC article
