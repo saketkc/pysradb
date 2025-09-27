@@ -21,23 +21,23 @@ guide](https://www.saket-choudhary.me/pysradb/quickstart.html).
 
     $ pysradb
      usage: pysradb [-h] [--version] [--citation]
-                    {metadata,download,search,gse-to-gsm,gse-to-srp,gsm-to-gse,gsm-to-srp,gsm-to-srr,gsm-to-srs,gsm-to-srx,srp-to-gse,srp-to-srr,srp-to-srs,srp-to-srx,srr-to-gsm,srr-to-srp,srr-to-srs,srr-to-srx,srs-to-gsm,srs-to-srx,srx-to-srp,srx-to-srr,srx-to-srs}
+                    {metadata,download,search,gse-to-gsm,gse-to-srp,gsm-to-gse,gsm-to-srp,gsm-to-srr,gsm-to-srs,gsm-to-srx,srp-to-gse,srp-to-srr,srp-to-srs,srp-to-srx,srr-to-gsm,srr-to-srp,srr-to-srs,srr-to-srx,srs-to-gsm,srs-to-srx,srx-to-srp,srx-to-srr,srx-to-srs,sra-to-pmid}
                     ...
 
      pysradb: Query NGS metadata and data from NCBI Sequence Read Archive.
-     version: 2.0.1
+     version: 2.3.0.
      Citation: 10.12688/f1000research.18676.1
 
-     optional arguments:
+     options:
        -h, --help            show this help message and exit
        --version             show program's version number and exit
        --citation            how to cite
 
      subcommands:
-       {metadata,download,search,gse-to-gsm,gse-to-srp,gsm-to-gse,gsm-to-srp,gsm-to-srr,gsm-to-srs,gsm-to-srx,srp-to-gse,srp-to-srr,srp-to-srs,srp-to-srx,srr-to-gsm,srr-to-srp,srr-to-srs,srr-to-srx,srs-to-gsm,srs-to-srx,srx-to-srp,srx-to-srr,srx-to-srs}
+       {metadata,download,search,gse-to-gsm,gse-to-srp,gsm-to-gse,gsm-to-srp,gsm-to-srr,gsm-to-srs,gsm-to-srx,srp-to-gse,srp-to-srr,srp-to-srs,srp-to-srx,srr-to-gsm,srr-to-srp,srr-to-srs,srr-to-srx,srs-to-gsm,srs-to-srx,srx-to-srp,srx-to-srr,srx-to-srs,sra-to-pmid}
          metadata            Fetch metadata for SRA project (SRPnnnn)
          download            Download SRA project (SRPnnnn)
-         search              Search SRA for matching text
+         search              Search SRA/ENA for matching text
          gse-to-gsm          Get GSM for a GSE
          gse-to-srp          Get SRP for a GSE
          gsm-to-gse          Get GSE for a GSM
@@ -58,6 +58,7 @@ guide](https://www.saket-choudhary.me/pysradb/quickstart.html).
          srx-to-srp          Get SRP for a SRX
          srx-to-srr          Get SRR for a SRX
          srx-to-srs          Get SRS for a SRX
+         sra-to-pmid         Get PMIDs for SRA accessions
 
 ## Quickstart
 
@@ -191,6 +192,13 @@ conda create -c bioconda -n pysradb PYTHON=3.10 pysradb
 
     experiment_alias run_accession
     GSM2177186       SRR3587529
+
+### Converting SRA to PMID
+
+    $ pysradb sra-to-pmid SRR3587529
+
+    sra_accession pmid
+    SRR3587529    27373336
 
 ### Downloading supplementary files from GEO
 
