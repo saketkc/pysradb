@@ -279,6 +279,8 @@ def test_fetch_bioproject_pmids_multiple(sraweb_connection):
     for bp in bioprojects:
         assert bp in result
         assert isinstance(result[bp], list)
+    # Check that PRJNA200000 returns an empty list (no PMIDs)
+    assert result["PRJNA200000"] == []
 
 
 def test_sra_to_pmid(sraweb_connection):
