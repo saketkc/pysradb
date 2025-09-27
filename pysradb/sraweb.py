@@ -426,7 +426,7 @@ class SRAweb(SRAdb):
         detailed=False,
         expand_sample_attributes=False,
         output_read_lengths=False,
-        include_pmids=True,
+        include_pmids=False,
         **kwargs,
     ):
         esummary_result = self.get_esummary_response("sra", srp)
