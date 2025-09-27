@@ -1312,7 +1312,7 @@ class SRAweb(SRAdb):
                     "retmax": "10",
                 }
 
-                response = requests.get(search_url, params=search_params, timeout=30)
+                response = requests.get(search_url, params=search_params, timeout=60)
                 response.raise_for_status()
                 result = response.json()
 
@@ -1330,7 +1330,7 @@ class SRAweb(SRAdb):
                     "retmode": "json",
                 }
 
-                summary_response = requests.get(summary_url, params=summary_params, timeout=30)
+                summary_response = requests.get(summary_url, params=summary_params, timeout=60)
                 summary_result = summary_response.json()
 
                 # Extract primary PMID for each PMC article
