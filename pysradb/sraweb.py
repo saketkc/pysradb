@@ -1198,8 +1198,9 @@ class SRAweb(SRAdb):
                 sra_accessions, detailed=True, include_pmids=False
             )
             if detailed_metadata is not None and not detailed_metadata.empty:
-                external_sources = self.extract_external_sources(detailed_metadata)
-                if external_sources:
+                if external_sources := self.extract_external_sources(
+                    detailed_metadata
+                ):
                     pmids = self.search_pmc_for_external_sources([external_sources[0]])
                     if pmids:
                         return pmids
