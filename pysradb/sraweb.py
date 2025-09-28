@@ -441,7 +441,6 @@ class SRAweb(SRAdb):
         try:
             uids = esummary_result["uids"]
         except KeyError:
-            print("No results found for {}".format(srp))
             return None
 
         exps_xml = OrderedDict()
@@ -843,7 +842,13 @@ class SRAweb(SRAdb):
     def gse_to_srp(self, gse, **kwargs):
         if isinstance(gse, str):
             gse = [gse]
+        if not gse:  # Handle empty input
+            return pd.DataFrame(columns=["study_alias", "study_accession"])
+
         gse_df = self.fetch_gds_results(gse, **kwargs)
+        if gse_df is None or gse_df.empty:  # Handle case where no results found
+            return pd.DataFrame(columns=["study_alias", "study_accession"])
+
         gse_df = gse_df.rename(
             columns={"accession": "study_alias", "SRA": "study_accession"}
         )
@@ -867,9 +872,20 @@ class SRAweb(SRAdb):
                     gse_df_subset_gse.study_accession.tolist()
                 )
             )
-            new_gse_df = pd.DataFrame(
-                {"study_alias": gse_of_interest, "study_accession": srp_unique}
-            )
+            # Handle mismatched lengths between GSEs and SRPs
+            # Create all combinations of GSE-SRP pairs
+            gse_srp_pairs = []
+            for gse_id in gse_of_interest:
+                for srp_id in srp_unique:
+                    gse_srp_pairs.append(
+                        {"study_alias": gse_id, "study_accession": srp_id}
+                    )
+
+            if gse_srp_pairs:
+                new_gse_df = pd.DataFrame(gse_srp_pairs)
+            else:
+                # If no pairs, create empty DataFrame with correct columns
+                new_gse_df = pd.DataFrame(columns=["study_alias", "study_accession"])
             gse_df_subset = pd.concat([gse_df_subset_gse, new_gse_df])
         gse_df_subset = gse_df_subset.loc[gse_df_subset.study_alias.isin(gse)]
         return gse_df_subset[["study_alias", "study_accession"]].drop_duplicates()
@@ -923,12 +939,49 @@ class SRAweb(SRAdb):
         return gsm_df[["experiment_alias", "experiment_accession"]].drop_duplicates()
 
     def gsm_to_gse(self, gsm, **kwargs):
+        if isinstance(gsm, str):
+            gsm = [gsm]
+        if not gsm:  # Handle empty input
+            return pd.DataFrame(columns=["study_alias", "study_accession"])
+
         gsm_df = self.fetch_gds_results(gsm, **kwargs)
-        gsm_df = gsm_df[gsm_df.entrytype == "GSE"]
-        gsm_df = gsm_df.rename(
-            columns={"accession": "study_alias", "SRA": "study_accession"}
-        )
-        return gsm_df[["study_alias", "study_accession"]]
+        if gsm_df is None or gsm_df.empty:  # Handle case where no results found
+            return pd.DataFrame(columns=["study_alias", "study_accession"])
+
+        # For GSM queries, we need to extract GSE IDs from the 'gse' column
+        # The entrytype will be 'GSM', not 'GSE'
+        gsm_entries = gsm_df[gsm_df.entrytype == "GSM"]
+
+        if gsm_entries.empty:
+            return pd.DataFrame(columns=["study_alias", "study_accession"])
+
+        # Extract GSE IDs from the 'gse' column and create result rows
+        results = []
+        for _, row in gsm_entries.iterrows():
+            gsm_id = row["accession"]
+            gse_str = str(row.get("gse", ""))
+
+            if gse_str and gse_str != "nan":
+                # Handle multiple GSE IDs separated by semicolon
+                gse_ids = [
+                    gse_id.strip() for gse_id in gse_str.split(";") if gse_id.strip()
+                ]
+                for gse_id in gse_ids:
+                    if gse_id.isdigit():
+                        # Add GSE prefix if it's just a number
+                        gse_id = f"GSE{gse_id}"
+                    results.append(
+                        {
+                            "study_alias": gse_id,
+                            "study_accession": row.get("SRA", pd.NA),
+                        }
+                    )
+
+        if results:
+            result_df = pd.DataFrame(results)
+            return result_df[["study_alias", "study_accession"]].drop_duplicates()
+        else:
+            return pd.DataFrame(columns=["study_alias", "study_accession"])
 
     def srp_to_gse(self, srp, **kwargs):
         """Get GSE for a SRP"""
@@ -1142,26 +1195,26 @@ class SRAweb(SRAdb):
 
         return bioproject_pmids
 
-    def sra_to_pmid(self, sra_accessions):
-        """Get PMIDs associated with SRA accessions
+    def srp_to_pmid(self, srp_accessions):
+        """Get PMIDs associated with SRP accessions
 
         Parameters
         ----------
-        sra_accessions: list or str
-                       SRA accession(s) - can be SRP, SRR, SRX, or SRS
+        srp_accessions: list or str
+                       SRP accession(s)
 
         Returns
         -------
-        sra_pmid_df: pandas.DataFrame
-                    DataFrame with SRA accessions and associated PMIDs
+        srp_pmid_df: pandas.DataFrame
+                    DataFrame with SRP accessions and associated PMIDs
         """
-        if isinstance(sra_accessions, str):
-            sra_accessions = [sra_accessions]
+        if isinstance(srp_accessions, str):
+            srp_accessions = [srp_accessions]
 
         # Get metadata to extract BioProject information
-        metadata_df = self.sra_metadata(sra_accessions)
+        metadata_df = self.sra_metadata(srp_accessions)
         if metadata_df is None or metadata_df.empty:
-            return pd.DataFrame(columns=["sra_accession", "bioproject", "pmid"])
+            return pd.DataFrame(columns=["srp_accession", "bioproject", "pmid"])
 
         # Try to get PMIDs via BioProject first
         unique_bioprojects = metadata_df["bioproject"].dropna().unique().tolist()
@@ -1170,12 +1223,12 @@ class SRAweb(SRAdb):
         # If no BioProject PMIDs found, try fallback search
         external_pmids = []
         if not any(pmids for pmids in bioproject_pmids.values()):
-            external_pmids = self._search_fallback_pmids(sra_accessions)
+            external_pmids = self._search_fallback_pmids(srp_accessions)
 
-        # Build results - one row per unique SRA accession
+        # Build results - one row per unique SRP accession
         results = []
         for _, row in metadata_df.iterrows():
-            sra_acc = self._extract_sra_accession(row)
+            srp_acc = self._extract_sra_accession(row)
             bioproject = row.get("bioproject", "")
 
             # Get PMIDs (BioProject takes priority over external)
@@ -1187,7 +1240,7 @@ class SRAweb(SRAdb):
             smallest_pmid = self._get_smallest_pmid(pmids) if pmids else pd.NA
             results.append(
                 {
-                    "sra_accession": sra_acc,
+                    "srp_accession": srp_acc,
                     "bioproject": bioproject,
                     "pmid": smallest_pmid,
                 }
@@ -1195,8 +1248,8 @@ class SRAweb(SRAdb):
 
         return pd.DataFrame(results).drop_duplicates()
 
-    def _search_fallback_pmids(self, sra_accessions):
-        """Search for PMIDs using fallback strategies (external sources + direct SRA search)"""
+    def _search_fallback_pmids(self, srp_accessions):
+        """Search for PMIDs using fallback strategies (external sources + direct SRA search + GSE search)"""
         try:
             original_sleep = self.sleep_time
             self.sleep_time = max(0.1, self.sleep_time * 0.5)
@@ -1204,22 +1257,30 @@ class SRAweb(SRAdb):
             # Strategy 1: Search via external source identifiers
             # Example: ERP018009
             detailed_metadata = self.sra_metadata(
-                sra_accessions, detailed=True, include_pmids=False
+                srp_accessions, detailed=True, include_pmids=False
             )
             if detailed_metadata is not None and not detailed_metadata.empty:
                 if external_sources := self.extract_external_sources(detailed_metadata):
                     pmids = self.search_pmc_for_external_sources([external_sources[0]])
                     if pmids:
                         return pmids
-            # Strategy 2: Direct SRA ID search
+
+                # Strategy 2: Search via GSE identifiers extracted from metadata
+                # Example: GSE253406 --> SRP484103
+                gse_pmids = self._search_gse_gsm_pmids(
+                    detailed_metadata, srp_accessions
+                )
+                if gse_pmids:
+                    return gse_pmids
+
+            # Strategy 3: Direct SRP ID search
             # Example: SRP047086
-            pmids = self.search_pmc_for_external_sources(sra_accessions)
+            pmids = self.search_pmc_for_external_sources(srp_accessions)
             return pmids
 
         except Exception as e:
             return []
         finally:
-            # Restore original sleep time
             self.sleep_time = original_sleep
 
     def _extract_sra_accession(self, row):
@@ -1262,7 +1323,6 @@ class SRAweb(SRAdb):
         """
         external_sources = []
 
-        # Common external database patterns
         patterns = [
             r"E-MTAB-\d+",  # ArrayExpress
             r"GSE\d+",  # GEO Series
@@ -1287,6 +1347,212 @@ class SRAweb(SRAdb):
 
         return external_sources
 
+    def _search_gse_gsm_pmids(self, metadata_df, sra_accessions):
+        """Search for PMIDs using GSE identifiers from BioProject and SRP conversion
+
+        Parameters
+        ----------
+        metadata_df: pandas.DataFrame
+                    Detailed metadata DataFrame
+        sra_accessions: list
+                       List of SRA accessions being searched
+
+        Returns
+        -------
+        pmids: list
+              List of PMIDs found via GSE search
+        """
+        import time
+
+        gse_identifiers = []
+
+        # Strategy 1: BioProject to GSE conversion via NCBI search
+        if "bioproject" in metadata_df.columns:
+            unique_bioprojects = metadata_df["bioproject"].dropna().unique()
+            for bioproject in unique_bioprojects[
+                :3
+            ]:  # Limit to avoid too many requests
+                try:
+                    gse_ids = self._bioproject_to_gse(bioproject)
+                    gse_identifiers.extend(gse_ids)
+                    time.sleep(self.sleep_time)  # Rate limiting
+                except Exception:
+                    pass
+
+        # Strategy 2: SRP to GSE conversion via NCBI ELink
+        for sra_acc in sra_accessions:
+            if sra_acc.startswith("SRP"):
+                try:
+                    gse_ids = self._srp_to_gse_via_elink(sra_acc)
+                    gse_identifiers.extend(gse_ids)
+                    time.sleep(self.sleep_time)  # Rate limiting
+                except Exception:
+                    pass
+
+        # Strategy 3: Try existing pysradb SRP to GSE conversion
+        for sra_acc in sra_accessions:
+            if sra_acc.startswith("SRP"):
+                try:
+                    gse_df = self.srp_to_gse(sra_acc)
+                    if not gse_df.empty and "experiment_alias" in gse_df.columns:
+                        gse_values = gse_df["experiment_alias"].dropna().astype(str)
+                        for gse_val in gse_values:
+                            if gse_val.startswith("GSE"):
+                                gse_identifiers.append(gse_val)
+                except Exception:
+                    pass
+
+        # Remove duplicates and search PMC for GSE identifiers
+        unique_gse_ids = list(set(gse_identifiers))
+
+        if unique_gse_ids:
+            pmids = self.search_pmc_for_external_sources(unique_gse_ids)
+            return pmids
+
+        return []
+
+    def _bioproject_to_gse(self, bioproject):
+        """Convert BioProject ID to GSE ID via NCBI search
+
+        Parameters
+        ----------
+        bioproject: str
+                   BioProject ID (e.g., 'PRJNA1065472')
+
+        Returns
+        -------
+        gse_ids: list
+                List of GSE IDs found
+        """
+        import requests
+
+        gse_ids = []
+        try:
+            search_url = "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi"
+            search_params = {
+                "db": "gds",
+                "term": f"{bioproject}[BioProject]",
+                "retmode": "json",
+                "retmax": "10",
+            }
+
+            response = requests.get(search_url, params=search_params, timeout=30)
+            response.raise_for_status()
+            result = response.json()
+            geo_uids = result["esearchresult"]["idlist"]
+
+            if geo_uids:
+                # Get summary to find GSE IDs
+                summary_url = (
+                    "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esummary.fcgi"
+                )
+                summary_params = {
+                    "db": "gds",
+                    "id": ",".join(geo_uids),
+                    "retmode": "json",
+                }
+
+                summary_response = requests.get(
+                    summary_url, params=summary_params, timeout=30
+                )
+                summary_response.raise_for_status()
+                summary_result = summary_response.json()
+
+                for uid in geo_uids:
+                    if uid in summary_result["result"]:
+                        record = summary_result["result"][uid]
+                        accession = record.get("accession", "")
+                        if accession.startswith("GSE"):
+                            gse_ids.append(accession)
+
+        except Exception:
+            pass
+
+        return gse_ids
+
+    def _srp_to_gse_via_elink(self, srp_id):
+        """Convert SRP ID to GSE ID via NCBI ELink
+
+        Parameters
+        ----------
+        srp_id: str
+               SRP ID (e.g., 'SRP484103')
+
+        Returns
+        -------
+        gse_ids: list
+                List of GSE IDs found
+        """
+        import requests
+
+        gse_ids = []
+        try:
+            # First, search for the SRP in SRA database to get UIDs
+            search_url = "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi"
+            search_params = {
+                "db": "sra",
+                "term": srp_id,
+                "retmode": "json",
+                "retmax": "5",
+            }
+
+            response = requests.get(search_url, params=search_params, timeout=30)
+            response.raise_for_status()
+            result = response.json()
+            sra_uids = result["esearchresult"]["idlist"]
+
+            if sra_uids:
+                # Use ELink to find related GEO records
+                elink_url = "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/elink.fcgi"
+                elink_params = {
+                    "dbfrom": "sra",
+                    "db": "gds",
+                    "id": sra_uids[0],  # Use first UID
+                    "retmode": "json",
+                }
+
+                elink_response = requests.get(
+                    elink_url, params=elink_params, timeout=30
+                )
+                elink_response.raise_for_status()
+                elink_result = elink_response.json()
+
+                if "linksets" in elink_result:
+                    for linkset in elink_result["linksets"]:
+                        if "linksetdbs" in linkset:
+                            for linksetdb in linkset["linksetdbs"]:
+                                if linksetdb["dbto"] == "gds":
+                                    geo_uids = linksetdb["links"]
+
+                                    if geo_uids:
+                                        # Get summary to find GSE IDs
+                                        summary_url = "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esummary.fcgi"
+                                        summary_params = {
+                                            "db": "gds",
+                                            "id": ",".join(geo_uids),
+                                            "retmode": "json",
+                                        }
+
+                                        summary_response = requests.get(
+                                            summary_url,
+                                            params=summary_params,
+                                            timeout=30,
+                                        )
+                                        summary_response.raise_for_status()
+                                        summary_result = summary_response.json()
+
+                                        for uid in geo_uids:
+                                            if uid in summary_result["result"]:
+                                                record = summary_result["result"][uid]
+                                                accession = record.get("accession", "")
+                                                if accession.startswith("GSE"):
+                                                    gse_ids.append(accession)
+
+        except Exception:
+            pass
+
+        return gse_ids
+
     def search_pmc_for_external_sources(self, external_sources):
         """Search PubMed Central for PMIDs using external source identifiers
 
@@ -1307,8 +1573,6 @@ class SRAweb(SRAdb):
 
         for source in external_sources:
             try:
-
-                # Search PMC for this external source
                 search_url = (
                     "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi"
                 )
@@ -1363,9 +1627,31 @@ class SRAweb(SRAdb):
 
         return list(set(all_pmids))  # Remove duplicates
 
-    def srp_to_pmid(self, srp):
-        """Get PMIDs for Study Accessions (SRP)"""
-        return self.sra_to_pmid(srp)
+    def sra_to_pmid(self, sra_accessions):
+        """Get PMIDs for SRA accessions (backward compatibility wrapper)
+
+        Parameters
+        ----------
+        sra_accessions: list or str
+                       SRA accession(s) - can be SRP, SRR, SRX, or SRS
+
+        Returns
+        -------
+        sra_pmid_df: pandas.DataFrame
+                    DataFrame with SRA accessions and associated PMIDs
+        """
+        # For SRP accessions, use the main method
+        if isinstance(sra_accessions, str):
+            if sra_accessions.startswith("SRP"):
+                return self.srp_to_pmid(sra_accessions)
+        elif isinstance(sra_accessions, list):
+            # If all are SRP accessions, use main method
+            if all(acc.startswith("SRP") for acc in sra_accessions):
+                return self.srp_to_pmid(sra_accessions)
+
+        # For other SRA accessions, convert to SRP first if possible
+        # This is a simplified implementation for backward compatibility
+        return self.srp_to_pmid(sra_accessions)
 
     def srr_to_pmid(self, srr):
         """Get PMIDs for Run Accessions (SRR)"""
@@ -1378,6 +1664,36 @@ class SRAweb(SRAdb):
     def srs_to_pmid(self, srs):
         """Get PMIDs for Sample Accessions (SRS)"""
         return self.sra_to_pmid(srs)
+
+    def gse_to_pmid(self, gse_accessions):
+        """Get PMIDs for GSE accessions by searching PubMed Central
+
+        Parameters
+        ----------
+        gse_accessions: list or str
+                       GSE accession(s)
+
+        Returns
+        -------
+        gse_pmid_df: pandas.DataFrame
+                    DataFrame with GSE accessions and associated PMIDs
+        """
+        if isinstance(gse_accessions, str):
+            gse_accessions = [gse_accessions]
+
+        results = []
+        for gse_acc in gse_accessions:
+            pmids = self.search_pmc_for_external_sources([gse_acc])
+            smallest_pmid = self._get_smallest_pmid(pmids) if pmids else pd.NA
+
+            results.append(
+                {
+                    "gse_accession": gse_acc,
+                    "pmid": smallest_pmid,
+                }
+            )
+
+        return pd.DataFrame(results)
 
     def close(self):
         # Dummy method to mimick SRAdb() object

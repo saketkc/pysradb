@@ -523,9 +523,24 @@ def srx_to_srs(srx_ids, saveto, detailed, desc, expand):
     sradb.close()
 
 
+def srp_to_pmid(srp_ids, saveto):
+    sradb = SRAweb()
+    df = sradb.srp_to_pmid(srp_ids)
+    _print_save_df(df, saveto)
+    sradb.close()
+
+
 def sra_to_pmid(sra_ids, saveto):
+    """Backward compatibility wrapper for sra_to_pmid"""
     sradb = SRAweb()
     df = sradb.sra_to_pmid(sra_ids)
+    _print_save_df(df, saveto)
+    sradb.close()
+
+
+def gse_to_pmid(gse_ids, saveto):
+    sradb = SRAweb()
+    df = sradb.gse_to_pmid(gse_ids)
     _print_save_df(df, saveto)
     sradb.close()
 
@@ -1170,15 +1185,21 @@ def parse_args(args=None):
     subparser.add_argument("srx_ids", nargs="+")
     subparser.set_defaults(func=srx_to_srs)
 
-    # pysradb sra-to-pmid
+    # pysradb srp-to-pmid
     subparser = subparsers.add_parser(
-        "sra-to-pmid", help="Get PMIDs for SRA accessions"
+        "srp-to-pmid", help="Get PMIDs for SRP accessions"
     )
     subparser.add_argument("--saveto", help="Save output to file")
-    subparser.add_argument(
-        "sra_ids", nargs="+", help="SRA accession(s) - can be SRP, SRR, SRX, or SRS"
+    subparser.add_argument("srp_ids", nargs="+", help="SRP accession(s)")
+    subparser.set_defaults(func=srp_to_pmid)
+
+    # pysradb gse-to-pmid
+    subparser = subparsers.add_parser(
+        "gse-to-pmid", help="Get PMIDs for GSE accessions"
     )
-    subparser.set_defaults(func=sra_to_pmid)
+    subparser.add_argument("--saveto", help="Save output to file")
+    subparser.add_argument("gse_ids", nargs="+", help="GSE accession(s)")
+    subparser.set_defaults(func=gse_to_pmid)
 
     args = parser.parse_args(args=None if sys.argv[1:] else ["--help"])
     if args.command == "metadata":
@@ -1253,8 +1274,10 @@ def parse_args(args=None):
         srx_to_srr(args.srx_ids, args.saveto, args.detailed, args.desc, args.expand)
     elif args.command == "srx-to-srs":
         srx_to_srs(args.srx_ids, args.saveto, args.detailed, args.desc, args.expand)
-    elif args.command == "sra-to-pmid":
-        sra_to_pmid(args.sra_ids, args.saveto)
+    elif args.command == "srp-to-pmid":
+        srp_to_pmid(args.srp_ids, args.saveto)
+    elif args.command == "gse-to-pmid":
+        gse_to_pmid(args.gse_ids, args.saveto)
 
 
 if __name__ == "__main__":
