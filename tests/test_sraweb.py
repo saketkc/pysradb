@@ -152,6 +152,25 @@ def test_gsm_to_gse(sraweb_connection):
     assert df["study_alias"].tolist()[0] == "GSE56924"
 
 
+def test_gsm_to_gse_multiple_gses(sraweb_connection):
+    """Test GSM that maps to multiple GSE accessions (GSM7430904 -> GSE233587, GSE234305)"""
+    df = sraweb_connection.gsm_to_gse("GSM7430904")
+    assert isinstance(df, pd.DataFrame)
+    assert not df.empty
+    assert "study_alias" in df.columns
+    assert "study_accession" in df.columns
+    study_aliases = df["study_alias"].tolist()
+    assert len(study_aliases) >= 2
+    study_aliases = df["study_alias"].tolist()
+    expected_gses = {"GSE233587", "GSE234305"}
+    actual_gses = set(study_aliases)
+    assert expected_gses.issubset(
+        actual_gses
+    ), f"Expected {expected_gses} to be subset of {actual_gses}"
+
+    assert "GSE234305" in study_aliases
+
+
 def test_gsm_to_srr(sraweb_connection):
     """Test if gsm is converted to srr correctly"""
     df = sraweb_connection.gsm_to_srr("GSM1371489")
@@ -265,6 +284,29 @@ def test_gse_to_srp3(sraweb_connection):
     assert df["study_accession"].tolist()[0] == "SRP093251"
 
 
+def test_gse_to_srp_multiple_srps(sraweb_connection):
+    """Test GSE that maps to multiple SRP accessions (GSE234305 -> SRP411077, SRP439808)"""
+    df = sraweb_connection.gse_to_srp("GSE234305")
+    assert isinstance(df, pd.DataFrame)
+    assert not df.empty
+    assert "study_alias" in df.columns
+    assert "study_accession" in df.columns
+
+    # Check that GSE234305 maps to the expected SRPs
+    study_aliases = df["study_alias"].tolist()
+    study_accessions = df["study_accession"].tolist()
+
+    assert "GSE234305" in study_aliases
+    # Should map to multiple SRPs
+    assert len(set(study_accessions)) >= 2
+    # Check for the known SRP accessions
+    expected_srps = {"SRP411077", "SRP439808"}
+    actual_srps = set(study_accessions)
+    assert expected_srps.issubset(
+        actual_srps
+    ), f"Expected {expected_srps} to be subset of {actual_srps}"
+
+
 def test_fetch_bioproject_pmids(sraweb_connection):
     """Test fetching PMIDs for BioProject accessions"""
     # Use a known BioProject that should have publications
@@ -287,18 +329,18 @@ def test_fetch_bioproject_pmids_multiple(sraweb_connection):
 
 
 def test_sra_to_pmid(sraweb_connection):
-    """Test SRA to PMID functionality"""
+    """Test SRA to PMID functionality (backward compatibility)"""
     df = sraweb_connection.sra_to_pmid("SRP002605")
     assert isinstance(df, pd.DataFrame)
-    required_columns = {"sra_accession", "bioproject", "pmid"}
+    required_columns = {"srp_accession", "bioproject", "pmid"}
     assert required_columns.issubset(set(df.columns))
 
 
 def test_srp_to_pmid(sraweb_connection):
-    """Test SRP to PMID convenience method"""
+    """Test SRP to PMID main method"""
     df = sraweb_connection.srp_to_pmid("SRP002605")
     assert isinstance(df, pd.DataFrame)
-    assert "sra_accession" in df.columns
+    assert "srp_accession" in df.columns
     assert "pmid" in df.columns
 
 
@@ -306,12 +348,39 @@ def test_srr_to_pmid(sraweb_connection):
     """Test SRR to PMID convenience method"""
     df = sraweb_connection.srr_to_pmid("SRR057511")
     assert isinstance(df, pd.DataFrame)
-    assert "sra_accession" in df.columns
+    assert "srp_accession" in df.columns
     assert "pmid" in df.columns
 
 
 def test_sra_to_pmid_multiple(sraweb_connection):
-    """Test SRA to PMID with multiple accessions"""
+    """Test SRA to PMID with multiple accessions (backward compatibility)"""
     df = sraweb_connection.sra_to_pmid(["SRP002605", "SRP016501"])
     assert isinstance(df, pd.DataFrame)
     assert len(df) >= 2  # Should have at least one row per input SRA
+
+
+def test_srp_to_pmid_multiple(sraweb_connection):
+    """Test SRP to PMID with multiple accessions"""
+    df = sraweb_connection.srp_to_pmid(["SRP002605", "SRP016501"])
+    assert isinstance(df, pd.DataFrame)
+    assert len(df) >= 2  # Should have at least one row per input SRP
+    assert "srp_accession" in df.columns
+    assert "pmid" in df.columns
+
+
+def test_gse_to_pmid(sraweb_connection):
+    """Test GSE to PMID functionality"""
+    df = sraweb_connection.gse_to_pmid("GSE253406")
+    assert isinstance(df, pd.DataFrame)
+    assert not df.empty
+    required_columns = {"gse_accession", "pmid"}
+    assert required_columns.issubset(df.columns)
+
+
+def test_gse_to_pmid_multiple(sraweb_connection):
+    """Test GSE to PMID with multiple accessions"""
+    df = sraweb_connection.gse_to_pmid(["GSE253406", "GSE168776"])
+    assert isinstance(df, pd.DataFrame)
+    assert len(df) >= 2  # Should have one row per input GSE
+    assert "gse_accession" in df.columns
+    assert "pmid" in df.columns

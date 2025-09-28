@@ -21,7 +21,7 @@ guide](https://www.saket-choudhary.me/pysradb/quickstart.html).
 
     $ pysradb
      usage: pysradb [-h] [--version] [--citation]
-                    {metadata,download,search,gse-to-gsm,gse-to-srp,gsm-to-gse,gsm-to-srp,gsm-to-srr,gsm-to-srs,gsm-to-srx,srp-to-gse,srp-to-srr,srp-to-srs,srp-to-srx,srr-to-gsm,srr-to-srp,srr-to-srs,srr-to-srx,srs-to-gsm,srs-to-srx,srx-to-srp,srx-to-srr,srx-to-srs,sra-to-pmid}
+                    {metadata,download,search,gse-to-gsm,gse-to-srp,gsm-to-gse,gsm-to-srp,gsm-to-srr,gsm-to-srs,gsm-to-srx,srp-to-gse,srp-to-srr,srp-to-srs,srp-to-srx,srr-to-gsm,srr-to-srp,srr-to-srs,srr-to-srx,srs-to-gsm,srs-to-srx,srx-to-srp,srx-to-srr,srx-to-srs,srp-to-pmid,gse-to-pmid}
                     ...
 
      pysradb: Query NGS metadata and data from NCBI Sequence Read Archive.
@@ -34,7 +34,7 @@ guide](https://www.saket-choudhary.me/pysradb/quickstart.html).
        --citation            how to cite
 
      subcommands:
-       {metadata,download,search,gse-to-gsm,gse-to-srp,gsm-to-gse,gsm-to-srp,gsm-to-srr,gsm-to-srs,gsm-to-srx,srp-to-gse,srp-to-srr,srp-to-srs,srp-to-srx,srr-to-gsm,srr-to-srp,srr-to-srs,srr-to-srx,srs-to-gsm,srs-to-srx,srx-to-srp,srx-to-srr,srx-to-srs,sra-to-pmid}
+       {metadata,download,search,gse-to-gsm,gse-to-srp,gsm-to-gse,gsm-to-srp,gsm-to-srr,gsm-to-srs,gsm-to-srx,srp-to-gse,srp-to-srr,srp-to-srs,srp-to-srx,srr-to-gsm,srr-to-srp,srr-to-srs,srr-to-srx,srs-to-gsm,srs-to-srx,srx-to-srp,srx-to-srr,srx-to-srs,srp-to-pmid,gse-to-pmid}
          metadata            Fetch metadata for SRA project (SRPnnnn)
          download            Download SRA project (SRPnnnn)
          search              Search SRA/ENA for matching text
@@ -58,7 +58,8 @@ guide](https://www.saket-choudhary.me/pysradb/quickstart.html).
          srx-to-srp          Get SRP for a SRX
          srx-to-srr          Get SRR for a SRX
          srx-to-srs          Get SRS for a SRX
-         sra-to-pmid         Get PMIDs for SRA accessions
+         srp-to-pmid         Get PMIDs for SRP accessions
+         gse-to-pmid         Get PMIDs for GSE accessions
 
 ## Quickstart
 
@@ -110,7 +111,7 @@ environment with a lot of pre-installed packages, conda might be
 Please consider creating a new enviroment for `pysradb`:
 
 ```bash
-conda create -c bioconda -n pysradb PYTHON=3.10 pysradb
+conda create -c bioconda -n pysradb PYTHON=3.13 pysradb
 ```
 
 ### Dependencies
@@ -193,12 +194,19 @@ conda create -c bioconda -n pysradb PYTHON=3.10 pysradb
     experiment_alias run_accession
     GSM2177186       SRR3587529
 
-### Converting SRA to PMID
+### Converting SRP to PMID
 
-    $ pysradb sra-to-pmid SRR3587529
+    $ pysradb srp-to-pmid SRP045778
 
-    sra_accession pmid
-    SRR3587529    27373336
+    srp_accession bioproject pmid
+    SRP045778     PRJNA257197 27373336
+
+### Converting GSE to PMID
+
+    $ pysradb gse-to-pmid GSE253406
+
+    gse_accession pmid
+    GSE253406     39528918
 
 ### Downloading supplementary files from GEO
 
@@ -269,6 +277,4 @@ Zenodo DOI: 10.5281/zenodo.2306881
 
 ## Questions?
 
-Open an [issue](https://github.com/saketkc/pysradb/issues) or join our
-[Slack
-Channel](https://join.slack.com/t/pysradb/shared_invite/zt-f01jndpy-KflPu3Be5Aq3FzRh5wj1Ug).
+Open an [issue](https://github.com/saketkc/pysradb/issues).
