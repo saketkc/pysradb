@@ -159,20 +159,15 @@ def test_gsm_to_gse_multiple_gses(sraweb_connection):
     assert not df.empty
     assert "study_alias" in df.columns
     assert "study_accession" in df.columns
-
-    # Check that GSM7430904 maps to the expected GSEs
     study_aliases = df["study_alias"].tolist()
-
-    # Should map to multiple GSEs
     assert len(study_aliases) >= 2
-    # Check for the known GSE accessions
+    study_aliases = df["study_alias"].tolist()
     expected_gses = {"GSE233587", "GSE234305"}
     actual_gses = set(study_aliases)
     assert expected_gses.issubset(
         actual_gses
     ), f"Expected {expected_gses} to be subset of {actual_gses}"
 
-    # Verify that GSE234305 is specifically included (this was the original issue)
     assert "GSE234305" in study_aliases
 
 
