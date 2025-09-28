@@ -59,7 +59,7 @@ guide](https://www.saket-choudhary.me/pysradb/quickstart.html).
          srx-to-srr          Get SRR for a SRX
          srx-to-srs          Get SRS for a SRX
          srp-to-pmid         Get PMIDs for SRP accessions
-        gse-to-pmid         Get PMIDs for GSE accessions
+         gse-to-pmid         Get PMIDs for GSE accessions
 
 ## Quickstart
 
@@ -111,7 +111,7 @@ environment with a lot of pre-installed packages, conda might be
 Please consider creating a new enviroment for `pysradb`:
 
 ```bash
-conda create -c bioconda -n pysradb PYTHON=3.10 pysradb
+conda create -c bioconda -n pysradb PYTHON=3.13 pysradb
 ```
 
 ### Dependencies
@@ -277,6 +277,4 @@ Zenodo DOI: 10.5281/zenodo.2306881
 
 ## Questions?
 
-Open an [issue](https://github.com/saketkc/pysradb/issues) or join our
-[Slack
-Channel](https://join.slack.com/t/pysradb/shared_invite/zt-f01jndpy-KflPu3Be5Aq3FzRh5wj1Ug).
+Open an [issue](https://github.com/saketkc/pysradb/issues).
