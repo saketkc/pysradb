@@ -1,5 +1,9 @@
 # History
 
+# 2.4.1 (2025-09-27)
+
+- Add gse-to-pmid conversion [#241](https://github.com/saketkc/pysradb/pull/244).
+
 # 2.4.0 (2025-09-27)
 
 - Add sra-to-pmid conversion [#241](https://github.com/saketkc/pysradb/pull/241). Thanks [@andrewdavidsmith](https://github.com/andrewdavidsmith) for the idea.
