@@ -292,13 +292,12 @@ class SRAweb(SRAdb):
             request = requests.post(self.base_url["esearch"], data=OrderedDict(payload))
             try:
                 esearch_response = request.json()
-            except JSONDecodeError:
-                sys.stderr.write(
-                    "Unable to parse esummary response json: {}{}. Aborting.".format(
-                        request.text, os.linesep
-                    )
+            except JSONDecodeError as e:
+                error_msg = "Unable to parse esummary response json: {}{}. Aborting.".format(
+                    request.text, os.linesep
                 )
-                sys.exit(1)
+                sys.stderr.write(error_msg)
+                raise ValueError(error_msg) from e
 
             # retry again
 
@@ -384,8 +383,9 @@ class SRAweb(SRAdb):
                     retry_after = request.headers["Retry-After"]
                 except KeyError:
                     if request_json["error"] == "error forwarding request":
-                        sys.stderr.write("Encountered error while making request.\n")
-                        sys.exit(1)
+                        error_msg = "Encountered error while making request.\n"
+                        sys.stderr.write(error_msg)
+                        raise RuntimeError(error_msg.strip())
                 time.sleep(int(retry_after))
                 # try again
                 request = requests.get(
@@ -406,18 +406,16 @@ class SRAweb(SRAdb):
 
                 exp_response = xml_response.get("EXPERIMENT_PACKAGE_SET", {})
                 response = exp_response.get("EXPERIMENT_PACKAGE", {})
-            except ExpatError:
-                sys.stderr.write(
-                    "Unable to parse xml: {}{}".format(request_text, os.linesep)
-                )
-                sys.exit(1)
+            except ExpatError as e:
+                error_msg = "Unable to parse xml: {}{}".format(request_text, os.linesep)
+                sys.stderr.write(error_msg)
+                raise ValueError(error_msg.strip()) from e
             if not response:
-                sys.stderr.write(
-                    "Unable to parse xml response. Received: {}{}".format(
-                        xml_response, os.linesep
-                    )
+                error_msg = "Unable to parse xml response. Received: {}{}".format(
+                    xml_response, os.linesep
                 )
-                sys.exit(1)
+                sys.stderr.write(error_msg)
+                raise ValueError(error_msg.strip())
             if retstart == 0:
                 results = response
             else:
