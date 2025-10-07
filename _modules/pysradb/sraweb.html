@@ -786,8 +786,10 @@
             <span class="k">try</span><span class="p">:</span>
                 <span class="n">esearch_response</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
             <span class="k">except</span> <span class="n">JSONDecodeError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-                <span class="n">error_msg</span> <span class="o">=</span> <span class="s2">&quot;Unable to parse esummary response json: </span><span class="si">{}{}</span><span class="s2">. Aborting.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-                    <span class="n">request</span><span class="o">.</span><span class="n">text</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">linesep</span>
+                <span class="n">error_msg</span> <span class="o">=</span> <span class="p">(</span>
+                    <span class="s2">&quot;Unable to parse esummary response json: </span><span class="si">{}{}</span><span class="s2">. Aborting.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                        <span class="n">request</span><span class="o">.</span><span class="n">text</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">linesep</span>
+                    <span class="p">)</span>
                 <span class="p">)</span>
                 <span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">error_msg</span><span class="p">)</span>
                 <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">error_msg</span><span class="p">)</span> <span class="kn">from</span><span class="w"> </span><span class="nn">e</span>
