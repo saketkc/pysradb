@@ -507,7 +507,7 @@
 
     <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">download_location</span><span class="p">)</span> <span class="ow">and</span> <span class="n">overwrite</span> <span class="ow">is</span> <span class="kc">False</span><span class="p">:</span>
         <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span>
-            <span class="s2">&quot;</span><span class="si">{}</span><span class="s2"> already exists! Set `overwrite=True` to redownload.&quot;</span><span class="o">.</span><span class="n">forma</span><span class="p">(</span>
+            <span class="s2">&quot;</span><span class="si">{}</span><span class="s2"> already exists! Set `overwrite=True` to redownload.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
                 <span class="n">download_location</span>
             <span class="p">)</span>
         <span class="p">)</span>
