@@ -293,8 +293,10 @@ class SRAweb(SRAdb):
             try:
                 esearch_response = request.json()
             except JSONDecodeError as e:
-                error_msg = "Unable to parse esummary response json: {}{}. Aborting.".format(
-                    request.text, os.linesep
+                error_msg = (
+                    "Unable to parse esummary response json: {}{}. Aborting.".format(
+                        request.text, os.linesep
+                    )
                 )
                 sys.stderr.write(error_msg)
                 raise ValueError(error_msg) from e
