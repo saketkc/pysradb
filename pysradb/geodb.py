@@ -34,7 +34,7 @@ def download_geodb_file(download_dir=os.getcwd(), overwrite=True):
 
     if os.path.isfile(download_location) and overwrite is False:
         raise RuntimeError(
-            "{} already exists! Set `overwrite=True` to redownload.".forma(
+            "{} already exists! Set `overwrite=True` to redownload.".format(
                 download_location
             )
         )
