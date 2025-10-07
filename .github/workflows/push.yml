@@ -3,8 +3,7 @@ name: push
 on: [push]
 
 jobs:
-  build:
-
+  test:
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -38,12 +37,22 @@ jobs:
         pytest
         make coverage
         codecov
+
+  docs:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Python 3.11
+      uses: actions/setup-python@v1
+      with:
+        python-version: '3.11'
     - uses: ammaraskar/sphinx-action@master
       with:
         pre-build-command: "pip install -r requirements.txt && pip install . && pip install sphinx myst-parser && pip install sphinxcontrib-gtagjs ipython numpydoc sphinx-tabs sphinx_rtd_theme nbsphinx ipython pydata-sphinx-theme nbsphinx-link sphinx-panels"
         docs-folder: "docs/"
     - name: Deploy
       uses: peaceiris/actions-gh-pages@v3
+      if: github.ref == 'refs/heads/develop'
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
         publish_dir: ./docs/_build/html/

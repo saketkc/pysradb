@@ -3,8 +3,7 @@ name: pull_request
 on: [pull_request]
 
 jobs:
-  build:
-
+  test:
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -38,6 +37,15 @@ jobs:
         pytest
         make coverage
         codecov
+
+  docs:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Python 3.11
+      uses: actions/setup-python@v1
+      with:
+        python-version: '3.11'
     - uses: ammaraskar/sphinx-action@master
       with:
         pre-build-command: "pip install -r requirements.txt && pip install . && pip install -U sphinx myst-parser && pip install sphinxcontrib-gtagjs ipython numpydoc sphinx-tabs sphinx_rtd_theme nbsphinx ipython pydata-sphinx-theme nbsphinx-link sphinx-panels"
