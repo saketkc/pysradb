@@ -52,6 +52,14 @@ pysradb.geodb module
    :undoc-members:
    :show-inheritance:
 
+pysradb.geoweb module
+---------------------
+
+.. automodule:: pysradb.geoweb
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 pysradb.search module
 ---------------------
 

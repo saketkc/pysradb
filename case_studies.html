@@ -1,13 +1,12 @@
 
-
 <!DOCTYPE html>
 
 
-<html lang="en" >
+<html lang="en" data-content_root="./" >
 
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
         <script async src="https://www.googletagmanager.com/gtag/js?id=G-CKQZFCEENZ"></script>
         <script>
@@ -19,48 +18,50 @@
             
         </script>
     
-    <title>Case Studies &#8212; pysradb 2.1.0 documentation</title>
+    <title>Case Studies &#8212; pysradb 2.4.1 documentation</title>
   
   
   
   <script data-cfasync="false">
     document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
-    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
   </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="_static/styles/theme.css?digest=e353d410970836974a52" rel="stylesheet" />
-<link href="_static/styles/bootstrap.css?digest=e353d410970836974a52" rel="stylesheet" />
-<link href="_static/styles/pydata-sphinx-theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+  <link href="_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
 
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="_static/graphviz.css?v=4ae1632d" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-dropdown.css?v=995e94df" />
+    <link rel="stylesheet" type="text/css" href="_static/panels-bootstrap.min.css?v=21c0b90a" />
   
-  <link href="_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=e353d410970836974a52" rel="stylesheet" />
-  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
-<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
-<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
-
-    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="_static/graphviz.css" />
-    <link rel="stylesheet" type="text/css" href="_static/tabs.css" />
-    <link rel="stylesheet" type="text/css" href="_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
-    <link rel="stylesheet" type="text/css" href="_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
-  
+  <!-- So that users can add custom icons -->
+  <script src="_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=e353d410970836974a52" />
-<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52" />
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
-    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
-    <script src="_static/jquery.js"></script>
-    <script src="_static/underscore.js"></script>
-    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
-    <script src="_static/doctools.js"></script>
-    <script src="_static/sphinx_highlight.js"></script>
+    <script src="_static/documentation_options.js?v=e9ebdb8f"></script>
+    <script src="_static/doctools.js?v=9bcbadda"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'case_studies';</script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="API Documentation" href="commands.html" />
     <link rel="prev" title="Python API" href="python-api-usage.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="2.4.1" />
   </head>
   
   
@@ -68,23 +69,16 @@
 
   
   
-  <a class="skip-link" href="#main-content">Skip to main content</a>
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
   
-  <input type="checkbox"
-          class="sidebar-toggle"
-          name="__primary"
-          id="__primary"/>
-  <label class="overlay overlay-primary" for="__primary"></label>
+  <div id="pst-scroll-pixel-helper"></div>
   
-  <input type="checkbox"
-          class="sidebar-toggle"
-          name="__secondary"
-          id="__secondary"/>
-  <label class="overlay overlay-secondary" for="__secondary"></label>
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
   
-  <div class="search-button__wrapper">
-    <div class="search-button__overlay"></div>
-    <div class="search-button__search-container">
+  <dialog id="pst-search-dialog">
+    
 <form class="bd-search d-flex align-items-center"
       action="search.html"
       method="get">
@@ -92,7 +86,6 @@
   <input type="search"
          class="form-control"
          name="q"
-         id="search-input"
          placeholder="Search the docs ..."
          aria-label="Search the docs ..."
          autocomplete="off"
@@ -100,18 +93,27 @@
          autocapitalize="off"
          spellcheck="false"/>
   <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
-</form></div>
-  </div>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
   
-    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
 <div class="bd-header__inner bd-page-width">
-  <label class="sidebar-toggle primary-toggle" for="__primary">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
     <span class="fa-solid fa-bars"></span>
-  </label>
+  </button>
   
-  <div class="navbar-header-items__start">
+  
+  <div class="col-lg-3 navbar-header-items__start">
     
       <div class="navbar-item">
+
+  
+    
   
 
 <a class="navbar-brand logo" href="index.html">
@@ -119,109 +121,106 @@
   
   
   
+  
     
     
       
     
     
-    <img src="_static/pysradb_v3.png" class="logo__image only-light" alt="Logo image"/>
-    <script>document.write(`<img src="_static/pysradb_v3.png" class="logo__image only-dark" alt="Logo image"/>`);</script>
+    <img src="_static/pysradb_v3.png" class="logo__image only-light" alt="pysradb 2.4.1 documentation - Home"/>
+    <img src="_static/pysradb_v3.png" class="logo__image only-dark pst-js-only" alt="pysradb 2.4.1 documentation - Home"/>
   
   
 </a></div>
     
   </div>
   
-  
   <div class="col-lg-9 navbar-header-items">
     
     <div class="me-auto navbar-header-items__center">
       
-        <div class="navbar-item"><nav class="navbar-nav">
-  <p class="sidebar-header-items__title"
-     role="heading"
-     aria-level="1"
-     aria-label="Site Navigation">
-    Site Navigation
-  </p>
+        <div class="navbar-item">
+<nav>
   <ul class="bd-navbar-elements navbar-nav">
     
-                    <li class="nav-item">
-                      <a class="nav-link nav-internal" href="installation.html">
-                        Installation
-                      </a>
-                    </li>
-                
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="installation.html">
+    Installation
+  </a>
+</li>
 
-                    <li class="nav-item">
-                      <a class="nav-link nav-internal" href="quickstart.html">
-                        Quickstart
-                      </a>
-                    </li>
-                
 
-                    <li class="nav-item">
-                      <a class="nav-link nav-internal" href="cmdline.html">
-                        CLI
-                      </a>
-                    </li>
-                
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="quickstart.html">
+    Quickstart
+  </a>
+</li>
 
-                    <li class="nav-item">
-                      <a class="nav-link nav-internal" href="python-api-usage.html">
-                        Python API
-                      </a>
-                    </li>
-                
 
-                    <li class="nav-item current active">
-                      <a class="nav-link nav-internal" href="#">
-                        Case Studies
-                      </a>
-                    </li>
-                
-            <div class="nav-item dropdown">
-                <button class="btn dropdown-toggle nav-item" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="cmdline.html">
+    CLI
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="python-api-usage.html">
+    Python API
+  </a>
+</li>
+
+
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="#">
+    Case Studies
+  </a>
+</li>
+
+            <li class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button"
+                data-bs-toggle="dropdown" aria-expanded="false"
+                aria-controls="pst-nav-more-links">
                     More
                 </button>
-                <div class="dropdown-menu">
+                <ul id="pst-nav-more-links" class="dropdown-menu">
                     
-                    <li class="nav-item">
-                      <a class="nav-link nav-internal" href="commands.html">
-                        API Documentation
-                      </a>
-                    </li>
-                
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="commands.html">
+    API Documentation
+  </a>
+</li>
 
-                    <li class="nav-item">
-                      <a class="nav-link nav-internal" href="contributing.html">
-                        Contributing
-                      </a>
-                    </li>
-                
 
-                    <li class="nav-item">
-                      <a class="nav-link nav-internal" href="authors.html">
-                        Credits
-                      </a>
-                    </li>
-                
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="contributing.html">
+    Contributing
+  </a>
+</li>
 
-                    <li class="nav-item">
-                      <a class="nav-link nav-internal" href="history.html">
-                        History
-                      </a>
-                    </li>
-                
 
-                    <li class="nav-item">
-                      <a class="nav-link nav-internal" href="modules.html">
-                        pysradb
-                      </a>
-                    </li>
-                
-                </div>
-            </div>
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="authors.html">
+    Credits
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="history.html">
+    History
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="modules.html">
+    pysradb
+  </a>
+</li>
+
+                </ul>
+            </li>
             
   </ul>
 </nav></div>
@@ -233,28 +232,24 @@
       
         <div class="navbar-item navbar-persistent--container">
           
-<script>
-document.write(`
-  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <i class="fa-solid fa-magnifying-glass"></i>
-  </button>
-`);
-</script>
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
         </div>
       
       
         <div class="navbar-item">
-<script>
-document.write(`
-  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
-    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
-    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
-  </button>
-`);
-</script></div>
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
       
-        <div class="navbar-item"><ul class="navbar-icon-links navbar-nav"
+        <div class="navbar-item"><ul class="navbar-icon-links"
     aria-label="Icon Links">
         <li class="nav-item">
           
@@ -265,8 +260,8 @@ document.write(`
           
           
           
-          <a href="https://github.com/saketkc/pysradb" title="GitHub" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fa-brands fa-square-github"></i></span>
-            <label class="sr-only">GitHub</label></a>
+          <a href="https://github.com/saketkc/pysradb" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
         </li>
 </ul></div>
       
@@ -276,29 +271,32 @@ document.write(`
   
   
     <div class="navbar-persistent--mobile">
-<script>
-document.write(`
-  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <i class="fa-solid fa-magnifying-glass"></i>
-  </button>
-`);
-</script>
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
     </div>
   
 
   
-    <label class="sidebar-toggle secondary-toggle" for="__secondary">
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
       <span class="fa-solid fa-outdent"></span>
-    </label>
+    </button>
   
 </div>
 
-    </nav>
+    </header>
   
+
   <div class="bd-container">
     <div class="bd-container__inner bd-page-width">
       
-      <div class="bd-sidebar-primary bd-sidebar hide-on-wide">
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
         
 
   
@@ -307,94 +305,84 @@ document.write(`
     
       <div class="sidebar-header-items__center">
         
-          <div class="navbar-item"><nav class="navbar-nav">
-  <p class="sidebar-header-items__title"
-     role="heading"
-     aria-level="1"
-     aria-label="Site Navigation">
-    Site Navigation
-  </p>
+          
+          
+            <div class="navbar-item">
+<nav>
   <ul class="bd-navbar-elements navbar-nav">
     
-                    <li class="nav-item">
-                      <a class="nav-link nav-internal" href="installation.html">
-                        Installation
-                      </a>
-                    </li>
-                
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="installation.html">
+    Installation
+  </a>
+</li>
 
-                    <li class="nav-item">
-                      <a class="nav-link nav-internal" href="quickstart.html">
-                        Quickstart
-                      </a>
-                    </li>
-                
 
-                    <li class="nav-item">
-                      <a class="nav-link nav-internal" href="cmdline.html">
-                        CLI
-                      </a>
-                    </li>
-                
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="quickstart.html">
+    Quickstart
+  </a>
+</li>
 
-                    <li class="nav-item">
-                      <a class="nav-link nav-internal" href="python-api-usage.html">
-                        Python API
-                      </a>
-                    </li>
-                
 
-                    <li class="nav-item current active">
-                      <a class="nav-link nav-internal" href="#">
-                        Case Studies
-                      </a>
-                    </li>
-                
-            <div class="nav-item dropdown">
-                <button class="btn dropdown-toggle nav-item" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    More
-                </button>
-                <div class="dropdown-menu">
-                    
-                    <li class="nav-item">
-                      <a class="nav-link nav-internal" href="commands.html">
-                        API Documentation
-                      </a>
-                    </li>
-                
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="cmdline.html">
+    CLI
+  </a>
+</li>
 
-                    <li class="nav-item">
-                      <a class="nav-link nav-internal" href="contributing.html">
-                        Contributing
-                      </a>
-                    </li>
-                
 
-                    <li class="nav-item">
-                      <a class="nav-link nav-internal" href="authors.html">
-                        Credits
-                      </a>
-                    </li>
-                
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="python-api-usage.html">
+    Python API
+  </a>
+</li>
 
-                    <li class="nav-item">
-                      <a class="nav-link nav-internal" href="history.html">
-                        History
-                      </a>
-                    </li>
-                
 
-                    <li class="nav-item">
-                      <a class="nav-link nav-internal" href="modules.html">
-                        pysradb
-                      </a>
-                    </li>
-                
-                </div>
-            </div>
-            
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="#">
+    Case Studies
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="commands.html">
+    API Documentation
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="contributing.html">
+    Contributing
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="authors.html">
+    Credits
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="history.html">
+    History
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="modules.html">
+    pysradb
+  </a>
+</li>
+
   </ul>
 </nav></div>
+          
         
       </div>
     
@@ -403,17 +391,14 @@ document.write(`
       <div class="sidebar-header-items__end">
         
           <div class="navbar-item">
-<script>
-document.write(`
-  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
-    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
-    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
-  </button>
-`);
-</script></div>
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
         
-          <div class="navbar-item"><ul class="navbar-icon-links navbar-nav"
+          <div class="navbar-item"><ul class="navbar-icon-links"
     aria-label="Icon Links">
         <li class="nav-item">
           
@@ -424,8 +409,8 @@ document.write(`
           
           
           
-          <a href="https://github.com/saketkc/pysradb" title="GitHub" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fa-brands fa-square-github"></i></span>
-            <label class="sr-only">GitHub</label></a>
+          <a href="https://github.com/saketkc/pysradb" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
         </li>
 </ul></div>
         
@@ -433,39 +418,51 @@ document.write(`
     
   </div>
   
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+<nav class="bd-docs-nav bd-links"
+     aria-label="Section Navigation">
+  <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
+  <div class="bd-toc-item navbar-nav"></div>
+</nav></div>
+    </div>
+  
   
   <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
   </div>
-  
-  <div id="rtd-footer-container"></div>
 
 
       </div>
       
-      <main id="main-content" class="bd-main">
+      <main id="main-content" class="bd-main" role="main">
         
         
           <div class="bd-content">
             <div class="bd-article-container">
               
-              <div class="bd-header-article">
+              <div class="bd-header-article d-print-none">
 <div class="header-article-items header-article__inner">
   
     <div class="header-article-items__start">
       
         <div class="header-article-item">
 
-
-
-<nav aria-label="Breadcrumbs">
-  <ul class="bd-breadcrumbs" role="navigation" aria-label="Breadcrumb">
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
     
     <li class="breadcrumb-item breadcrumb-home">
       <a href="index.html" class="nav-link" aria-label="Home">
         <i class="fa-solid fa-home"></i>
       </a>
     </li>
-    <li class="breadcrumb-item active" aria-current="page">Case Studies</li>
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">Case Studies</span></li>
   </ul>
 </nav>
 </div>
@@ -480,74 +477,79 @@ document.write(`
               
                 
 <div id="searchbox"></div>
-                <article class="bd-article" role="main">
+                <article class="bd-article">
                   
   <section id="case-studies">
-<span id="usagescenarios"></span><h1>Case Studies<a class="headerlink" href="#case-studies" title="Permalink to this heading">#</a></h1>
+<h1>Case Studies<a class="headerlink" href="#case-studies" title="Link to this heading">#</a></h1>
 <section id="case-study-1">
-<h2>Case Study 1<a class="headerlink" href="#case-study-1" title="Permalink to this heading">#</a></h2>
-<p>Consider a scenario where somone is interested in searching for single-cell
-RNA-seq datasets. In particular, the interest is in studying retina:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ pysradb search --query &quot;single-cell rna-seq retina&quot;
+<h2>Case Study 1<a class="headerlink" href="#case-study-1" title="Link to this heading">#</a></h2>
+<p>Consider a scenario where somone is interested in searching for
+single-cell RNA-seq datasets. In particular, the interest is in studying
+retina:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>$ pysradb search --query &quot;single-cell rna-seq retina&quot;
 
- study_accession     experiment_accession    experiment_title        sample_taxon_id sample_scientific_name  experiment_library_strategy     experiment_library_source       experiment_library_selection    sample_accession        sample_alias    experiment_instrument_model     pool_member_spots       run_1_size      run_1_accession run_1_total_spots       run_1_total_bases
- SRP299803   SRX9756769      GSM4995565: scATAC_Retina_WT; Mus musculus; ATAC-seq    10090   Mus musculus    ATAC-seq        GENOMIC other   SRS7946094      GSM4995565      Illumina NovaSeq 6000   55435867        2637580797      SRR13329759     55435867        6874047508
- SRP299803   SRX9756768      GSM4995564: scRNA_Retina_VSX2SEKO_Rep2; Mus musculus; RNA-Seq   10090   Mus musculus    RNA-Seq TRANSCRIPTOMIC  cDNA    SRS7946093      GSM4995564      Illumina NovaSeq 6000   96123725        4107807391      SRR13329758     96123725        12688331700
- SRP299803   SRX9756767      GSM4995563: scRNA_Retina_VSX2SEKO_Rep1; Mus musculus; RNA-Seq   10090   Mus musculus    RNA-Seq TRANSCRIPTOMIC  cDNA    SRS7946092      GSM4995563      Illumina NovaSeq 6000   94345783        4056010488      SRR13329757     94345783        12453643356
- SRP299803   SRX9756766      GSM4995562: scRNA_Retina_WT_Rep2; Mus musculus; RNA-Seq 10090   Mus musculus    RNA-Seq TRANSCRIPTOMIC  cDNA    SRS7946091      GSM4995562      Illumina NovaSeq 6000   99487074        4240172698      SRR13329756     99487074        13132293768
- SRP299803   SRX9756765      GSM4995561: scRNA_Retina_WT_Rep1; Mus musculus; RNA-Seq 10090   Mus musculus    RNA-Seq TRANSCRIPTOMIC  cDNA    SRS7946090      GSM4995561      Illumina NovaSeq 6000   88048461        3817540828      SRR13329755     88048461        11622396852
- SRP257758   SRX9537754      GSM4916438: Pou4f2-tdTomato/+ E17.5 scRNA-seq; Mus musculus; RNA-Seq    10090   Mus musculus    RNA-Seq TRANSCRIPTOMIC  cDNA    SRS7743995      GSM4916438      Illumina HiSeq 2500     364683840       8246658699      SRR13091939     364683840       32456861760
- SRP257758   SRX9537753      GSM4916437: Atoh7-zsGreen/lacZ E17.5 scRNA-seq; Mus musculus; RNA-Seq   10090   Mus musculus    RNA-Seq TRANSCRIPTOMIC  cDNA    SRS7743994      GSM4916437      Illumina HiSeq 2500     530456067       11895864680     SRR13091938     530456067       47210589963
- SRP257758   SRX9537752      GSM4916436: Atoh7-zsGreen/+ E17.5 scRNA-seq; Mus musculus; RNA-Seq      10090   Mus musculus    RNA-Seq TRANSCRIPTOMIC  cDNA    SRS7743993      GSM4916436      Illumina HiSeq 2500     389849416       8671923722      SRR13091937     389849416       34696598024
- SRP257758   SRX9537751      GSM4916435: Atoh7-zsGreen/lacZ E14.5 scRNA-seq; Mus musculus; RNA-Seq   10090   Mus musculus    RNA-Seq TRANSCRIPTOMIC  cDNA    SRS7743992      GSM4916435      Illumina HiSeq 2500     328878355       7875737709      SRR13091936     328878355       29270173595
- SRP257758   SRX9537750      GSM4916434: Atoh7-zsGreen/+ E14.5 scRNA-seq; Mus musculus; RNA-Seq      10090   Mus musculus    RNA-Seq TRANSCRIPTOMIC  cDNA    SRS7743991      GSM4916434      Illumina HiSeq 2500     522040155       12760941656     SRR13091935     522040155       46461573795
- ERP118072   ERX3614517      NextSeq 500 sequencing; 3&#39; mRNA-seq of protrusions and cell bodies of BJ, PC-3M, RPE-1, U-87 and WM-266.4 cells 9606    Homo sapiens    OTHER   TRANSCRIPTOMIC  Oligo-dT        ERS3920269      SAMEA6120013    NextSeq 500     5818488 43355751        ERR3619129      1457318 109897743
- ERP118072   ERX3614516      NextSeq 500 sequencing; 3&#39; mRNA-seq of protrusions and cell bodies of BJ, PC-3M, RPE-1, U-87 and WM-266.4 cells 9606    Homo sapiens    OTHER   TRANSCRIPTOMIC  Oligo-dT        ERS3920268      SAMEA6120012    NextSeq 500     5422441 40645479        ERR3619125      1359663 102468758
- SRP288715   SRX9369597      RPE1_SS119_p10  9606    Homo sapiens    OTHER   GENOMIC other   SRS7591452      RPE1_SS119_p10.bam      Illumina HiSeq 2000     5062938 88426773        SRR12904705     5062938 202517520
- SRP288715   SRX9369596      RPE1_SS119_p0   9606    Homo sapiens    OTHER   GENOMIC other   SRS7591451      RPE1_SS119_p0.bam       Illumina HiSeq 2000     978835  19219630        SRR12904706     978835  39153400
- SRP288715   SRX9369595      RPE1_SS111_p10  9606    Homo sapiens    OTHER   GENOMIC other   SRS7591450      RPE1_SS111_p10.bam      Illumina HiSeq 2000     6205827 108129733       SRR12904707     6205827 248233080
- SRP288715   SRX9369594      RPE1_SS111_p0   9606    Homo sapiens    OTHER   GENOMIC other   SRS7591449      RPE1_SS111_p0.bam       Illumina HiSeq 2000     928703  18488436        SRR12904708     928703  37148120
- SRP288715   SRX9369593      RPE1_SS51_p10   9606    Homo sapiens    OTHER   GENOMIC other   SRS7591448      RPE1_SS51_p10.bam       Illumina HiSeq 2000     6088168 106065537       SRR12904709     6088168 243526720
- SRP288715   SRX9369592      RPE1_SS51_p0    9606    Homo sapiens    OTHER   GENOMIC other   SRS7591447      RPE1_SS51_p0.bam        Illumina HiSeq 2000     1624227 30610200        SRR12904710     1624227 64969080
- SRP288715   SRX9369591      RPE1_SS48_p10   9606    Homo sapiens    OTHER   GENOMIC other   SRS7591446      RPE1_SS48_p10.bam       Illumina HiSeq 2000     8117881 139408135       SRR12904711     8117881 324715240
- SRP288715   SRX9369590      RPE1_SS48_p0    9606    Homo sapiens    OTHER   GENOMIC other   SRS7591445      RPE1_SS48_p0.bam        Illumina HiSeq 2000     776140  15821200        SRR12904712     776140  31045600
+ study_accession experiment_accession    experiment_title    sample_taxon_id sample_scientific_name  experiment_library_strategy experiment_library_source   experiment_library_selection    sample_accession    sample_alias    experiment_instrument_model pool_member_spots   run_1_size  run_1_accession run_1_total_spots   run_1_total_bases
+ SRP299803   SRX9756769  GSM4995565: scATAC_Retina_WT; Mus musculus; ATAC-seq    10090   Mus musculus    ATAC-seq    GENOMIC other   SRS7946094  GSM4995565  Illumina NovaSeq 6000   55435867    2637580797  SRR13329759 55435867    6874047508
+ SRP299803   SRX9756768  GSM4995564: scRNA_Retina_VSX2SEKO_Rep2; Mus musculus; RNA-Seq   10090   Mus musculus    RNA-Seq TRANSCRIPTOMIC  cDNA    SRS7946093  GSM4995564  Illumina NovaSeq 6000   96123725    4107807391  SRR13329758 96123725    12688331700
+ SRP299803   SRX9756767  GSM4995563: scRNA_Retina_VSX2SEKO_Rep1; Mus musculus; RNA-Seq   10090   Mus musculus    RNA-Seq TRANSCRIPTOMIC  cDNA    SRS7946092  GSM4995563  Illumina NovaSeq 6000   94345783    4056010488  SRR13329757 94345783    12453643356
+ SRP299803   SRX9756766  GSM4995562: scRNA_Retina_WT_Rep2; Mus musculus; RNA-Seq 10090   Mus musculus    RNA-Seq TRANSCRIPTOMIC  cDNA    SRS7946091  GSM4995562  Illumina NovaSeq 6000   99487074    4240172698  SRR13329756 99487074    13132293768
+ SRP299803   SRX9756765  GSM4995561: scRNA_Retina_WT_Rep1; Mus musculus; RNA-Seq 10090   Mus musculus    RNA-Seq TRANSCRIPTOMIC  cDNA    SRS7946090  GSM4995561  Illumina NovaSeq 6000   88048461    3817540828  SRR13329755 88048461    11622396852
+ SRP257758   SRX9537754  GSM4916438: Pou4f2-tdTomato/+ E17.5 scRNA-seq; Mus musculus; RNA-Seq    10090   Mus musculus    RNA-Seq TRANSCRIPTOMIC  cDNA    SRS7743995  GSM4916438  Illumina HiSeq 2500 364683840   8246658699  SRR13091939 364683840   32456861760
+ SRP257758   SRX9537753  GSM4916437: Atoh7-zsGreen/lacZ E17.5 scRNA-seq; Mus musculus; RNA-Seq   10090   Mus musculus    RNA-Seq TRANSCRIPTOMIC  cDNA    SRS7743994  GSM4916437  Illumina HiSeq 2500 530456067   11895864680 SRR13091938 530456067   47210589963
+ SRP257758   SRX9537752  GSM4916436: Atoh7-zsGreen/+ E17.5 scRNA-seq; Mus musculus; RNA-Seq  10090   Mus musculus    RNA-Seq TRANSCRIPTOMIC  cDNA    SRS7743993  GSM4916436  Illumina HiSeq 2500 389849416   8671923722  SRR13091937 389849416   34696598024
+ SRP257758   SRX9537751  GSM4916435: Atoh7-zsGreen/lacZ E14.5 scRNA-seq; Mus musculus; RNA-Seq   10090   Mus musculus    RNA-Seq TRANSCRIPTOMIC  cDNA    SRS7743992  GSM4916435  Illumina HiSeq 2500 328878355   7875737709  SRR13091936 328878355   29270173595
+ SRP257758   SRX9537750  GSM4916434: Atoh7-zsGreen/+ E14.5 scRNA-seq; Mus musculus; RNA-Seq  10090   Mus musculus    RNA-Seq TRANSCRIPTOMIC  cDNA    SRS7743991  GSM4916434  Illumina HiSeq 2500 522040155   12760941656 SRR13091935 522040155   46461573795
+ ERP118072   ERX3614517  NextSeq 500 sequencing; 3&#39; mRNA-seq of protrusions and cell bodies of BJ, PC-3M, RPE-1, U-87 and WM-266.4 cells 9606    Homo sapiens    OTHER   TRANSCRIPTOMIC  Oligo-dT    ERS3920269  SAMEA6120013    NextSeq 500 5818488 43355751    ERR3619129  1457318 109897743
+ ERP118072   ERX3614516  NextSeq 500 sequencing; 3&#39; mRNA-seq of protrusions and cell bodies of BJ, PC-3M, RPE-1, U-87 and WM-266.4 cells 9606    Homo sapiens    OTHER   TRANSCRIPTOMIC  Oligo-dT    ERS3920268  SAMEA6120012    NextSeq 500 5422441 40645479    ERR3619125  1359663 102468758
+ SRP288715   SRX9369597  RPE1_SS119_p10  9606    Homo sapiens    OTHER   GENOMIC other   SRS7591452  RPE1_SS119_p10.bam  Illumina HiSeq 2000 5062938 88426773    SRR12904705 5062938 202517520
+ SRP288715   SRX9369596  RPE1_SS119_p0   9606    Homo sapiens    OTHER   GENOMIC other   SRS7591451  RPE1_SS119_p0.bam   Illumina HiSeq 2000 978835  19219630    SRR12904706 978835  39153400
+ SRP288715   SRX9369595  RPE1_SS111_p10  9606    Homo sapiens    OTHER   GENOMIC other   SRS7591450  RPE1_SS111_p10.bam  Illumina HiSeq 2000 6205827 108129733   SRR12904707 6205827 248233080
+ SRP288715   SRX9369594  RPE1_SS111_p0   9606    Homo sapiens    OTHER   GENOMIC other   SRS7591449  RPE1_SS111_p0.bam   Illumina HiSeq 2000 928703  18488436    SRR12904708 928703  37148120
+ SRP288715   SRX9369593  RPE1_SS51_p10   9606    Homo sapiens    OTHER   GENOMIC other   SRS7591448  RPE1_SS51_p10.bam   Illumina HiSeq 2000 6088168 106065537   SRR12904709 6088168 243526720
+ SRP288715   SRX9369592  RPE1_SS51_p0    9606    Homo sapiens    OTHER   GENOMIC other   SRS7591447  RPE1_SS51_p0.bam    Illumina HiSeq 2000 1624227 30610200    SRR12904710 1624227 64969080
+ SRP288715   SRX9369591  RPE1_SS48_p10   9606    Homo sapiens    OTHER   GENOMIC other   SRS7591446  RPE1_SS48_p10.bam   Illumina HiSeq 2000 8117881 139408135   SRR12904711 8117881 324715240
+ SRP288715   SRX9369590  RPE1_SS48_p0    9606    Homo sapiens    OTHER   GENOMIC other   SRS7591445  RPE1_SS48_p0.bam    Illumina HiSeq 2000 776140  15821200    SRR12904712 776140  31045600
 </pre></div>
 </div>
-<p>By default search returns first 20 hits. <code class="docutils literal notranslate"><span class="pre">SRP299803</span></code> seems like a project of interest. However the information
-outputted by the <code class="docutils literal notranslate"><span class="pre">search</span></code> command is pretty limited. We want to
-look up more detailed information about this project:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ pysradb metadata SRP299803 | head
- study_accession     experiment_accession    experiment_title        experiment_desc organism_taxid  organism_name   library_name    library_strategy        library_source  library_selection       library_layout  sample_accession        sample_title    instrument      instrument_model        instrument_model_desc   total_spots     total_size      run_accession   run_total_spots run_total_bases
- SRP299803   SRX9756769      GSM4995565: scATAC_Retina_WT; Mus musculus; ATAC-seq    GSM4995565: scATAC_Retina_WT; Mus musculus; ATAC-seq    10090   Mus musculus            ATAC-seq        GENOMIC other   PAIRED  SRS7946094              Illumina NovaSeq 6000   Illumina NovaSeq 6000   ILLUMINA        55435867        2637580797      SRR13329759     55435867        6874047508
- SRP299803   SRX9756768      GSM4995564: scRNA_Retina_VSX2SEKO_Rep2; Mus musculus; RNA-Seq   GSM4995564: scRNA_Retina_VSX2SEKO_Rep2; Mus musculus; RNA-Seq   10090   Mus musculus            RNA-Seq TRANSCRIPTOMIC  cDNA    PAIRED  SRS7946093              Illumina NovaSeq 6000   Illumina NovaSeq 6000   ILLUMINA        96123725        4107807391      SRR13329758     96123725        12688331700
- SRP299803   SRX9756767      GSM4995563: scRNA_Retina_VSX2SEKO_Rep1; Mus musculus; RNA-Seq   GSM4995563: scRNA_Retina_VSX2SEKO_Rep1; Mus musculus; RNA-Seq   10090   Mus musculus            RNA-Seq TRANSCRIPTOMIC  cDNA    PAIRED  SRS7946092              Illumina NovaSeq 6000   Illumina NovaSeq 6000   ILLUMINA        94345783        4056010488      SRR13329757     94345783        12453643356
- SRP299803   SRX9756766      GSM4995562: scRNA_Retina_WT_Rep2; Mus musculus; RNA-Seq GSM4995562: scRNA_Retina_WT_Rep2; Mus musculus; RNA-Seq 10090   Mus musculus            RNA-Seq TRANSCRIPTOMIC  cDNA    PAIRED  SRS7946091              Illumina NovaSeq 6000   Illumina NovaSeq 6000   ILLUMINA        99487074        4240172698      SRR13329756     99487074        13132293768
- SRP299803   SRX9756765      GSM4995561: scRNA_Retina_WT_Rep1; Mus musculus; RNA-Seq GSM4995561: scRNA_Retina_WT_Rep1; Mus musculus; RNA-Seq 10090   Mus musculus            RNA-Seq TRANSCRIPTOMIC  cDNA    PAIRED  SRS7946090              Illumina NovaSeq 6000   Illumina NovaSeq 6000   ILLUMINA        88048461        3817540828      SRR13329755     88048461        11622396852
+<p>By default search returns first 20 hits. <code class="docutils literal notranslate"><span class="pre">SRP299803</span></code> seems like a
+project of interest. However the information outputted by the <code class="docutils literal notranslate"><span class="pre">search</span></code>
+command is pretty limited. We want to look up more detailed information
+about this project:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>$ pysradb metadata SRP299803 | head
+ study_accession experiment_accession    experiment_title    experiment_desc organism_taxid  organism_name   library_name    library_strategy    library_source  library_selection   library_layout  sample_accession    sample_title    instrument  instrument_model    instrument_model_desc   total_spots total_size  run_accession   run_total_spots run_total_bases
+ SRP299803   SRX9756769  GSM4995565: scATAC_Retina_WT; Mus musculus; ATAC-seq    GSM4995565: scATAC_Retina_WT; Mus musculus; ATAC-seq    10090   Mus musculus        ATAC-seq    GENOMIC other   PAIRED  SRS7946094      Illumina NovaSeq 6000   Illumina NovaSeq 6000   ILLUMINA    55435867    2637580797  SRR13329759 55435867    6874047508
+ SRP299803   SRX9756768  GSM4995564: scRNA_Retina_VSX2SEKO_Rep2; Mus musculus; RNA-Seq   GSM4995564: scRNA_Retina_VSX2SEKO_Rep2; Mus musculus; RNA-Seq   10090   Mus musculus        RNA-Seq TRANSCRIPTOMIC  cDNA    PAIRED  SRS7946093      Illumina NovaSeq 6000   Illumina NovaSeq 6000   ILLUMINA    96123725    4107807391  SRR13329758 96123725    12688331700
+ SRP299803   SRX9756767  GSM4995563: scRNA_Retina_VSX2SEKO_Rep1; Mus musculus; RNA-Seq   GSM4995563: scRNA_Retina_VSX2SEKO_Rep1; Mus musculus; RNA-Seq   10090   Mus musculus        RNA-Seq TRANSCRIPTOMIC  cDNA    PAIRED  SRS7946092      Illumina NovaSeq 6000   Illumina NovaSeq 6000   ILLUMINA    94345783    4056010488  SRR13329757 94345783    12453643356
+ SRP299803   SRX9756766  GSM4995562: scRNA_Retina_WT_Rep2; Mus musculus; RNA-Seq GSM4995562: scRNA_Retina_WT_Rep2; Mus musculus; RNA-Seq 10090   Mus musculus        RNA-Seq TRANSCRIPTOMIC  cDNA    PAIRED  SRS7946091      Illumina NovaSeq 6000   Illumina NovaSeq 6000   ILLUMINA    99487074    4240172698  SRR13329756 99487074    13132293768
+ SRP299803   SRX9756765  GSM4995561: scRNA_Retina_WT_Rep1; Mus musculus; RNA-Seq GSM4995561: scRNA_Retina_WT_Rep1; Mus musculus; RNA-Seq 10090   Mus musculus        RNA-Seq TRANSCRIPTOMIC  cDNA    PAIRED  SRS7946090      Illumina NovaSeq 6000   Illumina NovaSeq 6000   ILLUMINA    88048461    3817540828  SRR13329755 88048461    11622396852
 </pre></div>
 </div>
-<p>It is also possible to get more detailed information using the <code class="docutils literal notranslate"><span class="pre">--detailed</span></code> flag:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ pysradb metadata SRP075720 --detailed
+<p>It is also possible to get more detailed information using the
+<code class="docutils literal notranslate"><span class="pre">--detailed</span></code> flag:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>$ pysradb metadata SRP075720 --detailed
 
- run_accession       study_accession experiment_accession    experiment_title        experiment_desc organism_taxid  organism_name   library_name    library_strategy        library_source  library_selection       library_layout  sample_accession        sample_title    instrument      instrument_model        instrument_model_desc   total_spots     total_size      run_total_spots run_total_bases run_alias       sra_url experiment_alias        source_name     strain background       genotype        tissue/cell type        molecule subtype        ena_fastq_http  ena_fastq_http_1        ena_fastq_http_2        ena_fastq_ftp   ena_fastq_ftp_1 ena_fastq_ftp_2
- SRR13329759 SRP299803       SRX9756769      GSM4995565: scATAC_Retina_WT; Mus musculus; ATAC-seq    GSM4995565: scATAC_Retina_WT; Mus musculus; ATAC-seq    10090   Mus musculus            ATAC-seq        GENOMIC other   PAIRED  SRS7946094              Illumina NovaSeq 6000   Illumina NovaSeq 6000   ILLUMINA        55435867        2637580797      55435867        6874047508      GSM4995565_r1   https://sra-download.ncbi.nlm.nih.gov/traces/sra77/SRR/013017/SRR13329759       GSM4995565      wild type_retina        C57BL/6 wild type       retina                  http://ftp.sra.ebi.ac.uk/vol1/fastq/SRR133/059/SRR13329759/SRR13329759_1.fastq.gz       http://ftp.sra.ebi.ac.uk/vol1/fastq/SRR133/059/SRR13329759/SRR13329759_2.fastq.gz               era-fasp@fasp.sra.ebi.ac.uk:vol1/fastq/SRR133/059/SRR13329759/SRR13329759_1.fastq.gz    era-fasp@fasp.sra.ebi.ac.uk:vol1/fastq/SRR133/059/SRR13329759/SRR13329759_2.fastq.gz
- SRR13329758 SRP299803       SRX9756768      GSM4995564: scRNA_Retina_VSX2SEKO_Rep2; Mus musculus; RNA-Seq   GSM4995564: scRNA_Retina_VSX2SEKO_Rep2; Mus musculus; RNA-Seq   10090   Mus musculus            RNA-Seq TRANSCRIPTOMIC  cDNA    PAIRED  SRS7946093              Illumina NovaSeq 6000   Illumina NovaSeq 6000   ILLUMINA        96123725        4107807391      96123725        12688331700     GSM4995564_r1   https://sra-download.ncbi.nlm.nih.gov/traces/sra70/SRR/013017/SRR13329758       GSM4995564      Vsx2SE Δ/Δ_retina       C57BL/6 Vsx2SE {delta}/{delta}  retina  3&#39; RNA          http://ftp.sra.ebi.ac.uk/vol1/fastq/SRR133/058/SRR13329758/SRR13329758_1.fastq.gz       http://ftp.sra.ebi.ac.uk/vol1/fastq/SRR133/058/SRR13329758/SRR13329758_2.fastq.gz               era-fasp@fasp.sra.ebi.ac.uk:vol1/fastq/SRR133/058/SRR13329758/SRR13329758_1.fastq.gz    era-fasp@fasp.sra.ebi.ac.uk:vol1/fastq/SRR133/058/SRR13329758/SRR13329758_2.fastq.gz
- SRR13329757 SRP299803       SRX9756767      GSM4995563: scRNA_Retina_VSX2SEKO_Rep1; Mus musculus; RNA-Seq   GSM4995563: scRNA_Retina_VSX2SEKO_Rep1; Mus musculus; RNA-Seq   10090   Mus musculus            RNA-Seq TRANSCRIPTOMIC  cDNA    PAIRED  SRS7946092              Illumina NovaSeq 6000   Illumina NovaSeq 6000   ILLUMINA        94345783        4056010488      94345783        12453643356     GSM4995563_r1   https://sra-download.ncbi.nlm.nih.gov/traces/sra79/SRR/013017/SRR13329757       GSM4995563      Vsx2SE Δ/Δ_retina       C57BL/6 Vsx2SE {delta}/{delta}  retina  3&#39; RNA          http://ftp.sra.ebi.ac.uk/vol1/fastq/SRR133/057/SRR13329757/SRR13329757_1.fastq.gz       http://ftp.sra.ebi.ac.uk/vol1/fastq/SRR133/057/SRR13329757/SRR13329757_2.fastq.gz               era-fasp@fasp.sra.ebi.ac.uk:vol1/fastq/SRR133/057/SRR13329757/SRR13329757_1.fastq.gz    era-fasp@fasp.sra.ebi.ac.uk:vol1/fastq/SRR133/057/SRR13329757/SRR13329757_2.fastq.gz
- SRR13329756 SRP299803       SRX9756766      GSM4995562: scRNA_Retina_WT_Rep2; Mus musculus; RNA-Seq GSM4995562: scRNA_Retina_WT_Rep2; Mus musculus; RNA-Seq 10090   Mus musculus            RNA-Seq TRANSCRIPTOMIC  cDNA    PAIRED  SRS7946091              Illumina NovaSeq 6000   Illumina NovaSeq 6000   ILLUMINA        99487074        4240172698      99487074        13132293768     GSM4995562_r1   https://sra-download.ncbi.nlm.nih.gov/traces/sra77/SRR/013017/SRR13329756       GSM4995562      wild type_retina        C57BL/6 wild type       retina  3&#39; RNA          http://ftp.sra.ebi.ac.uk/vol1/fastq/SRR133/056/SRR13329756/SRR13329756_1.fastq.gz       http://ftp.sra.ebi.ac.uk/vol1/fastq/SRR133/056/SRR13329756/SRR13329756_2.fastq.gz               era-fasp@fasp.sra.ebi.ac.uk:vol1/fastq/SRR133/056/SRR13329756/SRR13329756_1.fastq.gz    era-fasp@fasp.sra.ebi.ac.uk:vol1/fastq/SRR133/056/SRR13329756/SRR13329756_2.fastq.gz
- SRR13329755 SRP299803       SRX9756765      GSM4995561: scRNA_Retina_WT_Rep1; Mus musculus; RNA-Seq GSM4995561: scRNA_Retina_WT_Rep1; Mus musculus; RNA-Seq 10090   Mus musculus            RNA-Seq TRANSCRIPTOMIC  cDNA    PAIRED  SRS7946090              Illumina NovaSeq 6000   Illumina NovaSeq 6000   ILLUMINA        88048461        3817540828      88048461        11622396852     GSM4995561_r1   https://sra-download.ncbi.nlm.nih.gov/traces/sra72/SRR/013017/SRR13329755       GSM4995561      wild type_retina        C57BL/6 wild type       retina  3&#39; RNA          http://ftp.sra.ebi.ac.uk/vol1/fastq/SRR133/055/SRR13329755/SRR13329755_1.fastq.gz       http://ftp.sra.ebi.ac.uk/vol1/fastq/SRR133/055/SRR13329755/SRR13329755_2.fastq.gz               era-fasp@fasp.sra.ebi.ac.uk:vol1/fastq/SRR133/055/SRR13329755/SRR13329755_1.fastq.gz    era-fasp@fasp.sra.ebi.ac.uk:vol1/fastq/SRR133/055/SRR13329755/SRR13329755_2.fastq.gz
+ run_accession   study_accession experiment_accession    experiment_title    experiment_desc organism_taxid  organism_name   library_name    library_strategy    library_source  library_selection   library_layout  sample_accession    sample_title    instrument  instrument_model    instrument_model_desc   total_spots total_size  run_total_spots run_total_bases run_alias   sra_url experiment_alias    source_name strain background   genotype    tissue/cell type    molecule subtype    ena_fastq_http  ena_fastq_http_1    ena_fastq_http_2    ena_fastq_ftp   ena_fastq_ftp_1 ena_fastq_ftp_2
+ SRR13329759 SRP299803   SRX9756769  GSM4995565: scATAC_Retina_WT; Mus musculus; ATAC-seq    GSM4995565: scATAC_Retina_WT; Mus musculus; ATAC-seq    10090   Mus musculus        ATAC-seq    GENOMIC other   PAIRED  SRS7946094      Illumina NovaSeq 6000   Illumina NovaSeq 6000   ILLUMINA    55435867    2637580797  55435867    6874047508  GSM4995565_r1   https://sra-download.ncbi.nlm.nih.gov/traces/sra77/SRR/013017/SRR13329759   GSM4995565  wild type_retina    C57BL/6 wild type   retina          http://ftp.sra.ebi.ac.uk/vol1/fastq/SRR133/059/SRR13329759/SRR13329759_1.fastq.gz   http://ftp.sra.ebi.ac.uk/vol1/fastq/SRR133/059/SRR13329759/SRR13329759_2.fastq.gz       era-fasp@fasp.sra.ebi.ac.uk:vol1/fastq/SRR133/059/SRR13329759/SRR13329759_1.fastq.gz    era-fasp@fasp.sra.ebi.ac.uk:vol1/fastq/SRR133/059/SRR13329759/SRR13329759_2.fastq.gz
+ SRR13329758 SRP299803   SRX9756768  GSM4995564: scRNA_Retina_VSX2SEKO_Rep2; Mus musculus; RNA-Seq   GSM4995564: scRNA_Retina_VSX2SEKO_Rep2; Mus musculus; RNA-Seq   10090   Mus musculus        RNA-Seq TRANSCRIPTOMIC  cDNA    PAIRED  SRS7946093      Illumina NovaSeq 6000   Illumina NovaSeq 6000   ILLUMINA    96123725    4107807391  96123725    12688331700 GSM4995564_r1   https://sra-download.ncbi.nlm.nih.gov/traces/sra70/SRR/013017/SRR13329758   GSM4995564  Vsx2SE Δ/Δ_retina   C57BL/6 Vsx2SE {delta}/{delta}  retina  3&#39; RNA      http://ftp.sra.ebi.ac.uk/vol1/fastq/SRR133/058/SRR13329758/SRR13329758_1.fastq.gz   http://ftp.sra.ebi.ac.uk/vol1/fastq/SRR133/058/SRR13329758/SRR13329758_2.fastq.gz       era-fasp@fasp.sra.ebi.ac.uk:vol1/fastq/SRR133/058/SRR13329758/SRR13329758_1.fastq.gz    era-fasp@fasp.sra.ebi.ac.uk:vol1/fastq/SRR133/058/SRR13329758/SRR13329758_2.fastq.gz
+ SRR13329757 SRP299803   SRX9756767  GSM4995563: scRNA_Retina_VSX2SEKO_Rep1; Mus musculus; RNA-Seq   GSM4995563: scRNA_Retina_VSX2SEKO_Rep1; Mus musculus; RNA-Seq   10090   Mus musculus        RNA-Seq TRANSCRIPTOMIC  cDNA    PAIRED  SRS7946092      Illumina NovaSeq 6000   Illumina NovaSeq 6000   ILLUMINA    94345783    4056010488  94345783    12453643356 GSM4995563_r1   https://sra-download.ncbi.nlm.nih.gov/traces/sra79/SRR/013017/SRR13329757   GSM4995563  Vsx2SE Δ/Δ_retina   C57BL/6 Vsx2SE {delta}/{delta}  retina  3&#39; RNA      http://ftp.sra.ebi.ac.uk/vol1/fastq/SRR133/057/SRR13329757/SRR13329757_1.fastq.gz   http://ftp.sra.ebi.ac.uk/vol1/fastq/SRR133/057/SRR13329757/SRR13329757_2.fastq.gz       era-fasp@fasp.sra.ebi.ac.uk:vol1/fastq/SRR133/057/SRR13329757/SRR13329757_1.fastq.gz    era-fasp@fasp.sra.ebi.ac.uk:vol1/fastq/SRR133/057/SRR13329757/SRR13329757_2.fastq.gz
+ SRR13329756 SRP299803   SRX9756766  GSM4995562: scRNA_Retina_WT_Rep2; Mus musculus; RNA-Seq GSM4995562: scRNA_Retina_WT_Rep2; Mus musculus; RNA-Seq 10090   Mus musculus        RNA-Seq TRANSCRIPTOMIC  cDNA    PAIRED  SRS7946091      Illumina NovaSeq 6000   Illumina NovaSeq 6000   ILLUMINA    99487074    4240172698  99487074    13132293768 GSM4995562_r1   https://sra-download.ncbi.nlm.nih.gov/traces/sra77/SRR/013017/SRR13329756   GSM4995562  wild type_retina    C57BL/6 wild type   retina  3&#39; RNA      http://ftp.sra.ebi.ac.uk/vol1/fastq/SRR133/056/SRR13329756/SRR13329756_1.fastq.gz   http://ftp.sra.ebi.ac.uk/vol1/fastq/SRR133/056/SRR13329756/SRR13329756_2.fastq.gz       era-fasp@fasp.sra.ebi.ac.uk:vol1/fastq/SRR133/056/SRR13329756/SRR13329756_1.fastq.gz    era-fasp@fasp.sra.ebi.ac.uk:vol1/fastq/SRR133/056/SRR13329756/SRR13329756_2.fastq.gz
+ SRR13329755 SRP299803   SRX9756765  GSM4995561: scRNA_Retina_WT_Rep1; Mus musculus; RNA-Seq GSM4995561: scRNA_Retina_WT_Rep1; Mus musculus; RNA-Seq 10090   Mus musculus        RNA-Seq TRANSCRIPTOMIC  cDNA    PAIRED  SRS7946090      Illumina NovaSeq 6000   Illumina NovaSeq 6000   ILLUMINA    88048461    3817540828  88048461    11622396852 GSM4995561_r1   https://sra-download.ncbi.nlm.nih.gov/traces/sra72/SRR/013017/SRR13329755   GSM4995561  wild type_retina    C57BL/6 wild type   retina  3&#39; RNA      http://ftp.sra.ebi.ac.uk/vol1/fastq/SRR133/055/SRR13329755/SRR13329755_1.fastq.gz   http://ftp.sra.ebi.ac.uk/vol1/fastq/SRR133/055/SRR13329755/SRR13329755_2.fastq.gz       era-fasp@fasp.sra.ebi.ac.uk:vol1/fastq/SRR133/055/SRR13329755/SRR13329755_1.fastq.gz    era-fasp@fasp.sra.ebi.ac.uk:vol1/fastq/SRR133/055/SRR13329755/SRR13329755_2.fastq.gz
 </pre></div>
 </div>
-<p>Having made sure this dataset is indeed of interest, we want to save some work and see
-if the processed dataset has been made available on GEO by the authors:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ pysradb srp-to-gse SRP299803
+<p>Having made sure this dataset is indeed of interest, we want to save
+some work and see if the processed dataset has been made available on
+GEO by the authors:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>$ pysradb srp-to-gse SRP299803
 
 study_accession  study_alias
 SRP299803        GSE164044
 </pre></div>
 </div>
 <p>So indeed a GEO project exists for this SRA dataset.</p>
-<p>Notice, that the GEO information was also visible in the <code class="docutils literal notranslate"><span class="pre">metadata</span> <span class="pre">--detailed</span></code> operation.
-Assume we were in posession of the GSM id of one of the experiments to start off with, say
-<code class="docutils literal notranslate"><span class="pre">GSE4995565</span></code>. Starting from this GSM id, we want to get the following information:</p>
+<p>Notice, that the GEO information was also visible in the
+<code class="docutils literal notranslate"><span class="pre">metadata</span> <span class="pre">--detailed</span></code> operation. Assume we were in posession of the GSM
+id of one of the experiments to start off with, say <code class="docutils literal notranslate"><span class="pre">GSE4995565</span></code>.
+Starting from this GSM id, we want to get the following information:</p>
 <ul class="simple">
 <li><p>SRP id of the project</p></li>
 <li><p>GSE id of the project</p></li>
@@ -555,28 +557,28 @@ Assume we were in posession of the GSM id of one of the experiments to start off
 <li><p>SRR id(s) corresponding to the experiment</p></li>
 </ul>
 <p>Get SRP id:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ pysradb gsm-to-srp GSM4995565
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>$ pysradb gsm-to-srp GSM4995565
 
 experiment_alias study_accession
 GSM4995565       SRP299803
 </pre></div>
 </div>
 <p>Get GSE id:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ pysradb gsm-to-gse GSM4995565
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>$ pysradb gsm-to-gse GSM4995565
 
 experiment_alias study_alias
 GSM4995565       GSE164044
 </pre></div>
 </div>
 <p>Get SRX id:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ pysradb gsm-to-srx GSM4995565
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>$ pysradb gsm-to-srx GSM4995565
 
 experiment_alias experiment_accession
 GSM4995565       SRX9756769
 </pre></div>
 </div>
 <p>Getting SRR id(s):</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ pysradb gsm-to-srr GSM4995565
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>$ pysradb gsm-to-srr GSM4995565
 
 experiment_alias run_accession
 GSM4995565       SRR13329759
@@ -584,21 +586,22 @@ GSM4995565       SRR13329759
 </div>
 </section>
 <section id="case-study-2">
-<h2>Case Study 2<a class="headerlink" href="#case-study-2" title="Permalink to this heading">#</a></h2>
-<p>Our first case study included metadata search. Next, we explore downloading datasets.</p>
-<p>We have a SRP id to start off with: <code class="docutils literal notranslate"><span class="pre">SRP000941</span></code>. We want to
-quickly checkout its contents:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ pysradb metadata SRP000941 --detailed| head
+<h2>Case Study 2<a class="headerlink" href="#case-study-2" title="Link to this heading">#</a></h2>
+<p>Our first case study included metadata search. Next, we explore
+downloading datasets.</p>
+<p>We have a SRP id to start off with: <code class="docutils literal notranslate"><span class="pre">SRP000941</span></code>. We want to quickly
+checkout its contents:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>$ pysradb metadata SRP000941 --detailed| head
 
-study_accession     experiment_accession    experiment_title        experiment_desc organism_taxid  organism_name   library_name    library_strategy        library_source  library_selection       library_layout  sample_accession        sample_title    instrument      instrument_model        instrument_model_desc   total_spots     total_size      run_accession   run_total_spots run_total_bases
-SRP000941   SRX056722       Reference Epigenome: ChIP-Seq Analysis of H3K27ac in hESC H1 Cells      Reference Epigenome: ChIP-Seq Analysis of H3K27ac in hESC H1 Cells      9606    Homo sapiens    SAK270  ChIP-Seq        GENOMIC ChIP    SINGLE  SRS184466               Illumina HiSeq 2000     Illumina HiSeq 2000     ILLUMINA        26900401        531654480       SRR179707       26900401        807012030
-SRP000941   SRX027889       Reference Epigenome: ChIP-Seq Analysis of H2AK5ac in hESC Cells Reference Epigenome: ChIP-Seq Analysis of H2AK5ac in hESC Cells 9606    Homo sapiens    SAK201  ChIP-Seq        GENOMIC ChIP    SINGLE  SRS116481               Illumina Genome Analyzer II     Illumina Genome Analyzer II     ILLUMINA        37528590        779578968       SRR067978       37528590        1351029240
-SRP000941   SRX027888       Reference Epigenome: ChIP-Seq Input from hESC H1 Cells  Reference Epigenome: ChIP-Seq Input from hESC H1 Cells  9606    Homo sapiens    LLH1U   ChIP-Seq        GENOMIC RANDOM  SINGLE  SRS116483               Illumina Genome Analyzer II     Illumina Genome Analyzer II     ILLUMINA        13603127        3232309537      SRR067977       13603127        489712572
-SRP000941   SRX027887       Reference Epigenome: ChIP-Seq Input from hESC H1 Cells  Reference Epigenome: ChIP-Seq Input from hESC H1 Cells  9606    Homo sapiens    DM219   ChIP-Seq        GENOMIC RANDOM  SINGLE  SRS116562               Illumina Genome Analyzer II     Illumina Genome Analyzer II     ILLUMINA        22430523        506327844       SRR067976       22430523        807498828
+study_accession experiment_accession    experiment_title    experiment_desc organism_taxid  organism_name   library_name    library_strategy    library_source  library_selection   library_layout  sample_accession    sample_title    instrument  instrument_model    instrument_model_desc   total_spots total_size  run_accession   run_total_spots run_total_bases
+SRP000941   SRX056722   Reference Epigenome: ChIP-Seq Analysis of H3K27ac in hESC H1 Cells  Reference Epigenome: ChIP-Seq Analysis of H3K27ac in hESC H1 Cells  9606    Homo sapiens    SAK270  ChIP-Seq    GENOMIC ChIP    SINGLE  SRS184466       Illumina HiSeq 2000 Illumina HiSeq 2000 ILLUMINA    26900401    531654480   SRR179707   26900401    807012030
+SRP000941   SRX027889   Reference Epigenome: ChIP-Seq Analysis of H2AK5ac in hESC Cells Reference Epigenome: ChIP-Seq Analysis of H2AK5ac in hESC Cells 9606    Homo sapiens    SAK201  ChIP-Seq    GENOMIC ChIP    SINGLE  SRS116481       Illumina Genome Analyzer II Illumina Genome Analyzer II ILLUMINA    37528590    779578968   SRR067978   37528590    1351029240
+SRP000941   SRX027888   Reference Epigenome: ChIP-Seq Input from hESC H1 Cells  Reference Epigenome: ChIP-Seq Input from hESC H1 Cells  9606    Homo sapiens    LLH1U   ChIP-Seq    GENOMIC RANDOM  SINGLE  SRS116483       Illumina Genome Analyzer II Illumina Genome Analyzer II ILLUMINA    13603127    3232309537  SRR067977   13603127    489712572
+SRP000941   SRX027887   Reference Epigenome: ChIP-Seq Input from hESC H1 Cells  Reference Epigenome: ChIP-Seq Input from hESC H1 Cells  9606    Homo sapiens    DM219   ChIP-Seq    GENOMIC RANDOM  SINGLE  SRS116562       Illumina Genome Analyzer II Illumina Genome Analyzer II ILLUMINA    22430523    506327844   SRR067976   22430523    807498828
 </pre></div>
 </div>
 <p>This project is a collection of multiple assays.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ pysradb metadata SRP000941 --detailed  | tr -s &#39;  &#39; | cut -f5 -d &#39; &#39; | sort | uniq -c
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>$ pysradb metadata SRP000941 --detailed  | tr -s &#39;  &#39; | cut -f5 -d &#39; &#39; | sort | uniq -c
 
 999 Bisulfite-Seq
 768 ChIP-Seq
@@ -609,16 +612,17 @@ SRP000941   SRX027887       Reference Epigenome: ChIP-Seq Input from hESC H1 Cel
 </pre></div>
 </div>
 <p>We want to however only download <code class="docutils literal notranslate"><span class="pre">RNA-seq</span></code> samples:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ pysradb metadata SRP000941 --detailed | grep &#39;study\|RNA-Seq&#39; | pysradb download
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>$ pysradb metadata SRP000941 --detailed | grep &#39;study\|RNA-Seq&#39; | pysradb download
 </pre></div>
 </div>
-<p>This will download all <code class="docutils literal notranslate"><span class="pre">RNA-seq</span></code> samples coming from this project using <code class="docutils literal notranslate"><span class="pre">aspera-client</span></code>, if available.
-Alternatively, it can also use <code class="docutils literal notranslate"><span class="pre">wget</span></code>.</p>
+<p>This will download all <code class="docutils literal notranslate"><span class="pre">RNA-seq</span></code> samples coming from this project using
+<code class="docutils literal notranslate"><span class="pre">aspera-client</span></code>, if available. Alternatively, it can also use <code class="docutils literal notranslate"><span class="pre">wget</span></code>.</p>
 <p>Downloading an entire project is easy:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ pysradb download -p SRP000941
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>$ pysradb download -p SRP000941
 </pre></div>
 </div>
-<p>Downloads are organized by <code class="docutils literal notranslate"><span class="pre">SRP/SRX/SRR</span></code> mimicking the hiererachy of SRA projects.</p>
+<p>Downloads are organized by <code class="docutils literal notranslate"><span class="pre">SRP/SRX/SRR</span></code> mimicking the hiererachy of SRA
+projects.</p>
 </section>
 </section>
 
@@ -627,11 +631,10 @@ Alternatively, it can also use <code class="docutils literal notranslate"><span 
               
               
               
-                <footer class="bd-footer-article">
+              
+              
+                <footer class="prev-next-footer d-print-none">
                   
-<div class="footer-article-items footer-article__inner">
-  
-    <div class="footer-article-item"><!-- Previous / next buttons -->
 <div class="prev-next-area">
     <a class="left-prev"
        href="python-api-usage.html"
@@ -651,23 +654,24 @@ Alternatively, it can also use <code class="docutils literal notranslate"><span 
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
-</div></div>
-  
 </div>
-
                 </footer>
               
             </div>
             
             
               
-                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
 
   <div class="sidebar-secondary-item">
-  <div class="page-toc tocsection onthispage">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
     <i class="fa-solid fa-list"></i> On this page
   </div>
-  <nav class="bd-toc-nav page-toc">
+  <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#case-study-1">Case Study 1</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#case-study-2">Case Study 2</a></li>
@@ -675,12 +679,13 @@ Alternatively, it can also use <code class="docutils literal notranslate"><span 
   </nav></div>
 
   <div class="sidebar-secondary-item">
-  <div class="tocsection sourcelink">
-    <a href="_sources/case_studies.rst.txt">
-      <i class="fa-solid fa-file-lines"></i> Show Source
-    </a>
-  </div>
-</div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/case_studies.md.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div></div>
 
 </div></div>
               
@@ -695,8 +700,8 @@ Alternatively, it can also use <code class="docutils literal notranslate"><span 
   </div>
   
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script src="_static/scripts/bootstrap.js?digest=e353d410970836974a52"></script>
-<script src="_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52"></script>
+  <script defer src="_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
 
   <footer class="bd-footer">
 <div class="bd-footer__inner bd-page-width">
@@ -704,6 +709,7 @@ Alternatively, it can also use <code class="docutils literal notranslate"><span 
     <div class="footer-items__start">
       
         <div class="footer-item">
+
   <p class="copyright">
     
       © Copyright 2023, Saket Choudhary.
@@ -713,8 +719,9 @@ Alternatively, it can also use <code class="docutils literal notranslate"><span 
 </div>
       
         <div class="footer-item">
+
   <p class="sphinx-version">
-    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 5.3.0.
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.1.3.
     <br/>
   </p>
 </div>
@@ -722,10 +729,13 @@ Alternatively, it can also use <code class="docutils literal notranslate"><span 
     </div>
   
   
+  
     <div class="footer-items__end">
       
-        <div class="footer-item"><p class="theme-version">
-  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.13.3.
+        <div class="footer-item">
+<p class="theme-version">
+  <!-- # L10n: Setting the PST URL as an argument as this does not need to be localized -->
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.16.1.
 </p></div>
       
     </div>

@@ -1,13 +1,12 @@
 
-
 <!DOCTYPE html>
 
 
-<html lang="en" >
+<html lang="en" data-content_root="./" >
 
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
         <script async src="https://www.googletagmanager.com/gtag/js?id=G-CKQZFCEENZ"></script>
         <script>
@@ -19,48 +18,50 @@
             
         </script>
     
-    <title>Python API &#8212; pysradb 2.1.0 documentation</title>
+    <title>Python API &#8212; pysradb 2.4.1 documentation</title>
   
   
   
   <script data-cfasync="false">
     document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
-    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
   </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="_static/styles/theme.css?digest=e353d410970836974a52" rel="stylesheet" />
-<link href="_static/styles/bootstrap.css?digest=e353d410970836974a52" rel="stylesheet" />
-<link href="_static/styles/pydata-sphinx-theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+  <link href="_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
 
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="_static/graphviz.css?v=4ae1632d" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-dropdown.css?v=995e94df" />
+    <link rel="stylesheet" type="text/css" href="_static/panels-bootstrap.min.css?v=21c0b90a" />
   
-  <link href="_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=e353d410970836974a52" rel="stylesheet" />
-  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
-<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
-<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
-
-    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="_static/graphviz.css" />
-    <link rel="stylesheet" type="text/css" href="_static/tabs.css" />
-    <link rel="stylesheet" type="text/css" href="_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
-    <link rel="stylesheet" type="text/css" href="_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
-  
+  <!-- So that users can add custom icons -->
+  <script src="_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=e353d410970836974a52" />
-<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52" />
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
-    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
-    <script src="_static/jquery.js"></script>
-    <script src="_static/underscore.js"></script>
-    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
-    <script src="_static/doctools.js"></script>
-    <script src="_static/sphinx_highlight.js"></script>
+    <script src="_static/documentation_options.js?v=e9ebdb8f"></script>
+    <script src="_static/doctools.js?v=9bcbadda"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'python-api-usage';</script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Case Studies" href="case_studies.html" />
     <link rel="prev" title="CLI" href="cmdline.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="2.4.1" />
   </head>
   
   
@@ -68,23 +69,16 @@
 
   
   
-  <a class="skip-link" href="#main-content">Skip to main content</a>
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
   
-  <input type="checkbox"
-          class="sidebar-toggle"
-          name="__primary"
-          id="__primary"/>
-  <label class="overlay overlay-primary" for="__primary"></label>
+  <div id="pst-scroll-pixel-helper"></div>
   
-  <input type="checkbox"
-          class="sidebar-toggle"
-          name="__secondary"
-          id="__secondary"/>
-  <label class="overlay overlay-secondary" for="__secondary"></label>
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
   
-  <div class="search-button__wrapper">
-    <div class="search-button__overlay"></div>
-    <div class="search-button__search-container">
+  <dialog id="pst-search-dialog">
+    
 <form class="bd-search d-flex align-items-center"
       action="search.html"
       method="get">
@@ -92,7 +86,6 @@
   <input type="search"
          class="form-control"
          name="q"
-         id="search-input"
          placeholder="Search the docs ..."
          aria-label="Search the docs ..."
          autocomplete="off"
@@ -100,18 +93,27 @@
          autocapitalize="off"
          spellcheck="false"/>
   <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
-</form></div>
-  </div>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
   
-    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
 <div class="bd-header__inner bd-page-width">
-  <label class="sidebar-toggle primary-toggle" for="__primary">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
     <span class="fa-solid fa-bars"></span>
-  </label>
+  </button>
   
-  <div class="navbar-header-items__start">
+  
+  <div class="col-lg-3 navbar-header-items__start">
     
       <div class="navbar-item">
+
+  
+    
   
 
 <a class="navbar-brand logo" href="index.html">
@@ -119,109 +121,106 @@
   
   
   
+  
     
     
       
     
     
-    <img src="_static/pysradb_v3.png" class="logo__image only-light" alt="Logo image"/>
-    <script>document.write(`<img src="_static/pysradb_v3.png" class="logo__image only-dark" alt="Logo image"/>`);</script>
+    <img src="_static/pysradb_v3.png" class="logo__image only-light" alt="pysradb 2.4.1 documentation - Home"/>
+    <img src="_static/pysradb_v3.png" class="logo__image only-dark pst-js-only" alt="pysradb 2.4.1 documentation - Home"/>
   
   
 </a></div>
     
   </div>
   
-  
   <div class="col-lg-9 navbar-header-items">
     
     <div class="me-auto navbar-header-items__center">
       
-        <div class="navbar-item"><nav class="navbar-nav">
-  <p class="sidebar-header-items__title"
-     role="heading"
-     aria-level="1"
-     aria-label="Site Navigation">
-    Site Navigation
-  </p>
+        <div class="navbar-item">
+<nav>
   <ul class="bd-navbar-elements navbar-nav">
     
-                    <li class="nav-item">
-                      <a class="nav-link nav-internal" href="installation.html">
-                        Installation
-                      </a>
-                    </li>
-                
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="installation.html">
+    Installation
+  </a>
+</li>
 
-                    <li class="nav-item">
-                      <a class="nav-link nav-internal" href="quickstart.html">
-                        Quickstart
-                      </a>
-                    </li>
-                
 
-                    <li class="nav-item">
-                      <a class="nav-link nav-internal" href="cmdline.html">
-                        CLI
-                      </a>
-                    </li>
-                
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="quickstart.html">
+    Quickstart
+  </a>
+</li>
 
-                    <li class="nav-item current active">
-                      <a class="nav-link nav-internal" href="#">
-                        Python API
-                      </a>
-                    </li>
-                
 
-                    <li class="nav-item">
-                      <a class="nav-link nav-internal" href="case_studies.html">
-                        Case Studies
-                      </a>
-                    </li>
-                
-            <div class="nav-item dropdown">
-                <button class="btn dropdown-toggle nav-item" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="cmdline.html">
+    CLI
+  </a>
+</li>
+
+
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="#">
+    Python API
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="case_studies.html">
+    Case Studies
+  </a>
+</li>
+
+            <li class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button"
+                data-bs-toggle="dropdown" aria-expanded="false"
+                aria-controls="pst-nav-more-links">
                     More
                 </button>
-                <div class="dropdown-menu">
+                <ul id="pst-nav-more-links" class="dropdown-menu">
                     
-                    <li class="nav-item">
-                      <a class="nav-link nav-internal" href="commands.html">
-                        API Documentation
-                      </a>
-                    </li>
-                
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="commands.html">
+    API Documentation
+  </a>
+</li>
 
-                    <li class="nav-item">
-                      <a class="nav-link nav-internal" href="contributing.html">
-                        Contributing
-                      </a>
-                    </li>
-                
 
-                    <li class="nav-item">
-                      <a class="nav-link nav-internal" href="authors.html">
-                        Credits
-                      </a>
-                    </li>
-                
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="contributing.html">
+    Contributing
+  </a>
+</li>
 
-                    <li class="nav-item">
-                      <a class="nav-link nav-internal" href="history.html">
-                        History
-                      </a>
-                    </li>
-                
 
-                    <li class="nav-item">
-                      <a class="nav-link nav-internal" href="modules.html">
-                        pysradb
-                      </a>
-                    </li>
-                
-                </div>
-            </div>
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="authors.html">
+    Credits
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="history.html">
+    History
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="modules.html">
+    pysradb
+  </a>
+</li>
+
+                </ul>
+            </li>
             
   </ul>
 </nav></div>
@@ -233,28 +232,24 @@
       
         <div class="navbar-item navbar-persistent--container">
           
-<script>
-document.write(`
-  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <i class="fa-solid fa-magnifying-glass"></i>
-  </button>
-`);
-</script>
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
         </div>
       
       
         <div class="navbar-item">
-<script>
-document.write(`
-  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
-    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
-    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
-  </button>
-`);
-</script></div>
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
       
-        <div class="navbar-item"><ul class="navbar-icon-links navbar-nav"
+        <div class="navbar-item"><ul class="navbar-icon-links"
     aria-label="Icon Links">
         <li class="nav-item">
           
@@ -265,8 +260,8 @@ document.write(`
           
           
           
-          <a href="https://github.com/saketkc/pysradb" title="GitHub" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fa-brands fa-square-github"></i></span>
-            <label class="sr-only">GitHub</label></a>
+          <a href="https://github.com/saketkc/pysradb" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
         </li>
 </ul></div>
       
@@ -276,29 +271,32 @@ document.write(`
   
   
     <div class="navbar-persistent--mobile">
-<script>
-document.write(`
-  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <i class="fa-solid fa-magnifying-glass"></i>
-  </button>
-`);
-</script>
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
     </div>
   
 
   
-    <label class="sidebar-toggle secondary-toggle" for="__secondary">
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
       <span class="fa-solid fa-outdent"></span>
-    </label>
+    </button>
   
 </div>
 
-    </nav>
+    </header>
   
+
   <div class="bd-container">
     <div class="bd-container__inner bd-page-width">
       
-      <div class="bd-sidebar-primary bd-sidebar hide-on-wide">
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
         
 
   
@@ -307,94 +305,84 @@ document.write(`
     
       <div class="sidebar-header-items__center">
         
-          <div class="navbar-item"><nav class="navbar-nav">
-  <p class="sidebar-header-items__title"
-     role="heading"
-     aria-level="1"
-     aria-label="Site Navigation">
-    Site Navigation
-  </p>
+          
+          
+            <div class="navbar-item">
+<nav>
   <ul class="bd-navbar-elements navbar-nav">
     
-                    <li class="nav-item">
-                      <a class="nav-link nav-internal" href="installation.html">
-                        Installation
-                      </a>
-                    </li>
-                
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="installation.html">
+    Installation
+  </a>
+</li>
 
-                    <li class="nav-item">
-                      <a class="nav-link nav-internal" href="quickstart.html">
-                        Quickstart
-                      </a>
-                    </li>
-                
 
-                    <li class="nav-item">
-                      <a class="nav-link nav-internal" href="cmdline.html">
-                        CLI
-                      </a>
-                    </li>
-                
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="quickstart.html">
+    Quickstart
+  </a>
+</li>
 
-                    <li class="nav-item current active">
-                      <a class="nav-link nav-internal" href="#">
-                        Python API
-                      </a>
-                    </li>
-                
 
-                    <li class="nav-item">
-                      <a class="nav-link nav-internal" href="case_studies.html">
-                        Case Studies
-                      </a>
-                    </li>
-                
-            <div class="nav-item dropdown">
-                <button class="btn dropdown-toggle nav-item" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    More
-                </button>
-                <div class="dropdown-menu">
-                    
-                    <li class="nav-item">
-                      <a class="nav-link nav-internal" href="commands.html">
-                        API Documentation
-                      </a>
-                    </li>
-                
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="cmdline.html">
+    CLI
+  </a>
+</li>
 
-                    <li class="nav-item">
-                      <a class="nav-link nav-internal" href="contributing.html">
-                        Contributing
-                      </a>
-                    </li>
-                
 
-                    <li class="nav-item">
-                      <a class="nav-link nav-internal" href="authors.html">
-                        Credits
-                      </a>
-                    </li>
-                
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="#">
+    Python API
+  </a>
+</li>
 
-                    <li class="nav-item">
-                      <a class="nav-link nav-internal" href="history.html">
-                        History
-                      </a>
-                    </li>
-                
 
-                    <li class="nav-item">
-                      <a class="nav-link nav-internal" href="modules.html">
-                        pysradb
-                      </a>
-                    </li>
-                
-                </div>
-            </div>
-            
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="case_studies.html">
+    Case Studies
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="commands.html">
+    API Documentation
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="contributing.html">
+    Contributing
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="authors.html">
+    Credits
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="history.html">
+    History
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="modules.html">
+    pysradb
+  </a>
+</li>
+
   </ul>
 </nav></div>
+          
         
       </div>
     
@@ -403,17 +391,14 @@ document.write(`
       <div class="sidebar-header-items__end">
         
           <div class="navbar-item">
-<script>
-document.write(`
-  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
-    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
-    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
-  </button>
-`);
-</script></div>
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
         
-          <div class="navbar-item"><ul class="navbar-icon-links navbar-nav"
+          <div class="navbar-item"><ul class="navbar-icon-links"
     aria-label="Icon Links">
         <li class="nav-item">
           
@@ -424,8 +409,8 @@ document.write(`
           
           
           
-          <a href="https://github.com/saketkc/pysradb" title="GitHub" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fa-brands fa-square-github"></i></span>
-            <label class="sr-only">GitHub</label></a>
+          <a href="https://github.com/saketkc/pysradb" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
         </li>
 </ul></div>
         
@@ -433,39 +418,51 @@ document.write(`
     
   </div>
   
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+<nav class="bd-docs-nav bd-links"
+     aria-label="Section Navigation">
+  <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
+  <div class="bd-toc-item navbar-nav"></div>
+</nav></div>
+    </div>
+  
   
   <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
   </div>
-  
-  <div id="rtd-footer-container"></div>
 
 
       </div>
       
-      <main id="main-content" class="bd-main">
+      <main id="main-content" class="bd-main" role="main">
         
         
           <div class="bd-content">
             <div class="bd-article-container">
               
-              <div class="bd-header-article">
+              <div class="bd-header-article d-print-none">
 <div class="header-article-items header-article__inner">
   
     <div class="header-article-items__start">
       
         <div class="header-article-item">
 
-
-
-<nav aria-label="Breadcrumbs">
-  <ul class="bd-breadcrumbs" role="navigation" aria-label="Breadcrumb">
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
     
     <li class="breadcrumb-item breadcrumb-home">
       <a href="index.html" class="nav-link" aria-label="Home">
         <i class="fa-solid fa-home"></i>
       </a>
     </li>
-    <li class="breadcrumb-item active" aria-current="page">Python API</li>
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">Python API</span></li>
   </ul>
 </nav>
 </div>
@@ -480,23 +477,25 @@ document.write(`
               
                 
 <div id="searchbox"></div>
-                <article class="bd-article" role="main">
+                <article class="bd-article">
                   
   <section id="python-api">
-<span id="apiusage"></span><h1>Python API<a class="headerlink" href="#python-api" title="Permalink to this heading">#</a></h1>
+<h1>Python API<a class="headerlink" href="#python-api" title="Link to this heading">#</a></h1>
 <section id="use-case-1-fetch-the-metadata-table-sra-runtable">
-<h2>Use Case 1: Fetch the metadata table (SRA-runtable)<a class="headerlink" href="#use-case-1-fetch-the-metadata-table-sra-runtable" title="Permalink to this heading">#</a></h2>
-<p>The simplest use case of <cite>pysradb</cite> is when you know the SRA project ID (SRP)
-and would simply want to fetch the metadata associated with it. This is generally
-reflected in the <cite>SraRunTable.txt</cite> that you get from NCBI’s website.
-See an <a class="reference external" href="https://www.ncbi.nlm.nih.gov/Traces/study/?acc=SRP098789">example</a> of a SraRunTable.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pysradb</span> <span class="kn">import</span> <span class="n">SRAWeb</span>
-<span class="n">db</span> <span class="o">=</span> <span class="n">SRAWeb</span><span class="p">()</span>
+<h2>Use Case 1: Fetch the metadata table (SRA-runtable)<a class="headerlink" href="#use-case-1-fetch-the-metadata-table-sra-runtable" title="Link to this heading">#</a></h2>
+<p>The simplest use case of [pysradb]{.title-ref} is when you know the SRA
+project ID (SRP) and would simply want to fetch the metadata associated
+with it. This is generally reflected in the
+[SraRunTable.txt]{.title-ref} that you get from NCBI’s website. See an
+<a class="reference external" href="https://www.ncbi.nlm.nih.gov/Traces/study/?acc=SRP098789">example</a> of a
+SraRunTable.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">pysradb</span><span class="w"> </span><span class="kn">import</span> <span class="n">SRAweb</span>
+<span class="n">db</span> <span class="o">=</span> <span class="n">SRAweb</span><span class="p">()</span>
 <span class="n">df</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">sra_metadata</span><span class="p">(</span><span class="s1">&#39;SRP098789&#39;</span><span class="p">)</span>
 <span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
 </pre></div>
 </div>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>===============  ====================  ======================================================================  =============  ========  =================  ==============  ================  ==============  ============  ==========  ========  ============  ===============
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>===============  ====================  ======================================================================  =============  ========  =================  ==============  ================  ==============  ============  ==========  ========  ============  ===============
 study_accession  experiment_accession                             experiment_title                             run_accession  taxon_id  library_selection  library_layout  library_strategy  library_source  library_name    bases      spots    adapter_spec  avg_read_length
 ===============  ====================  ======================================================================  =============  ========  =================  ==============  ================  ==============  ============  ==========  ========  ============  ===============
 SRP098789        SRX2536403            GSM2475997: 1.5 Ã‚ÂµM PF-067446846, 10 min, rep 1; Homo sapiens; OTHER  SRR5227288         9606  other              SINGLE -        OTHER             TRANSCRIPTOMIC                2104142750  42082855                             50
@@ -507,288 +506,300 @@ SRP098789        SRX2536407            GSM2476001: 0.3 Ã‚ÂµM PF-067446846, 
 ===============  ====================  ======================================================================  =============  ========  =================  ==============  ================  ==============  ============  ==========  ========  ============  ===============
 </pre></div>
 </div>
-<p>The metadata is returned as a <cite>pandas</cite> dataframe and hence allows you to perform
-all regular select/query operations available through <cite>pandas</cite>.</p>
+<p>The metadata is returned as a [pandas]{.title-ref} dataframe and hence
+allows you to perform all regular select/query operations available
+through [pandas]{.title-ref}.</p>
 </section>
 <section id="use-case-2-downloading-an-entire-project-arranged-experiment-wise">
-<h2>Use Case 2: Downloading an entire project arranged experiment wise<a class="headerlink" href="#use-case-2-downloading-an-entire-project-arranged-experiment-wise" title="Permalink to this heading">#</a></h2>
+<h2>Use Case 2: Downloading an entire project arranged experiment wise<a class="headerlink" href="#use-case-2-downloading-an-entire-project-arranged-experiment-wise" title="Link to this heading">#</a></h2>
 <p>Once you have fetched the metadata and made sure, this is the project
 you were looking for, you would want to download everything at once.
-NCBI follows this hiererachy: <cite>SRP =&gt; SRX =&gt; SRR</cite>. Each <cite>SRP</cite> (project) has multiple
-<cite>SRX</cite> (experiments) and each <cite>SRX</cite> in turn has multiple <cite>SRR</cite> (runs) inside it.
-We want to mimick this hiereachy in our downloads. The reason to do that is simple:
-in most cases you care about <cite>SRX</cite> the most, and would want to “merge” your SRRs
-in one way or the other. Having this hierearchy ensures your downstream code
-can handle such cases easily, without worrying about which runs (SRR) need to be merged.</p>
-<p>We strongly recommend installing <cite>aspera-client</cite> which uses UDP and is <a class="reference external" href="http://www.skullbox.net/tcpudp.php">designed to be faster</a>.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pysradb</span> <span class="kn">import</span> <span class="n">SRAWeb</span>
-<span class="n">db</span> <span class="o">=</span> <span class="n">SRAWeb</span><span class="p">()</span>
+NCBI follows this hiererachy: [SRP =&gt; SRX =&gt; SRR]{.title-ref}. Each
+[SRP]{.title-ref} (project) has multiple [SRX]{.title-ref} (experiments)
+and each [SRX]{.title-ref} in turn has multiple [SRR]{.title-ref} (runs)
+inside it. We want to mimick this hiereachy in our downloads. The reason
+to do that is simple: in most cases you care about [SRX]{.title-ref} the
+most, and would want to “merge” your SRRs in one way or the other.
+Having this hierearchy ensures your downstream code can handle such
+cases easily, without worrying about which runs (SRR) need to be merged.</p>
+<p>We strongly recommend installing [aspera-client]{.title-ref} which uses
+UDP and is <a class="reference external" href="http://www.skullbox.net/tcpudp.php">designed to be faster</a>.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">pysradb</span><span class="w"> </span><span class="kn">import</span> <span class="n">SRAweb</span>
+<span class="n">db</span> <span class="o">=</span> <span class="n">SRAweb</span><span class="p">()</span>
 <span class="n">df</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">sra_metadata</span><span class="p">(</span><span class="s1">&#39;SRP017942&#39;</span><span class="p">)</span>
 <span class="n">db</span><span class="o">.</span><span class="n">download</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
 </pre></div>
 </div>
 </section>
 <section id="use-case-3-downloading-a-subset-of-experiments">
-<h2>Use Case 3: Downloading a subset of experiments<a class="headerlink" href="#use-case-3-downloading-a-subset-of-experiments" title="Permalink to this heading">#</a></h2>
-<p>Often, you need to process only a smaller set of samples from a project (SRP).
-Consider this project which has data spanning four assays.</p>
+<h2>Use Case 3: Downloading a subset of experiments<a class="headerlink" href="#use-case-3-downloading-a-subset-of-experiments" title="Link to this heading">#</a></h2>
+<p>Often, you need to process only a smaller set of samples from a project
+(SRP). Consider this project which has data spanning four assays.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">sra_metadata</span><span class="p">(</span><span class="s1">&#39;SRP000941&#39;</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">library_strategy</span><span class="o">.</span><span class="n">unique</span><span class="p">())</span>
 <span class="p">[</span><span class="s1">&#39;ChIP-Seq&#39;</span> <span class="s1">&#39;Bisulfite-Seq&#39;</span> <span class="s1">&#39;RNA-Seq&#39;</span> <span class="s1">&#39;WGS&#39;</span> <span class="s1">&#39;OTHER&#39;</span><span class="p">]</span>
 </pre></div>
 </div>
-<p>But, you might be only interested in analyzing the <cite>RNA-seq</cite> samples and would just want to download that subset.
-This is simple using <cite>pysradb</cite> since the metadata can be subset just as you would subset a dataframe in
-pandas.</p>
+<p>But, you might be only interested in analyzing the [RNA-seq]{.title-ref}
+samples and would just want to download that subset. This is simple
+using [pysradb]{.title-ref} since the metadata can be subset just as you
+would subset a dataframe in pandas.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">df_rna</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="o">.</span><span class="n">library_strategy</span> <span class="o">==</span> <span class="s1">&#39;RNA-Seq&#39;</span><span class="p">]</span>
 <span class="n">db</span><span class="o">.</span><span class="n">download</span><span class="p">(</span><span class="n">df</span><span class="o">=</span><span class="n">df_rna</span><span class="p">,</span> <span class="n">out_dir</span><span class="o">=</span><span class="s1">&#39;/pysradb_downloads&#39;</span><span class="p">)()</span>
 </pre></div>
 </div>
 </section>
 <section id="use-case-4-getting-cell-type-treatment-information-from-sample-attributes">
-<h2>Use Case 4: Getting cell-type/treatment information from sample_attributes<a class="headerlink" href="#use-case-4-getting-cell-type-treatment-information-from-sample-attributes" title="Permalink to this heading">#</a></h2>
-<p>Cell type/tissue informations is usually hidden in the <cite>sample_attributes</cite> column,
-which can be expanded:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pysradb.filter_attrs</span> <span class="kn">import</span> <span class="n">expand_sample_attribute_columns</span>
+<h2>Use Case 4: Getting cell-type/treatment information from sample_attributes<a class="headerlink" href="#use-case-4-getting-cell-type-treatment-information-from-sample-attributes" title="Link to this heading">#</a></h2>
+<p>Cell type/tissue informations is usually hidden in the
+[sample_attributes]{.title-ref} column, which can be expanded:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">pysradb.filter_attrs</span><span class="w"> </span><span class="kn">import</span> <span class="n">expand_sample_attribute_columns</span>
 <span class="n">df</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">sra_metadata</span><span class="p">(</span><span class="s1">&#39;SRP017942&#39;</span><span class="p">)</span>
 <span class="n">expand_sample_attribute_columns</span><span class="p">(</span><span class="n">df</span><span class="p">)</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
 </pre></div>
 </div>
-<table class="table">
+<table>
 <thead>
-<tr class="row-odd"><th class="head"><p>study_accession</p></th>
-<th class="head"><p>experiment_accession</p></th>
-<th class="head"><p>experiment_title</p></th>
-<th class="head"><p>experiment_attribute</p></th>
-<th class="head"><p>sample_attribute</p></th>
-<th class="head"><p>run_accession</p></th>
-<th class="head"><p>taxon_id</p></th>
-<th class="head"><p>library_selection</p></th>
-<th class="head"><p>library_layout</p></th>
-<th class="head"><p>library_strategy</p></th>
-<th class="head"><p>library_source</p></th>
-<th class="head"><p>library_name</p></th>
-<th class="head"><p>bases</p></th>
-<th class="head"><p>spots</p></th>
-<th class="head"><p>adapter_spec</p></th>
-<th class="head"><p>avg_read_length</p></th>
-<th class="head"><p>assay_type</p></th>
-<th class="head"><p>cell_line</p></th>
-<th class="head"><p>source_name</p></th>
-<th class="head"><p>transfected_with</p></th>
-<th class="head"><p>treatment</p></th>
+<tr class="header">
+<th>study_accession</th>
+<th>experiment_accession</th>
+<th>experiment_title</th>
+<th>experiment_attribute</th>
+<th>sample_attribute</th>
+<th>run_accession</th>
+<th>taxon_id</th>
+<th>library_selection</th>
+<th>library_layout</th>
+<th>library_strategy</th>
+<th>library_source</th>
+<th>library_name</th>
+<th>bases</th>
+<th>spots</th>
+<th>adapter_spec</th>
+<th>avg_read_length</th>
+<th>assay_type</th>
+<th>cell_line</th>
+<th>source_name</th>
+<th>transfected_with</th>
+<th>treatment</th>
 </tr>
 </thead>
 <tbody>
-<tr class="row-even"><td><p>SRP017942</p></td>
-<td><p>SRX217028</p></td>
-<td><p>GSM1063575: 293T_GFP; Homo sapiens; RNA-Seq</p></td>
-<td><p>GEO Accession: GSM1063575</p></td>
-<td><p>source_name: 293T cells || cell line: 293T cells || transfected with: 3XFLAG-GFP || assay type: Riboseq</p></td>
-<td><p>SRR648667</p></td>
-<td><p>9606</p></td>
-<td><p>other</p></td>
-<td><p>SINGLE -</p></td>
-<td><p>RNA-Seq</p></td>
-<td><p>TRANSCRIPTOMIC</p></td>
+<tr class="odd">
+<td><p>SRP017942 SRP017942 SRP017942 SRP017942 SRP017942</p></td>
+<td><p>SRX217028 SRX217029 SRX217030 SRX217031 SRX217956</p></td>
+<td><p>GSM1063575: 293T_GFP; Homo sapiens; RNA-Seq GSM1063576:
+293T_GFP_2hrs_severe_Heat_Shock; Homo sapiens; RNA-Seq GSM1063577:
+293T_Hspa1a; Homo sapiens; RNA-Seq GSM1063578:
+293T_Hspa1a_2hrs_severe_Heat_Shock; Homo sapiens; RNA-Seq GSM794854:
+3T3-Control-Riboseq; Mus musculus; RNA-Seq</p></td>
+<td><p>GEO Accession: GSM1063575 GEO Accession: GSM1063576 GEO
+Accession: GSM1063577 GEO Accession: GSM1063578 GEO Accession:
+GSM794854</p></td>
+<td><p>source_name: 293T cells || cell line: 293T cells || transfected
+with: 3XFLAG-GFP || assay type: Riboseq source_name: 293T cells || cell
+line: 293T cells || transfected with: 3XFLAG-GFP || treatment: severe
+heat shock (44C 2 hours) || assay type: Riboseq source_name: 293T cells
+|| cell line: 293T cells || transfected with: 3XFLAG-Hspa1a || assay
+type: Riboseq source_name: 293T cells || cell line: 293T cells ||
+transfected with: 3XFLAG-Hspa1a || treatment: severe heat shock (44C 2
+hours) || assay type: Riboseq source_name: 3T3 cells || treatment:
+control || cell line: 3T3 cells || assay type: Riboseq</p></td>
+<td><p>SRR648667 SRR648668 SRR648669 SRR648670 SRR649752</p></td>
+<td><blockquote>
+<p>9606 9606 9606 9606 10090</p>
+</blockquote></td>
+<td><p>other other other other cDNA</p></td>
+<td><p>SINGLE -SINGLE -SINGLE -SINGLE -SINGLE -</p></td>
+<td><p>RNA-Seq RNA-Seq RNA-Seq RNA-Seq RNA-Seq</p></td>
+<td><p>TRANSCRIPTOMIC TRANSCRIPTOMIC TRANSCRIPTOMIC TRANSCRIPTOMIC
+TRANSCRIPTOMIC</p></td>
 <td></td>
-<td><p>1806641316</p></td>
-<td><p>50184481</p></td>
+<td><p>1806641316 3436984836 3330909216 3622123512 594945396</p></td>
+<td><blockquote>
+<p>50184481 95471801 92525256</p>
+</blockquote>
+<dl>
+<dt>100614542</dt>
+<dd>
+<p>16526261</p>
+</dd>
+</dl></td>
 <td></td>
-<td><p>36</p></td>
-<td><p>riboseq</p></td>
-<td><p>293t cells</p></td>
-<td><p>293t cells</p></td>
-<td><p>3xflag-gfp</p></td>
-<td><p>NaN</p></td>
-</tr>
-<tr class="row-odd"><td><p>SRP017942</p></td>
-<td><p>SRX217029</p></td>
-<td><p>GSM1063576: 293T_GFP_2hrs_severe_Heat_Shock; Homo sapiens; RNA-Seq</p></td>
-<td><p>GEO Accession: GSM1063576</p></td>
-<td><p>source_name: 293T cells || cell line: 293T cells || transfected with: 3XFLAG-GFP || treatment: severe heat shock (44C 2 hours) || assay type: Riboseq</p></td>
-<td><p>SRR648668</p></td>
-<td><p>9606</p></td>
-<td><p>other</p></td>
-<td><p>SINGLE -</p></td>
-<td><p>RNA-Seq</p></td>
-<td><p>TRANSCRIPTOMIC</p></td>
-<td></td>
-<td><p>3436984836</p></td>
-<td><p>95471801</p></td>
-<td></td>
-<td><p>36</p></td>
-<td><p>riboseq</p></td>
-<td><p>293t cells</p></td>
-<td><p>293t cells</p></td>
-<td><p>3xflag-gfp</p></td>
-<td><p>severe heat shock (44c 2 hours)</p></td>
-</tr>
-<tr class="row-even"><td><p>SRP017942</p></td>
-<td><p>SRX217030</p></td>
-<td><p>GSM1063577: 293T_Hspa1a; Homo sapiens; RNA-Seq</p></td>
-<td><p>GEO Accession: GSM1063577</p></td>
-<td><p>source_name: 293T cells || cell line: 293T cells || transfected with: 3XFLAG-Hspa1a || assay type: Riboseq</p></td>
-<td><p>SRR648669</p></td>
-<td><p>9606</p></td>
-<td><p>other</p></td>
-<td><p>SINGLE -</p></td>
-<td><p>RNA-Seq</p></td>
-<td><p>TRANSCRIPTOMIC</p></td>
-<td></td>
-<td><p>3330909216</p></td>
-<td><p>92525256</p></td>
-<td></td>
-<td><p>36</p></td>
-<td><p>riboseq</p></td>
-<td><p>293t cells</p></td>
-<td><p>293t cells</p></td>
-<td><p>3xflag-hspa1a</p></td>
-<td><p>NaN</p></td>
-</tr>
-<tr class="row-odd"><td><p>SRP017942</p></td>
-<td><p>SRX217031</p></td>
-<td><p>GSM1063578: 293T_Hspa1a_2hrs_severe_Heat_Shock; Homo sapiens; RNA-Seq</p></td>
-<td><p>GEO Accession: GSM1063578</p></td>
-<td><p>source_name: 293T cells || cell line: 293T cells || transfected with: 3XFLAG-Hspa1a || treatment: severe heat shock (44C 2 hours) || assay type: Riboseq</p></td>
-<td><p>SRR648670</p></td>
-<td><p>9606</p></td>
-<td><p>other</p></td>
-<td><p>SINGLE -</p></td>
-<td><p>RNA-Seq</p></td>
-<td><p>TRANSCRIPTOMIC</p></td>
-<td></td>
-<td><p>3622123512</p></td>
-<td><p>100614542</p></td>
-<td></td>
-<td><p>36</p></td>
-<td><p>riboseq</p></td>
-<td><p>293t cells</p></td>
-<td><p>293t cells</p></td>
-<td><p>3xflag-hspa1a</p></td>
-<td><p>severe heat shock (44c 2 hours)</p></td>
-</tr>
-<tr class="row-even"><td><p>SRP017942</p></td>
-<td><p>SRX217956</p></td>
-<td><p>GSM794854: 3T3-Control-Riboseq; Mus musculus; RNA-Seq</p></td>
-<td><p>GEO Accession: GSM794854</p></td>
-<td><p>source_name: 3T3 cells || treatment: control || cell line: 3T3 cells || assay type: Riboseq</p></td>
-<td><p>SRR649752</p></td>
-<td><p>10090</p></td>
-<td><p>cDNA</p></td>
-<td><p>SINGLE -</p></td>
-<td><p>RNA-Seq</p></td>
-<td><p>TRANSCRIPTOMIC</p></td>
-<td></td>
-<td><p>594945396</p></td>
-<td><p>16526261</p></td>
-<td></td>
-<td><p>36</p></td>
-<td><p>riboseq</p></td>
-<td><p>3t3 cells</p></td>
-<td><p>3t3 cells</p></td>
-<td><p>NaN</p></td>
-<td><p>control</p></td>
+<td><blockquote>
+<p>36 36 36 36 36</p>
+</blockquote></td>
+<td><p>riboseq riboseq riboseq riboseq riboseq</p></td>
+<td><p>293t cells 293t cells 293t cells 293t cells 3t3 cells</p></td>
+<td><p>293t cells 293t cells 293t cells 293t cells 3t3 cells</p></td>
+<td><p>3xflag-gfp 3xflag-gfp 3xflag-hspa1a 3xflag-hspa1a NaN</p></td>
+<td><p>NaN severe heat shock (44c 2 hours) NaN severe heat shock (44c 2
+hours) control</p></td>
 </tr>
 </tbody>
 </table>
 </section>
 <section id="use-case-5-searching-for-datasets">
-<h2>Use Case 5: Searching for datasets<a class="headerlink" href="#use-case-5-searching-for-datasets" title="Permalink to this heading">#</a></h2>
+<h2>Use Case 5: Searching for datasets<a class="headerlink" href="#use-case-5-searching-for-datasets" title="Link to this heading">#</a></h2>
 <p>Another common operation that we do on SRA is seach, plain text search.</p>
-<p>If you want to look up for all projects where <cite>ribosome profiling</cite> appears somewhere
-in the description:</p>
+<p>If you want to look up for all projects where [ribosome
+profiling]{.title-ref} appears somewhere in the description:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">search_sra</span><span class="p">(</span><span class="n">search_str</span><span class="o">=</span><span class="s1">&#39;&quot;ribosome profiling&quot;&#39;</span><span class="p">)</span>
 <span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
 </pre></div>
 </div>
-<table class="table">
+<table>
 <thead>
-<tr class="row-odd"><th class="head"><p>study_accession</p></th>
-<th class="head"><p>experiment_accession</p></th>
-<th class="head"><p>experiment_title</p></th>
-<th class="head"><p>run_accession</p></th>
-<th class="head"><p>taxon_id</p></th>
-<th class="head"><p>library_selection</p></th>
-<th class="head"><p>library_layout</p></th>
-<th class="head"><p>library_strategy</p></th>
-<th class="head"><p>library_source</p></th>
-<th class="head"><p>library_name</p></th>
-<th class="head"><p>bases</p></th>
-<th class="head"><p>spots</p></th>
+<tr class="header">
+<th>study_accession</th>
+<th>experiment_accession</th>
+<th>experiment_title</th>
+<th>run_accession</th>
+<th>taxon_id</th>
+<th>library_selection</th>
+<th>library_layout</th>
+<th>library_strategy</th>
+<th>library_source</th>
+<th>library_name</th>
+<th>bases</th>
+<th>spots</th>
 </tr>
 </thead>
 <tbody>
-<tr class="row-even"><td><p>DRP003075</p></td>
-<td><p>DRX019536</p></td>
-<td><p>Illumina Genome Analyzer IIx sequencing of SAMD00018584</p></td>
-<td><p>DRR021383</p></td>
-<td><p>83333</p></td>
-<td><p>other</p></td>
-<td><p>SINGLE -</p></td>
-<td><p>OTHER</p></td>
-<td><p>TRANSCRIPTOMIC</p></td>
-<td><p>GAII05_3</p></td>
-<td><p>978776480</p></td>
-<td><p>12234706</p></td>
+<tr class="odd">
+<td>DRP003075</td>
+<td>DRX019536</td>
+<td>Illumina Genome Analyzer IIx sequencing of SAMD00018584</td>
+<td>DRR021383</td>
+<td><blockquote>
+<p>83333</p>
+</blockquote></td>
+<td>other</td>
+<td>SINGLE -</td>
+<td>OTHER</td>
+<td>TRANSCRIPTOMIC</td>
+<td>GAII05_3</td>
+<td><blockquote>
+<p>978776480</p>
+</blockquote></td>
+<td>12234706</td>
 </tr>
-<tr class="row-odd"><td><p>DRP003075</p></td>
-<td><p>DRX019537</p></td>
-<td><p>Illumina Genome Analyzer IIx sequencing of SAMD00018585</p></td>
-<td><p>DRR021384</p></td>
-<td><p>83333</p></td>
-<td><p>other</p></td>
-<td><p>SINGLE -</p></td>
-<td><p>OTHER</p></td>
-<td><p>TRANSCRIPTOMIC</p></td>
-<td><p>GAII05_4</p></td>
-<td><p>894201680</p></td>
-<td><p>11177521</p></td>
+<tr class="even">
+<td>DRP003075</td>
+<td>DRX019537</td>
+<td>Illumina Genome Analyzer IIx sequencing of SAMD00018585</td>
+<td>DRR021384</td>
+<td><blockquote>
+<p>83333</p>
+</blockquote></td>
+<td>other</td>
+<td>SINGLE -</td>
+<td>OTHER</td>
+<td>TRANSCRIPTOMIC</td>
+<td>GAII05_4</td>
+<td><blockquote>
+<p>894201680</p>
+</blockquote></td>
+<td>11177521</td>
 </tr>
-<tr class="row-even"><td><p>DRP003075</p></td>
-<td><p>DRX019538</p></td>
-<td><p>Illumina Genome Analyzer IIx sequencing of SAMD00018586</p></td>
-<td><p>DRR021385</p></td>
-<td><p>83333</p></td>
-<td><p>other</p></td>
-<td><p>SINGLE -</p></td>
-<td><p>OTHER</p></td>
-<td><p>TRANSCRIPTOMIC</p></td>
-<td><p>GAII05_5</p></td>
-<td><p>931536720</p></td>
-<td><p>11644209</p></td>
+<tr class="odd">
+<td>DRP003075</td>
+<td>DRX019538</td>
+<td>Illumina Genome Analyzer IIx sequencing of SAMD00018586</td>
+<td>DRR021385</td>
+<td><blockquote>
+<p>83333</p>
+</blockquote></td>
+<td>other</td>
+<td>SINGLE -</td>
+<td>OTHER</td>
+<td>TRANSCRIPTOMIC</td>
+<td>GAII05_5</td>
+<td><blockquote>
+<p>931536720</p>
+</blockquote></td>
+<td>11644209</td>
 </tr>
-<tr class="row-odd"><td><p>DRP003075</p></td>
-<td><p>DRX019540</p></td>
-<td><p>Illumina Genome Analyzer IIx sequencing of SAMD00018588</p></td>
-<td><p>DRR021387</p></td>
-<td><p>83333</p></td>
-<td><p>other</p></td>
-<td><p>SINGLE -</p></td>
-<td><p>OTHER</p></td>
-<td><p>TRANSCRIPTOMIC</p></td>
-<td><p>GAII07_4</p></td>
-<td><p>2759398700</p></td>
-<td><p>27593987</p></td>
+<tr class="even">
+<td>DRP003075</td>
+<td>DRX019540</td>
+<td>Illumina Genome Analyzer IIx sequencing of SAMD00018588</td>
+<td>DRR021387</td>
+<td><blockquote>
+<p>83333</p>
+</blockquote></td>
+<td>other</td>
+<td>SINGLE -</td>
+<td>OTHER</td>
+<td>TRANSCRIPTOMIC</td>
+<td>GAII07_4</td>
+<td>2759398700</td>
+<td>27593987</td>
 </tr>
-<tr class="row-even"><td><p>DRP003075</p></td>
-<td><p>DRX019541</p></td>
-<td><p>Illumina Genome Analyzer IIx sequencing of SAMD00018589</p></td>
-<td><p>DRR021388</p></td>
-<td><p>83333</p></td>
-<td><p>other</p></td>
-<td><p>SINGLE -</p></td>
-<td><p>OTHER</p></td>
-<td><p>TRANSCRIPTOMIC</p></td>
-<td><p>GAII07_5</p></td>
-<td><p>2386196500</p></td>
-<td><p>23861965</p></td>
+<tr class="odd">
+<td>DRP003075</td>
+<td>DRX019541</td>
+<td>Illumina Genome Analyzer IIx sequencing of SAMD00018589</td>
+<td>DRR021388</td>
+<td><blockquote>
+<p>83333</p>
+</blockquote></td>
+<td>other</td>
+<td>SINGLE -</td>
+<td>OTHER</td>
+<td>TRANSCRIPTOMIC</td>
+<td>GAII07_5</td>
+<td>2386196500</td>
+<td>23861965</td>
 </tr>
 </tbody>
 </table>
-<p>Again, the results are available as a <cite>pandas</cite> dataframe and hence
-you can perform all subset operations post your query. Your query doesn’t need
-to be exact.</p>
+<p>Again, the results are available as a [pandas]{.title-ref} dataframe and
+hence you can perform all subset operations post your query. Your query
+doesn’t need to be exact.</p>
+</section>
+<section id="use-case-8-finding-publications-pmids-associated-with-sra-data">
+<h2>Use Case 8: Finding publications (PMIDs) associated with SRA data<a class="headerlink" href="#use-case-8-finding-publications-pmids-associated-with-sra-data" title="Link to this heading">#</a></h2>
+<p>Sometimes you have SRA accessions and want to find the publications that describe the data generation.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">pysradb</span><span class="w"> </span><span class="kn">import</span> <span class="n">SRAweb</span>
+<span class="n">db</span> <span class="o">=</span> <span class="n">SRAweb</span><span class="p">()</span>
+
+<span class="c1"># Get PMIDs for a study accession (SRP)</span>
+<span class="n">pmids_df</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">srp_to_pmid</span><span class="p">(</span><span class="s1">&#39;SRP002605&#39;</span><span class="p">)</span>
+<span class="n">pmids_df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>sra_accession   bioproject      pmid
+SRP002605      PRJNA129385   20703300
+</pre></div>
+</div>
+<p>You can also get PMIDs for other SRA accession types:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Get PMIDs for run accessions (SRR)</span>
+<span class="n">srr_pmids</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">srr_to_pmid</span><span class="p">(</span><span class="s1">&#39;SRR057511&#39;</span><span class="p">)</span>
+
+<span class="c1"># Get PMIDs for experiment accessions (SRX) </span>
+<span class="n">srx_pmids</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">srx_to_pmid</span><span class="p">(</span><span class="s1">&#39;SRX021967&#39;</span><span class="p">)</span>
+
+<span class="c1"># Get PMIDs for sample accessions (SRS)</span>
+<span class="n">srs_pmids</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">srs_to_pmid</span><span class="p">(</span><span class="s1">&#39;SRS079386&#39;</span><span class="p">)</span>
+
+<span class="c1"># Get PMIDs for multiple accessions at once</span>
+<span class="n">multi_pmids</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">sra_to_pmid</span><span class="p">([</span><span class="s1">&#39;SRP002605&#39;</span><span class="p">,</span> <span class="s1">&#39;SRP016501&#39;</span><span class="p">])</span>
+</pre></div>
+</div>
+<p>You can also directly query BioProject accessions for their associated publications:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Get PMIDs directly from BioProject accessions</span>
+<span class="n">bioproject_pmids</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">fetch_bioproject_pmids</span><span class="p">([</span><span class="s1">&#39;PRJNA257197&#39;</span><span class="p">,</span> <span class="s1">&#39;PRJNA129385&#39;</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">bioproject_pmids</span><span class="p">)</span>
+<span class="c1"># Output: {&#39;PRJNA257197&#39;: [&#39;25214632&#39;], &#39;PRJNA129385&#39;: [&#39;20703300&#39;]}</span>
+</pre></div>
+</div>
+<p><strong>Note</strong>: This functionality relies on the cross-references maintained between BioProjects and PubMed. Not all SRA datasets have associated publications, and some publications may not be properly cross-referenced in the NCBI databases. The success rate depends on:</p>
+<ul class="simple">
+<li><p>Whether the authors included SRA/BioProject accessions in their manuscript</p></li>
+<li><p>Whether NCBI has established the cross-references</p></li>
+<li><p>The publication date relative to data submission</p></li>
+</ul>
 </section>
 </section>
 
@@ -797,11 +808,10 @@ to be exact.</p>
               
               
               
-                <footer class="bd-footer-article">
+              
+              
+                <footer class="prev-next-footer d-print-none">
                   
-<div class="footer-article-items footer-article__inner">
-  
-    <div class="footer-article-item"><!-- Previous / next buttons -->
 <div class="prev-next-area">
     <a class="left-prev"
        href="cmdline.html"
@@ -821,39 +831,42 @@ to be exact.</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
-</div></div>
-  
 </div>
-
                 </footer>
               
             </div>
             
             
               
-                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
 
   <div class="sidebar-secondary-item">
-  <div class="page-toc tocsection onthispage">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
     <i class="fa-solid fa-list"></i> On this page
   </div>
-  <nav class="bd-toc-nav page-toc">
+  <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#use-case-1-fetch-the-metadata-table-sra-runtable">Use Case 1: Fetch the metadata table (SRA-runtable)</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#use-case-2-downloading-an-entire-project-arranged-experiment-wise">Use Case 2: Downloading an entire project arranged experiment wise</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#use-case-3-downloading-a-subset-of-experiments">Use Case 3: Downloading a subset of experiments</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#use-case-4-getting-cell-type-treatment-information-from-sample-attributes">Use Case 4: Getting cell-type/treatment information from sample_attributes</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#use-case-5-searching-for-datasets">Use Case 5: Searching for datasets</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#use-case-8-finding-publications-pmids-associated-with-sra-data">Use Case 8: Finding publications (PMIDs) associated with SRA data</a></li>
 </ul>
   </nav></div>
 
   <div class="sidebar-secondary-item">
-  <div class="tocsection sourcelink">
-    <a href="_sources/python-api-usage.rst.txt">
-      <i class="fa-solid fa-file-lines"></i> Show Source
-    </a>
-  </div>
-</div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/python-api-usage.md.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div></div>
 
 </div></div>
               
@@ -868,8 +881,8 @@ to be exact.</p>
   </div>
   
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script src="_static/scripts/bootstrap.js?digest=e353d410970836974a52"></script>
-<script src="_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52"></script>
+  <script defer src="_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
 
   <footer class="bd-footer">
 <div class="bd-footer__inner bd-page-width">
@@ -877,6 +890,7 @@ to be exact.</p>
     <div class="footer-items__start">
       
         <div class="footer-item">
+
   <p class="copyright">
     
       © Copyright 2023, Saket Choudhary.
@@ -886,8 +900,9 @@ to be exact.</p>
 </div>
       
         <div class="footer-item">
+
   <p class="sphinx-version">
-    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 5.3.0.
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.1.3.
     <br/>
   </p>
 </div>
@@ -895,10 +910,13 @@ to be exact.</p>
     </div>
   
   
+  
     <div class="footer-items__end">
       
-        <div class="footer-item"><p class="theme-version">
-  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.13.3.
+        <div class="footer-item">
+<p class="theme-version">
+  <!-- # L10n: Setting the PST URL as an argument as this does not need to be localized -->
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.16.1.
 </p></div>
       
     </div>

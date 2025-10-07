@@ -1,9 +1,8 @@
 
-
 <!DOCTYPE html>
 
 
-<html lang="en" >
+<html lang="en" data-content_root="../../" >
 
   <head>
     <meta charset="utf-8" />
@@ -18,48 +17,48 @@
             
         </script>
     
-    <title>pysradb.search &#8212; pysradb 2.1.0 documentation</title>
+    <title>pysradb.search &#8212; pysradb 2.4.1 documentation</title>
   
   
   
   <script data-cfasync="false">
     document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
-    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
   </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="../../_static/styles/theme.css?digest=e353d410970836974a52" rel="stylesheet" />
-<link href="../../_static/styles/bootstrap.css?digest=e353d410970836974a52" rel="stylesheet" />
-<link href="../../_static/styles/pydata-sphinx-theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+  <link href="../../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
 
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=4ae1632d" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-dropdown.css?v=995e94df" />
+    <link rel="stylesheet" type="text/css" href="../../_static/panels-bootstrap.min.css?v=21c0b90a" />
   
-  <link href="../../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=e353d410970836974a52" rel="stylesheet" />
-  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
-<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
-<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
-
-    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/tabs.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
-  
+  <!-- So that users can add custom icons -->
+  <script src="../../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=e353d410970836974a52" />
-<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52" />
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
-    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
-    <script src="../../_static/jquery.js"></script>
-    <script src="../../_static/underscore.js"></script>
-    <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
-    <script src="../../_static/doctools.js"></script>
-    <script src="../../_static/sphinx_highlight.js"></script>
-    <script src="../../_static/tabs.js"></script>
+    <script src="../../_static/documentation_options.js?v=e9ebdb8f"></script>
+    <script src="../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = '_modules/pysradb/search';</script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="2.4.1" />
   </head>
   
   
@@ -67,23 +66,16 @@
 
   
   
-  <a class="skip-link" href="#main-content">Skip to main content</a>
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
   
-  <input type="checkbox"
-          class="sidebar-toggle"
-          name="__primary"
-          id="__primary"/>
-  <label class="overlay overlay-primary" for="__primary"></label>
+  <div id="pst-scroll-pixel-helper"></div>
   
-  <input type="checkbox"
-          class="sidebar-toggle"
-          name="__secondary"
-          id="__secondary"/>
-  <label class="overlay overlay-secondary" for="__secondary"></label>
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
   
-  <div class="search-button__wrapper">
-    <div class="search-button__overlay"></div>
-    <div class="search-button__search-container">
+  <dialog id="pst-search-dialog">
+    
 <form class="bd-search d-flex align-items-center"
       action="../../search.html"
       method="get">
@@ -91,7 +83,6 @@
   <input type="search"
          class="form-control"
          name="q"
-         id="search-input"
          placeholder="Search the docs ..."
          aria-label="Search the docs ..."
          autocomplete="off"
@@ -99,18 +90,27 @@
          autocapitalize="off"
          spellcheck="false"/>
   <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
-</form></div>
-  </div>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
   
-    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
 <div class="bd-header__inner bd-page-width">
-  <label class="sidebar-toggle primary-toggle" for="__primary">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
     <span class="fa-solid fa-bars"></span>
-  </label>
+  </button>
   
-  <div class="navbar-header-items__start">
+  
+  <div class="col-lg-3 navbar-header-items__start">
     
       <div class="navbar-item">
+
+  
+    
   
 
 <a class="navbar-brand logo" href="../../index.html">
@@ -118,109 +118,106 @@
   
   
   
+  
     
     
       
     
     
-    <img src="../../_static/pysradb_v3.png" class="logo__image only-light" alt="Logo image"/>
-    <script>document.write(`<img src="../../_static/pysradb_v3.png" class="logo__image only-dark" alt="Logo image"/>`);</script>
+    <img src="../../_static/pysradb_v3.png" class="logo__image only-light" alt="pysradb 2.4.1 documentation - Home"/>
+    <img src="../../_static/pysradb_v3.png" class="logo__image only-dark pst-js-only" alt="pysradb 2.4.1 documentation - Home"/>
   
   
 </a></div>
     
   </div>
   
-  
   <div class="col-lg-9 navbar-header-items">
     
     <div class="me-auto navbar-header-items__center">
       
-        <div class="navbar-item"><nav class="navbar-nav">
-  <p class="sidebar-header-items__title"
-     role="heading"
-     aria-level="1"
-     aria-label="Site Navigation">
-    Site Navigation
-  </p>
+        <div class="navbar-item">
+<nav>
   <ul class="bd-navbar-elements navbar-nav">
     
-                    <li class="nav-item">
-                      <a class="nav-link nav-internal" href="../../installation.html">
-                        Installation
-                      </a>
-                    </li>
-                
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../installation.html">
+    Installation
+  </a>
+</li>
 
-                    <li class="nav-item">
-                      <a class="nav-link nav-internal" href="../../quickstart.html">
-                        Quickstart
-                      </a>
-                    </li>
-                
 
-                    <li class="nav-item">
-                      <a class="nav-link nav-internal" href="../../cmdline.html">
-                        CLI
-                      </a>
-                    </li>
-                
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../quickstart.html">
+    Quickstart
+  </a>
+</li>
 
-                    <li class="nav-item">
-                      <a class="nav-link nav-internal" href="../../python-api-usage.html">
-                        Python API
-                      </a>
-                    </li>
-                
 
-                    <li class="nav-item">
-                      <a class="nav-link nav-internal" href="../../case_studies.html">
-                        Case Studies
-                      </a>
-                    </li>
-                
-            <div class="nav-item dropdown">
-                <button class="btn dropdown-toggle nav-item" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../cmdline.html">
+    CLI
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../python-api-usage.html">
+    Python API
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../case_studies.html">
+    Case Studies
+  </a>
+</li>
+
+            <li class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button"
+                data-bs-toggle="dropdown" aria-expanded="false"
+                aria-controls="pst-nav-more-links">
                     More
                 </button>
-                <div class="dropdown-menu">
+                <ul id="pst-nav-more-links" class="dropdown-menu">
                     
-                    <li class="nav-item">
-                      <a class="nav-link nav-internal" href="../../commands.html">
-                        API Documentation
-                      </a>
-                    </li>
-                
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../../commands.html">
+    API Documentation
+  </a>
+</li>
 
-                    <li class="nav-item">
-                      <a class="nav-link nav-internal" href="../../contributing.html">
-                        Contributing
-                      </a>
-                    </li>
-                
 
-                    <li class="nav-item">
-                      <a class="nav-link nav-internal" href="../../authors.html">
-                        Credits
-                      </a>
-                    </li>
-                
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../../contributing.html">
+    Contributing
+  </a>
+</li>
 
-                    <li class="nav-item">
-                      <a class="nav-link nav-internal" href="../../history.html">
-                        History
-                      </a>
-                    </li>
-                
 
-                    <li class="nav-item">
-                      <a class="nav-link nav-internal" href="../../modules.html">
-                        pysradb
-                      </a>
-                    </li>
-                
-                </div>
-            </div>
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../../authors.html">
+    Credits
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../../history.html">
+    History
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../../modules.html">
+    pysradb
+  </a>
+</li>
+
+                </ul>
+            </li>
             
   </ul>
 </nav></div>
@@ -232,28 +229,24 @@
       
         <div class="navbar-item navbar-persistent--container">
           
-<script>
-document.write(`
-  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <i class="fa-solid fa-magnifying-glass"></i>
-  </button>
-`);
-</script>
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
         </div>
       
       
         <div class="navbar-item">
-<script>
-document.write(`
-  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
-    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
-    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
-  </button>
-`);
-</script></div>
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
       
-        <div class="navbar-item"><ul class="navbar-icon-links navbar-nav"
+        <div class="navbar-item"><ul class="navbar-icon-links"
     aria-label="Icon Links">
         <li class="nav-item">
           
@@ -264,8 +257,8 @@ document.write(`
           
           
           
-          <a href="https://github.com/saketkc/pysradb" title="GitHub" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fa-brands fa-square-github"></i></span>
-            <label class="sr-only">GitHub</label></a>
+          <a href="https://github.com/saketkc/pysradb" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
         </li>
 </ul></div>
       
@@ -275,25 +268,30 @@ document.write(`
   
   
     <div class="navbar-persistent--mobile">
-<script>
-document.write(`
-  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <i class="fa-solid fa-magnifying-glass"></i>
-  </button>
-`);
-</script>
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
     </div>
   
 
   
 </div>
 
-    </nav>
+    </header>
   
+
   <div class="bd-container">
     <div class="bd-container__inner bd-page-width">
       
-      <div class="bd-sidebar-primary bd-sidebar hide-on-wide">
+      
+      
+        
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar hide-on-wide">
         
 
   
@@ -302,94 +300,84 @@ document.write(`
     
       <div class="sidebar-header-items__center">
         
-          <div class="navbar-item"><nav class="navbar-nav">
-  <p class="sidebar-header-items__title"
-     role="heading"
-     aria-level="1"
-     aria-label="Site Navigation">
-    Site Navigation
-  </p>
+          
+          
+            <div class="navbar-item">
+<nav>
   <ul class="bd-navbar-elements navbar-nav">
     
-                    <li class="nav-item">
-                      <a class="nav-link nav-internal" href="../../installation.html">
-                        Installation
-                      </a>
-                    </li>
-                
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../installation.html">
+    Installation
+  </a>
+</li>
 
-                    <li class="nav-item">
-                      <a class="nav-link nav-internal" href="../../quickstart.html">
-                        Quickstart
-                      </a>
-                    </li>
-                
 
-                    <li class="nav-item">
-                      <a class="nav-link nav-internal" href="../../cmdline.html">
-                        CLI
-                      </a>
-                    </li>
-                
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../quickstart.html">
+    Quickstart
+  </a>
+</li>
 
-                    <li class="nav-item">
-                      <a class="nav-link nav-internal" href="../../python-api-usage.html">
-                        Python API
-                      </a>
-                    </li>
-                
 
-                    <li class="nav-item">
-                      <a class="nav-link nav-internal" href="../../case_studies.html">
-                        Case Studies
-                      </a>
-                    </li>
-                
-            <div class="nav-item dropdown">
-                <button class="btn dropdown-toggle nav-item" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    More
-                </button>
-                <div class="dropdown-menu">
-                    
-                    <li class="nav-item">
-                      <a class="nav-link nav-internal" href="../../commands.html">
-                        API Documentation
-                      </a>
-                    </li>
-                
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../cmdline.html">
+    CLI
+  </a>
+</li>
 
-                    <li class="nav-item">
-                      <a class="nav-link nav-internal" href="../../contributing.html">
-                        Contributing
-                      </a>
-                    </li>
-                
 
-                    <li class="nav-item">
-                      <a class="nav-link nav-internal" href="../../authors.html">
-                        Credits
-                      </a>
-                    </li>
-                
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../python-api-usage.html">
+    Python API
+  </a>
+</li>
 
-                    <li class="nav-item">
-                      <a class="nav-link nav-internal" href="../../history.html">
-                        History
-                      </a>
-                    </li>
-                
 
-                    <li class="nav-item">
-                      <a class="nav-link nav-internal" href="../../modules.html">
-                        pysradb
-                      </a>
-                    </li>
-                
-                </div>
-            </div>
-            
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../case_studies.html">
+    Case Studies
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../commands.html">
+    API Documentation
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../contributing.html">
+    Contributing
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../authors.html">
+    Credits
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../history.html">
+    History
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../modules.html">
+    pysradb
+  </a>
+</li>
+
   </ul>
 </nav></div>
+          
         
       </div>
     
@@ -398,17 +386,14 @@ document.write(`
       <div class="sidebar-header-items__end">
         
           <div class="navbar-item">
-<script>
-document.write(`
-  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
-    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
-    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
-  </button>
-`);
-</script></div>
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
         
-          <div class="navbar-item"><ul class="navbar-icon-links navbar-nav"
+          <div class="navbar-item"><ul class="navbar-icon-links"
     aria-label="Icon Links">
         <li class="nav-item">
           
@@ -419,8 +404,8 @@ document.write(`
           
           
           
-          <a href="https://github.com/saketkc/pysradb" title="GitHub" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fa-brands fa-square-github"></i></span>
-            <label class="sr-only">GitHub</label></a>
+          <a href="https://github.com/saketkc/pysradb" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
         </li>
 </ul></div>
         
@@ -430,30 +415,33 @@ document.write(`
   
   
   <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
   </div>
-  
-  <div id="rtd-footer-container"></div>
 
 
       </div>
       
-      <main id="main-content" class="bd-main">
+      <main id="main-content" class="bd-main" role="main">
         
         
           <div class="bd-content">
             <div class="bd-article-container">
               
-              <div class="bd-header-article">
+              <div class="bd-header-article d-print-none">
 <div class="header-article-items header-article__inner">
   
     <div class="header-article-items__start">
       
         <div class="header-article-item">
 
-
-
-<nav aria-label="Breadcrumbs">
-  <ul class="bd-breadcrumbs" role="navigation" aria-label="Breadcrumb">
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
     
     <li class="breadcrumb-item breadcrumb-home">
       <a href="../../index.html" class="nav-link" aria-label="Home">
@@ -463,7 +451,7 @@ document.write(`
     
     <li class="breadcrumb-item"><a href="../index.html" class="nav-link">Module code</a></li>
     
-    <li class="breadcrumb-item active" aria-current="page">pysradb.search</li>
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">pysradb.search</span></li>
   </ul>
 </nav>
 </div>
@@ -478,33 +466,33 @@ document.write(`
               
                 
 <div id="searchbox"></div>
-                <article class="bd-article" role="main">
+                <article class="bd-article">
                   
   <h1>Source code for pysradb.search</h1><div class="highlight"><pre>
-<span></span><span class="sd">&quot;&quot;&quot;This file contains the search classes for the search feature.</span>
-<span class="sd">&quot;&quot;&quot;</span>
-<span class="kn">import</span> <span class="nn">os</span>
-<span class="kn">import</span> <span class="nn">re</span>
-<span class="kn">import</span> <span class="nn">sys</span>
-<span class="kn">import</span> <span class="nn">time</span>
-<span class="kn">import</span> <span class="nn">urllib</span>
-<span class="kn">import</span> <span class="nn">xml.etree.ElementTree</span> <span class="k">as</span> <span class="nn">Et</span>
-<span class="kn">from</span> <span class="nn">json</span> <span class="kn">import</span> <span class="n">JSONDecodeError</span>
+<span></span><span class="sd">&quot;&quot;&quot;This file contains the search classes for the search feature.&quot;&quot;&quot;</span>
 
-<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
-<span class="kn">import</span> <span class="nn">requests</span>
-<span class="kn">from</span> <span class="nn">tqdm</span> <span class="kn">import</span> <span class="n">tqdm</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">re</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">sys</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">time</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">urllib</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">xml.etree.ElementTree</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">Et</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">json</span><span class="w"> </span><span class="kn">import</span> <span class="n">JSONDecodeError</span>
 
-<span class="kn">from</span> <span class="nn">.exceptions</span> <span class="kn">import</span> <span class="n">IncorrectFieldException</span>
-<span class="kn">from</span> <span class="nn">.exceptions</span> <span class="kn">import</span> <span class="n">MissingQueryException</span>
-<span class="kn">from</span> <span class="nn">.utils</span> <span class="kn">import</span> <span class="n">requests_3_retries</span>
-<span class="kn">from</span> <span class="nn">.utils</span> <span class="kn">import</span> <span class="n">scientific_name_to_taxid</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">requests</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">tqdm</span><span class="w"> </span><span class="kn">import</span> <span class="n">tqdm</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">.exceptions</span><span class="w"> </span><span class="kn">import</span> <span class="n">IncorrectFieldException</span><span class="p">,</span> <span class="n">MissingQueryException</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">requests_3_retries</span><span class="p">,</span> <span class="n">scientific_name_to_taxid</span>
 
 <span class="n">SEARCH_REQUEST_TIMEOUT</span> <span class="o">=</span> <span class="mi">20</span>
 <span class="n">SRA_SEARCH_GROUP_SIZE</span> <span class="o">=</span> <span class="mi">300</span>
 
 
-<div class="viewcode-block" id="QuerySearch"><a class="viewcode-back" href="../../pysradb.html#pysradb.search.QuerySearch">[docs]</a><span class="k">class</span> <span class="nc">QuerySearch</span><span class="p">:</span>
+<div class="viewcode-block" id="QuerySearch">
+<a class="viewcode-back" href="../../pysradb.html#pysradb.search.QuerySearch">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">QuerySearch</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;This is the base class for the search feature.</span>
 
 <span class="sd">    This class takes as input the user&#39;s search query, which has been</span>
@@ -576,7 +564,7 @@ document.write(`
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">verbosity</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
         <span class="n">return_max</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span>
@@ -653,7 +641,7 @@ document.write(`
         <span class="p">}</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">plot_objects</span> <span class="o">=</span> <span class="p">{}</span>
 
-    <span class="k">def</span> <span class="nf">_input_multi_regex_checker</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">regex_matcher</span><span class="p">,</span> <span class="n">input_query</span><span class="p">,</span> <span class="n">error_message</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_input_multi_regex_checker</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">regex_matcher</span><span class="p">,</span> <span class="n">input_query</span><span class="p">,</span> <span class="n">error_message</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Checks if the user input match exactly 1 of the possible regex.</span>
 
 <span class="sd">        This is a helper method for _validate_fields. It takes as input a</span>
@@ -700,7 +688,7 @@ document.write(`
             <span class="p">)</span>
             <span class="k">return</span> <span class="n">input_query</span><span class="p">,</span> <span class="n">message</span>
 
-    <span class="k">def</span> <span class="nf">_validate_fields</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_validate_fields</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Verifies that user input format is correct.</span>
 
 <span class="sd">        This helper function tries to match the input query strings from</span>
@@ -933,7 +921,7 @@ document.write(`
         <span class="k">if</span> <span class="n">message</span><span class="p">:</span>
             <span class="k">raise</span> <span class="n">IncorrectFieldException</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">_list_stat</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">stat_header</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_list_stat</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">stat_header</span><span class="p">):</span>
         <span class="n">stat</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">stats</span><span class="p">[</span><span class="n">stat_header</span><span class="p">]</span>
         <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">stat</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">dict</span><span class="p">:</span>
             <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;  </span><span class="si">{</span><span class="n">stat_header</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">stat</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span>
@@ -943,7 +931,9 @@ document.write(`
             <span class="n">stat_breakdown</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">  </span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s2">:  </span><span class="si">{</span><span class="n">stat</span><span class="p">[</span><span class="n">key</span><span class="p">]</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span>
         <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;  </span><span class="si">{</span><span class="n">stat_header</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">stat_breakdown</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span>
 
-<div class="viewcode-block" id="QuerySearch.show_result_statistics"><a class="viewcode-back" href="../../pysradb.html#pysradb.search.QuerySearch.show_result_statistics">[docs]</a>    <span class="k">def</span> <span class="nf">show_result_statistics</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="QuerySearch.show_result_statistics">
+<a class="viewcode-back" href="../../pysradb.html#pysradb.search.QuerySearch.show_result_statistics">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">show_result_statistics</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Shows search result statistics.&quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">df</span><span class="o">.</span><span class="n">empty</span><span class="p">:</span>
             <span class="nb">print</span><span class="p">(</span>
@@ -976,7 +966,10 @@ document.write(`
             <span class="n">stats</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_list_stat</span><span class="p">(</span><span class="n">categorical_stat</span><span class="p">)</span>
         <span class="nb">print</span><span class="p">(</span><span class="n">stats</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="QuerySearch.visualise_results"><a class="viewcode-back" href="../../pysradb.html#pysradb.search.QuerySearch.visualise_results">[docs]</a>    <span class="k">def</span> <span class="nf">visualise_results</span><span class="p">(</span>
+
+<div class="viewcode-block" id="QuerySearch.visualise_results">
+<a class="viewcode-back" href="../../pysradb.html#pysradb.search.QuerySearch.visualise_results">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">visualise_results</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">graph_types</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;all&quot;</span><span class="p">,),</span> <span class="n">show</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">saveto</span><span class="o">=</span><span class="s2">&quot;./search_plots/&quot;</span>
     <span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Generate graphs that visualise the search results.</span>
@@ -1003,7 +996,7 @@ document.write(`
             <span class="p">)</span>
             <span class="k">return</span>
         <span class="k">try</span><span class="p">:</span>
-            <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+            <span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
         <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
             <span class="nb">print</span><span class="p">(</span>
                 <span class="s2">&quot;The optional dependency, matplotlib, is not available on the system.</span><span class="se">\n</span><span class="s2">&quot;</span>
@@ -1058,18 +1051,28 @@ document.write(`
         <span class="k">for</span> <span class="n">plot</span> <span class="ow">in</span> <span class="n">plots</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_plot_graph</span><span class="p">(</span><span class="n">plt</span><span class="p">,</span> <span class="n">plot</span><span class="p">,</span> <span class="n">show</span><span class="p">,</span> <span class="n">saveto</span><span class="p">,</span> <span class="n">too_many_organisms</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="QuerySearch.search"><a class="viewcode-back" href="../../pysradb.html#pysradb.search.QuerySearch.search">[docs]</a>    <span class="k">def</span> <span class="nf">search</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+<div class="viewcode-block" id="QuerySearch.search">
+<a class="viewcode-back" href="../../pysradb.html#pysradb.search.QuerySearch.search">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">search</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">pass</span></div>
 
-<div class="viewcode-block" id="QuerySearch.get_df"><a class="viewcode-back" href="../../pysradb.html#pysradb.search.QuerySearch.get_df">[docs]</a>    <span class="k">def</span> <span class="nf">get_df</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+<div class="viewcode-block" id="QuerySearch.get_df">
+<a class="viewcode-back" href="../../pysradb.html#pysradb.search.QuerySearch.get_df">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_df</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Getter for the search result dataframe.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">df</span></div>
 
-<div class="viewcode-block" id="QuerySearch.get_plot_objects"><a class="viewcode-back" href="../../pysradb.html#pysradb.search.QuerySearch.get_plot_objects">[docs]</a>    <span class="k">def</span> <span class="nf">get_plot_objects</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+<div class="viewcode-block" id="QuerySearch.get_plot_objects">
+<a class="viewcode-back" href="../../pysradb.html#pysradb.search.QuerySearch.get_plot_objects">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_plot_objects</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Get the plot objects for plots generated.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">plot_objects</span></div>
 
-    <span class="k">def</span> <span class="nf">_plot_graph</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">plt</span><span class="p">,</span> <span class="n">axes</span><span class="p">,</span> <span class="n">show</span><span class="p">,</span> <span class="n">savedir</span><span class="p">,</span> <span class="n">too_many_organisms</span><span class="p">):</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_plot_graph</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">plt</span><span class="p">,</span> <span class="n">axes</span><span class="p">,</span> <span class="n">show</span><span class="p">,</span> <span class="n">savedir</span><span class="p">,</span> <span class="n">too_many_organisms</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Plots a graph based on data from self.stats</span>
 
 <span class="sd">        Parameters</span>
@@ -1163,7 +1166,10 @@ document.write(`
             <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span></div>
 
 
-<div class="viewcode-block" id="SraSearch"><a class="viewcode-back" href="../../pysradb.html#pysradb.search.SraSearch">[docs]</a><span class="k">class</span> <span class="nc">SraSearch</span><span class="p">(</span><span class="n">QuerySearch</span><span class="p">):</span>
+
+<div class="viewcode-block" id="SraSearch">
+<a class="viewcode-back" href="../../pysradb.html#pysradb.search.SraSearch">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">SraSearch</span><span class="p">(</span><span class="n">QuerySearch</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Subclass of QuerySearch that implements search by querying</span>
 <span class="sd">    NCBI Entrez API</span>
 
@@ -1200,7 +1206,7 @@ document.write(`
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">verbosity</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
         <span class="n">return_max</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span>
@@ -1237,7 +1243,9 @@ document.write(`
         <span class="bp">self</span><span class="o">.</span><span class="n">number_entries</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">uids</span> <span class="o">=</span> <span class="p">[]</span>
 
-<div class="viewcode-block" id="SraSearch.search"><a class="viewcode-back" href="../../pysradb.html#pysradb.search.SraSearch.search">[docs]</a>    <span class="k">def</span> <span class="nf">search</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="SraSearch.search">
+<a class="viewcode-back" href="../../pysradb.html#pysradb.search.SraSearch.search">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">search</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="c1"># Step 1: retrieves the list of uids that satisfies the input</span>
         <span class="c1"># search query</span>
         <span class="n">payload</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_format_request</span><span class="p">()</span>
@@ -1285,7 +1293,10 @@ document.write(`
                 <span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">URL queried: </span><span class="si">{</span><span class="n">r</span><span class="o">.</span><span class="n">url</span><span class="si">}</span><span class="s2"> </span><span class="se">\n</span><span class="s2">User query: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">fields</span><span class="si">}</span><span class="s2">&quot;</span>
             <span class="p">)</span></div>
 
-<div class="viewcode-block" id="SraSearch.get_uids"><a class="viewcode-back" href="../../pysradb.html#pysradb.search.SraSearch.get_uids">[docs]</a>    <span class="k">def</span> <span class="nf">get_uids</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+<div class="viewcode-block" id="SraSearch.get_uids">
+<a class="viewcode-back" href="../../pysradb.html#pysradb.search.SraSearch.get_uids">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_uids</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Get NCBI uids retrieved during this search query.</span>
 
 <span class="sd">        Note: There is a chance that some uids retrieved do not appear in</span>
@@ -1293,7 +1304,8 @@ document.write(`
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">uids</span></div>
 
-    <span class="k">def</span> <span class="nf">_format_query_string</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_format_query_string</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">term</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">fields</span><span class="p">[</span><span class="s2">&quot;query&quot;</span><span class="p">]:</span>
             <span class="n">term</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fields</span><span class="p">[</span><span class="s2">&quot;query&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="s2">&quot; AND &quot;</span>
@@ -1322,7 +1334,7 @@ document.write(`
             <span class="n">term</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fields</span><span class="p">[</span><span class="s2">&quot;title&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="s2">&quot;[Title] AND &quot;</span>
         <span class="k">return</span> <span class="n">term</span><span class="p">[:</span><span class="o">-</span><span class="mi">5</span><span class="p">]</span>  <span class="c1"># Removing trailing &quot; AND &quot;</span>
 
-    <span class="k">def</span> <span class="nf">_format_request</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_format_request</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">payload</span> <span class="o">=</span> <span class="p">{</span>
             <span class="s2">&quot;db&quot;</span><span class="p">:</span> <span class="s2">&quot;sra&quot;</span><span class="p">,</span>
             <span class="s2">&quot;term&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_format_query_string</span><span class="p">(),</span>
@@ -1331,7 +1343,7 @@ document.write(`
         <span class="p">}</span>
         <span class="k">return</span> <span class="n">payload</span>
 
-    <span class="k">def</span> <span class="nf">_format_response</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">content</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_format_response</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">content</span><span class="p">):</span>
         <span class="n">field_categories</span> <span class="o">=</span> <span class="p">[</span>
             <span class="s2">&quot;EXPERIMENT&quot;</span><span class="p">,</span>
             <span class="s2">&quot;SUBMISSION&quot;</span><span class="p">,</span>
@@ -1352,7 +1364,7 @@ document.write(`
                     <span class="bp">self</span><span class="o">.</span><span class="n">number_entries</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">entries</span><span class="p">[</span><span class="n">field</span><span class="p">])</span>
                 <span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">_format_result</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_format_result</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="o">.</span><span class="n">from_dict</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">entries</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span>
             <span class="sa">r</span><span class="s2">&quot;^\s*$&quot;</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">NA</span><span class="p">,</span> <span class="n">regex</span><span class="o">=</span><span class="kc">True</span>
         <span class="p">)</span>
@@ -1413,7 +1425,7 @@ document.write(`
             <span class="bp">self</span><span class="o">.</span><span class="n">df</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">df</span><span class="p">[</span><span class="n">important_columns</span> <span class="o">+</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">columns</span><span class="p">)]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">df</span><span class="o">.</span><span class="n">dropna</span><span class="p">(</span><span class="n">how</span><span class="o">=</span><span class="s2">&quot;all&quot;</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">_parse_entry</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">entry_root</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_parse_entry</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">entry_root</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Parses a subset of the XML tree from request stream</span>
 
 <span class="sd">        Parameters</span>
@@ -1578,7 +1590,7 @@ document.write(`
                                 <span class="n">v</span><span class="p">,</span>
                             <span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">_update_entry</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">field_name</span><span class="p">,</span> <span class="n">field_content</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_update_entry</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">field_name</span><span class="p">,</span> <span class="n">field_content</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Adds information from a field into the entries dictionary</span>
 
 <span class="sd">        This is a helper function that adds information parsed from the XML</span>
@@ -1604,7 +1616,7 @@ document.write(`
             <span class="bp">self</span><span class="o">.</span><span class="n">number_entries</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">entries</span><span class="p">[</span><span class="n">field_name</span><span class="p">])</span>
         <span class="p">)</span> <span class="o">+</span> <span class="p">[</span><span class="n">field_content</span><span class="p">]</span>
 
-    <span class="k">def</span> <span class="nf">_update_stats</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_update_stats</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="c1"># study</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">stats</span><span class="p">[</span><span class="s2">&quot;study&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;study_accession&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">nunique</span><span class="p">()</span>
         <span class="c1"># experiment</span>
@@ -1686,7 +1698,7 @@ document.write(`
             <span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span>
         <span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">_merge_selected_columns</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">regex</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_merge_selected_columns</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">regex</span><span class="p">):</span>
         <span class="n">columns</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">df</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">regex</span><span class="o">=</span><span class="n">regex</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">columns</span><span class="p">)</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">columns</span><span class="p">:</span>
             <span class="n">series</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">dtype</span><span class="o">=</span><span class="s2">&quot;object&quot;</span><span class="p">)</span>
@@ -1699,7 +1711,10 @@ document.write(`
         <span class="k">return</span> <span class="n">series</span><span class="p">[</span><span class="o">~</span><span class="n">pd</span><span class="o">.</span><span class="n">isna</span><span class="p">(</span><span class="n">series</span><span class="p">)]</span></div>
 
 
-<div class="viewcode-block" id="EnaSearch"><a class="viewcode-back" href="../../pysradb.html#pysradb.search.EnaSearch">[docs]</a><span class="k">class</span> <span class="nc">EnaSearch</span><span class="p">(</span><span class="n">QuerySearch</span><span class="p">):</span>
+
+<div class="viewcode-block" id="EnaSearch">
+<a class="viewcode-back" href="../../pysradb.html#pysradb.search.EnaSearch">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">EnaSearch</span><span class="p">(</span><span class="n">QuerySearch</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Subclass of QuerySearch that implements search via querying ENA API</span>
 
 
@@ -1734,7 +1749,9 @@ document.write(`
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
-<div class="viewcode-block" id="EnaSearch.search"><a class="viewcode-back" href="../../pysradb.html#pysradb.search.EnaSearch.search">[docs]</a>    <span class="k">def</span> <span class="nf">search</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="EnaSearch.search">
+<a class="viewcode-back" href="../../pysradb.html#pysradb.search.EnaSearch.search">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">search</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="c1"># This ensures that the spaces in the query string are not</span>
         <span class="c1"># converted to &#39;+&#39; by requests.</span>
         <span class="n">payload</span> <span class="o">=</span> <span class="n">urllib</span><span class="o">.</span><span class="n">parse</span><span class="o">.</span><span class="n">urlencode</span><span class="p">(</span>
@@ -1759,7 +1776,8 @@ document.write(`
             <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;No results found for the following search query: </span><span class="se">\n</span><span class="s2"> </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">fields</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
             <span class="k">return</span>  <span class="c1"># no results found</span></div>
 
-    <span class="k">def</span> <span class="nf">_format_query_string</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_format_query_string</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">term</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">fields</span><span class="p">[</span><span class="s2">&quot;query&quot;</span><span class="p">]:</span>
             <span class="n">term</span> <span class="o">+=</span> <span class="sa">rf</span><span class="s1">&#39;(experiment_title=&quot;*</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">fields</span><span class="p">[</span><span class="s2">&quot;query&quot;</span><span class="p">]</span><span class="si">}</span><span class="s1">*&quot;&#39;</span>
@@ -1824,7 +1842,7 @@ document.write(`
             <span class="n">term</span> <span class="o">+=</span> <span class="sa">rf</span><span class="s1">&#39;experiment_title=&quot;*</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">fields</span><span class="p">[</span><span class="s2">&quot;title&quot;</span><span class="p">]</span><span class="si">}</span><span class="s1">*&quot; AND &#39;</span>
         <span class="k">return</span> <span class="n">term</span><span class="p">[:</span><span class="o">-</span><span class="mi">5</span><span class="p">]</span>  <span class="c1"># Removing trailing &quot; AND &quot;</span>
 
-    <span class="k">def</span> <span class="nf">_format_request</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_format_request</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="c1"># Note: ENA&#39;s API does not support searching a query in all fields.</span>
         <span class="c1"># Currently, if the user does not specify a query field, the query will</span>
         <span class="c1"># be matched to experiment_title (aka description),</span>
@@ -1863,7 +1881,7 @@ document.write(`
             <span class="n">payload</span><span class="p">[</span><span class="s2">&quot;fields&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;all&quot;</span>
         <span class="k">return</span> <span class="n">payload</span>
 
-    <span class="k">def</span> <span class="nf">_format_result</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">content</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_format_result</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">content</span><span class="p">):</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">content</span><span class="p">:</span>
             <span class="k">return</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="o">.</span><span class="n">from_dict</span><span class="p">(</span><span class="n">content</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;^\s*$&quot;</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">NA</span><span class="p">,</span> <span class="n">regex</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
@@ -1903,7 +1921,7 @@ document.write(`
             <span class="bp">self</span><span class="o">.</span><span class="n">df</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">df</span><span class="p">[</span><span class="n">columns</span><span class="p">]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">df</span><span class="o">.</span><span class="n">dropna</span><span class="p">(</span><span class="n">how</span><span class="o">=</span><span class="s2">&quot;all&quot;</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">_update_stats</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_update_stats</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="c1"># study</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">stats</span><span class="p">[</span><span class="s2">&quot;study&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;study_accession&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">nunique</span><span class="p">()</span>
         <span class="c1"># experiment</span>
@@ -1981,7 +1999,10 @@ document.write(`
         <span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="GeoSearch"><a class="viewcode-back" href="../../pysradb.html#pysradb.search.GeoSearch">[docs]</a><span class="k">class</span> <span class="nc">GeoSearch</span><span class="p">(</span><span class="n">SraSearch</span><span class="p">):</span>
+
+<div class="viewcode-block" id="GeoSearch">
+<a class="viewcode-back" href="../../pysradb.html#pysradb.search.GeoSearch">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">GeoSearch</span><span class="p">(</span><span class="n">SraSearch</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Subclass of SraSearch that can query both GEO DataSets and SRA API.</span>
 
 <span class="sd">    Methods</span>
@@ -2019,7 +2040,7 @@ document.write(`
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">verbosity</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
         <span class="n">return_max</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span>
@@ -2102,7 +2123,7 @@ document.write(`
         <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">search_geo</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">geo_fields</span><span class="p">[</span><span class="s2">&quot;query&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;gds sra[Filter]&quot;</span>
 
-    <span class="k">def</span> <span class="nf">_format_geo_query_string</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_format_geo_query_string</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">term</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">geo_fields</span><span class="p">[</span><span class="s2">&quot;query&quot;</span><span class="p">]:</span>
             <span class="n">term</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">geo_fields</span><span class="p">[</span><span class="s2">&quot;query&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="s2">&quot; AND &quot;</span>
@@ -2119,7 +2140,7 @@ document.write(`
             <span class="n">term</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">geo_fields</span><span class="p">[</span><span class="s2">&quot;entry_type&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="s2">&quot;[Entry Type] AND &quot;</span>
         <span class="k">return</span> <span class="n">term</span><span class="p">[:</span><span class="o">-</span><span class="mi">5</span><span class="p">]</span>  <span class="c1"># Removing trailing &quot; AND &quot;</span>
 
-    <span class="k">def</span> <span class="nf">_format_geo_request</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_format_geo_request</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">payload</span> <span class="o">=</span> <span class="p">{</span>
             <span class="s2">&quot;db&quot;</span><span class="p">:</span> <span class="s2">&quot;gds&quot;</span><span class="p">,</span>
             <span class="s2">&quot;term&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_format_geo_query_string</span><span class="p">(),</span>
@@ -2129,7 +2150,7 @@ document.write(`
         <span class="p">}</span>
         <span class="k">return</span> <span class="n">payload</span>
 
-    <span class="k">def</span> <span class="nf">_format_request</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_format_request</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">search_geo</span><span class="p">:</span>
             <span class="n">retmax</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">return_max</span>
         <span class="k">else</span><span class="p">:</span>
@@ -2142,7 +2163,10 @@ document.write(`
         <span class="p">}</span>
         <span class="k">return</span> <span class="n">payload</span>
 
-<div class="viewcode-block" id="GeoSearch.search"><a class="viewcode-back" href="../../pysradb.html#pysradb.search.GeoSearch.search">[docs]</a>    <span class="k">def</span> <span class="nf">search</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="GeoSearch.search">
+<a class="viewcode-back" href="../../pysradb.html#pysradb.search.GeoSearch.search">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">search</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Sends the user query via requests to SRA, GEO DataSets, or both&quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">search_geo</span><span class="p">:</span>
             <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">search</span><span class="p">()</span>
         <span class="k">else</span><span class="p">:</span>
@@ -2162,7 +2186,7 @@ document.write(`
                 <span class="n">elink_payload</span> <span class="o">=</span> <span class="p">{</span>
                     <span class="s2">&quot;dbfrom&quot;</span><span class="p">:</span> <span class="s2">&quot;gds&quot;</span><span class="p">,</span>
                     <span class="s2">&quot;db&quot;</span><span class="p">:</span> <span class="s2">&quot;sra&quot;</span><span class="p">,</span>
-                    <span class="s2">&quot;retmode&quot;</span><span class="p">:</span> <span class="s2">&quot;json&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;retmode&quot;</span><span class="p">:</span> <span class="s2">&quot;xml&quot;</span><span class="p">,</span>
                     <span class="s2">&quot;query_key&quot;</span><span class="p">:</span> <span class="n">query_key</span><span class="p">,</span>
                     <span class="s2">&quot;WebEnv&quot;</span><span class="p">:</span> <span class="n">web_env</span><span class="p">,</span>
                 <span class="p">}</span>
@@ -2173,9 +2197,12 @@ document.write(`
                 <span class="p">)</span>
                 <span class="n">r</span><span class="o">.</span><span class="n">raise_for_status</span><span class="p">()</span>
                 <span class="k">try</span><span class="p">:</span>
-                    <span class="n">data</span> <span class="o">=</span> <span class="n">r</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
-                    <span class="n">uids_from_geo</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;linksets&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="s2">&quot;linksetdbs&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="s2">&quot;links&quot;</span><span class="p">]</span>
-                <span class="k">except</span> <span class="p">(</span><span class="n">JSONDecodeError</span><span class="p">,</span> <span class="ne">KeyError</span><span class="p">,</span> <span class="ne">IndexError</span><span class="p">):</span>
+                    <span class="n">root</span> <span class="o">=</span> <span class="n">Et</span><span class="o">.</span><span class="n">fromstring</span><span class="p">(</span><span class="n">r</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
+                    <span class="n">uids_from_geo</span> <span class="o">=</span> <span class="p">[</span>
+                        <span class="n">elem</span><span class="o">.</span><span class="n">text</span>
+                        <span class="k">for</span> <span class="n">elem</span> <span class="ow">in</span> <span class="n">root</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="s2">&quot;.//LinkSet/LinkSetDb/Link/Id&quot;</span><span class="p">)</span>
+                    <span class="p">]</span>
+                <span class="k">except</span> <span class="p">(</span><span class="n">Et</span><span class="o">.</span><span class="n">ParseError</span><span class="p">,</span> <span class="ne">TypeError</span><span class="p">,</span> <span class="ne">ValueError</span><span class="p">):</span>
                     <span class="n">uids_from_geo</span> <span class="o">=</span> <span class="p">[]</span>
                 <span class="c1"># Step 2: Retrieve list of uids from SRA and</span>
                 <span class="c1"># Find the intersection of both lists of uids</span>
@@ -2227,8 +2254,11 @@ document.write(`
                     <span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">URL queried: </span><span class="si">{</span><span class="n">r</span><span class="o">.</span><span class="n">url</span><span class="si">}</span><span class="s2"> </span><span class="se">\n</span><span class="s2">User query: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">fields</span><span class="si">}</span><span class="s2">&quot;</span>
                 <span class="p">)</span></div>
 
-<div class="viewcode-block" id="GeoSearch.info"><a class="viewcode-back" href="../../pysradb.html#pysradb.search.GeoSearch.info">[docs]</a>    <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">info</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
+
+<div class="viewcode-block" id="GeoSearch.info">
+<a class="viewcode-back" href="../../pysradb.html#pysradb.search.GeoSearch.info">[docs]</a>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">info</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Information on how to use GeoSearch.</span>
 
 <span class="sd">        Displays information on how to query GEO DataSets / SRA via</span>
@@ -2294,23 +2324,21 @@ document.write(`
             <span class="s2">&quot;  gsm</span><span class="se">\n\n</span><span class="s2">&quot;</span>
         <span class="p">)</span>
 
-        <span class="k">return</span> <span class="n">info</span></div></div>
+        <span class="k">return</span> <span class="n">info</span></div>
+</div>
+
 </pre></div>
 
                 </article>
               
               
               
-                <footer class="bd-footer-article">
+              
+              
+                <footer class="prev-next-footer d-print-none">
                   
-<div class="footer-article-items footer-article__inner">
-  
-    <div class="footer-article-item"><!-- Previous / next buttons -->
 <div class="prev-next-area">
-</div></div>
-  
 </div>
-
                 </footer>
               
             </div>
@@ -2328,8 +2356,8 @@ document.write(`
   </div>
   
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script src="../../_static/scripts/bootstrap.js?digest=e353d410970836974a52"></script>
-<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52"></script>
+  <script defer src="../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
 
   <footer class="bd-footer">
 <div class="bd-footer__inner bd-page-width">
@@ -2337,6 +2365,7 @@ document.write(`
     <div class="footer-items__start">
       
         <div class="footer-item">
+
   <p class="copyright">
     
       © Copyright 2023, Saket Choudhary.
@@ -2346,8 +2375,9 @@ document.write(`
 </div>
       
         <div class="footer-item">
+
   <p class="sphinx-version">
-    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 5.3.0.
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.1.3.
     <br/>
   </p>
 </div>
@@ -2355,10 +2385,13 @@ document.write(`
     </div>
   
   
+  
     <div class="footer-items__end">
       
-        <div class="footer-item"><p class="theme-version">
-  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.13.3.
+        <div class="footer-item">
+<p class="theme-version">
+  <!-- # L10n: Setting the PST URL as an argument as this does not need to be localized -->
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.16.1.
 </p></div>
       
     </div>
