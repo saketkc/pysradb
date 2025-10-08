@@ -7,7 +7,6 @@ import os
 import re
 import sys
 import pandas as pd
-import io
 from io import StringIO
 
 from .basedb import BASEdb
