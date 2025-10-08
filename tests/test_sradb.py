@@ -1,5 +1,4 @@
-"""Tests for sradb.py
-"""
+"""Tests for sradb.py"""
 
 import os
 from sqlite3 import OperationalError
@@ -7,9 +6,7 @@ from sqlite3 import OperationalError
 import pytest
 
 from pysradb import SRAdb
-from pysradb.filter_attrs import guess_cell_type
-from pysradb.filter_attrs import guess_strain_type
-from pysradb.filter_attrs import guess_tissue_type
+from pysradb.filter_attrs import guess_cell_type, guess_strain_type, guess_tissue_type
 
 
 def test_not_valid_file():

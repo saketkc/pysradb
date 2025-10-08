@@ -1,12 +1,24 @@
 # History
 
-# UNRELEASED
+# 2.4.1 (2025-09-27)
+
+- Add gse-to-pmid conversion [#241](https://github.com/saketkc/pysradb/pull/244).
+
+# 2.4.0 (2025-09-27)
+
+- Add sra-to-pmid conversion [#241](https://github.com/saketkc/pysradb/pull/241). Thanks [@andrewdavidsmith](https://github.com/andrewdavidsmith) for the idea.
+
+# 2.3.0 (2025-08-24)
+
+- Download logic improvements: remoted requests-ftp as requirement
 - Fix for handling missing metadata keys [#223](https://github.com/saketkc/pysradb/pull/223). Thanks [@andrewdavidsmith](https://github.com/andrewdavidsmith)
 
 # 2.2.2 (2024-10-03)
+
 - Fix for handling ENA urls for paired end data
 
 # 2.2.1 (2024-08-21)
+
 - Fix for handling ENA urls
 - Migrated to pyproject.toml
 

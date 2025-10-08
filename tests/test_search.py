@@ -1,5 +1,4 @@
-"""Tests for search.py
-"""
+"""Tests for search.py"""
 
 import json
 

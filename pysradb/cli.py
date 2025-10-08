@@ -1,5 +1,4 @@
-"""Command line interface for pysradb
-"""
+"""Command line interface for pysradb"""
 
 import argparse
 import os
@@ -12,14 +11,10 @@ from textwrap import dedent
 import pandas as pd
 
 from . import __version__
-from .exceptions import IncorrectFieldException
-from .exceptions import MissingQueryException
+from .exceptions import IncorrectFieldException, MissingQueryException
 from .geoweb import GEOweb
-from .search import EnaSearch
-from .search import GeoSearch
-from .search import SraSearch
-from .sradb import SRAdb
-from .sradb import download_sradb_file
+from .search import EnaSearch, GeoSearch, SraSearch
+from .sradb import SRAdb, download_sradb_file
 from .sraweb import SRAweb
 from .utils import confirm
 from .geodb import download_geo_matrix, parse_geo_matrix_to_tsv  
@@ -525,6 +520,28 @@ def srx_to_srs(srx_ids, saveto, detailed, desc, expand):
         sample_attribute=desc,
         expand_sample_attributes=expand,
     )
+    _print_save_df(df, saveto)
+    sradb.close()
+
+
+def srp_to_pmid(srp_ids, saveto):
+    sradb = SRAweb()
+    df = sradb.srp_to_pmid(srp_ids)
+    _print_save_df(df, saveto)
+    sradb.close()
+
+
+def sra_to_pmid(sra_ids, saveto):
+    """Backward compatibility wrapper for sra_to_pmid"""
+    sradb = SRAweb()
+    df = sradb.sra_to_pmid(sra_ids)
+    _print_save_df(df, saveto)
+    sradb.close()
+
+
+def gse_to_pmid(gse_ids, saveto):
+    sradb = SRAweb()
+    df = sradb.gse_to_pmid(gse_ids)
     _print_save_df(df, saveto)
     sradb.close()
 
@@ -1192,6 +1209,22 @@ def parse_args(args=None):
     subparser.add_argument("--output-dir", default=".", help="Output directory (default: current directory)")
     subparser.set_defaults(func=geo_matrix)
 
+    # pysradb srp-to-pmid
+    subparser = subparsers.add_parser(
+        "srp-to-pmid", help="Get PMIDs for SRP accessions"
+    )
+    subparser.add_argument("--saveto", help="Save output to file")
+    subparser.add_argument("srp_ids", nargs="+", help="SRP accession(s)")
+    subparser.set_defaults(func=srp_to_pmid)
+
+    # pysradb gse-to-pmid
+    subparser = subparsers.add_parser(
+        "gse-to-pmid", help="Get PMIDs for GSE accessions"
+    )
+    subparser.add_argument("--saveto", help="Save output to file")
+    subparser.add_argument("gse_ids", nargs="+", help="GSE accession(s)")
+    subparser.set_defaults(func=gse_to_pmid)
+
     args = parser.parse_args(args=None if sys.argv[1:] else ["--help"])
     if args.command == "metadata":
         metadata(
@@ -1267,6 +1300,10 @@ def parse_args(args=None):
         srx_to_srs(args.srx_ids, args.saveto, args.detailed, args.desc, args.expand)
     elif args.command == "geo-matrix":
         geo_matrix(args.accession, args.to_tsv, args.output_dir)
+    elif args.command == "srp-to-pmid":
+        srp_to_pmid(args.srp_ids, args.saveto)
+    elif args.command == "gse-to-pmid":
+        gse_to_pmid(args.gse_ids, args.saveto)
 
 
 if __name__ == "__main__":

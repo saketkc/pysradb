@@ -3,15 +3,14 @@
 import gzip
 import os
 import re
-import requests
 import sys
+
+import requests
 from lxml import html
 
 from .download import download_file
 from .geodb import GEOdb
-from .utils import _get_url
-from .utils import copyfileobj
-from .utils import get_gzip_uncompressed_size
+from .utils import _get_url, copyfileobj, get_gzip_uncompressed_size
 
 PY3 = True
 if sys.version_info[0] < 3:
@@ -105,6 +104,4 @@ class GEOweb(GEOdb):
             if link == "filelist.txt":
                 prefix = gse + "_"
             geo_path = os.path.join(out_dir, prefix + link)
-            download_file(
-                root_url.lstrip("https://") + link, geo_path, show_progress=True
-            )
+            download_file(root_url + link, geo_path, show_progress=True)

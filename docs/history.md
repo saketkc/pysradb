@@ -1,31 +1,45 @@
 # History
 
+# 2.3.0 (2025-08-24)
+
+- Download logic improvements: remoted requests-ftp as requirement 
+- Fix for handling missing metadata keys [#223](https://github.com/saketkc/pysradb/pull/223). Thanks [@andrewdavidsmith](https://github.com/andrewdavidsmith)
+
+# 2.2.2 (2024-10-03)
+
+- Fix for handling ENA urls for paired end data
+
+# 2.2.1 (2024-08-21)
+
+- Fix for handling ENA urls
+- Migrated to pyproject.toml
+
+
+# 2.2.0 (2023-09-17)
+
+- Add support for Biosamples and bioproject [#199](https://github.com/saketkc/pysradb/pull/198)
+- Use retmode xml for Geo search [#200](https://github.com/saketkc/pysradb/pull/200)
+- Documentation fixes
+
 ## 2.1.0 (2023-05-16)
 
--   Fix for [gse-to-srp]{.title-ref} returning unrequested GSEs ([#186
-    \<https://github.com/saketkc/pysradb/issues/190\>]{.title-ref})
--   Fix for [download]{.title-ref} using [public_urls]{.title-ref}
--   Fix for [gsm-to-srx]{.title-ref} returning false positives ([#165
-    \<https://github.com/saketkc/pysradb/issues/165\>]{.title-ref})
+-   Fix for [gse-to-srp] returning unrequested GSEs [#186](https://github.com/saketkc/pysradb/issues/190)
+-   Fix for [download] using [public_urls]
+-   Fix for [gsm-to-srx] returning false positives [#165](https://github.com/saketkc/pysradb/issues/165)
 -   Fix for delimiter not being consistent when metadata is printed on
-    terminal ([#147
-    \<https://github.com/saketkc/pysradb/issues/147\>]{.title-ref})
+    terminal [#147](https://github.com/saketkc/pysradb/issues/147)
 -   ENA search is currently broken because of an API change
 
 ## 2.0.2 (2023-04-09)
 
--   Fix for [gse-to-srp]{.title-ref} to handle cases where a project is
-    missing but SRXs are returned ([#186
-    \<https://github.com/saketkc/pysradb/issues/186\>]{.title-ref})
--   Fix gse-to-gsm ([#187
-    \<https://github.com/saketkc/pysradb/issues/187\>]{.title-ref})
+-   Fix for [gse-to-srp] to handle cases where a project is
+    missing but SRXs are returned [#186](https://github.com/saketkc/pysradb/issues/186)
+-   Fix gse-to-gsm [#187](https://github.com/saketkc/pysradb/issues/187)
 
 ## 2.0.1 (2023-03-18)
 
--   Fix for [pysradb download]{.title-ref} - using
-    [public_url]{.title-ref}
--   Fix for SRX -\> SRR and related conversions ([#183
-    \<https://github.com/saketkc/pysradb/pull/183\>]{.title-ref})
+-   Fix for [pysradb download] - using [public_url]
+-   Fix for SRX -\> SRR and related conversions [#183](https://github.com/saketkc/pysradb/pull/183)
 
 ## 2.0.0 (2023-02-23)
 
@@ -33,51 +47,45 @@
     returned (not backward compatible); all column names are lower cased
     by default
 -   Fix extra space in \"organism_taxid\" column
--   Added support for Experiment attributes ([#89
-    \<https://github.com/saketkc/pysradb/issues/89#issuecomment-1439319532\>]{.title-ref})
+-   Added support for Experiment attributes [#89](https://github.com/saketkc/pysradb/issues/89#issuecomment-1439319532)
 
 ## 1.4.2 (06-17-2022)
 
--   Fix ENA fastq fetching ([#163
-    \<https://github.com/saketkc/pysradb/issues/163\>]{.title-ref})
+-   Fix ENA fastq fetching [#163](https://github.com/saketkc/pysradb/issues/163)
 
 ## 1.4.1 (06-04-2022)
 
--   Fix for fetchin alternative URLs
+-   Fix for fetching alternative URLs
 
 ## 1.4.0 (06-04-2022)
 
 -   Added ability to fetch alternative URLs (GCP/AWS) for metadata
-    ([#161
-    \<https://github.com/saketkc/pysradb/issues/161\>]{.title-ref})
--   Fix for xmldict 0.13.0 no longer defaulting to OrderedDict ([#159
-    \<https://github.com/saketkc/pysradb/pull/159\>]{.title-ref})
--   Fix for missing experiment model and description in metadata ([#160
-    \<https://github.com/saketkc/pysradb/issues/160\>]{.title-ref})
+    [#161](https://github.com/saketkc/pysradb/issues/161)
+-   Fix for xmldict 0.13.0 no longer defaulting to OrderedDict [#159](https://github.com/saketkc/pysradb/pull/159)
+-   Fix for missing experiment model and description in metadata [#160](https://github.com/saketkc/pysradb/issues/160)
 
 ## 1.3.0 (02-18-2022)
 
--   Add [study_title]{.title-ref} to [\--detailed]{.title-ref} flag
+-   Add [study_title] to [\--detailed] flag
     ([#152](https://github.com/saketkc/pysradb/issues/152))
--   Fix [KeyError]{.title-ref} in [metadata]{.title-ref} where some new
+-   Fix [KeyError] in [metadata] where some new
     IDs do not have any metadata
     ([#151](https://github.com/saketkc/pysradb/issues/151))
 
 ## 1.2.0 (01-10-2022)
 
--   Do not exit if a qeury returns no hits ([#149
-    \<https://github.com/saketkc/pysradb/pull/149\>]{.title-ref})
+-   Do not exit if a qeury returns no hits ([#149](https://github.com/saketkc/pysradb/pull/149))
 
 ## 1.1.0 (12-12-2021)
 
--   Fixed [gsm-to-gse]{.title-ref} failure
+-   Fixed [gsm-to-gse] failure
     ([#128](https://github.com/saketkc/pysradb/pull/128))
 -   Fixed case sensitivity bug for ENA search
     ([#144](https://github.com/saketkc/pysradb/pull/144))
 -   Fixed publication date bug for search
     ([#146](https://github.com/saketkc/pysradb/pull/146))
 -   Added support for downloading data from GEO [pysradb dowload -g
-    \<GSE\>]{.title-ref}
+    GSE]
     ([#129](https://github.com/saketkc/pysradb/pull/129))
 
 ## 1.0.1 (01-10-2021)
@@ -90,16 +98,16 @@
     defaults to `SRAweb`
 -   `SRAweb` now supports
     [search](https://saket-choudhary.me/pysradb/quickstart.html#search)
--   [N/A]{.title-ref} is now replaced with [pd.NA]{.title-ref}
--   Two new fields in \`\--detailed\`: [instrument_model]{.title-ref}
-    and [instrument_model_desc]{.title-ref}
+-   [N/A] is now replaced with [pd.NA]
+-   Two new fields in \`\--detailed\`: [instrument_model]
+    and [instrument_model_desc]
     [#75](https://github.com/saketkc/pysradb/issues/75)
 -   Updated documentation
 
 ## 0.11.1 (09-18-2020)
 
--   [library_layout]{.title-ref} is now outputted in metadata #56
--   [-detailed]{.title-ref} unifies columns for ENA fastq links instead
+-   [library_layout] is now outputted in metadata #56
+-   [-detailed] unifies columns for ENA fastq links instead
     of appending \_x/\_y #59
 -   bugfix for parsing namespace in xml outputs #65
 -   XML errors from NCBI are now handled more gracefully #69
@@ -107,9 +115,9 @@
 
 ## 0.11.0 (09-04-2020)
 
--   [pysradb download]{.title-ref} now supports multiple threads for
+-   [pysradb download] now supports multiple threads for
     paralle downloads
--   [pysradb download]{.title-ref} also supports ultra fast downloads of
+-   [pysradb download] also supports ultra fast downloads of
     FASTQs from ENA using aspera-client
 
 ## 0.10.3 (03-26-2020)
@@ -128,7 +136,7 @@ Contributors
 
 -   Bug fix: Handle API-rate limit exceeding =\> Retries
 -   Enhancement: \'Alternatives\' URLs are now part of
-    [\--detailed]{.title-ref}
+    [\--detailed]
 
 ## 0.10.1 (02-04-2020)
 
@@ -157,7 +165,7 @@ Contributors
 
 ## 0.9.6 (07-20-2019)
 
--   Introduced [SRAweb]{.title-ref} to perform queries over the web if
+-   Introduced [SRAweb] to perform queries over the web if
     the SQLite is missing or does not contain the relevant record.
 
 ## 0.9.0 (02-27-2019)
@@ -165,7 +173,7 @@ Contributors
 ### Others
 
 -   This release completely changes the command line interface replacing
-    click with argparse (<https://github.com/saketkc/pysradb/pull/3>)
+    click with argparse ([#3](https://github.com/saketkc/pysradb/pull/3))
 -   Removed Python 2 comptaible stale code
 
 ## 0.8.0 (02-26-2019)
@@ -184,7 +192,7 @@ Contributors
 
 ### Others
 
--   [\--out_dir]{.title-ref} is now [out-dir]{.title-ref}
+-   [\--out_dir] is now [out-dir]
 
 ## 0.7.1 (02-18-2019)
 
@@ -209,20 +217,20 @@ Python3.
 The following commad line options have been renamed and the changes are
 not compatible with 0.6.0 release:
 
--   [sra-metadata]{.title-ref} -\> [metadata]{.title-ref}.
--   [sra-search]{.title-ref} -\> [search]{.title-ref}.
--   [srametadb]{.title-ref} -\> [metadb]{.title-ref}.
+-   [sra-metadata] -\> [metadata].
+-   [sra-search] -\> [search].
+-   [srametadb] -\> [metadb].
 
 ## 0.6.0 (12-25-2018)
 
 ### Bugfix
 
 -   Fixed bugs introduced in 0.5.0 with API changes where multiple
-    redundant columns were output in [sra-metadata]{.title-ref}
+    redundant columns were output in [sra-metadata]
 
 ### New methods/functionality
 
--   [download]{.title-ref} now allows piped inputs
+-   [download] now allows piped inputs
 
 ## 0.5.0 (12-24-2018)
 
@@ -231,9 +239,9 @@ not compatible with 0.6.0 release:
 -   Support for filtering by SRX Id for SRA downloads.
 -   \`srr_to_srx\`: Convert SRR to SRX/SRP
 -   \`srp_to_srx\`: Convert SRP to SRX
--   Stripped down [sra-metadata]{.title-ref} to give minimal information
--   Added [\--assay]{.title-ref}, [\--desc]{.title-ref},
-    [\--detailed]{.title-ref} flag for [sra-metadata]{.title-ref}
+-   Stripped down [sra-metadata] to give minimal information
+-   Added [\--assay], [\--desc],
+    [\--detailed] flag for [sra-metadata]
 -   Improved table printing on terminal
 
 ## 0.4.2 (12-16-2018)
@@ -246,7 +254,7 @@ not compatible with 0.6.0 release:
 
 ### New methods/functionality
 
--   Added a new [BASEdb]{.title-ref} class to handle common database
+-   Added a new [BASEdb] class to handle common database
     connections
 -   Initial support for GEOmetadb through GEOdb class
 -   Initial support or a command line interface:
@@ -261,20 +269,20 @@ not compatible with 0.6.0 release:
 
 ### New methods/functionality
 
--   [sample_attribute]{.title-ref} and
-    [experiment_attribute]{.title-ref} are now included by default in
-    the df returned by [sra_metadata()]{.title-ref}
+-   [sample_attribute] and
+    [experiment_attribute] are now included by default in
+    the df returned by [sra_metadata()]
 -   [expand_sample_attribute_columns: expand metadata dataframe based on
-    attributes in \`sample_attribute]{.title-ref} column
+    attributes in \`sample_attribute] column
 -   New methods to guess cell/tissue/strain:
-    [guess_cell_type()]{.title-ref}/[guess_tissue_type()]{.title-ref}/[guess_strain_type()]{.title-ref}
+    [guess_cell_type()]/[guess_tissue_type()]/[guess_strain_type()]
 -   Improved README and usage instructions
 
 ## 0.2.2 (12-03-2018)
 
 ### New methods/functionality
 
--   [search_sra()]{.title-ref} allows full text search on SRA metadata.
+-   [search_sra()] allows full text search on SRA metadata.
 
 ## 0.2.0 (12-03-2018)
 
@@ -283,26 +291,21 @@ not compatible with 0.6.0 release:
 The following methods have been renamed and the changes are not
 compatible with 0.1.0 release:
 
--   [get_query()]{.title-ref} -\> [query()]{.title-ref}.
--   [sra_convert()]{.title-ref} -\> [sra_metadata()]{.title-ref}.
--   [get_table_counts()]{.title-ref} -\> [all_row_counts()]{.title-ref}.
+-   [get_query()] -\> [query()].
+-   [sra_convert()] -\> [sra_metadata()].
+-   [get_table_counts()] -\> [all_row_counts()].
 
 ### New methods/functionality
 
--   [download_sradb_file()]{.title-ref} makes fetching
-    [SRAmetadb.sqlite]{.title-ref} file easy; wget is no longer
-    required.
--   [ftp]{.title-ref} protocol is now supported besides
-    [fsp]{.title-ref} and hence [aspera-client]{.title-ref} is now
-    optional. We however, strongly recommend [aspera-client]{.title-ref}
-    for faster downloads.
+-   [download_sradb_file()] makes fetching [SRAmetadb.sqlite] file easy; wget is no longer required.
+-   [ftp] protocol is now supported besides [fsp] and hence [aspera-client] is now optional. We however, strongly recommend [aspera-client] for faster downloads.
 
 ### Bug fixes
 
--   Silenced [SettingWithCopyWarning]{.title-ref} by excplicitly doing
+-   Silenced [SettingWithCopyWarning] by excplicitly doing
     operations on a copy of the dataframe instead of the original.
 
-Besides these, all methods now follow a [numpydoc]{.title-ref}
+Besides these, all methods now follow a [numpydoc]
 compatible documentation.
 
 ## 0.1.0 (12-01-2018)

@@ -79,14 +79,30 @@ def scientific_name_to_taxid(name):
 
     """
 
-    r = requests.get(
-        "https://www.ebi.ac.uk/ena/data/taxonomy/v1/taxon/scientific-name/" + name,
-        timeout=5,
+    session = requests_3_retries()
+    r = session.get(
+        "https://www.ebi.ac.uk/ena/taxonomy/rest/scientific-name/" + name,
+        timeout=10,
     )
     if r.status_code == 404:
         raise IncorrectFieldException(f"Unknown scientific name: {name}")
     r.raise_for_status()
-    return r.json()[0]["taxId"]
+
+    try:
+        data = r.json()
+    except requests.exceptions.JSONDecodeError as e:
+        raise IncorrectFieldException(
+            f"Failed to parse taxonomy response for '{name}'. "
+            f"API returned status {r.status_code} but invalid JSON. "
+            f"Response: {r.text[:200]}"
+        ) from e
+
+    if not data or not isinstance(data, list) or len(data) == 0:
+        raise IncorrectFieldException(
+            f"No taxonomy data found for scientific name: {name}"
+        )
+
+    return data[0]["taxId"]
 
 
 def unique(sequence):

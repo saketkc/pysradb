@@ -1,5 +1,4 @@
-"""This file contains custom Exceptions for pysradb
-"""
+"""This file contains custom Exceptions for pysradb"""
 
 
 class MissingQueryException(Exception):

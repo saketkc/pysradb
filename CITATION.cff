@@ -5,7 +5,7 @@ authors:
   given-names: "Saket"
   orcid: "https://orcid.org/0000-0001-5202-7633"
 title: "pysradb"
-version: 2.0.0
+version: 2.4.1
 doi: 10.12688/f1000research.18676.1
-date-released: 2023-04-05
+date-released: 2025-09-28
 url: "https://github.com/saketkc/pysradb"
