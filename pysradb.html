@@ -639,6 +639,11 @@ should either exit or raise an exception.</p>
 <dd></dd></dl>
 
 <dl class="py function">
+<dt class="sig sig-object py" id="pysradb.cli.geo_matrix">
+<span class="sig-prename descclassname"><span class="pre">pysradb.cli.</span></span><span class="sig-name descname"><span class="pre">geo_matrix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">accession</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">to_tsv</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_dir</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysradb/cli.html#geo_matrix"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysradb.cli.geo_matrix" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
 <dt class="sig sig-object py" id="pysradb.cli.get_geo_search_info">
 <span class="sig-prename descclassname"><span class="pre">pysradb.cli.</span></span><span class="sig-name descname"><span class="pre">get_geo_search_info</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysradb/cli.html#get_geo_search_info"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysradb.cli.get_geo_search_info" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
@@ -1118,6 +1123,21 @@ Returns None if no match found.</p>
 </dd></dl>
 
 <dl class="py function">
+<dt class="sig sig-object py" id="pysradb.geodb.download_geo_matrix">
+<span class="sig-prename descclassname"><span class="pre">pysradb.geodb.</span></span><span class="sig-name descname"><span class="pre">download_geo_matrix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">accession</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_dir</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'.'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysradb/geodb.html#download_geo_matrix"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysradb.geodb.download_geo_matrix" title="Link to this definition">#</a></dt>
+<dd><p>Download a GEO Matrix file for a given GEO accession ID.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>accession (str): GEO accession ID (e.g., ‘GSE234190’).
+output_dir (str): Directory to save the downloaded file (default: current directory).</p>
+</dd>
+<dt>Returns:</dt><dd><p>str: Path to the downloaded file.</p>
+</dd>
+<dt>Raises:</dt><dd><p>Exception: If the download fails.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
 <dt class="sig sig-object py" id="pysradb.geodb.download_geodb_file">
 <span class="sig-prename descclassname"><span class="pre">pysradb.geodb.</span></span><span class="sig-name descname"><span class="pre">download_geodb_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">download_dir</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'/home/runner/work/pysradb/pysradb/docs'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">overwrite</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysradb/geodb.html#download_geodb_file"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysradb.geodb.download_geodb_file" title="Link to this definition">#</a></dt>
 <dd><p>Download GEOmetadb.sqlite file.</p>
@@ -1130,6 +1150,19 @@ Returns None if no match found.</p>
 Set to True by default.</p>
 </dd>
 </dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pysradb.geodb.parse_geo_matrix_to_tsv">
+<span class="sig-prename descclassname"><span class="pre">pysradb.geodb.</span></span><span class="sig-name descname"><span class="pre">parse_geo_matrix_to_tsv</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input_file</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_file</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysradb/geodb.html#parse_geo_matrix_to_tsv"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysradb.geodb.parse_geo_matrix_to_tsv" title="Link to this definition">#</a></dt>
+<dd><p>Parse a GEO Matrix file to a TSV file, extracting the expression data.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>input_file (str): Path to the input GEO Matrix file (gzipped).
+output_file (str): Path to save the output TSV file.</p>
+</dd>
+<dt>Returns:</dt><dd><p>pandas.DataFrame: The parsed expression data.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -2756,6 +2789,7 @@ errors.</p>
 </li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pysradb.cli.CustomFormatterArgP"><code class="docutils literal notranslate"><span class="pre">CustomFormatterArgP</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pysradb.cli.download"><code class="docutils literal notranslate"><span class="pre">download()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pysradb.cli.geo_matrix"><code class="docutils literal notranslate"><span class="pre">geo_matrix()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pysradb.cli.get_geo_search_info"><code class="docutils literal notranslate"><span class="pre">get_geo_search_info()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pysradb.cli.gse_to_gsm"><code class="docutils literal notranslate"><span class="pre">gse_to_gsm()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pysradb.cli.gse_to_pmid"><code class="docutils literal notranslate"><span class="pre">gse_to_pmid()</span></code></a></li>
@@ -2815,7 +2849,9 @@ errors.</p>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#pysradb.geodb.GEOdb.guess_srp_from_gse"><code class="docutils literal notranslate"><span class="pre">GEOdb.guess_srp_from_gse()</span></code></a></li>
 </ul>
 </li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pysradb.geodb.download_geo_matrix"><code class="docutils literal notranslate"><span class="pre">download_geo_matrix()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pysradb.geodb.download_geodb_file"><code class="docutils literal notranslate"><span class="pre">download_geodb_file()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pysradb.geodb.parse_geo_matrix_to_tsv"><code class="docutils literal notranslate"><span class="pre">parse_geo_matrix_to_tsv()</span></code></a></li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-pysradb.geoweb">pysradb.geoweb module</a><ul class="nav section-nav flex-column">
