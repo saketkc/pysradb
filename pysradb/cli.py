@@ -12,6 +12,7 @@ import pandas as pd
 
 from . import __version__
 from .exceptions import IncorrectFieldException, MissingQueryException
+from .geodb import download_geo_matrix, parse_geo_matrix_to_tsv
 from .geoweb import GEOweb
 from .search import EnaSearch, GeoSearch, SraSearch
 from .sradb import SRAdb, download_sradb_file
@@ -548,6 +549,22 @@ def gse_to_pmid(gse_ids, saveto):
 #########################################################################
 
 
+########################### geo-matrix ##################################
+def geo_matrix(accession, to_tsv, output_dir):
+    # Download the GEO Matrix file
+    matrix_file = download_geo_matrix(accession, output_dir=output_dir)
+    print(f"Downloaded GEO Matrix file to: {matrix_file}")
+
+    # If --to-tsv is specified, parse the file to TSV
+    if to_tsv:
+        output_tsv = os.path.join(output_dir, f"{accession}_matrix.tsv")
+        df = parse_geo_matrix_to_tsv(matrix_file, output_tsv)
+        print(f"Parsed GEO Matrix file to TSV: {output_tsv}")
+
+
+#########################################################################
+
+
 def parse_args(args=None):
     """Argument parser"""
     parser = ArgParser(
@@ -867,7 +884,7 @@ def parse_args(args=None):
         action="store_true",
         help="""Output additional columns: [experiment_accession (SRX),
                                             sample_accession (SRS),
-                                            study_accession (SRS),
+                                            study_accession (SRP),
                                             run_alias (GSM_r),
                                             sample_alias (GSM),
                                             study_alias (GSE)]""",
@@ -1185,6 +1202,23 @@ def parse_args(args=None):
     subparser.add_argument("srx_ids", nargs="+")
     subparser.set_defaults(func=srx_to_srs)
 
+    # pysradb geo-matrix
+    subparser = subparsers.add_parser(
+        "geo-matrix", help="Download and parse GEO Matrix files"
+    )
+    subparser.add_argument(
+        "--accession", required=True, help="GEO accession (e.g., GSE234190)"
+    )
+    subparser.add_argument(
+        "--to-tsv", action="store_true", help="Convert the matrix file to TSV format"
+    )
+    subparser.add_argument(
+        "--output-dir",
+        default=".",
+        help="Output directory (default: current directory)",
+    )
+    subparser.set_defaults(func=geo_matrix)
+
     # pysradb srp-to-pmid
     subparser = subparsers.add_parser(
         "srp-to-pmid", help="Get PMIDs for SRP accessions"
@@ -1274,6 +1308,8 @@ def parse_args(args=None):
         srx_to_srr(args.srx_ids, args.saveto, args.detailed, args.desc, args.expand)
     elif args.command == "srx-to-srs":
         srx_to_srs(args.srx_ids, args.saveto, args.detailed, args.desc, args.expand)
+    elif args.command == "geo-matrix":
+        geo_matrix(args.accession, args.to_tsv, args.output_dir)
     elif args.command == "srp-to-pmid":
         srp_to_pmid(args.srp_ids, args.saveto)
     elif args.command == "gse-to-pmid":
