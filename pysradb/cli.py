@@ -12,12 +12,12 @@ import pandas as pd
 
 from . import __version__
 from .exceptions import IncorrectFieldException, MissingQueryException
+from .geodb import download_geo_matrix, parse_geo_matrix_to_tsv
 from .geoweb import GEOweb
 from .search import EnaSearch, GeoSearch, SraSearch
 from .sradb import SRAdb, download_sradb_file
 from .sraweb import SRAweb
 from .utils import confirm
-from .geodb import download_geo_matrix, parse_geo_matrix_to_tsv  
 
 pd.set_option("display.max_rows", None)
 pd.set_option("display.max_columns", None)
@@ -1203,10 +1203,20 @@ def parse_args(args=None):
     subparser.set_defaults(func=srx_to_srs)
 
     # pysradb geo-matrix
-    subparser = subparsers.add_parser("geo-matrix", help="Download and parse GEO Matrix files")
-    subparser.add_argument("--accession", required=True, help="GEO accession (e.g., GSE234190)")
-    subparser.add_argument("--to-tsv", action="store_true", help="Convert the matrix file to TSV format")
-    subparser.add_argument("--output-dir", default=".", help="Output directory (default: current directory)")
+    subparser = subparsers.add_parser(
+        "geo-matrix", help="Download and parse GEO Matrix files"
+    )
+    subparser.add_argument(
+        "--accession", required=True, help="GEO accession (e.g., GSE234190)"
+    )
+    subparser.add_argument(
+        "--to-tsv", action="store_true", help="Convert the matrix file to TSV format"
+    )
+    subparser.add_argument(
+        "--output-dir",
+        default=".",
+        help="Output directory (default: current directory)",
+    )
     subparser.set_defaults(func=geo_matrix)
 
     # pysradb srp-to-pmid
