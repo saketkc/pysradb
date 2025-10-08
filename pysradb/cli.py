@@ -829,7 +829,7 @@ def parse_args(args=None):
         "--expand", action="store_true", help="Should sample_attribute be expanded"
     )
     subparser.add_argument("gse_ids", nargs="+")
-    subparser.set_defaults(func=gse_to_srp)
+    subparser.set_defaults(func=gse_to_gsm)
 
     # pysradb gsm-to-gse
     subparser = subparsers.add_parser("gsm-to-gse", help="Get GSE for a GSM")
