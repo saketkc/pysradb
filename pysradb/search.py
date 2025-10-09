@@ -1706,9 +1706,9 @@ class GeoSearch(SraSearch):
                     )
                     r.raise_for_status()
                     uids_from_sra = r.json()["esearchresult"]["idlist"]
-                    uids = list(set(uids_from_sra).intersection(uids_from_geo))
                 else:
-                    uids = uids_from_geo
+                    uids_from_sra = None
+                uids = self._combine_uids(uids_from_sra, uids_from_geo)
                 # Ensure that only return_max number of uids are used
                 uids = uids[: self.return_max]
                 # Step 3: retrieves the detailed information for each uid
@@ -1745,6 +1745,25 @@ class GeoSearch(SraSearch):
                     f"HTTPError: This is likely caused by an invalid search query: "
                     f"\nURL queried: {r.url} \nUser query: {self.fields}"
                 )
+
+    def _combine_uids(self, uids_from_sra, uids_from_geo):
+        """Combine SRA and GEO uid lists while preserving ordering stability."""
+        if not uids_from_geo:
+            return []
+        combined = []
+        seen = set()
+        if uids_from_sra is not None:
+            sra_uid_set = set(uids_from_sra)
+            for uid in uids_from_geo:
+                if uid in sra_uid_set and uid not in seen:
+                    combined.append(uid)
+                    seen.add(uid)
+        else:
+            for uid in uids_from_geo:
+                if uid not in seen:
+                    combined.append(uid)
+                    seen.add(uid)
+        return combined
 
     @classmethod
     def info(cls):

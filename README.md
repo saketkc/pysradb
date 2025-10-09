@@ -82,14 +82,10 @@ The following notebooks document all the possible features of
     conda)](https://colab.research.google.com/github/saketkc/pysradb/blob/master/notebooks/04.SRA_to_fastq_conda.ipynb)
 5.  [Downloading subsets of a project - Python
     API](https://colab.research.google.com/github/saketkc/pysradb/blob/master/notebooks/05.Downloading_subsets_of_a_project.ipynb)
-6.  [Download
-    BAMs](https://colab.research.google.com/github/saketkc/pysradb/blob/master/notebooks/06.Download_BAMs.ipynb)
-7.  [Metadata for multiple
-    SRPs](https://colab.research.google.com/github/saketkc/pysradb/blob/master/notebooks/07.Multiple_SRPs.ipynb)
-8.  [Multithreaded fastq downloads using Aspera
-    Client](https://colab.research.google.com/github/saketkc/pysradb/blob/master/notebooks/08.pysradb_ascp_multithreaded.ipynb)
-9.  [Searching
-    SRA/GEO/ENA](https://colab.research.google.com/github/saketkc/pysradb/blob/master/notebooks/09.Query_Search.ipynb)
+6.  [Metadata for multiple
+    SRPs](https://colab.research.google.com/github/saketkc/pysradb/blob/master/notebooks/06.Multiple_SRPs.ipynb)
+7.  [Searching
+    SRA/GEO/ENA](https://colab.research.google.com/github/saketkc/pysradb/blob/master/notebooks/07.Query_Search.ipynb)
 
 ## Installation
 
