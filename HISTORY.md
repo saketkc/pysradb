@@ -1,5 +1,9 @@
 # History
 
+# 2.5.0 (2025-10-19)
+
+- Add pmid/doi-to-gse/srp conversion [#246](https://github.com/saketkc/pysradb/pull/246).
+
 # 2.4.1 (2025-09-27)
 
 - Add gse-to-pmid conversion [#241](https://github.com/saketkc/pysradb/pull/244).
