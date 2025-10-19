@@ -1733,8 +1733,11 @@ class SRAweb(SRAdb):
 
                 time.sleep(self.sleep_time)
 
-            except Exception as e:
-                warnings.warn(f"Failed to get PMID for DOI {doi}: {e}")
+            except requests.RequestException as e:
+                warnings.warn(f"Network error while getting PMID for DOI {doi}: {e}")
+                doi_pmid_mapping[doi] = None
+            except ValueError as e:
+                warnings.warn(f"Value error while processing response for DOI {doi}: {e}")
                 doi_pmid_mapping[doi] = None
 
         return doi_pmid_mapping
