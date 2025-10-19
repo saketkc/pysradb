@@ -1137,7 +1137,6 @@ class SRAweb(SRAdb):
                 continue
 
             try:
-                # Use efetch to get BioProject XML
                 payload = self.efetch_params.copy()
                 payload = [param for param in payload if param[0] != "retmode"]
                 payload += [
@@ -1694,6 +1693,510 @@ class SRAweb(SRAdb):
             )
 
         return pd.DataFrame(results)
+
+    def doi_to_pmid(self, dois):
+        """Convert DOI(s) to PMID(s)
+
+        Parameters
+        ----------
+        dois: list or str
+             DOI(s)
+
+        Returns
+        -------
+        doi_pmid_mapping: dict
+                         Mapping of DOI to PMID
+        """
+        if isinstance(dois, str):
+            dois = [dois]
+
+        doi_pmid_mapping = {}
+
+        for doi in dois:
+            try:
+                search_url = self.base_url["esearch"]
+                search_params = {
+                    "db": "pubmed",
+                    "term": f"{doi}[DOI]",
+                    "retmode": "json",
+                }
+
+                response = requests.get(search_url, params=search_params, timeout=60)
+                response.raise_for_status()
+                result = response.json()
+
+                id_list = result.get("esearchresult", {}).get("idlist", [])
+                if id_list:
+                    doi_pmid_mapping[doi] = id_list[0]
+                else:
+                    doi_pmid_mapping[doi] = None
+
+                time.sleep(self.sleep_time)
+
+            except requests.RequestException as e:
+                warnings.warn(f"Network error while getting PMID for DOI {doi}: {e}")
+                doi_pmid_mapping[doi] = None
+            except ValueError as e:
+                warnings.warn(
+                    f"Value error while processing response for DOI {doi}: {e}"
+                )
+                doi_pmid_mapping[doi] = None
+
+        return doi_pmid_mapping
+
+    def pmid_to_pmc(self, pmids):
+        """Convert PMID(s) to PMC ID(s)
+
+        Parameters
+        ----------
+        pmids: list or str
+              PMID(s)
+
+        Returns
+        -------
+        pmid_pmc_mapping: dict
+                         Mapping of PMID to PMC ID
+        """
+        if isinstance(pmids, str):
+            pmids = [pmids]
+
+        pmid_pmc_mapping = {}
+
+        for pmid in pmids:
+            try:
+                summary_url = self.base_url["esummary"]
+                summary_params = {
+                    "db": "pubmed",
+                    "id": pmid,
+                    "retmode": "json",
+                }
+
+                response = requests.get(summary_url, params=summary_params, timeout=60)
+                response.raise_for_status()
+                result = response.json()
+
+                # Extract PMC ID from articleids
+                if str(pmid) in result.get("result", {}):
+                    article = result["result"][str(pmid)]
+                    articleids = article.get("articleids", [])
+
+                    for aid in articleids:
+                        if aid.get("idtype") == "pmc":
+                            pmc_id = aid.get("value")
+                            pmid_pmc_mapping[pmid] = pmc_id
+                            break
+
+                time.sleep(self.sleep_time)
+
+            except Exception as e:
+                warnings.warn(f"Failed to get PMC ID for PMID {pmid}: {e}")
+                pmid_pmc_mapping[pmid] = None
+
+        return pmid_pmc_mapping
+
+    def fetch_pmc_fulltext(self, pmc_id):
+        """Fetch full text from PMC article
+
+        Parameters
+        ----------
+        pmc_id: str
+               PMC ID (can be with or without 'PMC' prefix)
+
+        Returns
+        -------
+        fulltext: str
+                 Full text of the article, or None if unavailable
+        """
+        # Ensure PMC ID has the PMC prefix
+        if not pmc_id.startswith("PMC"):
+            pmc_id = f"PMC{pmc_id}"
+
+        try:
+            fetch_url = self.base_url["efetch"]
+            fetch_params = {"db": "pmc", "id": pmc_id, "retmode": "xml"}
+
+            response = requests.get(fetch_url, params=fetch_params, timeout=60)
+            response.raise_for_status()
+
+            time.sleep(self.sleep_time)
+            return response.text
+
+        except Exception as e:
+            warnings.warn(f"Failed to fetch full text for {pmc_id}: {e}")
+            return None
+
+    def extract_identifiers_from_text(self, text):
+        """Extract GSE, PRJNA, SRP, and other identifiers from text
+
+        Parameters
+        ----------
+        text: str
+             Text to search for identifiers
+
+        Returns
+        -------
+        identifiers: dict
+                    Dictionary with lists of found identifiers by type
+        """
+        if not text:
+            return {
+                "gse": [],
+                "prjna": [],
+                "srp": [],
+                "srr": [],
+                "srx": [],
+                "srs": [],
+            }
+
+        # Define patterns for different identifier types
+        patterns = {
+            "gse": r"GSE\d+",
+            "prjna": r"PRJNA\d+",
+            "srp": r"SRP\d+",
+            "srr": r"SRR\d+",
+            "srx": r"SRX\d+",
+            "srs": r"SRS\d+",
+        }
+
+        identifiers = {}
+        for id_type, pattern in patterns.items():
+            matches = re.findall(pattern, text, re.IGNORECASE)
+            # Convert to uppercase and remove duplicates
+            identifiers[id_type] = sorted(list(set([m.upper() for m in matches])))
+
+        return identifiers
+
+    def pmc_to_identifiers(self, pmc_ids, convert_missing=True):
+        """Extract database identifiers from PMC articles
+
+        Parameters
+        ----------
+        pmc_ids: list or str
+                PMC ID(s) (can be with or without 'PMC' prefix)
+        convert_missing: bool
+                        If True, automatically convert GSE↔SRP when one is found but not the other
+                        Default: True
+
+        Returns
+        -------
+        results_df: pandas.DataFrame
+                   DataFrame with PMC IDs and extracted identifiers
+        """
+        if isinstance(pmc_ids, str):
+            pmc_ids = [pmc_ids]
+
+        results = []
+
+        for pmc_id in pmc_ids:
+            # Fetch full text
+            fulltext = self.fetch_pmc_fulltext(pmc_id)
+
+            if fulltext:
+                # Extract identifiers
+                identifiers = self.extract_identifiers_from_text(fulltext)
+
+                if convert_missing:
+                    # If we found GSE IDs but no SRP IDs, convert GSE to SRP
+                    if identifiers["gse"] and not identifiers["srp"]:
+                        try:
+                            for gse_id in identifiers["gse"]:
+                                gse_srp_df = self.gse_to_srp(gse_id)
+                                if (
+                                    not gse_srp_df.empty
+                                    and "study_accession" in gse_srp_df.columns
+                                ):
+                                    srp_values = (
+                                        gse_srp_df["study_accession"].dropna().tolist()
+                                    )
+                                    identifiers["srp"].extend(
+                                        [str(x) for x in srp_values if not pd.isna(x)]
+                                    )
+                            identifiers["srp"] = sorted(list(set(identifiers["srp"])))
+                            time.sleep(self.sleep_time)
+                        except Exception:
+                            pass
+
+                    # If we found SRP IDs but no GSE IDs, convert SRP to GSE
+                    elif identifiers["srp"] and not identifiers["gse"]:
+                        try:
+                            for srp_id in identifiers["srp"]:
+                                srp_gse_df = self.srp_to_gse(srp_id)
+                                if (
+                                    not srp_gse_df.empty
+                                    and "study_alias" in srp_gse_df.columns
+                                ):
+                                    gse_values = (
+                                        srp_gse_df["study_alias"].dropna().tolist()
+                                    )
+                                    identifiers["gse"].extend(
+                                        [str(x) for x in gse_values if not pd.isna(x)]
+                                    )
+                            identifiers["gse"] = sorted(
+                                list(set(identifiers["gse"]))
+                            )  # Remove duplicates
+                            time.sleep(self.sleep_time)
+                        except Exception:
+                            pass  # If conversion fails, just keep what we found
+
+                results.append(
+                    {
+                        "pmc_id": (
+                            pmc_id if pmc_id.startswith("PMC") else f"PMC{pmc_id}"
+                        ),
+                        "gse_ids": (
+                            ",".join(identifiers["gse"])
+                            if identifiers["gse"]
+                            else pd.NA
+                        ),
+                        "prjna_ids": (
+                            ",".join(identifiers["prjna"])
+                            if identifiers["prjna"]
+                            else pd.NA
+                        ),
+                        "srp_ids": (
+                            ",".join(identifiers["srp"])
+                            if identifiers["srp"]
+                            else pd.NA
+                        ),
+                        "srr_ids": (
+                            ",".join(identifiers["srr"])
+                            if identifiers["srr"]
+                            else pd.NA
+                        ),
+                        "srx_ids": (
+                            ",".join(identifiers["srx"])
+                            if identifiers["srx"]
+                            else pd.NA
+                        ),
+                        "srs_ids": (
+                            ",".join(identifiers["srs"])
+                            if identifiers["srs"]
+                            else pd.NA
+                        ),
+                    }
+                )
+            else:
+                results.append(
+                    {
+                        "pmc_id": (
+                            pmc_id if pmc_id.startswith("PMC") else f"PMC{pmc_id}"
+                        ),
+                        "gse_ids": pd.NA,
+                        "prjna_ids": pd.NA,
+                        "srp_ids": pd.NA,
+                        "srr_ids": pd.NA,
+                        "srx_ids": pd.NA,
+                        "srs_ids": pd.NA,
+                    }
+                )
+
+        return pd.DataFrame(results)
+
+    def pmid_to_identifiers(self, pmids):
+        """Extract database identifiers from PubMed articles via PMC
+
+        Parameters
+        ----------
+        pmids: list or str
+              PMID(s)
+
+        Returns
+        -------
+        results_df: pandas.DataFrame
+                   DataFrame with PMIDs, PMC IDs, and extracted identifiers
+        """
+        if isinstance(pmids, str):
+            pmids = [pmids]
+
+        # First convert PMIDs to PMC IDs
+        pmid_pmc_mapping = self.pmid_to_pmc(pmids)
+
+        results = []
+
+        for pmid, pmc_id in pmid_pmc_mapping.items():
+            if pmc_id:
+                # Get identifiers from PMC
+                pmc_results = self.pmc_to_identifiers([pmc_id])
+
+                if not pmc_results.empty:
+                    result = pmc_results.iloc[0].to_dict()
+                    result["pmid"] = pmid
+                    # Reorder columns to have pmid first
+                    result = {
+                        "pmid": result["pmid"],
+                        "pmc_id": result["pmc_id"],
+                        "gse_ids": result["gse_ids"],
+                        "prjna_ids": result["prjna_ids"],
+                        "srp_ids": result["srp_ids"],
+                        "srr_ids": result["srr_ids"],
+                        "srx_ids": result["srx_ids"],
+                        "srs_ids": result["srs_ids"],
+                    }
+                    results.append(result)
+                else:
+                    results.append(
+                        {
+                            "pmid": pmid,
+                            "pmc_id": pmc_id,
+                            "gse_ids": pd.NA,
+                            "prjna_ids": pd.NA,
+                            "srp_ids": pd.NA,
+                            "srr_ids": pd.NA,
+                            "srx_ids": pd.NA,
+                            "srs_ids": pd.NA,
+                        }
+                    )
+            else:
+                # No PMC ID available
+                results.append(
+                    {
+                        "pmid": pmid,
+                        "pmc_id": pd.NA,
+                        "gse_ids": pd.NA,
+                        "prjna_ids": pd.NA,
+                        "srp_ids": pd.NA,
+                        "srr_ids": pd.NA,
+                        "srx_ids": pd.NA,
+                        "srs_ids": pd.NA,
+                    }
+                )
+
+        return pd.DataFrame(results)
+
+    def pmid_to_gse(self, pmids):
+        """Get GSE identifiers from PMID(s)
+
+        Parameters
+        ----------
+        pmids: list or str
+              PMID(s)
+
+        Returns
+        -------
+        results_df: pandas.DataFrame
+                   DataFrame with PMIDs and GSE identifiers
+        """
+        full_results = self.pmid_to_identifiers(pmids)
+        return full_results[["pmid", "pmc_id", "gse_ids"]]
+
+    def pmid_to_srp(self, pmids):
+        """Get SRP identifiers from PMID(s)
+
+        Parameters
+        ----------
+        pmids: list or str
+              PMID(s)
+
+        Returns
+        -------
+        results_df: pandas.DataFrame
+                   DataFrame with PMIDs and SRP identifiers
+        """
+        full_results = self.pmid_to_identifiers(pmids)
+        return full_results[["pmid", "pmc_id", "srp_ids"]]
+
+    def doi_to_identifiers(self, dois):
+        """Extract database identifiers from articles via DOI
+
+        Parameters
+        ----------
+        dois: list or str
+             DOI(s)
+
+        Returns
+        -------
+        results_df: pandas.DataFrame
+                   DataFrame with DOIs, PMIDs, PMC IDs, and extracted identifiers
+        """
+        if isinstance(dois, str):
+            dois = [dois]
+
+        doi_pmid_mapping = self.doi_to_pmid(dois)
+
+        results = []
+
+        for doi, pmid in doi_pmid_mapping.items():
+            if pmid:
+                pmid_results = self.pmid_to_identifiers([pmid])
+
+                if not pmid_results.empty:
+                    result = pmid_results.iloc[0].to_dict()
+                    result["doi"] = doi
+                    result = {
+                        "doi": result["doi"],
+                        "pmid": result["pmid"],
+                        "pmc_id": result["pmc_id"],
+                        "gse_ids": result["gse_ids"],
+                        "prjna_ids": result["prjna_ids"],
+                        "srp_ids": result["srp_ids"],
+                        "srr_ids": result["srr_ids"],
+                        "srx_ids": result["srx_ids"],
+                        "srs_ids": result["srs_ids"],
+                    }
+                    results.append(result)
+                else:
+                    results.append(
+                        {
+                            "doi": doi,
+                            "pmid": pmid,
+                            "pmc_id": pd.NA,
+                            "gse_ids": pd.NA,
+                            "prjna_ids": pd.NA,
+                            "srp_ids": pd.NA,
+                            "srr_ids": pd.NA,
+                            "srx_ids": pd.NA,
+                            "srs_ids": pd.NA,
+                        }
+                    )
+            else:
+                # No PMID available
+                results.append(
+                    {
+                        "doi": doi,
+                        "pmid": pd.NA,
+                        "pmc_id": pd.NA,
+                        "gse_ids": pd.NA,
+                        "prjna_ids": pd.NA,
+                        "srp_ids": pd.NA,
+                        "srr_ids": pd.NA,
+                        "srx_ids": pd.NA,
+                        "srs_ids": pd.NA,
+                    }
+                )
+
+        return pd.DataFrame(results)
+
+    def doi_to_gse(self, dois):
+        """Get GSE identifiers from DOI(s)
+
+        Parameters
+        ----------
+        dois: list or str
+             DOI(s)
+
+        Returns
+        -------
+        results_df: pandas.DataFrame
+                   DataFrame with DOIs and GSE identifiers
+        """
+        full_results = self.doi_to_identifiers(dois)
+        return full_results[["doi", "pmid", "pmc_id", "gse_ids"]]
+
+    def doi_to_srp(self, dois):
+        """Get SRP identifiers from DOI(s)
+
+        Parameters
+        ----------
+        dois: list or str
+             DOI(s)
+
+        Returns
+        -------
+        results_df: pandas.DataFrame
+                   DataFrame with DOIs and SRP identifiers
+        """
+        full_results = self.doi_to_identifiers(dois)
+        return full_results[["doi", "pmid", "pmc_id", "srp_ids"]]
 
     def close(self):
         # Dummy method to mimick SRAdb() object
