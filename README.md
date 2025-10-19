@@ -95,7 +95,7 @@ The following notebooks document all the possible features of
     SRPs](https://colab.research.google.com/github/saketkc/pysradb/blob/master/notebooks/06.Multiple_SRPs.ipynb)
 7.  [Searching
     SRA/GEO/ENA](https://colab.research.google.com/github/saketkc/pysradb/blob/master/notebooks/07.Query_Search.ipynb)
-8. [Extracting identifiers from PMC/DOI (NEW!)](https://colab.research.google.com/github/saketkc/pysradb/blob/master/notebooks/10.PMC_DOI_Identifiers.ipynb)
+8. [Extracting identifiers from PMC/DOI](https://colab.research.google.com/github/saketkc/pysradb/blob/master/notebooks/10.PMC_DOI_Identifiers.ipynb)
 
 ## Installation
 
