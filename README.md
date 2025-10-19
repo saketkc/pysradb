@@ -20,46 +20,55 @@
 guide](https://www.saket-choudhary.me/pysradb/quickstart.html).
 
     $ pysradb
-     usage: pysradb [-h] [--version] [--citation]
-                    {metadata,download,search,gse-to-gsm,gse-to-srp,gsm-to-gse,gsm-to-srp,gsm-to-srr,gsm-to-srs,gsm-to-srx,srp-to-gse,srp-to-srr,srp-to-srs,srp-to-srx,srr-to-gsm,srr-to-srp,srr-to-srs,srr-to-srx,srs-to-gsm,srs-to-srx,srx-to-srp,srx-to-srr,srx-to-srs,srp-to-pmid,gse-to-pmid}
-                    ...
+usage: pysradb [-h] [--version] [--citation]
+               {metadata,download,search,gse-to-gsm,gse-to-srp,gsm-to-gse,gsm-to-srp,gsm-to-srr,gsm-to-srs,gsm-to-srx,srp-to-gse,srp-to-srr,srp-to-srs,srp-to-srx,srr-to-gsm,srr-to-srp,srr-to-srs,srr-to-srx,srs-to-gsm,srs-to-srx,srx-to-srp,srx-to-srr,srx-to-srs,geo-matrix,srp-to-pmid,gse-to-pmid,pmid-to-gse,pmid-to-srp,pmc-to-identifiers,pmid-to-identifiers,doi-to-gse,doi-to-srp,doi-to-identifiers}
+               ...
 
-     pysradb: Query NGS metadata and data from NCBI Sequence Read Archive.
-     version: 2.3.0.
-     Citation: 10.12688/f1000research.18676.1
+pysradb: Query NGS metadata and data from NCBI Sequence Read Archive.
+version: 2.4.1.
+Citation: 10.12688/f1000research.18676.1
 
-     options:
-       -h, --help            show this help message and exit
-       --version             show program's version number and exit
-       --citation            how to cite
+options:
+  -h, --help            show this help message and exit
+  --version             show program's version number and exit
+  --citation            how to cite
 
-     subcommands:
-       {metadata,download,search,gse-to-gsm,gse-to-srp,gsm-to-gse,gsm-to-srp,gsm-to-srr,gsm-to-srs,gsm-to-srx,srp-to-gse,srp-to-srr,srp-to-srs,srp-to-srx,srr-to-gsm,srr-to-srp,srr-to-srs,srr-to-srx,srs-to-gsm,srs-to-srx,srx-to-srp,srx-to-srr,srx-to-srs,srp-to-pmid,gse-to-pmid}
-         metadata            Fetch metadata for SRA project (SRPnnnn)
-         download            Download SRA project (SRPnnnn)
-         search              Search SRA/ENA for matching text
-         gse-to-gsm          Get GSM for a GSE
-         gse-to-srp          Get SRP for a GSE
-         gsm-to-gse          Get GSE for a GSM
-         gsm-to-srp          Get SRP for a GSM
-         gsm-to-srr          Get SRR for a GSM
-         gsm-to-srs          Get SRS for a GSM
-         gsm-to-srx          Get SRX for a GSM
-         srp-to-gse          Get GSE for a SRP
-         srp-to-srr          Get SRR for a SRP
-         srp-to-srs          Get SRS for a SRP
-         srp-to-srx          Get SRX for a SRP
-         srr-to-gsm          Get GSM for a SRR
-         srr-to-srp          Get SRP for a SRR
-         srr-to-srs          Get SRS for a SRR
-         srr-to-srx          Get SRX for a SRR
-         srs-to-gsm          Get GSM for a SRS
-         srs-to-srx          Get SRX for a SRS
-         srx-to-srp          Get SRP for a SRX
-         srx-to-srr          Get SRR for a SRX
-         srx-to-srs          Get SRS for a SRX
-         srp-to-pmid         Get PMIDs for SRP accessions
-         gse-to-pmid         Get PMIDs for GSE accessions
+subcommands:
+  {metadata,download,search,gse-to-gsm,gse-to-srp,gsm-to-gse,gsm-to-srp,gsm-to-srr,gsm-to-srs,gsm-to-srx,srp-to-gse,srp-to-srr,srp-to-srs,srp-to-srx,srr-to-gsm,srr-to-srp,srr-to-srs,srr-to-srx,srs-to-gsm,srs-to-srx,srx-to-srp,srx-to-srr,srx-to-srs,geo-matrix,srp-to-pmid,gse-to-pmid,pmid-to-gse,pmid-to-srp,pmc-to-identifiers,pmid-to-identifiers,doi-to-gse,doi-to-srp,doi-to-identifiers}
+    metadata            Fetch metadata for SRA project (SRPnnnn)
+    download            Download SRA project (SRPnnnn)
+    search              Search SRA/ENA for matching text
+    gse-to-gsm          Get GSM for a GSE
+    gse-to-srp          Get SRP for a GSE
+    gsm-to-gse          Get GSE for a GSM
+    gsm-to-srp          Get SRP for a GSM
+    gsm-to-srr          Get SRR for a GSM
+    gsm-to-srs          Get SRS for a GSM
+    gsm-to-srx          Get SRX for a GSM
+    srp-to-gse          Get GSE for a SRP
+    srp-to-srr          Get SRR for a SRP
+    srp-to-srs          Get SRS for a SRP
+    srp-to-srx          Get SRX for a SRP
+    srr-to-gsm          Get GSM for a SRR
+    srr-to-srp          Get SRP for a SRR
+    srr-to-srs          Get SRS for a SRR
+    srr-to-srx          Get SRX for a SRR
+    srs-to-gsm          Get GSM for a SRS
+    srs-to-srx          Get SRX for a SRS
+    srx-to-srp          Get SRP for a SRX
+    srx-to-srr          Get SRR for a SRX
+    srx-to-srs          Get SRS for a SRX
+    geo-matrix          Download and parse GEO Matrix files
+    srp-to-pmid         Get PMIDs for SRP accessions
+    gse-to-pmid         Get PMIDs for GSE accessions
+    pmid-to-gse         Get GSE accessions from PMIDs
+    pmid-to-srp         Get SRP accessions from PMIDs
+    pmc-to-identifiers  Extract database identifiers from PMC articles
+    pmid-to-identifiers
+                        Extract database identifiers from PubMed articles
+    doi-to-gse          Get GSE accessions from DOIs
+    doi-to-srp          Get SRP accessions from DOIs
+    doi-to-identifiers  Extract database identifiers from articles via DOI
 
 ## Quickstart
 
