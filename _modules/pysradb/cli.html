@@ -1110,6 +1110,76 @@
 
 
 
+<div class="viewcode-block" id="pmid_to_gse">
+<a class="viewcode-back" href="../../pysradb.html#pysradb.cli.pmid_to_gse">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">pmid_to_gse</span><span class="p">(</span><span class="n">pmid_ids</span><span class="p">,</span> <span class="n">saveto</span><span class="p">):</span>
+    <span class="n">sradb</span> <span class="o">=</span> <span class="n">SRAweb</span><span class="p">()</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">sradb</span><span class="o">.</span><span class="n">pmid_to_gse</span><span class="p">(</span><span class="n">pmid_ids</span><span class="p">)</span>
+    <span class="n">_print_save_df</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">saveto</span><span class="p">)</span>
+    <span class="n">sradb</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div>
+
+
+
+<div class="viewcode-block" id="pmid_to_srp">
+<a class="viewcode-back" href="../../pysradb.html#pysradb.cli.pmid_to_srp">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">pmid_to_srp</span><span class="p">(</span><span class="n">pmid_ids</span><span class="p">,</span> <span class="n">saveto</span><span class="p">):</span>
+    <span class="n">sradb</span> <span class="o">=</span> <span class="n">SRAweb</span><span class="p">()</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">sradb</span><span class="o">.</span><span class="n">pmid_to_srp</span><span class="p">(</span><span class="n">pmid_ids</span><span class="p">)</span>
+    <span class="n">_print_save_df</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">saveto</span><span class="p">)</span>
+    <span class="n">sradb</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div>
+
+
+
+<div class="viewcode-block" id="pmc_to_identifiers">
+<a class="viewcode-back" href="../../pysradb.html#pysradb.cli.pmc_to_identifiers">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">pmc_to_identifiers</span><span class="p">(</span><span class="n">pmc_ids</span><span class="p">,</span> <span class="n">saveto</span><span class="p">):</span>
+    <span class="n">sradb</span> <span class="o">=</span> <span class="n">SRAweb</span><span class="p">()</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">sradb</span><span class="o">.</span><span class="n">pmc_to_identifiers</span><span class="p">(</span><span class="n">pmc_ids</span><span class="p">)</span>
+    <span class="n">_print_save_df</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">saveto</span><span class="p">)</span>
+    <span class="n">sradb</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div>
+
+
+
+<div class="viewcode-block" id="pmid_to_identifiers">
+<a class="viewcode-back" href="../../pysradb.html#pysradb.cli.pmid_to_identifiers">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">pmid_to_identifiers</span><span class="p">(</span><span class="n">pmid_ids</span><span class="p">,</span> <span class="n">saveto</span><span class="p">):</span>
+    <span class="n">sradb</span> <span class="o">=</span> <span class="n">SRAweb</span><span class="p">()</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">sradb</span><span class="o">.</span><span class="n">pmid_to_identifiers</span><span class="p">(</span><span class="n">pmid_ids</span><span class="p">)</span>
+    <span class="n">_print_save_df</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">saveto</span><span class="p">)</span>
+    <span class="n">sradb</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div>
+
+
+
+<div class="viewcode-block" id="doi_to_gse">
+<a class="viewcode-back" href="../../pysradb.html#pysradb.cli.doi_to_gse">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">doi_to_gse</span><span class="p">(</span><span class="n">doi_ids</span><span class="p">,</span> <span class="n">saveto</span><span class="p">):</span>
+    <span class="n">sradb</span> <span class="o">=</span> <span class="n">SRAweb</span><span class="p">()</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">sradb</span><span class="o">.</span><span class="n">doi_to_gse</span><span class="p">(</span><span class="n">doi_ids</span><span class="p">)</span>
+    <span class="n">_print_save_df</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">saveto</span><span class="p">)</span>
+    <span class="n">sradb</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div>
+
+
+
+<div class="viewcode-block" id="doi_to_srp">
+<a class="viewcode-back" href="../../pysradb.html#pysradb.cli.doi_to_srp">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">doi_to_srp</span><span class="p">(</span><span class="n">doi_ids</span><span class="p">,</span> <span class="n">saveto</span><span class="p">):</span>
+    <span class="n">sradb</span> <span class="o">=</span> <span class="n">SRAweb</span><span class="p">()</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">sradb</span><span class="o">.</span><span class="n">doi_to_srp</span><span class="p">(</span><span class="n">doi_ids</span><span class="p">)</span>
+    <span class="n">_print_save_df</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">saveto</span><span class="p">)</span>
+    <span class="n">sradb</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div>
+
+
+
+<div class="viewcode-block" id="doi_to_identifiers">
+<a class="viewcode-back" href="../../pysradb.html#pysradb.cli.doi_to_identifiers">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">doi_to_identifiers</span><span class="p">(</span><span class="n">doi_ids</span><span class="p">,</span> <span class="n">saveto</span><span class="p">):</span>
+    <span class="n">sradb</span> <span class="o">=</span> <span class="n">SRAweb</span><span class="p">()</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">sradb</span><span class="o">.</span><span class="n">doi_to_identifiers</span><span class="p">(</span><span class="n">doi_ids</span><span class="p">)</span>
+    <span class="n">_print_save_df</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">saveto</span><span class="p">)</span>
+    <span class="n">sradb</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div>
+
+
+
 <span class="c1">#########################################################################</span>
 
 
@@ -1804,6 +1874,58 @@
     <span class="n">subparser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;gse_ids&quot;</span><span class="p">,</span> <span class="n">nargs</span><span class="o">=</span><span class="s2">&quot;+&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;GSE accession(s)&quot;</span><span class="p">)</span>
     <span class="n">subparser</span><span class="o">.</span><span class="n">set_defaults</span><span class="p">(</span><span class="n">func</span><span class="o">=</span><span class="n">gse_to_pmid</span><span class="p">)</span>
 
+    <span class="c1"># pysradb pmid-to-gse</span>
+    <span class="n">subparser</span> <span class="o">=</span> <span class="n">subparsers</span><span class="o">.</span><span class="n">add_parser</span><span class="p">(</span>
+        <span class="s2">&quot;pmid-to-gse&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Get GSE accessions from PMIDs&quot;</span>
+    <span class="p">)</span>
+    <span class="n">subparser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--saveto&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Save output to file&quot;</span><span class="p">)</span>
+    <span class="n">subparser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;pmid_ids&quot;</span><span class="p">,</span> <span class="n">nargs</span><span class="o">=</span><span class="s2">&quot;+&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;PMID(s)&quot;</span><span class="p">)</span>
+    <span class="n">subparser</span><span class="o">.</span><span class="n">set_defaults</span><span class="p">(</span><span class="n">func</span><span class="o">=</span><span class="n">pmid_to_gse</span><span class="p">)</span>
+
+    <span class="c1"># pysradb pmid-to-srp</span>
+    <span class="n">subparser</span> <span class="o">=</span> <span class="n">subparsers</span><span class="o">.</span><span class="n">add_parser</span><span class="p">(</span>
+        <span class="s2">&quot;pmid-to-srp&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Get SRP accessions from PMIDs&quot;</span>
+    <span class="p">)</span>
+    <span class="n">subparser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--saveto&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Save output to file&quot;</span><span class="p">)</span>
+    <span class="n">subparser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;pmid_ids&quot;</span><span class="p">,</span> <span class="n">nargs</span><span class="o">=</span><span class="s2">&quot;+&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;PMID(s)&quot;</span><span class="p">)</span>
+    <span class="n">subparser</span><span class="o">.</span><span class="n">set_defaults</span><span class="p">(</span><span class="n">func</span><span class="o">=</span><span class="n">pmid_to_srp</span><span class="p">)</span>
+
+    <span class="c1"># pysradb pmc-to-identifiers</span>
+    <span class="n">subparser</span> <span class="o">=</span> <span class="n">subparsers</span><span class="o">.</span><span class="n">add_parser</span><span class="p">(</span>
+        <span class="s2">&quot;pmc-to-identifiers&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Extract database identifiers from PMC articles&quot;</span>
+    <span class="p">)</span>
+    <span class="n">subparser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--saveto&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Save output to file&quot;</span><span class="p">)</span>
+    <span class="n">subparser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;pmc_ids&quot;</span><span class="p">,</span> <span class="n">nargs</span><span class="o">=</span><span class="s2">&quot;+&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;PMC ID(s)&quot;</span><span class="p">)</span>
+    <span class="n">subparser</span><span class="o">.</span><span class="n">set_defaults</span><span class="p">(</span><span class="n">func</span><span class="o">=</span><span class="n">pmc_to_identifiers</span><span class="p">)</span>
+
+    <span class="c1"># pysradb pmid-to-identifiers</span>
+    <span class="n">subparser</span> <span class="o">=</span> <span class="n">subparsers</span><span class="o">.</span><span class="n">add_parser</span><span class="p">(</span>
+        <span class="s2">&quot;pmid-to-identifiers&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Extract database identifiers from PubMed articles&quot;</span>
+    <span class="p">)</span>
+    <span class="n">subparser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--saveto&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Save output to file&quot;</span><span class="p">)</span>
+    <span class="n">subparser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;pmid_ids&quot;</span><span class="p">,</span> <span class="n">nargs</span><span class="o">=</span><span class="s2">&quot;+&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;PMID(s)&quot;</span><span class="p">)</span>
+    <span class="n">subparser</span><span class="o">.</span><span class="n">set_defaults</span><span class="p">(</span><span class="n">func</span><span class="o">=</span><span class="n">pmid_to_identifiers</span><span class="p">)</span>
+
+    <span class="c1"># pysradb doi-to-gse</span>
+    <span class="n">subparser</span> <span class="o">=</span> <span class="n">subparsers</span><span class="o">.</span><span class="n">add_parser</span><span class="p">(</span><span class="s2">&quot;doi-to-gse&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Get GSE accessions from DOIs&quot;</span><span class="p">)</span>
+    <span class="n">subparser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--saveto&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Save output to file&quot;</span><span class="p">)</span>
+    <span class="n">subparser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;doi_ids&quot;</span><span class="p">,</span> <span class="n">nargs</span><span class="o">=</span><span class="s2">&quot;+&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;DOI(s)&quot;</span><span class="p">)</span>
+    <span class="n">subparser</span><span class="o">.</span><span class="n">set_defaults</span><span class="p">(</span><span class="n">func</span><span class="o">=</span><span class="n">doi_to_gse</span><span class="p">)</span>
+
+    <span class="c1"># pysradb doi-to-srp</span>
+    <span class="n">subparser</span> <span class="o">=</span> <span class="n">subparsers</span><span class="o">.</span><span class="n">add_parser</span><span class="p">(</span><span class="s2">&quot;doi-to-srp&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Get SRP accessions from DOIs&quot;</span><span class="p">)</span>
+    <span class="n">subparser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--saveto&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Save output to file&quot;</span><span class="p">)</span>
+    <span class="n">subparser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;doi_ids&quot;</span><span class="p">,</span> <span class="n">nargs</span><span class="o">=</span><span class="s2">&quot;+&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;DOI(s)&quot;</span><span class="p">)</span>
+    <span class="n">subparser</span><span class="o">.</span><span class="n">set_defaults</span><span class="p">(</span><span class="n">func</span><span class="o">=</span><span class="n">doi_to_srp</span><span class="p">)</span>
+
+    <span class="c1"># pysradb doi-to-identifiers</span>
+    <span class="n">subparser</span> <span class="o">=</span> <span class="n">subparsers</span><span class="o">.</span><span class="n">add_parser</span><span class="p">(</span>
+        <span class="s2">&quot;doi-to-identifiers&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Extract database identifiers from articles via DOI&quot;</span>
+    <span class="p">)</span>
+    <span class="n">subparser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--saveto&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Save output to file&quot;</span><span class="p">)</span>
+    <span class="n">subparser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;doi_ids&quot;</span><span class="p">,</span> <span class="n">nargs</span><span class="o">=</span><span class="s2">&quot;+&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;DOI(s)&quot;</span><span class="p">)</span>
+    <span class="n">subparser</span><span class="o">.</span><span class="n">set_defaults</span><span class="p">(</span><span class="n">func</span><span class="o">=</span><span class="n">doi_to_identifiers</span><span class="p">)</span>
+
     <span class="n">args</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse_args</span><span class="p">(</span><span class="n">args</span><span class="o">=</span><span class="kc">None</span> <span class="k">if</span> <span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span> <span class="k">else</span> <span class="p">[</span><span class="s2">&quot;--help&quot;</span><span class="p">])</span>
     <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">command</span> <span class="o">==</span> <span class="s2">&quot;metadata&quot;</span><span class="p">:</span>
         <span class="n">metadata</span><span class="p">(</span>
@@ -1882,7 +2004,21 @@
     <span class="k">elif</span> <span class="n">args</span><span class="o">.</span><span class="n">command</span> <span class="o">==</span> <span class="s2">&quot;srp-to-pmid&quot;</span><span class="p">:</span>
         <span class="n">srp_to_pmid</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">srp_ids</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">saveto</span><span class="p">)</span>
     <span class="k">elif</span> <span class="n">args</span><span class="o">.</span><span class="n">command</span> <span class="o">==</span> <span class="s2">&quot;gse-to-pmid&quot;</span><span class="p">:</span>
-        <span class="n">gse_to_pmid</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">gse_ids</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">saveto</span><span class="p">)</span></div>
+        <span class="n">gse_to_pmid</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">gse_ids</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">saveto</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">args</span><span class="o">.</span><span class="n">command</span> <span class="o">==</span> <span class="s2">&quot;pmid-to-gse&quot;</span><span class="p">:</span>
+        <span class="n">pmid_to_gse</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">pmid_ids</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">saveto</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">args</span><span class="o">.</span><span class="n">command</span> <span class="o">==</span> <span class="s2">&quot;pmid-to-srp&quot;</span><span class="p">:</span>
+        <span class="n">pmid_to_srp</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">pmid_ids</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">saveto</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">args</span><span class="o">.</span><span class="n">command</span> <span class="o">==</span> <span class="s2">&quot;pmc-to-identifiers&quot;</span><span class="p">:</span>
+        <span class="n">pmc_to_identifiers</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">pmc_ids</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">saveto</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">args</span><span class="o">.</span><span class="n">command</span> <span class="o">==</span> <span class="s2">&quot;pmid-to-identifiers&quot;</span><span class="p">:</span>
+        <span class="n">pmid_to_identifiers</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">pmid_ids</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">saveto</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">args</span><span class="o">.</span><span class="n">command</span> <span class="o">==</span> <span class="s2">&quot;doi-to-gse&quot;</span><span class="p">:</span>
+        <span class="n">doi_to_gse</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">doi_ids</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">saveto</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">args</span><span class="o">.</span><span class="n">command</span> <span class="o">==</span> <span class="s2">&quot;doi-to-srp&quot;</span><span class="p">:</span>
+        <span class="n">doi_to_srp</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">doi_ids</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">saveto</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">args</span><span class="o">.</span><span class="n">command</span> <span class="o">==</span> <span class="s2">&quot;doi-to-identifiers&quot;</span><span class="p">:</span>
+        <span class="n">doi_to_identifiers</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">doi_ids</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">saveto</span><span class="p">)</span></div>
 
 
 

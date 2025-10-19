@@ -1708,7 +1708,6 @@
                 <span class="k">continue</span>
 
             <span class="k">try</span><span class="p">:</span>
-                <span class="c1"># Use efetch to get BioProject XML</span>
                 <span class="n">payload</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">efetch_params</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
                 <span class="n">payload</span> <span class="o">=</span> <span class="p">[</span><span class="n">param</span> <span class="k">for</span> <span class="n">param</span> <span class="ow">in</span> <span class="n">payload</span> <span class="k">if</span> <span class="n">param</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">!=</span> <span class="s2">&quot;retmode&quot;</span><span class="p">]</span>
                 <span class="n">payload</span> <span class="o">+=</span> <span class="p">[</span>
@@ -2289,6 +2288,543 @@
             <span class="p">)</span>
 
         <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">results</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="SRAweb.doi_to_pmid">
+<a class="viewcode-back" href="../../pysradb.html#pysradb.sraweb.SRAweb.doi_to_pmid">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">doi_to_pmid</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dois</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Convert DOI(s) to PMID(s)</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        dois: list or str</span>
+<span class="sd">             DOI(s)</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        doi_pmid_mapping: dict</span>
+<span class="sd">                         Mapping of DOI to PMID</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">dois</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+            <span class="n">dois</span> <span class="o">=</span> <span class="p">[</span><span class="n">dois</span><span class="p">]</span>
+
+        <span class="n">doi_pmid_mapping</span> <span class="o">=</span> <span class="p">{}</span>
+
+        <span class="k">for</span> <span class="n">doi</span> <span class="ow">in</span> <span class="n">dois</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">search_url</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">base_url</span><span class="p">[</span><span class="s2">&quot;esearch&quot;</span><span class="p">]</span>
+                <span class="n">search_params</span> <span class="o">=</span> <span class="p">{</span>
+                    <span class="s2">&quot;db&quot;</span><span class="p">:</span> <span class="s2">&quot;pubmed&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;term&quot;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">doi</span><span class="si">}</span><span class="s2">[DOI]&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;retmode&quot;</span><span class="p">:</span> <span class="s2">&quot;json&quot;</span><span class="p">,</span>
+                <span class="p">}</span>
+
+                <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">search_url</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="n">search_params</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">60</span><span class="p">)</span>
+                <span class="n">response</span><span class="o">.</span><span class="n">raise_for_status</span><span class="p">()</span>
+                <span class="n">result</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
+
+                <span class="n">id_list</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;esearchresult&quot;</span><span class="p">,</span> <span class="p">{})</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;idlist&quot;</span><span class="p">,</span> <span class="p">[])</span>
+                <span class="k">if</span> <span class="n">id_list</span><span class="p">:</span>
+                    <span class="n">doi_pmid_mapping</span><span class="p">[</span><span class="n">doi</span><span class="p">]</span> <span class="o">=</span> <span class="n">id_list</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">doi_pmid_mapping</span><span class="p">[</span><span class="n">doi</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+
+                <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sleep_time</span><span class="p">)</span>
+
+            <span class="k">except</span> <span class="n">requests</span><span class="o">.</span><span class="n">RequestException</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Network error while getting PMID for DOI </span><span class="si">{</span><span class="n">doi</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+                <span class="n">doi_pmid_mapping</span><span class="p">[</span><span class="n">doi</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="k">except</span> <span class="ne">ValueError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
+                    <span class="sa">f</span><span class="s2">&quot;Value error while processing response for DOI </span><span class="si">{</span><span class="n">doi</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span>
+                <span class="p">)</span>
+                <span class="n">doi_pmid_mapping</span><span class="p">[</span><span class="n">doi</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="k">return</span> <span class="n">doi_pmid_mapping</span></div>
+
+
+<div class="viewcode-block" id="SRAweb.pmid_to_pmc">
+<a class="viewcode-back" href="../../pysradb.html#pysradb.sraweb.SRAweb.pmid_to_pmc">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">pmid_to_pmc</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pmids</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Convert PMID(s) to PMC ID(s)</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        pmids: list or str</span>
+<span class="sd">              PMID(s)</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        pmid_pmc_mapping: dict</span>
+<span class="sd">                         Mapping of PMID to PMC ID</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">pmids</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+            <span class="n">pmids</span> <span class="o">=</span> <span class="p">[</span><span class="n">pmids</span><span class="p">]</span>
+
+        <span class="n">pmid_pmc_mapping</span> <span class="o">=</span> <span class="p">{}</span>
+
+        <span class="k">for</span> <span class="n">pmid</span> <span class="ow">in</span> <span class="n">pmids</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">summary_url</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">base_url</span><span class="p">[</span><span class="s2">&quot;esummary&quot;</span><span class="p">]</span>
+                <span class="n">summary_params</span> <span class="o">=</span> <span class="p">{</span>
+                    <span class="s2">&quot;db&quot;</span><span class="p">:</span> <span class="s2">&quot;pubmed&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="n">pmid</span><span class="p">,</span>
+                    <span class="s2">&quot;retmode&quot;</span><span class="p">:</span> <span class="s2">&quot;json&quot;</span><span class="p">,</span>
+                <span class="p">}</span>
+
+                <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">summary_url</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="n">summary_params</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">60</span><span class="p">)</span>
+                <span class="n">response</span><span class="o">.</span><span class="n">raise_for_status</span><span class="p">()</span>
+                <span class="n">result</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
+
+                <span class="c1"># Extract PMC ID from articleids</span>
+                <span class="k">if</span> <span class="nb">str</span><span class="p">(</span><span class="n">pmid</span><span class="p">)</span> <span class="ow">in</span> <span class="n">result</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;result&quot;</span><span class="p">,</span> <span class="p">{}):</span>
+                    <span class="n">article</span> <span class="o">=</span> <span class="n">result</span><span class="p">[</span><span class="s2">&quot;result&quot;</span><span class="p">][</span><span class="nb">str</span><span class="p">(</span><span class="n">pmid</span><span class="p">)]</span>
+                    <span class="n">articleids</span> <span class="o">=</span> <span class="n">article</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;articleids&quot;</span><span class="p">,</span> <span class="p">[])</span>
+
+                    <span class="k">for</span> <span class="n">aid</span> <span class="ow">in</span> <span class="n">articleids</span><span class="p">:</span>
+                        <span class="k">if</span> <span class="n">aid</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;idtype&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="s2">&quot;pmc&quot;</span><span class="p">:</span>
+                            <span class="n">pmc_id</span> <span class="o">=</span> <span class="n">aid</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;value&quot;</span><span class="p">)</span>
+                            <span class="n">pmid_pmc_mapping</span><span class="p">[</span><span class="n">pmid</span><span class="p">]</span> <span class="o">=</span> <span class="n">pmc_id</span>
+                            <span class="k">break</span>
+
+                <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sleep_time</span><span class="p">)</span>
+
+            <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Failed to get PMC ID for PMID </span><span class="si">{</span><span class="n">pmid</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+                <span class="n">pmid_pmc_mapping</span><span class="p">[</span><span class="n">pmid</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="k">return</span> <span class="n">pmid_pmc_mapping</span></div>
+
+
+<div class="viewcode-block" id="SRAweb.fetch_pmc_fulltext">
+<a class="viewcode-back" href="../../pysradb.html#pysradb.sraweb.SRAweb.fetch_pmc_fulltext">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">fetch_pmc_fulltext</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pmc_id</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Fetch full text from PMC article</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        pmc_id: str</span>
+<span class="sd">               PMC ID (can be with or without &#39;PMC&#39; prefix)</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        fulltext: str</span>
+<span class="sd">                 Full text of the article, or None if unavailable</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Ensure PMC ID has the PMC prefix</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">pmc_id</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;PMC&quot;</span><span class="p">):</span>
+            <span class="n">pmc_id</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;PMC</span><span class="si">{</span><span class="n">pmc_id</span><span class="si">}</span><span class="s2">&quot;</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">fetch_url</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">base_url</span><span class="p">[</span><span class="s2">&quot;efetch&quot;</span><span class="p">]</span>
+            <span class="n">fetch_params</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;db&quot;</span><span class="p">:</span> <span class="s2">&quot;pmc&quot;</span><span class="p">,</span> <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="n">pmc_id</span><span class="p">,</span> <span class="s2">&quot;retmode&quot;</span><span class="p">:</span> <span class="s2">&quot;xml&quot;</span><span class="p">}</span>
+
+            <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">fetch_url</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="n">fetch_params</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">60</span><span class="p">)</span>
+            <span class="n">response</span><span class="o">.</span><span class="n">raise_for_status</span><span class="p">()</span>
+
+            <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sleep_time</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">response</span><span class="o">.</span><span class="n">text</span>
+
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Failed to fetch full text for </span><span class="si">{</span><span class="n">pmc_id</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="kc">None</span></div>
+
+
+<div class="viewcode-block" id="SRAweb.extract_identifiers_from_text">
+<a class="viewcode-back" href="../../pysradb.html#pysradb.sraweb.SRAweb.extract_identifiers_from_text">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">extract_identifiers_from_text</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Extract GSE, PRJNA, SRP, and other identifiers from text</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        text: str</span>
+<span class="sd">             Text to search for identifiers</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        identifiers: dict</span>
+<span class="sd">                    Dictionary with lists of found identifiers by type</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">text</span><span class="p">:</span>
+            <span class="k">return</span> <span class="p">{</span>
+                <span class="s2">&quot;gse&quot;</span><span class="p">:</span> <span class="p">[],</span>
+                <span class="s2">&quot;prjna&quot;</span><span class="p">:</span> <span class="p">[],</span>
+                <span class="s2">&quot;srp&quot;</span><span class="p">:</span> <span class="p">[],</span>
+                <span class="s2">&quot;srr&quot;</span><span class="p">:</span> <span class="p">[],</span>
+                <span class="s2">&quot;srx&quot;</span><span class="p">:</span> <span class="p">[],</span>
+                <span class="s2">&quot;srs&quot;</span><span class="p">:</span> <span class="p">[],</span>
+            <span class="p">}</span>
+
+        <span class="c1"># Define patterns for different identifier types</span>
+        <span class="n">patterns</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;gse&quot;</span><span class="p">:</span> <span class="sa">r</span><span class="s2">&quot;GSE\d+&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;prjna&quot;</span><span class="p">:</span> <span class="sa">r</span><span class="s2">&quot;PRJNA\d+&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;srp&quot;</span><span class="p">:</span> <span class="sa">r</span><span class="s2">&quot;SRP\d+&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;srr&quot;</span><span class="p">:</span> <span class="sa">r</span><span class="s2">&quot;SRR\d+&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;srx&quot;</span><span class="p">:</span> <span class="sa">r</span><span class="s2">&quot;SRX\d+&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;srs&quot;</span><span class="p">:</span> <span class="sa">r</span><span class="s2">&quot;SRS\d+&quot;</span><span class="p">,</span>
+        <span class="p">}</span>
+
+        <span class="n">identifiers</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">id_type</span><span class="p">,</span> <span class="n">pattern</span> <span class="ow">in</span> <span class="n">patterns</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="n">matches</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="n">pattern</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">IGNORECASE</span><span class="p">)</span>
+            <span class="c1"># Convert to uppercase and remove duplicates</span>
+            <span class="n">identifiers</span><span class="p">[</span><span class="n">id_type</span><span class="p">]</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="nb">set</span><span class="p">([</span><span class="n">m</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span> <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="n">matches</span><span class="p">])))</span>
+
+        <span class="k">return</span> <span class="n">identifiers</span></div>
+
+
+<div class="viewcode-block" id="SRAweb.pmc_to_identifiers">
+<a class="viewcode-back" href="../../pysradb.html#pysradb.sraweb.SRAweb.pmc_to_identifiers">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">pmc_to_identifiers</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pmc_ids</span><span class="p">,</span> <span class="n">convert_missing</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Extract database identifiers from PMC articles</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        pmc_ids: list or str</span>
+<span class="sd">                PMC ID(s) (can be with or without &#39;PMC&#39; prefix)</span>
+<span class="sd">        convert_missing: bool</span>
+<span class="sd">                        If True, automatically convert GSE↔SRP when one is found but not the other</span>
+<span class="sd">                        Default: True</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        results_df: pandas.DataFrame</span>
+<span class="sd">                   DataFrame with PMC IDs and extracted identifiers</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">pmc_ids</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+            <span class="n">pmc_ids</span> <span class="o">=</span> <span class="p">[</span><span class="n">pmc_ids</span><span class="p">]</span>
+
+        <span class="n">results</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="k">for</span> <span class="n">pmc_id</span> <span class="ow">in</span> <span class="n">pmc_ids</span><span class="p">:</span>
+            <span class="c1"># Fetch full text</span>
+            <span class="n">fulltext</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fetch_pmc_fulltext</span><span class="p">(</span><span class="n">pmc_id</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="n">fulltext</span><span class="p">:</span>
+                <span class="c1"># Extract identifiers</span>
+                <span class="n">identifiers</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">extract_identifiers_from_text</span><span class="p">(</span><span class="n">fulltext</span><span class="p">)</span>
+
+                <span class="k">if</span> <span class="n">convert_missing</span><span class="p">:</span>
+                    <span class="c1"># If we found GSE IDs but no SRP IDs, convert GSE to SRP</span>
+                    <span class="k">if</span> <span class="n">identifiers</span><span class="p">[</span><span class="s2">&quot;gse&quot;</span><span class="p">]</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">identifiers</span><span class="p">[</span><span class="s2">&quot;srp&quot;</span><span class="p">]:</span>
+                        <span class="k">try</span><span class="p">:</span>
+                            <span class="k">for</span> <span class="n">gse_id</span> <span class="ow">in</span> <span class="n">identifiers</span><span class="p">[</span><span class="s2">&quot;gse&quot;</span><span class="p">]:</span>
+                                <span class="n">gse_srp_df</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">gse_to_srp</span><span class="p">(</span><span class="n">gse_id</span><span class="p">)</span>
+                                <span class="k">if</span> <span class="p">(</span>
+                                    <span class="ow">not</span> <span class="n">gse_srp_df</span><span class="o">.</span><span class="n">empty</span>
+                                    <span class="ow">and</span> <span class="s2">&quot;study_accession&quot;</span> <span class="ow">in</span> <span class="n">gse_srp_df</span><span class="o">.</span><span class="n">columns</span>
+                                <span class="p">):</span>
+                                    <span class="n">srp_values</span> <span class="o">=</span> <span class="p">(</span>
+                                        <span class="n">gse_srp_df</span><span class="p">[</span><span class="s2">&quot;study_accession&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">dropna</span><span class="p">()</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+                                    <span class="p">)</span>
+                                    <span class="n">identifiers</span><span class="p">[</span><span class="s2">&quot;srp&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span>
+                                        <span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">srp_values</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">pd</span><span class="o">.</span><span class="n">isna</span><span class="p">(</span><span class="n">x</span><span class="p">)]</span>
+                                    <span class="p">)</span>
+                            <span class="n">identifiers</span><span class="p">[</span><span class="s2">&quot;srp&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">identifiers</span><span class="p">[</span><span class="s2">&quot;srp&quot;</span><span class="p">])))</span>
+                            <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sleep_time</span><span class="p">)</span>
+                        <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+                            <span class="k">pass</span>
+
+                    <span class="c1"># If we found SRP IDs but no GSE IDs, convert SRP to GSE</span>
+                    <span class="k">elif</span> <span class="n">identifiers</span><span class="p">[</span><span class="s2">&quot;srp&quot;</span><span class="p">]</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">identifiers</span><span class="p">[</span><span class="s2">&quot;gse&quot;</span><span class="p">]:</span>
+                        <span class="k">try</span><span class="p">:</span>
+                            <span class="k">for</span> <span class="n">srp_id</span> <span class="ow">in</span> <span class="n">identifiers</span><span class="p">[</span><span class="s2">&quot;srp&quot;</span><span class="p">]:</span>
+                                <span class="n">srp_gse_df</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">srp_to_gse</span><span class="p">(</span><span class="n">srp_id</span><span class="p">)</span>
+                                <span class="k">if</span> <span class="p">(</span>
+                                    <span class="ow">not</span> <span class="n">srp_gse_df</span><span class="o">.</span><span class="n">empty</span>
+                                    <span class="ow">and</span> <span class="s2">&quot;study_alias&quot;</span> <span class="ow">in</span> <span class="n">srp_gse_df</span><span class="o">.</span><span class="n">columns</span>
+                                <span class="p">):</span>
+                                    <span class="n">gse_values</span> <span class="o">=</span> <span class="p">(</span>
+                                        <span class="n">srp_gse_df</span><span class="p">[</span><span class="s2">&quot;study_alias&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">dropna</span><span class="p">()</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+                                    <span class="p">)</span>
+                                    <span class="n">identifiers</span><span class="p">[</span><span class="s2">&quot;gse&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span>
+                                        <span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">gse_values</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">pd</span><span class="o">.</span><span class="n">isna</span><span class="p">(</span><span class="n">x</span><span class="p">)]</span>
+                                    <span class="p">)</span>
+                            <span class="n">identifiers</span><span class="p">[</span><span class="s2">&quot;gse&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span>
+                                <span class="nb">list</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">identifiers</span><span class="p">[</span><span class="s2">&quot;gse&quot;</span><span class="p">]))</span>
+                            <span class="p">)</span>  <span class="c1"># Remove duplicates</span>
+                            <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sleep_time</span><span class="p">)</span>
+                        <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+                            <span class="k">pass</span>  <span class="c1"># If conversion fails, just keep what we found</span>
+
+                <span class="n">results</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                    <span class="p">{</span>
+                        <span class="s2">&quot;pmc_id&quot;</span><span class="p">:</span> <span class="p">(</span>
+                            <span class="n">pmc_id</span> <span class="k">if</span> <span class="n">pmc_id</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;PMC&quot;</span><span class="p">)</span> <span class="k">else</span> <span class="sa">f</span><span class="s2">&quot;PMC</span><span class="si">{</span><span class="n">pmc_id</span><span class="si">}</span><span class="s2">&quot;</span>
+                        <span class="p">),</span>
+                        <span class="s2">&quot;gse_ids&quot;</span><span class="p">:</span> <span class="p">(</span>
+                            <span class="s2">&quot;,&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">identifiers</span><span class="p">[</span><span class="s2">&quot;gse&quot;</span><span class="p">])</span>
+                            <span class="k">if</span> <span class="n">identifiers</span><span class="p">[</span><span class="s2">&quot;gse&quot;</span><span class="p">]</span>
+                            <span class="k">else</span> <span class="n">pd</span><span class="o">.</span><span class="n">NA</span>
+                        <span class="p">),</span>
+                        <span class="s2">&quot;prjna_ids&quot;</span><span class="p">:</span> <span class="p">(</span>
+                            <span class="s2">&quot;,&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">identifiers</span><span class="p">[</span><span class="s2">&quot;prjna&quot;</span><span class="p">])</span>
+                            <span class="k">if</span> <span class="n">identifiers</span><span class="p">[</span><span class="s2">&quot;prjna&quot;</span><span class="p">]</span>
+                            <span class="k">else</span> <span class="n">pd</span><span class="o">.</span><span class="n">NA</span>
+                        <span class="p">),</span>
+                        <span class="s2">&quot;srp_ids&quot;</span><span class="p">:</span> <span class="p">(</span>
+                            <span class="s2">&quot;,&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">identifiers</span><span class="p">[</span><span class="s2">&quot;srp&quot;</span><span class="p">])</span>
+                            <span class="k">if</span> <span class="n">identifiers</span><span class="p">[</span><span class="s2">&quot;srp&quot;</span><span class="p">]</span>
+                            <span class="k">else</span> <span class="n">pd</span><span class="o">.</span><span class="n">NA</span>
+                        <span class="p">),</span>
+                        <span class="s2">&quot;srr_ids&quot;</span><span class="p">:</span> <span class="p">(</span>
+                            <span class="s2">&quot;,&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">identifiers</span><span class="p">[</span><span class="s2">&quot;srr&quot;</span><span class="p">])</span>
+                            <span class="k">if</span> <span class="n">identifiers</span><span class="p">[</span><span class="s2">&quot;srr&quot;</span><span class="p">]</span>
+                            <span class="k">else</span> <span class="n">pd</span><span class="o">.</span><span class="n">NA</span>
+                        <span class="p">),</span>
+                        <span class="s2">&quot;srx_ids&quot;</span><span class="p">:</span> <span class="p">(</span>
+                            <span class="s2">&quot;,&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">identifiers</span><span class="p">[</span><span class="s2">&quot;srx&quot;</span><span class="p">])</span>
+                            <span class="k">if</span> <span class="n">identifiers</span><span class="p">[</span><span class="s2">&quot;srx&quot;</span><span class="p">]</span>
+                            <span class="k">else</span> <span class="n">pd</span><span class="o">.</span><span class="n">NA</span>
+                        <span class="p">),</span>
+                        <span class="s2">&quot;srs_ids&quot;</span><span class="p">:</span> <span class="p">(</span>
+                            <span class="s2">&quot;,&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">identifiers</span><span class="p">[</span><span class="s2">&quot;srs&quot;</span><span class="p">])</span>
+                            <span class="k">if</span> <span class="n">identifiers</span><span class="p">[</span><span class="s2">&quot;srs&quot;</span><span class="p">]</span>
+                            <span class="k">else</span> <span class="n">pd</span><span class="o">.</span><span class="n">NA</span>
+                        <span class="p">),</span>
+                    <span class="p">}</span>
+                <span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">results</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                    <span class="p">{</span>
+                        <span class="s2">&quot;pmc_id&quot;</span><span class="p">:</span> <span class="p">(</span>
+                            <span class="n">pmc_id</span> <span class="k">if</span> <span class="n">pmc_id</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;PMC&quot;</span><span class="p">)</span> <span class="k">else</span> <span class="sa">f</span><span class="s2">&quot;PMC</span><span class="si">{</span><span class="n">pmc_id</span><span class="si">}</span><span class="s2">&quot;</span>
+                        <span class="p">),</span>
+                        <span class="s2">&quot;gse_ids&quot;</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">NA</span><span class="p">,</span>
+                        <span class="s2">&quot;prjna_ids&quot;</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">NA</span><span class="p">,</span>
+                        <span class="s2">&quot;srp_ids&quot;</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">NA</span><span class="p">,</span>
+                        <span class="s2">&quot;srr_ids&quot;</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">NA</span><span class="p">,</span>
+                        <span class="s2">&quot;srx_ids&quot;</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">NA</span><span class="p">,</span>
+                        <span class="s2">&quot;srs_ids&quot;</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">NA</span><span class="p">,</span>
+                    <span class="p">}</span>
+                <span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">results</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="SRAweb.pmid_to_identifiers">
+<a class="viewcode-back" href="../../pysradb.html#pysradb.sraweb.SRAweb.pmid_to_identifiers">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">pmid_to_identifiers</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pmids</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Extract database identifiers from PubMed articles via PMC</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        pmids: list or str</span>
+<span class="sd">              PMID(s)</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        results_df: pandas.DataFrame</span>
+<span class="sd">                   DataFrame with PMIDs, PMC IDs, and extracted identifiers</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">pmids</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+            <span class="n">pmids</span> <span class="o">=</span> <span class="p">[</span><span class="n">pmids</span><span class="p">]</span>
+
+        <span class="c1"># First convert PMIDs to PMC IDs</span>
+        <span class="n">pmid_pmc_mapping</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">pmid_to_pmc</span><span class="p">(</span><span class="n">pmids</span><span class="p">)</span>
+
+        <span class="n">results</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="k">for</span> <span class="n">pmid</span><span class="p">,</span> <span class="n">pmc_id</span> <span class="ow">in</span> <span class="n">pmid_pmc_mapping</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="k">if</span> <span class="n">pmc_id</span><span class="p">:</span>
+                <span class="c1"># Get identifiers from PMC</span>
+                <span class="n">pmc_results</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">pmc_to_identifiers</span><span class="p">([</span><span class="n">pmc_id</span><span class="p">])</span>
+
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">pmc_results</span><span class="o">.</span><span class="n">empty</span><span class="p">:</span>
+                    <span class="n">result</span> <span class="o">=</span> <span class="n">pmc_results</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">to_dict</span><span class="p">()</span>
+                    <span class="n">result</span><span class="p">[</span><span class="s2">&quot;pmid&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pmid</span>
+                    <span class="c1"># Reorder columns to have pmid first</span>
+                    <span class="n">result</span> <span class="o">=</span> <span class="p">{</span>
+                        <span class="s2">&quot;pmid&quot;</span><span class="p">:</span> <span class="n">result</span><span class="p">[</span><span class="s2">&quot;pmid&quot;</span><span class="p">],</span>
+                        <span class="s2">&quot;pmc_id&quot;</span><span class="p">:</span> <span class="n">result</span><span class="p">[</span><span class="s2">&quot;pmc_id&quot;</span><span class="p">],</span>
+                        <span class="s2">&quot;gse_ids&quot;</span><span class="p">:</span> <span class="n">result</span><span class="p">[</span><span class="s2">&quot;gse_ids&quot;</span><span class="p">],</span>
+                        <span class="s2">&quot;prjna_ids&quot;</span><span class="p">:</span> <span class="n">result</span><span class="p">[</span><span class="s2">&quot;prjna_ids&quot;</span><span class="p">],</span>
+                        <span class="s2">&quot;srp_ids&quot;</span><span class="p">:</span> <span class="n">result</span><span class="p">[</span><span class="s2">&quot;srp_ids&quot;</span><span class="p">],</span>
+                        <span class="s2">&quot;srr_ids&quot;</span><span class="p">:</span> <span class="n">result</span><span class="p">[</span><span class="s2">&quot;srr_ids&quot;</span><span class="p">],</span>
+                        <span class="s2">&quot;srx_ids&quot;</span><span class="p">:</span> <span class="n">result</span><span class="p">[</span><span class="s2">&quot;srx_ids&quot;</span><span class="p">],</span>
+                        <span class="s2">&quot;srs_ids&quot;</span><span class="p">:</span> <span class="n">result</span><span class="p">[</span><span class="s2">&quot;srs_ids&quot;</span><span class="p">],</span>
+                    <span class="p">}</span>
+                    <span class="n">results</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">results</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                        <span class="p">{</span>
+                            <span class="s2">&quot;pmid&quot;</span><span class="p">:</span> <span class="n">pmid</span><span class="p">,</span>
+                            <span class="s2">&quot;pmc_id&quot;</span><span class="p">:</span> <span class="n">pmc_id</span><span class="p">,</span>
+                            <span class="s2">&quot;gse_ids&quot;</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">NA</span><span class="p">,</span>
+                            <span class="s2">&quot;prjna_ids&quot;</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">NA</span><span class="p">,</span>
+                            <span class="s2">&quot;srp_ids&quot;</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">NA</span><span class="p">,</span>
+                            <span class="s2">&quot;srr_ids&quot;</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">NA</span><span class="p">,</span>
+                            <span class="s2">&quot;srx_ids&quot;</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">NA</span><span class="p">,</span>
+                            <span class="s2">&quot;srs_ids&quot;</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">NA</span><span class="p">,</span>
+                        <span class="p">}</span>
+                    <span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="c1"># No PMC ID available</span>
+                <span class="n">results</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                    <span class="p">{</span>
+                        <span class="s2">&quot;pmid&quot;</span><span class="p">:</span> <span class="n">pmid</span><span class="p">,</span>
+                        <span class="s2">&quot;pmc_id&quot;</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">NA</span><span class="p">,</span>
+                        <span class="s2">&quot;gse_ids&quot;</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">NA</span><span class="p">,</span>
+                        <span class="s2">&quot;prjna_ids&quot;</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">NA</span><span class="p">,</span>
+                        <span class="s2">&quot;srp_ids&quot;</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">NA</span><span class="p">,</span>
+                        <span class="s2">&quot;srr_ids&quot;</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">NA</span><span class="p">,</span>
+                        <span class="s2">&quot;srx_ids&quot;</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">NA</span><span class="p">,</span>
+                        <span class="s2">&quot;srs_ids&quot;</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">NA</span><span class="p">,</span>
+                    <span class="p">}</span>
+                <span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">results</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="SRAweb.pmid_to_gse">
+<a class="viewcode-back" href="../../pysradb.html#pysradb.sraweb.SRAweb.pmid_to_gse">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">pmid_to_gse</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pmids</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get GSE identifiers from PMID(s)</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        pmids: list or str</span>
+<span class="sd">              PMID(s)</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        results_df: pandas.DataFrame</span>
+<span class="sd">                   DataFrame with PMIDs and GSE identifiers</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">full_results</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">pmid_to_identifiers</span><span class="p">(</span><span class="n">pmids</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">full_results</span><span class="p">[[</span><span class="s2">&quot;pmid&quot;</span><span class="p">,</span> <span class="s2">&quot;pmc_id&quot;</span><span class="p">,</span> <span class="s2">&quot;gse_ids&quot;</span><span class="p">]]</span></div>
+
+
+<div class="viewcode-block" id="SRAweb.pmid_to_srp">
+<a class="viewcode-back" href="../../pysradb.html#pysradb.sraweb.SRAweb.pmid_to_srp">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">pmid_to_srp</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pmids</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get SRP identifiers from PMID(s)</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        pmids: list or str</span>
+<span class="sd">              PMID(s)</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        results_df: pandas.DataFrame</span>
+<span class="sd">                   DataFrame with PMIDs and SRP identifiers</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">full_results</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">pmid_to_identifiers</span><span class="p">(</span><span class="n">pmids</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">full_results</span><span class="p">[[</span><span class="s2">&quot;pmid&quot;</span><span class="p">,</span> <span class="s2">&quot;pmc_id&quot;</span><span class="p">,</span> <span class="s2">&quot;srp_ids&quot;</span><span class="p">]]</span></div>
+
+
+<div class="viewcode-block" id="SRAweb.doi_to_identifiers">
+<a class="viewcode-back" href="../../pysradb.html#pysradb.sraweb.SRAweb.doi_to_identifiers">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">doi_to_identifiers</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dois</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Extract database identifiers from articles via DOI</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        dois: list or str</span>
+<span class="sd">             DOI(s)</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        results_df: pandas.DataFrame</span>
+<span class="sd">                   DataFrame with DOIs, PMIDs, PMC IDs, and extracted identifiers</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">dois</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+            <span class="n">dois</span> <span class="o">=</span> <span class="p">[</span><span class="n">dois</span><span class="p">]</span>
+
+        <span class="n">doi_pmid_mapping</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">doi_to_pmid</span><span class="p">(</span><span class="n">dois</span><span class="p">)</span>
+
+        <span class="n">results</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="k">for</span> <span class="n">doi</span><span class="p">,</span> <span class="n">pmid</span> <span class="ow">in</span> <span class="n">doi_pmid_mapping</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="k">if</span> <span class="n">pmid</span><span class="p">:</span>
+                <span class="n">pmid_results</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">pmid_to_identifiers</span><span class="p">([</span><span class="n">pmid</span><span class="p">])</span>
+
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">pmid_results</span><span class="o">.</span><span class="n">empty</span><span class="p">:</span>
+                    <span class="n">result</span> <span class="o">=</span> <span class="n">pmid_results</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">to_dict</span><span class="p">()</span>
+                    <span class="n">result</span><span class="p">[</span><span class="s2">&quot;doi&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">doi</span>
+                    <span class="n">result</span> <span class="o">=</span> <span class="p">{</span>
+                        <span class="s2">&quot;doi&quot;</span><span class="p">:</span> <span class="n">result</span><span class="p">[</span><span class="s2">&quot;doi&quot;</span><span class="p">],</span>
+                        <span class="s2">&quot;pmid&quot;</span><span class="p">:</span> <span class="n">result</span><span class="p">[</span><span class="s2">&quot;pmid&quot;</span><span class="p">],</span>
+                        <span class="s2">&quot;pmc_id&quot;</span><span class="p">:</span> <span class="n">result</span><span class="p">[</span><span class="s2">&quot;pmc_id&quot;</span><span class="p">],</span>
+                        <span class="s2">&quot;gse_ids&quot;</span><span class="p">:</span> <span class="n">result</span><span class="p">[</span><span class="s2">&quot;gse_ids&quot;</span><span class="p">],</span>
+                        <span class="s2">&quot;prjna_ids&quot;</span><span class="p">:</span> <span class="n">result</span><span class="p">[</span><span class="s2">&quot;prjna_ids&quot;</span><span class="p">],</span>
+                        <span class="s2">&quot;srp_ids&quot;</span><span class="p">:</span> <span class="n">result</span><span class="p">[</span><span class="s2">&quot;srp_ids&quot;</span><span class="p">],</span>
+                        <span class="s2">&quot;srr_ids&quot;</span><span class="p">:</span> <span class="n">result</span><span class="p">[</span><span class="s2">&quot;srr_ids&quot;</span><span class="p">],</span>
+                        <span class="s2">&quot;srx_ids&quot;</span><span class="p">:</span> <span class="n">result</span><span class="p">[</span><span class="s2">&quot;srx_ids&quot;</span><span class="p">],</span>
+                        <span class="s2">&quot;srs_ids&quot;</span><span class="p">:</span> <span class="n">result</span><span class="p">[</span><span class="s2">&quot;srs_ids&quot;</span><span class="p">],</span>
+                    <span class="p">}</span>
+                    <span class="n">results</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">results</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                        <span class="p">{</span>
+                            <span class="s2">&quot;doi&quot;</span><span class="p">:</span> <span class="n">doi</span><span class="p">,</span>
+                            <span class="s2">&quot;pmid&quot;</span><span class="p">:</span> <span class="n">pmid</span><span class="p">,</span>
+                            <span class="s2">&quot;pmc_id&quot;</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">NA</span><span class="p">,</span>
+                            <span class="s2">&quot;gse_ids&quot;</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">NA</span><span class="p">,</span>
+                            <span class="s2">&quot;prjna_ids&quot;</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">NA</span><span class="p">,</span>
+                            <span class="s2">&quot;srp_ids&quot;</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">NA</span><span class="p">,</span>
+                            <span class="s2">&quot;srr_ids&quot;</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">NA</span><span class="p">,</span>
+                            <span class="s2">&quot;srx_ids&quot;</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">NA</span><span class="p">,</span>
+                            <span class="s2">&quot;srs_ids&quot;</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">NA</span><span class="p">,</span>
+                        <span class="p">}</span>
+                    <span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="c1"># No PMID available</span>
+                <span class="n">results</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                    <span class="p">{</span>
+                        <span class="s2">&quot;doi&quot;</span><span class="p">:</span> <span class="n">doi</span><span class="p">,</span>
+                        <span class="s2">&quot;pmid&quot;</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">NA</span><span class="p">,</span>
+                        <span class="s2">&quot;pmc_id&quot;</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">NA</span><span class="p">,</span>
+                        <span class="s2">&quot;gse_ids&quot;</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">NA</span><span class="p">,</span>
+                        <span class="s2">&quot;prjna_ids&quot;</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">NA</span><span class="p">,</span>
+                        <span class="s2">&quot;srp_ids&quot;</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">NA</span><span class="p">,</span>
+                        <span class="s2">&quot;srr_ids&quot;</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">NA</span><span class="p">,</span>
+                        <span class="s2">&quot;srx_ids&quot;</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">NA</span><span class="p">,</span>
+                        <span class="s2">&quot;srs_ids&quot;</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">NA</span><span class="p">,</span>
+                    <span class="p">}</span>
+                <span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">results</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="SRAweb.doi_to_gse">
+<a class="viewcode-back" href="../../pysradb.html#pysradb.sraweb.SRAweb.doi_to_gse">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">doi_to_gse</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dois</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get GSE identifiers from DOI(s)</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        dois: list or str</span>
+<span class="sd">             DOI(s)</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        results_df: pandas.DataFrame</span>
+<span class="sd">                   DataFrame with DOIs and GSE identifiers</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">full_results</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">doi_to_identifiers</span><span class="p">(</span><span class="n">dois</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">full_results</span><span class="p">[[</span><span class="s2">&quot;doi&quot;</span><span class="p">,</span> <span class="s2">&quot;pmid&quot;</span><span class="p">,</span> <span class="s2">&quot;pmc_id&quot;</span><span class="p">,</span> <span class="s2">&quot;gse_ids&quot;</span><span class="p">]]</span></div>
+
+
+<div class="viewcode-block" id="SRAweb.doi_to_srp">
+<a class="viewcode-back" href="../../pysradb.html#pysradb.sraweb.SRAweb.doi_to_srp">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">doi_to_srp</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dois</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get SRP identifiers from DOI(s)</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        dois: list or str</span>
+<span class="sd">             DOI(s)</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        results_df: pandas.DataFrame</span>
+<span class="sd">                   DataFrame with DOIs and SRP identifiers</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">full_results</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">doi_to_identifiers</span><span class="p">(</span><span class="n">dois</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">full_results</span><span class="p">[[</span><span class="s2">&quot;doi&quot;</span><span class="p">,</span> <span class="s2">&quot;pmid&quot;</span><span class="p">,</span> <span class="s2">&quot;pmc_id&quot;</span><span class="p">,</span> <span class="s2">&quot;srp_ids&quot;</span><span class="p">]]</span></div>
 
 
 <div class="viewcode-block" id="SRAweb.close">
