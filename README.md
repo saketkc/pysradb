@@ -254,8 +254,8 @@ Extract database identifiers (GSE, PRJNA, SRP, etc.) from PubMed Central article
 
 ### Downloading an entire SRA/ENA project (multithreaded)
 
-`pysradb` makes it super easy to download datasets from SRA parallely:
-Using 8 threads to download:
+-`pysradb` makes it super easy to download datasets from SRA in parallel:
+-Using 8 threads to download:
 
     $ pysradb download -y -t 8 --out-dir ./pysradb_downloads -p SRP063852
 
