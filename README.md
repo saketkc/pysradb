@@ -90,6 +90,7 @@ The following notebooks document all the possible features of
     Client](https://colab.research.google.com/github/saketkc/pysradb/blob/master/notebooks/08.pysradb_ascp_multithreaded.ipynb)
 9.  [Searching
     SRA/GEO/ENA](https://colab.research.google.com/github/saketkc/pysradb/blob/master/notebooks/09.Query_Search.ipynb)
+10. [Extracting identifiers from PMC/DOI (NEW!)](https://colab.research.google.com/github/saketkc/pysradb/blob/master/notebooks/10.PMC_DOI_Identifiers.ipynb)
 
 ## Installation
 
@@ -208,6 +209,45 @@ conda create -c bioconda -n pysradb PYTHON=3.13 pysradb
     gse_accession pmid
     GSE253406     39528918
 
+### Extracting identifiers from PMC/DOI (NEW!)
+
+Extract database identifiers (GSE, PRJNA, SRP, etc.) from PubMed Central articles or DOIs. This feature automatically converts between GSE and SRP identifiers even when papers only mention one type!
+
+#### Get all identifiers from a PMID
+
+    $ pysradb pmid-to-identifiers 39528918
+
+    pmid      pmc_id       gse_ids     prjna_ids    srp_ids
+    39528918  PMC10802650  GSE253406   PRJNA1058002 SRP484103
+
+#### Get only GSE or SRP from PMID
+
+    $ pysradb pmid-to-gse 39528918
+
+    pmid      pmc_id       gse_ids
+    39528918  PMC10802650  GSE253406
+
+    $ pysradb pmid-to-srp 39528918
+
+    pmid      pmc_id       srp_ids
+    39528918  PMC10802650  SRP484103
+
+
+#### Extract from DOI
+
+    $ pysradb doi-to-identifiers 10.12688/f1000research.18676.1
+
+    doi                                 pmid      pmc_id      gse_ids  srp_ids
+    10.12688/f1000research.18676.1      30873266  PMC6411813  GSE...   SRP...
+
+#### Extract from PMC ID
+
+    $ pysradb pmc-to-identifiers PMC10802650
+
+    pmc_id       gse_ids     prjna_ids    srp_ids
+    PMC10802650  GSE253406   PRJNA1058002 SRP484103
+
+
 ### Downloading supplementary files from GEO
 
     $ pysradb download -g GSE161707
@@ -221,26 +261,6 @@ Using 8 threads to download:
 
 Downloads are organized by `SRP/SRX/SRR` mimicking the hierarchy of SRA
 projects.
-
-### Downloading only certain samples of interest
-
-    $ pysradb metadata SRP000941 --detailed | grep 'study\|RNA-Seq' | pysradb download
-
-This will download all `RNA-seq` samples coming from this project.
-
-### Ultrafast fastq downloads
-
-With
-[aspera-client](https://downloads.asperasoft.com/en/downloads/8?list)
-installed, [pysradb]{.title-ref} can perform ultra fast downloads:
-
-To download all original fastqs with [aspera-client]{.title-ref}
-installed utilizing 8 threads:
-
-    $ pysradb download -t 8 --use_ascp -p SRP002605
-
-Refer to the notebook for [(shallow) time
-benchmarks](https://colab.research.google.com/github/saketkc/pysradb/blob/master/notebooks/08.pysradb_ascp_multithreaded.ipynb).
 
 ## Publication
 

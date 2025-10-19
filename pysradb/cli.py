@@ -545,6 +545,55 @@ def gse_to_pmid(gse_ids, saveto):
     sradb.close()
 
 
+def pmid_to_gse(pmid_ids, saveto):
+    sradb = SRAweb()
+    df = sradb.pmid_to_gse(pmid_ids)
+    _print_save_df(df, saveto)
+    sradb.close()
+
+
+def pmid_to_srp(pmid_ids, saveto):
+    sradb = SRAweb()
+    df = sradb.pmid_to_srp(pmid_ids)
+    _print_save_df(df, saveto)
+    sradb.close()
+
+
+def pmc_to_identifiers(pmc_ids, saveto):
+    sradb = SRAweb()
+    df = sradb.pmc_to_identifiers(pmc_ids)
+    _print_save_df(df, saveto)
+    sradb.close()
+
+
+def pmid_to_identifiers(pmid_ids, saveto):
+    sradb = SRAweb()
+    df = sradb.pmid_to_identifiers(pmid_ids)
+    _print_save_df(df, saveto)
+    sradb.close()
+
+
+def doi_to_gse(doi_ids, saveto):
+    sradb = SRAweb()
+    df = sradb.doi_to_gse(doi_ids)
+    _print_save_df(df, saveto)
+    sradb.close()
+
+
+def doi_to_srp(doi_ids, saveto):
+    sradb = SRAweb()
+    df = sradb.doi_to_srp(doi_ids)
+    _print_save_df(df, saveto)
+    sradb.close()
+
+
+def doi_to_identifiers(doi_ids, saveto):
+    sradb = SRAweb()
+    df = sradb.doi_to_identifiers(doi_ids)
+    _print_save_df(df, saveto)
+    sradb.close()
+
+
 #########################################################################
 
 
@@ -1201,6 +1250,58 @@ def parse_args(args=None):
     subparser.add_argument("gse_ids", nargs="+", help="GSE accession(s)")
     subparser.set_defaults(func=gse_to_pmid)
 
+    # pysradb pmid-to-gse
+    subparser = subparsers.add_parser(
+        "pmid-to-gse", help="Get GSE accessions from PMIDs"
+    )
+    subparser.add_argument("--saveto", help="Save output to file")
+    subparser.add_argument("pmid_ids", nargs="+", help="PMID(s)")
+    subparser.set_defaults(func=pmid_to_gse)
+
+    # pysradb pmid-to-srp
+    subparser = subparsers.add_parser(
+        "pmid-to-srp", help="Get SRP accessions from PMIDs"
+    )
+    subparser.add_argument("--saveto", help="Save output to file")
+    subparser.add_argument("pmid_ids", nargs="+", help="PMID(s)")
+    subparser.set_defaults(func=pmid_to_srp)
+
+    # pysradb pmc-to-identifiers
+    subparser = subparsers.add_parser(
+        "pmc-to-identifiers", help="Extract database identifiers from PMC articles"
+    )
+    subparser.add_argument("--saveto", help="Save output to file")
+    subparser.add_argument("pmc_ids", nargs="+", help="PMC ID(s)")
+    subparser.set_defaults(func=pmc_to_identifiers)
+
+    # pysradb pmid-to-identifiers
+    subparser = subparsers.add_parser(
+        "pmid-to-identifiers", help="Extract database identifiers from PubMed articles"
+    )
+    subparser.add_argument("--saveto", help="Save output to file")
+    subparser.add_argument("pmid_ids", nargs="+", help="PMID(s)")
+    subparser.set_defaults(func=pmid_to_identifiers)
+
+    # pysradb doi-to-gse
+    subparser = subparsers.add_parser("doi-to-gse", help="Get GSE accessions from DOIs")
+    subparser.add_argument("--saveto", help="Save output to file")
+    subparser.add_argument("doi_ids", nargs="+", help="DOI(s)")
+    subparser.set_defaults(func=doi_to_gse)
+
+    # pysradb doi-to-srp
+    subparser = subparsers.add_parser("doi-to-srp", help="Get SRP accessions from DOIs")
+    subparser.add_argument("--saveto", help="Save output to file")
+    subparser.add_argument("doi_ids", nargs="+", help="DOI(s)")
+    subparser.set_defaults(func=doi_to_srp)
+
+    # pysradb doi-to-identifiers
+    subparser = subparsers.add_parser(
+        "doi-to-identifiers", help="Extract database identifiers from articles via DOI"
+    )
+    subparser.add_argument("--saveto", help="Save output to file")
+    subparser.add_argument("doi_ids", nargs="+", help="DOI(s)")
+    subparser.set_defaults(func=doi_to_identifiers)
+
     args = parser.parse_args(args=None if sys.argv[1:] else ["--help"])
     if args.command == "metadata":
         metadata(
@@ -1278,6 +1379,20 @@ def parse_args(args=None):
         srp_to_pmid(args.srp_ids, args.saveto)
     elif args.command == "gse-to-pmid":
         gse_to_pmid(args.gse_ids, args.saveto)
+    elif args.command == "pmid-to-gse":
+        pmid_to_gse(args.pmid_ids, args.saveto)
+    elif args.command == "pmid-to-srp":
+        pmid_to_srp(args.pmid_ids, args.saveto)
+    elif args.command == "pmc-to-identifiers":
+        pmc_to_identifiers(args.pmc_ids, args.saveto)
+    elif args.command == "pmid-to-identifiers":
+        pmid_to_identifiers(args.pmid_ids, args.saveto)
+    elif args.command == "doi-to-gse":
+        doi_to_gse(args.doi_ids, args.saveto)
+    elif args.command == "doi-to-srp":
+        doi_to_srp(args.doi_ids, args.saveto)
+    elif args.command == "doi-to-identifiers":
+        doi_to_identifiers(args.doi_ids, args.saveto)
 
 
 if __name__ == "__main__":
