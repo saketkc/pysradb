@@ -384,3 +384,115 @@ def test_gse_to_pmid_multiple(sraweb_connection):
     assert len(df) >= 2  # Should have one row per input GSE
     assert "gse_accession" in df.columns
     assert "pmid" in df.columns
+
+
+def test_pmid_to_pmc(sraweb_connection):
+    """Test PMID to PMC conversion"""
+    mapping = sraweb_connection.pmid_to_pmc("27373336")
+    assert isinstance(mapping, dict)
+    assert "27373336" in mapping
+
+
+def test_pmid_to_pmc_multiple(sraweb_connection):
+    """Test PMID to PMC with multiple PMIDs"""
+    mapping = sraweb_connection.pmid_to_pmc(["27373336", "39528918"])
+    assert isinstance(mapping, dict)
+    assert len(mapping) == 2
+
+
+def test_extract_identifiers_from_text(sraweb_connection):
+    """Test extraction of identifiers from text"""
+    test_text = "This study uses data from GSE12345 and SRP067890. The BioProject is PRJNA123456 with samples SRR1234567."
+    identifiers = sraweb_connection.extract_identifiers_from_text(test_text)
+    assert isinstance(identifiers, dict)
+    assert "GSE12345" in identifiers["gse"]
+    assert "SRP067890" in identifiers["srp"]
+    assert "PRJNA123456" in identifiers["prjna"]
+    assert "SRR1234567" in identifiers["srr"]
+
+
+@pytest.mark.slow
+def test_pmc_to_identifiers(sraweb_connection):
+    """Test PMC to identifiers extraction - requires PMC full text access"""
+    # Using a known PMC article that mentions GEO/SRA identifiers
+    df = sraweb_connection.pmc_to_identifiers("PMC5316890")
+    assert isinstance(df, pd.DataFrame)
+    assert not df.empty
+    required_columns = {"pmc_id", "gse_ids", "srp_ids", "prjna_ids"}
+    assert required_columns.issubset(df.columns)
+
+
+@pytest.mark.slow
+def test_pmid_to_identifiers(sraweb_connection):
+    """Test PMID to identifiers extraction"""
+    df = sraweb_connection.pmid_to_identifiers("27373336")
+    assert isinstance(df, pd.DataFrame)
+    assert not df.empty
+    required_columns = {"pmid", "pmc_id", "gse_ids", "srp_ids", "prjna_ids"}
+    assert required_columns.issubset(df.columns)
+
+
+@pytest.mark.slow
+def test_pmid_to_gse(sraweb_connection):
+    """Test PMID to GSE extraction"""
+    df = sraweb_connection.pmid_to_gse("27373336")
+    assert isinstance(df, pd.DataFrame)
+    assert not df.empty
+    required_columns = {"pmid", "pmc_id", "gse_ids"}
+    assert required_columns.issubset(df.columns)
+
+
+@pytest.mark.slow
+def test_pmid_to_srp(sraweb_connection):
+    """Test PMID to SRP extraction"""
+    df = sraweb_connection.pmid_to_srp("27373336")
+    assert isinstance(df, pd.DataFrame)
+    assert not df.empty
+    required_columns = {"pmid", "pmc_id", "srp_ids"}
+    assert required_columns.issubset(df.columns)
+
+
+def test_doi_to_pmid(sraweb_connection):
+    """Test DOI to PMID conversion"""
+    mapping = sraweb_connection.doi_to_pmid("10.12688/f1000research.18676.1")
+    assert isinstance(mapping, dict)
+    assert "10.12688/f1000research.18676.1" in mapping
+
+
+def test_doi_to_pmid_multiple(sraweb_connection):
+    """Test DOI to PMID with multiple DOIs"""
+    mapping = sraweb_connection.doi_to_pmid(
+        ["10.12688/f1000research.18676.1", "10.1186/s13059-016-1070-5"]
+    )
+    assert isinstance(mapping, dict)
+    assert len(mapping) == 2
+
+
+@pytest.mark.slow
+def test_doi_to_identifiers(sraweb_connection):
+    """Test DOI to identifiers extraction"""
+    df = sraweb_connection.doi_to_identifiers("10.12688/f1000research.18676.1")
+    assert isinstance(df, pd.DataFrame)
+    assert not df.empty
+    required_columns = {"doi", "pmid", "pmc_id", "gse_ids", "srp_ids", "prjna_ids"}
+    assert required_columns.issubset(df.columns)
+
+
+@pytest.mark.slow
+def test_doi_to_gse(sraweb_connection):
+    """Test DOI to GSE extraction"""
+    df = sraweb_connection.doi_to_gse("10.12688/f1000research.18676.1")
+    assert isinstance(df, pd.DataFrame)
+    assert not df.empty
+    required_columns = {"doi", "pmid", "pmc_id", "gse_ids"}
+    assert required_columns.issubset(df.columns)
+
+
+@pytest.mark.slow
+def test_doi_to_srp(sraweb_connection):
+    """Test DOI to SRP extraction"""
+    df = sraweb_connection.doi_to_srp("10.12688/f1000research.18676.1")
+    assert isinstance(df, pd.DataFrame)
+    assert not df.empty
+    required_columns = {"doi", "pmid", "pmc_id", "srp_ids"}
+    assert required_columns.issubset(df.columns)
