@@ -1737,7 +1737,9 @@ class SRAweb(SRAdb):
                 warnings.warn(f"Network error while getting PMID for DOI {doi}: {e}")
                 doi_pmid_mapping[doi] = None
             except ValueError as e:
-                warnings.warn(f"Value error while processing response for DOI {doi}: {e}")
+                warnings.warn(
+                    f"Value error while processing response for DOI {doi}: {e}"
+                )
                 doi_pmid_mapping[doi] = None
 
         return doi_pmid_mapping
