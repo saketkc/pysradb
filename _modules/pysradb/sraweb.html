@@ -2548,6 +2548,31 @@
                         <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
                             <span class="k">pass</span>  <span class="c1"># If conversion fails, just keep what we found</span>
 
+                <span class="c1"># Extract PRJNA from SRP metadata if we have SRP IDs</span>
+                <span class="k">if</span> <span class="n">identifiers</span><span class="p">[</span><span class="s2">&quot;srp&quot;</span><span class="p">]</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">identifiers</span><span class="p">[</span><span class="s2">&quot;prjna&quot;</span><span class="p">]:</span>
+                    <span class="k">try</span><span class="p">:</span>
+                        <span class="k">for</span> <span class="n">srp_id</span> <span class="ow">in</span> <span class="n">identifiers</span><span class="p">[</span><span class="s2">&quot;srp&quot;</span><span class="p">]:</span>
+                            <span class="n">srp_metadata</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sra_metadata</span><span class="p">(</span><span class="n">srp_id</span><span class="p">)</span>
+                            <span class="k">if</span> <span class="n">srp_metadata</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">srp_metadata</span><span class="o">.</span><span class="n">empty</span><span class="p">:</span>
+                                <span class="k">if</span> <span class="s2">&quot;bioproject&quot;</span> <span class="ow">in</span> <span class="n">srp_metadata</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
+                                    <span class="n">bioproject_values</span> <span class="o">=</span> <span class="p">(</span>
+                                        <span class="n">srp_metadata</span><span class="p">[</span><span class="s2">&quot;bioproject&quot;</span><span class="p">]</span>
+                                        <span class="o">.</span><span class="n">dropna</span><span class="p">()</span>
+                                        <span class="o">.</span><span class="n">unique</span><span class="p">()</span>
+                                        <span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+                                    <span class="p">)</span>
+                                    <span class="n">identifiers</span><span class="p">[</span><span class="s2">&quot;prjna&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span>
+                                        <span class="p">[</span>
+                                            <span class="nb">str</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+                                            <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">bioproject_values</span>
+                                            <span class="k">if</span> <span class="ow">not</span> <span class="n">pd</span><span class="o">.</span><span class="n">isna</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+                                        <span class="p">]</span>
+                                    <span class="p">)</span>
+                        <span class="n">identifiers</span><span class="p">[</span><span class="s2">&quot;prjna&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">identifiers</span><span class="p">[</span><span class="s2">&quot;prjna&quot;</span><span class="p">])))</span>
+                        <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sleep_time</span><span class="p">)</span>
+                    <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+                        <span class="k">pass</span>
+
                 <span class="n">results</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
                     <span class="p">{</span>
                         <span class="s2">&quot;pmc_id&quot;</span><span class="p">:</span> <span class="p">(</span>
