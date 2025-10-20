@@ -2,7 +2,7 @@
 
 # 2.5.1 (2025-10-29)
 
-- Add prjna support in doi-to-identifiers 
+- Add prjna support in doi-to-identifiers [#249](https://github.com/saketkc/pysradb/pull/249) 
 
 # 2.5.0 (2025-10-19)
 
