@@ -214,7 +214,7 @@ conda create -c bioconda -n pysradb PYTHON=3.13 pysradb
     gse_accession pmid
     GSE253406     39528918
 
-### Extracting identifiers from PMC/DOI (NEW!)
+### Extracting identifiers from PMC/DOI 
 
 Extract database identifiers (GSE, PRJNA, SRP, etc.) from PubMed Central articles or DOIs. This feature automatically converts between GSE and SRP identifiers even when papers only mention one type!
 
