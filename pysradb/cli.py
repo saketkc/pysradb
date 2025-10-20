@@ -39,10 +39,18 @@ class ArgParser(argparse.ArgumentParser):
 
 
 def pretty_print_df(df, include_header=True):
+    """Pretty print"""
+
+    def format_value(v):
+        """Convert value to string, handling None and pd.NA"""
+        if v is None or pd.isna(v):
+            return "-"
+        return str(v)
+
     if include_header:
         print("\t".join(map(str, list(df.columns))))
     for index, row in df.iterrows():
-        print("\t".join(map(str, row.tolist())))
+        print("\t".join(map(format_value, row.tolist())))
 
 
 def _print_save_df(df, saveto=None):

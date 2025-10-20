@@ -1938,6 +1938,31 @@ class SRAweb(SRAdb):
                         except Exception:
                             pass  # If conversion fails, just keep what we found
 
+                # Extract PRJNA from SRP metadata if we have SRP IDs
+                if identifiers["srp"] and not identifiers["prjna"]:
+                    try:
+                        for srp_id in identifiers["srp"]:
+                            srp_metadata = self.sra_metadata(srp_id)
+                            if srp_metadata is not None and not srp_metadata.empty:
+                                if "bioproject" in srp_metadata.columns:
+                                    bioproject_values = (
+                                        srp_metadata["bioproject"]
+                                        .dropna()
+                                        .unique()
+                                        .tolist()
+                                    )
+                                    identifiers["prjna"].extend(
+                                        [
+                                            str(x)
+                                            for x in bioproject_values
+                                            if not pd.isna(x)
+                                        ]
+                                    )
+                        identifiers["prjna"] = sorted(list(set(identifiers["prjna"])))
+                        time.sleep(self.sleep_time)
+                    except Exception:
+                        pass
+
                 results.append(
                     {
                         "pmc_id": (
