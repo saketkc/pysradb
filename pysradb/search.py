@@ -10,7 +10,7 @@ from json import JSONDecodeError
 
 import pandas as pd
 import requests
-from tqdm import tqdm
+from tqdm.autonotebook import tqdm
 
 from .exceptions import IncorrectFieldException, MissingQueryException
 from .utils import requests_3_retries, scientific_name_to_taxid

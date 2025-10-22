@@ -307,6 +307,97 @@ def test_gse_to_srp_multiple_srps(sraweb_connection):
     ), f"Expected {expected_srps} to be subset of {actual_srps}"
 
 
+def test_geo_metadata_for_gse_without_srp(sraweb_connection):
+    """GSE286254 should return GEO metadata even without SRP links"""
+    df = sraweb_connection.geo_metadata("GSE286254")
+    assert isinstance(df, pd.DataFrame)
+    assert not df.empty
+    assert "GSE286254" in df["study_accession"].unique()
+    assert "GSM8721777" in df["sample_accession"].values
+
+
+def test_geo_metadata_with_sample_attributes(sraweb_connection):
+    """Ensure sample_attribute flag adds sample summaries"""
+    df = sraweb_connection.geo_metadata("GSE286254", sample_attribute=True)
+    assert "sample_summary" in df.columns
+    assert df["sample_summary"].notna().any()
+
+
+def test_geo_metadata_covid19_characteristics(sraweb_connection):
+    """Test GSE155673 COVID-19 metadata with disease_status and custom characteristics"""
+    df = sraweb_connection.geo_metadata("GSE155673", detailed=True)
+
+    # Find the specific sample GSM4712885
+    sample = df[df["sample_accession"] == "GSM4712885"]
+    assert not sample.empty, "Sample GSM4712885 not found"
+
+    # Verify disease field captures disease_status
+    disease_value = sample["disease"].iloc[0]
+    assert pd.notna(disease_value), "Disease field should not be NA"
+    assert (
+        "COVID-19" in str(disease_value).upper()
+        or "COVID" in str(disease_value).upper()
+    ), f"Disease should contain COVID-19, got: {disease_value}"
+
+    # Verify custom characteristics are captured
+    assert "disease_severity" in df.columns, "disease_severity column should exist"
+    assert (
+        "days_since_symptom_onset" in df.columns
+    ), "days_since_symptom_onset column should exist"
+
+    # Verify values for GSM4712885
+    sample_severity = sample["disease_severity"].iloc[0]
+    assert pd.notna(
+        sample_severity
+    ), "disease_severity should not be NA for COVID sample"
+    assert "Severe" in str(
+        sample_severity
+    ), f"Expected 'Severe', got: {sample_severity}"
+
+    days_onset = sample["days_since_symptom_onset"].iloc[0]
+    assert pd.notna(days_onset), "days_since_symptom_onset should not be NA"
+    assert str(days_onset) == "15", f"Expected '15', got: {days_onset}"
+
+    # Verify standard fields
+    assert sample["sex"].iloc[0] == "F", "Sex should be F"
+    assert str(sample["age"].iloc[0]) == "75", "Age should be 75"
+    assert sample["cell_type"].iloc[0] == "PBMC", "Cell type should be PBMC"
+
+    # Verify comprehensive SOFT field capture (no filtering)
+    # These fields should be present when detailed=True
+    expected_soft_fields = [
+        "sample_instrument_model",
+        "sample_library_strategy",
+        "sample_library_source",
+        "sample_organism_ch1",
+        "sample_taxid_ch1",
+        "sample_molecule_ch1",
+        "sample_contact_name",
+        "sample_contact_institute",
+        "sample_data_processing",
+        "sample_platform_id",
+    ]
+
+    for field in expected_soft_fields:
+        assert (
+            field in df.columns
+        ), f"SOFT field '{field}' should be captured in detailed mode"
+        assert pd.notna(
+            sample[field].iloc[0]
+        ), f"SOFT field '{field}' should have a value"
+
+    # Verify specific values for comprehensive check
+    assert "Illumina" in str(
+        sample["sample_instrument_model"].iloc[0]
+    ), "Should capture instrument model"
+    assert (
+        sample["sample_library_strategy"].iloc[0] == "RNA-Seq"
+    ), "Should capture library strategy"
+    assert (
+        str(sample["sample_taxid_ch1"].iloc[0]) == "9606"
+    ), "Should capture taxid (human)"
+
+
 def test_fetch_bioproject_pmids(sraweb_connection):
     """Test fetching PMIDs for BioProject accessions"""
     # Use a known BioProject that should have publications
@@ -496,3 +587,34 @@ def test_doi_to_srp(sraweb_connection):
     assert not df.empty
     required_columns = {"doi", "pmid", "pmc_id", "srp_ids"}
     assert required_columns.issubset(df.columns)
+
+
+def test_unified_metadata_with_gse(sraweb_connection):
+    """Test unified metadata() function with GSE accession"""
+    df = sraweb_connection.metadata("GSE286254")
+    assert isinstance(df, pd.DataFrame)
+    assert not df.empty
+    assert "GSE286254" in df["study_accession"].unique()
+
+
+def test_unified_metadata_with_srp(sraweb_connection):
+    """Test unified metadata() function with SRP accession"""
+    df = sraweb_connection.metadata("SRP016501")
+    assert isinstance(df, pd.DataFrame)
+    assert df.shape[0] == 134
+    assert "SRP016501" in df["study_accession"].unique()
+
+
+def test_unified_metadata_with_multiple_gse(sraweb_connection):
+    """Test unified metadata() function with multiple GSE accessions"""
+    df = sraweb_connection.metadata(["GSE168880", "GSE209835"])
+    assert isinstance(df, pd.DataFrame)
+    assert not df.empty
+    gse_ids = df["study_accession"].unique()
+    assert "GSE168880" in gse_ids or "GSE209835" in gse_ids
+
+
+def test_unified_metadata_invalid_accession(sraweb_connection):
+    """Test unified metadata() function with invalid accession type"""
+    with pytest.raises(ValueError, match="Unsupported accession type"):
+        sraweb_connection.metadata("INVALID123")

@@ -70,13 +70,41 @@ def _print_save_df(df, saveto=None):
 ###################### metadata ##############################
 def metadata(srp_id, assay, desc, detailed, expand, saveto):
     sradb = SRAweb()
-    df = sradb.sra_metadata(
-        srp_id,
-        assay=assay,
-        detailed=detailed,
-        sample_attribute=desc,
-        expand_sample_attributes=expand,
-    )
+
+    srp_ids = []
+    gse_ids = []
+    for accession in srp_id:
+        if isinstance(accession, str) and accession.upper().startswith("GSE"):
+            gse_ids.append(accession)
+        else:
+            srp_ids.append(accession)
+
+    metadata_frames = []
+    if srp_ids:
+        srp_metadata = sradb.sra_metadata(
+            srp_ids if len(srp_ids) > 1 else srp_ids[0],
+            assay=assay,
+            detailed=detailed,
+            sample_attribute=desc,
+            expand_sample_attributes=expand,
+        )
+        if srp_metadata is not None:
+            metadata_frames.append(srp_metadata)
+
+    if gse_ids:
+        geo_metadata_df = sradb.geo_metadata(
+            gse_ids if len(gse_ids) > 1 else gse_ids[0],
+            sample_attribute=desc,
+            detailed=detailed,
+        )
+        if not geo_metadata_df.empty:
+            metadata_frames.append(geo_metadata_df)
+
+    if metadata_frames:
+        df = pd.concat(metadata_frames, ignore_index=True, sort=False)
+    else:
+        df = pd.DataFrame()
+
     _print_save_df(df, saveto)
     sradb.close()
 
