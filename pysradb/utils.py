@@ -11,6 +11,8 @@ import warnings
 import requests
 from requests.adapters import HTTPAdapter
 from requests.packages.urllib3.util.retry import Retry
+
+warnings.filterwarnings("ignore", category=UserWarning, module="tqdm")
 from tqdm.autonotebook import tqdm
 
 from .exceptions import IncorrectFieldException

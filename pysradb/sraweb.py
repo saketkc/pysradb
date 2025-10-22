@@ -435,6 +435,8 @@ class SRAweb(SRAdb):
         expand_sample_attributes=False,
         output_read_lengths=False,
         include_pmids=False,
+        enrich=False,
+        enrich_backend="ollama/phi3",
         **kwargs,
     ):
         esummary_result = self.get_esummary_response("sra", srp)
@@ -776,6 +778,20 @@ class SRAweb(SRAdb):
             regex=r"^@xmlns.*", value=pd.NA
         ).infer_objects(copy=False)
 
+        # Enrich metadata if requested
+        if enrich and not metadata_df.empty:
+            try:
+                from pysradb.metadata_enrichment import create_metadata_extractor
+
+                extractor = create_metadata_extractor(
+                    method="llm", backend=enrich_backend
+                )
+                metadata_df = extractor.enrich_dataframe(
+                    metadata_df, text_column=None, prefix="guessed_"
+                )
+            except Exception as e:
+                print(f"Warning: Enrichment failed: {e}")
+
         if "run_accession" in metadata_df.columns:
             return metadata_df.sort_values(by="run_accession")
         return metadata_df
@@ -792,8 +808,8 @@ class SRAweb(SRAdb):
         for uid in uids:
             record = result[uid]
             del record["uid"]
-            if record["extrelations"]:
-                extrelations = record["extrelations"]
+            extrelations = record.get("extrelations") or []
+            if extrelations:
                 for extrelation in extrelations:
                     keys = list(extrelation.keys())
                     values = list(extrelation.values())
@@ -804,10 +820,386 @@ class SRAweb(SRAdb):
                     record[extrelation["relationtype"]] = extrelation["targetobject"]
                 del record["extrelations"]
                 gse_records.append(record)
+                continue
+
+            # Fallback for records without extrelations (e.g., spatial transcriptomics datasets)
+            samples = record.get("samples") or []
+            if samples:
+                record["samples"] = samples
+            gse_records.append(record)
         if not len(gse_records):
             print("No results found for {}".format(gse))
             return None
         return pd.DataFrame(gse_records)
+
+    def fetch_gsm_soft(self, gsm_ids):
+        """
+        Fetch detailed GSM metadata in SOFT format.
+
+        Args:
+            gsm_ids: List of GSM accessions
+
+        Returns:
+            Dictionary mapping GSM accession to parsed SOFT metadata
+        """
+        if isinstance(gsm_ids, str):
+            gsm_ids = [gsm_ids]
+
+        gsm_data = {}
+        for gsm in gsm_ids:
+            try:
+                url = f"https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc={gsm}&targ=self&form=text&view=full"
+                response = requests.get(url, timeout=30)
+                response.raise_for_status()
+
+                # Parse SOFT format
+                soft_text = response.text
+                metadata = {}
+                characteristics = []
+
+                for line in soft_text.split("\n"):
+                    line = line.strip()
+                    if line.startswith("!Sample_"):
+                        if " = " in line:
+                            key, value = line.split(" = ", 1)
+                            key = key.replace("!Sample_", "").lower()
+
+                            # Handle characteristics specially - they can appear multiple times
+                            if "characteristics" in key:
+                                characteristics.append(value)
+                            else:
+                                # Store in metadata dict
+                                # Join multiple values with semicolon for consistency
+                                if key not in metadata:
+                                    metadata[key] = value
+                                elif isinstance(metadata[key], list):
+                                    metadata[key].append(value)
+                                else:
+                                    # Convert to list if we have multiple values
+                                    metadata[key] = [metadata[key], value]
+
+                # Convert list values to semicolon-separated strings
+                for key, value in metadata.items():
+                    if isinstance(value, list):
+                        metadata[key] = "; ".join(str(v) for v in value)
+
+                # Process characteristics into a dict
+                char_dict = {}
+                for char in characteristics:
+                    if ": " in char:
+                        char_key, char_val = char.split(": ", 1)
+                        char_dict[char_key.strip().lower()] = char_val.strip()
+
+                metadata["characteristics"] = char_dict
+                gsm_data[gsm] = metadata
+
+            except Exception as e:
+                print(f"Warning: Could not fetch SOFT data for {gsm}: {e}")
+                gsm_data[gsm] = {}
+
+        return gsm_data
+
+    def geo_metadata(
+        self,
+        gse,
+        sample_attribute=False,
+        detailed=False,
+        expand_sample_attributes=False,
+        include_pmids=False,
+        enrich=False,
+        enrich_backend="ollama/phi3",
+        **kwargs,
+    ):
+        if isinstance(gse, str):
+            gse = [gse]
+        if not gse:
+            return pd.DataFrame(
+                columns=[
+                    "study_accession",
+                    "study_title",
+                    "study_summary",
+                    "organism_name",
+                    "platform_accession",
+                    "platform_title",
+                    "experiment_type",
+                    "bioproject",
+                    "submission_date",
+                    "supplementary_files",
+                    "series_ftp",
+                    "sample_accession",
+                    "sample_title",
+                ]
+            )
+
+        geo_response = self.get_esummary_response("geo", gse)
+        if not geo_response:
+            return pd.DataFrame(
+                columns=[
+                    "study_accession",
+                    "study_title",
+                    "study_summary",
+                    "organism_name",
+                    "platform_accession",
+                    "platform_title",
+                    "experiment_type",
+                    "bioproject",
+                    "submission_date",
+                    "supplementary_files",
+                    "series_ftp",
+                    "sample_accession",
+                    "sample_title",
+                ]
+            )
+
+        gse_records = []
+        sample_accessions = []
+        for uid in geo_response.get("uids", []):
+            record = geo_response.get(uid, {})
+            if record.get("entrytype") != "GSE":
+                continue
+            gse_records.append(record)
+            for sample in record.get("samples") or []:
+                accession = sample.get("accession")
+                if accession and accession not in sample_accessions:
+                    sample_accessions.append(accession)
+
+        sample_details = {}
+        gsm_soft_data = {}
+        if (sample_attribute or detailed) and sample_accessions:
+            sample_response = self.get_esummary_response("geo", sample_accessions)
+            if sample_response:
+                for uid in sample_response.get("uids", []):
+                    entry = sample_response.get(uid, {})
+                    if entry.get("entrytype") == "GSM":
+                        sample_details[entry.get("accession")] = entry
+
+            # Fetch full SOFT metadata when detailed=True
+            if detailed:
+                gsm_soft_data = self.fetch_gsm_soft(sample_accessions)
+
+        rows = []
+        for record in gse_records:
+            study_accession = record.get("accession", pd.NA)
+            platform = record.get("gpl", pd.NA)
+            if (
+                isinstance(platform, str)
+                and platform.strip()
+                and not platform.upper().startswith("GPL")
+                and platform.replace(" ", "").isdigit()
+            ):
+                platform_accession = f"GPL{platform.strip()}"
+            else:
+                platform_accession = platform if platform else pd.NA
+
+            base_row = OrderedDict(
+                [
+                    ("study_accession", study_accession),
+                    ("study_title", record.get("title", pd.NA)),
+                    ("study_summary", record.get("summary", pd.NA)),
+                    ("organism_name", record.get("taxon", pd.NA)),
+                    ("platform_accession", platform_accession),
+                    ("platform_title", record.get("platformtitle", pd.NA)),
+                    ("experiment_type", record.get("gdstype", pd.NA)),
+                    ("bioproject", record.get("bioproject", pd.NA)),
+                    ("submission_date", record.get("pdat", pd.NA)),
+                    ("supplementary_files", record.get("suppfile", pd.NA)),
+                    ("series_ftp", record.get("ftplink", pd.NA)),
+                    ("sample_accession", pd.NA),
+                    ("sample_title", pd.NA),
+                ]
+            )
+
+            if sample_attribute:
+                base_row["sample_summary"] = pd.NA
+            if detailed:
+                base_row["sample_ftp"] = pd.NA
+                base_row["sample_supplementary"] = pd.NA
+                base_row["sample_geo2r"] = pd.NA
+                # Add SOFT metadata fields
+                base_row["sample_type"] = pd.NA
+                base_row["sample_source_name"] = pd.NA
+                base_row["sex"] = pd.NA
+                base_row["age"] = pd.NA
+                base_row["tissue"] = pd.NA
+                base_row["cell_type"] = pd.NA
+                base_row["disease"] = pd.NA
+                base_row["treatment"] = pd.NA
+                base_row["extract_protocol"] = pd.NA
+                base_row["label_protocol"] = pd.NA
+
+            samples = record.get("samples") or []
+            if samples:
+                for sample in samples:
+                    row = base_row.copy()
+                    sample_acc = sample.get("accession", pd.NA)
+                    row["sample_accession"] = sample_acc
+                    row["sample_title"] = sample.get("title", pd.NA)
+                    sample_entry = sample_details.get(sample_acc, {})
+                    if sample_attribute:
+                        row["sample_summary"] = sample_entry.get("summary", pd.NA)
+                    if detailed:
+                        row["sample_ftp"] = sample_entry.get("ftplink", pd.NA)
+                        row["sample_supplementary"] = sample_entry.get(
+                            "suppfile", pd.NA
+                        )
+                        row["sample_geo2r"] = sample_entry.get("geo2r", pd.NA)
+
+                        # Add SOFT metadata - extract ALL available fields
+                        soft_data = gsm_soft_data.get(sample_acc, {})
+                        if soft_data:
+                            # Add all SOFT fields with sample_ prefix (characteristics handled separately)
+                            for soft_key, soft_val in soft_data.items():
+                                if soft_key != "characteristics":
+                                    col_name = f"sample_{soft_key}"
+                                    row[col_name] = soft_val
+
+                            # Also extract commonly used fields to canonical column names for convenience
+                            row["sample_type"] = soft_data.get("type_ch1", pd.NA)
+                            row["sample_source_name"] = soft_data.get(
+                                "source_name_ch1", pd.NA
+                            )
+                            row["extract_protocol"] = soft_data.get(
+                                "extract_protocol_ch1", pd.NA
+                            )
+                            row["label_protocol"] = soft_data.get(
+                                "label_protocol_ch1", pd.NA
+                            )
+
+                            # Process characteristics: add standard ones to canonical names, preserve all as-is
+                            chars = soft_data.get("characteristics", {})
+
+                            # Standard fields with canonical names (for backward compatibility)
+                            row["sex"] = chars.get("sex", chars.get("gender", pd.NA))
+                            row["age"] = chars.get("age", pd.NA)
+                            row["tissue"] = chars.get(
+                                "tissue",
+                                chars.get(
+                                    "tissue type",
+                                    chars.get("structures", chars.get("organ", pd.NA)),
+                                ),
+                            )
+                            row["cell_type"] = chars.get(
+                                "cell type",
+                                chars.get("cell_type", chars.get("celltype", pd.NA)),
+                            )
+                            row["disease"] = chars.get(
+                                "disease",
+                                chars.get(
+                                    "disease state",
+                                    chars.get(
+                                        "disease_state",
+                                        chars.get("disease_status", pd.NA),
+                                    ),
+                                ),
+                            )
+                            row["treatment"] = chars.get(
+                                "treatment",
+                                chars.get("compound", chars.get("drug", pd.NA)),
+                            )
+
+                            # Add ALL characteristics as-is (including custom ones)
+                            for char_key, char_val in chars.items():
+                                row[char_key] = char_val
+
+                    rows.append(row)
+            else:
+                rows.append(base_row)
+
+        if not rows:
+            return pd.DataFrame(
+                columns=list(base_row.keys()) if "base_row" in locals() else None
+            )
+
+        metadata_df = pd.DataFrame(rows)
+
+        if include_pmids:
+            try:
+                pmid_df = self.gse_to_pmid(gse)
+            except Exception:
+                pmid_df = None
+            if pmid_df is not None and not pmid_df.empty:
+                pmid_map = {}
+                for _, row in pmid_df.iterrows():
+                    gse_acc = row.get("gse_accession")
+                    pmid = row.get("pmid")
+                    if pd.isna(pmid):
+                        continue
+                    pmid_map.setdefault(gse_acc, []).append(str(pmid))
+
+                metadata_df["pmid"] = metadata_df["study_accession"].map(
+                    lambda accession: (
+                        ",".join(pmid_map.get(accession, []))
+                        if accession in pmid_map
+                        else pd.NA
+                    )
+                )
+            else:
+                metadata_df["pmid"] = pd.NA
+
+        metadata_df = metadata_df.replace("", pd.NA)
+        if "sample_accession" in metadata_df.columns:
+            metadata_df = metadata_df.sort_values(
+                by=["study_accession", "sample_accession"],
+                na_position="last",
+            )
+        metadata_df = metadata_df.reset_index(drop=True)
+
+        # Enrich metadata if requested
+        if enrich and not metadata_df.empty:
+            try:
+                from pysradb.metadata_enrichment import create_metadata_extractor
+
+                extractor = create_metadata_extractor(
+                    method="llm", backend=enrich_backend
+                )
+                metadata_df = extractor.enrich_dataframe(
+                    metadata_df, text_column=None, prefix="guessed_"
+                )
+            except Exception as e:
+                print(f"Warning: Enrichment failed: {e}")
+
+        return metadata_df
+
+    def metadata(self, accession, **kwargs):
+        """
+        Unified method to fetch metadata for SRA or GEO accessions.
+
+        Automatically detects accession type and calls appropriate method.
+
+        Args:
+            accession: SRP/GSE accession(s) - can be string or list
+            **kwargs: Additional parameters passed to sra_metadata() or geo_metadata()
+                     (e.g., detailed, enrich, enrich_backend, sample_attribute, etc.)
+
+        Returns:
+            DataFrame with metadata (enriched if enrich=True)
+
+        Examples:
+            >>> db = SRAweb()
+            >>> df = db.metadata("GSE286254", detailed=True, enrich=True)
+            >>> df = db.metadata("SRP253951", detailed=True, enrich=True)
+            >>> df = db.metadata(["GSE286254", "GSE147507"], enrich=True)
+        """
+        if isinstance(accession, str):
+            accessions = [accession]
+        else:
+            accessions = accession
+
+        if not accessions:
+            return pd.DataFrame()
+
+        # Detect accession type from first accession
+        first_acc = accessions[0].upper()
+
+        if first_acc.startswith("GSE"):
+            return self.geo_metadata(accession, **kwargs)
+        elif first_acc.startswith("SRP"):
+            return self.sra_metadata(accession, **kwargs)
+        else:
+            raise ValueError(
+                f"Unsupported accession type: {first_acc}. "
+                "Supported types: GSE (GEO Series), SRP (SRA Project)"
+            )
 
     def gse_to_gsm(self, gse, **kwargs):
         if isinstance(gse, str):

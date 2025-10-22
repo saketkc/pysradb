@@ -96,6 +96,7 @@ The following notebooks document all the possible features of
 7.  [Searching
     SRA/GEO/ENA](https://colab.research.google.com/github/saketkc/pysradb/blob/master/notebooks/07.Query_Search.ipynb)
 8. [Extracting identifiers from PMC/DOI](https://colab.research.google.com/github/saketkc/pysradb/blob/master/notebooks/08.PMC_DOI_Identifiers.ipynb)
+9. [Metadata Enrichment with LLMs](https://colab.research.google.com/github/saketkc/pysradb/blob/master/notebooks/09.Metadata_Enrichment_with_LLMs.ipynb)
 
 ## Installation
 
@@ -251,6 +252,63 @@ Extract database identifiers (GSE, PRJNA, SRP, etc.) from PubMed Central article
 
     pmc_id       gse_ids     prjna_ids    srp_ids
     PMC10802650  GSE253406   PRJNA1058002 SRP484103
+
+
+### Enriching Metadata with Ontology-Based Extraction
+
+Extract standardized biological metadata from SRA/GEO datasets using LLMs. Automatically extracts 9 CellxGene-compatible fields using biological ontologies (UBERON, MONDO, CL).
+
+#### Quick Start (One-Line Enrichment)
+
+```python
+from pysradb import SRAweb
+
+db = SRAweb()
+
+df = db.metadata("GSE286254", detailed=True, enrich=True)
+
+# Returns original + 9 enriched columns (might not always be complete):
+# guessed_organ, guessed_tissue, guessed_anatomical_system,
+# guessed_cell_type, guessed_disease, guessed_sex,
+# guessed_development_stage, guessed_assay, guessed_organism
+
+db.close()
+```
+
+
+#### Prerequisites
+
+Install Ollama: https://ollama.ai
+
+```bash
+ollama pull phi3
+```
+
+#### Advanced Usage
+
+```python
+# Use different model
+df = db.metadata("GSE286254", detailed=True, enrich=True,
+                enrich_backend="ollama/llama3.2")
+
+# Manual enrichment with custom settings
+from pysradb.metadata_enrichment import create_metadata_extractor, load_ontology_reference
+
+# LLM-based extraction
+extractor_llm = create_metadata_extractor(method="llm", backend="ollama/phi3")
+df_enriched = extractor_llm.enrich_dataframe(df, prefix="guessed_")
+
+# Embedding-based extraction (faster, offline)
+ontology_ref = load_ontology_reference()  
+extractor_emb = create_metadata_extractor(
+    method="embedding",
+    model="FremyCompany/BioLORD-2023",
+    reference_categories=ontology_ref
+)
+df_enriched = extractor_emb.enrich_dataframe(df, prefix="guessed_")
+```
+
+See [Notebook 09](notebooks/09.Metadata_Enrichment_with_LLMs.ipynb) for detailed examples.
 
 
 ### Downloading supplementary files from GEO
