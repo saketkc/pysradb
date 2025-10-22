@@ -1256,6 +1256,168 @@ output_file (str): Path to save the output TSV file.</p>
 </dd></dl>
 
 </section>
+<section id="module-pysradb.metadata_enrichment">
+<span id="pysradb-metadata-enrichment-module"></span><h2>pysradb.metadata_enrichment module<a class="headerlink" href="#module-pysradb.metadata_enrichment" title="Link to this heading">#</a></h2>
+<p>Metadata enrichment for SRA/GEO datasets using LLMs and embeddings.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="pysradb.metadata_enrichment.EmbeddingMetadataExtractor">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pysradb.metadata_enrichment.</span></span><span class="sig-name descname"><span class="pre">EmbeddingMetadataExtractor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'FremyCompany/BioLORD-2023'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">backend</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'sentence-transformers'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reference_categories</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysradb/metadata_enrichment.html#EmbeddingMetadataExtractor"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysradb.metadata_enrichment.EmbeddingMetadataExtractor" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pysradb.metadata_enrichment.MetadataExtractor" title="pysradb.metadata_enrichment.MetadataExtractor"><code class="xref py py-class docutils literal notranslate"><span class="pre">MetadataExtractor</span></code></a></p>
+<p>Extract metadata using embedding-based similarity matching.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="pysradb.metadata_enrichment.EmbeddingMetadataExtractor.extract_metadata">
+<span class="sig-name descname"><span class="pre">extract_metadata</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fields</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/pysradb/metadata_enrichment.html#EmbeddingMetadataExtractor.extract_metadata"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysradb.metadata_enrichment.EmbeddingMetadataExtractor.extract_metadata" title="Link to this definition">#</a></dt>
+<dd><p>Extract metadata using embedding similarity.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>text: Input text
+fields: List of fields to extract</p>
+</dd>
+<dt>Returns:</dt><dd><p>Dictionary with extracted metadata</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="pysradb.metadata_enrichment.LLMMetadataExtractor">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pysradb.metadata_enrichment.</span></span><span class="sig-name descname"><span class="pre">LLMMetadataExtractor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">backend</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'ollama/phi3'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">api_key</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">base_url</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">temperature</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_retries</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">3</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysradb/metadata_enrichment.html#LLMMetadataExtractor"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysradb.metadata_enrichment.LLMMetadataExtractor" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pysradb.metadata_enrichment.MetadataExtractor" title="pysradb.metadata_enrichment.MetadataExtractor"><code class="xref py py-class docutils literal notranslate"><span class="pre">MetadataExtractor</span></code></a></p>
+<p>Extract metadata using Large Language Models via Instructor.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="pysradb.metadata_enrichment.LLMMetadataExtractor.extract_metadata">
+<span class="sig-name descname"><span class="pre">extract_metadata</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fields</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/pysradb/metadata_enrichment.html#LLMMetadataExtractor.extract_metadata"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysradb.metadata_enrichment.LLMMetadataExtractor.extract_metadata" title="Link to this definition">#</a></dt>
+<dd><p>Extract metadata from text using LLM.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>text: Input text
+fields: List of fields to extract</p>
+</dd>
+<dt>Returns:</dt><dd><p>Dictionary with extracted metadata</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="pysradb.metadata_enrichment.MetadataExtractor">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pysradb.metadata_enrichment.</span></span><span class="sig-name descname"><span class="pre">MetadataExtractor</span></span><a class="reference internal" href="_modules/pysradb/metadata_enrichment.html#MetadataExtractor"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysradb.metadata_enrichment.MetadataExtractor" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ABC</span></code></p>
+<p>Base class for metadata extraction from experiment descriptions.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="pysradb.metadata_enrichment.MetadataExtractor.enrich_dataframe">
+<span class="sig-name descname"><span class="pre">enrich_dataframe</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">DataFrame</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">text_column</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fields</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prefix</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'guessed_'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">show_progress</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">DataFrame</span></span></span><a class="reference internal" href="_modules/pysradb/metadata_enrichment.html#MetadataExtractor.enrich_dataframe"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysradb.metadata_enrichment.MetadataExtractor.enrich_dataframe" title="Link to this definition">#</a></dt>
+<dd><p>Enrich a DataFrame with extracted metadata.</p>
+<dl>
+<dt>Args:</dt><dd><p>df: Input DataFrame
+text_column: Column containing text to analyze. If None, automatically combines</p>
+<blockquote>
+<div><p>all relevant sample-level text columns (sample_title, sample_source_name,
+sample_type, extract_protocol, label_protocol, etc.) for maximum context.</p>
+</div></blockquote>
+<p>fields: List of metadata fields to extract
+prefix: Prefix for new columns
+show_progress: Show progress bar (default: True)</p>
+</dd>
+<dt>Returns:</dt><dd><p>DataFrame with additional metadata columns</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pysradb.metadata_enrichment.MetadataExtractor.extract_batch">
+<span class="sig-name descname"><span class="pre">extract_batch</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">texts</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fields</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/pysradb/metadata_enrichment.html#MetadataExtractor.extract_batch"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysradb.metadata_enrichment.MetadataExtractor.extract_batch" title="Link to this definition">#</a></dt>
+<dd><p>Extract metadata from multiple texts.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>texts: List of input texts
+fields: List of metadata fields to extract</p>
+</dd>
+<dt>Returns:</dt><dd><p>List of dictionaries with extracted metadata</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pysradb.metadata_enrichment.MetadataExtractor.extract_metadata">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">extract_metadata</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fields</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/pysradb/metadata_enrichment.html#MetadataExtractor.extract_metadata"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysradb.metadata_enrichment.MetadataExtractor.extract_metadata" title="Link to this definition">#</a></dt>
+<dd><p>Extract metadata from text.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>text: Input text (experiment description, title, etc.)
+fields: List of metadata fields to extract. If None, extract all.</p>
+</dd>
+<dt>Returns:</dt><dd><p>Dictionary with extracted metadata</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pysradb.metadata_enrichment.apply_dataframe_enrichment">
+<span class="sig-prename descclassname"><span class="pre">pysradb.metadata_enrichment.</span></span><span class="sig-name descname"><span class="pre">apply_dataframe_enrichment</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">DataFrame</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">method</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'embedding'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">backend</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">text_column</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">show_progress</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prefix</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'guessed_'</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">DataFrame</span></span></span><a class="reference internal" href="_modules/pysradb/metadata_enrichment.html#apply_dataframe_enrichment"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysradb.metadata_enrichment.apply_dataframe_enrichment" title="Link to this definition">#</a></dt>
+<dd><p>Utility function to apply metadata enrichment to a DataFrame.</p>
+<p>This is a convenience function that handles:
+- Column auto-detection
+- Extractor initialization
+- Error handling
+- Progress display</p>
+<dl>
+<dt>Args:</dt><dd><p>df: Input DataFrame
+method: Enrichment method (‘llm’ or ‘embedding’)
+backend: Backend for the method
+model: Model name
+text_column: Column to use (auto-detected if None)
+show_progress: Show progress bar
+prefix: Prefix for new columns</p>
+</dd>
+<dt>Returns:</dt><dd><p>Enriched DataFrame</p>
+</dd>
+<dt>Example:</dt><dd><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">pysradb.metadata_enrichment</span><span class="w"> </span><span class="kn">import</span> <span class="n">apply_dataframe_enrichment</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">enriched_df</span> <span class="o">=</span> <span class="n">apply_dataframe_enrichment</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">df</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">method</span><span class="o">=</span><span class="s2">&quot;embedding&quot;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">text_column</span><span class="o">=</span><span class="s2">&quot;experiment_title&quot;</span>
+<span class="gp">... </span><span class="p">)</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pysradb.metadata_enrichment.create_metadata_extractor">
+<span class="sig-prename descclassname"><span class="pre">pysradb.metadata_enrichment.</span></span><span class="sig-name descname"><span class="pre">create_metadata_extractor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">method</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'llm'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">backend</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#pysradb.metadata_enrichment.MetadataExtractor" title="pysradb.metadata_enrichment.MetadataExtractor"><span class="pre">MetadataExtractor</span></a></span></span><a class="reference internal" href="_modules/pysradb/metadata_enrichment.html#create_metadata_extractor"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysradb.metadata_enrichment.create_metadata_extractor" title="Link to this definition">#</a></dt>
+<dd><p>Factory function to create metadata extractor.</p>
+<dl>
+<dt>Args:</dt><dd><p>method: Extraction method (“llm” or “embedding”)
+backend: Backend for the method
+model: Model name
+<a href="#id1"><span class="problematic" id="id2">**</span></a>kwargs: Additional parameters</p>
+</dd>
+<dt>Returns:</dt><dd><p>MetadataExtractor instance</p>
+</dd>
+<dt>Examples:</dt><dd><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># LLM-based with Instructor (default provider)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">extractor</span> <span class="o">=</span> <span class="n">create_metadata_extractor</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s2">&quot;llm&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Embedding-based (default: BioLORD-2023 for biomedical text)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">extractor</span> <span class="o">=</span> <span class="n">create_metadata_extractor</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s2">&quot;embedding&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pysradb.metadata_enrichment.load_ontology_reference">
+<span class="sig-prename descclassname"><span class="pre">pysradb.metadata_enrichment.</span></span><span class="sig-name descname"><span class="pre">load_ontology_reference</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/pysradb/metadata_enrichment.html#load_ontology_reference"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysradb.metadata_enrichment.load_ontology_reference" title="Link to this definition">#</a></dt>
+<dd><p>Returns comprehensive reference categories from UBERON, MONDO, and CL ontologies.</p>
+<dl class="simple">
+<dt>Returns:</dt><dd><p>Dictionary with ontology terms (organs, tissues, anatomical_systems, cell_types, diseases)</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
 <section id="module-pysradb.search">
 <span id="pysradb-search-module"></span><h2>pysradb.search module<a class="headerlink" href="#module-pysradb.search" title="Link to this heading">#</a></h2>
 <p>This file contains the search classes for the search feature.</p>
@@ -2268,6 +2430,18 @@ Set to True by default.</p>
 <dd></dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="pysradb.sraweb.SRAweb.fetch_gsm_soft">
+<span class="sig-name descname"><span class="pre">fetch_gsm_soft</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">gsm_ids</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysradb/sraweb.html#SRAweb.fetch_gsm_soft"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysradb.sraweb.SRAweb.fetch_gsm_soft" title="Link to this definition">#</a></dt>
+<dd><p>Fetch detailed GSM metadata in SOFT format.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>gsm_ids: List of GSM accessions</p>
+</dd>
+<dt>Returns:</dt><dd><p>Dictionary mapping GSM accession to parsed SOFT metadata</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="pysradb.sraweb.SRAweb.fetch_pmc_fulltext">
 <span class="sig-name descname"><span class="pre">fetch_pmc_fulltext</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pmc_id</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysradb/sraweb.html#SRAweb.fetch_pmc_fulltext"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysradb.sraweb.SRAweb.fetch_pmc_fulltext" title="Link to this definition">#</a></dt>
 <dd><p>Fetch full text from PMC article</p>
@@ -2304,6 +2478,11 @@ Set to True by default.</p>
 </dd>
 </dl>
 </dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pysradb.sraweb.SRAweb.geo_metadata">
+<span class="sig-name descname"><span class="pre">geo_metadata</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">gse</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sample_attribute</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">detailed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">expand_sample_attributes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">include_pmids</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">enrich</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">enrich_backend</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'ollama/phi3'</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysradb/sraweb.html#SRAweb.geo_metadata"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysradb.sraweb.SRAweb.geo_metadata" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pysradb.sraweb.SRAweb.get_efetch_response">
@@ -2446,6 +2625,30 @@ Set to True by default.</p>
 </dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="pysradb.sraweb.SRAweb.metadata">
+<span class="sig-name descname"><span class="pre">metadata</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">accession</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysradb/sraweb.html#SRAweb.metadata"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysradb.sraweb.SRAweb.metadata" title="Link to this definition">#</a></dt>
+<dd><p>Unified method to fetch metadata for SRA or GEO accessions.</p>
+<p>Automatically detects accession type and calls appropriate method.</p>
+<dl>
+<dt>Args:</dt><dd><p>accession: SRP/GSE accession(s) - can be string or list
+<a href="#id3"><span class="problematic" id="id4">**</span></a>kwargs: Additional parameters passed to sra_metadata() or geo_metadata()</p>
+<blockquote>
+<div><p>(e.g., detailed, enrich, enrich_backend, sample_attribute, etc.)</p>
+</div></blockquote>
+</dd>
+<dt>Returns:</dt><dd><p>DataFrame with metadata (enriched if enrich=True)</p>
+</dd>
+<dt>Examples:</dt><dd><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">db</span> <span class="o">=</span> <span class="n">SRAweb</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">df</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">metadata</span><span class="p">(</span><span class="s2">&quot;GSE286254&quot;</span><span class="p">,</span> <span class="n">detailed</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">enrich</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">df</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">metadata</span><span class="p">(</span><span class="s2">&quot;SRP253951&quot;</span><span class="p">,</span> <span class="n">detailed</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">enrich</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">df</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">metadata</span><span class="p">([</span><span class="s2">&quot;GSE286254&quot;</span><span class="p">,</span> <span class="s2">&quot;GSE147507&quot;</span><span class="p">],</span> <span class="n">enrich</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="pysradb.sraweb.SRAweb.pmc_to_identifiers">
 <span class="sig-name descname"><span class="pre">pmc_to_identifiers</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pmc_ids</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">convert_missing</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysradb/sraweb.html#SRAweb.pmc_to_identifiers"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysradb.sraweb.SRAweb.pmc_to_identifiers" title="Link to this definition">#</a></dt>
 <dd><p>Extract database identifiers from PMC articles</p>
@@ -2575,7 +2778,7 @@ Default: True</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pysradb.sraweb.SRAweb.sra_metadata">
-<span class="sig-name descname"><span class="pre">sra_metadata</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">srp</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sample_attribute</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">detailed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">expand_sample_attributes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_read_lengths</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">include_pmids</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysradb/sraweb.html#SRAweb.sra_metadata"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysradb.sraweb.SRAweb.sra_metadata" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">sra_metadata</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">srp</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sample_attribute</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">detailed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">expand_sample_attributes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_read_lengths</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">include_pmids</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">enrich</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">enrich_backend</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'ollama/phi3'</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysradb/sraweb.html#SRAweb.sra_metadata"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysradb.sraweb.SRAweb.sra_metadata" title="Link to this definition">#</a></dt>
 <dd><p>Get metadata for the provided SRA accession.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -3128,6 +3331,26 @@ errors.</p>
 </li>
 </ul>
 </li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-pysradb.metadata_enrichment">pysradb.metadata_enrichment module</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pysradb.metadata_enrichment.EmbeddingMetadataExtractor"><code class="docutils literal notranslate"><span class="pre">EmbeddingMetadataExtractor</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#pysradb.metadata_enrichment.EmbeddingMetadataExtractor.extract_metadata"><code class="docutils literal notranslate"><span class="pre">EmbeddingMetadataExtractor.extract_metadata()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pysradb.metadata_enrichment.LLMMetadataExtractor"><code class="docutils literal notranslate"><span class="pre">LLMMetadataExtractor</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#pysradb.metadata_enrichment.LLMMetadataExtractor.extract_metadata"><code class="docutils literal notranslate"><span class="pre">LLMMetadataExtractor.extract_metadata()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pysradb.metadata_enrichment.MetadataExtractor"><code class="docutils literal notranslate"><span class="pre">MetadataExtractor</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#pysradb.metadata_enrichment.MetadataExtractor.enrich_dataframe"><code class="docutils literal notranslate"><span class="pre">MetadataExtractor.enrich_dataframe()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#pysradb.metadata_enrichment.MetadataExtractor.extract_batch"><code class="docutils literal notranslate"><span class="pre">MetadataExtractor.extract_batch()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#pysradb.metadata_enrichment.MetadataExtractor.extract_metadata"><code class="docutils literal notranslate"><span class="pre">MetadataExtractor.extract_metadata()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pysradb.metadata_enrichment.apply_dataframe_enrichment"><code class="docutils literal notranslate"><span class="pre">apply_dataframe_enrichment()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pysradb.metadata_enrichment.create_metadata_extractor"><code class="docutils literal notranslate"><span class="pre">create_metadata_extractor()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pysradb.metadata_enrichment.load_ontology_reference"><code class="docutils literal notranslate"><span class="pre">load_ontology_reference()</span></code></a></li>
+</ul>
+</li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-pysradb.search">pysradb.search module</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pysradb.search.EnaSearch"><code class="docutils literal notranslate"><span class="pre">EnaSearch</span></code></a><ul class="nav section-nav flex-column">
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#pysradb.search.EnaSearch.search"><code class="docutils literal notranslate"><span class="pre">EnaSearch.search()</span></code></a></li>
@@ -3197,8 +3420,10 @@ errors.</p>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#pysradb.sraweb.SRAweb.fetch_bioproject_pmids"><code class="docutils literal notranslate"><span class="pre">SRAweb.fetch_bioproject_pmids()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#pysradb.sraweb.SRAweb.fetch_ena_fastq"><code class="docutils literal notranslate"><span class="pre">SRAweb.fetch_ena_fastq()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#pysradb.sraweb.SRAweb.fetch_gds_results"><code class="docutils literal notranslate"><span class="pre">SRAweb.fetch_gds_results()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#pysradb.sraweb.SRAweb.fetch_gsm_soft"><code class="docutils literal notranslate"><span class="pre">SRAweb.fetch_gsm_soft()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#pysradb.sraweb.SRAweb.fetch_pmc_fulltext"><code class="docutils literal notranslate"><span class="pre">SRAweb.fetch_pmc_fulltext()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#pysradb.sraweb.SRAweb.format_xml"><code class="docutils literal notranslate"><span class="pre">SRAweb.format_xml()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#pysradb.sraweb.SRAweb.geo_metadata"><code class="docutils literal notranslate"><span class="pre">SRAweb.geo_metadata()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#pysradb.sraweb.SRAweb.get_efetch_response"><code class="docutils literal notranslate"><span class="pre">SRAweb.get_efetch_response()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#pysradb.sraweb.SRAweb.get_esummary_response"><code class="docutils literal notranslate"><span class="pre">SRAweb.get_esummary_response()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#pysradb.sraweb.SRAweb.gse_to_gsm"><code class="docutils literal notranslate"><span class="pre">SRAweb.gse_to_gsm()</span></code></a></li>
@@ -3209,6 +3434,7 @@ errors.</p>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#pysradb.sraweb.SRAweb.gsm_to_srr"><code class="docutils literal notranslate"><span class="pre">SRAweb.gsm_to_srr()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#pysradb.sraweb.SRAweb.gsm_to_srs"><code class="docutils literal notranslate"><span class="pre">SRAweb.gsm_to_srs()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#pysradb.sraweb.SRAweb.gsm_to_srx"><code class="docutils literal notranslate"><span class="pre">SRAweb.gsm_to_srx()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#pysradb.sraweb.SRAweb.metadata"><code class="docutils literal notranslate"><span class="pre">SRAweb.metadata()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#pysradb.sraweb.SRAweb.pmc_to_identifiers"><code class="docutils literal notranslate"><span class="pre">SRAweb.pmc_to_identifiers()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#pysradb.sraweb.SRAweb.pmid_to_gse"><code class="docutils literal notranslate"><span class="pre">SRAweb.pmid_to_gse()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#pysradb.sraweb.SRAweb.pmid_to_identifiers"><code class="docutils literal notranslate"><span class="pre">SRAweb.pmid_to_identifiers()</span></code></a></li>

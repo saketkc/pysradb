@@ -60,6 +60,14 @@ pysradb.geoweb module
    :undoc-members:
    :show-inheritance:
 
+pysradb.metadata\_enrichment module
+-----------------------------------
+
+.. automodule:: pysradb.metadata_enrichment
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 pysradb.search module
 ---------------------
 

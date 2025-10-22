@@ -934,6 +934,8 @@
         <span class="n">expand_sample_attributes</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
         <span class="n">output_read_lengths</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
         <span class="n">include_pmids</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="n">enrich</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="n">enrich_backend</span><span class="o">=</span><span class="s2">&quot;ollama/phi3&quot;</span><span class="p">,</span>
         <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="n">esummary_result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_esummary_response</span><span class="p">(</span><span class="s2">&quot;sra&quot;</span><span class="p">,</span> <span class="n">srp</span><span class="p">)</span>
@@ -1275,6 +1277,20 @@
             <span class="n">regex</span><span class="o">=</span><span class="sa">r</span><span class="s2">&quot;^@xmlns.*&quot;</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="n">pd</span><span class="o">.</span><span class="n">NA</span>
         <span class="p">)</span><span class="o">.</span><span class="n">infer_objects</span><span class="p">(</span><span class="n">copy</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 
+        <span class="c1"># Enrich metadata if requested</span>
+        <span class="k">if</span> <span class="n">enrich</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">metadata_df</span><span class="o">.</span><span class="n">empty</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="kn">from</span><span class="w"> </span><span class="nn">pysradb.metadata_enrichment</span><span class="w"> </span><span class="kn">import</span> <span class="n">create_metadata_extractor</span>
+
+                <span class="n">extractor</span> <span class="o">=</span> <span class="n">create_metadata_extractor</span><span class="p">(</span>
+                    <span class="n">method</span><span class="o">=</span><span class="s2">&quot;llm&quot;</span><span class="p">,</span> <span class="n">backend</span><span class="o">=</span><span class="n">enrich_backend</span>
+                <span class="p">)</span>
+                <span class="n">metadata_df</span> <span class="o">=</span> <span class="n">extractor</span><span class="o">.</span><span class="n">enrich_dataframe</span><span class="p">(</span>
+                    <span class="n">metadata_df</span><span class="p">,</span> <span class="n">text_column</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">prefix</span><span class="o">=</span><span class="s2">&quot;guessed_&quot;</span>
+                <span class="p">)</span>
+            <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Warning: Enrichment failed: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
         <span class="k">if</span> <span class="s2">&quot;run_accession&quot;</span> <span class="ow">in</span> <span class="n">metadata_df</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">metadata_df</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="s2">&quot;run_accession&quot;</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">metadata_df</span></div>
@@ -1294,8 +1310,8 @@
         <span class="k">for</span> <span class="n">uid</span> <span class="ow">in</span> <span class="n">uids</span><span class="p">:</span>
             <span class="n">record</span> <span class="o">=</span> <span class="n">result</span><span class="p">[</span><span class="n">uid</span><span class="p">]</span>
             <span class="k">del</span> <span class="n">record</span><span class="p">[</span><span class="s2">&quot;uid&quot;</span><span class="p">]</span>
-            <span class="k">if</span> <span class="n">record</span><span class="p">[</span><span class="s2">&quot;extrelations&quot;</span><span class="p">]:</span>
-                <span class="n">extrelations</span> <span class="o">=</span> <span class="n">record</span><span class="p">[</span><span class="s2">&quot;extrelations&quot;</span><span class="p">]</span>
+            <span class="n">extrelations</span> <span class="o">=</span> <span class="n">record</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;extrelations&quot;</span><span class="p">)</span> <span class="ow">or</span> <span class="p">[]</span>
+            <span class="k">if</span> <span class="n">extrelations</span><span class="p">:</span>
                 <span class="k">for</span> <span class="n">extrelation</span> <span class="ow">in</span> <span class="n">extrelations</span><span class="p">:</span>
                     <span class="n">keys</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">extrelation</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
                     <span class="n">values</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">extrelation</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
@@ -1306,10 +1322,395 @@
                     <span class="n">record</span><span class="p">[</span><span class="n">extrelation</span><span class="p">[</span><span class="s2">&quot;relationtype&quot;</span><span class="p">]]</span> <span class="o">=</span> <span class="n">extrelation</span><span class="p">[</span><span class="s2">&quot;targetobject&quot;</span><span class="p">]</span>
                 <span class="k">del</span> <span class="n">record</span><span class="p">[</span><span class="s2">&quot;extrelations&quot;</span><span class="p">]</span>
                 <span class="n">gse_records</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">record</span><span class="p">)</span>
+                <span class="k">continue</span>
+
+            <span class="c1"># Fallback for records without extrelations (e.g., spatial transcriptomics datasets)</span>
+            <span class="n">samples</span> <span class="o">=</span> <span class="n">record</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;samples&quot;</span><span class="p">)</span> <span class="ow">or</span> <span class="p">[]</span>
+            <span class="k">if</span> <span class="n">samples</span><span class="p">:</span>
+                <span class="n">record</span><span class="p">[</span><span class="s2">&quot;samples&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">samples</span>
+            <span class="n">gse_records</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">record</span><span class="p">)</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">len</span><span class="p">(</span><span class="n">gse_records</span><span class="p">):</span>
             <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;No results found for </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">gse</span><span class="p">))</span>
             <span class="k">return</span> <span class="kc">None</span>
         <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">gse_records</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="SRAweb.fetch_gsm_soft">
+<a class="viewcode-back" href="../../pysradb.html#pysradb.sraweb.SRAweb.fetch_gsm_soft">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">fetch_gsm_soft</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">gsm_ids</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Fetch detailed GSM metadata in SOFT format.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            gsm_ids: List of GSM accessions</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Dictionary mapping GSM accession to parsed SOFT metadata</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">gsm_ids</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+            <span class="n">gsm_ids</span> <span class="o">=</span> <span class="p">[</span><span class="n">gsm_ids</span><span class="p">]</span>
+
+        <span class="n">gsm_data</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">gsm</span> <span class="ow">in</span> <span class="n">gsm_ids</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">url</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=</span><span class="si">{</span><span class="n">gsm</span><span class="si">}</span><span class="s2">&amp;targ=self&amp;form=text&amp;view=full&quot;</span>
+                <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">30</span><span class="p">)</span>
+                <span class="n">response</span><span class="o">.</span><span class="n">raise_for_status</span><span class="p">()</span>
+
+                <span class="c1"># Parse SOFT format</span>
+                <span class="n">soft_text</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">text</span>
+                <span class="n">metadata</span> <span class="o">=</span> <span class="p">{}</span>
+                <span class="n">characteristics</span> <span class="o">=</span> <span class="p">[]</span>
+
+                <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">soft_text</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">):</span>
+                    <span class="n">line</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+                    <span class="k">if</span> <span class="n">line</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;!Sample_&quot;</span><span class="p">):</span>
+                        <span class="k">if</span> <span class="s2">&quot; = &quot;</span> <span class="ow">in</span> <span class="n">line</span><span class="p">:</span>
+                            <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot; = &quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+                            <span class="n">key</span> <span class="o">=</span> <span class="n">key</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;!Sample_&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+
+                            <span class="c1"># Handle characteristics specially - they can appear multiple times</span>
+                            <span class="k">if</span> <span class="s2">&quot;characteristics&quot;</span> <span class="ow">in</span> <span class="n">key</span><span class="p">:</span>
+                                <span class="n">characteristics</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+                            <span class="k">else</span><span class="p">:</span>
+                                <span class="c1"># Store in metadata dict</span>
+                                <span class="c1"># Join multiple values with semicolon for consistency</span>
+                                <span class="k">if</span> <span class="n">key</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">metadata</span><span class="p">:</span>
+                                    <span class="n">metadata</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
+                                <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">metadata</span><span class="p">[</span><span class="n">key</span><span class="p">],</span> <span class="nb">list</span><span class="p">):</span>
+                                    <span class="n">metadata</span><span class="p">[</span><span class="n">key</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+                                <span class="k">else</span><span class="p">:</span>
+                                    <span class="c1"># Convert to list if we have multiple values</span>
+                                    <span class="n">metadata</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">metadata</span><span class="p">[</span><span class="n">key</span><span class="p">],</span> <span class="n">value</span><span class="p">]</span>
+
+                <span class="c1"># Convert list values to semicolon-separated strings</span>
+                <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">metadata</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+                        <span class="n">metadata</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">value</span><span class="p">)</span>
+
+                <span class="c1"># Process characteristics into a dict</span>
+                <span class="n">char_dict</span> <span class="o">=</span> <span class="p">{}</span>
+                <span class="k">for</span> <span class="n">char</span> <span class="ow">in</span> <span class="n">characteristics</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="s2">&quot;: &quot;</span> <span class="ow">in</span> <span class="n">char</span><span class="p">:</span>
+                        <span class="n">char_key</span><span class="p">,</span> <span class="n">char_val</span> <span class="o">=</span> <span class="n">char</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;: &quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+                        <span class="n">char_dict</span><span class="p">[</span><span class="n">char_key</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">lower</span><span class="p">()]</span> <span class="o">=</span> <span class="n">char_val</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+
+                <span class="n">metadata</span><span class="p">[</span><span class="s2">&quot;characteristics&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">char_dict</span>
+                <span class="n">gsm_data</span><span class="p">[</span><span class="n">gsm</span><span class="p">]</span> <span class="o">=</span> <span class="n">metadata</span>
+
+            <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Warning: Could not fetch SOFT data for </span><span class="si">{</span><span class="n">gsm</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+                <span class="n">gsm_data</span><span class="p">[</span><span class="n">gsm</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+
+        <span class="k">return</span> <span class="n">gsm_data</span></div>
+
+
+<div class="viewcode-block" id="SRAweb.geo_metadata">
+<a class="viewcode-back" href="../../pysradb.html#pysradb.sraweb.SRAweb.geo_metadata">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">geo_metadata</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">gse</span><span class="p">,</span>
+        <span class="n">sample_attribute</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="n">detailed</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="n">expand_sample_attributes</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="n">include_pmids</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="n">enrich</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="n">enrich_backend</span><span class="o">=</span><span class="s2">&quot;ollama/phi3&quot;</span><span class="p">,</span>
+        <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">gse</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+            <span class="n">gse</span> <span class="o">=</span> <span class="p">[</span><span class="n">gse</span><span class="p">]</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">gse</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
+                <span class="n">columns</span><span class="o">=</span><span class="p">[</span>
+                    <span class="s2">&quot;study_accession&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;study_title&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;study_summary&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;organism_name&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;platform_accession&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;platform_title&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;experiment_type&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;bioproject&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;submission_date&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;supplementary_files&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;series_ftp&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;sample_accession&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;sample_title&quot;</span><span class="p">,</span>
+                <span class="p">]</span>
+            <span class="p">)</span>
+
+        <span class="n">geo_response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_esummary_response</span><span class="p">(</span><span class="s2">&quot;geo&quot;</span><span class="p">,</span> <span class="n">gse</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">geo_response</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
+                <span class="n">columns</span><span class="o">=</span><span class="p">[</span>
+                    <span class="s2">&quot;study_accession&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;study_title&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;study_summary&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;organism_name&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;platform_accession&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;platform_title&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;experiment_type&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;bioproject&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;submission_date&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;supplementary_files&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;series_ftp&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;sample_accession&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;sample_title&quot;</span><span class="p">,</span>
+                <span class="p">]</span>
+            <span class="p">)</span>
+
+        <span class="n">gse_records</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">sample_accessions</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">uid</span> <span class="ow">in</span> <span class="n">geo_response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;uids&quot;</span><span class="p">,</span> <span class="p">[]):</span>
+            <span class="n">record</span> <span class="o">=</span> <span class="n">geo_response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">uid</span><span class="p">,</span> <span class="p">{})</span>
+            <span class="k">if</span> <span class="n">record</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;entrytype&quot;</span><span class="p">)</span> <span class="o">!=</span> <span class="s2">&quot;GSE&quot;</span><span class="p">:</span>
+                <span class="k">continue</span>
+            <span class="n">gse_records</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">record</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">sample</span> <span class="ow">in</span> <span class="n">record</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;samples&quot;</span><span class="p">)</span> <span class="ow">or</span> <span class="p">[]:</span>
+                <span class="n">accession</span> <span class="o">=</span> <span class="n">sample</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;accession&quot;</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">accession</span> <span class="ow">and</span> <span class="n">accession</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">sample_accessions</span><span class="p">:</span>
+                    <span class="n">sample_accessions</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">accession</span><span class="p">)</span>
+
+        <span class="n">sample_details</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">gsm_soft_data</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">sample_attribute</span> <span class="ow">or</span> <span class="n">detailed</span><span class="p">)</span> <span class="ow">and</span> <span class="n">sample_accessions</span><span class="p">:</span>
+            <span class="n">sample_response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_esummary_response</span><span class="p">(</span><span class="s2">&quot;geo&quot;</span><span class="p">,</span> <span class="n">sample_accessions</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">sample_response</span><span class="p">:</span>
+                <span class="k">for</span> <span class="n">uid</span> <span class="ow">in</span> <span class="n">sample_response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;uids&quot;</span><span class="p">,</span> <span class="p">[]):</span>
+                    <span class="n">entry</span> <span class="o">=</span> <span class="n">sample_response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">uid</span><span class="p">,</span> <span class="p">{})</span>
+                    <span class="k">if</span> <span class="n">entry</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;entrytype&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="s2">&quot;GSM&quot;</span><span class="p">:</span>
+                        <span class="n">sample_details</span><span class="p">[</span><span class="n">entry</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;accession&quot;</span><span class="p">)]</span> <span class="o">=</span> <span class="n">entry</span>
+
+            <span class="c1"># Fetch full SOFT metadata when detailed=True</span>
+            <span class="k">if</span> <span class="n">detailed</span><span class="p">:</span>
+                <span class="n">gsm_soft_data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fetch_gsm_soft</span><span class="p">(</span><span class="n">sample_accessions</span><span class="p">)</span>
+
+        <span class="n">rows</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">record</span> <span class="ow">in</span> <span class="n">gse_records</span><span class="p">:</span>
+            <span class="n">study_accession</span> <span class="o">=</span> <span class="n">record</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;accession&quot;</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">NA</span><span class="p">)</span>
+            <span class="n">platform</span> <span class="o">=</span> <span class="n">record</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;gpl&quot;</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">NA</span><span class="p">)</span>
+            <span class="k">if</span> <span class="p">(</span>
+                <span class="nb">isinstance</span><span class="p">(</span><span class="n">platform</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span>
+                <span class="ow">and</span> <span class="n">platform</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+                <span class="ow">and</span> <span class="ow">not</span> <span class="n">platform</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;GPL&quot;</span><span class="p">)</span>
+                <span class="ow">and</span> <span class="n">platform</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">isdigit</span><span class="p">()</span>
+            <span class="p">):</span>
+                <span class="n">platform_accession</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;GPL</span><span class="si">{</span><span class="n">platform</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">platform_accession</span> <span class="o">=</span> <span class="n">platform</span> <span class="k">if</span> <span class="n">platform</span> <span class="k">else</span> <span class="n">pd</span><span class="o">.</span><span class="n">NA</span>
+
+            <span class="n">base_row</span> <span class="o">=</span> <span class="n">OrderedDict</span><span class="p">(</span>
+                <span class="p">[</span>
+                    <span class="p">(</span><span class="s2">&quot;study_accession&quot;</span><span class="p">,</span> <span class="n">study_accession</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s2">&quot;study_title&quot;</span><span class="p">,</span> <span class="n">record</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;title&quot;</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">NA</span><span class="p">)),</span>
+                    <span class="p">(</span><span class="s2">&quot;study_summary&quot;</span><span class="p">,</span> <span class="n">record</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;summary&quot;</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">NA</span><span class="p">)),</span>
+                    <span class="p">(</span><span class="s2">&quot;organism_name&quot;</span><span class="p">,</span> <span class="n">record</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;taxon&quot;</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">NA</span><span class="p">)),</span>
+                    <span class="p">(</span><span class="s2">&quot;platform_accession&quot;</span><span class="p">,</span> <span class="n">platform_accession</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s2">&quot;platform_title&quot;</span><span class="p">,</span> <span class="n">record</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;platformtitle&quot;</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">NA</span><span class="p">)),</span>
+                    <span class="p">(</span><span class="s2">&quot;experiment_type&quot;</span><span class="p">,</span> <span class="n">record</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;gdstype&quot;</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">NA</span><span class="p">)),</span>
+                    <span class="p">(</span><span class="s2">&quot;bioproject&quot;</span><span class="p">,</span> <span class="n">record</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;bioproject&quot;</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">NA</span><span class="p">)),</span>
+                    <span class="p">(</span><span class="s2">&quot;submission_date&quot;</span><span class="p">,</span> <span class="n">record</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;pdat&quot;</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">NA</span><span class="p">)),</span>
+                    <span class="p">(</span><span class="s2">&quot;supplementary_files&quot;</span><span class="p">,</span> <span class="n">record</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;suppfile&quot;</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">NA</span><span class="p">)),</span>
+                    <span class="p">(</span><span class="s2">&quot;series_ftp&quot;</span><span class="p">,</span> <span class="n">record</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;ftplink&quot;</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">NA</span><span class="p">)),</span>
+                    <span class="p">(</span><span class="s2">&quot;sample_accession&quot;</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">NA</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s2">&quot;sample_title&quot;</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">NA</span><span class="p">),</span>
+                <span class="p">]</span>
+            <span class="p">)</span>
+
+            <span class="k">if</span> <span class="n">sample_attribute</span><span class="p">:</span>
+                <span class="n">base_row</span><span class="p">[</span><span class="s2">&quot;sample_summary&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">NA</span>
+            <span class="k">if</span> <span class="n">detailed</span><span class="p">:</span>
+                <span class="n">base_row</span><span class="p">[</span><span class="s2">&quot;sample_ftp&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">NA</span>
+                <span class="n">base_row</span><span class="p">[</span><span class="s2">&quot;sample_supplementary&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">NA</span>
+                <span class="n">base_row</span><span class="p">[</span><span class="s2">&quot;sample_geo2r&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">NA</span>
+                <span class="c1"># Add SOFT metadata fields</span>
+                <span class="n">base_row</span><span class="p">[</span><span class="s2">&quot;sample_type&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">NA</span>
+                <span class="n">base_row</span><span class="p">[</span><span class="s2">&quot;sample_source_name&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">NA</span>
+                <span class="n">base_row</span><span class="p">[</span><span class="s2">&quot;sex&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">NA</span>
+                <span class="n">base_row</span><span class="p">[</span><span class="s2">&quot;age&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">NA</span>
+                <span class="n">base_row</span><span class="p">[</span><span class="s2">&quot;tissue&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">NA</span>
+                <span class="n">base_row</span><span class="p">[</span><span class="s2">&quot;cell_type&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">NA</span>
+                <span class="n">base_row</span><span class="p">[</span><span class="s2">&quot;disease&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">NA</span>
+                <span class="n">base_row</span><span class="p">[</span><span class="s2">&quot;treatment&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">NA</span>
+                <span class="n">base_row</span><span class="p">[</span><span class="s2">&quot;extract_protocol&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">NA</span>
+                <span class="n">base_row</span><span class="p">[</span><span class="s2">&quot;label_protocol&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">NA</span>
+
+            <span class="n">samples</span> <span class="o">=</span> <span class="n">record</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;samples&quot;</span><span class="p">)</span> <span class="ow">or</span> <span class="p">[]</span>
+            <span class="k">if</span> <span class="n">samples</span><span class="p">:</span>
+                <span class="k">for</span> <span class="n">sample</span> <span class="ow">in</span> <span class="n">samples</span><span class="p">:</span>
+                    <span class="n">row</span> <span class="o">=</span> <span class="n">base_row</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+                    <span class="n">sample_acc</span> <span class="o">=</span> <span class="n">sample</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;accession&quot;</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">NA</span><span class="p">)</span>
+                    <span class="n">row</span><span class="p">[</span><span class="s2">&quot;sample_accession&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">sample_acc</span>
+                    <span class="n">row</span><span class="p">[</span><span class="s2">&quot;sample_title&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">sample</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;title&quot;</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">NA</span><span class="p">)</span>
+                    <span class="n">sample_entry</span> <span class="o">=</span> <span class="n">sample_details</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">sample_acc</span><span class="p">,</span> <span class="p">{})</span>
+                    <span class="k">if</span> <span class="n">sample_attribute</span><span class="p">:</span>
+                        <span class="n">row</span><span class="p">[</span><span class="s2">&quot;sample_summary&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">sample_entry</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;summary&quot;</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">NA</span><span class="p">)</span>
+                    <span class="k">if</span> <span class="n">detailed</span><span class="p">:</span>
+                        <span class="n">row</span><span class="p">[</span><span class="s2">&quot;sample_ftp&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">sample_entry</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;ftplink&quot;</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">NA</span><span class="p">)</span>
+                        <span class="n">row</span><span class="p">[</span><span class="s2">&quot;sample_supplementary&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">sample_entry</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
+                            <span class="s2">&quot;suppfile&quot;</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">NA</span>
+                        <span class="p">)</span>
+                        <span class="n">row</span><span class="p">[</span><span class="s2">&quot;sample_geo2r&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">sample_entry</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;geo2r&quot;</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">NA</span><span class="p">)</span>
+
+                        <span class="c1"># Add SOFT metadata - extract ALL available fields</span>
+                        <span class="n">soft_data</span> <span class="o">=</span> <span class="n">gsm_soft_data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">sample_acc</span><span class="p">,</span> <span class="p">{})</span>
+                        <span class="k">if</span> <span class="n">soft_data</span><span class="p">:</span>
+                            <span class="c1"># Add all SOFT fields with sample_ prefix (characteristics handled separately)</span>
+                            <span class="k">for</span> <span class="n">soft_key</span><span class="p">,</span> <span class="n">soft_val</span> <span class="ow">in</span> <span class="n">soft_data</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                                <span class="k">if</span> <span class="n">soft_key</span> <span class="o">!=</span> <span class="s2">&quot;characteristics&quot;</span><span class="p">:</span>
+                                    <span class="n">col_name</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;sample_</span><span class="si">{</span><span class="n">soft_key</span><span class="si">}</span><span class="s2">&quot;</span>
+                                    <span class="n">row</span><span class="p">[</span><span class="n">col_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">soft_val</span>
+
+                            <span class="c1"># Also extract commonly used fields to canonical column names for convenience</span>
+                            <span class="n">row</span><span class="p">[</span><span class="s2">&quot;sample_type&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">soft_data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;type_ch1&quot;</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">NA</span><span class="p">)</span>
+                            <span class="n">row</span><span class="p">[</span><span class="s2">&quot;sample_source_name&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">soft_data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
+                                <span class="s2">&quot;source_name_ch1&quot;</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">NA</span>
+                            <span class="p">)</span>
+                            <span class="n">row</span><span class="p">[</span><span class="s2">&quot;extract_protocol&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">soft_data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
+                                <span class="s2">&quot;extract_protocol_ch1&quot;</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">NA</span>
+                            <span class="p">)</span>
+                            <span class="n">row</span><span class="p">[</span><span class="s2">&quot;label_protocol&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">soft_data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
+                                <span class="s2">&quot;label_protocol_ch1&quot;</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">NA</span>
+                            <span class="p">)</span>
+
+                            <span class="c1"># Process characteristics: add standard ones to canonical names, preserve all as-is</span>
+                            <span class="n">chars</span> <span class="o">=</span> <span class="n">soft_data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;characteristics&quot;</span><span class="p">,</span> <span class="p">{})</span>
+
+                            <span class="c1"># Standard fields with canonical names (for backward compatibility)</span>
+                            <span class="n">row</span><span class="p">[</span><span class="s2">&quot;sex&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">chars</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;sex&quot;</span><span class="p">,</span> <span class="n">chars</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;gender&quot;</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">NA</span><span class="p">))</span>
+                            <span class="n">row</span><span class="p">[</span><span class="s2">&quot;age&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">chars</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;age&quot;</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">NA</span><span class="p">)</span>
+                            <span class="n">row</span><span class="p">[</span><span class="s2">&quot;tissue&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">chars</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
+                                <span class="s2">&quot;tissue&quot;</span><span class="p">,</span>
+                                <span class="n">chars</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
+                                    <span class="s2">&quot;tissue type&quot;</span><span class="p">,</span>
+                                    <span class="n">chars</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;structures&quot;</span><span class="p">,</span> <span class="n">chars</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;organ&quot;</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">NA</span><span class="p">)),</span>
+                                <span class="p">),</span>
+                            <span class="p">)</span>
+                            <span class="n">row</span><span class="p">[</span><span class="s2">&quot;cell_type&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">chars</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
+                                <span class="s2">&quot;cell type&quot;</span><span class="p">,</span>
+                                <span class="n">chars</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;cell_type&quot;</span><span class="p">,</span> <span class="n">chars</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;celltype&quot;</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">NA</span><span class="p">)),</span>
+                            <span class="p">)</span>
+                            <span class="n">row</span><span class="p">[</span><span class="s2">&quot;disease&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">chars</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
+                                <span class="s2">&quot;disease&quot;</span><span class="p">,</span>
+                                <span class="n">chars</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
+                                    <span class="s2">&quot;disease state&quot;</span><span class="p">,</span>
+                                    <span class="n">chars</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
+                                        <span class="s2">&quot;disease_state&quot;</span><span class="p">,</span>
+                                        <span class="n">chars</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;disease_status&quot;</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">NA</span><span class="p">),</span>
+                                    <span class="p">),</span>
+                                <span class="p">),</span>
+                            <span class="p">)</span>
+                            <span class="n">row</span><span class="p">[</span><span class="s2">&quot;treatment&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">chars</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
+                                <span class="s2">&quot;treatment&quot;</span><span class="p">,</span>
+                                <span class="n">chars</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;compound&quot;</span><span class="p">,</span> <span class="n">chars</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;drug&quot;</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">NA</span><span class="p">)),</span>
+                            <span class="p">)</span>
+
+                            <span class="c1"># Add ALL characteristics as-is (including custom ones)</span>
+                            <span class="k">for</span> <span class="n">char_key</span><span class="p">,</span> <span class="n">char_val</span> <span class="ow">in</span> <span class="n">chars</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                                <span class="n">row</span><span class="p">[</span><span class="n">char_key</span><span class="p">]</span> <span class="o">=</span> <span class="n">char_val</span>
+
+                    <span class="n">rows</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">row</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">rows</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">base_row</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">rows</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
+                <span class="n">columns</span><span class="o">=</span><span class="nb">list</span><span class="p">(</span><span class="n">base_row</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span> <span class="k">if</span> <span class="s2">&quot;base_row&quot;</span> <span class="ow">in</span> <span class="nb">locals</span><span class="p">()</span> <span class="k">else</span> <span class="kc">None</span>
+            <span class="p">)</span>
+
+        <span class="n">metadata_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">rows</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">include_pmids</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">pmid_df</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">gse_to_pmid</span><span class="p">(</span><span class="n">gse</span><span class="p">)</span>
+            <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+                <span class="n">pmid_df</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="k">if</span> <span class="n">pmid_df</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">pmid_df</span><span class="o">.</span><span class="n">empty</span><span class="p">:</span>
+                <span class="n">pmid_map</span> <span class="o">=</span> <span class="p">{}</span>
+                <span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">pmid_df</span><span class="o">.</span><span class="n">iterrows</span><span class="p">():</span>
+                    <span class="n">gse_acc</span> <span class="o">=</span> <span class="n">row</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;gse_accession&quot;</span><span class="p">)</span>
+                    <span class="n">pmid</span> <span class="o">=</span> <span class="n">row</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;pmid&quot;</span><span class="p">)</span>
+                    <span class="k">if</span> <span class="n">pd</span><span class="o">.</span><span class="n">isna</span><span class="p">(</span><span class="n">pmid</span><span class="p">):</span>
+                        <span class="k">continue</span>
+                    <span class="n">pmid_map</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="n">gse_acc</span><span class="p">,</span> <span class="p">[])</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">pmid</span><span class="p">))</span>
+
+                <span class="n">metadata_df</span><span class="p">[</span><span class="s2">&quot;pmid&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">metadata_df</span><span class="p">[</span><span class="s2">&quot;study_accession&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">map</span><span class="p">(</span>
+                    <span class="k">lambda</span> <span class="n">accession</span><span class="p">:</span> <span class="p">(</span>
+                        <span class="s2">&quot;,&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">pmid_map</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">accession</span><span class="p">,</span> <span class="p">[]))</span>
+                        <span class="k">if</span> <span class="n">accession</span> <span class="ow">in</span> <span class="n">pmid_map</span>
+                        <span class="k">else</span> <span class="n">pd</span><span class="o">.</span><span class="n">NA</span>
+                    <span class="p">)</span>
+                <span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">metadata_df</span><span class="p">[</span><span class="s2">&quot;pmid&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">NA</span>
+
+        <span class="n">metadata_df</span> <span class="o">=</span> <span class="n">metadata_df</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">NA</span><span class="p">)</span>
+        <span class="k">if</span> <span class="s2">&quot;sample_accession&quot;</span> <span class="ow">in</span> <span class="n">metadata_df</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
+            <span class="n">metadata_df</span> <span class="o">=</span> <span class="n">metadata_df</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span>
+                <span class="n">by</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;study_accession&quot;</span><span class="p">,</span> <span class="s2">&quot;sample_accession&quot;</span><span class="p">],</span>
+                <span class="n">na_position</span><span class="o">=</span><span class="s2">&quot;last&quot;</span><span class="p">,</span>
+            <span class="p">)</span>
+        <span class="n">metadata_df</span> <span class="o">=</span> <span class="n">metadata_df</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+        <span class="c1"># Enrich metadata if requested</span>
+        <span class="k">if</span> <span class="n">enrich</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">metadata_df</span><span class="o">.</span><span class="n">empty</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="kn">from</span><span class="w"> </span><span class="nn">pysradb.metadata_enrichment</span><span class="w"> </span><span class="kn">import</span> <span class="n">create_metadata_extractor</span>
+
+                <span class="n">extractor</span> <span class="o">=</span> <span class="n">create_metadata_extractor</span><span class="p">(</span>
+                    <span class="n">method</span><span class="o">=</span><span class="s2">&quot;llm&quot;</span><span class="p">,</span> <span class="n">backend</span><span class="o">=</span><span class="n">enrich_backend</span>
+                <span class="p">)</span>
+                <span class="n">metadata_df</span> <span class="o">=</span> <span class="n">extractor</span><span class="o">.</span><span class="n">enrich_dataframe</span><span class="p">(</span>
+                    <span class="n">metadata_df</span><span class="p">,</span> <span class="n">text_column</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">prefix</span><span class="o">=</span><span class="s2">&quot;guessed_&quot;</span>
+                <span class="p">)</span>
+            <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Warning: Enrichment failed: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">metadata_df</span></div>
+
+
+<div class="viewcode-block" id="SRAweb.metadata">
+<a class="viewcode-back" href="../../pysradb.html#pysradb.sraweb.SRAweb.metadata">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">metadata</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">accession</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Unified method to fetch metadata for SRA or GEO accessions.</span>
+
+<span class="sd">        Automatically detects accession type and calls appropriate method.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            accession: SRP/GSE accession(s) - can be string or list</span>
+<span class="sd">            **kwargs: Additional parameters passed to sra_metadata() or geo_metadata()</span>
+<span class="sd">                     (e.g., detailed, enrich, enrich_backend, sample_attribute, etc.)</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            DataFrame with metadata (enriched if enrich=True)</span>
+
+<span class="sd">        Examples:</span>
+<span class="sd">            &gt;&gt;&gt; db = SRAweb()</span>
+<span class="sd">            &gt;&gt;&gt; df = db.metadata(&quot;GSE286254&quot;, detailed=True, enrich=True)</span>
+<span class="sd">            &gt;&gt;&gt; df = db.metadata(&quot;SRP253951&quot;, detailed=True, enrich=True)</span>
+<span class="sd">            &gt;&gt;&gt; df = db.metadata([&quot;GSE286254&quot;, &quot;GSE147507&quot;], enrich=True)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">accession</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+            <span class="n">accessions</span> <span class="o">=</span> <span class="p">[</span><span class="n">accession</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">accessions</span> <span class="o">=</span> <span class="n">accession</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">accessions</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">()</span>
+
+        <span class="c1"># Detect accession type from first accession</span>
+        <span class="n">first_acc</span> <span class="o">=</span> <span class="n">accessions</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="n">first_acc</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;GSE&quot;</span><span class="p">):</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">geo_metadata</span><span class="p">(</span><span class="n">accession</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">first_acc</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;SRP&quot;</span><span class="p">):</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">sra_metadata</span><span class="p">(</span><span class="n">accession</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;Unsupported accession type: </span><span class="si">{</span><span class="n">first_acc</span><span class="si">}</span><span class="s2">. &quot;</span>
+                <span class="s2">&quot;Supported types: GSE (GEO Series), SRP (SRA Project)&quot;</span>
+            <span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="SRAweb.gse_to_gsm">
