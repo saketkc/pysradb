@@ -96,7 +96,7 @@ The following notebooks document all the possible features of
 7.  [Searching
     SRA/GEO/ENA](https://colab.research.google.com/github/saketkc/pysradb/blob/master/notebooks/07.Query_Search.ipynb)
 8. [Extracting identifiers from PMC/DOI](https://colab.research.google.com/github/saketkc/pysradb/blob/master/notebooks/08.PMC_DOI_Identifiers.ipynb)
-9. [Metadata Enrichment with LLMs](https://colab.research.google.com/github/saketkc/pysradb/blob/master/notebooks/09.Metadata_Enrichment_with_LLMs.ipynb)
+9. [Metadata Enrichment with LLMs](https://colab.research.google.com/github/saketkc/pysradb/blob/develop/notebooks/09.Metadata_Enrichment_with_LLMs.ipynb)
 
 ## Installation
 
