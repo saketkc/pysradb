@@ -4,6 +4,8 @@ Metadata enrichment for SRA/GEO datasets using LLMs and embeddings.
 
 import logging
 import os
+import subprocess
+import sys
 from abc import ABC, abstractmethod
 from typing import Any, Dict, List, Optional, Union
 
@@ -12,6 +14,47 @@ from pydantic import BaseModel, Field
 from tqdm.autonotebook import tqdm
 
 logger = logging.getLogger(__name__)
+
+
+def _prompt_install_enrichment_dependencies() -> bool:
+    """
+    Prompt user to install enrichment dependencies.
+
+    Returns:
+        True if installation succeeded, False otherwise.
+    """
+    try:
+        response = (
+            input(
+                "Enrichment requires 'instructor' and 'pydantic'. Install now? (yes/no): "
+            )
+            .strip()
+            .lower()
+        )
+    except (EOFError, KeyboardInterrupt):
+        return False
+
+    if response not in ["yes", "y"]:
+        print("Install with: pip install 'pysradb[enrichment]'")
+        return False
+
+    try:
+        subprocess.check_call(
+            [
+                sys.executable,
+                "-m",
+                "pip",
+                "install",
+                "instructor>=1.0.0",
+                "pydantic>=2.0.0",
+            ]
+        )
+        return True
+    except subprocess.CalledProcessError:
+        print(
+            "Installation failed. Install manually with: pip install 'pysradb[enrichment]'"
+        )
+        return False
 
 
 class MetadataExtractor(ABC):
@@ -252,10 +295,13 @@ class LLMMetadataExtractor(MetadataExtractor):
     def _initialize_client(self):
         try:
             import instructor
-        except ImportError as exc:
-            raise ImportError(
-                "instructor package required. Install with: pip install instructor"
-            ) from exc
+        except ImportError:
+            if _prompt_install_enrichment_dependencies():
+                import instructor
+            else:
+                raise ImportError(
+                    "instructor package required. Install with: pip install 'pysradb[enrichment]'"
+                )
 
         client_kwargs = self.kwargs.copy()
         if self.base_url:
@@ -452,18 +498,28 @@ class EmbeddingMetadataExtractor(MetadataExtractor):
 
                 return SentenceTransformer(self.model_name)
             except ImportError:
-                raise ImportError(
-                    "sentence-transformers required. Install with: pip install sentence-transformers"
-                )
+                if _prompt_install_enrichment_dependencies():
+                    from sentence_transformers import SentenceTransformer
+
+                    return SentenceTransformer(self.model_name)
+                else:
+                    raise ImportError(
+                        "sentence-transformers required. Install with: pip install sentence-transformers"
+                    )
         elif self.backend == "fastembed":
             try:
                 from fastembed import TextEmbedding
 
                 return TextEmbedding(model_name=self.model_name)
             except ImportError:
-                raise ImportError(
-                    "fastembed required. Install with: pip install fastembed"
-                )
+                if _prompt_install_enrichment_dependencies():
+                    from fastembed import TextEmbedding
+
+                    return TextEmbedding(model_name=self.model_name)
+                else:
+                    raise ImportError(
+                        "fastembed required. Install with: pip install fastembed"
+                    )
         else:
             raise ValueError(f"Unsupported backend: {self.backend}")
 

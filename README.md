@@ -254,11 +254,11 @@ Extract database identifiers (GSE, PRJNA, SRP, etc.) from PubMed Central article
     PMC10802650  GSE253406   PRJNA1058002 SRP484103
 
 
-### Enriching Metadata with Ontology-Based Extraction
+### Enriching metadata
 
-Extract standardized biological metadata from SRA/GEO datasets using LLMs. Automatically extracts 9 CellxGene-compatible fields using biological ontologies (UBERON, MONDO, CL).
+Extract standardized biological metadata from SRA/GEO datasets using LLMs.
 
-#### Quick Start (One-Line Enrichment)
+#### Quickstart 
 
 ```python
 from pysradb import SRAweb
