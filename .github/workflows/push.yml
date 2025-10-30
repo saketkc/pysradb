@@ -52,6 +52,10 @@ jobs:
         pip install -r requirements.txt
         pip install ".[enrichment]"
         pip install sphinx myst-parser sphinxcontrib-gtagjs ipython numpydoc sphinx-tabs furo nbsphinx sphinx-panels
+    - name: Install Pandoc
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y pandoc
     - name: Build documentation
       run: |
         make docs
