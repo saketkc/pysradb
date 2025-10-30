@@ -213,18 +213,20 @@ scv_show_banner = True
 html_logo = "_static/pysradb_v3.png"
 
 # Update theme options to merge with Furo settings
-html_theme_options.update({
-    "sidebar_hide_on_mobile": False,
-})
+html_theme_options.update(
+    {
+        "sidebar_hide_on_mobile": False,
+    }
+)
 
 # Load custom JavaScript for copy-to-clipboard functionality
 html_js_files = [
-    'copy-button.js',
+    "copy-button.js",
 ]
 
 # Load custom CSS to override Pygments background colors
 html_css_files = [
-    'custom.css',
+    "custom.css",
 ]
 
 # NBSphinx configuration
