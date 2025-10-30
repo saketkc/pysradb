@@ -60,13 +60,8 @@ To fetch detailed metadata which includes link to raw sequencing files, specify 
 
 See :doc:`quickstart` for other examples.
 
-===========================================================================
-
-========
-Contents
-========
-
 .. toctree::
+   :hidden:
    :maxdepth: 1
 
    installation
@@ -80,9 +75,6 @@ Contents
    authors
    history
    modules
-
-
-===========================================================================
 
 
 ===========
@@ -121,19 +113,3 @@ Choudhary, Saket. "pysradb: A Python Package to Query next-Generation Sequencing
 Zenodo archive: https://zenodo.org/badge/latestdoi/159590788
 
 Zenodo DOI: 10.5281/zenodo.2306881
-
-===========================================================================
-
-==========
-Questions?
-==========
-
-Join our `Slack Channel <https://join.slack.com/t/pysradb/shared_invite/zt-f01jndpy-KflPu3Be5Aq3FzRh5wj1Ug>`_ or open an `issue <https://github.com/saketkc/pysradb/issues>`_.
-
-
-==================
-Indices and tables
-==================
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`

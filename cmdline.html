@@ -290,7 +290,7 @@
 <h1>CLI<a class="headerlink" href="#cli" title="Link to this heading">¶</a></h1>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>$ pysradb
 usage: pysradb [-h] [--version] [--citation]
-               {metadb,metadata,download,search,gse-to-gsm,gse-to-srp,gsm-to-gse,gsm-to-srp,gsm-to-srr,gsm-to-srs,gsm-to-srx,srp-to-gse,srp-to-srr,srp-to-srs,srp-to-srx,srr-to-gsm,srr-to-srp,srr-to-srs,srr-to-srx,srs-to-gsm,srs-to-srx,srx-to-srp,srx-to-srr,srx-to-srs}
+               {metadata,download,search,gse-to-gsm,gse-to-srp,gsm-to-gse,gsm-to-srp,gsm-to-srr,gsm-to-srs,gsm-to-srx,srp-to-gse,srp-to-srr,srp-to-srs,srp-to-srx,srr-to-gsm,srr-to-srp,srr-to-srs,srr-to-srx,srs-to-gsm,srs-to-srx,srx-to-srp,srx-to-srr,srx-to-srs,geo-matrix,srp-to-pmid,gse-to-pmid,pmid-to-gse,pmid-to-srp,pmc-to-identifiers,pmid-to-identifiers,doi-to-gse,doi-to-srp,doi-to-identifiers}
                ...
 
 pysradb: Query NGS metadata and data from NCBI Sequence Read Archive.
@@ -302,7 +302,7 @@ optional arguments:
   --citation            how to cite
 
 subcommands:
-  {metadb,metadata,download,search,gse-to-gsm,gse-to-srp,gsm-to-gse,gsm-to-srp,gsm-to-srr,gsm-to-srs,gsm-to-srx,srp-to-gse,srp-to-srr,srp-to-srs,srp-to-srx,srr-to-gsm,srr-to-srp,srr-to-srs,srr-to-srx,srs-to-gsm,srs-to-srx,srx-to-srp,srx-to-srr,srx-to-srs}
+  {metadata,download,search,gse-to-gsm,gse-to-srp,gsm-to-gse,gsm-to-srp,gsm-to-srr,gsm-to-srs,gsm-to-srx,srp-to-gse,srp-to-srr,srp-to-srs,srp-to-srx,srr-to-gsm,srr-to-srp,srr-to-srs,srr-to-srx,srs-to-gsm,srs-to-srx,srx-to-srp,srx-to-srr,srx-to-srs,geo-matrix,srp-to-pmid,gse-to-pmid,pmid-to-gse,pmid-to-srp,pmc-to-identifiers,pmid-to-identifiers,doi-to-gse,doi-to-srp,doi-to-identifiers}
     metadata            Fetch metadata for SRA project (SRPnnnn)
     download            Download SRA project (SRPnnnn)
     search              Search SRA/ENA for matching text
@@ -326,8 +326,71 @@ subcommands:
     srx-to-srp          Get SRP for a SRX
     srx-to-srr          Get SRR for a SRX
     srx-to-srs          Get SRS for a SRX
+    geo-matrix          Download and parse GEO Matrix files
+    srp-to-pmid         Get PMIDs for SRP accessions
+    gse-to-pmid         Get PMIDs for GSE accessions
+    pmid-to-gse         Get GSE accessions from PMIDs
+    pmid-to-srp         Get SRP accessions from PMIDs
+    pmc-to-identifiers  Extract database identifiers from PMC articles
+    pmid-to-identifiers Extract database identifiers from PubMed articles
+    doi-to-gse          Get GSE accessions from DOIs
+    doi-to-srp          Get SRP accessions from DOIs
+    doi-to-identifiers  Extract database identifiers from articles via DOI
 </pre></div>
 </div>
+<section id="enriching-metadata">
+<h2>Enriching metadata<a class="headerlink" href="#enriching-metadata" title="Link to this heading">¶</a></h2>
+<p>Extract standardized biological metadata from SRA/GEO datasets using LLMs.</p>
+<section id="quickstart">
+<h3>Quickstart<a class="headerlink" href="#quickstart" title="Link to this heading">¶</a></h3>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>from<span class="w"> </span>pysradb<span class="w"> </span>import<span class="w"> </span>SRAweb
+
+<span class="nv">db</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>SRAweb<span class="o">()</span>
+
+<span class="nv">df</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>db.metadata<span class="o">(</span><span class="s2">&quot;GSE286254&quot;</span>,<span class="w"> </span><span class="nv">detailed</span><span class="o">=</span>True,<span class="w"> </span><span class="nv">enrich</span><span class="o">=</span>True<span class="o">)</span>
+
+<span class="c1"># Returns original + 9 enriched columns (might not always be complete):</span>
+<span class="c1"># guessed_organ, guessed_tissue, guessed_anatomical_system,</span>
+<span class="c1"># guessed_cell_type, guessed_disease, guessed_sex,</span>
+<span class="c1"># guessed_development_stage, guessed_assay, guessed_organism</span>
+
+db.close<span class="o">()</span>
+</pre></div>
+</div>
+</section>
+<section id="prerequisites">
+<h3>Prerequisites<a class="headerlink" href="#prerequisites" title="Link to this heading">¶</a></h3>
+<p>Install Ollama: <a class="reference external" href="https://ollama.ai">https://ollama.ai</a></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ollama<span class="w"> </span>pull<span class="w"> </span>phi3
+</pre></div>
+</div>
+</section>
+<section id="advanced-usage">
+<h3>Advanced Usage<a class="headerlink" href="#advanced-usage" title="Link to this heading">¶</a></h3>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Use different model</span>
+<span class="nv">df</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>db.metadata<span class="o">(</span><span class="s2">&quot;GSE286254&quot;</span>,<span class="w"> </span><span class="nv">detailed</span><span class="o">=</span>True,<span class="w"> </span><span class="nv">enrich</span><span class="o">=</span>True,
+<span class="w">                </span><span class="nv">enrich_backend</span><span class="o">=</span><span class="s2">&quot;ollama/llama3.2&quot;</span><span class="o">)</span>
+
+<span class="c1"># Manual enrichment with custom settings</span>
+from<span class="w"> </span>pysradb.metadata_enrichment<span class="w"> </span>import<span class="w"> </span>create_metadata_extractor,<span class="w"> </span>load_ontology_reference
+
+<span class="c1"># LLM-based extraction</span>
+<span class="nv">extractor_llm</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>create_metadata_extractor<span class="o">(</span><span class="nv">method</span><span class="o">=</span><span class="s2">&quot;llm&quot;</span>,<span class="w"> </span><span class="nv">backend</span><span class="o">=</span><span class="s2">&quot;ollama/phi3&quot;</span><span class="o">)</span>
+<span class="nv">df_enriched</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>extractor_llm.enrich_dataframe<span class="o">(</span>df,<span class="w"> </span><span class="nv">prefix</span><span class="o">=</span><span class="s2">&quot;guessed_&quot;</span><span class="o">)</span>
+
+<span class="c1"># Embedding-based extraction (faster, offline)</span>
+<span class="nv">ontology_ref</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>load_ontology_reference<span class="o">()</span>
+<span class="nv">extractor_emb</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>create_metadata_extractor<span class="o">(</span>
+<span class="w">    </span><span class="nv">method</span><span class="o">=</span><span class="s2">&quot;embedding&quot;</span>,
+<span class="w">    </span><span class="nv">model</span><span class="o">=</span><span class="s2">&quot;FremyCompany/BioLORD-2023&quot;</span>,
+<span class="w">    </span><span class="nv">reference_categories</span><span class="o">=</span>ontology_ref
+<span class="o">)</span>
+<span class="nv">df_enriched</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>extractor_emb.enrich_dataframe<span class="o">(</span>df,<span class="w"> </span><span class="nv">prefix</span><span class="o">=</span><span class="s2">&quot;guessed_&quot;</span><span class="o">)</span>
+</pre></div>
+</div>
+<p>See <a class="reference external" href="https://github.com/saketkc/pysradb/blob/develop/notebooks/09.Metadata_Enrichment_with_LLMs.ipynb">Notebook 09</a> for detailed examples.</p>
+</section>
+</section>
 <section id="getting-metadata-for-a-sra-project-srp">
 <h2>Getting metadata for a SRA project (SRP)<a class="headerlink" href="#getting-metadata-for-a-sra-project-srp" title="Link to this heading">¶</a></h2>
 <p>The most basic information associated with any SRA project is its list
@@ -467,6 +530,42 @@ SRP029589       PRJNA218051
 </pre></div>
 </div>
 </section>
+<section id="converting-gsm-to-srp">
+<h2>Converting GSM to SRP<a class="headerlink" href="#converting-gsm-to-srp" title="Link to this heading">¶</a></h2>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>$ pysradb gsm-to-srp GSM2177186
+
+experiment_alias study_accession
+GSM2177186       SRP075720
+</pre></div>
+</div>
+</section>
+<section id="converting-gsm-to-gse">
+<h2>Converting GSM to GSE<a class="headerlink" href="#converting-gsm-to-gse" title="Link to this heading">¶</a></h2>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>$ pysradb gsm-to-gse GSM2177186
+
+experiment_alias study_alias
+GSM2177186       GSE81903
+</pre></div>
+</div>
+</section>
+<section id="converting-gsm-to-srx">
+<h2>Converting GSM to SRX<a class="headerlink" href="#converting-gsm-to-srx" title="Link to this heading">¶</a></h2>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>$ pysradb gsm-to-srx GSM2177186
+
+experiment_alias experiment_accession
+GSM2177186       SRX1800089
+</pre></div>
+</div>
+</section>
+<section id="converting-gsm-to-srr">
+<h2>Converting GSM to SRR<a class="headerlink" href="#converting-gsm-to-srr" title="Link to this heading">¶</a></h2>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>$ pysradb gsm-to-srr GSM2177186
+
+experiment_alias run_accession
+GSM2177186       SRR3587529
+</pre></div>
+</div>
+</section>
 <section id="sra-accessions-for-geo-studies-gse-srp">
 <h2>SRA accessions for GEO studies (GSE =&gt; SRP)<a class="headerlink" href="#sra-accessions-for-geo-studies-gse-srp" title="Link to this heading">¶</a></h2>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>$ pysradb gse-to-srp GSE87328i
@@ -475,9 +574,85 @@ study_alias study_accession
 GSE87328    SRP090415
 </pre></div>
 </div>
-<p>Please see
-<a class="reference external" href="https://www.saket-choudhary.me/pysradb/quickstart.html#the-full-list-of-possible-pysradb-operations">quickstart</a>
-for all possible operations available through <code class="docutils literal notranslate"><span class="pre">pysradb</span></code>.</p>
+</section>
+<section id="converting-srp-to-pmid">
+<h2>Converting SRP to PMID<a class="headerlink" href="#converting-srp-to-pmid" title="Link to this heading">¶</a></h2>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>$ pysradb srp-to-pmid SRP045778
+
+srp_accession bioproject pmid
+SRP045778     PRJNA257197 27373336
+</pre></div>
+</div>
+</section>
+<section id="converting-gse-to-pmid">
+<h2>Converting GSE to PMID<a class="headerlink" href="#converting-gse-to-pmid" title="Link to this heading">¶</a></h2>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>$ pysradb gse-to-pmid GSE253406
+
+gse_accession pmid
+GSE253406     39528918
+</pre></div>
+</div>
+</section>
+<section id="extracting-identifiers-from-pmc-doi">
+<h2>Extracting identifiers from PMC/DOI<a class="headerlink" href="#extracting-identifiers-from-pmc-doi" title="Link to this heading">¶</a></h2>
+<p>Extract database identifiers (GSE, PRJNA, SRP, etc.) from PubMed Central articles or DOIs.</p>
+<section id="get-all-identifiers-from-a-pmid">
+<h3>Get all identifiers from a PMID<a class="headerlink" href="#get-all-identifiers-from-a-pmid" title="Link to this heading">¶</a></h3>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>$ pysradb pmid-to-identifiers 39528918
+
+pmid      pmc_id       gse_ids     prjna_ids    srp_ids
+39528918  PMC10802650  GSE253406   PRJNA1058002 SRP484103
+</pre></div>
+</div>
+</section>
+<section id="get-only-gse-or-srp-from-pmid">
+<h3>Get only GSE or SRP from PMID<a class="headerlink" href="#get-only-gse-or-srp-from-pmid" title="Link to this heading">¶</a></h3>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>$ pysradb pmid-to-gse 39528918
+
+pmid      pmc_id       gse_ids
+39528918  PMC10802650  GSE253406
+
+$ pysradb pmid-to-srp 39528918
+
+pmid      pmc_id       srp_ids
+39528918  PMC10802650  SRP484103
+</pre></div>
+</div>
+</section>
+<section id="extract-from-doi">
+<h3>Extract from DOI<a class="headerlink" href="#extract-from-doi" title="Link to this heading">¶</a></h3>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>$ pysradb doi-to-identifiers 10.12688/f1000research.18676.1
+
+doi                                 pmid      pmc_id      gse_ids  srp_ids
+10.12688/f1000research.18676.1      30873266  PMC6411813  GSE...   SRP...
+</pre></div>
+</div>
+</section>
+<section id="extract-from-pmc-id">
+<h3>Extract from PMC ID<a class="headerlink" href="#extract-from-pmc-id" title="Link to this heading">¶</a></h3>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>$ pysradb pmc-to-identifiers PMC10802650
+
+pmc_id       gse_ids     prjna_ids    srp_ids
+PMC10802650  GSE253406   PRJNA1058002 SRP484103
+</pre></div>
+</div>
+</section>
+</section>
+<section id="downloading-supplementary-files-from-geo">
+<h2>Downloading supplementary files from GEO<a class="headerlink" href="#downloading-supplementary-files-from-geo" title="Link to this heading">¶</a></h2>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>$ pysradb download -g GSE161707
+</pre></div>
+</div>
+</section>
+<section id="downloading-an-entire-sra-ena-project-multithreaded">
+<h2>Downloading an entire SRA/ENA project (multithreaded)<a class="headerlink" href="#downloading-an-entire-sra-ena-project-multithreaded" title="Link to this heading">¶</a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">pysradb</span></code> makes it super easy to download datasets from SRA in parallel:
+Using 8 threads to download:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>$ pysradb download -y -t 8 --out-dir ./pysradb_downloads -p SRP063852
+</pre></div>
+</div>
+<p>Downloads are organized by <code class="docutils literal notranslate"><span class="pre">SRP/SRX/SRR</span></code> mimicking the hierarchy of SRA
+projects.</p>
 </section>
 </section>
 
@@ -537,6 +712,12 @@ for all possible operations available through <code class="docutils literal notr
           <div class="toc-tree">
             <ul>
 <li><a class="reference internal" href="#">CLI</a><ul>
+<li><a class="reference internal" href="#enriching-metadata">Enriching metadata</a><ul>
+<li><a class="reference internal" href="#quickstart">Quickstart</a></li>
+<li><a class="reference internal" href="#prerequisites">Prerequisites</a></li>
+<li><a class="reference internal" href="#advanced-usage">Advanced Usage</a></li>
+</ul>
+</li>
 <li><a class="reference internal" href="#getting-metadata-for-a-sra-project-srp">Getting metadata for a SRA project (SRP)</a></li>
 <li><a class="reference internal" href="#experiment-accessions-for-a-project-srp-srx">Experiment accessions for a project (SRP =&gt; SRX)</a></li>
 <li><a class="reference internal" href="#sample-accessions-for-a-project-srp-srs">Sample accessions for a project (SRP =&gt; SRS)</a></li>
@@ -544,7 +725,22 @@ for all possible operations available through <code class="docutils literal notr
 <li><a class="reference internal" href="#experiment-accessions-for-runs-srr-srx">Experiment accessions for runs (SRR =&gt; SRX)</a></li>
 <li><a class="reference internal" href="#downaloading-entire-project">Downaloading entire project</a></li>
 <li><a class="reference internal" href="#geo-accessions-for-studies-srp-gse">GEO accessions for studies (SRP =&gt; GSE)</a></li>
+<li><a class="reference internal" href="#converting-gsm-to-srp">Converting GSM to SRP</a></li>
+<li><a class="reference internal" href="#converting-gsm-to-gse">Converting GSM to GSE</a></li>
+<li><a class="reference internal" href="#converting-gsm-to-srx">Converting GSM to SRX</a></li>
+<li><a class="reference internal" href="#converting-gsm-to-srr">Converting GSM to SRR</a></li>
 <li><a class="reference internal" href="#sra-accessions-for-geo-studies-gse-srp">SRA accessions for GEO studies (GSE =&gt; SRP)</a></li>
+<li><a class="reference internal" href="#converting-srp-to-pmid">Converting SRP to PMID</a></li>
+<li><a class="reference internal" href="#converting-gse-to-pmid">Converting GSE to PMID</a></li>
+<li><a class="reference internal" href="#extracting-identifiers-from-pmc-doi">Extracting identifiers from PMC/DOI</a><ul>
+<li><a class="reference internal" href="#get-all-identifiers-from-a-pmid">Get all identifiers from a PMID</a></li>
+<li><a class="reference internal" href="#get-only-gse-or-srp-from-pmid">Get only GSE or SRP from PMID</a></li>
+<li><a class="reference internal" href="#extract-from-doi">Extract from DOI</a></li>
+<li><a class="reference internal" href="#extract-from-pmc-id">Extract from PMC ID</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#downloading-supplementary-files-from-geo">Downloading supplementary files from GEO</a></li>
+<li><a class="reference internal" href="#downloading-an-entire-sra-ena-project-multithreaded">Downloading an entire SRA/ENA project (multithreaded)</a></li>
 </ul>
 </li>
 </ul>
