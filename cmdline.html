@@ -17,7 +17,7 @@
         <link rel="prefetch" href="_static/pysradb_v3.png" as="image">
 
     <!-- Generated with Sphinx 8.1.3 and Furo 2025.09.25 -->
-        <title>CLI - pysradb 2.5.1 documentation</title>
+        <title>CLI - pysradb 3.0.0.dev0 documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
     <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?v=580074bf" />
     <link rel="stylesheet" type="text/css" href="_static/graphviz.css?v=4ae1632d" />
@@ -188,7 +188,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="index.html"><div class="brand">pysradb 2.5.1 documentation</div></a>
+      <a href="index.html"><div class="brand">pysradb 3.0.0.dev0 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -212,7 +212,7 @@
     <img class="sidebar-logo" src="_static/pysradb_v3.png" alt="Logo"/>
   </div>
   
-  <span class="sidebar-brand-text">pysradb 2.5.1 documentation</span>
+  <span class="sidebar-brand-text">pysradb 3.0.0.dev0 documentation</span>
   
 </a><form class="sidebar-search-container" method="get" action="search.html" role="search">
   <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
@@ -442,6 +442,41 @@ SRP098789       SRX2536428           SRR5227313    RNA-Seq          SINGLE -
  28 WGS
 </pre></div>
 </div>
+</section>
+<section id="id1">
+<h2>Enriching metadata<a class="headerlink" href="#id1" title="Link to this heading">¶</a></h2>
+<p>You can enrich metadata with standardized biological attributes using LLMs through the <code class="docutils literal notranslate"><span class="pre">--enrich</span></code> flag:</p>
+<section id="basic-enrichment-using-default-backend">
+<h3>Basic enrichment (using default backend)<a class="headerlink" href="#basic-enrichment-using-default-backend" title="Link to this heading">¶</a></h3>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>$ pysradb metadata GSE286254 --detailed --enrich
+</pre></div>
+</div>
+<p>This returns the original metadata plus 9 enriched columns:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">guessed_organ</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">guessed_tissue</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">guessed_anatomical_system</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">guessed_cell_type</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">guessed_disease</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">guessed_sex</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">guessed_development_stage</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">guessed_assay</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">guessed_organism</span></code></p></li>
+</ul>
+</section>
+<section id="using-a-specific-llm-backend">
+<h3>Using a specific LLM backend<a class="headerlink" href="#using-a-specific-llm-backend" title="Link to this heading">¶</a></h3>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>$ pysradb metadata GSE286254 --detailed --enrich --enrich-backend ollama/llama3.2
+</pre></div>
+</div>
+<p>Available backends:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">ollama/phi3</span></code> (default, faster)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ollama/llama3.2</span></code> (more capable)</p></li>
+<li><p>Other compatible Ollama models</p></li>
+</ul>
+<p>For more details on enrichment features and prerequisites, see the <a class="reference internal" href="#enriching-metadata"><span class="std std-ref">Enriching metadata</span></a> section above.</p>
+</section>
 </section>
 <section id="experiment-accessions-for-a-project-srp-srx">
 <h2>Experiment accessions for a project (SRP =&gt; SRX)<a class="headerlink" href="#experiment-accessions-for-a-project-srp-srx" title="Link to this heading">¶</a></h2>
@@ -719,6 +754,11 @@ projects.</p>
 </ul>
 </li>
 <li><a class="reference internal" href="#getting-metadata-for-a-sra-project-srp">Getting metadata for a SRA project (SRP)</a></li>
+<li><a class="reference internal" href="#id1">Enriching metadata</a><ul>
+<li><a class="reference internal" href="#basic-enrichment-using-default-backend">Basic enrichment (using default backend)</a></li>
+<li><a class="reference internal" href="#using-a-specific-llm-backend">Using a specific LLM backend</a></li>
+</ul>
+</li>
 <li><a class="reference internal" href="#experiment-accessions-for-a-project-srp-srx">Experiment accessions for a project (SRP =&gt; SRX)</a></li>
 <li><a class="reference internal" href="#sample-accessions-for-a-project-srp-srs">Sample accessions for a project (SRP =&gt; SRS)</a></li>
 <li><a class="reference internal" href="#run-accessions-for-experiments-srx-srr">Run accessions for experiments (SRX =&gt; SRR)</a></li>
@@ -752,7 +792,7 @@ projects.</p>
       
     </aside>
   </div>
-</div><script src="_static/documentation_options.js?v=983e91d6"></script>
+</div><script src="_static/documentation_options.js?v=afcbd73c"></script>
     <script src="_static/doctools.js?v=9bcbadda"></script>
     <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/scripts/furo.js?v=46bd48cc"></script>
