@@ -1,0 +1,35 @@
+/* Override Pygments code block background color for light mode */
+.highlight {
+  background: #f5f5f5 !important;
+}
+
+/* Ensure code block background uses our color */
+.highlight pre {
+  background: #f5f5f5 !important;
+}
+
+/* Override inline code highlighting */
+.highlighttable {
+  background: #f5f5f5 !important;
+}
+
+.highlighttable td.linenos {
+  background: #f5f5f5 !important;
+}
+
+/* Dark mode overrides */
+[data-theme="dark"] .highlight {
+  background: #1e293b !important;
+}
+
+[data-theme="dark"] .highlight pre {
+  background: #1e293b !important;
+}
+
+[data-theme="dark"] .highlighttable {
+  background: #1e293b !important;
+}
+
+[data-theme="dark"] .highlighttable td.linenos {
+  background: #1e293b !important;
+}
