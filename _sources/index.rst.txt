@@ -74,6 +74,7 @@ Contents
    cmdline
    python-api-usage
    case_studies
+   notebooks
    commands
    contributing
    authors

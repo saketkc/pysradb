@@ -1,12 +1,8 @@
-
-<!DOCTYPE html>
-
-
-<html lang="en" data-content_root="./" >
-
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+<!doctype html>
+<html class="no-js" lang="en" data-content_root="./">
+  <head><meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
 
         <script async src="https://www.googletagmanager.com/gtag/js?id=G-CKQZFCEENZ"></script>
         <script>
@@ -17,470 +13,283 @@
             gtag('config', 'G-CKQZFCEENZ');
             
         </script>
-    
-    <title>Quickstart &#8212; pysradb 2.5.1 documentation</title>
-  
-  
-  
-  <script data-cfasync="false">
-    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
-    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
-  </script>
-  <!--
-    this give us a css class that will be invisible only if js is disabled
-  -->
-  <noscript>
-    <style>
-      .pst-js-only { display: none !important; }
+    <link rel="index" title="Index" href="genindex.html"><link rel="search" title="Search" href="search.html"><link rel="next" title="CLI" href="cmdline.html"><link rel="prev" title="Installation" href="installation.html">
+        <link rel="prefetch" href="_static/pysradb_v3.png" as="image">
 
-    </style>
-  </noscript>
-  
-  <!-- Loaded before other Sphinx assets -->
-  <link href="_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
-<link href="_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
-
-    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
+    <!-- Generated with Sphinx 8.1.3 and Furo 2025.09.25 -->
+        <title>Quickstart - pysradb 2.5.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?v=580074bf" />
     <link rel="stylesheet" type="text/css" href="_static/graphviz.css?v=4ae1632d" />
     <link rel="stylesheet" type="text/css" href="_static/sphinx-dropdown.css?v=995e94df" />
     <link rel="stylesheet" type="text/css" href="_static/panels-bootstrap.min.css?v=21c0b90a" />
-  
-  <!-- So that users can add custom icons -->
-  <script src="_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
-  <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
-<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
-
-    <script src="_static/documentation_options.js?v=983e91d6"></script>
-    <script src="_static/doctools.js?v=9bcbadda"></script>
-    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
-    <script>DOCUMENTATION_OPTIONS.pagename = 'quickstart';</script>
-    <link rel="index" title="Index" href="genindex.html" />
-    <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="CLI" href="cmdline.html" />
-    <link rel="prev" title="Installation" href="installation.html" />
-  <meta name="viewport" content="width=device-width, initial-scale=1"/>
-  <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="2.5.1" />
-  </head>
-  
-  
-  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
-
-  
-  
-  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
-  
-  <div id="pst-scroll-pixel-helper"></div>
-  
-  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
-    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
-
-  
-  <dialog id="pst-search-dialog">
+    <link rel="stylesheet" type="text/css" href="_static/tabs.css?v=a5c4661c" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/furo-extensions.css?v=8dab3a3b" />
+    <link rel="stylesheet" type="text/css" href="_static/custom.css" />
     
-<form class="bd-search d-flex align-items-center"
-      action="search.html"
-      method="get">
-  <i class="fa-solid fa-magnifying-glass"></i>
-  <input type="search"
-         class="form-control"
-         name="q"
-         placeholder="Search the docs ..."
-         aria-label="Search the docs ..."
-         autocomplete="off"
-         autocorrect="off"
-         autocapitalize="off"
-         spellcheck="false"/>
-  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+    
+
+
+<style>
+  body {
+    --color-code-background: #eeffcc;
+  --color-code-foreground: black;
+  --color-brand-primary: #0066cc;
+  --color-brand-content: #0066cc;
+  --color-code-background: #f5f5f5;
+  --color-inline-code-background: #f0f0f0;
+  
+  }
+  @media not print {
+    body[data-theme="dark"] {
+      --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  --color-brand-primary: #3b82f6;
+  --color-brand-content: #3b82f6;
+  --color-code-background: #1e293b;
+  --color-inline-code-background: #334155;
+  
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  --color-brand-primary: #3b82f6;
+  --color-brand-content: #3b82f6;
+  --color-code-background: #1e293b;
+  --color-inline-code-background: #334155;
+  
+      }
+    }
+  }
+</style></head>
+  <body>
+    
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-with-moon" viewBox="0 0 24 24">
+    <title>Auto light/dark, in light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path style="opacity: 50%" d="M 5.411 14.504 C 5.471 14.504 5.532 14.504 5.591 14.504 C 3.639 16.319 4.383 19.569 6.931 20.352 C 7.693 20.586 8.512 20.551 9.25 20.252 C 8.023 23.207 4.056 23.725 2.11 21.184 C 0.166 18.642 1.702 14.949 4.874 14.536 C 5.051 14.512 5.231 14.5 5.411 14.5 L 5.411 14.504 Z"/>
+      <line x1="14.5" y1="3.25" x2="14.5" y2="1.25"/>
+      <line x1="14.5" y1="15.85" x2="14.5" y2="17.85"/>
+      <line x1="10.044" y1="5.094" x2="8.63" y2="3.68"/>
+      <line x1="19" y1="14.05" x2="20.414" y2="15.464"/>
+      <line x1="8.2" y1="9.55" x2="6.2" y2="9.55"/>
+      <line x1="20.8" y1="9.55" x2="22.8" y2="9.55"/>
+      <line x1="10.044" y1="14.006" x2="8.63" y2="15.42"/>
+      <line x1="19" y1="5.05" x2="20.414" y2="3.636"/>
+      <circle cx="14.5" cy="9.55" r="3.6"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon-with-sun" viewBox="0 0 24 24">
+    <title>Auto light/dark, in dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path d="M 8.282 7.007 C 8.385 7.007 8.494 7.007 8.595 7.007 C 5.18 10.184 6.481 15.869 10.942 17.24 C 12.275 17.648 13.706 17.589 15 17.066 C 12.851 22.236 5.91 23.143 2.505 18.696 C -0.897 14.249 1.791 7.786 7.342 7.063 C 7.652 7.021 7.965 7 8.282 7 L 8.282 7.007 Z"/>
+      <line style="opacity: 50%" x1="18" y1="3.705" x2="18" y2="2.5"/>
+      <line style="opacity: 50%" x1="18" y1="11.295" x2="18" y2="12.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="4.816" x2="14.464" y2="3.964"/>
+      <line style="opacity: 50%" x1="20.711" y1="10.212" x2="21.563" y2="11.063"/>
+      <line style="opacity: 50%" x1="14.205" y1="7.5" x2="13.001" y2="7.5"/>
+      <line style="opacity: 50%" x1="21.795" y1="7.5" x2="23" y2="7.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="10.184" x2="14.464" y2="11.036"/>
+      <line style="opacity: 50%" x1="20.711" y1="4.789" x2="21.563" y2="3.937"/>
+      <circle style="opacity: 50%" cx="18" cy="7.5" r="2.169"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-pencil" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-pencil-code">
+      <path d="M4 20h4l10.5 -10.5a2.828 2.828 0 1 0 -4 -4l-10.5 10.5v4" />
+      <path d="M13.5 6.5l4 4" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+  <symbol id="svg-eye" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-eye-code">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
+      <path
+        d="M11.11 17.958c-3.209 -.307 -5.91 -2.293 -8.11 -5.958c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6c-.21 .352 -.427 .688 -.647 1.008" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation" aria-label="Toggle site navigation sidebar">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc" aria-label="Toggle table of contents sidebar">
+<label class="overlay sidebar-overlay" for="__navigation"></label>
+<label class="overlay toc-overlay" for="__toc"></label>
+
+<a class="skip-to-content muted-link" href="#furo-main-content">Skip to content</a>
+
+
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <span class="icon"><svg><use href="#svg-menu"></use></svg></span>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="index.html"><div class="brand">pysradb 2.5.1 documentation</div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle" aria-label="Toggle Light / Dark / Auto color theme">
+          <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+          <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon" for="__toc">
+        <span class="icon"><svg><use href="#svg-toc"></use></svg></span>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="index.html">
+  <div class="sidebar-logo-container">
+    <img class="sidebar-logo" src="_static/pysradb_v3.png" alt="Logo"/>
+  </div>
+  
+  <span class="sidebar-brand-text">pysradb 2.5.1 documentation</span>
+  
+</a><form class="sidebar-search-container" method="get" action="search.html" role="search">
+  <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
 </form>
-  </dialog>
+<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
+  <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1 current current-page"><a class="current reference internal" href="#">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cmdline.html">CLI</a></li>
+<li class="toctree-l1"><a class="reference internal" href="python-api-usage.html">Python API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="case_studies.html">Case Studies</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="notebooks.html">Tutorials &amp; Notebooks</a><input aria-label="Toggle navigation of Tutorials &amp; Notebooks" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/01.Python-API_demo.html">Python API Demo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/02.Commandline_download.html">Command-line Download</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/03.ParallelDownload.html">Parallel Download</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/04.SRA_to_fastq_conda.html">Converting SRA to FASTQ using Conda</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/05.Downloading_subsets_of_a_project.html">Downloading Subsets of a Project</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/06.Multiple_SRPs.html">Querying Multiple Projects</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/07.Query_Search.html">Query and Search</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/08.PMC_DOI_Identifiers.html">Extract Identifiers from PMC/DOI</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/09.Metadata_Enrichment_with_LLMs.html">Metadata Enrichment with LLMs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/11.Parse_Bioscience_Search.html">Parse BioScience Search</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="commands.html">API Documentation</a><input aria-label="Toggle navigation of API Documentation" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul class="simple">
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="contributing.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="authors.html">Credits</a></li>
+<li class="toctree-l1"><a class="reference internal" href="history.html">History</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="modules.html">pysradb</a><input aria-label="Toggle navigation of pysradb" class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="pysradb.html">pysradb package</a></li>
+</ul>
+</li>
+</ul>
 
-  <div class="pst-async-banner-revealer d-none">
-  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
 </div>
 
-  
-    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
-<div class="bd-header__inner bd-page-width">
-  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
-    <span class="fa-solid fa-bars"></span>
-  </button>
-  
-  
-  <div class="col-lg-3 navbar-header-items__start">
-    
-      <div class="navbar-item">
-
-  
-    
-  
-
-<a class="navbar-brand logo" href="index.html">
-  
-  
-  
-  
-  
-    
-    
-      
-    
-    
-    <img src="_static/pysradb_v3.png" class="logo__image only-light" alt="pysradb 2.5.1 documentation - Home"/>
-    <img src="_static/pysradb_v3.png" class="logo__image only-dark pst-js-only" alt="pysradb 2.5.1 documentation - Home"/>
-  
-  
-</a></div>
-    
-  </div>
-  
-  <div class="col-lg-9 navbar-header-items">
-    
-    <div class="me-auto navbar-header-items__center">
-      
-        <div class="navbar-item">
-<nav>
-  <ul class="bd-navbar-elements navbar-nav">
-    
-<li class="nav-item ">
-  <a class="nav-link nav-internal" href="installation.html">
-    Installation
-  </a>
-</li>
-
-
-<li class="nav-item current active">
-  <a class="nav-link nav-internal" href="#">
-    Quickstart
-  </a>
-</li>
-
-
-<li class="nav-item ">
-  <a class="nav-link nav-internal" href="cmdline.html">
-    CLI
-  </a>
-</li>
-
-
-<li class="nav-item ">
-  <a class="nav-link nav-internal" href="python-api-usage.html">
-    Python API
-  </a>
-</li>
-
-
-<li class="nav-item ">
-  <a class="nav-link nav-internal" href="case_studies.html">
-    Case Studies
-  </a>
-</li>
-
-            <li class="nav-item dropdown">
-                <button class="btn dropdown-toggle nav-item" type="button"
-                data-bs-toggle="dropdown" aria-expanded="false"
-                aria-controls="pst-nav-more-links">
-                    More
-                </button>
-                <ul id="pst-nav-more-links" class="dropdown-menu">
-                    
-<li class=" ">
-  <a class="nav-link dropdown-item nav-internal" href="commands.html">
-    API Documentation
-  </a>
-</li>
-
-
-<li class=" ">
-  <a class="nav-link dropdown-item nav-internal" href="contributing.html">
-    Contributing
-  </a>
-</li>
-
-
-<li class=" ">
-  <a class="nav-link dropdown-item nav-internal" href="authors.html">
-    Credits
-  </a>
-</li>
-
-
-<li class=" ">
-  <a class="nav-link dropdown-item nav-internal" href="history.html">
-    History
-  </a>
-</li>
-
-
-<li class=" ">
-  <a class="nav-link dropdown-item nav-internal" href="modules.html">
-    pysradb
-  </a>
-</li>
-
-                </ul>
-            </li>
-            
-  </ul>
-</nav></div>
+      </div>
       
     </div>
-    
-    
-    <div class="navbar-header-items__end">
-      
-        <div class="navbar-item navbar-persistent--container">
-          
-
-<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
- <i class="fa-solid fa-magnifying-glass"></i>
- <span class="search-button__default-text">Search</span>
- <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
-</button>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
+        <div class="content-icon-container">
+          <div class="view-this-page">
+  <a class="muted-link" href="_sources/quickstart.md.txt" title="View this page">
+    <svg><use href="#svg-eye"></use></svg>
+    <span class="visually-hidden">View this page</span>
+  </a>
+</div>
+<div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle" aria-label="Toggle Light / Dark / Auto color theme">
+              <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+              <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon" for="__toc">
+            <span class="icon"><svg><use href="#svg-toc"></use></svg></span>
+          </label>
         </div>
-      
-      
-        <div class="navbar-item">
-
-<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
-  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
-  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
-  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
-</button></div>
-      
-        <div class="navbar-item"><ul class="navbar-icon-links"
-    aria-label="Icon Links">
-        <li class="nav-item">
-          
-          
-          
-          
-          
-          
-          
-          
-          <a href="https://github.com/saketkc/pysradb" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i>
-            <span class="sr-only">GitHub</span></a>
-        </li>
-</ul></div>
-      
-    </div>
-    
-  </div>
-  
-  
-    <div class="navbar-persistent--mobile">
-
-<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
- <i class="fa-solid fa-magnifying-glass"></i>
- <span class="search-button__default-text">Search</span>
- <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
-</button>
-    </div>
-  
-
-  
-    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
-      <span class="fa-solid fa-outdent"></span>
-    </button>
-  
-</div>
-
-    </header>
-  
-
-  <div class="bd-container">
-    <div class="bd-container__inner bd-page-width">
-      
-      
-      
-      <dialog id="pst-primary-sidebar-modal"></dialog>
-      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
-        
-
-  
-  <div class="sidebar-header-items sidebar-primary__section">
-    
-    
-      <div class="sidebar-header-items__center">
-        
-          
-          
-            <div class="navbar-item">
-<nav>
-  <ul class="bd-navbar-elements navbar-nav">
-    
-<li class="nav-item ">
-  <a class="nav-link nav-internal" href="installation.html">
-    Installation
-  </a>
-</li>
-
-
-<li class="nav-item current active">
-  <a class="nav-link nav-internal" href="#">
-    Quickstart
-  </a>
-</li>
-
-
-<li class="nav-item ">
-  <a class="nav-link nav-internal" href="cmdline.html">
-    CLI
-  </a>
-</li>
-
-
-<li class="nav-item ">
-  <a class="nav-link nav-internal" href="python-api-usage.html">
-    Python API
-  </a>
-</li>
-
-
-<li class="nav-item ">
-  <a class="nav-link nav-internal" href="case_studies.html">
-    Case Studies
-  </a>
-</li>
-
-
-<li class="nav-item ">
-  <a class="nav-link nav-internal" href="commands.html">
-    API Documentation
-  </a>
-</li>
-
-
-<li class="nav-item ">
-  <a class="nav-link nav-internal" href="contributing.html">
-    Contributing
-  </a>
-</li>
-
-
-<li class="nav-item ">
-  <a class="nav-link nav-internal" href="authors.html">
-    Credits
-  </a>
-</li>
-
-
-<li class="nav-item ">
-  <a class="nav-link nav-internal" href="history.html">
-    History
-  </a>
-</li>
-
-
-<li class="nav-item ">
-  <a class="nav-link nav-internal" href="modules.html">
-    pysradb
-  </a>
-</li>
-
-  </ul>
-</nav></div>
-          
-        
-      </div>
-    
-    
-    
-      <div class="sidebar-header-items__end">
-        
-          <div class="navbar-item">
-
-<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
-  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
-  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
-  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
-</button></div>
-        
-          <div class="navbar-item"><ul class="navbar-icon-links"
-    aria-label="Icon Links">
-        <li class="nav-item">
-          
-          
-          
-          
-          
-          
-          
-          
-          <a href="https://github.com/saketkc/pysradb" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i>
-            <span class="sr-only">GitHub</span></a>
-        </li>
-</ul></div>
-        
-      </div>
-    
-  </div>
-  
-    <div class="sidebar-primary-items__start sidebar-primary__section">
-        <div class="sidebar-primary-item">
-<nav class="bd-docs-nav bd-links"
-     aria-label="Section Navigation">
-  <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
-  <div class="bd-toc-item navbar-nav"></div>
-</nav></div>
-    </div>
-  
-  
-  <div class="sidebar-primary-items__end sidebar-primary__section">
-      <div class="sidebar-primary-item">
-<div id="ethical-ad-placement"
-      class="flat"
-      data-ea-publisher="readthedocs"
-      data-ea-type="readthedocs-sidebar"
-      data-ea-manual="true">
-</div></div>
-  </div>
-
-
-      </div>
-      
-      <main id="main-content" class="bd-main" role="main">
-        
-        
-          <div class="bd-content">
-            <div class="bd-article-container">
-              
-              <div class="bd-header-article d-print-none">
-<div class="header-article-items header-article__inner">
-  
-    <div class="header-article-items__start">
-      
-        <div class="header-article-item">
-
-<nav aria-label="Breadcrumb" class="d-print-none">
-  <ul class="bd-breadcrumbs">
-    
-    <li class="breadcrumb-item breadcrumb-home">
-      <a href="index.html" class="nav-link" aria-label="Home">
-        <i class="fa-solid fa-home"></i>
-      </a>
-    </li>
-    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">Quickstart</span></li>
-  </ul>
-</nav>
-</div>
-      
-    </div>
-  
-  
-</div>
-</div>
-              
-              
-              
-                
-<div id="searchbox"></div>
-                <article class="bd-article">
-                  
-  <section id="quickstart">
-<h1>Quickstart<a class="headerlink" href="#quickstart" title="Link to this heading">#</a></h1>
+        <article role="main" id="furo-main-content">
+          <section id="quickstart">
+<h1>Quickstart<a class="headerlink" href="#quickstart" title="Link to this heading">¶</a></h1>
 <p>Most features in <code class="docutils literal notranslate"><span class="pre">pysradb</span></code> are accessible both from the command-line and
 as a python package. <code class="docutils literal notranslate"><span class="pre">pysradb</span></code> usage on the two platforms will be
 displayed by selecting the corresponding tab below.</p>
@@ -495,7 +304,7 @@ also wish to refer to the <code class="docutils literal notranslate"><span class
 :::</p>
 <hr class="docutils" />
 <section id="notebooks">
-<h2>Notebooks<a class="headerlink" href="#notebooks" title="Link to this heading">#</a></h2>
+<h2>Notebooks<a class="headerlink" href="#notebooks" title="Link to this heading">¶</a></h2>
 <p>A Google Colaboratory version of most used commands are available in
 this <a class="reference external" href="https://colab.research.google.com/drive/1C60V-jkcNZiaCra_V5iEyFs318jgVoUR">Colab
 Notebook</a>
@@ -523,27 +332,22 @@ Client</a></p></li>
 <li><p><a class="reference external" href="https://colab.research.google.com/github/saketkc/pysradb/blob/master/notebooks/09.Query_Search.ipynb">Searching
 SRA/GEO/ENA</a></p></li>
 </ol>
-<p>|</p>
 </section>
 <section id="metadata">
-<h2>Metadata<a class="headerlink" href="#metadata" title="Link to this heading">#</a></h2>
+<h2>Metadata<a class="headerlink" href="#metadata" title="Link to this heading">¶</a></h2>
 <p><code class="docutils literal notranslate"><span class="pre">pysradb</span></code> makes it very easy to obtain metadata from SRA/EBI:</p>
-<p>::: tabbed
-Console</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>pysradb<span class="w"> </span>metadata<span class="w"> </span>SRP265425
+<div class="sphinx-tabs docutils container">
+<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-0-0-0" aria-selected="true" class="sphinx-tabs-tab" id="tab-0-0-0" name="0-0" role="tab" tabindex="0">Console</button><button aria-controls="panel-0-0-1" aria-selected="false" class="sphinx-tabs-tab" id="tab-0-0-1" name="0-1" role="tab" tabindex="-1">Python</button></div><div aria-labelledby="tab-0-0-0" class="sphinx-tabs-panel" id="panel-0-0-0" name="0-0" role="tabpanel" tabindex="0"><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>pysradb<span class="w"> </span>metadata<span class="w"> </span>SRP265425
 </pre></div>
 </div>
-<p>:::</p>
-<p>::: tabbed
-Python</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">pysradb.sraweb</span><span class="w"> </span><span class="kn">import</span> <span class="n">SRAweb</span>
+</div><div aria-labelledby="tab-0-0-1" class="sphinx-tabs-panel" hidden="true" id="panel-0-0-1" name="0-1" role="tabpanel" tabindex="0"><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">pysradb.sraweb</span><span class="w"> </span><span class="kn">import</span> <span class="n">SRAweb</span>
 
 <span class="n">db</span> <span class="o">=</span> <span class="n">SRAweb</span><span class="p">()</span>
 <span class="n">df</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">metadata</span><span class="p">(</span><span class="s2">&quot;SRP265425&quot;</span><span class="p">)</span>
 <span class="n">df</span>
 </pre></div>
 </div>
-<p>:::</p>
+</div></div>
 <p>Output: :</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>study_accession experiment_accession    experiment_title    experiment_desc organism_taxid  organism_name   library_name    library_strategy    library_source  library_selection   library_layout  sample_accession    sample_title    instrument  instrument_model    instrument_model_desc   total_spots total_size  run_accession   run_total_spots run_total_bases
 SRP265425   SRX8434255  Ampliseq of SARS-CoV-2  Ampliseq of SARS-CoV-2  2697049 Severe acute respiratory syndrome coronavirus 2 63-2020-04-22   AMPLICON    VIRAL RNA   RT-PCR  SINGLE  SRS6745319      Ion Torrent S5 XL   Ion Torrent S5 XL   ION_TORRENT 1311358 83306910    SRR11886735 1311358 109594216
@@ -565,22 +369,18 @@ SRP265425   SRX8434242  Ampliseq of SARS-CoV-2  Ampliseq of SARS-CoV-2  2697049 
 <p>Additionally to obtain locations of <code class="docutils literal notranslate"><span class="pre">.fastq/.sra</span></code> files and other
 metadata:</p>
 <p><code class="docutils literal notranslate"><span class="pre">pysradb</span></code> makes it very easy to obtain metadata from SRA/EBI:</p>
-<p>::: tabbed
-Console</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>pysradb<span class="w"> </span>metadata<span class="w"> </span>SRP265425<span class="w"> </span>--detailed
+<div class="sphinx-tabs docutils container">
+<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-1-1-0" aria-selected="true" class="sphinx-tabs-tab" id="tab-1-1-0" name="1-0" role="tab" tabindex="0">Console</button><button aria-controls="panel-1-1-1" aria-selected="false" class="sphinx-tabs-tab" id="tab-1-1-1" name="1-1" role="tab" tabindex="-1">Python</button></div><div aria-labelledby="tab-1-1-0" class="sphinx-tabs-panel" id="panel-1-1-0" name="1-0" role="tabpanel" tabindex="0"><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>pysradb<span class="w"> </span>metadata<span class="w"> </span>SRP265425<span class="w"> </span>--detailed
 </pre></div>
 </div>
-<p>:::</p>
-<p>::: tabbed
-Python</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">pysradb.sraweb</span><span class="w"> </span><span class="kn">import</span> <span class="n">SRAweb</span>
+</div><div aria-labelledby="tab-1-1-1" class="sphinx-tabs-panel" hidden="true" id="panel-1-1-1" name="1-1" role="tabpanel" tabindex="0"><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">pysradb.sraweb</span><span class="w"> </span><span class="kn">import</span> <span class="n">SRAweb</span>
 
 <span class="n">db</span> <span class="o">=</span> <span class="n">SRAweb</span><span class="p">()</span>
 <span class="n">df</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">metadata</span><span class="p">(</span><span class="s2">&quot;SRP265425&quot;</span><span class="p">,</span> <span class="n">detailed</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="n">df</span>
 </pre></div>
 </div>
-<p>:::</p>
+</div></div>
 <p>Output: :</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>run_accession   study_accession experiment_accession    experiment_title    experiment_desc organism_taxid  organism_name   library_name    library_strategy    library_source  library_selection   library_layout  sample_accession    sample_title    instrument  instrument_model    instrument_model_desc   total_spots total_size  run_total_spots run_total_bases run_alias   sra_url_alt1    sra_url_alt2    sra_url experiment_alias    isolate collected_by    collection_date geo_loc_name    host    host_disease    isolation_source    lat_lon BioSampleModel  sra_url_alt3    ena_fastq_http  ena_fastq_http_1    ena_fastq_http_2    ena_fastq_ftp   ena_fastq_ftp_1 ena_fastq_ftp_2
 SRR11886735 SRP265425   SRX8434255  Ampliseq of SARS-CoV-2  Ampliseq of SARS-CoV-2  2697049 Severe acute respiratory syndrome coronavirus 2 63-2020-04-22   AMPLICON    VIRAL RNA   RT-PCR  SINGLE  SRS6745319      Ion Torrent S5 XL   Ion Torrent S5 XL   ION_TORRENT 1311358 83306910    1311358 109594216   IonXpress_063_R_2020_04_22_15_56_22_user_GCEID-S5-58-SARS_CoV2_SA4.bam  gs://sra-pub-src-9/SRR11886735/Wuhan_Hu_1_NC_045512_21500_and_subgenomics_SA4.fasta.1   https://sra-pub-sars-cov2.s3.amazonaws.com/sra-src/SRR11886735/Wuhan_Hu_1_NC_045512_21500_and_subgenomics_SA4.fasta.1   https://sra-download.ncbi.nlm.nih.gov/traces/sra0/SRR/011608/SRR11886735        GC-20   NA  02-Apr-2020 Australia: Victoria Homo sapiens    COVID-19    swab    NA  Pathogen.cl     http://ftp.sra.ebi.ac.uk/vol1/fastq/SRR118/035/SRR11886735/SRR11886735.fastq.gz         era-fasp@fasp.sra.ebi.ac.uk:vol1/fastq/SRR118/035/SRR11886735/SRR11886735.fastq.gz
@@ -601,27 +401,23 @@ SRR11886748 SRP265425   SRX8434242  Ampliseq of SARS-CoV-2  Ampliseq of SARS-CoV
 </div>
 </section>
 <section id="converting-between-accession-numbers">
-<h2>Converting between accession numbers<a class="headerlink" href="#converting-between-accession-numbers" title="Link to this heading">#</a></h2>
+<h2>Converting between accession numbers<a class="headerlink" href="#converting-between-accession-numbers" title="Link to this heading">¶</a></h2>
 <p><code class="docutils literal notranslate"><span class="pre">pysradb</span></code> provides a suite of commands for interoperability between
 conversion numbers.</p>
 <section id="convert-srp-to-srx">
-<h3>Convert SRP to SRX<a class="headerlink" href="#convert-srp-to-srx" title="Link to this heading">#</a></h3>
-<p>::: tabbed
-Console</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>pysradb<span class="w"> </span>srp-to-srx<span class="w"> </span>SRP098789
+<h3>Convert SRP to SRX<a class="headerlink" href="#convert-srp-to-srx" title="Link to this heading">¶</a></h3>
+<div class="sphinx-tabs docutils container">
+<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-2-2-0" aria-selected="true" class="sphinx-tabs-tab" id="tab-2-2-0" name="2-0" role="tab" tabindex="0">Console</button><button aria-controls="panel-2-2-1" aria-selected="false" class="sphinx-tabs-tab" id="tab-2-2-1" name="2-1" role="tab" tabindex="-1">Python</button></div><div aria-labelledby="tab-2-2-0" class="sphinx-tabs-panel" id="panel-2-2-0" name="2-0" role="tabpanel" tabindex="0"><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>pysradb<span class="w"> </span>srp-to-srx<span class="w"> </span>SRP098789
 </pre></div>
 </div>
-<p>:::</p>
-<p>::: tabbed
-Python</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">pysradb.sraweb</span><span class="w"> </span><span class="kn">import</span> <span class="n">SRAweb</span>
+</div><div aria-labelledby="tab-2-2-1" class="sphinx-tabs-panel" hidden="true" id="panel-2-2-1" name="2-1" role="tabpanel" tabindex="0"><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">pysradb.sraweb</span><span class="w"> </span><span class="kn">import</span> <span class="n">SRAweb</span>
 
 <span class="n">db</span> <span class="o">=</span> <span class="n">SRAweb</span><span class="p">()</span>
 <span class="n">df</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">srp</span><span class="o">-</span><span class="n">to</span><span class="o">-</span><span class="n">srx</span><span class="p">(</span><span class="s2">&quot;SRP098789&quot;</span><span class="p">)</span>
 <span class="n">df</span>
 </pre></div>
 </div>
-<p>:::</p>
+</div></div>
 <p>Output: :</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>study_accession experiment_accession    experiment_title        experiment_desc organism_taxid  organism_name   library_strategy        library_source  library_selection       sample_accession        sample_title    instrument      total_spots     total_size      run_accession   run_total_spots run_total_bases study_accesssion
 SRP098789       SRX2536428      GSM2476022: vehicle, 60 min, rep 5-mRNAseq; Homo sapiens; RNA-Seq       GSM2476022: vehicle, 60 min, rep 5-mRNAseq; Homo sapiens; RNA-Seq       9606    Homo sapiens    RNA-Seq TRANSCRIPTOMIC  cDNA    SRS1956378      Illumina HiSeq 2500     69422931        1545681856      SRR5227313      69422931        3540569481      SRP098789
@@ -652,26 +448,21 @@ SRP098789       SRX2536404      GSM2475998: 1.5 ?M PF-067446846, 10 min, rep 2; 
 SRP098789       SRX2536403      GSM2475997: 1.5 ?M PF-067446846, 10 min, rep 1; Homo sapiens; OTHER     GSM2475997: 1.5 ?M PF-067446846, 10 min, rep 1; Homo sapiens; OTHER     9606    Homo sapiens    OTHER   TRANSCRIPTOMIC  other   SRS1956353      Illumina HiSeq 2000     42082855        916745706       SRR5227288      42082855        2104142750      SRP098789
 </pre></div>
 </div>
-<p>|</p>
 </section>
 <section id="convert-gse-to-srp">
-<h3>Convert GSE to SRP<a class="headerlink" href="#convert-gse-to-srp" title="Link to this heading">#</a></h3>
-<p>::: tabbed
-Console</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>pysradb<span class="w"> </span>srp-to-srx<span class="w"> </span>SRP098789
+<h3>Convert GSE to SRP<a class="headerlink" href="#convert-gse-to-srp" title="Link to this heading">¶</a></h3>
+<div class="sphinx-tabs docutils container">
+<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-3-3-0" aria-selected="true" class="sphinx-tabs-tab" id="tab-3-3-0" name="3-0" role="tab" tabindex="0">Console</button><button aria-controls="panel-3-3-1" aria-selected="false" class="sphinx-tabs-tab" id="tab-3-3-1" name="3-1" role="tab" tabindex="-1">Python</button></div><div aria-labelledby="tab-3-3-0" class="sphinx-tabs-panel" id="panel-3-3-0" name="3-0" role="tabpanel" tabindex="0"><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>pysradb<span class="w"> </span>srp-to-srx<span class="w"> </span>SRP098789
 </pre></div>
 </div>
-<p>:::</p>
-<p>::: tabbed
-Python</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">pysradb.sraweb</span><span class="w"> </span><span class="kn">import</span> <span class="n">SRAweb</span>
+</div><div aria-labelledby="tab-3-3-1" class="sphinx-tabs-panel" hidden="true" id="panel-3-3-1" name="3-1" role="tabpanel" tabindex="0"><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">pysradb.sraweb</span><span class="w"> </span><span class="kn">import</span> <span class="n">SRAweb</span>
 
 <span class="n">db</span> <span class="o">=</span> <span class="n">SRAweb</span><span class="p">()</span>
 <span class="n">df</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">srp</span><span class="o">-</span><span class="n">to</span><span class="o">-</span><span class="n">srx</span><span class="p">(</span><span class="s2">&quot;SRP098789&quot;</span><span class="p">)</span>
 <span class="n">df</span>
 </pre></div>
 </div>
-<p>:::</p>
+</div></div>
 <p>Output: :</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>study_accession experiment_accession    experiment_title        experiment_desc organism_taxid  organism_name   library_strategy        library_source  library_selection       sample_accession        sample_title    instrument      total_spots     total_size      run_accession   run_total_spots run_total_bases study_accesssion
 SRP098789       SRX2536428      GSM2476022: vehicle, 60 min, rep 5-mRNAseq; Homo sapiens; RNA-Seq       GSM2476022: vehicle, 60 min, rep 5-mRNAseq; Homo sapiens; RNA-Seq       9606    Homo sapiens    RNA-Seq TRANSCRIPTOMIC  cDNA    SRS1956378      Illumina HiSeq 2500     69422931        1545681856      SRR5227313      69422931        3540569481      SRP098789
@@ -702,106 +493,85 @@ SRP098789       SRX2536404      GSM2475998: 1.5 ?M PF-067446846, 10 min, rep 2; 
 SRP098789       SRX2536403      GSM2475997: 1.5 ?M PF-067446846, 10 min, rep 1; Homo sapiens; OTHER     GSM2475997: 1.5 ?M PF-067446846, 10 min, rep 1; Homo sapiens; OTHER     9606    Homo sapiens    OTHER   TRANSCRIPTOMIC  other   SRS1956353      Illumina HiSeq 2000     42082855        916745706       SRR5227288      42082855        2104142750      SRP098789
 </pre></div>
 </div>
+</section>
+</section>
 <hr class="docutils" />
-<p>|</p>
-</section>
-</section>
 <section id="downloading-sequencing-data">
-<h2>Downloading sequencing data<a class="headerlink" href="#downloading-sequencing-data" title="Link to this heading">#</a></h2>
+<h2>Downloading sequencing data<a class="headerlink" href="#downloading-sequencing-data" title="Link to this heading">¶</a></h2>
 <p><code class="docutils literal notranslate"><span class="pre">pysradb</span></code> can alse be used to download either <code class="docutils literal notranslate"><span class="pre">.fastq</span></code> or <code class="docutils literal notranslate"><span class="pre">.sra</span></code>
 filesboth from ENA and SRA.</p>
 <section id="downloading-via-accession-number">
-<h3>Downloading via accession number<a class="headerlink" href="#downloading-via-accession-number" title="Link to this heading">#</a></h3>
-<p>::: tabbed
-Console</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>pysradb<span class="w"> </span>download<span class="w"> </span>SRP098789
+<h3>Downloading via accession number<a class="headerlink" href="#downloading-via-accession-number" title="Link to this heading">¶</a></h3>
+<div class="sphinx-tabs docutils container">
+<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-4-4-0" aria-selected="true" class="sphinx-tabs-tab" id="tab-4-4-0" name="4-0" role="tab" tabindex="0">Console</button><button aria-controls="panel-4-4-1" aria-selected="false" class="sphinx-tabs-tab" id="tab-4-4-1" name="4-1" role="tab" tabindex="-1">Python</button></div><div aria-labelledby="tab-4-4-0" class="sphinx-tabs-panel" id="panel-4-4-0" name="4-0" role="tabpanel" tabindex="0"><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>pysradb<span class="w"> </span>download<span class="w"> </span>SRP098789
 </pre></div>
 </div>
-<p>:::</p>
-<p>::: tabbed
-Python</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">pysradb.sraweb</span><span class="w"> </span><span class="kn">import</span> <span class="n">SRAweb</span>
+</div><div aria-labelledby="tab-4-4-1" class="sphinx-tabs-panel" hidden="true" id="panel-4-4-1" name="4-1" role="tabpanel" tabindex="0"><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">pysradb.sraweb</span><span class="w"> </span><span class="kn">import</span> <span class="n">SRAweb</span>
 
 <span class="n">db</span> <span class="o">=</span> <span class="n">SRAweb</span><span class="p">()</span>
 <span class="n">db</span><span class="o">.</span><span class="n">download</span><span class="p">(</span><span class="s2">&quot;SRP098789&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>:::</p>
-<p>|</p>
+</div></div>
 <p>It is also possible to pipe the dataframe from [metadata]{.title-ref} or
 [search]{.title-ref} to download, after filtering the dataframe entries:</p>
-<p>::: tabbed
-Console</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>pysradb<span class="w"> </span>metadata<span class="w"> </span>SRP276671<span class="w"> </span>--detailed<span class="w"> </span><span class="p">|</span><span class="w"> </span>pysradb<span class="w"> </span>download
+<div class="sphinx-tabs docutils container">
+<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-5-5-0" aria-selected="true" class="sphinx-tabs-tab" id="tab-5-5-0" name="5-0" role="tab" tabindex="0">Console</button><button aria-controls="panel-5-5-1" aria-selected="false" class="sphinx-tabs-tab" id="tab-5-5-1" name="5-1" role="tab" tabindex="-1">Python</button></div><div aria-labelledby="tab-5-5-0" class="sphinx-tabs-panel" id="panel-5-5-0" name="5-0" role="tabpanel" tabindex="0"><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>pysradb<span class="w"> </span>metadata<span class="w"> </span>SRP276671<span class="w"> </span>--detailed<span class="w"> </span><span class="p">|</span><span class="w"> </span>pysradb<span class="w"> </span>download
 </pre></div>
 </div>
-<p>:::</p>
-<p>::: tabbed
-Python</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">pysradb.sraweb</span><span class="w"> </span><span class="kn">import</span> <span class="n">SRAweb</span>
+</div><div aria-labelledby="tab-5-5-1" class="sphinx-tabs-panel" hidden="true" id="panel-5-5-1" name="5-1" role="tabpanel" tabindex="0"><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">pysradb.sraweb</span><span class="w"> </span><span class="kn">import</span> <span class="n">SRAweb</span>
 <span class="n">db</span> <span class="o">=</span> <span class="n">SRAweb</span><span class="p">()</span>
 <span class="n">df</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">sra_metadata</span><span class="p">(</span><span class="s1">&#39;SRP016501&#39;</span><span class="p">,</span> <span class="n">detailed</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="n">db</span><span class="o">.</span><span class="n">download</span><span class="p">(</span><span class="n">df</span><span class="o">=</span><span class="n">df</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>:::</p>
-<p>|</p>
+</div></div>
 </section>
 <section id="ultrafast-fastq-downloads">
-<h3>Ultrafast fastq downloads<a class="headerlink" href="#ultrafast-fastq-downloads" title="Link to this heading">#</a></h3>
+<h3>Ultrafast fastq downloads<a class="headerlink" href="#ultrafast-fastq-downloads" title="Link to this heading">¶</a></h3>
 <p>With
 <a class="reference external" href="https://downloads.asperasoft.com/en/downloads/8?list">aspera-client</a>
 installed, <code class="docutils literal notranslate"><span class="pre">pysradb</span></code> canan perform ultra fast downloads:</p>
 <p>To download all original fastqs with [aspera-client]{.title-ref}
 installed utilizing 8 threads:</p>
-<p>::: tabbed
-Console</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>pysradb<span class="w"> </span>download<span class="w"> </span>-t<span class="w"> </span><span class="m">8</span><span class="w"> </span>--use_ascp<span class="w"> </span>-p<span class="w"> </span>SRP002605
+<div class="sphinx-tabs docutils container">
+<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-6-6-0" aria-selected="true" class="sphinx-tabs-tab" id="tab-6-6-0" name="6-0" role="tab" tabindex="0">Console</button><button aria-controls="panel-6-6-1" aria-selected="false" class="sphinx-tabs-tab" id="tab-6-6-1" name="6-1" role="tab" tabindex="-1">Python</button></div><div aria-labelledby="tab-6-6-0" class="sphinx-tabs-panel" id="panel-6-6-0" name="6-0" role="tabpanel" tabindex="0"><div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>pysradb<span class="w"> </span>download<span class="w"> </span>-t<span class="w"> </span><span class="m">8</span><span class="w"> </span>--use_ascp<span class="w"> </span>-p<span class="w"> </span>SRP002605
 </pre></div>
 </div>
-<p>:::</p>
-<p>::: tabbed
-Python</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">pysradb.sraweb</span><span class="w"> </span><span class="kn">import</span> <span class="n">SRAweb</span>
+</div><div aria-labelledby="tab-6-6-1" class="sphinx-tabs-panel" hidden="true" id="panel-6-6-1" name="6-1" role="tabpanel" tabindex="0"><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">pysradb.sraweb</span><span class="w"> </span><span class="kn">import</span> <span class="n">SRAweb</span>
 
 <span class="n">db</span> <span class="o">=</span> <span class="n">SRAweb</span><span class="p">()</span>
 <span class="n">db</span><span class="o">.</span><span class="n">download</span><span class="p">(</span><span class="s2">&quot;SRP098789&quot;</span><span class="p">,</span> <span class="n">use_ascp</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">threads</span><span class="o">=</span><span class="mi">8</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>:::</p>
+</div></div>
 <p>Refer to the notebook for <a class="reference external" href="https://colab.research.google.com/github/saketkc/pysradb/blob/master/notebooks/08.pysradb_ascp_multithreaded.ipynb">(shallow) time
 benchmarks</a>.</p>
+</section>
+</section>
 <hr class="docutils" />
-<p>|</p>
-</section>
-</section>
 <section id="search">
-<h2>Search<a class="headerlink" href="#search" title="Link to this heading">#</a></h2>
+<h2>Search<a class="headerlink" href="#search" title="Link to this heading">¶</a></h2>
 <section id="retrieving-metadata-by-accession-number">
-<h3>Retrieving metadata by accession number<a class="headerlink" href="#retrieving-metadata-by-accession-number" title="Link to this heading">#</a></h3>
-<p>::: tabbed
-Console</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>pysradb<span class="w"> </span>metadata<span class="w"> </span>SRP276671
+<h3>Retrieving metadata by accession number<a class="headerlink" href="#retrieving-metadata-by-accession-number" title="Link to this heading">¶</a></h3>
+<div class="sphinx-tabs docutils container">
+<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-7-7-0" aria-selected="true" class="sphinx-tabs-tab" id="tab-7-7-0" name="7-0" role="tab" tabindex="0">Console</button><button aria-controls="panel-7-7-1" aria-selected="false" class="sphinx-tabs-tab" id="tab-7-7-1" name="7-1" role="tab" tabindex="-1">Python</button></div><div aria-labelledby="tab-7-7-0" class="sphinx-tabs-panel" id="panel-7-7-0" name="7-0" role="tabpanel" tabindex="0"><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>pysradb<span class="w"> </span>metadata<span class="w"> </span>SRP276671
 </pre></div>
 </div>
-<p>:::</p>
-<p>::: tabbed
-Python</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">pysradb.sraweb</span><span class="w"> </span><span class="kn">import</span> <span class="n">SRAweb</span>
+</div><div aria-labelledby="tab-7-7-1" class="sphinx-tabs-panel" hidden="true" id="panel-7-7-1" name="7-1" role="tabpanel" tabindex="0"><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">pysradb.sraweb</span><span class="w"> </span><span class="kn">import</span> <span class="n">SRAweb</span>
 
 <span class="n">db</span> <span class="o">=</span> <span class="n">SRAweb</span><span class="p">()</span>
 <span class="n">df</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">sra_metadata</span><span class="p">(</span><span class="s1">&#39;SRP016501&#39;</span><span class="p">)</span>
 <span class="n">df</span>
 </pre></div>
 </div>
-<p>:::</p>
+</div></div>
 <p>Output: :</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>study_accession experiment_accession    experiment_title        experiment_desc organism_taxid  organism_name   library_strategy        library_source  library_selection       sample_accession        sample_title    instrument      total_spots     total_size      run_accession   run_total_spots run_total_bases
 SRP276671       SRX8978626      hCov-19/Canada/ON/VIDO01/2020 (EPI ISL 413015)  hCov-19/Canada/ON/VIDO01/2020 (EPI ISL 413015)  2697049 Severe acute respiratory syndrome coronavirus 2 WGS     GENOMIC RT-PCR  SRS7233795      MinION  96202  79690689 SRR12486810     96202   86575096
 SRP276671       SRX8909137      hCoV-19/Canada/ON-VIDO-01/2020 (EPI_ISL_425177) hCoV-19/Canada/ON-VIDO-01/2020 (EPI_ISL_425177) 2697049 Severe acute respiratory syndrome coronavirus 2 WGS     GENOMIC RT-PCR  SRS7166526      Illumina MiSeq 866225   173474986       SRR12412952     866225  338457239
 </pre></div>
 </div>
-<p>|</p>
 <p>::: note
 ::: title
 Note
@@ -810,54 +580,44 @@ Note
 metadata as a [pandas]{.title-ref} DataFrame, with all regular
 select/query operations available through [pandas]{.title-ref}.
 :::</p>
-<p>|</p>
 <p>For more detailed metadata (including download URLs), we can include the
 [detailed]{.title-ref} flag:</p>
-<p>::: tabbed
-Console</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>pysradb<span class="w"> </span>metadata<span class="w"> </span>SRP276671<span class="w"> </span>--detailed
+<div class="sphinx-tabs docutils container">
+<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-8-8-0" aria-selected="true" class="sphinx-tabs-tab" id="tab-8-8-0" name="8-0" role="tab" tabindex="0">Console</button><button aria-controls="panel-8-8-1" aria-selected="false" class="sphinx-tabs-tab" id="tab-8-8-1" name="8-1" role="tab" tabindex="-1">Python</button></div><div aria-labelledby="tab-8-8-0" class="sphinx-tabs-panel" id="panel-8-8-0" name="8-0" role="tabpanel" tabindex="0"><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>pysradb<span class="w"> </span>metadata<span class="w"> </span>SRP276671<span class="w"> </span>--detailed
 </pre></div>
 </div>
-<p>:::</p>
-<p>::: tabbed
-Python</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">pysradb.sraweb</span><span class="w"> </span><span class="kn">import</span> <span class="n">SRAweb</span>
+</div><div aria-labelledby="tab-8-8-1" class="sphinx-tabs-panel" hidden="true" id="panel-8-8-1" name="8-1" role="tabpanel" tabindex="0"><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">pysradb.sraweb</span><span class="w"> </span><span class="kn">import</span> <span class="n">SRAweb</span>
 
 <span class="n">db</span> <span class="o">=</span> <span class="n">SRAweb</span><span class="p">()</span>
 <span class="n">df</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">sra_metadata</span><span class="p">(</span><span class="s1">&#39;SRP016501&#39;</span><span class="p">,</span> <span class="n">detailed</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="n">df</span>
 </pre></div>
 </div>
-<p>:::</p>
+</div></div>
 <p>Output: :</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>study_accession experiment_accession    experiment_title        experiment_desc organism_taxid  organism_name   library_strategy        library_source  library_selection       sample_accession        sample_title    instrument      total_spots     total_size      run_accession   run_total_spots run_total_bases run_alias       sra_url_alt     sra_url experiment_alias        isolate collected_by    collection_date geo_loc_name    host    host_disease    isolation_source       lat_lon  host_sex        host_subject_id passage_history BioSampleModel  sra_url_alt1    sra_url_alt2    sra_url_alt3   ena_fastq_http   ena_fastq_ftp
 SRP276671       SRX8978626      hCov-19/Canada/ON/VIDO01/2020 (EPI ISL 413015)  hCov-19/Canada/ON/VIDO01/2020 (EPI ISL 413015)  2697049 Severe acute respiratory syndrome coronavirus 2 WGS     GENOMIC RT-PCR  SRS7233795      N/A     MinION 96202    79690689        SRR12486810     96202   86575096        VIDO-01.tar.gz  https://sra-download.ncbi.nlm.nih.gov/traces/sra1/SRZ/012486/SRR12486810/VIDO-01.tar.gz https://sra-download.ncbi.nlm.nih.gov/traces/sra78/SRR/012194/SRR12486810       N/A     ON-VIDO-01-P3   Public Health Ontario   2020-01-23      Canada: Ontario Homo sapiens    COVID-19       missing  missing male    VIDO-01 Vero E6 P3      Pathogen.cl     N/A     N/A     N/A     http://ftp.sra.ebi.ac.uk/vol1/fastq/SRR124/010/SRR12486810/SRR12486810_1.fastq.gz       era-fasp@fasp.sra.ebi.ac.uk:vol1/fastq/SRR124/010/SRR12486810/SRR12486810_1.fastq.gz
 SRP276671       SRX8909137      hCoV-19/Canada/ON-VIDO-01/2020 (EPI_ISL_425177) hCoV-19/Canada/ON-VIDO-01/2020 (EPI_ISL_425177) 2697049 Severe acute respiratory syndrome coronavirus 2 WGS     GENOMIC RT-PCR  SRS7166526      N/A     Illumina MiSeq  866225  173474986       SRR12412952     866225  338457239       SP-2_R1.fastq.gz        N/A     https://sra-download.ncbi.nlm.nih.gov/traces/sra48/SRR/012122/SRR12412952       N/A     ON-VIDO-01-P2   Public Health Ontario   2020-01-23      Canada: Ontario Homo sapiens    COVID-19        missing missing male    VIDO-01 Vero E6 P2      Pathogen.cl    gs://sra-pub-src-10/SRR12412952/SP-2_R2.fastq.1  s3://sra-pub-src-10/SRR12412952/SP-2_R2.fastq.1 https://sra-pub-sars-cov2.s3.amazonaws.com/sra-src/SRR12412952/SP-2_R2.fastq.1  http://ftp.sra.ebi.ac.uk/vol1/fastq/SRR124/052/SRR12412952/SRR12412952.fastq.gz era-fasp@fasp.sra.ebi.ac.uk:vol1/fastq/SRR124/052/SRR12412952/SRR12412952.fastq.gz
 </pre></div>
 </div>
-<hr class="docutils" />
-<p>|</p>
 </section>
+<hr class="docutils" />
 <section id="searching-sra-ena-databases-and-retrieving-metadata">
-<h3>Searching SRA/ENA databases and retrieving metadata<a class="headerlink" href="#searching-sra-ena-databases-and-retrieving-metadata" title="Link to this heading">#</a></h3>
+<h3>Searching SRA/ENA databases and retrieving metadata<a class="headerlink" href="#searching-sra-ena-databases-and-retrieving-metadata" title="Link to this heading">¶</a></h3>
 <p>Let’s take for example we are interested in coronavirus sequences
 published on Short Reads Archive (SRA) in the first week of August 2020.</p>
-<p>::: tabbed
-Console</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>pysradb<span class="w"> </span>search<span class="w"> </span>-q<span class="w"> </span>coronavirus<span class="w"> </span>--publication-date<span class="w"> </span><span class="m">01</span>-08-2020:07-08-2020<span class="w"> </span>--max<span class="w"> </span><span class="m">10000</span>
+<div class="sphinx-tabs docutils container">
+<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-9-9-0" aria-selected="true" class="sphinx-tabs-tab" id="tab-9-9-0" name="9-0" role="tab" tabindex="0">Console</button><button aria-controls="panel-9-9-1" aria-selected="false" class="sphinx-tabs-tab" id="tab-9-9-1" name="9-1" role="tab" tabindex="-1">Python</button></div><div aria-labelledby="tab-9-9-0" class="sphinx-tabs-panel" id="panel-9-9-0" name="9-0" role="tabpanel" tabindex="0"><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>pysradb<span class="w"> </span>search<span class="w"> </span>-q<span class="w"> </span>coronavirus<span class="w"> </span>--publication-date<span class="w"> </span><span class="m">01</span>-08-2020:07-08-2020<span class="w"> </span>--max<span class="w"> </span><span class="m">10000</span>
 </pre></div>
 </div>
-<p>:::</p>
-<p>::: tabbed
-Python</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">pysradb.search</span><span class="w"> </span><span class="kn">import</span> <span class="n">SraSearch</span>
+</div><div aria-labelledby="tab-9-9-1" class="sphinx-tabs-panel" hidden="true" id="panel-9-9-1" name="9-1" role="tabpanel" tabindex="0"><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">pysradb.search</span><span class="w"> </span><span class="kn">import</span> <span class="n">SraSearch</span>
 
 <span class="n">instance</span> <span class="o">=</span> <span class="n">SraSearch</span><span class="p">(</span><span class="n">return_max</span><span class="o">=</span><span class="mi">10000</span><span class="p">,</span> <span class="n">query</span><span class="o">=</span><span class="s2">&quot;coronavirus&quot;</span><span class="p">,</span> <span class="n">publication_date</span><span class="o">=</span><span class="s2">&quot;01-08-2020:07-08-2020&quot;</span><span class="p">)</span>
 <span class="n">instance</span><span class="o">.</span><span class="n">search</span><span class="p">()</span>
 <span class="n">instance</span><span class="o">.</span><span class="n">get_df</span><span class="p">()</span>
 </pre></div>
 </div>
-<p>:::</p>
+</div></div>
 <p>Output (showing only the first 10 entries): :</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>study_accession  experiment_accession    experiment_title        sample_taxon_id sample_scientific_name  experiment_library_strategy     experiment_library_source       experiment_library_selection    sample_accession        sample_alias    experiment_instrument_model     pool_member_spots       run_1_size     run_1_accession  run_1_total_spots       run_1_total_bases       pmid
 SRP270658       SRX8679965      GSM4658808: SARS-CoV-2-infected 24h 3; Chlorocebus sabaeus; Severe acute respiratory syndrome coronavirus 2; RNA-Seq    60711   Chlorocebus sabaeus     RNA-Seq TRANSCRIPTOMIC  cDNA    SRS6959042      GSM4658808      NextSeq 500     104223040       9743267247      SRR12164500     104223040       31475358080     11295714
@@ -872,24 +632,19 @@ SRP253798       SRX8677883      Severe acute respiratory syndrome coronavirus 2 
 SRP253798       SRX8677882      Severe acute respiratory syndrome coronavirus 2 2697049 Severe acute respiratory syndrome coronavirus 2 AMPLICON        VIRAL RNA       PCR     SRS6956968      hCoV-19/Australia/VIC1814/2020  NextSeq 550    353704   40652239        SRR12162156     353704  103366580       11292869
 </pre></div>
 </div>
-<p>|</p>
 <p>To query European Nucleotide Archive (ENA) instead:</p>
-<p>::: tabbed
-Console</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>pysradb<span class="w"> </span>search<span class="w"> </span>--db<span class="w"> </span>ena<span class="w"> </span>-q<span class="w"> </span>coronavirus<span class="w"> </span>--publication-date<span class="w"> </span><span class="m">01</span>-08-2020:07-08-2020<span class="w"> </span>--max<span class="w"> </span><span class="m">10000</span>
+<div class="sphinx-tabs docutils container">
+<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-10-10-0" aria-selected="true" class="sphinx-tabs-tab" id="tab-10-10-0" name="10-0" role="tab" tabindex="0">Console</button><button aria-controls="panel-10-10-1" aria-selected="false" class="sphinx-tabs-tab" id="tab-10-10-1" name="10-1" role="tab" tabindex="-1">Python</button></div><div aria-labelledby="tab-10-10-0" class="sphinx-tabs-panel" id="panel-10-10-0" name="10-0" role="tabpanel" tabindex="0"><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>pysradb<span class="w"> </span>search<span class="w"> </span>--db<span class="w"> </span>ena<span class="w"> </span>-q<span class="w"> </span>coronavirus<span class="w"> </span>--publication-date<span class="w"> </span><span class="m">01</span>-08-2020:07-08-2020<span class="w"> </span>--max<span class="w"> </span><span class="m">10000</span>
 </pre></div>
 </div>
-<p>:::</p>
-<p>::: tabbed
-Python</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">pysradb.search</span><span class="w"> </span><span class="kn">import</span> <span class="n">EnaSearch</span>
+</div><div aria-labelledby="tab-10-10-1" class="sphinx-tabs-panel" hidden="true" id="panel-10-10-1" name="10-1" role="tabpanel" tabindex="0"><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">pysradb.search</span><span class="w"> </span><span class="kn">import</span> <span class="n">EnaSearch</span>
 
 <span class="n">instance</span> <span class="o">=</span> <span class="n">EnaSearch</span><span class="p">(</span><span class="n">return_max</span><span class="o">=</span><span class="mi">10000</span><span class="p">,</span> <span class="n">query</span><span class="o">=</span><span class="s2">&quot;coronavirus&quot;</span><span class="p">,</span> <span class="n">publication_date</span><span class="o">=</span><span class="s2">&quot;01-08-2020:07-08-2020&quot;</span><span class="p">)</span>
 <span class="n">instance</span><span class="o">.</span><span class="n">search</span><span class="p">()</span>
 <span class="n">instance</span><span class="o">.</span><span class="n">get_df</span><span class="p">()</span>
 </pre></div>
 </div>
-<p>:::</p>
+</div></div>
 <p>Output (showing only the first 10 entries): :</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>study_accession experiment_accession    experiment_title        description     tax_id  scientific_name library_strategylibrary_source  library_selection       sample_accession        sample_title    instrument_model        run_accession  read_count       base_count
 PRJEB12126      ERX1264364      Illumina HiSeq 2000 sequencing; Analysis of coronavirus and infected host-cell gene expression through RNA sequencing and ribosome profiling    Illumina HiSeq 2000 sequencing; Analysis of coronavirus and infected host-cell gene expression through RNA sequencing and ribosome profiling    10090   Mus musculus    OTHER   TRANSCRIPTOMIC  other   SAMEA3708907    Sample 1        Illumina HiSeq 2000     ERR1190989      38883498        1161289538
@@ -904,30 +659,24 @@ PRJEB12126      ERX1264372      Illumina HiSeq 2000 sequencing; Analysis of coro
 PRJEB12126      ERX1264373      Illumina HiSeq 2000 sequencing; Analysis of coronavirus and infected host-cell gene expression through RNA sequencing and ribosome profiling    Illumina HiSeq 2000 sequencing; Analysis of coronavirus and infected host-cell gene expression through RNA sequencing and ribosome profiling    10090   Mus musculus    RNA-Seq TRANSCRIPTOMIC  RANDOM  SAMEA3708916    Sample 18       Illumina HiSeq 2000     ERR1190998      68575621        2149386138
 </pre></div>
 </div>
-<p>|</p>
 <p>If the number of returned entries is large, it might be troublesome to
 filter through the metadata to find any information of interest. As a
 starting point, we can use the search feature to generate summary
 statistics and graphs for the search result:</p>
-<p>|</p>
 </section>
 <section id="statistics">
-<h3>Statistics<a class="headerlink" href="#statistics" title="Link to this heading">#</a></h3>
-<p>::: tabbed
-Console</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>pysradb<span class="w"> </span>search<span class="w"> </span>--db<span class="w"> </span>ena<span class="w"> </span>--organism<span class="w"> </span><span class="s2">&quot;Severe acute respiratory syndrome coronavirus 2&quot;</span><span class="w"> </span>--max<span class="w"> </span><span class="m">10000</span><span class="w"> </span>-s
+<h3>Statistics<a class="headerlink" href="#statistics" title="Link to this heading">¶</a></h3>
+<div class="sphinx-tabs docutils container">
+<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-11-11-0" aria-selected="true" class="sphinx-tabs-tab" id="tab-11-11-0" name="11-0" role="tab" tabindex="0">Console</button><button aria-controls="panel-11-11-1" aria-selected="false" class="sphinx-tabs-tab" id="tab-11-11-1" name="11-1" role="tab" tabindex="-1">Python</button></div><div aria-labelledby="tab-11-11-0" class="sphinx-tabs-panel" id="panel-11-11-0" name="11-0" role="tabpanel" tabindex="0"><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>pysradb<span class="w"> </span>search<span class="w"> </span>--db<span class="w"> </span>ena<span class="w"> </span>--organism<span class="w"> </span><span class="s2">&quot;Severe acute respiratory syndrome coronavirus 2&quot;</span><span class="w"> </span>--max<span class="w"> </span><span class="m">10000</span><span class="w"> </span>-s
 </pre></div>
 </div>
-<p>:::</p>
-<p>::: tabbed
-Python</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">pysradb.search</span><span class="w"> </span><span class="kn">import</span> <span class="n">EnaSearch</span>
+</div><div aria-labelledby="tab-11-11-1" class="sphinx-tabs-panel" hidden="true" id="panel-11-11-1" name="11-1" role="tabpanel" tabindex="0"><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">pysradb.search</span><span class="w"> </span><span class="kn">import</span> <span class="n">EnaSearch</span>
 <span class="n">instance</span> <span class="o">=</span> <span class="n">EnaSearch</span><span class="p">(</span><span class="n">return_max</span><span class="o">=</span><span class="mi">10000</span><span class="p">,</span> <span class="n">organism</span><span class="o">=</span><span class="s2">&quot;Severe acute respiratory syndrome coronavirus 2&quot;</span><span class="p">)</span>
 <span class="n">instance</span><span class="o">.</span><span class="n">search</span><span class="p">()</span>
 <span class="n">instance</span><span class="o">.</span><span class="n">show_result_statistics</span><span class="p">()</span>
 </pre></div>
 </div>
-<p>:::</p>
+</div></div>
 <p>Output: :</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>Statistics for the search query:
 =================================
@@ -973,26 +722,21 @@ Library layout:
     SINGLE:  4941
 </pre></div>
 </div>
-<p>|</p>
 </section>
 <section id="plotting">
-<h3>Plotting<a class="headerlink" href="#plotting" title="Link to this heading">#</a></h3>
-<p>::: tabbed
-Console</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>pysradb<span class="w"> </span>search<span class="w"> </span>--db<span class="w"> </span>ena<span class="w"> </span>-q<span class="w"> </span>e<span class="w"> </span>--max<span class="w"> </span><span class="m">500000</span><span class="w"> </span>-g
+<h3>Plotting<a class="headerlink" href="#plotting" title="Link to this heading">¶</a></h3>
+<div class="sphinx-tabs docutils container">
+<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-12-12-0" aria-selected="true" class="sphinx-tabs-tab" id="tab-12-12-0" name="12-0" role="tab" tabindex="0">Console</button><button aria-controls="panel-12-12-1" aria-selected="false" class="sphinx-tabs-tab" id="tab-12-12-1" name="12-1" role="tab" tabindex="-1">Python</button></div><div aria-labelledby="tab-12-12-0" class="sphinx-tabs-panel" id="panel-12-12-0" name="12-0" role="tabpanel" tabindex="0"><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>pysradb<span class="w"> </span>search<span class="w"> </span>--db<span class="w"> </span>ena<span class="w"> </span>-q<span class="w"> </span>e<span class="w"> </span>--max<span class="w"> </span><span class="m">500000</span><span class="w"> </span>-g
 </pre></div>
 </div>
-<p>:::</p>
-<p>::: tabbed
-Python</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">pysradb.search</span><span class="w"> </span><span class="kn">import</span> <span class="n">EnaSearch</span>
+</div><div aria-labelledby="tab-12-12-1" class="sphinx-tabs-panel" hidden="true" id="panel-12-12-1" name="12-1" role="tabpanel" tabindex="0"><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">pysradb.search</span><span class="w"> </span><span class="kn">import</span> <span class="n">EnaSearch</span>
 
 <span class="n">instance</span> <span class="o">=</span> <span class="n">EnaSearch</span><span class="p">(</span><span class="n">return_max</span><span class="o">=</span><span class="mi">500000</span><span class="p">,</span> <span class="s2">&quot;e&quot;</span><span class="p">)</span>
 <span class="n">instance</span><span class="o">.</span><span class="n">search</span><span class="p">()</span>
 <span class="n">instance</span><span class="o">.</span><span class="n">visualise_results</span><span class="p">()</span>
 </pre></div>
 </div>
-<p>:::</p>
+</div></div>
 <p>Output: Graphs generated will automatically be saved under
 [./search_plots/]{.title-ref}. Optionally, graphs can be shown in python
 by including the argument [show=True]{.title-ref} Here are some of the
@@ -1000,12 +744,11 @@ available graphs that will be generated:</p>
 <p><img alt="image" src="_images/e1.png" />{width=”600px”}</p>
 <p><img alt="image" src="_images/e2.png" />{width=”600px”}</p>
 <p><img alt="image" src="_images/e3.png" />{width=”600px”}</p>
+</section>
+</section>
 <hr class="docutils" />
-<p>|</p>
-</section>
-</section>
 <section id="list-of-possible-pysradb-title-ref-operations">
-<h2>List of possible [pysradb]{.title-ref} operations<a class="headerlink" href="#list-of-possible-pysradb-title-ref-operations" title="Link to this heading">#</a></h2>
+<h2>List of possible [pysradb]{.title-ref} operations<a class="headerlink" href="#list-of-possible-pysradb-title-ref-operations" title="Link to this heading">¶</a></h2>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>$ pysradb
 usage: pysradb [-h] [--version] [--citation]
                {metadb,metadata,download,search,gse-to-gsm,gse-to-srp,gsm-to-gse,gsm-to-srp,gsm-to-srr,gsm-to-srs,gsm-to-srx,srp-to-gse,srp-to-srr,srp-to-srs,srp-to-srx,srr-to-gsm,srr-to-srp,srr-to-srs,srr-to-srx,srs-to-gsm,srs-to-srx,srx-to-srp,srx-to-srr,srx-to-srs}
@@ -1056,140 +799,99 @@ commands/srx-to-srs
 </section>
 </section>
 
-
-                </article>
-              
-              
-              
-              
-              
-                <footer class="prev-next-footer d-print-none">
-                  
-<div class="prev-next-area">
-    <a class="left-prev"
-       href="installation.html"
-       title="previous page">
-      <i class="fa-solid fa-angle-left"></i>
-      <div class="prev-next-info">
-        <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">Installation</p>
+        </article>
       </div>
-    </a>
-    <a class="right-next"
-       href="cmdline.html"
-       title="next page">
-      <div class="prev-next-info">
-        <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">CLI</p>
-      </div>
-      <i class="fa-solid fa-angle-right"></i>
-    </a>
-</div>
-                </footer>
-              
+      <footer>
+        
+        <div class="related-pages">
+          <a class="next-page" href="cmdline.html">
+              <div class="page-info">
+                <div class="context">
+                  <span>Next</span>
+                </div>
+                <div class="title">CLI</div>
+              </div>
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+            </a>
+          <a class="prev-page" href="installation.html">
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+              <div class="page-info">
+                <div class="context">
+                  <span>Previous</span>
+                </div>
+                
+                <div class="title">Installation</div>
+                
+              </div>
+            </a>
+        </div>
+        <div class="bottom-of-page">
+          <div class="left-details">
+            <div class="copyright">
+                Copyright &#169; 2023, Saket Choudhary
             </div>
+            Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
             
-            
-              
-                <dialog id="pst-secondary-sidebar-modal"></dialog>
-                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
-
-
-  <div class="sidebar-secondary-item">
-<div
-    id="pst-page-navigation-heading-2"
-    class="page-toc tocsection onthispage">
-    <i class="fa-solid fa-list"></i> On this page
-  </div>
-  <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
-    <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#notebooks">Notebooks</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#metadata">Metadata</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#converting-between-accession-numbers">Converting between accession numbers</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#convert-srp-to-srx">Convert SRP to SRX</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#convert-gse-to-srp">Convert GSE to SRP</a></li>
-</ul>
-</li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#downloading-sequencing-data">Downloading sequencing data</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#downloading-via-accession-number">Downloading via accession number</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ultrafast-fastq-downloads">Ultrafast fastq downloads</a></li>
-</ul>
-</li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#search">Search</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#retrieving-metadata-by-accession-number">Retrieving metadata by accession number</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#searching-sra-ena-databases-and-retrieving-metadata">Searching SRA/ENA databases and retrieving metadata</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#statistics">Statistics</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#plotting">Plotting</a></li>
-</ul>
-</li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#list-of-possible-pysradb-title-ref-operations">List of possible [pysradb]{.title-ref} operations</a></li>
-</ul>
-  </nav></div>
-
-  <div class="sidebar-secondary-item">
-  <div role="note" aria-label="source link">
-    <h3>This Page</h3>
-    <ul class="this-page-menu">
-      <li><a href="_sources/quickstart.md.txt"
-            rel="nofollow">Show Source</a></li>
-    </ul>
-   </div></div>
-
-</div></div>
-              
+            <a href="https://github.com/pradyunsg/furo">Furo</a>
             
           </div>
-          <footer class="bd-footer-content">
+          <div class="right-details">
             
-          </footer>
+          </div>
+        </div>
         
-      </main>
+      </footer>
     </div>
+    <aside class="toc-drawer">
+      
+      
+      <div class="toc-sticky toc-scroll">
+        <div class="toc-title-container">
+          <span class="toc-title">
+            On this page
+          </span>
+        </div>
+        <div class="toc-tree-container">
+          <div class="toc-tree">
+            <ul>
+<li><a class="reference internal" href="#">Quickstart</a><ul>
+<li><a class="reference internal" href="#notebooks">Notebooks</a></li>
+<li><a class="reference internal" href="#metadata">Metadata</a></li>
+<li><a class="reference internal" href="#converting-between-accession-numbers">Converting between accession numbers</a><ul>
+<li><a class="reference internal" href="#convert-srp-to-srx">Convert SRP to SRX</a></li>
+<li><a class="reference internal" href="#convert-gse-to-srp">Convert GSE to SRP</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#downloading-sequencing-data">Downloading sequencing data</a><ul>
+<li><a class="reference internal" href="#downloading-via-accession-number">Downloading via accession number</a></li>
+<li><a class="reference internal" href="#ultrafast-fastq-downloads">Ultrafast fastq downloads</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#search">Search</a><ul>
+<li><a class="reference internal" href="#retrieving-metadata-by-accession-number">Retrieving metadata by accession number</a></li>
+<li><a class="reference internal" href="#searching-sra-ena-databases-and-retrieving-metadata">Searching SRA/ENA databases and retrieving metadata</a></li>
+<li><a class="reference internal" href="#statistics">Statistics</a></li>
+<li><a class="reference internal" href="#plotting">Plotting</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#list-of-possible-pysradb-title-ref-operations">List of possible [pysradb]{.title-ref} operations</a></li>
+</ul>
+</li>
+</ul>
+
+          </div>
+        </div>
+      </div>
+      
+      
+    </aside>
   </div>
-  
-  <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script defer src="_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
-<script defer src="_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
-
-  <footer class="bd-footer">
-<div class="bd-footer__inner bd-page-width">
-  
-    <div class="footer-items__start">
-      
-        <div class="footer-item">
-
-  <p class="copyright">
-    
-      © Copyright 2023, Saket Choudhary.
-      <br/>
-    
-  </p>
-</div>
-      
-        <div class="footer-item">
-
-  <p class="sphinx-version">
-    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.1.3.
-    <br/>
-  </p>
-</div>
-      
-    </div>
-  
-  
-  
-    <div class="footer-items__end">
-      
-        <div class="footer-item">
-<p class="theme-version">
-  <!-- # L10n: Setting the PST URL as an argument as this does not need to be localized -->
-  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.16.1.
-</p></div>
-      
-    </div>
-  
-</div>
-
-  </footer>
-  </body>
+</div><script src="_static/documentation_options.js?v=983e91d6"></script>
+    <script src="_static/doctools.js?v=9bcbadda"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/scripts/furo.js?v=46bd48cc"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="_static/tabs.js?v=3030b3cb"></script>
+    <script src="_static/copy-button.js?v=5b6a40c7"></script>
+    </body>
 </html>

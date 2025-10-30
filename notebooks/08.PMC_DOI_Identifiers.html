@@ -1,0 +1,1191 @@
+<!doctype html>
+<html class="no-js" lang="en" data-content_root="../">
+  <head><meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-CKQZFCEENZ"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            
+            gtag('config', 'G-CKQZFCEENZ');
+            
+        </script>
+    <link rel="index" title="Index" href="../genindex.html"><link rel="search" title="Search" href="../search.html"><link rel="next" title="Metadata Enrichment with LLMs" href="09.Metadata_Enrichment_with_LLMs.html"><link rel="prev" title="Query and Search" href="07.Query_Search.html">
+        <link rel="prefetch" href="../_static/pysradb_v3.png" as="image">
+
+    <!-- Generated with Sphinx 8.1.3 and Furo 2025.09.25 -->
+        <title>Extract Identifiers from PMC/DOI - pysradb 2.5.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?v=580074bf" />
+    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=4ae1632d" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-dropdown.css?v=995e94df" />
+    <link rel="stylesheet" type="text/css" href="../_static/panels-bootstrap.min.css?v=21c0b90a" />
+    <link rel="stylesheet" type="text/css" href="../_static/nbsphinx-code-cells.css?v=2aa19091" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo-extensions.css?v=8dab3a3b" />
+    <link rel="stylesheet" type="text/css" href="../_static/custom.css" />
+    
+    
+
+
+<style>
+  body {
+    --color-code-background: #eeffcc;
+  --color-code-foreground: black;
+  --color-brand-primary: #0066cc;
+  --color-brand-content: #0066cc;
+  --color-code-background: #f5f5f5;
+  --color-inline-code-background: #f0f0f0;
+  
+  }
+  @media not print {
+    body[data-theme="dark"] {
+      --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  --color-brand-primary: #3b82f6;
+  --color-brand-content: #3b82f6;
+  --color-code-background: #1e293b;
+  --color-inline-code-background: #334155;
+  
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  --color-brand-primary: #3b82f6;
+  --color-brand-content: #3b82f6;
+  --color-code-background: #1e293b;
+  --color-inline-code-background: #334155;
+  
+      }
+    }
+  }
+</style></head>
+  <body>
+    
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-with-moon" viewBox="0 0 24 24">
+    <title>Auto light/dark, in light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path style="opacity: 50%" d="M 5.411 14.504 C 5.471 14.504 5.532 14.504 5.591 14.504 C 3.639 16.319 4.383 19.569 6.931 20.352 C 7.693 20.586 8.512 20.551 9.25 20.252 C 8.023 23.207 4.056 23.725 2.11 21.184 C 0.166 18.642 1.702 14.949 4.874 14.536 C 5.051 14.512 5.231 14.5 5.411 14.5 L 5.411 14.504 Z"/>
+      <line x1="14.5" y1="3.25" x2="14.5" y2="1.25"/>
+      <line x1="14.5" y1="15.85" x2="14.5" y2="17.85"/>
+      <line x1="10.044" y1="5.094" x2="8.63" y2="3.68"/>
+      <line x1="19" y1="14.05" x2="20.414" y2="15.464"/>
+      <line x1="8.2" y1="9.55" x2="6.2" y2="9.55"/>
+      <line x1="20.8" y1="9.55" x2="22.8" y2="9.55"/>
+      <line x1="10.044" y1="14.006" x2="8.63" y2="15.42"/>
+      <line x1="19" y1="5.05" x2="20.414" y2="3.636"/>
+      <circle cx="14.5" cy="9.55" r="3.6"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon-with-sun" viewBox="0 0 24 24">
+    <title>Auto light/dark, in dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path d="M 8.282 7.007 C 8.385 7.007 8.494 7.007 8.595 7.007 C 5.18 10.184 6.481 15.869 10.942 17.24 C 12.275 17.648 13.706 17.589 15 17.066 C 12.851 22.236 5.91 23.143 2.505 18.696 C -0.897 14.249 1.791 7.786 7.342 7.063 C 7.652 7.021 7.965 7 8.282 7 L 8.282 7.007 Z"/>
+      <line style="opacity: 50%" x1="18" y1="3.705" x2="18" y2="2.5"/>
+      <line style="opacity: 50%" x1="18" y1="11.295" x2="18" y2="12.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="4.816" x2="14.464" y2="3.964"/>
+      <line style="opacity: 50%" x1="20.711" y1="10.212" x2="21.563" y2="11.063"/>
+      <line style="opacity: 50%" x1="14.205" y1="7.5" x2="13.001" y2="7.5"/>
+      <line style="opacity: 50%" x1="21.795" y1="7.5" x2="23" y2="7.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="10.184" x2="14.464" y2="11.036"/>
+      <line style="opacity: 50%" x1="20.711" y1="4.789" x2="21.563" y2="3.937"/>
+      <circle style="opacity: 50%" cx="18" cy="7.5" r="2.169"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-pencil" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-pencil-code">
+      <path d="M4 20h4l10.5 -10.5a2.828 2.828 0 1 0 -4 -4l-10.5 10.5v4" />
+      <path d="M13.5 6.5l4 4" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+  <symbol id="svg-eye" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-eye-code">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
+      <path
+        d="M11.11 17.958c-3.209 -.307 -5.91 -2.293 -8.11 -5.958c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6c-.21 .352 -.427 .688 -.647 1.008" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation" aria-label="Toggle site navigation sidebar">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc" aria-label="Toggle table of contents sidebar">
+<label class="overlay sidebar-overlay" for="__navigation"></label>
+<label class="overlay toc-overlay" for="__toc"></label>
+
+<a class="skip-to-content muted-link" href="#furo-main-content">Skip to content</a>
+
+
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <span class="icon"><svg><use href="#svg-menu"></use></svg></span>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="../index.html"><div class="brand">pysradb 2.5.1 documentation</div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle" aria-label="Toggle Light / Dark / Auto color theme">
+          <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+          <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon" for="__toc">
+        <span class="icon"><svg><use href="#svg-toc"></use></svg></span>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="../index.html">
+  <div class="sidebar-logo-container">
+    <img class="sidebar-logo" src="../_static/pysradb_v3.png" alt="Logo"/>
+  </div>
+  
+  <span class="sidebar-brand-text">pysradb 2.5.1 documentation</span>
+  
+</a><form class="sidebar-search-container" method="get" action="../search.html" role="search">
+  <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
+  <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../quickstart.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cmdline.html">CLI</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../python-api-usage.html">Python API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../case_studies.html">Case Studies</a></li>
+<li class="toctree-l1 current has-children"><a class="reference internal" href="../notebooks.html">Tutorials &amp; Notebooks</a><input aria-label="Toggle navigation of Tutorials &amp; Notebooks" checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="01.Python-API_demo.html">Python API Demo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="02.Commandline_download.html">Command-line Download</a></li>
+<li class="toctree-l2"><a class="reference internal" href="03.ParallelDownload.html">Parallel Download</a></li>
+<li class="toctree-l2"><a class="reference internal" href="04.SRA_to_fastq_conda.html">Converting SRA to FASTQ using Conda</a></li>
+<li class="toctree-l2"><a class="reference internal" href="05.Downloading_subsets_of_a_project.html">Downloading Subsets of a Project</a></li>
+<li class="toctree-l2"><a class="reference internal" href="06.Multiple_SRPs.html">Querying Multiple Projects</a></li>
+<li class="toctree-l2"><a class="reference internal" href="07.Query_Search.html">Query and Search</a></li>
+<li class="toctree-l2 current current-page"><a class="current reference internal" href="#">Extract Identifiers from PMC/DOI</a></li>
+<li class="toctree-l2"><a class="reference internal" href="09.Metadata_Enrichment_with_LLMs.html">Metadata Enrichment with LLMs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="11.Parse_Bioscience_Search.html">Parse BioScience Search</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../commands.html">API Documentation</a><input aria-label="Toggle navigation of API Documentation" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul class="simple">
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../contributing.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../authors.html">Credits</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../history.html">History</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../modules.html">pysradb</a><input aria-label="Toggle navigation of pysradb" class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../pysradb.html">pysradb package</a></li>
+</ul>
+</li>
+</ul>
+
+</div>
+</div>
+
+      </div>
+      
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
+        <div class="content-icon-container">
+          <div class="view-this-page">
+  <a class="muted-link" href="../_sources/notebooks/08.PMC_DOI_Identifiers.ipynb.txt" title="View this page">
+    <svg><use href="#svg-eye"></use></svg>
+    <span class="visually-hidden">View this page</span>
+  </a>
+</div>
+<div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle" aria-label="Toggle Light / Dark / Auto color theme">
+              <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+              <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon" for="__toc">
+            <span class="icon"><svg><use href="#svg-toc"></use></svg></span>
+          </label>
+        </div>
+        <article role="main" id="furo-main-content">
+          <p><a class="reference external" href="https://colab.research.google.com/github/saketkc/pysradb/blob/master/notebooks/08.PMC_DOI_Identifiers.ipynb"><img alt="Open In Colab" src="https://colab.research.google.com/assets/colab-badge.svg" /></a></p>
+<section id="Extract-Identifiers-from-PMC/DOI">
+<h1>Extract Identifiers from PMC/DOI<a class="headerlink" href="#Extract-Identifiers-from-PMC/DOI" title="Link to this heading">¶</a></h1>
+<p>This notebook shows how to extract SRA identifiers from PubMed Central articles and DOI references.</p>
+<section id="Extracting-Database-Identifiers-from-Literature-(PMC/DOI)">
+<h2>Extracting Database Identifiers from Literature (PMC/DOI)<a class="headerlink" href="#Extracting-Database-Identifiers-from-Literature-(PMC/DOI)" title="Link to this heading">¶</a></h2>
+<p>This notebook demonstrates how to extract database identifiers (GSE, PRJNA, SRP, SRR, SRX, SRS) from:</p>
+<ul class="simple">
+<li><p>PubMed Central (PMC) articles</p></li>
+<li><p>PubMed IDs (PMIDs)</p></li>
+<li><p>Digital Object Identifiers (DOIs)</p></li>
+</ul>
+</section>
+<section id="Setup">
+<h2>Setup<a class="headerlink" href="#Setup" title="Link to this heading">¶</a></h2>
+<p>First, let’s import pysradb and create a connection:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">pysradb.sraweb</span><span class="w"> </span><span class="kn">import</span> <span class="n">SRAweb</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+
+<span class="n">db</span> <span class="o">=</span> <span class="n">SRAweb</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+/Users/saket/github/pysradb/pysradb/utils.py:14: TqdmExperimentalWarning: Using `tqdm.autonotebook.tqdm` in notebook mode. Use `tqdm.tqdm` instead to force console mode (e.g. in jupyter console)
+  from tqdm.autonotebook import tqdm
+</pre></div></div>
+</div>
+</section>
+<section id="Example-1:-Extract-Identifiers-from-PMID">
+<h2>Example 1: Extract Identifiers from PMID<a class="headerlink" href="#Example-1:-Extract-Identifiers-from-PMID" title="Link to this heading">¶</a></h2>
+<p>Let’s extract all database identifiers from a PubMed article using its PMID:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Extract all identifiers from PMID 39528918</span>
+<span class="n">pmid</span> <span class="o">=</span> <span class="s2">&quot;39528918&quot;</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">pmid_to_identifiers</span><span class="p">(</span><span class="n">pmid</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Identifiers found for PMID </span><span class="si">{</span><span class="n">pmid</span><span class="si">}</span><span class="s2">:&quot;</span><span class="p">)</span>
+<span class="n">df</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Identifiers found for PMID 39528918:
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>pmid</th>
+      <th>pmc_id</th>
+      <th>gse_ids</th>
+      <th>prjna_ids</th>
+      <th>srp_ids</th>
+      <th>srr_ids</th>
+      <th>srx_ids</th>
+      <th>srs_ids</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>39528918</td>
+      <td>PMC11552371</td>
+      <td>GSE253406</td>
+      <td>None</td>
+      <td>SRP484103</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+</section>
+<section id="Example-2:-Get-Only-GSE-IDs-from-PMID">
+<h2>Example 2: Get Only GSE IDs from PMID<a class="headerlink" href="#Example-2:-Get-Only-GSE-IDs-from-PMID" title="Link to this heading">¶</a></h2>
+<p>Sometimes you only need specific identifier types:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Get only GSE identifiers</span>
+<span class="n">gse_df</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">pmid_to_gse</span><span class="p">(</span><span class="s2">&quot;39528918&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;GSE identifiers:&quot;</span><span class="p">)</span>
+<span class="n">gse_df</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+GSE identifiers:
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>pmid</th>
+      <th>pmc_id</th>
+      <th>gse_ids</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>39528918</td>
+      <td>PMC11552371</td>
+      <td>GSE253406</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+</section>
+<section id="Example-3:-Get-Only-SRP-IDs-from-PMID">
+<h2>Example 3: Get Only SRP IDs from PMID<a class="headerlink" href="#Example-3:-Get-Only-SRP-IDs-from-PMID" title="Link to this heading">¶</a></h2>
+<p><strong>Important:</strong> Even if the paper only mentions GSE IDs, pysradb will automatically convert them to SRP!</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Get only SRP identifiers</span>
+<span class="c1"># This works even if the paper only mentions GSE253406!</span>
+<span class="n">srp_df</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">pmid_to_srp</span><span class="p">(</span><span class="s2">&quot;39528918&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;SRP identifiers (auto-converted from GSE if needed):&quot;</span><span class="p">)</span>
+<span class="n">srp_df</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+SRP identifiers (auto-converted from GSE if needed):
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>pmid</th>
+      <th>pmc_id</th>
+      <th>srp_ids</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>39528918</td>
+      <td>PMC11552371</td>
+      <td>SRP484103</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+</section>
+<section id="Example-4:-Process-Multiple-PMIDs">
+<h2>Example 4: Process Multiple PMIDs<a class="headerlink" href="#Example-4:-Process-Multiple-PMIDs" title="Link to this heading">¶</a></h2>
+<p>You can batch process multiple PMIDs at once:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Process multiple PMIDs</span>
+<span class="n">pmids</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;39528918&quot;</span><span class="p">,</span> <span class="s2">&quot;27373336&quot;</span><span class="p">]</span>
+<span class="n">df_multiple</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">pmid_to_identifiers</span><span class="p">(</span><span class="n">pmids</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Identifiers from </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">pmids</span><span class="p">)</span><span class="si">}</span><span class="s2"> PMIDs:&quot;</span><span class="p">)</span>
+<span class="n">df_multiple</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Identifiers from 2 PMIDs:
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>pmid</th>
+      <th>pmc_id</th>
+      <th>gse_ids</th>
+      <th>prjna_ids</th>
+      <th>srp_ids</th>
+      <th>srr_ids</th>
+      <th>srx_ids</th>
+      <th>srs_ids</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>39528918</td>
+      <td>PMC11552371</td>
+      <td>GSE253406</td>
+      <td>None</td>
+      <td>SRP484103</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>27373336</td>
+      <td>PMC4958508</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+</section>
+<section id="Example-5:-Extract-from-PMC-ID">
+<h2>Example 5: Extract from PMC ID<a class="headerlink" href="#Example-5:-Extract-from-PMC-ID" title="Link to this heading">¶</a></h2>
+<p>If you have a PMC ID directly, you can use it:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Extract from PMC ID</span>
+<span class="n">pmc_df</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">pmc_to_identifiers</span><span class="p">(</span><span class="s2">&quot;PMC10802650&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Identifiers from PMC article:&quot;</span><span class="p">)</span>
+<span class="n">pmc_df</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Identifiers from PMC article:
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>pmc_id</th>
+      <th>gse_ids</th>
+      <th>prjna_ids</th>
+      <th>srp_ids</th>
+      <th>srr_ids</th>
+      <th>srx_ids</th>
+      <th>srs_ids</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>PMC10802650</td>
+      <td>&lt;NA&gt;</td>
+      <td>&lt;NA&gt;</td>
+      <td>&lt;NA&gt;</td>
+      <td>&lt;NA&gt;</td>
+      <td>&lt;NA&gt;</td>
+      <td>&lt;NA&gt;</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+</section>
+<section id="Example-6:-Extract-from-DOI">
+<h2>Example 6: Extract from DOI<a class="headerlink" href="#Example-6:-Extract-from-DOI" title="Link to this heading">¶</a></h2>
+<p>You can also extract identifiers directly from a DOI:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Extract from DOI</span>
+<span class="n">doi</span> <span class="o">=</span> <span class="s2">&quot;10.12688/f1000research.18676.1&quot;</span>
+<span class="n">doi_df</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">doi_to_identifiers</span><span class="p">(</span><span class="n">doi</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Identifiers from DOI </span><span class="si">{</span><span class="n">doi</span><span class="si">}</span><span class="s2">:&quot;</span><span class="p">)</span>
+<span class="n">doi_df</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Identifiers from DOI 10.12688/f1000research.18676.1:
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>doi</th>
+      <th>pmid</th>
+      <th>pmc_id</th>
+      <th>gse_ids</th>
+      <th>prjna_ids</th>
+      <th>srp_ids</th>
+      <th>srr_ids</th>
+      <th>srx_ids</th>
+      <th>srs_ids</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>10.12688/f1000research.18676.1</td>
+      <td>31114675</td>
+      <td>PMC6505635</td>
+      <td>GSE100007,GSE24355,GSE25842,GSE41637</td>
+      <td>None</td>
+      <td>SRP000941,SRP003870,SRP005378,SRP010679,SRP109126</td>
+      <td>SRR403882,SRR403883,SRR403884,SRR403885,SRR403...</td>
+      <td>SRX118285,SRX118286,SRX118287,SRX118288,SRX118...</td>
+      <td>SRS2282390,SRS2282391,SRS2282392,SRS2282393,SR...</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+</section>
+<section id="Example-7:-Get-GSE-from-DOI">
+<h2>Example 7: Get GSE from DOI<a class="headerlink" href="#Example-7:-Get-GSE-from-DOI" title="Link to this heading">¶</a></h2>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Get only GSE from DOI</span>
+<span class="n">doi_gse_df</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">doi_to_gse</span><span class="p">(</span><span class="s2">&quot;10.12688/f1000research.18676.1&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;GSE identifiers from DOI:&quot;</span><span class="p">)</span>
+<span class="n">doi_gse_df</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+GSE identifiers from DOI:
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>doi</th>
+      <th>pmid</th>
+      <th>pmc_id</th>
+      <th>gse_ids</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>10.12688/f1000research.18676.1</td>
+      <td>31114675</td>
+      <td>PMC6505635</td>
+      <td>GSE100007,GSE24355,GSE25842,GSE41637</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+</section>
+<section id="Example-8:-Complete-Workflow---DOI-to-Data-Download">
+<h2>Example 8: Complete Workflow - DOI to Data Download<a class="headerlink" href="#Example-8:-Complete-Workflow---DOI-to-Data-Download" title="Link to this heading">¶</a></h2>
+<p>Here’s a complete workflow from DOI to downloading the actual data:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Step 1: Extract SRP from DOI</span>
+<span class="n">doi</span> <span class="o">=</span> <span class="s2">&quot;10.12688/f1000research.18676.1&quot;</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Step 1: Extracting identifiers from DOI: </span><span class="si">{</span><span class="n">doi</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="n">doi_results</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">doi_to_srp</span><span class="p">(</span><span class="n">doi</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">doi_results</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Step 1: Extracting identifiers from DOI: 10.12688/f1000research.18676.1
+                              doi      pmid      pmc_id  \
+0  10.12688/f1000research.18676.1  31114675  PMC6505635
+
+                                             srp_ids
+0  SRP000941,SRP003870,SRP005378,SRP010679,SRP109126
+
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Step 2: Extract SRP ID from results</span>
+<span class="k">if</span> <span class="ow">not</span> <span class="n">doi_results</span><span class="o">.</span><span class="n">empty</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">pd</span><span class="o">.</span><span class="n">isna</span><span class="p">(</span><span class="n">doi_results</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s2">&quot;srp_ids&quot;</span><span class="p">]):</span>
+    <span class="n">srp_id</span> <span class="o">=</span> <span class="n">doi_results</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s2">&quot;srp_ids&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;,&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>  <span class="c1"># Take first SRP if multiple</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Step 2: Found SRP ID: </span><span class="si">{</span><span class="n">srp_id</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">()</span>
+
+    <span class="c1"># Step 3: Get metadata for this SRP</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Step 3: Getting metadata for </span><span class="si">{</span><span class="n">srp_id</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">metadata</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">sra_metadata</span><span class="p">(</span><span class="n">srp_id</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Found </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">metadata</span><span class="p">)</span><span class="si">}</span><span class="s2"> samples&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">metadata</span><span class="o">.</span><span class="n">head</span><span class="p">())</span>
+
+    <span class="c1"># Optional: Download the data</span>
+    <span class="c1"># db.download(df=metadata, out_dir=&#39;./downloads&#39;)</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;No SRP IDs found for this DOI&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Step 2: Found SRP ID: SRP000941
+
+Step 3: Getting metadata for SRP000941
+Found 2207 samples
+     study_accession                                     study_title  \
+16         SRP000941  UCSD Human Reference Epigenome Mapping Project
+1055       SRP000941  UCSD Human Reference Epigenome Mapping Project
+1053       SRP000941  UCSD Human Reference Epigenome Mapping Project
+1054       SRP000941  UCSD Human Reference Epigenome Mapping Project
+968        SRP000941  UCSD Human Reference Epigenome Mapping Project
+
+     experiment_accession                                   experiment_title  \
+16              SRX027874  Reference Epigenome: ChIP-Seq Analysis of H3K9...
+1055            SRX006235  Reference Epigenome: ChIP-Seq Analysis of H3K3...
+1053            SRX006237  Reference Epigenome: ChIP-Seq Analysis of H3K4...
+1054            SRX006236  Reference Epigenome: ChIP-Seq Analysis of H3K4...
+968             SRX006240  Whole genome shotgun bisulfite sequencing of t...
+
+                                        experiment_desc organism_taxid  \
+16    Reference Epigenome: ChIP-Seq Analysis of H3K9...           9606
+1055  Reference Epigenome: ChIP-Seq Analysis of H3K3...           9606
+1053  Reference Epigenome: ChIP-Seq Analysis of H3K4...           9606
+1054  Reference Epigenome: ChIP-Seq Analysis of H3K4...           9606
+968   Whole genome shotgun bisulfite sequencing of t...           9606
+
+     organism_name        library_name library_strategy library_source  ...  \
+16    Homo sapiens               LL218         ChIP-Seq        GENOMIC  ...
+1055  Homo sapiens               LL220         ChIP-Seq        GENOMIC  ...
+1053  Homo sapiens               LL227         ChIP-Seq        GENOMIC  ...
+1054  Homo sapiens               LL228         ChIP-Seq        GENOMIC  ...
+968   Homo sapiens  methylC-seq_h1_r2b    Bisulfite-Seq        GENOMIC  ...
+
+         biosample bioproject                   instrument  \
+16    SAMN00004698       &lt;NA&gt;  Illumina Genome Analyzer II
+1055  SAMN00004459       &lt;NA&gt;  Illumina Genome Analyzer II
+1053  SAMN00004459       &lt;NA&gt;  Illumina Genome Analyzer II
+1054  SAMN00004459       &lt;NA&gt;  Illumina Genome Analyzer II
+968   SAMN00004462       &lt;NA&gt;  Illumina Genome Analyzer II
+
+                 instrument_model instrument_model_desc total_spots  \
+16    Illumina Genome Analyzer II              ILLUMINA    59041190
+1055  Illumina Genome Analyzer II              ILLUMINA    12466602
+1053  Illumina Genome Analyzer II              ILLUMINA     7763232
+1054  Illumina Genome Analyzer II              ILLUMINA     7110370
+968   Illumina Genome Analyzer II              ILLUMINA   544393574
+
+       total_size run_accession run_total_spots run_total_bases
+16     1555248627     SRR018453        11642838       419142168
+1055    223017616     SRR018454        12466602       448797672
+1053    204130918     SRR018455         7763232       279476352
+1054    185053545     SRR018456         7110370       255973320
+968   32242220269     SRR018975        16729745      1455487815
+
+[5 rows x 24 columns]
+</pre></div></div>
+</div>
+</section>
+<section id="Example-9:-Batch-Processing-Literature">
+<h2>Example 9: Batch Processing Literature<a class="headerlink" href="#Example-9:-Batch-Processing-Literature" title="Link to this heading">¶</a></h2>
+<p>Process multiple papers from a literature search:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Simulate PMIDs from a literature search</span>
+<span class="n">pmids_from_search</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;39528918&quot;</span><span class="p">,</span> <span class="s2">&quot;27373336&quot;</span><span class="p">,</span> <span class="s2">&quot;30873266&quot;</span><span class="p">]</span>
+
+<span class="c1"># Extract identifiers from all papers</span>
+<span class="n">results</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">pmid_to_identifiers</span><span class="p">(</span><span class="n">pmids_from_search</span><span class="p">)</span>
+
+<span class="c1"># Filter to papers with SRA data</span>
+<span class="n">papers_with_sra</span> <span class="o">=</span> <span class="n">results</span><span class="p">[</span><span class="o">~</span><span class="n">pd</span><span class="o">.</span><span class="n">isna</span><span class="p">(</span><span class="n">results</span><span class="p">[</span><span class="s2">&quot;srp_ids&quot;</span><span class="p">])]</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Processed </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">pmids_from_search</span><span class="p">)</span><span class="si">}</span><span class="s2"> papers&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Found </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">papers_with_sra</span><span class="p">)</span><span class="si">}</span><span class="s2"> papers with SRA data&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Papers with SRA data:&quot;</span><span class="p">)</span>
+<span class="n">papers_with_sra</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Processed 3 papers
+Found 1 papers with SRA data
+
+Papers with SRA data:
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>pmid</th>
+      <th>pmc_id</th>
+      <th>gse_ids</th>
+      <th>prjna_ids</th>
+      <th>srp_ids</th>
+      <th>srr_ids</th>
+      <th>srx_ids</th>
+      <th>srs_ids</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>39528918</td>
+      <td>PMC11552371</td>
+      <td>GSE253406</td>
+      <td>None</td>
+      <td>SRP484103</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+</section>
+<section id="Example-10:-Extract-Identifiers-from-Custom-Text">
+<h2>Example 10: Extract Identifiers from Custom Text<a class="headerlink" href="#Example-10:-Extract-Identifiers-from-Custom-Text" title="Link to this heading">¶</a></h2>
+<p>You can also extract identifiers from any text:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Custom text with database identifiers</span>
+<span class="n">text</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">This study analyzed RNA-seq data from GSE81903 and SRP075720.</span>
+<span class="s2">The BioProject accession is PRJNA319707 with representative samples</span>
+<span class="s2">SRR3587529, SRX1800089, and SRS1467635.</span>
+<span class="s2">&quot;&quot;&quot;</span>
+
+<span class="n">identifiers</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">extract_identifiers_from_text</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Identifiers found in text:&quot;</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">id_type</span><span class="p">,</span> <span class="n">ids</span> <span class="ow">in</span> <span class="n">identifiers</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+    <span class="k">if</span> <span class="n">ids</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  </span><span class="si">{</span><span class="n">id_type</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">ids</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Identifiers found in text:
+  GSE: GSE81903
+  PRJNA: PRJNA319707
+  SRP: SRP075720
+  SRR: SRR3587529
+  SRX: SRX1800089
+  SRS: SRS1467635
+</pre></div></div>
+</div>
+</section>
+<section id="Example-11:-ID-Conversion-Utilities">
+<h2>Example 11: ID Conversion Utilities<a class="headerlink" href="#Example-11:-ID-Conversion-Utilities" title="Link to this heading">¶</a></h2>
+<p>Convert between different identifier types:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Convert PMID to PMC</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;PMID to PMC conversion:&quot;</span><span class="p">)</span>
+<span class="n">pmid_pmc</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">pmid_to_pmc</span><span class="p">(</span><span class="s2">&quot;27373336&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">pmid_pmc</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">()</span>
+
+<span class="c1"># Convert DOI to PMID</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;DOI to PMID conversion:&quot;</span><span class="p">)</span>
+<span class="n">doi_pmid</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">doi_to_pmid</span><span class="p">(</span><span class="s2">&quot;10.12688/f1000research.18676.1&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">doi_pmid</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+PMID to PMC conversion:
+{&#39;27373336&#39;: &#39;PMC4958508&#39;}
+
+DOI to PMID conversion:
+{&#39;10.12688/f1000research.18676.1&#39;: &#39;31114675&#39;}
+</pre></div></div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+</div>
+</section>
+</section>
+
+        </article>
+      </div>
+      <footer>
+        
+        <div class="related-pages">
+          <a class="next-page" href="09.Metadata_Enrichment_with_LLMs.html">
+              <div class="page-info">
+                <div class="context">
+                  <span>Next</span>
+                </div>
+                <div class="title">Metadata Enrichment with LLMs</div>
+              </div>
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+            </a>
+          <a class="prev-page" href="07.Query_Search.html">
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+              <div class="page-info">
+                <div class="context">
+                  <span>Previous</span>
+                </div>
+                
+                <div class="title">Query and Search</div>
+                
+              </div>
+            </a>
+        </div>
+        <div class="bottom-of-page">
+          <div class="left-details">
+            <div class="copyright">
+                Copyright &#169; 2023, Saket Choudhary
+            </div>
+            Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
+            
+            <a href="https://github.com/pradyunsg/furo">Furo</a>
+            
+          </div>
+          <div class="right-details">
+            
+          </div>
+        </div>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer">
+      
+      
+      <div class="toc-sticky toc-scroll">
+        <div class="toc-title-container">
+          <span class="toc-title">
+            On this page
+          </span>
+        </div>
+        <div class="toc-tree-container">
+          <div class="toc-tree">
+            <ul>
+<li><a class="reference internal" href="#">Extract Identifiers from PMC/DOI</a><ul>
+<li><a class="reference internal" href="#Extracting-Database-Identifiers-from-Literature-(PMC/DOI)">Extracting Database Identifiers from Literature (PMC/DOI)</a></li>
+<li><a class="reference internal" href="#Setup">Setup</a></li>
+<li><a class="reference internal" href="#Example-1:-Extract-Identifiers-from-PMID">Example 1: Extract Identifiers from PMID</a></li>
+<li><a class="reference internal" href="#Example-2:-Get-Only-GSE-IDs-from-PMID">Example 2: Get Only GSE IDs from PMID</a></li>
+<li><a class="reference internal" href="#Example-3:-Get-Only-SRP-IDs-from-PMID">Example 3: Get Only SRP IDs from PMID</a></li>
+<li><a class="reference internal" href="#Example-4:-Process-Multiple-PMIDs">Example 4: Process Multiple PMIDs</a></li>
+<li><a class="reference internal" href="#Example-5:-Extract-from-PMC-ID">Example 5: Extract from PMC ID</a></li>
+<li><a class="reference internal" href="#Example-6:-Extract-from-DOI">Example 6: Extract from DOI</a></li>
+<li><a class="reference internal" href="#Example-7:-Get-GSE-from-DOI">Example 7: Get GSE from DOI</a></li>
+<li><a class="reference internal" href="#Example-8:-Complete-Workflow---DOI-to-Data-Download">Example 8: Complete Workflow - DOI to Data Download</a></li>
+<li><a class="reference internal" href="#Example-9:-Batch-Processing-Literature">Example 9: Batch Processing Literature</a></li>
+<li><a class="reference internal" href="#Example-10:-Extract-Identifiers-from-Custom-Text">Example 10: Extract Identifiers from Custom Text</a></li>
+<li><a class="reference internal" href="#Example-11:-ID-Conversion-Utilities">Example 11: ID Conversion Utilities</a></li>
+</ul>
+</li>
+</ul>
+
+          </div>
+        </div>
+      </div>
+      
+      
+    </aside>
+  </div>
+</div><script src="../_static/documentation_options.js?v=983e91d6"></script>
+    <script src="../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/scripts/furo.js?v=46bd48cc"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="../_static/copy-button.js?v=5b6a40c7"></script>
+    </body>
+</html>

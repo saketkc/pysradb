@@ -1,0 +1,1043 @@
+<!doctype html>
+<html class="no-js" lang="en" data-content_root="../">
+  <head><meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-CKQZFCEENZ"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            
+            gtag('config', 'G-CKQZFCEENZ');
+            
+        </script>
+    <link rel="index" title="Index" href="../genindex.html"><link rel="search" title="Search" href="../search.html"><link rel="next" title="Downloading Subsets of a Project" href="05.Downloading_subsets_of_a_project.html"><link rel="prev" title="Parallel Download" href="03.ParallelDownload.html">
+        <link rel="prefetch" href="../_static/pysradb_v3.png" as="image">
+
+    <!-- Generated with Sphinx 8.1.3 and Furo 2025.09.25 -->
+        <title>Converting SRA to FASTQ using Conda - pysradb 2.5.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?v=580074bf" />
+    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=4ae1632d" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-dropdown.css?v=995e94df" />
+    <link rel="stylesheet" type="text/css" href="../_static/panels-bootstrap.min.css?v=21c0b90a" />
+    <link rel="stylesheet" type="text/css" href="../_static/nbsphinx-code-cells.css?v=2aa19091" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo-extensions.css?v=8dab3a3b" />
+    <link rel="stylesheet" type="text/css" href="../_static/custom.css" />
+    
+    
+
+
+<style>
+  body {
+    --color-code-background: #eeffcc;
+  --color-code-foreground: black;
+  --color-brand-primary: #0066cc;
+  --color-brand-content: #0066cc;
+  --color-code-background: #f5f5f5;
+  --color-inline-code-background: #f0f0f0;
+  
+  }
+  @media not print {
+    body[data-theme="dark"] {
+      --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  --color-brand-primary: #3b82f6;
+  --color-brand-content: #3b82f6;
+  --color-code-background: #1e293b;
+  --color-inline-code-background: #334155;
+  
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  --color-brand-primary: #3b82f6;
+  --color-brand-content: #3b82f6;
+  --color-code-background: #1e293b;
+  --color-inline-code-background: #334155;
+  
+      }
+    }
+  }
+</style></head>
+  <body>
+    
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-with-moon" viewBox="0 0 24 24">
+    <title>Auto light/dark, in light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path style="opacity: 50%" d="M 5.411 14.504 C 5.471 14.504 5.532 14.504 5.591 14.504 C 3.639 16.319 4.383 19.569 6.931 20.352 C 7.693 20.586 8.512 20.551 9.25 20.252 C 8.023 23.207 4.056 23.725 2.11 21.184 C 0.166 18.642 1.702 14.949 4.874 14.536 C 5.051 14.512 5.231 14.5 5.411 14.5 L 5.411 14.504 Z"/>
+      <line x1="14.5" y1="3.25" x2="14.5" y2="1.25"/>
+      <line x1="14.5" y1="15.85" x2="14.5" y2="17.85"/>
+      <line x1="10.044" y1="5.094" x2="8.63" y2="3.68"/>
+      <line x1="19" y1="14.05" x2="20.414" y2="15.464"/>
+      <line x1="8.2" y1="9.55" x2="6.2" y2="9.55"/>
+      <line x1="20.8" y1="9.55" x2="22.8" y2="9.55"/>
+      <line x1="10.044" y1="14.006" x2="8.63" y2="15.42"/>
+      <line x1="19" y1="5.05" x2="20.414" y2="3.636"/>
+      <circle cx="14.5" cy="9.55" r="3.6"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon-with-sun" viewBox="0 0 24 24">
+    <title>Auto light/dark, in dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path d="M 8.282 7.007 C 8.385 7.007 8.494 7.007 8.595 7.007 C 5.18 10.184 6.481 15.869 10.942 17.24 C 12.275 17.648 13.706 17.589 15 17.066 C 12.851 22.236 5.91 23.143 2.505 18.696 C -0.897 14.249 1.791 7.786 7.342 7.063 C 7.652 7.021 7.965 7 8.282 7 L 8.282 7.007 Z"/>
+      <line style="opacity: 50%" x1="18" y1="3.705" x2="18" y2="2.5"/>
+      <line style="opacity: 50%" x1="18" y1="11.295" x2="18" y2="12.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="4.816" x2="14.464" y2="3.964"/>
+      <line style="opacity: 50%" x1="20.711" y1="10.212" x2="21.563" y2="11.063"/>
+      <line style="opacity: 50%" x1="14.205" y1="7.5" x2="13.001" y2="7.5"/>
+      <line style="opacity: 50%" x1="21.795" y1="7.5" x2="23" y2="7.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="10.184" x2="14.464" y2="11.036"/>
+      <line style="opacity: 50%" x1="20.711" y1="4.789" x2="21.563" y2="3.937"/>
+      <circle style="opacity: 50%" cx="18" cy="7.5" r="2.169"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-pencil" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-pencil-code">
+      <path d="M4 20h4l10.5 -10.5a2.828 2.828 0 1 0 -4 -4l-10.5 10.5v4" />
+      <path d="M13.5 6.5l4 4" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+  <symbol id="svg-eye" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-eye-code">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
+      <path
+        d="M11.11 17.958c-3.209 -.307 -5.91 -2.293 -8.11 -5.958c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6c-.21 .352 -.427 .688 -.647 1.008" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation" aria-label="Toggle site navigation sidebar">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc" aria-label="Toggle table of contents sidebar">
+<label class="overlay sidebar-overlay" for="__navigation"></label>
+<label class="overlay toc-overlay" for="__toc"></label>
+
+<a class="skip-to-content muted-link" href="#furo-main-content">Skip to content</a>
+
+
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <span class="icon"><svg><use href="#svg-menu"></use></svg></span>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="../index.html"><div class="brand">pysradb 2.5.1 documentation</div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle" aria-label="Toggle Light / Dark / Auto color theme">
+          <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+          <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon" for="__toc">
+        <span class="icon"><svg><use href="#svg-toc"></use></svg></span>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="../index.html">
+  <div class="sidebar-logo-container">
+    <img class="sidebar-logo" src="../_static/pysradb_v3.png" alt="Logo"/>
+  </div>
+  
+  <span class="sidebar-brand-text">pysradb 2.5.1 documentation</span>
+  
+</a><form class="sidebar-search-container" method="get" action="../search.html" role="search">
+  <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
+  <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../quickstart.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cmdline.html">CLI</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../python-api-usage.html">Python API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../case_studies.html">Case Studies</a></li>
+<li class="toctree-l1 current has-children"><a class="reference internal" href="../notebooks.html">Tutorials &amp; Notebooks</a><input aria-label="Toggle navigation of Tutorials &amp; Notebooks" checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="01.Python-API_demo.html">Python API Demo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="02.Commandline_download.html">Command-line Download</a></li>
+<li class="toctree-l2"><a class="reference internal" href="03.ParallelDownload.html">Parallel Download</a></li>
+<li class="toctree-l2 current current-page"><a class="current reference internal" href="#">Converting SRA to FASTQ using Conda</a></li>
+<li class="toctree-l2"><a class="reference internal" href="05.Downloading_subsets_of_a_project.html">Downloading Subsets of a Project</a></li>
+<li class="toctree-l2"><a class="reference internal" href="06.Multiple_SRPs.html">Querying Multiple Projects</a></li>
+<li class="toctree-l2"><a class="reference internal" href="07.Query_Search.html">Query and Search</a></li>
+<li class="toctree-l2"><a class="reference internal" href="08.PMC_DOI_Identifiers.html">Extract Identifiers from PMC/DOI</a></li>
+<li class="toctree-l2"><a class="reference internal" href="09.Metadata_Enrichment_with_LLMs.html">Metadata Enrichment with LLMs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="11.Parse_Bioscience_Search.html">Parse BioScience Search</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../commands.html">API Documentation</a><input aria-label="Toggle navigation of API Documentation" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul class="simple">
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../contributing.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../authors.html">Credits</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../history.html">History</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../modules.html">pysradb</a><input aria-label="Toggle navigation of pysradb" class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../pysradb.html">pysradb package</a></li>
+</ul>
+</li>
+</ul>
+
+</div>
+</div>
+
+      </div>
+      
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
+        <div class="content-icon-container">
+          <div class="view-this-page">
+  <a class="muted-link" href="../_sources/notebooks/04.SRA_to_fastq_conda.ipynb.txt" title="View this page">
+    <svg><use href="#svg-eye"></use></svg>
+    <span class="visually-hidden">View this page</span>
+  </a>
+</div>
+<div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle" aria-label="Toggle Light / Dark / Auto color theme">
+              <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+              <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon" for="__toc">
+            <span class="icon"><svg><use href="#svg-toc"></use></svg></span>
+          </label>
+        </div>
+        <article role="main" id="furo-main-content">
+          <p><a class="reference external" href="https://colab.research.google.com/github/saketkc/pysradb/blob/master/notebooks/04.SRA_to_fastq_conda.ipynb"><img alt="Open In Colab" src="https://colab.research.google.com/assets/colab-badge.svg" /></a></p>
+<section id="Converting-SRA-to-FASTQ-using-Conda">
+<h1>Converting SRA to FASTQ using Conda<a class="headerlink" href="#Converting-SRA-to-FASTQ-using-Conda" title="Link to this heading">¶</a></h1>
+<p>This notebook demonstrates how to convert SRA files to FASTQ format using conda and parallel-fastq-dump.</p>
+<section id="Install-Conda">
+<h2>Install Conda<a class="headerlink" href="#Install-Conda" title="Link to this heading">¶</a></h2>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-none notranslate"><div class="highlight"><pre><span></span>!wget -c https://repo.continuum.io/archive/Anaconda3-5.1.0-Linux-x86_64.sh
+!chmod +x Anaconda3-5.1.0-Linux-x86_64.sh
+!bash ./Anaconda3-5.1.0-Linux-x86_64.sh -b -f -p /usr/local
+
+import sys
+
+sys.path.append(&quot;/usr/local/lib/python3.6/site-packages/&quot;)
+
+!conda config --add channels defaults
+!conda config --add channels bioconda
+!conda config --add channels conda-forge
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+--2020-02-13 07:19:36--  https://repo.continuum.io/archive/Anaconda3-5.1.0-Linux-x86_64.sh
+Resolving repo.continuum.io (repo.continuum.io)... 104.18.201.79, 104.18.200.79, 2606:4700::6812:c94f, ...
+Connecting to repo.continuum.io (repo.continuum.io)|104.18.201.79|:443... connected.
+HTTP request sent, awaiting response... 200 OK
+Length: 577996269 (551M) [application/x-sh]
+Saving to: ‘Anaconda3-5.1.0-Linux-x86_64.sh’
+
+Anaconda3-5.1.0-Lin 100%[===================&gt;] 551.22M   131MB/s    in 4.3s
+
+2020-02-13 07:19:46 (127 MB/s) - ‘Anaconda3-5.1.0-Linux-x86_64.sh’ saved [577996269/577996269]
+
+PREFIX=/usr/local
+installing: python-3.6.4-hc3d631a_1 ...
+Python 3.6.4 :: Anaconda, Inc.
+installing: ca-certificates-2017.08.26-h1d4fec5_0 ...
+installing: conda-env-2.6.0-h36134e3_1 ...
+installing: intel-openmp-2018.0.0-hc7b2577_8 ...
+installing: libgcc-ng-7.2.0-h7cc24e2_2 ...
+installing: libgfortran-ng-7.2.0-h9f7466a_2 ...
+installing: libstdcxx-ng-7.2.0-h7a57d05_2 ...
+installing: bzip2-1.0.6-h9a117a8_4 ...
+installing: expat-2.2.5-he0dffb1_0 ...
+installing: gmp-6.1.2-h6c8ec71_1 ...
+installing: graphite2-1.3.10-hf63cedd_1 ...
+installing: icu-58.2-h9c2bf20_1 ...
+installing: jbig-2.1-hdba287a_0 ...
+installing: jpeg-9b-h024ee3a_2 ...
+installing: libffi-3.2.1-hd88cf55_4 ...
+installing: libsodium-1.0.15-hf101ebd_0 ...
+installing: libtool-2.4.6-h544aabb_3 ...
+installing: libxcb-1.12-hcd93eb1_4 ...
+installing: lzo-2.10-h49e0be7_2 ...
+installing: mkl-2018.0.1-h19d6760_4 ...
+installing: ncurses-6.0-h9df7e31_2 ...
+installing: openssl-1.0.2n-hb7f436b_0 ...
+installing: patchelf-0.9-hf79760b_2 ...
+installing: pcre-8.41-hc27e229_1 ...
+installing: pixman-0.34.0-hceecf20_3 ...
+installing: tk-8.6.7-hc745277_3 ...
+installing: unixodbc-2.3.4-hc36303a_1 ...
+installing: xz-5.2.3-h55aa19d_2 ...
+installing: yaml-0.1.7-had09818_2 ...
+installing: zlib-1.2.11-ha838bed_2 ...
+installing: glib-2.53.6-h5d9569c_2 ...
+installing: hdf5-1.10.1-h9caa474_1 ...
+installing: libedit-3.1-heed3624_0 ...
+installing: libpng-1.6.34-hb9fc6fc_0 ...
+installing: libssh2-1.8.0-h9cfc8f7_4 ...
+installing: libtiff-4.0.9-h28f6b97_0 ...
+installing: libxml2-2.9.7-h26e45fe_0 ...
+installing: mpfr-3.1.5-h11a74b3_2 ...
+installing: pandoc-1.19.2.1-hea2e7c5_1 ...
+installing: readline-7.0-ha6073c6_4 ...
+installing: zeromq-4.2.2-hbedb6e5_2 ...
+installing: dbus-1.12.2-hc3f9b76_1 ...
+installing: freetype-2.8-hab7d2ae_1 ...
+installing: gstreamer-1.12.4-hb53b477_0 ...
+installing: libcurl-7.58.0-h1ad7b7a_0 ...
+installing: libxslt-1.1.32-h1312cb7_0 ...
+installing: mpc-1.0.3-hec55b23_5 ...
+installing: sqlite-3.22.0-h1bed415_0 ...
+installing: curl-7.58.0-h84994c4_0 ...
+installing: fontconfig-2.12.4-h88586e7_1 ...
+installing: gst-plugins-base-1.12.4-h33fb286_0 ...
+installing: alabaster-0.7.10-py36h306e16b_0 ...
+installing: asn1crypto-0.24.0-py36_0 ...
+installing: attrs-17.4.0-py36_0 ...
+installing: backports-1.0-py36hfa02d7e_1 ...
+installing: beautifulsoup4-4.6.0-py36h49b8c8c_1 ...
+installing: bitarray-0.8.1-py36h14c3975_1 ...
+installing: boto-2.48.0-py36h6e4cd66_1 ...
+installing: cairo-1.14.12-h77bcde2_0 ...
+installing: certifi-2018.1.18-py36_0 ...
+installing: chardet-3.0.4-py36h0f667ec_1 ...
+installing: click-6.7-py36h5253387_0 ...
+installing: cloudpickle-0.5.2-py36_1 ...
+installing: colorama-0.3.9-py36h489cec4_0 ...
+installing: contextlib2-0.5.5-py36h6c84a62_0 ...
+installing: dask-core-0.16.1-py36_0 ...
+installing: decorator-4.2.1-py36_0 ...
+installing: docutils-0.14-py36hb0f60f5_0 ...
+installing: entrypoints-0.2.3-py36h1aec115_2 ...
+installing: et_xmlfile-1.0.1-py36hd6bccc3_0 ...
+installing: fastcache-1.0.2-py36h14c3975_2 ...
+installing: filelock-2.0.13-py36h646ffb5_0 ...
+installing: glob2-0.6-py36he249c77_0 ...
+installing: gmpy2-2.0.8-py36hc8893dd_2 ...
+installing: greenlet-0.4.12-py36h2d503a6_0 ...
+installing: heapdict-1.0.0-py36_2 ...
+installing: idna-2.6-py36h82fb2a8_1 ...
+installing: imagesize-0.7.1-py36h52d8127_0 ...
+installing: ipython_genutils-0.2.0-py36hb52b0d5_0 ...
+installing: itsdangerous-0.24-py36h93cc618_1 ...
+installing: jdcal-1.3-py36h4c697fb_0 ...
+installing: lazy-object-proxy-1.3.1-py36h10fcdad_0 ...
+installing: llvmlite-0.21.0-py36ha241eea_0 ...
+installing: locket-0.2.0-py36h787c0ad_1 ...
+installing: lxml-4.1.1-py36hf71bdeb_1 ...
+installing: markupsafe-1.0-py36hd9260cd_1 ...
+installing: mccabe-0.6.1-py36h5ad9710_1 ...
+installing: mistune-0.8.3-py36_0 ...
+installing: mkl-service-1.1.2-py36h17a0993_4 ...
+installing: mpmath-1.0.0-py36hfeacd6b_2 ...
+installing: msgpack-python-0.5.1-py36h6bb024c_0 ...
+installing: multipledispatch-0.4.9-py36h41da3fb_0 ...
+installing: numpy-1.14.0-py36h3dfced4_1 ...
+installing: olefile-0.45.1-py36_0 ...
+installing: pandocfilters-1.4.2-py36ha6701b7_1 ...
+installing: parso-0.1.1-py36h35f843b_0 ...
+installing: path.py-10.5-py36h55ceabb_0 ...
+installing: pep8-1.7.1-py36_0 ...
+installing: pickleshare-0.7.4-py36h63277f8_0 ...
+installing: pkginfo-1.4.1-py36h215d178_1 ...
+installing: pluggy-0.6.0-py36hb689045_0 ...
+installing: ply-3.10-py36hed35086_0 ...
+installing: psutil-5.4.3-py36h14c3975_0 ...
+installing: ptyprocess-0.5.2-py36h69acd42_0 ...
+installing: py-1.5.2-py36h29bf505_0 ...
+installing: pycodestyle-2.3.1-py36hf609f19_0 ...
+installing: pycosat-0.6.3-py36h0a5515d_0 ...
+installing: pycparser-2.18-py36hf9f622e_1 ...
+installing: pycrypto-2.6.1-py36h14c3975_7 ...
+installing: pycurl-7.43.0.1-py36hb7f436b_0 ...
+installing: pyodbc-4.0.22-py36hf484d3e_0 ...
+installing: pyparsing-2.2.0-py36hee85983_1 ...
+installing: pysocks-1.6.7-py36hd97a5b1_1 ...
+installing: pytz-2017.3-py36h63b9c63_0 ...
+installing: pyyaml-3.12-py36hafb9ca4_1 ...
+installing: pyzmq-16.0.3-py36he2533c7_0 ...
+installing: qt-5.6.2-h974d657_12 ...
+installing: qtpy-1.3.1-py36h3691cc8_0 ...
+installing: rope-0.10.7-py36h147e2ec_0 ...
+installing: ruamel_yaml-0.15.35-py36h14c3975_1 ...
+installing: send2trash-1.4.2-py36_0 ...
+installing: simplegeneric-0.8.1-py36_2 ...
+installing: sip-4.18.1-py36h51ed4ed_2 ...
+installing: six-1.11.0-py36h372c433_1 ...
+installing: snowballstemmer-1.2.1-py36h6febd40_0 ...
+installing: sortedcontainers-1.5.9-py36_0 ...
+installing: sphinxcontrib-1.0-py36h6d0f590_1 ...
+installing: sqlalchemy-1.2.1-py36h14c3975_0 ...
+installing: tblib-1.3.2-py36h34cf8b6_0 ...
+installing: testpath-0.3.1-py36h8cadb63_0 ...
+installing: toolz-0.9.0-py36_0 ...
+installing: tornado-4.5.3-py36_0 ...
+installing: typing-3.6.2-py36h7da032a_0 ...
+installing: unicodecsv-0.14.1-py36ha668878_0 ...
+installing: wcwidth-0.1.7-py36hdf4376a_0 ...
+installing: webencodings-0.5.1-py36h800622e_1 ...
+installing: werkzeug-0.14.1-py36_0 ...
+installing: wrapt-1.10.11-py36h28b7045_0 ...
+installing: xlrd-1.1.0-py36h1db9f0c_1 ...
+installing: xlsxwriter-1.0.2-py36h3de1aca_0 ...
+installing: xlwt-1.3.0-py36h7b00a1f_0 ...
+installing: babel-2.5.3-py36_0 ...
+installing: backports.shutil_get_terminal_size-1.0.0-py36hfea85ff_2 ...
+installing: bottleneck-1.2.1-py36haac1ea0_0 ...
+installing: cffi-1.11.4-py36h9745a5d_0 ...
+installing: conda-verify-2.0.0-py36h98955d8_0 ...
+installing: cycler-0.10.0-py36h93f1223_0 ...
+installing: cytoolz-0.9.0-py36h14c3975_0 ...
+installing: h5py-2.7.1-py36h3585f63_0 ...
+installing: harfbuzz-1.7.4-hc5b324e_0 ...
+installing: html5lib-1.0.1-py36h2f9c1c0_0 ...
+installing: jedi-0.11.1-py36_0 ...
+installing: networkx-2.1-py36_0 ...
+installing: nltk-3.2.5-py36h7532b22_0 ...
+installing: numba-0.36.2-np114py36hc6662d5_0 ...
+installing: numexpr-2.6.4-py36hc4a3f9a_0 ...
+installing: openpyxl-2.4.10-py36_0 ...
+installing: packaging-16.8-py36ha668100_1 ...
+installing: partd-0.3.8-py36h36fd896_0 ...
+installing: pathlib2-2.3.0-py36h49efa8e_0 ...
+installing: pexpect-4.3.1-py36_0 ...
+installing: pillow-5.0.0-py36h3deb7b8_0 ...
+installing: pyqt-5.6.0-py36h0386399_5 ...
+installing: python-dateutil-2.6.1-py36h88d3b88_1 ...
+installing: pywavelets-0.5.2-py36he602eb0_0 ...
+installing: qtawesome-0.4.4-py36h609ed8c_0 ...
+installing: scipy-1.0.0-py36hbf646e7_0 ...
+installing: setuptools-38.4.0-py36_0 ...
+installing: singledispatch-3.4.0.3-py36h7a266c3_0 ...
+installing: sortedcollections-0.5.3-py36h3c761f9_0 ...
+installing: sphinxcontrib-websupport-1.0.1-py36hb5cb234_1 ...
+installing: sympy-1.1.1-py36hc6d1c1c_0 ...
+installing: terminado-0.8.1-py36_1 ...
+installing: traitlets-4.3.2-py36h674d592_0 ...
+installing: zict-0.1.3-py36h3a3bf81_0 ...
+installing: astroid-1.6.1-py36_0 ...
+installing: bleach-2.1.2-py36_0 ...
+installing: clyent-1.2.2-py36h7e57e65_1 ...
+installing: cryptography-2.1.4-py36hd09be54_0 ...
+installing: cython-0.27.3-py36h1860423_0 ...
+installing: datashape-0.5.4-py36h3ad6b5c_0 ...
+installing: distributed-1.20.2-py36_0 ...
+installing: get_terminal_size-1.0.0-haa9412d_0 ...
+installing: gevent-1.2.2-py36h2fe25dc_0 ...
+installing: imageio-2.2.0-py36he555465_0 ...
+installing: isort-4.2.15-py36had401c0_0 ...
+installing: jinja2-2.10-py36ha16c418_0 ...
+installing: jsonschema-2.6.0-py36h006f8b5_0 ...
+installing: jupyter_core-4.4.0-py36h7c827e3_0 ...
+installing: matplotlib-2.1.2-py36h0e671d2_0 ...
+installing: navigator-updater-0.1.0-py36h14770f7_0 ...
+installing: nose-1.3.7-py36hcdf7029_2 ...
+installing: pandas-0.22.0-py36hf484d3e_0 ...
+installing: pango-1.41.0-hd475d92_0 ...
+installing: patsy-0.5.0-py36_0 ...
+installing: pyflakes-1.6.0-py36h7bd6a15_0 ...
+installing: pygments-2.2.0-py36h0d3125c_0 ...
+installing: pytables-3.4.2-py36h3b5282a_2 ...
+installing: pytest-3.3.2-py36_0 ...
+installing: scikit-learn-0.19.1-py36h7aa7ec6_0 ...
+installing: wheel-0.30.0-py36hfd4bba0_1 ...
+installing: astropy-2.0.3-py36h14c3975_0 ...
+installing: bkcharts-0.2-py36h735825a_0 ...
+installing: bokeh-0.12.13-py36h2f9c1c0_0 ...
+installing: flask-0.12.2-py36hb24657c_0 ...
+installing: jupyter_client-5.2.2-py36_0 ...
+installing: nbformat-4.4.0-py36h31c9010_0 ...
+installing: pip-9.0.1-py36h6c6f9ce_4 ...
+installing: prompt_toolkit-1.0.15-py36h17d85b1_0 ...
+installing: pylint-1.8.2-py36_0 ...
+installing: pyopenssl-17.5.0-py36h20ba746_0 ...
+installing: statsmodels-0.8.0-py36h8533d0b_0 ...
+installing: dask-0.16.1-py36_0 ...
+installing: flask-cors-3.0.3-py36h2d857d3_0 ...
+installing: ipython-6.2.1-py36h88c514a_1 ...
+installing: nbconvert-5.3.1-py36hb41ffb7_0 ...
+installing: seaborn-0.8.1-py36hfad7ec4_0 ...
+installing: urllib3-1.22-py36hbe7ace6_0 ...
+installing: ipykernel-4.8.0-py36_0 ...
+installing: odo-0.5.1-py36h90ed295_0 ...
+installing: requests-2.18.4-py36he2e5f8d_1 ...
+installing: scikit-image-0.13.1-py36h14c3975_1 ...
+installing: anaconda-client-1.6.9-py36_0 ...
+installing: blaze-0.11.3-py36h4e06776_0 ...
+installing: jupyter_console-5.2.0-py36he59e554_1 ...
+installing: notebook-5.4.0-py36_0 ...
+installing: qtconsole-4.3.1-py36h8f73b5b_0 ...
+installing: sphinx-1.6.6-py36_0 ...
+installing: anaconda-project-0.8.2-py36h44fb852_0 ...
+installing: jupyterlab_launcher-0.10.2-py36_0 ...
+installing: numpydoc-0.7.0-py36h18f165f_0 ...
+installing: widgetsnbextension-3.1.0-py36_0 ...
+installing: anaconda-navigator-1.7.0-py36_0 ...
+installing: ipywidgets-7.1.1-py36_0 ...
+installing: jupyterlab-0.31.5-py36_0 ...
+installing: spyder-3.2.6-py36_0 ...
+installing: _ipyw_jlab_nb_ext_conf-0.1.0-py36he11e457_0 ...
+installing: jupyter-1.0.0-py36_4 ...
+installing: anaconda-5.1.0-py36_2 ...
+installing: conda-4.4.10-py36_0 ...
+installing: conda-build-3.4.1-py36_0 ...
+installation finished.
+WARNING:
+    You currently have a PYTHONPATH environment variable set. This may cause
+    unexpected behavior when running the Python interpreter in Anaconda3.
+    For best results, please verify that your PYTHONPATH only points to
+    directories of packages that are compatible with the Python interpreter
+    in Anaconda3: /usr/local
+Warning: &#39;defaults&#39; already in &#39;channels&#39; list, moving to the top
+</pre></div></div>
+</div>
+</section>
+<section id="Install-parallel-fastq-dump">
+<h2>Install parallel-fastq-dump<a class="headerlink" href="#Install-parallel-fastq-dump" title="Link to this heading">¶</a></h2>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-none notranslate"><div class="highlight"><pre><span></span>!conda install -y parallel-fastq-dump
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Solving environment: - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ done
+
+
+==&gt; WARNING: A newer version of conda exists. &lt;==
+  current version: 4.4.10
+  latest version: 4.8.2
+
+Please update conda by running
+
+    $ conda update -n base conda
+
+
+
+## Package Plan ##
+
+  environment location: /usr/local
+
+  added / updated specs:
+    - parallel-fastq-dump
+
+
+The following packages will be downloaded:
+
+    package                    |            build
+    ---------------------------|-----------------
+    bzip2-1.0.8                |       h516909a_2         396 KB  conda-forge
+    parallel-fastq-dump-0.6.6  |             py_0           8 KB  bioconda
+    python-3.7.1               |       h5001a0f_0        26.8 MB  conda-forge
+    ca-certificates-2019.11.28 |       hecc5488_0         145 KB  conda-forge
+    _libgcc_mutex-0.1          |      conda_forge           3 KB  conda-forge
+    libgcc-ng-9.2.0            |       h24d8f2e_2         8.2 MB  conda-forge
+    sqlite-3.28.0              |       h8b20d00_0         1.9 MB  conda-forge
+    sra-tools-2.9.1_1          |       h470a237_0        38.0 MB  bioconda
+    libgomp-9.2.0              |       h24d8f2e_2         816 KB  conda-forge
+    certifi-2019.11.28         |           py37_0         148 KB  conda-forge
+    ncurses-6.1                |       hfc679d8_2         1.3 MB  conda-forge
+    pip-20.0.2                 |             py_2         1.0 MB  conda-forge
+    readline-7.0               |    hf8c457e_1001         391 KB  conda-forge
+    xz-5.2.4                   |    h14c3975_1001         366 KB  conda-forge
+    libffi-3.2.1               |       hfc679d8_5          51 KB  conda-forge
+    zlib-1.2.11                |    h516909a_1006         105 KB  conda-forge
+    openssl-1.0.2u             |       h516909a_0         3.2 MB  conda-forge
+    tk-8.6.10                  |       hed695b0_0         3.2 MB  conda-forge
+    setuptools-45.2.0          |           py37_0         654 KB  conda-forge
+    _openmp_mutex-4.5          |            0_gnu         435 KB  conda-forge
+    wheel-0.34.2               |             py_1          24 KB  conda-forge
+    ------------------------------------------------------------
+                                           Total:        87.1 MB
+
+The following NEW packages will be INSTALLED:
+
+    _libgcc_mutex:       0.1-conda_forge       conda-forge
+    _openmp_mutex:       4.5-0_gnu             conda-forge
+    libgomp:             9.2.0-h24d8f2e_2      conda-forge
+    parallel-fastq-dump: 0.6.6-py_0            bioconda
+    sra-tools:           2.9.1_1-h470a237_0    bioconda
+
+The following packages will be UPDATED:
+
+    bzip2:               1.0.6-h9a117a8_4                  --&gt; 1.0.8-h516909a_2      conda-forge
+    ca-certificates:     2017.08.26-h1d4fec5_0             --&gt; 2019.11.28-hecc5488_0 conda-forge
+    certifi:             2018.1.18-py36_0                  --&gt; 2019.11.28-py37_0     conda-forge
+    libffi:              3.2.1-hd88cf55_4                  --&gt; 3.2.1-hfc679d8_5      conda-forge
+    libgcc-ng:           7.2.0-h7cc24e2_2                  --&gt; 9.2.0-h24d8f2e_2      conda-forge
+    ncurses:             6.0-h9df7e31_2                    --&gt; 6.1-hfc679d8_2        conda-forge
+    openssl:             1.0.2n-hb7f436b_0                 --&gt; 1.0.2u-h516909a_0     conda-forge
+    pip:                 9.0.1-py36h6c6f9ce_4              --&gt; 20.0.2-py_2           conda-forge
+    python:              3.6.4-hc3d631a_1                  --&gt; 3.7.1-h5001a0f_0      conda-forge
+    readline:            7.0-ha6073c6_4                    --&gt; 7.0-hf8c457e_1001     conda-forge
+    setuptools:          38.4.0-py36_0                     --&gt; 45.2.0-py37_0         conda-forge
+    sqlite:              3.22.0-h1bed415_0                 --&gt; 3.28.0-h8b20d00_0     conda-forge
+    tk:                  8.6.7-hc745277_3                  --&gt; 8.6.10-hed695b0_0     conda-forge
+    wheel:               0.30.0-py36hfd4bba0_1             --&gt; 0.34.2-py_1           conda-forge
+    xz:                  5.2.3-h55aa19d_2                  --&gt; 5.2.4-h14c3975_1001   conda-forge
+    zlib:                1.2.11-ha838bed_2                 --&gt; 1.2.11-h516909a_1006  conda-forge
+
+
+Downloading and Extracting Packages
+bzip2 1.0.8: 100% 1.0/1 [00:00&lt;00:00,  4.95it/s]
+parallel-fastq-dump 0.6.6: 100% 1.0/1 [00:00&lt;00:00, 25.61it/s]
+python 3.7.1: 100% 1.0/1 [00:08&lt;00:00,  8.74s/it]
+ca-certificates 2019.11.28: 100% 1.0/1 [00:00&lt;00:00, 12.07it/s]
+_libgcc_mutex 0.1: 100% 1.0/1 [00:00&lt;00:00, 22.60it/s]
+libgcc-ng 9.2.0: 100% 1.0/1 [00:02&lt;00:00,  2.84s/it]
+sqlite 3.28.0: 100% 1.0/1 [00:00&lt;00:00,  1.35it/s]
+sra-tools 2.9.1_1: 100% 1.0/1 [00:13&lt;00:00, 30.18s/it]
+libgomp 9.2.0: 100% 1.0/1 [00:00&lt;00:00,  3.97it/s]
+certifi 2019.11.28: 100% 1.0/1 [00:00&lt;00:00, 11.58it/s]
+ncurses 6.1: 100% 1.0/1 [00:01&lt;00:00,  1.22s/it]
+pip 20.0.2: 100% 1.0/1 [00:00&lt;00:00,  1.83it/s]
+readline 7.0: 100% 1.0/1 [00:00&lt;00:00,  4.98it/s]
+xz 5.2.4: 100% 1.0/1 [00:00&lt;00:00,  5.48it/s]
+libffi 3.2.1: 100% 1.0/1 [00:00&lt;00:00, 16.06it/s]
+zlib 1.2.11: 100% 1.0/1 [00:00&lt;00:00, 14.34it/s]
+openssl 1.0.2u: 100% 1.0/1 [00:01&lt;00:00,  2.86s/it]
+tk 8.6.10: 100% 1.0/1 [00:01&lt;00:00,  1.28s/it]
+setuptools 45.2.0: 100% 1.0/1 [00:00&lt;00:00,  2.78it/s]
+_openmp_mutex 4.5: 100% 1.0/1 [00:00&lt;00:00,  7.34it/s]
+wheel 0.34.2: 100% 1.0/1 [00:00&lt;00:00, 21.98it/s]
+Preparing transaction: / - \ done
+Verifying transaction: / - \ | / - \ | / - \ | / - \ | / - \ | / - done
+Executing transaction: | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | done
+</pre></div></div>
+</div>
+</section>
+<section id="Install-latest-pysradb">
+<h2>Install latest pysradb<a class="headerlink" href="#Install-latest-pysradb" title="Link to this heading">¶</a></h2>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-none notranslate"><div class="highlight"><pre><span></span>pip install git+https://github.com/saketkc/pysradb
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Collecting git+https://github.com/saketkc/pysradb
+  Cloning https://github.com/saketkc/pysradb to /tmp/pip-req-build-bd1zhhoz
+  Running command git clone -q https://github.com/saketkc/pysradb /tmp/pip-req-build-bd1zhhoz
+Collecting pandas==0.25.3
+  Using cached pandas-0.25.3-cp37-cp37m-manylinux1_x86_64.whl (10.4 MB)
+Collecting tqdm==4.41.1
+  Using cached tqdm-4.41.1-py2.py3-none-any.whl (56 kB)
+Collecting requests==2.22.0
+  Using cached requests-2.22.0-py2.py3-none-any.whl (57 kB)
+Collecting xmltodict==0.12.0
+  Using cached xmltodict-0.12.0-py2.py3-none-any.whl (9.2 kB)
+Collecting python-dateutil&gt;=2.6.1
+  Using cached python_dateutil-2.8.1-py2.py3-none-any.whl (227 kB)
+Collecting numpy&gt;=1.13.3
+  Using cached numpy-1.18.1-cp37-cp37m-manylinux1_x86_64.whl (20.1 MB)
+Collecting pytz&gt;=2017.2
+  Using cached pytz-2019.3-py2.py3-none-any.whl (509 kB)
+Collecting idna&lt;2.9,&gt;=2.5
+  Using cached idna-2.8-py2.py3-none-any.whl (58 kB)
+Collecting urllib3!=1.25.0,!=1.25.1,&lt;1.26,&gt;=1.21.1
+  Using cached urllib3-1.25.8-py2.py3-none-any.whl (125 kB)
+Collecting chardet&lt;3.1.0,&gt;=3.0.2
+  Using cached chardet-3.0.4-py2.py3-none-any.whl (133 kB)
+Requirement already satisfied: certifi&gt;=2017.4.17 in /usr/local/lib/python3.7/site-packages (from requests==2.22.0-&gt;pysradb==0.10.3.dev0) (2019.11.28)
+Collecting six&gt;=1.5
+  Using cached six-1.14.0-py2.py3-none-any.whl (10 kB)
+Building wheels for collected packages: pysradb
+  Building wheel for pysradb (setup.py) ... done
+  Created wheel for pysradb: filename=pysradb-0.10.3.dev0-py3-none-any.whl size=147407 sha256=b498f377cda436cca6ee34c470c8aabcbe9a75f5fe8af7a5e6c56796c1be9041
+  Stored in directory: /tmp/pip-ephem-wheel-cache-a6fjccpo/wheels/3f/06/98/98805e85e0909f2d0920ce73557c06d3802e4baaa2616920e8
+Successfully built pysradb
+Installing collected packages: six, python-dateutil, numpy, pytz, pandas, tqdm, idna, urllib3, chardet, requests, xmltodict, pysradb
+Successfully installed chardet-3.0.4 idna-2.8 numpy-1.18.1 pandas-0.25.3 pysradb-0.10.3.dev0 python-dateutil-2.8.1 pytz-2019.3 requests-2.22.0 six-1.14.0 tqdm-4.41.1 urllib3-1.25.8 xmltodict-0.12.0
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="admonition warning">
+<p>Data type cannot be displayed: application/vnd.colab-display-data+json</p>
+</div>
+</div>
+</div>
+</section>
+<section id="Get-metadata">
+<h2>Get metadata<a class="headerlink" href="#Get-metadata" title="Link to this heading">¶</a></h2>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-none notranslate"><div class="highlight"><pre><span></span>!pysradb metadata --detailed        SRP063852
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+study_accession experiment_accession experiment_title                                         experiment_desc                                          organism_taxid  organism_name library_strategy library_source  library_selection   sample_accession sample_title instrument           total_spots total_size run_accession run_total_spots run_total_bases run_alias      sra_url                                                                                 experiment_alias source_name cell line
+SRP063852       SRX1254413           GSM1887643: ribosome profiling; Homo sapiens; miRNA-Seq  GSM1887643: ribosome profiling; Homo sapiens; miRNA-Seq  9606            Homo sapiens  miRNA-Seq        TRANSCRIPTOMIC  size fractionation  SRS1072728       N/A          Illumina HiSeq 2000  31967082    626381849  SRR2433794    31967082        916773615       GSM1887643_r1  https://sra-download.st-va.ncbi.nlm.nih.gov/sos2/sra-pub-run-3/SRR2433794/SRR2433794.1  GSM1887643       HEK293      HEK293
+</pre></div></div>
+</div>
+</section>
+<section id="Download-data">
+<h2>Download data<a class="headerlink" href="#Download-data" title="Link to this heading">¶</a></h2>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-none notranslate"><div class="highlight"><pre><span></span>!pysradb download -y -p SRP063852
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+The following files will be downloaded:
+
+study_accession experiment_accession experiment_title                                         experiment_desc                                          organism_taxid  organism_name library_strategy library_source  library_selection   sample_accession sample_title instrument           total_spots total_size run_accession run_total_spots run_total_bases run_alias      srapath_url                                                                             experiment_alias source_name cell line download_url
+ SRP063852       SRX1254413           GSM1887643: ribosome profiling; Homo sapiens; miRNA-Seq  GSM1887643: ribosome profiling; Homo sapiens; miRNA-Seq  9606            Homo sapiens  miRNA-Seq        TRANSCRIPTOMIC  size fractionation  SRS1072728       N/A          Illumina HiSeq 2000  31967082    626381849  SRR2433794    31967082        916773615       GSM1887643_r1  https://sra-download.st-va.ncbi.nlm.nih.gov/sos2/sra-pub-run-3/SRR2433794/SRR2433794.1  GSM1887643       HEK293      HEK293
+
+
+Total size: 626.4 MB
+
+
+SRP063852/SRX1254413/SRR2433794:   0% 0/1 [00:00&lt;?, ?it/s]
+Downloading SRR2433794.1:   0% 0.00/626M [00:00&lt;?, ?B/s]
+Downloading SRR2433794.1:   0% 1.05M/626M [00:00&lt;01:04, 9.72MB/s]
+Downloading SRR2433794.1:   3% 21.0M/626M [00:00&lt;00:45, 13.3MB/s]
+Downloading SRR2433794.1:   6% 35.7M/626M [00:00&lt;00:32, 18.2MB/s]
+Downloading SRR2433794.1:   7% 43.0M/626M [00:00&lt;00:25, 23.3MB/s]
+Downloading SRR2433794.1:   9% 58.7M/626M [00:00&lt;00:18, 31.2MB/s]
+Downloading SRR2433794.1:  11% 68.2M/626M [00:00&lt;00:14, 38.2MB/s]
+Downloading SRR2433794.1:  13% 81.8M/626M [00:00&lt;00:11, 48.6MB/s]
+Downloading SRR2433794.1:  15% 92.3M/626M [00:00&lt;00:09, 56.3MB/s]
+Downloading SRR2433794.1:  16% 103M/626M [00:01&lt;00:08, 64.1MB/s]
+Downloading SRR2433794.1:  18% 113M/626M [00:01&lt;00:07, 68.4MB/s]
+Downloading SRR2433794.1:  20% 123M/626M [00:01&lt;00:06, 74.3MB/s]
+Downloading SRR2433794.1:  21% 132M/626M [00:01&lt;00:06, 72.8MB/s]
+Downloading SRR2433794.1:  23% 142M/626M [00:01&lt;00:06, 75.6MB/s]
+Downloading SRR2433794.1:  24% 151M/626M [00:01&lt;00:06, 74.0MB/s]
+Downloading SRR2433794.1:  26% 161M/626M [00:01&lt;00:05, 80.8MB/s]
+Downloading SRR2433794.1:  27% 171M/626M [00:01&lt;00:05, 78.8MB/s]
+Downloading SRR2433794.1:  29% 184M/626M [00:02&lt;00:05, 87.8MB/s]
+Downloading SRR2433794.1:  31% 193M/626M [00:02&lt;00:04, 88.0MB/s]
+Downloading SRR2433794.1:  33% 207M/626M [00:02&lt;00:04, 97.5MB/s]
+Downloading SRR2433794.1:  35% 217M/626M [00:02&lt;00:04, 91.6MB/s]
+Downloading SRR2433794.1:  37% 231M/626M [00:02&lt;00:04, 86.9MB/s]
+Downloading SRR2433794.1:  39% 245M/626M [00:02&lt;00:03, 98.8MB/s]
+Downloading SRR2433794.1:  41% 257M/626M [00:02&lt;00:03, 94.1MB/s]
+Downloading SRR2433794.1:  43% 268M/626M [00:02&lt;00:03, 99.1MB/s]
+Downloading SRR2433794.1:  45% 279M/626M [00:03&lt;00:03, 97.1MB/s]
+Downloading SRR2433794.1:  46% 289M/626M [00:03&lt;00:03, 98.1MB/s]
+Downloading SRR2433794.1:  48% 300M/626M [00:03&lt;00:03, 92.6MB/s]
+Downloading SRR2433794.1:  50% 312M/626M [00:03&lt;00:03, 99.9MB/s]
+Downloading SRR2433794.1:  52% 325M/626M [00:03&lt;00:03, 99.9MB/s]
+Downloading SRR2433794.1:  54% 336M/626M [00:03&lt;00:03, 94.2MB/s]
+Downloading SRR2433794.1:  56% 348M/626M [00:03&lt;00:02, 101MB/s]
+Downloading SRR2433794.1:  57% 359M/626M [00:03&lt;00:02, 99.1MB/s]
+Downloading SRR2433794.1:  59% 372M/626M [00:03&lt;00:02, 107MB/s]
+Downloading SRR2433794.1:  61% 384M/626M [00:04&lt;00:02, 93.7MB/s]
+Downloading SRR2433794.1:  63% 394M/626M [00:04&lt;00:02, 96.0MB/s]
+Downloading SRR2433794.1:  65% 405M/626M [00:04&lt;00:02, 92.5MB/s]
+Downloading SRR2433794.1:  67% 419M/626M [00:04&lt;00:02, 90.3MB/s]
+Downloading SRR2433794.1:  69% 430M/626M [00:04&lt;00:02, 92.1MB/s]
+Downloading SRR2433794.1:  70% 440M/626M [00:04&lt;00:02, 88.8MB/s]
+Downloading SRR2433794.1:  72% 453M/626M [00:04&lt;00:01, 97.0MB/s]
+Downloading SRR2433794.1:  74% 463M/626M [00:04&lt;00:01, 92.5MB/s]
+Downloading SRR2433794.1:  76% 477M/626M [00:05&lt;00:01, 102MB/s]
+Downloading SRR2433794.1:  78% 489M/626M [00:05&lt;00:01, 99.6MB/s]
+Downloading SRR2433794.1:  80% 500M/626M [00:05&lt;00:01, 103MB/s]
+Downloading SRR2433794.1:  82% 512M/626M [00:05&lt;00:01, 95.6MB/s]
+Downloading SRR2433794.1:  84% 524M/626M [00:05&lt;00:01, 88.6MB/s]
+Downloading SRR2433794.1:  85% 535M/626M [00:05&lt;00:00, 91.6MB/s]
+Downloading SRR2433794.1:  87% 545M/626M [00:05&lt;00:00, 87.5MB/s]
+Downloading SRR2433794.1:  89% 556M/626M [00:05&lt;00:00, 90.1MB/s]
+Downloading SRR2433794.1:  90% 566M/626M [00:06&lt;00:00, 83.4MB/s]
+Downloading SRR2433794.1:  92% 578M/626M [00:06&lt;00:00, 90.2MB/s]
+Downloading SRR2433794.1:  94% 587M/626M [00:06&lt;00:00, 88.8MB/s]
+Downloading SRR2433794.1:  96% 599M/626M [00:06&lt;00:00, 94.0MB/s]
+Downloading SRR2433794.1:  97% 609M/626M [00:06&lt;00:00, 91.4MB/s]
+Downloading SRR2433794.1: 627MB [00:06, 94.5MB/s]
+SRP063852/SRX1254413/SRR2433794: 100% 1/1 [00:06&lt;00:00,  6.84s/it]
+</pre></div></div>
+</div>
+</section>
+<section id="Run-parallel-fastq-dump">
+<h2>Run parallel-fastq-dump<a class="headerlink" href="#Run-parallel-fastq-dump" title="Link to this heading">¶</a></h2>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-none notranslate"><div class="highlight"><pre><span></span>!ls -ltrh pysradb_downloads
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+total 4.0K
+drwxr-xr-x 3 root root 4.0K Feb 13 07:28 SRP063852
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-none notranslate"><div class="highlight"><pre><span></span>!ls -ltrh pysradb_downloads/SRP063852/SRX1254413
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+total 598M
+-rw-r--r-- 1 root root 598M Feb 13 07:28 SRR2433794.sra
+</pre></div></div>
+</div>
+</section>
+<section id="SRA-to-fastq">
+<h2>SRA to fastq<a class="headerlink" href="#SRA-to-fastq" title="Link to this heading">¶</a></h2>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-none notranslate"><div class="highlight"><pre><span></span>!mkdir -p sratofastq &amp;&amp; mkdir -p tmpdir &amp;&amp; parallel-fastq-dump --threads 4 --outdir sratofastq/ --split-files --tmpdir tmpdir --gzip -s pysradb_downloads/SRP063852/SRX1254413/SRR2433794.sra
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+SRR ids: [&#39;pysradb_downloads/SRP063852/SRX1254413/SRR2433794.sra&#39;]
+extra args: [&#39;--split-files&#39;, &#39;--gzip&#39;]
+tempdir: tmpdir/pfd_wgclvuwy
+pysradb_downloads/SRP063852/SRX1254413/SRR2433794.sra spots: 31967082
+blocks: [[1, 7991770], [7991771, 15983540], [15983541, 23975310], [23975311, 31967082]]
+Rejected 7991770 READS because READLEN &lt; 1
+Read 7991770 spots for pysradb_downloads/SRP063852/SRX1254413/SRR2433794.sra
+Written 7991770 spots for pysradb_downloads/SRP063852/SRX1254413/SRR2433794.sra
+Rejected 7991772 READS because READLEN &lt; 1
+Read 7991772 spots for pysradb_downloads/SRP063852/SRX1254413/SRR2433794.sra
+Written 7991772 spots for pysradb_downloads/SRP063852/SRX1254413/SRR2433794.sra
+Rejected 7991770 READS because READLEN &lt; 1
+Read 7991770 spots for pysradb_downloads/SRP063852/SRX1254413/SRR2433794.sra
+Written 7991770 spots for pysradb_downloads/SRP063852/SRX1254413/SRR2433794.sra
+Rejected 7991770 READS because READLEN &lt; 1
+Read 7991770 spots for pysradb_downloads/SRP063852/SRX1254413/SRR2433794.sra
+Written 7991770 spots for pysradb_downloads/SRP063852/SRX1254413/SRR2433794.sra
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-none notranslate"><div class="highlight"><pre><span></span>!ls -ltrh sratofastq
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+ls: cannot access &#39;sratofastq&#39;: No such file or directory
+</pre></div></div>
+</div>
+</section>
+</section>
+
+        </article>
+      </div>
+      <footer>
+        
+        <div class="related-pages">
+          <a class="next-page" href="05.Downloading_subsets_of_a_project.html">
+              <div class="page-info">
+                <div class="context">
+                  <span>Next</span>
+                </div>
+                <div class="title">Downloading Subsets of a Project</div>
+              </div>
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+            </a>
+          <a class="prev-page" href="03.ParallelDownload.html">
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+              <div class="page-info">
+                <div class="context">
+                  <span>Previous</span>
+                </div>
+                
+                <div class="title">Parallel Download</div>
+                
+              </div>
+            </a>
+        </div>
+        <div class="bottom-of-page">
+          <div class="left-details">
+            <div class="copyright">
+                Copyright &#169; 2023, Saket Choudhary
+            </div>
+            Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
+            
+            <a href="https://github.com/pradyunsg/furo">Furo</a>
+            
+          </div>
+          <div class="right-details">
+            
+          </div>
+        </div>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer">
+      
+      
+      <div class="toc-sticky toc-scroll">
+        <div class="toc-title-container">
+          <span class="toc-title">
+            On this page
+          </span>
+        </div>
+        <div class="toc-tree-container">
+          <div class="toc-tree">
+            <ul>
+<li><a class="reference internal" href="#">Converting SRA to FASTQ using Conda</a><ul>
+<li><a class="reference internal" href="#Install-Conda">Install Conda</a></li>
+<li><a class="reference internal" href="#Install-parallel-fastq-dump">Install parallel-fastq-dump</a></li>
+<li><a class="reference internal" href="#Install-latest-pysradb">Install latest pysradb</a></li>
+<li><a class="reference internal" href="#Get-metadata">Get metadata</a></li>
+<li><a class="reference internal" href="#Download-data">Download data</a></li>
+<li><a class="reference internal" href="#Run-parallel-fastq-dump">Run parallel-fastq-dump</a></li>
+<li><a class="reference internal" href="#SRA-to-fastq">SRA to fastq</a></li>
+</ul>
+</li>
+</ul>
+
+          </div>
+        </div>
+      </div>
+      
+      
+    </aside>
+  </div>
+</div><script src="../_static/documentation_options.js?v=983e91d6"></script>
+    <script src="../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/scripts/furo.js?v=46bd48cc"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="../_static/copy-button.js?v=5b6a40c7"></script>
+    </body>
+</html>
