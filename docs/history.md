@@ -1,37 +1,90 @@
 # History
 
-# 2.5.1 (2025-10-29)
+<details open>
+<summary style="cursor: pointer; font-weight: bold; font-size: 1.1em; margin-top: 0.5em;">
+2.5.1 (2025-10-29)
+</summary>
+
 
 - Add prjna support in doi-to-identifiers [#249](https://github.com/saketkc/pysradb/pull/249) 
 
-# 2.5.0 (2025-10-19)
+
+</details>
+
+<details open>
+<summary style="cursor: pointer; font-weight: bold; font-size: 1.1em; margin-top: 0.5em;">
+2.5.0 (2025-10-19)
+</summary>
+
 
 - Add pmid/doi-to-gse/srp conversion [#246](https://github.com/saketkc/pysradb/pull/246).
 
-# 2.4.1 (2025-09-27)
+
+</details>
+
+<details open>
+<summary style="cursor: pointer; font-weight: bold; font-size: 1.1em; margin-top: 0.5em;">
+2.4.1 (2025-09-27)
+</summary>
+
 
 - Add gse-to-pmid conversion [#241](https://github.com/saketkc/pysradb/pull/244).
 
-# 2.4.0 (2025-09-27)
+
+</details>
+
+<details open>
+<summary style="cursor: pointer; font-weight: bold; font-size: 1.1em; margin-top: 0.5em;">
+2.4.0 (2025-09-27)
+</summary>
+
 
 - Add sra-to-pmid conversion [#241](https://github.com/saketkc/pysradb/pull/241). Thanks [@andrewdavidsmith](https://github.com/andrewdavidsmith) for the idea.
 
-# 2.3.0 (2025-08-24)
+
+</details>
+
+<details open>
+<summary style="cursor: pointer; font-weight: bold; font-size: 1.1em; margin-top: 0.5em;">
+2.3.0 (2025-08-24)
+</summary>
+
 
 - Download logic improvements: remoted requests-ftp as requirement
 - Fix for handling missing metadata keys [#223](https://github.com/saketkc/pysradb/pull/223). Thanks [@andrewdavidsmith](https://github.com/andrewdavidsmith)
 
-# 2.2.2 (2024-10-03)
+
+</details>
+
+<details open>
+<summary style="cursor: pointer; font-weight: bold; font-size: 1.1em; margin-top: 0.5em;">
+2.2.2 (2024-10-03)
+</summary>
+
 
 - Fix for handling ENA urls for paired end data
 
-# 2.2.1 (2024-08-21)
+
+</details>
+
+<details open>
+<summary style="cursor: pointer; font-weight: bold; font-size: 1.1em; margin-top: 0.5em;">
+2.2.1 (2024-08-21)
+</summary>
+
 
 - Fix for handling ENA urls
 - Migrated to pyproject.toml
 
 
-# 2.2.0 (2023-09-17)
+
+</details>
+
+<details open>
+<summary style="cursor: pointer; font-weight: bold; font-size: 1.1em; margin-top: 0.5em;">
+2.2.0 (2023-09-17)
+</summary>
+
 
 - Add support for Biosamples and bioproject [#199](https://github.com/saketkc/pysradb/pull/198)
 - Use retmode xml for Geo search [#200](https://github.com/saketkc/pysradb/pull/200)
@@ -327,3 +380,6 @@ compatible documentation.
 ## 0.1.0 (12-01-2018)
 
 -   First release on PyPI.
+
+</details>
+

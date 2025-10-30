@@ -51,6 +51,7 @@ extensions = [
     "sphinx_panels",
     "sphinxcontrib.gtagjs",
     "myst_parser",
+    "nbsphinx",
 ]
 gtagjs_ids = [
     "G-CKQZFCEENZ",
@@ -88,7 +89,7 @@ release = pysradb.__version__
 #
 # This is also used if you do content translation via gettext catalogs.
 # Usually you set "language" from the command line for these cases.
-language = None
+language = "en"
 
 # List of patterns, relative to source directory, that match files and
 # directories to ignore when looking for source files.
@@ -107,13 +108,27 @@ todo_include_todos = False
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
 #
-html_theme = "pydata_sphinx_theme"
+html_theme = "furo"
 
 # Theme options are theme-specific and customize the look and feel of a
 # theme further.  For a list of options available for each theme, see the
 # documentation.
 #
-# html_theme_options = {}
+html_theme_options = {
+    "sidebar_hide_on_mobile": False,
+    "light_css_variables": {
+        "color-brand-primary": "#0066cc",
+        "color-brand-content": "#0066cc",
+        "color-code-background": "#f5f5f5",
+        "color-inline-code-background": "#f0f0f0",
+    },
+    "dark_css_variables": {
+        "color-brand-primary": "#3b82f6",
+        "color-brand-content": "#3b82f6",
+        "color-code-background": "#1e293b",
+        "color-inline-code-background": "#334155",
+    },
+}
 
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
@@ -196,8 +211,23 @@ scv_greatest_tag = True
 scv_show_banner = True
 
 html_logo = "_static/pysradb_v3.png"
-html_theme_options = {
-    "github_url": "https://github.com/saketkc/pysradb",
-    "google_analytics_id": "G-CKQZFCEENZ",
-    #    "navbar_align": "left",
-}
+
+# Update theme options to merge with Furo settings
+html_theme_options.update({
+    "sidebar_hide_on_mobile": False,
+})
+
+# Load custom JavaScript for copy-to-clipboard functionality
+html_js_files = [
+    'copy-button.js',
+]
+
+# Load custom CSS to override Pygments background colors
+html_css_files = [
+    'custom.css',
+]
+
+# NBSphinx configuration
+nbsphinx_execute = "never"
+exclude_patterns.append("**/.ipynb_checkpoints")
+exclude_patterns.append("notebooks/.ipynb_checkpoints")

@@ -9,109 +9,109 @@ pysradb.basedb module
 
 .. automodule:: pysradb.basedb
    :members:
-   :show-inheritance:
    :undoc-members:
+   :show-inheritance:
 
 pysradb.cli module
 ------------------
 
 .. automodule:: pysradb.cli
    :members:
-   :show-inheritance:
    :undoc-members:
+   :show-inheritance:
 
 pysradb.download module
 -----------------------
 
 .. automodule:: pysradb.download
    :members:
-   :show-inheritance:
    :undoc-members:
+   :show-inheritance:
 
 pysradb.exceptions module
 -------------------------
 
 .. automodule:: pysradb.exceptions
    :members:
-   :show-inheritance:
    :undoc-members:
+   :show-inheritance:
 
 pysradb.filter\_attrs module
 ----------------------------
 
 .. automodule:: pysradb.filter_attrs
    :members:
-   :show-inheritance:
    :undoc-members:
+   :show-inheritance:
 
 pysradb.geodb module
 --------------------
 
 .. automodule:: pysradb.geodb
    :members:
-   :show-inheritance:
    :undoc-members:
+   :show-inheritance:
 
 pysradb.geoweb module
 ---------------------
 
 .. automodule:: pysradb.geoweb
    :members:
-   :show-inheritance:
    :undoc-members:
+   :show-inheritance:
 
 pysradb.metadata\_enrichment module
 -----------------------------------
 
 .. automodule:: pysradb.metadata_enrichment
    :members:
-   :show-inheritance:
    :undoc-members:
+   :show-inheritance:
 
 pysradb.search module
 ---------------------
 
 .. automodule:: pysradb.search
    :members:
-   :show-inheritance:
    :undoc-members:
+   :show-inheritance:
 
 pysradb.sradb module
 --------------------
 
 .. automodule:: pysradb.sradb
    :members:
-   :show-inheritance:
    :undoc-members:
+   :show-inheritance:
 
 pysradb.sraweb module
 ---------------------
 
 .. automodule:: pysradb.sraweb
    :members:
-   :show-inheritance:
    :undoc-members:
+   :show-inheritance:
 
 pysradb.taxid2name module
 -------------------------
 
 .. automodule:: pysradb.taxid2name
    :members:
-   :show-inheritance:
    :undoc-members:
+   :show-inheritance:
 
 pysradb.utils module
 --------------------
 
 .. automodule:: pysradb.utils
    :members:
-   :show-inheritance:
    :undoc-members:
+   :show-inheritance:
 
 Module contents
 ---------------
 
 .. automodule:: pysradb
    :members:
-   :show-inheritance:
    :undoc-members:
+   :show-inheritance:

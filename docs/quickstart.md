@@ -47,23 +47,18 @@ The following notebooks document all the possible features of `pysradb`:
 9.  [Searching
     SRA/GEO/ENA](https://colab.research.google.com/github/saketkc/pysradb/blob/master/notebooks/09.Query_Search.ipynb)
 
-| 
-
 ## Metadata
 
 `pysradb` makes it very easy to obtain metadata from SRA/EBI:
 
-::: tabbed
-Console
-
+`````{tabs}
+````{tab} Console
 ``` bash
 $ pysradb metadata SRP265425
 ```
-:::
+````
 
-::: tabbed
-Python
-
+````{tab} Python
 ``` python
 from pysradb.sraweb import SRAweb
 
@@ -71,7 +66,8 @@ db = SRAweb()
 df = db.metadata("SRP265425")
 df
 ```
-:::
+````
+`````
 
 Output: :
 
@@ -96,17 +92,14 @@ metadata:
 
 `pysradb` makes it very easy to obtain metadata from SRA/EBI:
 
-::: tabbed
-Console
-
+`````{tabs}
+````{tab} Console
 ``` bash
 $ pysradb metadata SRP265425 --detailed
 ```
-:::
+````
 
-::: tabbed
-Python
-
+````{tab} Python
 ``` python
 from pysradb.sraweb import SRAweb
 
@@ -114,7 +107,8 @@ db = SRAweb()
 df = db.metadata("SRP265425", detailed=True)
 df
 ```
-:::
+````
+`````
 
 Output: :
 
@@ -141,17 +135,14 @@ conversion numbers.
 
 ### Convert SRP to SRX
 
-::: tabbed
-Console
-
+`````{tabs}
+````{tab} Console
 ``` bash
 $ pysradb srp-to-srx SRP098789
 ```
-:::
+````
 
-::: tabbed
-Python
-
+````{tab} Python
 ``` python
 from pysradb.sraweb import SRAweb
 
@@ -159,7 +150,8 @@ db = SRAweb()
 df = db.srp-to-srx("SRP098789")
 df
 ```
-:::
+````
+`````
 
 Output: :
 
@@ -191,21 +183,16 @@ Output: :
     SRP098789       SRX2536404      GSM2475998: 1.5 ?M PF-067446846, 10 min, rep 2; Homo sapiens; OTHER     GSM2475998: 1.5 ?M PF-067446846, 10 min, rep 2; Homo sapiens; OTHER     9606    Homo sapiens    OTHER   TRANSCRIPTOMIC  other   SRS1956354      Illumina HiSeq 2000     41657461        1360366732      SRR5227289      41657461        2082873050      SRP098789
     SRP098789       SRX2536403      GSM2475997: 1.5 ?M PF-067446846, 10 min, rep 1; Homo sapiens; OTHER     GSM2475997: 1.5 ?M PF-067446846, 10 min, rep 1; Homo sapiens; OTHER     9606    Homo sapiens    OTHER   TRANSCRIPTOMIC  other   SRS1956353      Illumina HiSeq 2000     42082855        916745706       SRR5227288      42082855        2104142750      SRP098789
 
-| 
-
 ### Convert GSE to SRP
 
-::: tabbed
-Console
-
+`````{tabs}
+````{tab} Console
 ``` bash
 $ pysradb srp-to-srx SRP098789
 ```
-:::
+````
 
-::: tabbed
-Python
-
+````{tab} Python
 ``` python
 from pysradb.sraweb import SRAweb
 
@@ -213,7 +200,8 @@ db = SRAweb()
 df = db.srp-to-srx("SRP098789")
 df
 ```
-:::
+````
+`````
 
 Output: :
 
@@ -247,8 +235,6 @@ Output: :
 
 ------------------------------------------------------------------------
 
-| 
-
 ## Downloading sequencing data
 
 `pysradb` can alse be used to download either `.fastq` or `.sra`
@@ -256,50 +242,42 @@ filesboth from ENA and SRA.
 
 ### Downloading via accession number
 
-::: tabbed
-Console
-
+`````{tabs}
+````{tab} Console
 ``` bash
 $ pysradb download SRP098789
 ```
-:::
+````
 
-::: tabbed
-Python
-
+````{tab} Python
 ``` python
 from pysradb.sraweb import SRAweb
 
 db = SRAweb()
 db.download("SRP098789")
 ```
-:::
-
-| 
+````
+`````
 
 It is also possible to pipe the dataframe from [metadata]{.title-ref} or
 [search]{.title-ref} to download, after filtering the dataframe entries:
 
-::: tabbed
-Console
-
+`````{tabs}
+````{tab} Console
 ``` bash
 $ pysradb metadata SRP276671 --detailed | pysradb download
 ```
-:::
+````
 
-::: tabbed
-Python
-
+````{tab} Python
 ``` python
 from pysradb.sraweb import SRAweb
 db = SRAweb()
 df = db.sra_metadata('SRP016501', detailed=True)
 db.download(df=df)
 ```
-:::
-
-| 
+````
+`````
 
 ### Ultrafast fastq downloads
 
@@ -310,47 +288,40 @@ installed, `pysradb` canan perform ultra fast downloads:
 To download all original fastqs with [aspera-client]{.title-ref}
 installed utilizing 8 threads:
 
-::: tabbed
-Console
-
+`````{tabs}
+````{tab} Console
 ``` console
 $ pysradb download -t 8 --use_ascp -p SRP002605
 ```
-:::
+````
 
-::: tabbed
-Python
-
+````{tab} Python
 ``` python
 from pysradb.sraweb import SRAweb
 
 db = SRAweb()
 db.download("SRP098789", use_ascp=True, threads=8)
 ```
-:::
+````
+`````
 
 Refer to the notebook for [(shallow) time
 benchmarks](https://colab.research.google.com/github/saketkc/pysradb/blob/master/notebooks/08.pysradb_ascp_multithreaded.ipynb).
 
 ------------------------------------------------------------------------
 
-| 
-
 ## Search
 
 ### Retrieving metadata by accession number
 
-::: tabbed
-Console
-
+`````{tabs}
+````{tab} Console
 ``` bash
 $ pysradb metadata SRP276671
 ```
-:::
+````
 
-::: tabbed
-Python
-
+````{tab} Python
 ``` python
 from pysradb.sraweb import SRAweb
 
@@ -358,15 +329,14 @@ db = SRAweb()
 df = db.sra_metadata('SRP016501')
 df
 ```
-:::
+````
+`````
 
 Output: :
 
     study_accession experiment_accession    experiment_title        experiment_desc organism_taxid  organism_name   library_strategy        library_source  library_selection       sample_accession        sample_title    instrument      total_spots     total_size      run_accession   run_total_spots run_total_bases
     SRP276671       SRX8978626      hCov-19/Canada/ON/VIDO01/2020 (EPI ISL 413015)  hCov-19/Canada/ON/VIDO01/2020 (EPI ISL 413015)  2697049 Severe acute respiratory syndrome coronavirus 2 WGS     GENOMIC RT-PCR  SRS7233795      MinION  96202  79690689 SRR12486810     96202   86575096
     SRP276671       SRX8909137      hCoV-19/Canada/ON-VIDO-01/2020 (EPI_ISL_425177) hCoV-19/Canada/ON-VIDO-01/2020 (EPI_ISL_425177) 2697049 Severe acute respiratory syndrome coronavirus 2 WGS     GENOMIC RT-PCR  SRS7166526      Illumina MiSeq 866225   173474986       SRR12412952     866225  338457239
-
-| 
 
 ::: note
 ::: title
@@ -378,22 +348,17 @@ metadata as a [pandas]{.title-ref} DataFrame, with all regular
 select/query operations available through [pandas]{.title-ref}.
 :::
 
-| 
-
 For more detailed metadata (including download URLs), we can include the
 [detailed]{.title-ref} flag:
 
-::: tabbed
-Console
-
+`````{tabs}
+````{tab} Console
 ``` bash
 $ pysradb metadata SRP276671 --detailed
 ```
-:::
+````
 
-::: tabbed
-Python
-
+````{tab} Python
 ``` python
 from pysradb.sraweb import SRAweb
 
@@ -401,7 +366,8 @@ db = SRAweb()
 df = db.sra_metadata('SRP016501', detailed=True)
 df
 ```
-:::
+````
+`````
 
 Output: :
 
@@ -411,24 +377,19 @@ Output: :
 
 ------------------------------------------------------------------------
 
-| 
-
 ### Searching SRA/ENA databases and retrieving metadata
 
 Let\'s take for example we are interested in coronavirus sequences
 published on Short Reads Archive (SRA) in the first week of August 2020.
 
-::: tabbed
-Console
-
+`````{tabs}
+````{tab} Console
 ``` bash
 $ pysradb search -q coronavirus --publication-date 01-08-2020:07-08-2020 --max 10000
 ```
-:::
+````
 
-::: tabbed
-Python
-
+````{tab} Python
 ``` python
 from pysradb.search import SraSearch
 
@@ -436,7 +397,8 @@ instance = SraSearch(return_max=10000, query="coronavirus", publication_date="01
 instance.search()
 instance.get_df()
 ```
-:::
+````
+`````
 
 Output (showing only the first 10 entries): :
 
@@ -452,21 +414,16 @@ Output (showing only the first 10 entries): :
     SRP253798       SRX8677883      Severe acute respiratory syndrome coronavirus 2 2697049 Severe acute respiratory syndrome coronavirus 2 AMPLICON        VIRAL RNA       PCR     SRS6956969      hCoV-19/Australia/VIC1815/2020  NextSeq 550    307106   35306959        SRR12162155     307106  89866234        11292870
     SRP253798       SRX8677882      Severe acute respiratory syndrome coronavirus 2 2697049 Severe acute respiratory syndrome coronavirus 2 AMPLICON        VIRAL RNA       PCR     SRS6956968      hCoV-19/Australia/VIC1814/2020  NextSeq 550    353704   40652239        SRR12162156     353704  103366580       11292869
 
-| 
-
 To query European Nucleotide Archive (ENA) instead:
 
-::: tabbed
-Console
-
+`````{tabs}
+````{tab} Console
 ``` bash
 $ pysradb search --db ena -q coronavirus --publication-date 01-08-2020:07-08-2020 --max 10000
 ```
-:::
+````
 
-::: tabbed
-Python
-
+````{tab} Python
 ``` python
 from pysradb.search import EnaSearch
 
@@ -474,7 +431,8 @@ instance = EnaSearch(return_max=10000, query="coronavirus", publication_date="01
 instance.search()
 instance.get_df()
 ```
-:::
+````
+`````
 
 Output (showing only the first 10 entries): :
 
@@ -490,35 +448,29 @@ Output (showing only the first 10 entries): :
     PRJEB12126      ERX1264372      Illumina HiSeq 2000 sequencing; Analysis of coronavirus and infected host-cell gene expression through RNA sequencing and ribosome profiling    Illumina HiSeq 2000 sequencing; Analysis of coronavirus and infected host-cell gene expression through RNA sequencing and ribosome profiling    10090   Mus musculus    RNA-Seq TRANSCRIPTOMIC  RANDOM  SAMEA3708915    Sample 17       Illumina HiSeq 2000     ERR1190997      80591061        2475034240
     PRJEB12126      ERX1264373      Illumina HiSeq 2000 sequencing; Analysis of coronavirus and infected host-cell gene expression through RNA sequencing and ribosome profiling    Illumina HiSeq 2000 sequencing; Analysis of coronavirus and infected host-cell gene expression through RNA sequencing and ribosome profiling    10090   Mus musculus    RNA-Seq TRANSCRIPTOMIC  RANDOM  SAMEA3708916    Sample 18       Illumina HiSeq 2000     ERR1190998      68575621        2149386138
 
-| 
-
 If the number of returned entries is large, it might be troublesome to
 filter through the metadata to find any information of interest. As a
 starting point, we can use the search feature to generate summary
 statistics and graphs for the search result:
 
-| 
-
 ### Statistics
 
-::: tabbed
-Console
-
+`````{tabs}
+````{tab} Console
 ``` bash
 $ pysradb search --db ena --organism "Severe acute respiratory syndrome coronavirus 2" --max 10000 -s
 ```
-:::
+````
 
-::: tabbed
-Python
-
+````{tab} Python
 ``` python
 from pysradb.search import EnaSearch
 instance = EnaSearch(return_max=10000, organism="Severe acute respiratory syndrome coronavirus 2")
 instance.search()
 instance.show_result_statistics()
 ```
-:::
+````
+`````
 
 Output: :
 
@@ -565,21 +517,16 @@ Output: :
         PAIRED:  5059
         SINGLE:  4941
 
-| 
-
 ### Plotting
 
-::: tabbed
-Console
-
+`````{tabs}
+````{tab} Console
 ``` bash
 $ pysradb search --db ena -q e --max 500000 -g
 ```
-:::
+````
 
-::: tabbed
-Python
-
+````{tab} Python
 ``` python
 from pysradb.search import EnaSearch
 
@@ -587,7 +534,8 @@ instance = EnaSearch(return_max=500000, "e")
 instance.search()
 instance.visualise_results()
 ```
-:::
+````
+`````
 
 Output: Graphs generated will automatically be saved under
 [./search_plots/]{.title-ref}. Optionally, graphs can be shown in python
@@ -601,8 +549,6 @@ available graphs that will be generated:
 ![image](_static/e3.png){width="600px"}
 
 ------------------------------------------------------------------------
-
-| 
 
 ## List of possible [pysradb]{.title-ref} operations
 
