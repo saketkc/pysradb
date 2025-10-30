@@ -68,7 +68,9 @@ def _print_save_df(df, saveto=None):
 
 
 ###################### metadata ##############################
-def metadata(srp_id, assay, desc, detailed, expand, saveto, enrich=False, enrich_backend=None):
+def metadata(
+    srp_id, assay, desc, detailed, expand, saveto, enrich=False, enrich_backend=None
+):
     sradb = SRAweb()
 
     srp_ids = []
@@ -112,13 +114,11 @@ def metadata(srp_id, assay, desc, detailed, expand, saveto, enrich=False, enrich
                 gse_ids if gse_ids else srp_ids,
                 detailed=detailed,
                 enrich=True,
-                enrich_backend=enrich_backend
+                enrich_backend=enrich_backend,
             )
         else:
             df = sradb.metadata(
-                gse_ids if gse_ids else srp_ids,
-                detailed=detailed,
-                enrich=True
+                gse_ids if gse_ids else srp_ids, detailed=detailed, enrich=True
             )
 
     _print_save_df(df, saveto)
@@ -735,14 +735,14 @@ def parse_args(args=None):
     subparser.add_argument(
         "--enrich",
         action="store_true",
-        help="Enrich metadata with standardized biological attributes using LLMs"
+        help="Enrich metadata with standardized biological attributes using LLMs",
     )
     subparser.add_argument(
         "--enrich-backend",
         type=str,
         default=None,
         help="LLM backend for enrichment (e.g., 'ollama/phi3', 'ollama/llama3.2'). "
-             "If not specified, uses default backend"
+        "If not specified, uses default backend",
     )
     subparser.add_argument("srp_id", nargs="+")
     subparser.set_defaults(func=metadata)
