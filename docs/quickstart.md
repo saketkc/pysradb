@@ -4,16 +4,12 @@ Most features in `pysradb` are accessible both from the command-line and
 as a python package. `pysradb` usage on the two platforms will be
 displayed by selecting the corresponding tab below.
 
-::: note
-::: title
-Note
-:::
-
+```{note}
 If you have any questions along the way, please head over to the
-`python-api-usage`{.interpreted-text role="doc"} or the
-`cmdline`{.interpreted-text role="doc"} for more information. You may
-also wish to refer to the `commands`{.interpreted-text role="doc"}
-:::
+[Python API Usage](python-api-usage.md) or the
+[Command Line](cmdline.md) for more information. You may
+also wish to refer to the [API Documentation](commands.rst).
+```
 
 ------------------------------------------------------------------------
 
@@ -69,7 +65,7 @@ df
 ````
 `````
 
-Output: :
+Output:
 
     study_accession experiment_accession    experiment_title    experiment_desc organism_taxid  organism_name   library_name    library_strategy    library_source  library_selection   library_layout  sample_accession    sample_title    instrument  instrument_model    instrument_model_desc   total_spots total_size  run_accession   run_total_spots run_total_bases
     SRP265425   SRX8434255  Ampliseq of SARS-CoV-2  Ampliseq of SARS-CoV-2  2697049 Severe acute respiratory syndrome coronavirus 2 63-2020-04-22   AMPLICON    VIRAL RNA   RT-PCR  SINGLE  SRS6745319      Ion Torrent S5 XL   Ion Torrent S5 XL   ION_TORRENT 1311358 83306910    SRR11886735 1311358 109594216
@@ -110,7 +106,7 @@ df
 ````
 `````
 
-Output: :
+Output:
 
     run_accession   study_accession experiment_accession    experiment_title    experiment_desc organism_taxid  organism_name   library_name    library_strategy    library_source  library_selection   library_layout  sample_accession    sample_title    instrument  instrument_model    instrument_model_desc   total_spots total_size  run_total_spots run_total_bases run_alias   sra_url_alt1    sra_url_alt2    sra_url experiment_alias    isolate collected_by    collection_date geo_loc_name    host    host_disease    isolation_source    lat_lon BioSampleModel  sra_url_alt3    ena_fastq_http  ena_fastq_http_1    ena_fastq_http_2    ena_fastq_ftp   ena_fastq_ftp_1 ena_fastq_ftp_2
     SRR11886735 SRP265425   SRX8434255  Ampliseq of SARS-CoV-2  Ampliseq of SARS-CoV-2  2697049 Severe acute respiratory syndrome coronavirus 2 63-2020-04-22   AMPLICON    VIRAL RNA   RT-PCR  SINGLE  SRS6745319      Ion Torrent S5 XL   Ion Torrent S5 XL   ION_TORRENT 1311358 83306910    1311358 109594216   IonXpress_063_R_2020_04_22_15_56_22_user_GCEID-S5-58-SARS_CoV2_SA4.bam  gs://sra-pub-src-9/SRR11886735/Wuhan_Hu_1_NC_045512_21500_and_subgenomics_SA4.fasta.1   https://sra-pub-sars-cov2.s3.amazonaws.com/sra-src/SRR11886735/Wuhan_Hu_1_NC_045512_21500_and_subgenomics_SA4.fasta.1   https://sra-download.ncbi.nlm.nih.gov/traces/sra0/SRR/011608/SRR11886735        GC-20   NA  02-Apr-2020 Australia: Victoria Homo sapiens    COVID-19    swab    NA  Pathogen.cl     http://ftp.sra.ebi.ac.uk/vol1/fastq/SRR118/035/SRR11886735/SRR11886735.fastq.gz         era-fasp@fasp.sra.ebi.ac.uk:vol1/fastq/SRR118/035/SRR11886735/SRR11886735.fastq.gz
@@ -153,7 +149,7 @@ df
 ````
 `````
 
-Output: :
+Output:
 
     study_accession experiment_accession    experiment_title        experiment_desc organism_taxid  organism_name   library_strategy        library_source  library_selection       sample_accession        sample_title    instrument      total_spots     total_size      run_accession   run_total_spots run_total_bases study_accesssion
     SRP098789       SRX2536428      GSM2476022: vehicle, 60 min, rep 5-mRNAseq; Homo sapiens; RNA-Seq       GSM2476022: vehicle, 60 min, rep 5-mRNAseq; Homo sapiens; RNA-Seq       9606    Homo sapiens    RNA-Seq TRANSCRIPTOMIC  cDNA    SRS1956378      Illumina HiSeq 2500     69422931        1545681856      SRR5227313      69422931        3540569481      SRP098789
@@ -203,7 +199,7 @@ df
 ````
 `````
 
-Output: :
+Output:
 
     study_accession experiment_accession    experiment_title        experiment_desc organism_taxid  organism_name   library_strategy        library_source  library_selection       sample_accession        sample_title    instrument      total_spots     total_size      run_accession   run_total_spots run_total_bases study_accesssion
     SRP098789       SRX2536428      GSM2476022: vehicle, 60 min, rep 5-mRNAseq; Homo sapiens; RNA-Seq       GSM2476022: vehicle, 60 min, rep 5-mRNAseq; Homo sapiens; RNA-Seq       9606    Homo sapiens    RNA-Seq TRANSCRIPTOMIC  cDNA    SRS1956378      Illumina HiSeq 2500     69422931        1545681856      SRR5227313      69422931        3540569481      SRP098789
@@ -332,7 +328,7 @@ df
 ````
 `````
 
-Output: :
+Output:
 
     study_accession experiment_accession    experiment_title        experiment_desc organism_taxid  organism_name   library_strategy        library_source  library_selection       sample_accession        sample_title    instrument      total_spots     total_size      run_accession   run_total_spots run_total_bases
     SRP276671       SRX8978626      hCov-19/Canada/ON/VIDO01/2020 (EPI ISL 413015)  hCov-19/Canada/ON/VIDO01/2020 (EPI ISL 413015)  2697049 Severe acute respiratory syndrome coronavirus 2 WGS     GENOMIC RT-PCR  SRS7233795      MinION  96202  79690689 SRR12486810     96202   86575096
@@ -369,7 +365,7 @@ df
 ````
 `````
 
-Output: :
+Output:
 
     study_accession experiment_accession    experiment_title        experiment_desc organism_taxid  organism_name   library_strategy        library_source  library_selection       sample_accession        sample_title    instrument      total_spots     total_size      run_accession   run_total_spots run_total_bases run_alias       sra_url_alt     sra_url experiment_alias        isolate collected_by    collection_date geo_loc_name    host    host_disease    isolation_source       lat_lon  host_sex        host_subject_id passage_history BioSampleModel  sra_url_alt1    sra_url_alt2    sra_url_alt3   ena_fastq_http   ena_fastq_ftp
     SRP276671       SRX8978626      hCov-19/Canada/ON/VIDO01/2020 (EPI ISL 413015)  hCov-19/Canada/ON/VIDO01/2020 (EPI ISL 413015)  2697049 Severe acute respiratory syndrome coronavirus 2 WGS     GENOMIC RT-PCR  SRS7233795      N/A     MinION 96202    79690689        SRR12486810     96202   86575096        VIDO-01.tar.gz  https://sra-download.ncbi.nlm.nih.gov/traces/sra1/SRZ/012486/SRR12486810/VIDO-01.tar.gz https://sra-download.ncbi.nlm.nih.gov/traces/sra78/SRR/012194/SRR12486810       N/A     ON-VIDO-01-P3   Public Health Ontario   2020-01-23      Canada: Ontario Homo sapiens    COVID-19       missing  missing male    VIDO-01 Vero E6 P3      Pathogen.cl     N/A     N/A     N/A     http://ftp.sra.ebi.ac.uk/vol1/fastq/SRR124/010/SRR12486810/SRR12486810_1.fastq.gz       era-fasp@fasp.sra.ebi.ac.uk:vol1/fastq/SRR124/010/SRR12486810/SRR12486810_1.fastq.gz
@@ -472,7 +468,7 @@ instance.show_result_statistics()
 ````
 `````
 
-Output: :
+Output:
 
     Statistics for the search query:
     =================================
@@ -591,10 +587,3 @@ available graphs that will be generated:
         srx-to-srr          Get SRR for a SRX
         srx-to-srs          Get SRS for a SRX
 
-::: {.toctree maxdepth="1"}
-commands/download commands/metadata commands/search commands/gse-to-gsm
-commands/gse-to-srp commands/srp-to-gse commands/srp-to-srr
-commands/srp-to-srs commands/srp-to-srx commands/srr-to-srs
-commands/srr-to-srx commands/srs-to-srx commands/srx-to-srr
-commands/srx-to-srs
-:::

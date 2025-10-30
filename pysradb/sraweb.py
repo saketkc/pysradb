@@ -1167,9 +1167,9 @@ class SRAweb(SRAdb):
         Automatically detects accession type and calls appropriate method.
 
         Args:
-            accession: SRP/GSE accession(s) - can be string or list
-            **kwargs: Additional parameters passed to sra_metadata() or geo_metadata()
-                     (e.g., detailed, enrich, enrich_backend, sample_attribute, etc.)
+            accession: ``SRP``/``GSE`` accession(s) - can be string or list
+            kwargs: Additional parameters passed to ``sra_metadata()`` or ``geo_metadata()``
+                     (e.g., ``detailed``, ``enrich``, ``enrich_backend``, ``sample_attribute``, etc.)
 
         Returns:
             DataFrame with metadata (enriched if enrich=True)

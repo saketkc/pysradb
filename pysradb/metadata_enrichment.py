@@ -107,9 +107,7 @@ class MetadataExtractor(ABC):
 
         Args:
             df: Input DataFrame
-            text_column: Column containing text to analyze. If None, automatically combines
-                        all relevant sample-level text columns (sample_title, sample_source_name,
-                        sample_type, extract_protocol, label_protocol, etc.) for maximum context.
+            text_column: Column containing text to analyze. If None, combines sample text columns.
             fields: List of metadata fields to extract
             prefix: Prefix for new columns
             show_progress: Show progress bar (default: True)
@@ -749,10 +747,10 @@ def create_metadata_extractor(
     Factory function to create metadata extractor.
 
     Args:
-        method: Extraction method ("llm" or "embedding")
+        method: Extraction method (``llm`` or ``embedding``)
         backend: Backend for the method
         model: Model name
-        **kwargs: Additional parameters
+        kwargs: Additional parameters (as keyword arguments)
 
     Returns:
         MetadataExtractor instance

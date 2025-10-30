@@ -115,7 +115,6 @@ html_theme = "furo"
 # documentation.
 #
 html_theme_options = {
-    "sidebar_hide_on_mobile": False,
     "light_css_variables": {
         "color-brand-primary": "#0066cc",
         "color-brand-content": "#0066cc",
@@ -211,13 +210,6 @@ scv_greatest_tag = True
 scv_show_banner = True
 
 html_logo = "_static/pysradb_v3.png"
-
-# Update theme options to merge with Furo settings
-html_theme_options.update(
-    {
-        "sidebar_hide_on_mobile": False,
-    }
-)
 
 # Load custom JavaScript for copy-to-clipboard functionality
 html_js_files = [
