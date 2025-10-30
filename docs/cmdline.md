@@ -1,8 +1,8 @@
-# CLI 
+# CLI
 
     $ pysradb
     usage: pysradb [-h] [--version] [--citation]
-                   {metadb,metadata,download,search,gse-to-gsm,gse-to-srp,gsm-to-gse,gsm-to-srp,gsm-to-srr,gsm-to-srs,gsm-to-srx,srp-to-gse,srp-to-srr,srp-to-srs,srp-to-srx,srr-to-gsm,srr-to-srp,srr-to-srs,srr-to-srx,srs-to-gsm,srs-to-srx,srx-to-srp,srx-to-srr,srx-to-srs}
+                   {metadata,download,search,gse-to-gsm,gse-to-srp,gsm-to-gse,gsm-to-srp,gsm-to-srr,gsm-to-srs,gsm-to-srx,srp-to-gse,srp-to-srr,srp-to-srs,srp-to-srx,srr-to-gsm,srr-to-srp,srr-to-srs,srr-to-srx,srs-to-gsm,srs-to-srx,srx-to-srp,srx-to-srr,srx-to-srs,geo-matrix,srp-to-pmid,gse-to-pmid,pmid-to-gse,pmid-to-srp,pmc-to-identifiers,pmid-to-identifiers,doi-to-gse,doi-to-srp,doi-to-identifiers}
                    ...
 
     pysradb: Query NGS metadata and data from NCBI Sequence Read Archive.
@@ -14,7 +14,7 @@
       --citation            how to cite
 
     subcommands:
-      {metadb,metadata,download,search,gse-to-gsm,gse-to-srp,gsm-to-gse,gsm-to-srp,gsm-to-srr,gsm-to-srs,gsm-to-srx,srp-to-gse,srp-to-srr,srp-to-srs,srp-to-srx,srr-to-gsm,srr-to-srp,srr-to-srs,srr-to-srx,srs-to-gsm,srs-to-srx,srx-to-srp,srx-to-srr,srx-to-srs}
+      {metadata,download,search,gse-to-gsm,gse-to-srp,gsm-to-gse,gsm-to-srp,gsm-to-srr,gsm-to-srs,gsm-to-srx,srp-to-gse,srp-to-srr,srp-to-srs,srp-to-srx,srr-to-gsm,srr-to-srp,srr-to-srs,srr-to-srx,srs-to-gsm,srs-to-srx,srx-to-srp,srx-to-srr,srx-to-srs,geo-matrix,srp-to-pmid,gse-to-pmid,pmid-to-gse,pmid-to-srp,pmc-to-identifiers,pmid-to-identifiers,doi-to-gse,doi-to-srp,doi-to-identifiers}
         metadata            Fetch metadata for SRA project (SRPnnnn)
         download            Download SRA project (SRPnnnn)
         search              Search SRA/ENA for matching text
@@ -38,6 +38,71 @@
         srx-to-srp          Get SRP for a SRX
         srx-to-srr          Get SRR for a SRX
         srx-to-srs          Get SRS for a SRX
+        geo-matrix          Download and parse GEO Matrix files
+        srp-to-pmid         Get PMIDs for SRP accessions
+        gse-to-pmid         Get PMIDs for GSE accessions
+        pmid-to-gse         Get GSE accessions from PMIDs
+        pmid-to-srp         Get SRP accessions from PMIDs
+        pmc-to-identifiers  Extract database identifiers from PMC articles
+        pmid-to-identifiers Extract database identifiers from PubMed articles
+        doi-to-gse          Get GSE accessions from DOIs
+        doi-to-srp          Get SRP accessions from DOIs
+        doi-to-identifiers  Extract database identifiers from articles via DOI
+
+## Enriching metadata
+
+Extract standardized biological metadata from SRA/GEO datasets using LLMs.
+
+### Quickstart
+
+```bash
+from pysradb import SRAweb
+
+db = SRAweb()
+
+df = db.metadata("GSE286254", detailed=True, enrich=True)
+
+# Returns original + 9 enriched columns (might not always be complete):
+# guessed_organ, guessed_tissue, guessed_anatomical_system,
+# guessed_cell_type, guessed_disease, guessed_sex,
+# guessed_development_stage, guessed_assay, guessed_organism
+
+db.close()
+```
+
+### Prerequisites
+
+Install Ollama: <https://ollama.ai>
+
+```bash
+ollama pull phi3
+```
+
+### Advanced Usage
+
+```bash
+# Use different model
+df = db.metadata("GSE286254", detailed=True, enrich=True,
+                enrich_backend="ollama/llama3.2")
+
+# Manual enrichment with custom settings
+from pysradb.metadata_enrichment import create_metadata_extractor, load_ontology_reference
+
+# LLM-based extraction
+extractor_llm = create_metadata_extractor(method="llm", backend="ollama/phi3")
+df_enriched = extractor_llm.enrich_dataframe(df, prefix="guessed_")
+
+# Embedding-based extraction (faster, offline)
+ontology_ref = load_ontology_reference()
+extractor_emb = create_metadata_extractor(
+    method="embedding",
+    model="FremyCompany/BioLORD-2023",
+    reference_categories=ontology_ref
+)
+df_enriched = extractor_emb.enrich_dataframe(df, prefix="guessed_")
+```
+
+See [Notebook 09](https://github.com/saketkc/pysradb/blob/develop/notebooks/09.Metadata_Enrichment_with_LLMs.ipynb) for detailed examples.
 
 ## Getting metadata for a SRA project (SRP)
 
@@ -169,6 +234,34 @@ But not all SRPs will have an associated GEO id (GSE):
     study_accession study_alias
     SRP029589       PRJNA218051
 
+## Converting GSM to SRP
+
+    $ pysradb gsm-to-srp GSM2177186
+
+    experiment_alias study_accession
+    GSM2177186       SRP075720
+
+## Converting GSM to GSE
+
+    $ pysradb gsm-to-gse GSM2177186
+
+    experiment_alias study_alias
+    GSM2177186       GSE81903
+
+## Converting GSM to SRX
+
+    $ pysradb gsm-to-srx GSM2177186
+
+    experiment_alias experiment_accession
+    GSM2177186       SRX1800089
+
+## Converting GSM to SRR
+
+    $ pysradb gsm-to-srr GSM2177186
+
+    experiment_alias run_accession
+    GSM2177186       SRR3587529
+
 ## SRA accessions for GEO studies (GSE =\> SRP)
 
     $ pysradb gse-to-srp GSE87328i
@@ -176,6 +269,67 @@ But not all SRPs will have an associated GEO id (GSE):
     study_alias study_accession
     GSE87328    SRP090415
 
-Please see
-[quickstart](https://www.saket-choudhary.me/pysradb/quickstart.html#the-full-list-of-possible-pysradb-operations)
-for all possible operations available through `pysradb`.
+## Converting SRP to PMID
+
+    $ pysradb srp-to-pmid SRP045778
+
+    srp_accession bioproject pmid
+    SRP045778     PRJNA257197 27373336
+
+## Converting GSE to PMID
+
+    $ pysradb gse-to-pmid GSE253406
+
+    gse_accession pmid
+    GSE253406     39528918
+
+## Extracting identifiers from PMC/DOI
+
+Extract database identifiers (GSE, PRJNA, SRP, etc.) from PubMed Central articles or DOIs.
+
+### Get all identifiers from a PMID
+
+    $ pysradb pmid-to-identifiers 39528918
+
+    pmid      pmc_id       gse_ids     prjna_ids    srp_ids
+    39528918  PMC10802650  GSE253406   PRJNA1058002 SRP484103
+
+### Get only GSE or SRP from PMID
+
+    $ pysradb pmid-to-gse 39528918
+
+    pmid      pmc_id       gse_ids
+    39528918  PMC10802650  GSE253406
+
+    $ pysradb pmid-to-srp 39528918
+
+    pmid      pmc_id       srp_ids
+    39528918  PMC10802650  SRP484103
+
+### Extract from DOI
+
+    $ pysradb doi-to-identifiers 10.12688/f1000research.18676.1
+
+    doi                                 pmid      pmc_id      gse_ids  srp_ids
+    10.12688/f1000research.18676.1      30873266  PMC6411813  GSE...   SRP...
+
+### Extract from PMC ID
+
+    $ pysradb pmc-to-identifiers PMC10802650
+
+    pmc_id       gse_ids     prjna_ids    srp_ids
+    PMC10802650  GSE253406   PRJNA1058002 SRP484103
+
+## Downloading supplementary files from GEO
+
+    $ pysradb download -g GSE161707
+
+## Downloading an entire SRA/ENA project (multithreaded)
+
+`pysradb` makes it super easy to download datasets from SRA in parallel:
+Using 8 threads to download:
+
+    $ pysradb download -y -t 8 --out-dir ./pysradb_downloads -p SRP063852
+
+Downloads are organized by `SRP/SRX/SRR` mimicking the hierarchy of SRA
+projects.
