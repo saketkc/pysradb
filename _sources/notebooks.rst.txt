@@ -7,6 +7,7 @@ The following Jupyter notebooks demonstrate various features of pysradb:
    :maxdepth: 1
    :caption: Key Tutorials
 
+   notebooks/README
    notebooks/01.Python-API_demo.ipynb
    notebooks/02.Commandline_download.ipynb
    notebooks/03.ParallelDownload.ipynb

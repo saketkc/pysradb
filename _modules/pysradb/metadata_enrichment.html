@@ -226,6 +226,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../python-api-usage.html">Python API</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../case_studies.html">Case Studies</a></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../notebooks.html">Tutorials &amp; Notebooks</a><input aria-label="Toggle navigation of Tutorials &amp; Notebooks" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../notebooks/README.html">Notebooks demonstrating functionalities of pysradb</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../notebooks/01.Python-API_demo.html">Python API Demo</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../notebooks/02.Commandline_download.html">Command-line Download</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../notebooks/03.ParallelDownload.html">Parallel Download</a></li>
@@ -238,13 +239,11 @@
 <li class="toctree-l2"><a class="reference internal" href="../../notebooks/11.Parse_Bioscience_Search.html">Parse BioScience Search</a></li>
 </ul>
 </li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../../commands.html">API Documentation</a><input aria-label="Toggle navigation of API Documentation" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul class="simple">
-</ul>
-</li>
+<li class="toctree-l1"><a class="reference internal" href="../../commands.html">API Documentation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../contributing.html">Contributing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../authors.html">Credits</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../history.html">History</a></li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../../modules.html">pysradb</a><input aria-label="Toggle navigation of pysradb" class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../modules.html">pysradb</a><input aria-label="Toggle navigation of pysradb" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../pysradb.html">pysradb package</a></li>
 </ul>
 </li>
@@ -400,9 +399,7 @@
 
 <span class="sd">        Args:</span>
 <span class="sd">            df: Input DataFrame</span>
-<span class="sd">            text_column: Column containing text to analyze. If None, automatically combines</span>
-<span class="sd">                        all relevant sample-level text columns (sample_title, sample_source_name,</span>
-<span class="sd">                        sample_type, extract_protocol, label_protocol, etc.) for maximum context.</span>
+<span class="sd">            text_column: Column containing text to analyze. If None, combines sample text columns.</span>
 <span class="sd">            fields: List of metadata fields to extract</span>
 <span class="sd">            prefix: Prefix for new columns</span>
 <span class="sd">            show_progress: Show progress bar (default: True)</span>
@@ -1061,10 +1058,10 @@
 <span class="sd">    Factory function to create metadata extractor.</span>
 
 <span class="sd">    Args:</span>
-<span class="sd">        method: Extraction method (&quot;llm&quot; or &quot;embedding&quot;)</span>
+<span class="sd">        method: Extraction method (``llm`` or ``embedding``)</span>
 <span class="sd">        backend: Backend for the method</span>
 <span class="sd">        model: Model name</span>
-<span class="sd">        **kwargs: Additional parameters</span>
+<span class="sd">        kwargs: Additional parameters (as keyword arguments)</span>
 
 <span class="sd">    Returns:</span>
 <span class="sd">        MetadataExtractor instance</span>

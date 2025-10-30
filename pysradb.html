@@ -227,6 +227,7 @@
 <li class="toctree-l1"><a class="reference internal" href="python-api-usage.html">Python API</a></li>
 <li class="toctree-l1"><a class="reference internal" href="case_studies.html">Case Studies</a></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="notebooks.html">Tutorials &amp; Notebooks</a><input aria-label="Toggle navigation of Tutorials &amp; Notebooks" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/README.html">Notebooks demonstrating functionalities of pysradb</a></li>
 <li class="toctree-l2"><a class="reference internal" href="notebooks/01.Python-API_demo.html">Python API Demo</a></li>
 <li class="toctree-l2"><a class="reference internal" href="notebooks/02.Commandline_download.html">Command-line Download</a></li>
 <li class="toctree-l2"><a class="reference internal" href="notebooks/03.ParallelDownload.html">Parallel Download</a></li>
@@ -239,13 +240,11 @@
 <li class="toctree-l2"><a class="reference internal" href="notebooks/11.Parse_Bioscience_Search.html">Parse BioScience Search</a></li>
 </ul>
 </li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="commands.html">API Documentation</a><input aria-label="Toggle navigation of API Documentation" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul class="simple">
-</ul>
-</li>
+<li class="toctree-l1"><a class="reference internal" href="commands.html">API Documentation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="contributing.html">Contributing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="authors.html">Credits</a></li>
 <li class="toctree-l1"><a class="reference internal" href="history.html">History</a></li>
-<li class="toctree-l1 current has-children"><a class="reference internal" href="modules.html">pysradb</a><input aria-label="Toggle navigation of pysradb" checked="" class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul class="current">
+<li class="toctree-l1 current has-children"><a class="reference internal" href="modules.html">pysradb</a><input aria-label="Toggle navigation of pysradb" checked="" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul class="current">
 <li class="toctree-l2 current current-page"><a class="current reference internal" href="#">pysradb package</a></li>
 </ul>
 </li>
@@ -1125,14 +1124,10 @@ fields: List of fields to extract</p>
 <dt class="sig sig-object py" id="pysradb.metadata_enrichment.MetadataExtractor.enrich_dataframe">
 <span class="sig-name descname"><span class="pre">enrich_dataframe</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">DataFrame</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">text_column</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fields</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prefix</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'guessed_'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">show_progress</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">DataFrame</span></span></span><a class="reference internal" href="_modules/pysradb/metadata_enrichment.html#MetadataExtractor.enrich_dataframe"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysradb.metadata_enrichment.MetadataExtractor.enrich_dataframe" title="Link to this definition">¶</a></dt>
 <dd><p>Enrich a DataFrame with extracted metadata.</p>
-<dl>
+<dl class="simple">
 <dt>Args:</dt><dd><p>df: Input DataFrame
-text_column: Column containing text to analyze. If None, automatically combines</p>
-<blockquote>
-<div><p>all relevant sample-level text columns (sample_title, sample_source_name,
-sample_type, extract_protocol, label_protocol, etc.) for maximum context.</p>
-</div></blockquote>
-<p>fields: List of metadata fields to extract
+text_column: Column containing text to analyze. If None, combines sample text columns.
+fields: List of metadata fields to extract
 prefix: Prefix for new columns
 show_progress: Show progress bar (default: True)</p>
 </dd>
@@ -1206,10 +1201,10 @@ prefix: Prefix for new columns</p>
 <span class="sig-prename descclassname"><span class="pre">pysradb.metadata_enrichment.</span></span><span class="sig-name descname"><span class="pre">create_metadata_extractor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">method</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'llm'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">backend</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#pysradb.metadata_enrichment.MetadataExtractor" title="pysradb.metadata_enrichment.MetadataExtractor"><span class="pre">MetadataExtractor</span></a></span></span><a class="reference internal" href="_modules/pysradb/metadata_enrichment.html#create_metadata_extractor"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysradb.metadata_enrichment.create_metadata_extractor" title="Link to this definition">¶</a></dt>
 <dd><p>Factory function to create metadata extractor.</p>
 <dl>
-<dt>Args:</dt><dd><p>method: Extraction method (“llm” or “embedding”)
+<dt>Args:</dt><dd><p>method: Extraction method (<code class="docutils literal notranslate"><span class="pre">llm</span></code> or <code class="docutils literal notranslate"><span class="pre">embedding</span></code>)
 backend: Backend for the method
 model: Model name
-<a href="#id1"><span class="problematic" id="id2">**</span></a>kwargs: Additional parameters</p>
+kwargs: Additional parameters (as keyword arguments)</p>
 </dd>
 <dt>Returns:</dt><dd><p>MetadataExtractor instance</p>
 </dd>
@@ -2451,10 +2446,10 @@ Set to True by default.</p>
 <dd><p>Unified method to fetch metadata for SRA or GEO accessions.</p>
 <p>Automatically detects accession type and calls appropriate method.</p>
 <dl>
-<dt>Args:</dt><dd><p>accession: SRP/GSE accession(s) - can be string or list
-<a href="#id3"><span class="problematic" id="id4">**</span></a>kwargs: Additional parameters passed to sra_metadata() or geo_metadata()</p>
+<dt>Args:</dt><dd><p>accession: <code class="docutils literal notranslate"><span class="pre">SRP</span></code>/<code class="docutils literal notranslate"><span class="pre">GSE</span></code> accession(s) - can be string or list
+kwargs: Additional parameters passed to <code class="docutils literal notranslate"><span class="pre">sra_metadata()</span></code> or <code class="docutils literal notranslate"><span class="pre">geo_metadata()</span></code></p>
 <blockquote>
-<div><p>(e.g., detailed, enrich, enrich_backend, sample_attribute, etc.)</p>
+<div><p>(e.g., <code class="docutils literal notranslate"><span class="pre">detailed</span></code>, <code class="docutils literal notranslate"><span class="pre">enrich</span></code>, <code class="docutils literal notranslate"><span class="pre">enrich_backend</span></code>, <code class="docutils literal notranslate"><span class="pre">sample_attribute</span></code>, etc.)</p>
 </div></blockquote>
 </dd>
 <dt>Returns:</dt><dd><p>DataFrame with metadata (enriched if enrich=True)</p>
