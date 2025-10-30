@@ -68,7 +68,7 @@ def _print_save_df(df, saveto=None):
 
 
 ###################### metadata ##############################
-def metadata(srp_id, assay, desc, detailed, expand, saveto):
+def metadata(srp_id, assay, desc, detailed, expand, saveto, enrich=False, enrich_backend=None):
     sradb = SRAweb()
 
     srp_ids = []
@@ -104,6 +104,22 @@ def metadata(srp_id, assay, desc, detailed, expand, saveto):
         df = pd.concat(metadata_frames, ignore_index=True, sort=False)
     else:
         df = pd.DataFrame()
+
+    # Apply enrichment if requested
+    if enrich and not df.empty:
+        if enrich_backend:
+            df = sradb.metadata(
+                gse_ids if gse_ids else srp_ids,
+                detailed=detailed,
+                enrich=True,
+                enrich_backend=enrich_backend
+            )
+        else:
+            df = sradb.metadata(
+                gse_ids if gse_ids else srp_ids,
+                detailed=detailed,
+                enrich=True
+            )
 
     _print_save_df(df, saveto)
     sradb.close()
@@ -715,6 +731,18 @@ def parse_args(args=None):
     )
     subparser.add_argument(
         "--expand", action="store_true", help="Should sample_attribute be expanded"
+    )
+    subparser.add_argument(
+        "--enrich",
+        action="store_true",
+        help="Enrich metadata with standardized biological attributes using LLMs"
+    )
+    subparser.add_argument(
+        "--enrich-backend",
+        type=str,
+        default=None,
+        help="LLM backend for enrichment (e.g., 'ollama/phi3', 'ollama/llama3.2'). "
+             "If not specified, uses default backend"
     )
     subparser.add_argument("srp_id", nargs="+")
     subparser.set_defaults(func=metadata)
@@ -1381,6 +1409,8 @@ def parse_args(args=None):
             args.detailed,
             args.expand,
             args.saveto,
+            args.enrich,
+            args.enrich_backend,
         )
     elif args.command == "download":
         download(

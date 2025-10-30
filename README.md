@@ -165,6 +165,33 @@ conda create -c bioconda -n pysradb PYTHON=3.13 pysradb
     SRP075720       SRX1800469            GSM2177562: Kcng4_2la_H2; Mus musculus; RNA-Seq   GSM2177562: Kcng4_2la_H2; Mus musculus; RNA-Seq  10090           Mus musculus  RNA-Seq          TRANSCRIPTOMIC  cDNA              SRS1467637                    Illumina HiSeq 2500  2071159      79689296  SRR3587905    2071159         103557950
     SRP075720       SRX1800468            GSM2177561: Kcng4_2la_H1; Mus musculus; RNA-Seq   GSM2177561: Kcng4_2la_H1; Mus musculus; RNA-Seq  10090           Mus musculus  RNA-Seq          TRANSCRIPTOMIC  cDNA              SRS1467635                    Illumina HiSeq 2500  2321657      89307894  SRR3587904    2321657         116082850
 
+### Enriching metadata via CLI
+
+Enrich metadata with standardized biological attributes using LLMs through the command line:
+
+```bash
+# Basic enrichment with default backend
+$ pysradb metadata GSE286254 --detailed --enrich
+
+# Using a specific LLM backend
+$ pysradb metadata GSE286254 --detailed --enrich --enrich-backend ollama/llama3.2
+```
+
+Available backends: `ollama/phi3` (default), `ollama/llama3.2`, or other compatible Ollama models.
+
+This returns the original metadata plus 9 enriched columns:
+- `guessed_organ`
+- `guessed_tissue`
+- `guessed_anatomical_system`
+- `guessed_cell_type`
+- `guessed_disease`
+- `guessed_sex`
+- `guessed_development_stage`
+- `guessed_assay`
+- `guessed_organism`
+
+For more details on enrichment features, prerequisites, and Python API usage, see the [Enriching metadata](#enriching-metadata) section below.
+
 ### Converting SRP to GSE
 
     $ pysradb srp-to-gse SRP075720
