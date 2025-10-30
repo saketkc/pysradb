@@ -364,7 +364,9 @@
 <span class="c1">###################### metadata ##############################</span>
 <div class="viewcode-block" id="metadata">
 <a class="viewcode-back" href="../../pysradb.html#pysradb.cli.metadata">[docs]</a>
-<span class="k">def</span><span class="w"> </span><span class="nf">metadata</span><span class="p">(</span><span class="n">srp_id</span><span class="p">,</span> <span class="n">assay</span><span class="p">,</span> <span class="n">desc</span><span class="p">,</span> <span class="n">detailed</span><span class="p">,</span> <span class="n">expand</span><span class="p">,</span> <span class="n">saveto</span><span class="p">,</span> <span class="n">enrich</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">enrich_backend</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">metadata</span><span class="p">(</span>
+    <span class="n">srp_id</span><span class="p">,</span> <span class="n">assay</span><span class="p">,</span> <span class="n">desc</span><span class="p">,</span> <span class="n">detailed</span><span class="p">,</span> <span class="n">expand</span><span class="p">,</span> <span class="n">saveto</span><span class="p">,</span> <span class="n">enrich</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">enrich_backend</span><span class="o">=</span><span class="kc">None</span>
+<span class="p">):</span>
     <span class="n">sradb</span> <span class="o">=</span> <span class="n">SRAweb</span><span class="p">()</span>
 
     <span class="n">srp_ids</span> <span class="o">=</span> <span class="p">[]</span>
@@ -408,13 +410,11 @@
                 <span class="n">gse_ids</span> <span class="k">if</span> <span class="n">gse_ids</span> <span class="k">else</span> <span class="n">srp_ids</span><span class="p">,</span>
                 <span class="n">detailed</span><span class="o">=</span><span class="n">detailed</span><span class="p">,</span>
                 <span class="n">enrich</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-                <span class="n">enrich_backend</span><span class="o">=</span><span class="n">enrich_backend</span>
+                <span class="n">enrich_backend</span><span class="o">=</span><span class="n">enrich_backend</span><span class="p">,</span>
             <span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">df</span> <span class="o">=</span> <span class="n">sradb</span><span class="o">.</span><span class="n">metadata</span><span class="p">(</span>
-                <span class="n">gse_ids</span> <span class="k">if</span> <span class="n">gse_ids</span> <span class="k">else</span> <span class="n">srp_ids</span><span class="p">,</span>
-                <span class="n">detailed</span><span class="o">=</span><span class="n">detailed</span><span class="p">,</span>
-                <span class="n">enrich</span><span class="o">=</span><span class="kc">True</span>
+                <span class="n">gse_ids</span> <span class="k">if</span> <span class="n">gse_ids</span> <span class="k">else</span> <span class="n">srp_ids</span><span class="p">,</span> <span class="n">detailed</span><span class="o">=</span><span class="n">detailed</span><span class="p">,</span> <span class="n">enrich</span><span class="o">=</span><span class="kc">True</span>
             <span class="p">)</span>
 
     <span class="n">_print_save_df</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">saveto</span><span class="p">)</span>
@@ -1136,14 +1136,14 @@
     <span class="n">subparser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
         <span class="s2">&quot;--enrich&quot;</span><span class="p">,</span>
         <span class="n">action</span><span class="o">=</span><span class="s2">&quot;store_true&quot;</span><span class="p">,</span>
-        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Enrich metadata with standardized biological attributes using LLMs&quot;</span>
+        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Enrich metadata with standardized biological attributes using LLMs&quot;</span><span class="p">,</span>
     <span class="p">)</span>
     <span class="n">subparser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
         <span class="s2">&quot;--enrich-backend&quot;</span><span class="p">,</span>
         <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span>
         <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">help</span><span class="o">=</span><span class="s2">&quot;LLM backend for enrichment (e.g., &#39;ollama/phi3&#39;, &#39;ollama/llama3.2&#39;). &quot;</span>
-             <span class="s2">&quot;If not specified, uses default backend&quot;</span>
+        <span class="s2">&quot;If not specified, uses default backend&quot;</span><span class="p">,</span>
     <span class="p">)</span>
     <span class="n">subparser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;srp_id&quot;</span><span class="p">,</span> <span class="n">nargs</span><span class="o">=</span><span class="s2">&quot;+&quot;</span><span class="p">)</span>
     <span class="n">subparser</span><span class="o">.</span><span class="n">set_defaults</span><span class="p">(</span><span class="n">func</span><span class="o">=</span><span class="n">metadata</span><span class="p">)</span>
