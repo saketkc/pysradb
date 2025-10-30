@@ -51,7 +51,7 @@ jobs:
         python -m pip install --upgrade pip
         pip install -r requirements.txt
         pip install ".[enrichment]"
-        pip install sphinx myst-parser sphinxcontrib-gtagjs ipython numpydoc sphinx-tabs sphinx_rtd_theme nbsphinx pydata-sphinx-theme nbsphinx-link sphinx-panels
+        pip install sphinx myst-parser sphinxcontrib-gtagjs ipython numpydoc sphinx-tabs furo nbsphinx sphinx-panels
     - name: Build documentation
       run: |
         make docs
