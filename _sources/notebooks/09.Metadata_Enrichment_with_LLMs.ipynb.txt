@@ -28,7 +28,7 @@
    "metadata": {},
    "outputs": [],
    "source": [
-    "!pip install git+https://github.com/saketkc/pysradb\n"
+    "!pip install git+https://github.com/saketkc/pysradb"
    ]
   },
   {
@@ -54,7 +54,6 @@
     }
    ],
    "source": [
-    "\n",
     "import pandas as pd\n",
     "\n",
     "from pysradb import SRAweb\n",
