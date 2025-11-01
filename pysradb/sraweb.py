@@ -802,9 +802,7 @@ class SRAweb(SRAdb):
                     print("1. Start Ollama server: ollama serve")
                     print("2. Pull a model: ollama pull phi3")
                     print("3. Try again or use a different enrichment backend")
-                    import sys
-
-                    sys.exit(1)
+                    raise
                 else:
                     print(f"Warning: Enrichment failed: {e}")
 
@@ -1184,9 +1182,7 @@ class SRAweb(SRAdb):
                     print("1. Start Ollama server: ollama serve")
                     print("2. Pull a model: ollama pull phi3")
                     print("3. Try again or use a different enrichment backend")
-                    import sys
-
-                    sys.exit(1)
+                    raise
                 else:
                     print(f"Warning: Enrichment failed: {e}")
 
