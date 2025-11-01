@@ -287,12 +287,47 @@
           </label>
         </div>
         <article role="main" id="furo-main-content">
-          <p><a class="reference external" href="https://colab.research.google.com/github/saketkc/pysradb/blob/master/notebooks/01.Python-API_demo.ipynb"><img alt="Open In Colab" src="https://colab.research.google.com/assets/colab-badge.svg" /></a></p>
+          <p><a class="reference external" href="https://colab.research.google.com/github/saketkc/pysradb/blob/develop/notebooks/01.Python-API_demo.ipynb"><img alt="Open In Colab" src="https://colab.research.google.com/assets/colab-badge.svg" /></a></p>
 <section id="Python-API-Demo">
 <h1>Python API Demo<a class="headerlink" href="#Python-API-Demo" title="Link to this heading">¶</a></h1>
 <p>This notebook demonstrates the core functionality of pysradb Python API for querying SRA metadata.</p>
-<div class="nbinput nblast docutils container">
+<div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Install pysradb if not already installed</span>
+<span class="k">try</span><span class="p">:</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">pysradb</span>
+
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;pysradb </span><span class="si">{</span><span class="n">pysradb</span><span class="o">.</span><span class="n">__version__</span><span class="si">}</span><span class="s2"> is already installed&quot;</span><span class="p">)</span>
+<span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Installing pysradb from GitHub...&quot;</span><span class="p">)</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">sys</span>
+
+    <span class="o">!{</span>sys.executable<span class="o">}</span><span class="w"> </span>-m<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>-q<span class="w"> </span>git+https://github.com/saketkc/pysradb
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;pysradb installed successfully!&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+pysradb 3.0.0.dev0 is already installed
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+/data/github/pysradb/pysradb/utils.py:16: TqdmExperimentalWarning: Using `tqdm.autonotebook.tqdm` in notebook mode. Use `tqdm.tqdm` instead to force console mode (e.g. in jupyter console)
+  from tqdm.autonotebook import tqdm
+</pre></div></div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># pip install git+https://github.com/saketkc/pysradb</span>
@@ -300,7 +335,7 @@
 </div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pysradb<span class="w"> </span>--version
@@ -312,28 +347,19 @@
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-pysradb 2.4.1
+pysradb 3.0.0.dev0
 </pre></div></div>
 </div>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">pysradb.sraweb</span><span class="w"> </span><span class="kn">import</span> <span class="n">SRAweb</span>
 </pre></div>
 </div>
 </div>
-<div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area stderr docutils container">
-<div class="highlight"><pre>
-/home/saket/miniforge3/lib/python3.12/site-packages/pysradb/utils.py:14: TqdmExperimentalWarning: Using `tqdm.autonotebook.tqdm` in notebook mode. Use `tqdm.tqdm` instead to force console mode (e.g. in jupyter console)
-  from tqdm.autonotebook import tqdm
-</pre></div></div>
-</div>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">db</span> <span class="o">=</span> <span class="n">SRAweb</span><span class="p">()</span>
@@ -343,7 +369,7 @@ pysradb 2.4.1
 <section id="Get-metadata-of-one-project">
 <h2>Get metadata of one project<a class="headerlink" href="#Get-metadata-of-one-project" title="Link to this heading">¶</a></h2>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">sra_metadata</span><span class="p">(</span><span class="s2">&quot;SRP016501&quot;</span><span class="p">)</span>
@@ -352,7 +378,7 @@ pysradb 2.4.1
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
 </pre></div>
 </div>
 <div class="output_area rendered_html docutils container">
@@ -671,7 +697,7 @@ pysradb 2.4.1
 <section id="Get-detailed-metadata">
 <h2>Get detailed metadata<a class="headerlink" href="#Get-detailed-metadata" title="Link to this heading">¶</a></h2>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">sra_metadata</span><span class="p">(</span><span class="s2">&quot;SRP016501&quot;</span><span class="p">,</span> <span class="n">detailed</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
@@ -680,7 +706,7 @@ pysradb 2.4.1
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
 </pre></div>
 </div>
 <div class="output_area rendered_html docutils container">
@@ -999,7 +1025,7 @@ pysradb 2.4.1
 <section id="Get-metadata-of-multiple-projects">
 <h2>Get metadata of multiple projects<a class="headerlink" href="#Get-metadata-of-multiple-projects" title="Link to this heading">¶</a></h2>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">sra_metadata</span><span class="p">([</span><span class="s2">&quot;SRP016501&quot;</span><span class="p">,</span> <span class="s2">&quot;SRP098789&quot;</span><span class="p">])</span>
@@ -1008,7 +1034,7 @@ pysradb 2.4.1
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
 </pre></div>
 </div>
 <div class="output_area rendered_html docutils container">
@@ -1327,7 +1353,7 @@ pysradb 2.4.1
 <section id="Get-metadata-of-a-Run">
 <h2>Get metadata of a Run<a class="headerlink" href="#Get-metadata-of-a-Run" title="Link to this heading">¶</a></h2>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">sra_metadata</span><span class="p">(</span><span class="s2">&quot;SRR11085797&quot;</span><span class="p">,</span> <span class="n">detailed</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
@@ -1336,7 +1362,7 @@ pysradb 2.4.1
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
 </pre></div>
 </div>
 <div class="output_area rendered_html docutils container">
@@ -1415,7 +1441,7 @@ pysradb 2.4.1
 <section id="SRX-to-GSM">
 <h2>SRX to GSM<a class="headerlink" href="#SRX-to-GSM" title="Link to this heading">¶</a></h2>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">srx_to_gsm</span><span class="p">(</span><span class="s2">&quot;SRX1254413&quot;</span><span class="p">)</span>
@@ -1424,7 +1450,7 @@ pysradb 2.4.1
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
 </pre></div>
 </div>
 <div class="output_area rendered_html docutils container">

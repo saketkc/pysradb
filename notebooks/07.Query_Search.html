@@ -287,10 +287,28 @@
           </label>
         </div>
         <article role="main" id="furo-main-content">
-          <p><a class="reference external" href="https://colab.research.google.com/github/saketkc/pysradb/blob/master/notebooks/07.Query_Search.ipynb"><img alt="Open In Colab" src="https://colab.research.google.com/assets/colab-badge.svg" /></a></p>
+          <p><a class="reference external" href="https://colab.research.google.com/github/saketkc/pysradb/blob/develop/notebooks/07.Query_Search.ipynb"><img alt="Open In Colab" src="https://colab.research.google.com/assets/colab-badge.svg" /></a></p>
 <section id="Query-and-Search">
 <h1>Query and Search<a class="headerlink" href="#Query-and-Search" title="Link to this heading">¶</a></h1>
 <p>This notebook demonstrates advanced search capabilities to find SRA studies based on specific criteria.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Install pysradb if not already installed</span>
+<span class="k">try</span><span class="p">:</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">pysradb</span>
+
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;pysradb </span><span class="si">{</span><span class="n">pysradb</span><span class="o">.</span><span class="n">__version__</span><span class="si">}</span><span class="s2"> is already installed&quot;</span><span class="p">)</span>
+<span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Installing pysradb from GitHub...&quot;</span><span class="p">)</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">sys</span>
+
+    <span class="o">!{</span>sys.executable<span class="o">}</span><span class="w"> </span>-m<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>-q<span class="w"> </span>git+https://github.com/saketkc/pysradb
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;pysradb installed successfully!&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
 <section id="pysradb-search">
 <h2>pysradb search<a class="headerlink" href="#pysradb-search" title="Link to this heading">¶</a></h2>
 <section id="The-pysradb-search-module-supports-querying-the-Sequence-Read-Archive-(SRA)-and-the-European-Nucleotide-Archive-(ENA)-databases-for-sequencing-data.-The-module-also-includes-several-built-in-flags-that-can-be-used-to-fine-tune-a-search-query.">

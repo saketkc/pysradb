@@ -287,10 +287,28 @@
           </label>
         </div>
         <article role="main" id="furo-main-content">
-          <p><a class="reference external" href="https://colab.research.google.com/github/saketkc/pysradb/blob/master/notebooks/05.Downloading_subsets_of_a_project.ipynb"><img alt="Open In Colab" src="https://colab.research.google.com/assets/colab-badge.svg" /></a></p>
+          <p><a class="reference external" href="https://colab.research.google.com/github/saketkc/pysradb/blob/develop/notebooks/05.Downloading_subsets_of_a_project.ipynb"><img alt="Open In Colab" src="https://colab.research.google.com/assets/colab-badge.svg" /></a></p>
 <section id="Downloading-Subsets-of-a-Project">
 <h1>Downloading Subsets of a Project<a class="headerlink" href="#Downloading-Subsets-of-a-Project" title="Link to this heading">¶</a></h1>
 <p>This notebook shows how to filter and download specific samples from a larger SRA project.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-none notranslate"><div class="highlight"><pre><span></span># Install pysradb if not already installed
+try:
+    import pysradb
+
+    print(f&quot;pysradb {pysradb.__version__} is already installed&quot;)
+except ImportError:
+    print(&quot;Installing pysradb from GitHub...&quot;)
+    import sys
+
+    !{sys.executable} -m pip install -q git+https://github.com/saketkc/pysradb
+    print(&quot;pysradb installed successfully!&quot;)
+</pre></div>
+</div>
+</div>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
 </pre></div>

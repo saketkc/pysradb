@@ -287,7 +287,7 @@
           </label>
         </div>
         <article role="main" id="furo-main-content">
-          <p><a class="reference external" href="https://colab.research.google.com/github/saketkc/pysradb/blob/master/notebooks/09.Metadata_Enrichment_with_LLMs.ipynb"><img alt="Open In Colab" src="https://colab.research.google.com/assets/colab-badge.svg" /></a></p>
+          <p><a class="reference external" href="https://colab.research.google.com/github/saketkc/pysradb/blob/develop/notebooks/09.Metadata_Enrichment_with_LLMs.ipynb"><img alt="Open In Colab" src="https://colab.research.google.com/assets/colab-badge.svg" /></a></p>
 <section id="Metadata-Enrichment-with-LLMs">
 <h1>Metadata Enrichment with LLMs<a class="headerlink" href="#Metadata-Enrichment-with-LLMs" title="Link to this heading">¶</a></h1>
 <p>pysradb now helps you ‘enrich’ your metadata frame by leveraging recent advancements in (fast) (S)LLMs. The parsed metadata can be fed to an LLM that is ‘instructed’ to enrich the metadata by returning 9 ontology-based fields:: <code class="docutils literal notranslate"><span class="pre">organ</span></code>, <code class="docutils literal notranslate"><span class="pre">tissue</span></code>, <code class="docutils literal notranslate"><span class="pre">anatomical_system</span></code>, <code class="docutils literal notranslate"><span class="pre">cell_type</span></code>, <code class="docutils literal notranslate"><span class="pre">disease</span></code>, <code class="docutils literal notranslate"><span class="pre">sex</span></code>, <code class="docutils literal notranslate"><span class="pre">development_stage</span></code>, <code class="docutils literal notranslate"><span class="pre">assay</span></code>, <code class="docutils literal notranslate"><span class="pre">organism</span></code></p>
@@ -296,6 +296,24 @@
 <li><p><strong>LLMs</strong> (<a class="reference external" href="https://ollama.com/download">Requires Ollama</a> - local, no API keys)</p></li>
 <li><p><strong>Embeddings</strong> (<a class="reference external" href="https://huggingface.co/sentence-transformers">Using sentence-transformers</a> with <a class="reference external" href="https://arxiv.org/abs/2311.16075">BioLORD</a> embedding model)</p></li>
 </ul>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Install pysradb if not already installed</span>
+<span class="k">try</span><span class="p">:</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">pysradb</span>
+
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;pysradb </span><span class="si">{</span><span class="n">pysradb</span><span class="o">.</span><span class="n">__version__</span><span class="si">}</span><span class="s2"> is already installed&quot;</span><span class="p">)</span>
+<span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Installing pysradb from GitHub...&quot;</span><span class="p">)</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">sys</span>
+
+    <span class="o">!{</span>sys.executable<span class="o">}</span><span class="w"> </span>-m<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>-q<span class="w"> </span>git+https://github.com/saketkc/pysradb
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;pysradb installed successfully!&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>

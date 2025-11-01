@@ -10,8 +10,9 @@
    "include_colab_link": true
   },
   "kernelspec": {
-   "name": "python3",
-   "display_name": "Python 3"
+   "display_name": "Python 3",
+   "language": "python",
+   "name": "python3"
   }
  },
  "cells": [
@@ -19,7 +20,7 @@
    "cell_type": "markdown",
    "metadata": {},
    "source": [
-    "[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/saketkc/pysradb/blob/master/notebooks/04.SRA_to_fastq_conda.ipynb)"
+    "[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/saketkc/pysradb/blob/develop/notebooks/04.SRA_to_fastq_conda.ipynb)"
    ]
   },
   {
@@ -29,6 +30,25 @@
     "# Converting SRA to FASTQ using Conda\n",
     "\n",
     "This notebook demonstrates how to convert SRA files to FASTQ format using conda and parallel-fastq-dump."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# Install pysradb if not already installed\n",
+    "try:\n",
+    "    import pysradb\n",
+    "\n",
+    "    print(f\"pysradb {pysradb.__version__} is already installed\")\n",
+    "except ImportError:\n",
+    "    print(\"Installing pysradb from GitHub...\")\n",
+    "    import sys\n",
+    "\n",
+    "    !{sys.executable} -m pip install -q git+https://github.com/saketkc/pysradb\n",
+    "    print(\"pysradb installed successfully!\")"
    ]
   },
   {
@@ -75,11 +95,11 @@
       "Connecting to repo.continuum.io (repo.continuum.io)|104.18.201.79|:443... connected.\n",
       "HTTP request sent, awaiting response... 200 OK\n",
       "Length: 577996269 (551M) [application/x-sh]\n",
-      "Saving to: \u2018Anaconda3-5.1.0-Linux-x86_64.sh\u2019\n",
+      "Saving to: ‘Anaconda3-5.1.0-Linux-x86_64.sh’\n",
       "\n",
       "Anaconda3-5.1.0-Lin 100%[===================>] 551.22M   131MB/s    in 4.3s    \n",
       "\n",
-      "2020-02-13 07:19:46 (127 MB/s) - \u2018Anaconda3-5.1.0-Linux-x86_64.sh\u2019 saved [577996269/577996269]\n",
+      "2020-02-13 07:19:46 (127 MB/s) - ‘Anaconda3-5.1.0-Linux-x86_64.sh’ saved [577996269/577996269]\n",
       "\n",
       "PREFIX=/usr/local\n",
       "installing: python-3.6.4-hc3d631a_1 ...\n",
