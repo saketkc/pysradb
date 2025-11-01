@@ -1112,9 +1112,7 @@
                     <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;1. Start Ollama server: ollama serve&quot;</span><span class="p">)</span>
                     <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;2. Pull a model: ollama pull phi3&quot;</span><span class="p">)</span>
                     <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;3. Try again or use a different enrichment backend&quot;</span><span class="p">)</span>
-                    <span class="kn">import</span><span class="w"> </span><span class="nn">sys</span>
-
-                    <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+                    <span class="k">raise</span>
                 <span class="k">else</span><span class="p">:</span>
                     <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Warning: Enrichment failed: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
@@ -1503,9 +1501,7 @@
                     <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;1. Start Ollama server: ollama serve&quot;</span><span class="p">)</span>
                     <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;2. Pull a model: ollama pull phi3&quot;</span><span class="p">)</span>
                     <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;3. Try again or use a different enrichment backend&quot;</span><span class="p">)</span>
-                    <span class="kn">import</span><span class="w"> </span><span class="nn">sys</span>
-
-                    <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+                    <span class="k">raise</span>
                 <span class="k">else</span><span class="p">:</span>
                     <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Warning: Enrichment failed: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
