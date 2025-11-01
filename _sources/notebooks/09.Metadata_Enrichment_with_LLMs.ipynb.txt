@@ -30,11 +30,11 @@
       "cell_type": "code",
       "execution_count": 1,
       "metadata": {
-        "id": "RNrFmwO6TU7N",
-        "outputId": "ecc1202e-1e59-4d50-9881-11e45b05fc34",
         "colab": {
           "base_uri": "https://localhost:8080/"
-        }
+        },
+        "id": "RNrFmwO6TU7N",
+        "outputId": "ecc1202e-1e59-4d50-9881-11e45b05fc34"
       },
       "outputs": [
         {
@@ -75,11 +75,11 @@
           "shell.execute_reply": "2025-10-22T16:43:40.469420Z",
           "shell.execute_reply.started": "2025-10-22T16:43:39.723206Z"
         },
-        "id": "veB38ra_TU7N",
-        "outputId": "a040f2be-31cd-47fc-ede9-3112d38c1aa2",
         "colab": {
           "base_uri": "https://localhost:8080/"
-        }
+        },
+        "id": "veB38ra_TU7N",
+        "outputId": "a040f2be-31cd-47fc-ede9-3112d38c1aa2"
       },
       "outputs": [
         {
@@ -120,11 +120,11 @@
         "! sudo apt update && sudo apt install pciutils lshw systemd"
       ],
       "metadata": {
-        "id": "12mmTfSzdzgT",
-        "outputId": "16297db3-2473-49cf-b63e-5280d4419210",
         "colab": {
           "base_uri": "https://localhost:8080/"
-        }
+        },
+        "id": "12mmTfSzdzgT",
+        "outputId": "16297db3-2473-49cf-b63e-5280d4419210"
       },
       "execution_count": 3,
       "outputs": [
@@ -242,11 +242,11 @@
         "!curl -fsSL https://ollama.com/install.sh | sh"
       ],
       "metadata": {
-        "id": "iINq3dweaUXe",
-        "outputId": "b1e8eac9-88b9-4ff3-8e60-60b7f61174dd",
         "colab": {
           "base_uri": "https://localhost:8080/"
-        }
+        },
+        "id": "iINq3dweaUXe",
+        "outputId": "b1e8eac9-88b9-4ff3-8e60-60b7f61174dd"
       },
       "execution_count": 4,
       "outputs": [
@@ -301,11 +301,11 @@
         "!ollama list\n"
       ],
       "metadata": {
-        "id": "UFQqnmdTduPp",
-        "outputId": "ffd70b0f-692e-497a-eb39-739d5db34beb",
         "colab": {
           "base_uri": "https://localhost:8080/"
-        }
+        },
+        "id": "UFQqnmdTduPp",
+        "outputId": "ffd70b0f-692e-497a-eb39-739d5db34beb"
       },
       "execution_count": 7,
       "outputs": [
@@ -324,11 +324,11 @@
         "!ollama pull phi3:latest"
       ],
       "metadata": {
-        "id": "BUw1vDcMabgR",
-        "outputId": "a9ac394a-0de8-45df-d794-d3836cb20a1a",
         "colab": {
           "base_uri": "https://localhost:8080/"
-        }
+        },
+        "id": "BUw1vDcMabgR",
+        "outputId": "a9ac394a-0de8-45df-d794-d3836cb20a1a"
       },
       "execution_count": 13,
       "outputs": [
@@ -347,11 +347,11 @@
         "!ollama list\n"
       ],
       "metadata": {
-        "id": "RUJCkdWhhWZX",
-        "outputId": "65fc2781-af81-411c-bdce-41ad76273811",
         "colab": {
           "base_uri": "https://localhost:8080/"
-        }
+        },
+        "id": "RUJCkdWhhWZX",
+        "outputId": "65fc2781-af81-411c-bdce-41ad76273811"
       },
       "execution_count": 14,
       "outputs": [
@@ -391,8 +391,6 @@
         "display(df[cols])"
       ],
       "metadata": {
-        "id": "I6olFn2waePh",
-        "outputId": "30e1ffed-d45f-4914-be62-a14a3ea3c504",
         "colab": {
           "base_uri": "https://localhost:8080/",
           "height": 854,
@@ -409,7 +407,9 @@
             "644ee776fee548908ea55eed2ae06854",
             "b93ffab4a5394222b7e63664ac417140"
           ]
-        }
+        },
+        "id": "I6olFn2waePh",
+        "outputId": "30e1ffed-d45f-4914-be62-a14a3ea3c504"
       },
       "execution_count": 15,
       "outputs": [
@@ -1136,11 +1136,11 @@
           "shell.execute_reply": "2025-10-22T16:48:25.997750Z",
           "shell.execute_reply.started": "2025-10-22T16:48:19.988525Z"
         },
-        "id": "r8zyyk6xTU7O",
-        "outputId": "5101959b-792e-403a-a911-8b18a6914aeb",
         "colab": {
           "base_uri": "https://localhost:8080/"
-        }
+        },
+        "id": "r8zyyk6xTU7O",
+        "outputId": "5101959b-792e-403a-a911-8b18a6914aeb"
       },
       "outputs": [
         {
@@ -1186,8 +1186,6 @@
           "shell.execute_reply": "2025-10-22T16:48:45.378199Z",
           "shell.execute_reply.started": "2025-10-22T16:48:29.277335Z"
         },
-        "id": "m2UKRJshTU7O",
-        "outputId": "75397c21-8a78-42a6-c7c2-21379c6336bf",
         "colab": {
           "base_uri": "https://localhost:8080/",
           "height": 195,
@@ -1204,7 +1202,9 @@
             "527b0ae986ea4d93a31195ece36ddf00",
             "2491de498acc4203b9b7dcea0f0d33be"
           ]
-        }
+        },
+        "id": "m2UKRJshTU7O",
+        "outputId": "75397c21-8a78-42a6-c7c2-21379c6336bf"
       },
       "outputs": [
         {
@@ -1568,12 +1568,12 @@
           "shell.execute_reply": "2025-10-22T16:49:15.702764Z",
           "shell.execute_reply.started": "2025-10-22T16:49:05.232516Z"
         },
-        "id": "F0iOlZ9tTU7P",
-        "outputId": "1d78a4e6-03ae-4d5e-9d12-da0d2d03ff66",
         "colab": {
           "base_uri": "https://localhost:8080/",
           "height": 349
-        }
+        },
+        "id": "F0iOlZ9tTU7P",
+        "outputId": "1d78a4e6-03ae-4d5e-9d12-da0d2d03ff66"
       },
       "outputs": [
         {
