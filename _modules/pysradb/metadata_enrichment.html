@@ -638,7 +638,7 @@
                 <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span>
                     <span class="s2">&quot;Ollama is not installed or not running. &quot;</span>
                     <span class="s2">&quot;Please install ollama from https://ollama.ai/ and start it with &#39;ollama serve&#39;. &quot;</span>
-                    <span class="s2">&quot;Then pull a model with &#39;ollama pull phi3&#39; (or another model like &#39;meditron-7b&#39;).&quot;</span>
+                    <span class="s2">&quot;Then pull a model with &#39;ollama pull phi3:latest&#39; (or another model like &#39;meditron-7b&#39;).&quot;</span>
                 <span class="p">)</span>
 
         <span class="k">if</span> <span class="n">provider_name</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;ollama&quot;</span><span class="p">,</span> <span class="s2">&quot;local&quot;</span><span class="p">]</span> <span class="ow">and</span> <span class="s2">&quot;mode&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">client_kwargs</span><span class="p">:</span>
