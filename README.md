@@ -24,7 +24,7 @@ guide](https://www.saket-choudhary.me/pysradb/quickstart.html).
                    ...
 
     pysradb: Query NGS metadata and data from NCBI Sequence Read Archive.
-    version: 2.4.1.
+    version: 3.0.0
     Citation: 10.12688/f1000research.18676.1
 
     options:
