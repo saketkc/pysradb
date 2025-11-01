@@ -22,16 +22,16 @@ guide](https://www.saket-choudhary.me/pysradb/quickstart.html).
     usage: pysradb [-h] [--version] [--citation]
                    {metadata,download,search,gse-to-gsm,gse-to-srp,gsm-to-gse,gsm-to-srp,gsm-to-srr,gsm-to-srs,gsm-to-srx,srp-to-gse,srp-to-srr,srp-to-srs,srp-to-srx,srr-to-gsm,srr-to-srp,srr-to-srs,srr-to-srx,srs-to-gsm,srs-to-srx,srx-to-srp,srx-to-srr,srx-to-srs,geo-matrix,srp-to-pmid,gse-to-pmid,pmid-to-gse,pmid-to-srp,pmc-to-identifiers,pmid-to-identifiers,doi-to-gse,doi-to-srp,doi-to-identifiers}
                    ...
-    
+
     pysradb: Query NGS metadata and data from NCBI Sequence Read Archive.
     version: 2.4.1.
     Citation: 10.12688/f1000research.18676.1
-    
+
     options:
       -h, --help            show this help message and exit
       --version             show program's version number and exit
       --citation            how to cite
-    
+
     subcommands:
       {metadata,download,search,gse-to-gsm,gse-to-srp,gsm-to-gse,gsm-to-srp,gsm-to-srr,gsm-to-srs,gsm-to-srx,srp-to-gse,srp-to-srr,srp-to-srs,srp-to-srx,srr-to-gsm,srr-to-srp,srr-to-srs,srr-to-srx,srs-to-gsm,srs-to-srx,srx-to-srp,srx-to-srr,srx-to-srs,geo-matrix,srp-to-pmid,gse-to-pmid,pmid-to-gse,pmid-to-srp,pmc-to-identifiers,pmid-to-identifiers,doi-to-gse,doi-to-srp,doi-to-identifiers}
         metadata            Fetch metadata for SRA project (SRPnnnn)
@@ -95,7 +95,7 @@ The following notebooks document all the possible features of
 7.  [Searching
     SRA/GEO/ENA](https://colab.research.google.com/github/saketkc/pysradb/blob/master/notebooks/07.Query_Search.ipynb)
 8. [Extracting identifiers from PMC/DOI](https://colab.research.google.com/github/saketkc/pysradb/blob/master/notebooks/08.PMC_DOI_Identifiers.ipynb)
-9. [Metadata Enrichment with LLMs](https://colab.research.google.com/github/saketkc/pysradb/blob/develop/notebooks/09.Metadata_Enrichment_with_LLMs.ipynb)
+9. [Metadata Enrichment with LLMs](https://colab.research.google.com/github/saketkc/pysradb/blob/develop/notebooks/09.Metadata_enrichment.ipynb)
 
 ## Installation
 
@@ -243,7 +243,7 @@ For more details on enrichment features, prerequisites, and Python API usage, se
     gse_accession pmid
     GSE253406     39528918
 
-### Extracting identifiers from PMC/DOI 
+### Extracting identifiers from PMC/DOI
 
 Extract database identifiers (GSE, PRJNA, SRP, etc.) from PubMed Central articles or DOIs. This feature automatically converts between GSE and SRP identifiers even when papers only mention one type!
 
@@ -286,7 +286,7 @@ Extract database identifiers (GSE, PRJNA, SRP, etc.) from PubMed Central article
 
 Extract standardized biological metadata from SRA/GEO datasets using LLMs.
 
-#### Quickstart 
+#### Quickstart
 
 ```python
 from pysradb import SRAweb
