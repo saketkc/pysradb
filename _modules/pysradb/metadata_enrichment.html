@@ -518,7 +518,7 @@
     <span class="p">)</span>
 
 
-<span class="n">DEFAULT_LLM_PROVIDER</span> <span class="o">=</span> <span class="s2">&quot;ollama/openbiollm-8b&quot;</span>
+<span class="n">DEFAULT_LLM_PROVIDER</span> <span class="o">=</span> <span class="s2">&quot;ollama/phi3&quot;</span>
 
 
 <div class="viewcode-block" id="load_ontology_reference">
@@ -589,6 +589,32 @@
             <span class="k">return</span> <span class="s2">&quot;GROQ_API_KEY&quot;</span>
         <span class="k">return</span> <span class="kc">None</span>
 
+    <span class="k">def</span><span class="w"> </span><span class="nf">_check_ollama_available</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Check if ollama is installed and running.&quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="kn">import</span><span class="w"> </span><span class="nn">subprocess</span>
+            <span class="kn">import</span><span class="w"> </span><span class="nn">requests</span>
+
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">subprocess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span>
+                    <span class="p">[</span><span class="s2">&quot;ollama&quot;</span><span class="p">,</span> <span class="s2">&quot;--version&quot;</span><span class="p">],</span> <span class="n">capture_output</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">check</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">10</span>
+                <span class="p">)</span>
+            <span class="k">except</span> <span class="p">(</span>
+                <span class="n">subprocess</span><span class="o">.</span><span class="n">CalledProcessError</span><span class="p">,</span>
+                <span class="ne">FileNotFoundError</span><span class="p">,</span>
+                <span class="n">subprocess</span><span class="o">.</span><span class="n">TimeoutExpired</span><span class="p">,</span>
+            <span class="p">):</span>
+                <span class="k">return</span> <span class="kc">False</span>
+
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;http://localhost:11434/api/tags&quot;</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+                <span class="k">return</span> <span class="n">response</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">200</span>
+            <span class="k">except</span> <span class="p">(</span><span class="n">requests</span><span class="o">.</span><span class="n">RequestException</span><span class="p">,</span> <span class="n">requests</span><span class="o">.</span><span class="n">Timeout</span><span class="p">):</span>
+                <span class="k">return</span> <span class="kc">False</span>
+
+        <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">False</span>
+
     <span class="k">def</span><span class="w"> </span><span class="nf">_initialize_client</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="kn">import</span><span class="w"> </span><span class="nn">instructor</span>
@@ -606,6 +632,15 @@
             <span class="n">client_kwargs</span><span class="p">[</span><span class="s2">&quot;client_kwargs&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="s2">&quot;base_url&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">base_url</span><span class="p">)</span>
 
         <span class="n">provider_name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">provider</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="n">provider_name</span> <span class="o">==</span> <span class="s2">&quot;ollama&quot;</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_check_ollama_available</span><span class="p">():</span>
+                <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span>
+                    <span class="s2">&quot;Ollama is not installed or not running. &quot;</span>
+                    <span class="s2">&quot;Please install ollama from https://ollama.ai/ and start it with &#39;ollama serve&#39;. &quot;</span>
+                    <span class="s2">&quot;Then pull a model with &#39;ollama pull phi3&#39; (or another model like &#39;meditron-7b&#39;).&quot;</span>
+                <span class="p">)</span>
+
         <span class="k">if</span> <span class="n">provider_name</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;ollama&quot;</span><span class="p">,</span> <span class="s2">&quot;local&quot;</span><span class="p">]</span> <span class="ow">and</span> <span class="s2">&quot;mode&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">client_kwargs</span><span class="p">:</span>
             <span class="n">client_kwargs</span><span class="p">[</span><span class="s2">&quot;mode&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">instructor</span><span class="o">.</span><span class="n">Mode</span><span class="o">.</span><span class="n">JSON</span>
 
@@ -939,7 +974,6 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 
-        <span class="c1"># First try matching the extracted value directly if available</span>
         <span class="k">if</span> <span class="n">value</span> <span class="ow">and</span> <span class="n">category</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">reference_categories</span><span class="p">:</span>
             <span class="k">try</span><span class="p">:</span>
                 <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">backend</span> <span class="o">==</span> <span class="s2">&quot;sentence-transformers&quot;</span><span class="p">:</span>
