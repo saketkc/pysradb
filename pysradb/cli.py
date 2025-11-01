@@ -64,22 +64,20 @@ def pretty_print_df(df, include_header=True):
         show_lines=False,
         padding=(0, 1),
         box=None,  # Use simple box style for better readability
-        collapse_padding=False
+        collapse_padding=False,
     )
 
     for column in df.columns:
         col_name = str(column)
         sample_data = df[column].head(100).astype(str)
-        max_len = max(len(col_name), sample_data.str.len().max() if len(sample_data) > 0 else 0)
+        max_len = max(
+            len(col_name), sample_data.str.len().max() if len(sample_data) > 0 else 0
+        )
 
         width = min(max(15, max_len), 50)
 
         table.add_column(
-            col_name,
-            style="green",
-            no_wrap=False,
-            overflow="fold",
-            width=width
+            col_name, style="green", no_wrap=False, overflow="fold", width=width
         )
 
     for index, row in df.iterrows():
@@ -102,16 +100,24 @@ def _print_save_df(df, saveto=None):
 
         if file_ext == ".csv":
             df.to_csv(saveto, index=False, header=True)
-            console.print(f"[bold green]✓[/bold green] Saved to CSV: [cyan]{saveto}[/cyan]")
+            console.print(
+                f"[bold green]✓[/bold green] Saved to CSV: [cyan]{saveto}[/cyan]"
+            )
         elif file_ext == ".json":
             df.to_json(saveto, orient="records", indent=2)
-            console.print(f"[bold green]✓[/bold green] Saved to JSON: [cyan]{saveto}[/cyan]")
+            console.print(
+                f"[bold green]✓[/bold green] Saved to JSON: [cyan]{saveto}[/cyan]"
+            )
         elif file_ext in [".tsv", ".txt"]:
             df.to_csv(saveto, index=False, header=True, sep="\t")
-            console.print(f"[bold green]✓[/bold green] Saved to TSV: [cyan]{saveto}[/cyan]")
+            console.print(
+                f"[bold green]✓[/bold green] Saved to TSV: [cyan]{saveto}[/cyan]"
+            )
         else:
             df.to_csv(saveto, index=False, header=True, sep="\t")
-            console.print(f"[bold green]✓[/bold green] Saved to file: [cyan]{saveto}[/cyan]")
+            console.print(
+                f"[bold green]✓[/bold green] Saved to file: [cyan]{saveto}[/cyan]"
+            )
     else:
         if df is None:
             console.print("[yellow]No data to display[/yellow]")
@@ -306,8 +312,12 @@ def search(saveto, db, verbosity, return_max, fields):
 
 def get_geo_search_info():
     info_text = GeoSearch.info()
-    panel = Panel(info_text, title="[bold cyan]GeoSearch Information[/bold cyan]",
-                  border_style="cyan", padding=(1, 2))
+    panel = Panel(
+        info_text,
+        title="[bold cyan]GeoSearch Information[/bold cyan]",
+        border_style="cyan",
+        padding=(1, 2),
+    )
     console.print(panel)
 
 
@@ -709,13 +719,17 @@ def doi_to_identifiers(doi_ids, saveto):
 def geo_matrix(accession, to_tsv, output_dir):
     # Download the GEO Matrix file
     matrix_file = download_geo_matrix(accession, output_dir=output_dir)
-    console.print(f"[bold green]✓[/bold green] Downloaded GEO Matrix file to: [cyan]{matrix_file}[/cyan]")
+    console.print(
+        f"[bold green]✓[/bold green] Downloaded GEO Matrix file to: [cyan]{matrix_file}[/cyan]"
+    )
 
     # If --to-tsv is specified, parse the file to TSV
     if to_tsv:
         output_tsv = os.path.join(output_dir, f"{accession}_matrix.tsv")
         df = parse_geo_matrix_to_tsv(matrix_file, output_tsv)
-        console.print(f"[bold green]✓[/bold green] Parsed GEO Matrix file to TSV: [cyan]{output_tsv}[/cyan]")
+        console.print(
+            f"[bold green]✓[/bold green] Parsed GEO Matrix file to TSV: [cyan]{output_tsv}[/cyan]"
+        )
 
 
 #########################################################################
