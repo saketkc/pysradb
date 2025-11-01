@@ -224,7 +224,8 @@ class _MetadataExtraction(BaseModel):
     )
 
 
-DEFAULT_LLM_PROVIDER = "ollama/meditron"
+#DEFAULT_LLM_PROVIDER = "ollama/meditron"
+DEFAULT_LLM_PROVIDER = "ollama/phi3"
 
 
 def load_ontology_reference() -> Dict[str, List[str]]:
@@ -351,7 +352,7 @@ EXTRACTION RULES:
 4. anatomical_system: Derive from organ/cell_type using biological knowledge (blood→immune, brain→nervous, liver→digestive, heart→cardiovascular, lung→respiratory). Lowercase.
 5. disease: Extract ANY disease mentioned. "Normal"/"control"/"WT"→healthy. Lowercase.
 6. sex: F=female, M=male. Return: male, female, mixed, or Unknown. Lowercase.
-7. development_stage: From age (0-2=infant, 3-12=child, 13-18=adolescent, 19-64=adult, 65+=aged) or keywords. Lowercase.
+7. development_stage: From age - handle 'y' for years, 'm' for months (e.g., 17m=17 months=1.4 years). Use: 0-2y=infant, 3-12y=child, 13-18y=adolescent, 19-64y=adult, 65+=aged. Convert months to years when needed. Lowercase.
 8. assay: RNA-seq, scRNA-seq, CITE-seq, ATAC-seq, etc.
 9. organism: Homo sapiens, Mus musculus, or common names. Lowercase unless scientific.
 
