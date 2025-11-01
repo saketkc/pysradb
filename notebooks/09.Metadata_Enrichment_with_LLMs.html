@@ -296,8 +296,8 @@
 <li><p><strong>LLMs</strong> (<a class="reference external" href="https://ollama.com/download">Requires Ollama</a> - local, no API keys)</p></li>
 <li><p><strong>Embeddings</strong> (<a class="reference external" href="https://huggingface.co/sentence-transformers">Using sentence-transformers</a> with <a class="reference external" href="https://arxiv.org/abs/2311.16075">BioLORD</a> embedding model)</p></li>
 </ul>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Install pysradb if not already installed</span>
@@ -314,27 +314,27 @@
 </pre></div>
 </div>
 </div>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
-</pre></div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span>git+https://github.com/saketkc/pysradb
-</pre></div>
-</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Installing pysradb from GitHub...
+  Installing build dependencies ... done
+  Getting requirements to build wheel ... done
+  Preparing metadata (pyproject.toml) ... done
+  Building wheel for pysradb (pyproject.toml) ... done
+pysradb installed successfully!
+</pre></div></div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
-
-<span class="kn">from</span><span class="w"> </span><span class="nn">pysradb</span><span class="w"> </span><span class="kn">import</span> <span class="n">SRAweb</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><br/><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">pysradb</span><span class="w"> </span><span class="kn">import</span> <span class="n">SRAweb</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">pysradb.metadata_enrichment</span><span class="w"> </span><span class="kn">import</span> <span class="n">create_metadata_extractor</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">pysradb.search</span><span class="w"> </span><span class="kn">import</span> <span class="n">GeoSearch</span>
-
-<span class="n">pd</span><span class="o">.</span><span class="n">set_option</span><span class="p">(</span><span class="s2">&quot;display.max_columns&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
-<span class="n">pd</span><span class="o">.</span><span class="n">set_option</span><span class="p">(</span><span class="s2">&quot;display.max_colwidth&quot;</span><span class="p">,</span> <span class="mi">80</span><span class="p">)</span>
-</pre></div>
+<br/><br/></pre></div>
 </div>
 </div>
 <div class="nboutput nblast docutils container">
@@ -342,7 +342,7 @@
 </div>
 <div class="output_area stderr docutils container">
 <div class="highlight"><pre>
-/Users/saket/github/pysradb/pysradb/utils.py:16: TqdmExperimentalWarning: Using `tqdm.autonotebook.tqdm` in notebook mode. Use `tqdm.tqdm` instead to force console mode (e.g. in jupyter console)
+/usr/local/lib/python3.12/dist-packages/pysradb/utils.py:16: TqdmExperimentalWarning: Using `tqdm.autonotebook.tqdm` in notebook mode. Use `tqdm.tqdm` instead to force console mode (e.g. in jupyter console)
   from tqdm.autonotebook import tqdm
 </pre></div></div>
 </div>
@@ -353,6 +353,217 @@
 <p>The easiest way to enrich metadata is using the <code class="docutils literal notranslate"><span class="pre">enrich=True</span></code> parameter:</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span><span class="w"> </span>sudo<span class="w"> </span>apt<span class="w"> </span>update<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>sudo<span class="w"> </span>apt<span class="w"> </span>install<span class="w"> </span>pciutils<span class="w"> </span>lshw<span class="w"> </span>systemd
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Hit:1 https://cli.github.com/packages stable InRelease
+Get:2 https://cloud.r-project.org/bin/linux/ubuntu jammy-cran40/ InRelease [3,632 B]
+Hit:3 https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2204/x86_64  InRelease
+Get:4 https://r2u.stat.illinois.edu/ubuntu jammy InRelease [6,555 B]
+Hit:5 http://archive.ubuntu.com/ubuntu jammy InRelease
+Get:6 http://security.ubuntu.com/ubuntu jammy-security InRelease [129 kB]
+Get:7 https://r2u.stat.illinois.edu/ubuntu jammy/main all Packages [9,413 kB]
+Get:8 http://archive.ubuntu.com/ubuntu jammy-updates InRelease [128 kB]
+Hit:9 https://ppa.launchpadcontent.net/deadsnakes/ppa/ubuntu jammy InRelease
+Hit:10 https://ppa.launchpadcontent.net/graphics-drivers/ppa/ubuntu jammy InRelease
+Hit:11 https://ppa.launchpadcontent.net/ubuntugis/ppa/ubuntu jammy InRelease
+Get:12 http://archive.ubuntu.com/ubuntu jammy-backports InRelease [127 kB]
+Get:13 https://r2u.stat.illinois.edu/ubuntu jammy/main amd64 Packages [2,822 kB]
+Get:14 http://security.ubuntu.com/ubuntu jammy-security/main amd64 Packages [3,479 kB]
+Get:15 http://archive.ubuntu.com/ubuntu jammy-updates/main amd64 Packages [3,847 kB]
+Get:16 http://security.ubuntu.com/ubuntu jammy-security/universe amd64 Packages [1,288 kB]
+Get:17 http://archive.ubuntu.com/ubuntu jammy-updates/restricted amd64 Packages [6,148 kB]
+Get:18 http://archive.ubuntu.com/ubuntu jammy-updates/universe amd64 Packages [1,594 kB]
+Fetched 29.0 MB in 4s (7,583 kB/s)
+Reading package lists... Done
+Building dependency tree... Done
+Reading state information... Done
+46 packages can be upgraded. Run &#39;apt list --upgradable&#39; to see them.
+<span class="ansi-yellow-intense-fg ansi-bold">W: </span>Skipping acquire of configured file &#39;main/source/Sources&#39; as repository &#39;https://r2u.stat.illinois.edu/ubuntu jammy InRelease&#39; does not seem to provide it (sources.list entry misspelt?)
+Reading package lists... Done
+Building dependency tree... Done
+Reading state information... Done
+systemd is already the newest version (249.11-0ubuntu3.17).
+systemd set to manually installed.
+The following additional packages will be installed:
+  libpci3 pci.ids usb.ids
+The following NEW packages will be installed:
+  libpci3 lshw pci.ids pciutils usb.ids
+0 upgraded, 5 newly installed, 0 to remove and 46 not upgraded.
+Need to get 883 kB of archives.
+After this operation, 3,256 kB of additional disk space will be used.
+Get:1 http://archive.ubuntu.com/ubuntu jammy-updates/main amd64 pci.ids all 0.0~2022.01.22-1ubuntu0.1 [251 kB]
+Get:2 http://archive.ubuntu.com/ubuntu jammy/main amd64 libpci3 amd64 1:3.7.0-6 [28.9 kB]
+Get:3 http://archive.ubuntu.com/ubuntu jammy/main amd64 lshw amd64 02.19.git.2021.06.19.996aaad9c7-2build1 [321 kB]
+Get:4 http://archive.ubuntu.com/ubuntu jammy/main amd64 pciutils amd64 1:3.7.0-6 [63.6 kB]
+Get:5 http://archive.ubuntu.com/ubuntu jammy/main amd64 usb.ids all 2022.04.02-1 [219 kB]
+Fetched 883 kB in 1s (721 kB/s)
+debconf: unable to initialize frontend: Dialog
+debconf: (No usable dialog-like program is installed, so the dialog based frontend cannot be used. at /usr/share/perl5/Debconf/FrontEnd/Dialog.pm line 78, &lt;&gt; line 5.)
+debconf: falling back to frontend: Readline
+debconf: unable to initialize frontend: Readline
+debconf: (This frontend requires a controlling tty.)
+debconf: falling back to frontend: Teletype
+dpkg-preconfigure: unable to re-open stdin:
+Selecting previously unselected package pci.ids.
+(Reading database ... 125080 files and directories currently installed.)
+Preparing to unpack .../pci.ids_0.0~2022.01.22-1ubuntu0.1_all.deb ...
+Unpacking pci.ids (0.0~2022.01.22-1ubuntu0.1) ...
+Selecting previously unselected package libpci3:amd64.
+Preparing to unpack .../libpci3_1%3a3.7.0-6_amd64.deb ...
+Unpacking libpci3:amd64 (1:3.7.0-6) ...
+Selecting previously unselected package lshw.
+Preparing to unpack .../lshw_02.19.git.2021.06.19.996aaad9c7-2build1_amd64.deb ...
+Unpacking lshw (02.19.git.2021.06.19.996aaad9c7-2build1) ...
+Selecting previously unselected package pciutils.
+Preparing to unpack .../pciutils_1%3a3.7.0-6_amd64.deb ...
+Unpacking pciutils (1:3.7.0-6) ...
+Selecting previously unselected package usb.ids.
+Preparing to unpack .../usb.ids_2022.04.02-1_all.deb ...
+Unpacking usb.ids (2022.04.02-1) ...
+Setting up pci.ids (0.0~2022.01.22-1ubuntu0.1) ...
+Setting up lshw (02.19.git.2021.06.19.996aaad9c7-2build1) ...
+Setting up usb.ids (2022.04.02-1) ...
+Setting up libpci3:amd64 (1:3.7.0-6) ...
+Setting up pciutils (1:3.7.0-6) ...
+Processing triggers for man-db (2.10.2-1) ...
+Processing triggers for libc-bin (2.35-0ubuntu3.8) ...
+/sbin/ldconfig.real: /usr/local/lib/libumf.so.1 is not a symbolic link
+
+/sbin/ldconfig.real: /usr/local/lib/libtcm.so.1 is not a symbolic link
+
+/sbin/ldconfig.real: /usr/local/lib/libhwloc.so.15 is not a symbolic link
+
+/sbin/ldconfig.real: /usr/local/lib/libur_loader.so.0 is not a symbolic link
+
+/sbin/ldconfig.real: /usr/local/lib/libtbbbind_2_0.so.3 is not a symbolic link
+
+/sbin/ldconfig.real: /usr/local/lib/libur_adapter_opencl.so.0 is not a symbolic link
+
+/sbin/ldconfig.real: /usr/local/lib/libtbb.so.12 is not a symbolic link
+
+/sbin/ldconfig.real: /usr/local/lib/libtbbbind_2_5.so.3 is not a symbolic link
+
+/sbin/ldconfig.real: /usr/local/lib/libur_adapter_level_zero_v2.so.0 is not a symbolic link
+
+/sbin/ldconfig.real: /usr/local/lib/libtbbmalloc_proxy.so.2 is not a symbolic link
+
+/sbin/ldconfig.real: /usr/local/lib/libtcm_debug.so.1 is not a symbolic link
+
+/sbin/ldconfig.real: /usr/local/lib/libtbbmalloc.so.2 is not a symbolic link
+
+/sbin/ldconfig.real: /usr/local/lib/libur_adapter_level_zero.so.0 is not a symbolic link
+
+/sbin/ldconfig.real: /usr/local/lib/libtbbbind.so.3 is not a symbolic link
+
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>curl<span class="w"> </span>-fsSL<span class="w"> </span>https://ollama.com/install.sh<span class="w"> </span><span class="p">|</span><span class="w"> </span>sh
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+&gt;&gt;&gt; Installing ollama to /usr/local
+&gt;&gt;&gt; Downloading Linux amd64 bundle
+######################################################################## 100.0%
+&gt;&gt;&gt; Creating ollama user...
+&gt;&gt;&gt; Adding ollama user to video group...
+&gt;&gt;&gt; Adding current user to ollama group...
+&gt;&gt;&gt; Creating ollama systemd service...
+<span class="ansi-red-intense-fg ansi-bold">WARNING:</span> systemd is not running
+&gt;&gt;&gt; NVIDIA GPU installed.
+&gt;&gt;&gt; The Ollama API is now available at 127.0.0.1:11434.
+&gt;&gt;&gt; Install complete. Run &#34;ollama&#34; from the command line.
+</pre></div></div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#import subprocess</span>
+<span class="c1">#import time</span>
+
+<span class="c1">#process = subprocess.Popen([&#39;ollama&#39;, &#39;serve&#39;], stdout=subprocess.PIPE, #stderr=subprocess.PIPE)</span>
+<span class="c1">#time.sleep(5)</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>nohup<span class="w"> </span>ollama<span class="w"> </span>serve<span class="w"> </span>&gt;<span class="w"> </span>ollama.log<span class="w"> </span><span class="m">2</span>&gt;<span class="p">&amp;</span><span class="m">1</span><span class="w"> </span><span class="p">&amp;</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>ollama<span class="w"> </span>list
+<br/></pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+NAME    ID    SIZE    MODIFIED
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>ollama<span class="w"> </span>pull<span class="w"> </span>phi3:latest
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>ollama<span class="w"> </span>list
+<br/></pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+NAME           ID              SIZE      MODIFIED
+phi3:latest    4f2222927938    2.2 GB    2 seconds ago
+phi3:3.8b      4f2222927938    2.2 GB    3 minutes ago
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">pysradb.sraweb</span><span class="w"> </span><span class="kn">import</span> <span class="n">SRAweb</span>
@@ -382,13 +593,14 @@
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<script type="application/vnd.jupyter.widget-view+json">{"model_id": "9cc1bb05d1d54d02a13f88c88d256149", "version_major": 2, "version_minor": 0}</script></div>
+<script type="application/vnd.jupyter.widget-view+json">{"version_major": 2, "version_minor": 0, "model_id": "9d62d492c139422a828ebe655deb3814"}</script></div>
 </div>
 <div class="nboutput nblast docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area rendered_html docutils container">
-<div>
+  <div id="df-912359a1-57c4-45cd-8d30-a64d0ce02982" class="colab-df-container">
+    <div>
 <style scoped>
     .dataframe tbody tr th:only-of-type {
         vertical-align: middle;
@@ -410,9 +622,9 @@
       <th>sex</th>
       <th>guessed_sex</th>
       <th>tissue</th>
+      <th>guessed_tissue</th>
       <th>guessed_organ</th>
       <th>guessed_anatomical_system</th>
-      <th>guessed_tissue</th>
       <th>guessed_cell_type</th>
       <th>guessed_organ</th>
       <th>guessed_tissue</th>
@@ -426,9 +638,9 @@
       <td>F</td>
       <td>female</td>
       <td>&lt;NA&gt;</td>
+      <td>peripheral blood</td>
       <td>blood</td>
       <td>immune system</td>
-      <td>peripheral blood</td>
       <td>pbmc</td>
       <td>blood</td>
       <td>peripheral blood</td>
@@ -440,9 +652,9 @@
       <td>F</td>
       <td>female</td>
       <td>&lt;NA&gt;</td>
+      <td>peripheral blood</td>
       <td>blood</td>
       <td>immune system</td>
-      <td>peripheral blood</td>
       <td>pbmc</td>
       <td>blood</td>
       <td>peripheral blood</td>
@@ -454,9 +666,9 @@
       <td>F</td>
       <td>female</td>
       <td>&lt;NA&gt;</td>
+      <td>peripheral blood</td>
       <td>blood</td>
       <td>immune system</td>
-      <td>peripheral blood</td>
       <td>pbmc</td>
       <td>blood</td>
       <td>peripheral blood</td>
@@ -468,9 +680,9 @@
       <td>F</td>
       <td>female</td>
       <td>&lt;NA&gt;</td>
+      <td>peripheral blood</td>
       <td>blood</td>
       <td>immune system</td>
-      <td>peripheral blood</td>
       <td>pbmc</td>
       <td>blood</td>
       <td>peripheral blood</td>
@@ -482,9 +694,9 @@
       <td>F</td>
       <td>female</td>
       <td>&lt;NA&gt;</td>
+      <td>peripheral blood</td>
       <td>blood</td>
       <td>immune system</td>
-      <td>peripheral blood</td>
       <td>pbmc</td>
       <td>blood</td>
       <td>peripheral blood</td>
@@ -496,9 +708,9 @@
       <td>F</td>
       <td>female</td>
       <td>&lt;NA&gt;</td>
+      <td>peripheral blood</td>
       <td>blood</td>
       <td>immune system</td>
-      <td>peripheral blood</td>
       <td>pbmc</td>
       <td>blood</td>
       <td>peripheral blood</td>
@@ -510,9 +722,9 @@
       <td>M</td>
       <td>male</td>
       <td>&lt;NA&gt;</td>
+      <td>peripheral blood</td>
       <td>blood</td>
       <td>immune system</td>
-      <td>peripheral blood</td>
       <td>pbmc</td>
       <td>blood</td>
       <td>peripheral blood</td>
@@ -524,9 +736,9 @@
       <td>M</td>
       <td>male</td>
       <td>&lt;NA&gt;</td>
+      <td>peripheral blood</td>
       <td>blood</td>
       <td>immune system</td>
-      <td>peripheral blood</td>
       <td>pbmc</td>
       <td>blood</td>
       <td>peripheral blood</td>
@@ -538,9 +750,9 @@
       <td>F</td>
       <td>female</td>
       <td>&lt;NA&gt;</td>
+      <td>peripheral blood</td>
       <td>blood</td>
       <td>immune system</td>
-      <td>peripheral blood</td>
       <td>pbmc</td>
       <td>blood</td>
       <td>peripheral blood</td>
@@ -552,9 +764,9 @@
       <td>F</td>
       <td>female</td>
       <td>&lt;NA&gt;</td>
+      <td>peripheral blood</td>
       <td>blood</td>
       <td>immune system</td>
-      <td>peripheral blood</td>
       <td>pbmc</td>
       <td>blood</td>
       <td>peripheral blood</td>
@@ -566,9 +778,9 @@
       <td>F</td>
       <td>female</td>
       <td>&lt;NA&gt;</td>
+      <td>peripheral blood</td>
       <td>blood</td>
       <td>immune system</td>
-      <td>peripheral blood</td>
       <td>pbmc</td>
       <td>blood</td>
       <td>peripheral blood</td>
@@ -580,9 +792,9 @@
       <td>F</td>
       <td>female</td>
       <td>&lt;NA&gt;</td>
+      <td>peripheral blood</td>
       <td>blood</td>
       <td>immune system</td>
-      <td>peripheral blood</td>
       <td>pbmc</td>
       <td>blood</td>
       <td>peripheral blood</td>
@@ -594,9 +806,9 @@
       <td>M</td>
       <td>male</td>
       <td>&lt;NA&gt;</td>
+      <td>peripheral blood</td>
       <td>blood</td>
       <td>immune system</td>
-      <td>peripheral blood</td>
       <td>pbmc</td>
       <td>blood</td>
       <td>peripheral blood</td>
@@ -608,9 +820,9 @@
       <td>M</td>
       <td>male</td>
       <td>&lt;NA&gt;</td>
+      <td>peripheral blood</td>
       <td>blood</td>
       <td>immune system</td>
-      <td>peripheral blood</td>
       <td>pbmc</td>
       <td>blood</td>
       <td>peripheral blood</td>
@@ -622,9 +834,9 @@
       <td>F</td>
       <td>female</td>
       <td>&lt;NA&gt;</td>
+      <td>peripheral blood</td>
       <td>blood</td>
       <td>immune system</td>
-      <td>peripheral blood</td>
       <td>pbmc</td>
       <td>blood</td>
       <td>peripheral blood</td>
@@ -636,9 +848,9 @@
       <td>F</td>
       <td>female</td>
       <td>&lt;NA&gt;</td>
+      <td>peripheral blood</td>
       <td>blood</td>
       <td>immune system</td>
-      <td>peripheral blood</td>
       <td>pbmc</td>
       <td>blood</td>
       <td>peripheral blood</td>
@@ -650,9 +862,9 @@
       <td>M</td>
       <td>male</td>
       <td>&lt;NA&gt;</td>
+      <td>peripheral blood</td>
       <td>blood</td>
       <td>immune system</td>
-      <td>peripheral blood</td>
       <td>pbmc</td>
       <td>blood</td>
       <td>peripheral blood</td>
@@ -664,9 +876,9 @@
       <td>M</td>
       <td>male</td>
       <td>&lt;NA&gt;</td>
+      <td>peripheral blood</td>
       <td>blood</td>
       <td>immune system</td>
-      <td>peripheral blood</td>
       <td>pbmc</td>
       <td>blood</td>
       <td>peripheral blood</td>
@@ -678,9 +890,9 @@
       <td>F</td>
       <td>female</td>
       <td>&lt;NA&gt;</td>
+      <td>peripheral blood</td>
       <td>blood</td>
       <td>immune system</td>
-      <td>peripheral blood</td>
       <td>pbmc</td>
       <td>blood</td>
       <td>peripheral blood</td>
@@ -692,9 +904,9 @@
       <td>F</td>
       <td>female</td>
       <td>&lt;NA&gt;</td>
+      <td>peripheral blood</td>
       <td>blood</td>
       <td>immune system</td>
-      <td>peripheral blood</td>
       <td>pbmc</td>
       <td>blood</td>
       <td>peripheral blood</td>
@@ -706,9 +918,9 @@
       <td>M</td>
       <td>male</td>
       <td>&lt;NA&gt;</td>
+      <td>peripheral blood</td>
       <td>blood</td>
       <td>immune system</td>
-      <td>peripheral blood</td>
       <td>pbmc</td>
       <td>blood</td>
       <td>peripheral blood</td>
@@ -720,9 +932,9 @@
       <td>M</td>
       <td>male</td>
       <td>&lt;NA&gt;</td>
+      <td>peripheral blood</td>
       <td>blood</td>
       <td>immune system</td>
-      <td>peripheral blood</td>
       <td>pbmc</td>
       <td>blood</td>
       <td>peripheral blood</td>
@@ -734,9 +946,9 @@
       <td>F</td>
       <td>female</td>
       <td>&lt;NA&gt;</td>
+      <td>peripheral blood</td>
       <td>blood</td>
       <td>immune system</td>
-      <td>peripheral blood</td>
       <td>pbmc</td>
       <td>blood</td>
       <td>peripheral blood</td>
@@ -748,9 +960,9 @@
       <td>F</td>
       <td>female</td>
       <td>&lt;NA&gt;</td>
+      <td>peripheral blood</td>
       <td>blood</td>
       <td>immune system</td>
-      <td>peripheral blood</td>
       <td>pbmc</td>
       <td>blood</td>
       <td>peripheral blood</td>
@@ -758,7 +970,216 @@
     </tr>
   </tbody>
 </table>
-</div></div>
+</div>
+    <div class="colab-df-buttons">
+
+  <div class="colab-df-container">
+    <button class="colab-df-convert" onclick="convertToInteractive('df-912359a1-57c4-45cd-8d30-a64d0ce02982')"
+            title="Convert this dataframe to an interactive table."
+            style="display:none;">
+
+  <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960">
+    <path d="M120-120v-720h720v720H120Zm60-500h600v-160H180v160Zm220 220h160v-160H400v160Zm0 220h160v-160H400v160ZM180-400h160v-160H180v160Zm440 0h160v-160H620v160ZM180-180h160v-160H180v160Zm440 0h160v-160H620v160Z"/>
+  </svg>
+    </button>
+
+  <style>
+    .colab-df-container {
+      display:flex;
+      gap: 12px;
+    }
+
+    .colab-df-convert {
+      background-color: #E8F0FE;
+      border: none;
+      border-radius: 50%;
+      cursor: pointer;
+      display: none;
+      fill: #1967D2;
+      height: 32px;
+      padding: 0 0 0 0;
+      width: 32px;
+    }
+
+    .colab-df-convert:hover {
+      background-color: #E2EBFA;
+      box-shadow: 0px 1px 2px rgba(60, 64, 67, 0.3), 0px 1px 3px 1px rgba(60, 64, 67, 0.15);
+      fill: #174EA6;
+    }
+
+    .colab-df-buttons div {
+      margin-bottom: 4px;
+    }
+
+    [theme=dark] .colab-df-convert {
+      background-color: #3B4455;
+      fill: #D2E3FC;
+    }
+
+    [theme=dark] .colab-df-convert:hover {
+      background-color: #434B5C;
+      box-shadow: 0px 1px 3px 1px rgba(0, 0, 0, 0.15);
+      filter: drop-shadow(0px 1px 2px rgba(0, 0, 0, 0.3));
+      fill: #FFFFFF;
+    }
+  </style>
+
+    <script>
+      const buttonEl =
+        document.querySelector('#df-912359a1-57c4-45cd-8d30-a64d0ce02982 button.colab-df-convert');
+      buttonEl.style.display =
+        google.colab.kernel.accessAllowed ? 'block' : 'none';
+
+      async function convertToInteractive(key) {
+        const element = document.querySelector('#df-912359a1-57c4-45cd-8d30-a64d0ce02982');
+        const dataTable =
+          await google.colab.kernel.invokeFunction('convertToInteractive',
+                                                    [key], {});
+        if (!dataTable) return;
+
+        const docLinkHtml = 'Like what you see? Visit the ' +
+          '<a target="_blank" href=https://colab.research.google.com/notebooks/data_table.ipynb>data table notebook</a>'
+          + ' to learn more about interactive tables.';
+        element.innerHTML = '';
+        dataTable['output_type'] = 'display_data';
+        await google.colab.output.renderOutput(dataTable, element);
+        const docLink = document.createElement('div');
+        docLink.innerHTML = docLinkHtml;
+        element.appendChild(docLink);
+      }
+    </script>
+  </div>
+
+
+    <div id="df-ee05d285-e31e-4b5a-83f5-99108f6009c8">
+      <button class="colab-df-quickchart" onclick="quickchart('df-ee05d285-e31e-4b5a-83f5-99108f6009c8')"
+                title="Suggest charts"
+                style="display:none;">
+
+<svg xmlns="http://www.w3.org/2000/svg" height="24px"viewBox="0 0 24 24"
+     width="24px">
+    <g>
+        <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 17H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4z"/>
+    </g>
+</svg>
+      </button>
+
+<style>
+  .colab-df-quickchart {
+      --bg-color: #E8F0FE;
+      --fill-color: #1967D2;
+      --hover-bg-color: #E2EBFA;
+      --hover-fill-color: #174EA6;
+      --disabled-fill-color: #AAA;
+      --disabled-bg-color: #DDD;
+  }
+
+  [theme=dark] .colab-df-quickchart {
+      --bg-color: #3B4455;
+      --fill-color: #D2E3FC;
+      --hover-bg-color: #434B5C;
+      --hover-fill-color: #FFFFFF;
+      --disabled-bg-color: #3B4455;
+      --disabled-fill-color: #666;
+  }
+
+  .colab-df-quickchart {
+    background-color: var(--bg-color);
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    display: none;
+    fill: var(--fill-color);
+    height: 32px;
+    padding: 0;
+    width: 32px;
+  }
+
+  .colab-df-quickchart:hover {
+    background-color: var(--hover-bg-color);
+    box-shadow: 0 1px 2px rgba(60, 64, 67, 0.3), 0 1px 3px 1px rgba(60, 64, 67, 0.15);
+    fill: var(--button-hover-fill-color);
+  }
+
+  .colab-df-quickchart-complete:disabled,
+  .colab-df-quickchart-complete:disabled:hover {
+    background-color: var(--disabled-bg-color);
+    fill: var(--disabled-fill-color);
+    box-shadow: none;
+  }
+
+  .colab-df-spinner {
+    border: 2px solid var(--fill-color);
+    border-color: transparent;
+    border-bottom-color: var(--fill-color);
+    animation:
+      spin 1s steps(1) infinite;
+  }
+
+  @keyframes spin {
+    0% {
+      border-color: transparent;
+      border-bottom-color: var(--fill-color);
+      border-left-color: var(--fill-color);
+    }
+    20% {
+      border-color: transparent;
+      border-left-color: var(--fill-color);
+      border-top-color: var(--fill-color);
+    }
+    30% {
+      border-color: transparent;
+      border-left-color: var(--fill-color);
+      border-top-color: var(--fill-color);
+      border-right-color: var(--fill-color);
+    }
+    40% {
+      border-color: transparent;
+      border-right-color: var(--fill-color);
+      border-top-color: var(--fill-color);
+    }
+    60% {
+      border-color: transparent;
+      border-right-color: var(--fill-color);
+    }
+    80% {
+      border-color: transparent;
+      border-right-color: var(--fill-color);
+      border-bottom-color: var(--fill-color);
+    }
+    90% {
+      border-color: transparent;
+      border-bottom-color: var(--fill-color);
+    }
+  }
+</style>
+
+      <script>
+        async function quickchart(key) {
+          const quickchartButtonEl =
+            document.querySelector('#' + key + ' button');
+          quickchartButtonEl.disabled = true;  // To prevent multiple clicks.
+          quickchartButtonEl.classList.add('colab-df-spinner');
+          try {
+            const charts = await google.colab.kernel.invokeFunction(
+                'suggestCharts', [key], {});
+          } catch (error) {
+            console.error('Error during call to suggestCharts:', error);
+          }
+          quickchartButtonEl.classList.remove('colab-df-spinner');
+          quickchartButtonEl.classList.add('colab-df-quickchart-complete');
+        }
+        (() => {
+          let quickchartButtonEl =
+            document.querySelector('#df-ee05d285-e31e-4b5a-83f5-99108f6009c8 button');
+          quickchartButtonEl.style.display =
+            google.colab.kernel.accessAllowed ? 'block' : 'none';
+        })();
+      </script>
+    </div>
+
+    </div>
+  </div></div>
 </div>
 </section>
 <hr class="docutils" />
@@ -768,7 +1189,7 @@
 <section id="Manual-LLM-Based-Enrichment">
 <h3>Manual LLM-Based Enrichment<a class="headerlink" href="#Manual-LLM-Based-Enrichment" title="Link to this heading">¶</a></h3>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create LLM extractor</span>
@@ -804,7 +1225,7 @@ Extracted metadata:
 </pre></div></div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[17]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">if</span> <span class="ow">not</span> <span class="n">df</span><span class="o">.</span><span class="n">empty</span><span class="p">:</span>
@@ -823,13 +1244,14 @@ Extracted metadata:
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<script type="application/vnd.jupyter.widget-view+json">{"model_id": "5b3b3aafaa5d4c39836f9893d950707a", "version_major": 2, "version_minor": 0}</script></div>
+<script type="application/vnd.jupyter.widget-view+json">{"version_major": 2, "version_minor": 0, "model_id": "f368fe611fe2454592bc6fb7880abb43"}</script></div>
 </div>
 <div class="nboutput nblast docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area rendered_html docutils container">
-<div>
+  <div id="df-f82bb05b-5747-4b86-9627-3cdd765074f4" class="colab-df-container">
+    <div>
 <style scoped>
     .dataframe tbody tr th:only-of-type {
         vertical-align: middle;
@@ -901,14 +1323,223 @@ Extracted metadata:
     </tr>
   </tbody>
 </table>
-</div></div>
+</div>
+    <div class="colab-df-buttons">
+
+  <div class="colab-df-container">
+    <button class="colab-df-convert" onclick="convertToInteractive('df-f82bb05b-5747-4b86-9627-3cdd765074f4')"
+            title="Convert this dataframe to an interactive table."
+            style="display:none;">
+
+  <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960">
+    <path d="M120-120v-720h720v720H120Zm60-500h600v-160H180v160Zm220 220h160v-160H400v160Zm0 220h160v-160H400v160ZM180-400h160v-160H180v160Zm440 0h160v-160H620v160ZM180-180h160v-160H180v160Zm440 0h160v-160H620v160Z"/>
+  </svg>
+    </button>
+
+  <style>
+    .colab-df-container {
+      display:flex;
+      gap: 12px;
+    }
+
+    .colab-df-convert {
+      background-color: #E8F0FE;
+      border: none;
+      border-radius: 50%;
+      cursor: pointer;
+      display: none;
+      fill: #1967D2;
+      height: 32px;
+      padding: 0 0 0 0;
+      width: 32px;
+    }
+
+    .colab-df-convert:hover {
+      background-color: #E2EBFA;
+      box-shadow: 0px 1px 2px rgba(60, 64, 67, 0.3), 0px 1px 3px 1px rgba(60, 64, 67, 0.15);
+      fill: #174EA6;
+    }
+
+    .colab-df-buttons div {
+      margin-bottom: 4px;
+    }
+
+    [theme=dark] .colab-df-convert {
+      background-color: #3B4455;
+      fill: #D2E3FC;
+    }
+
+    [theme=dark] .colab-df-convert:hover {
+      background-color: #434B5C;
+      box-shadow: 0px 1px 3px 1px rgba(0, 0, 0, 0.15);
+      filter: drop-shadow(0px 1px 2px rgba(0, 0, 0, 0.3));
+      fill: #FFFFFF;
+    }
+  </style>
+
+    <script>
+      const buttonEl =
+        document.querySelector('#df-f82bb05b-5747-4b86-9627-3cdd765074f4 button.colab-df-convert');
+      buttonEl.style.display =
+        google.colab.kernel.accessAllowed ? 'block' : 'none';
+
+      async function convertToInteractive(key) {
+        const element = document.querySelector('#df-f82bb05b-5747-4b86-9627-3cdd765074f4');
+        const dataTable =
+          await google.colab.kernel.invokeFunction('convertToInteractive',
+                                                    [key], {});
+        if (!dataTable) return;
+
+        const docLinkHtml = 'Like what you see? Visit the ' +
+          '<a target="_blank" href=https://colab.research.google.com/notebooks/data_table.ipynb>data table notebook</a>'
+          + ' to learn more about interactive tables.';
+        element.innerHTML = '';
+        dataTable['output_type'] = 'display_data';
+        await google.colab.output.renderOutput(dataTable, element);
+        const docLink = document.createElement('div');
+        docLink.innerHTML = docLinkHtml;
+        element.appendChild(docLink);
+      }
+    </script>
+  </div>
+
+
+    <div id="df-9d8da938-fd62-4b1c-838a-45b624997e2e">
+      <button class="colab-df-quickchart" onclick="quickchart('df-9d8da938-fd62-4b1c-838a-45b624997e2e')"
+                title="Suggest charts"
+                style="display:none;">
+
+<svg xmlns="http://www.w3.org/2000/svg" height="24px"viewBox="0 0 24 24"
+     width="24px">
+    <g>
+        <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 17H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4z"/>
+    </g>
+</svg>
+      </button>
+
+<style>
+  .colab-df-quickchart {
+      --bg-color: #E8F0FE;
+      --fill-color: #1967D2;
+      --hover-bg-color: #E2EBFA;
+      --hover-fill-color: #174EA6;
+      --disabled-fill-color: #AAA;
+      --disabled-bg-color: #DDD;
+  }
+
+  [theme=dark] .colab-df-quickchart {
+      --bg-color: #3B4455;
+      --fill-color: #D2E3FC;
+      --hover-bg-color: #434B5C;
+      --hover-fill-color: #FFFFFF;
+      --disabled-bg-color: #3B4455;
+      --disabled-fill-color: #666;
+  }
+
+  .colab-df-quickchart {
+    background-color: var(--bg-color);
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    display: none;
+    fill: var(--fill-color);
+    height: 32px;
+    padding: 0;
+    width: 32px;
+  }
+
+  .colab-df-quickchart:hover {
+    background-color: var(--hover-bg-color);
+    box-shadow: 0 1px 2px rgba(60, 64, 67, 0.3), 0 1px 3px 1px rgba(60, 64, 67, 0.15);
+    fill: var(--button-hover-fill-color);
+  }
+
+  .colab-df-quickchart-complete:disabled,
+  .colab-df-quickchart-complete:disabled:hover {
+    background-color: var(--disabled-bg-color);
+    fill: var(--disabled-fill-color);
+    box-shadow: none;
+  }
+
+  .colab-df-spinner {
+    border: 2px solid var(--fill-color);
+    border-color: transparent;
+    border-bottom-color: var(--fill-color);
+    animation:
+      spin 1s steps(1) infinite;
+  }
+
+  @keyframes spin {
+    0% {
+      border-color: transparent;
+      border-bottom-color: var(--fill-color);
+      border-left-color: var(--fill-color);
+    }
+    20% {
+      border-color: transparent;
+      border-left-color: var(--fill-color);
+      border-top-color: var(--fill-color);
+    }
+    30% {
+      border-color: transparent;
+      border-left-color: var(--fill-color);
+      border-top-color: var(--fill-color);
+      border-right-color: var(--fill-color);
+    }
+    40% {
+      border-color: transparent;
+      border-right-color: var(--fill-color);
+      border-top-color: var(--fill-color);
+    }
+    60% {
+      border-color: transparent;
+      border-right-color: var(--fill-color);
+    }
+    80% {
+      border-color: transparent;
+      border-right-color: var(--fill-color);
+      border-bottom-color: var(--fill-color);
+    }
+    90% {
+      border-color: transparent;
+      border-bottom-color: var(--fill-color);
+    }
+  }
+</style>
+
+      <script>
+        async function quickchart(key) {
+          const quickchartButtonEl =
+            document.querySelector('#' + key + ' button');
+          quickchartButtonEl.disabled = true;  // To prevent multiple clicks.
+          quickchartButtonEl.classList.add('colab-df-spinner');
+          try {
+            const charts = await google.colab.kernel.invokeFunction(
+                'suggestCharts', [key], {});
+          } catch (error) {
+            console.error('Error during call to suggestCharts:', error);
+          }
+          quickchartButtonEl.classList.remove('colab-df-spinner');
+          quickchartButtonEl.classList.add('colab-df-quickchart-complete');
+        }
+        (() => {
+          let quickchartButtonEl =
+            document.querySelector('#df-9d8da938-fd62-4b1c-838a-45b624997e2e button');
+          quickchartButtonEl.style.display =
+            google.colab.kernel.accessAllowed ? 'block' : 'none';
+        })();
+      </script>
+    </div>
+
+    </div>
+  </div></div>
 </div>
 </section>
 <section id="Manual-Embedding-Based-Enrichment">
 <h3>Manual Embedding-Based Enrichment<a class="headerlink" href="#Manual-Embedding-Based-Enrichment" title="Link to this heading">¶</a></h3>
 <p>Faster than LLMs, works offline. Load comprehensive ontology reference (31K+ terms):</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[19]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Load ontology reference (31K+ terms from UBERON, MONDO, CL)</span>
@@ -935,20 +1566,28 @@ Extracted metadata:
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Loaded 31,164 ontology terms
+<span class="ansi-red-fg">---------------------------------------------------------------------------</span>
+<span class="ansi-red-fg">FileNotFoundError</span>                         Traceback (most recent call last)
+<span class="ansi-green-fg">/tmp/ipython-input-2111896337.py</span> in <span class="ansi-cyan-fg">&lt;cell line: 0&gt;</span><span class="ansi-blue-fg">()</span>
+<span class="ansi-green-intense-fg ansi-bold">      2</span> <span class="ansi-green-fg">from</span> pysradb<span class="ansi-blue-fg">.</span>metadata_enrichment <span class="ansi-green-fg">import</span> load_ontology_reference
+<span class="ansi-green-intense-fg ansi-bold">      3</span>
+<span class="ansi-green-fg">----&gt; 4</span><span class="ansi-red-fg"> </span>ontology_ref <span class="ansi-blue-fg">=</span> load_ontology_reference<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">      5</span> print<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">f&#34;Loaded {sum(len(v) for v in ontology_ref.values()):,} ontology terms&#34;</span><span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">      6</span>
 
-Extracted: {&#39;organ&#39;: &#39;Unknown&#39;, &#39;tissue&#39;: &#39;mucosa-associated lymphoid tissue&#39;, &#39;anatomical_system&#39;: &#39;Unknown&#39;, &#39;cell_type&#39;: &#39;mucosal-associated invariant T cell, human&#39;, &#39;disease&#39;: &#39;melanoma, cutaneous malignant, susceptibility to, 8&#39;, &#39;sex&#39;: &#39;Unknown&#39;, &#39;development_stage&#39;: &#39;Unknown&#39;, &#39;assay&#39;: &#39;Unknown&#39;, &#39;organism&#39;: &#39;Unknown&#39;}
+<span class="ansi-green-fg">/usr/local/lib/python3.12/dist-packages/pysradb/metadata_enrichment.py</span> in <span class="ansi-cyan-fg">load_ontology_reference</span><span class="ansi-blue-fg">()</span>
+<span class="ansi-green-intense-fg ansi-bold">    242</span>
+<span class="ansi-green-intense-fg ansi-bold">    243</span>     <span class="ansi-green-fg">if</span> <span class="ansi-green-fg">not</span> os<span class="ansi-blue-fg">.</span>path<span class="ansi-blue-fg">.</span>exists<span class="ansi-blue-fg">(</span>ontology_path<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">:</span>
+<span class="ansi-green-fg">--&gt; 244</span><span class="ansi-red-fg">         raise FileNotFoundError(
+</span><span class="ansi-green-intense-fg ansi-bold">    245</span>             <span class="ansi-blue-fg">f&#34;Ontology reference not found at {ontology_path}. &#34;</span>
+<span class="ansi-green-intense-fg ansi-bold">    246</span>             <span class="ansi-blue-fg">&#34;Please ensure ontology_reference.json is in the pysradb package directory.&#34;</span>
+
+<span class="ansi-red-fg">FileNotFoundError</span>: Ontology reference not found at /usr/local/lib/python3.12/dist-packages/pysradb/ontology_reference.json. Please ensure ontology_reference.json is in the pysradb package directory.
 </pre></div></div>
 </div>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>
-</pre></div>
-</div>
-</div>
-</section>
+<script type="application/vnd.jupyter.widget-state+json">
+{"9d62d492c139422a828ebe655deb3814": {"model_module": "@jupyter-widgets/controls", "model_name": "HBoxModel", "model_module_version": "1.5.0", "state": {"_dom_classes": [], "_model_module": "@jupyter-widgets/controls", "_model_module_version": "1.5.0", "_model_name": "HBoxModel", "_view_count": null, "_view_module": "@jupyter-widgets/controls", "_view_module_version": "1.5.0", "_view_name": "HBoxView", "box_style": "", "children": ["IPY_MODEL_6e4b755674ea4095bb1198b9eb0c0f03", "IPY_MODEL_42b65baafb864bc7a54b5a0317ce8039", "IPY_MODEL_f75b71247ab143fc8814e295b07b4af0"], "layout": "IPY_MODEL_50f68e3f6e1b439dbd4479a07c6155a0"}}, "6e4b755674ea4095bb1198b9eb0c0f03": {"model_module": "@jupyter-widgets/controls", "model_name": "HTMLModel", "model_module_version": "1.5.0", "state": {"_dom_classes": [], "_model_module": "@jupyter-widgets/controls", "_model_module_version": "1.5.0", "_model_name": "HTMLModel", "_view_count": null, "_view_module": "@jupyter-widgets/controls", "_view_module_version": "1.5.0", "_view_name": "HTMLView", "description": "", "description_tooltip": null, "layout": "IPY_MODEL_aebe06a9187e407d8842390163dacbd9", "placeholder": "\u200b", "style": "IPY_MODEL_3d8d1857f91345e782d3ee97536997ed", "value": "Enriching\u2007metadata:\u2007100%"}}, "42b65baafb864bc7a54b5a0317ce8039": {"model_module": "@jupyter-widgets/controls", "model_name": "FloatProgressModel", "model_module_version": "1.5.0", "state": {"_dom_classes": [], "_model_module": "@jupyter-widgets/controls", "_model_module_version": "1.5.0", "_model_name": "FloatProgressModel", "_view_count": null, "_view_module": "@jupyter-widgets/controls", "_view_module_version": "1.5.0", "_view_name": "ProgressView", "bar_style": "success", "description": "", "description_tooltip": null, "layout": "IPY_MODEL_ece88eb423454ee9a3ad53f6adb809c5", "max": 24, "min": 0, "orientation": "horizontal", "style": "IPY_MODEL_1a92049dd35e40aeb1674ae690049fcd", "value": 24}}, "f75b71247ab143fc8814e295b07b4af0": {"model_module": "@jupyter-widgets/controls", "model_name": "HTMLModel", "model_module_version": "1.5.0", "state": {"_dom_classes": [], "_model_module": "@jupyter-widgets/controls", "_model_module_version": "1.5.0", "_model_name": "HTMLModel", "_view_count": null, "_view_module": "@jupyter-widgets/controls", "_view_module_version": "1.5.0", "_view_name": "HTMLView", "description": "", "description_tooltip": null, "layout": "IPY_MODEL_644ee776fee548908ea55eed2ae06854", "placeholder": "\u200b", "style": "IPY_MODEL_b93ffab4a5394222b7e63664ac417140", "value": "\u200724/24\u2007[01:01&lt;00:00,\u2007\u20072.49s/row]"}}, "50f68e3f6e1b439dbd4479a07c6155a0": {"model_module": "@jupyter-widgets/base", "model_name": "LayoutModel", "model_module_version": "1.2.0", "state": {"_model_module": "@jupyter-widgets/base", "_model_module_version": "1.2.0", "_model_name": "LayoutModel", "_view_count": null, "_view_module": "@jupyter-widgets/base", "_view_module_version": "1.2.0", "_view_name": "LayoutView", "align_content": null, "align_items": null, "align_self": null, "border": null, "bottom": null, "display": null, "flex": null, "flex_flow": null, "grid_area": null, "grid_auto_columns": null, "grid_auto_flow": null, "grid_auto_rows": null, "grid_column": null, "grid_gap": null, "grid_row": null, "grid_template_areas": null, "grid_template_columns": null, "grid_template_rows": null, "height": null, "justify_content": null, "justify_items": null, "left": null, "margin": null, "max_height": null, "max_width": null, "min_height": null, "min_width": null, "object_fit": null, "object_position": null, "order": null, "overflow": null, "overflow_x": null, "overflow_y": null, "padding": null, "right": null, "top": null, "visibility": null, "width": null}}, "aebe06a9187e407d8842390163dacbd9": {"model_module": "@jupyter-widgets/base", "model_name": "LayoutModel", "model_module_version": "1.2.0", "state": {"_model_module": "@jupyter-widgets/base", "_model_module_version": "1.2.0", "_model_name": "LayoutModel", "_view_count": null, "_view_module": "@jupyter-widgets/base", "_view_module_version": "1.2.0", "_view_name": "LayoutView", "align_content": null, "align_items": null, "align_self": null, "border": null, "bottom": null, "display": null, "flex": null, "flex_flow": null, "grid_area": null, "grid_auto_columns": null, "grid_auto_flow": null, "grid_auto_rows": null, "grid_column": null, "grid_gap": null, "grid_row": null, "grid_template_areas": null, "grid_template_columns": null, "grid_template_rows": null, "height": null, "justify_content": null, "justify_items": null, "left": null, "margin": null, "max_height": null, "max_width": null, "min_height": null, "min_width": null, "object_fit": null, "object_position": null, "order": null, "overflow": null, "overflow_x": null, "overflow_y": null, "padding": null, "right": null, "top": null, "visibility": null, "width": null}}, "3d8d1857f91345e782d3ee97536997ed": {"model_module": "@jupyter-widgets/controls", "model_name": "DescriptionStyleModel", "model_module_version": "1.5.0", "state": {"_model_module": "@jupyter-widgets/controls", "_model_module_version": "1.5.0", "_model_name": "DescriptionStyleModel", "_view_count": null, "_view_module": "@jupyter-widgets/base", "_view_module_version": "1.2.0", "_view_name": "StyleView", "description_width": ""}}, "ece88eb423454ee9a3ad53f6adb809c5": {"model_module": "@jupyter-widgets/base", "model_name": "LayoutModel", "model_module_version": "1.2.0", "state": {"_model_module": "@jupyter-widgets/base", "_model_module_version": "1.2.0", "_model_name": "LayoutModel", "_view_count": null, "_view_module": "@jupyter-widgets/base", "_view_module_version": "1.2.0", "_view_name": "LayoutView", "align_content": null, "align_items": null, "align_self": null, "border": null, "bottom": null, "display": null, "flex": null, "flex_flow": null, "grid_area": null, "grid_auto_columns": null, "grid_auto_flow": null, "grid_auto_rows": null, "grid_column": null, "grid_gap": null, "grid_row": null, "grid_template_areas": null, "grid_template_columns": null, "grid_template_rows": null, "height": null, "justify_content": null, "justify_items": null, "left": null, "margin": null, "max_height": null, "max_width": null, "min_height": null, "min_width": null, "object_fit": null, "object_position": null, "order": null, "overflow": null, "overflow_x": null, "overflow_y": null, "padding": null, "right": null, "top": null, "visibility": null, "width": null}}, "1a92049dd35e40aeb1674ae690049fcd": {"model_module": "@jupyter-widgets/controls", "model_name": "ProgressStyleModel", "model_module_version": "1.5.0", "state": {"_model_module": "@jupyter-widgets/controls", "_model_module_version": "1.5.0", "_model_name": "ProgressStyleModel", "_view_count": null, "_view_module": "@jupyter-widgets/base", "_view_module_version": "1.2.0", "_view_name": "StyleView", "bar_color": null, "description_width": ""}}, "644ee776fee548908ea55eed2ae06854": {"model_module": "@jupyter-widgets/base", "model_name": "LayoutModel", "model_module_version": "1.2.0", "state": {"_model_module": "@jupyter-widgets/base", "_model_module_version": "1.2.0", "_model_name": "LayoutModel", "_view_count": null, "_view_module": "@jupyter-widgets/base", "_view_module_version": "1.2.0", "_view_name": "LayoutView", "align_content": null, "align_items": null, "align_self": null, "border": null, "bottom": null, "display": null, "flex": null, "flex_flow": null, "grid_area": null, "grid_auto_columns": null, "grid_auto_flow": null, "grid_auto_rows": null, "grid_column": null, "grid_gap": null, "grid_row": null, "grid_template_areas": null, "grid_template_columns": null, "grid_template_rows": null, "height": null, "justify_content": null, "justify_items": null, "left": null, "margin": null, "max_height": null, "max_width": null, "min_height": null, "min_width": null, "object_fit": null, "object_position": null, "order": null, "overflow": null, "overflow_x": null, "overflow_y": null, "padding": null, "right": null, "top": null, "visibility": null, "width": null}}, "b93ffab4a5394222b7e63664ac417140": {"model_module": "@jupyter-widgets/controls", "model_name": "DescriptionStyleModel", "model_module_version": "1.5.0", "state": {"_model_module": "@jupyter-widgets/controls", "_model_module_version": "1.5.0", "_model_name": "DescriptionStyleModel", "_view_count": null, "_view_module": "@jupyter-widgets/base", "_view_module_version": "1.2.0", "_view_name": "StyleView", "description_width": ""}}, "f368fe611fe2454592bc6fb7880abb43": {"model_module": "@jupyter-widgets/controls", "model_name": "HBoxModel", "model_module_version": "1.5.0", "state": {"_dom_classes": [], "_model_module": "@jupyter-widgets/controls", "_model_module_version": "1.5.0", "_model_name": "HBoxModel", "_view_count": null, "_view_module": "@jupyter-widgets/controls", "_view_module_version": "1.5.0", "_view_name": "HBoxView", "box_style": "", "children": ["IPY_MODEL_dc1e1dce77f74d4d8d5cda7e9ac0e229", "IPY_MODEL_c81785201113469d801a6bb8293923e0", "IPY_MODEL_1f75a0ccc3634786abd9e6b8dd7e7818"], "layout": "IPY_MODEL_0e0b8ceca6e0406ab8a7948791b37787"}}, "dc1e1dce77f74d4d8d5cda7e9ac0e229": {"model_module": "@jupyter-widgets/controls", "model_name": "HTMLModel", "model_module_version": "1.5.0", "state": {"_dom_classes": [], "_model_module": "@jupyter-widgets/controls", "_model_module_version": "1.5.0", "_model_name": "HTMLModel", "_view_count": null, "_view_module": "@jupyter-widgets/controls", "_view_module_version": "1.5.0", "_view_name": "HTMLView", "description": "", "description_tooltip": null, "layout": "IPY_MODEL_7586f722fbc845729171a595c91b2444", "placeholder": "\u200b", "style": "IPY_MODEL_dba6cfc8e84f4d6baee6e2d2c4b980df", "value": "Enriching\u2007metadata:\u2007100%"}}, "c81785201113469d801a6bb8293923e0": {"model_module": "@jupyter-widgets/controls", "model_name": "FloatProgressModel", "model_module_version": "1.5.0", "state": {"_dom_classes": [], "_model_module": "@jupyter-widgets/controls", "_model_module_version": "1.5.0", "_model_name": "FloatProgressModel", "_view_count": null, "_view_module": "@jupyter-widgets/controls", "_view_module_version": "1.5.0", "_view_name": "ProgressView", "bar_style": "success", "description": "", "description_tooltip": null, "layout": "IPY_MODEL_59f5fa0209a84ac7a0414a072aa64e97", "max": 3, "min": 0, "orientation": "horizontal", "style": "IPY_MODEL_d80942bfdb1049fdbe8c348c71acd2d3", "value": 3}}, "1f75a0ccc3634786abd9e6b8dd7e7818": {"model_module": "@jupyter-widgets/controls", "model_name": "HTMLModel", "model_module_version": "1.5.0", "state": {"_dom_classes": [], "_model_module": "@jupyter-widgets/controls", "_model_module_version": "1.5.0", "_model_name": "HTMLModel", "_view_count": null, "_view_module": "@jupyter-widgets/controls", "_view_module_version": "1.5.0", "_view_name": "HTMLView", "description": "", "description_tooltip": null, "layout": "IPY_MODEL_527b0ae986ea4d93a31195ece36ddf00", "placeholder": "\u200b", "style": "IPY_MODEL_2491de498acc4203b9b7dcea0f0d33be", "value": "\u20073/3\u2007[00:06&lt;00:00,\u2007\u20072.29s/row]"}}, "0e0b8ceca6e0406ab8a7948791b37787": {"model_module": "@jupyter-widgets/base", "model_name": "LayoutModel", "model_module_version": "1.2.0", "state": {"_model_module": "@jupyter-widgets/base", "_model_module_version": "1.2.0", "_model_name": "LayoutModel", "_view_count": null, "_view_module": "@jupyter-widgets/base", "_view_module_version": "1.2.0", "_view_name": "LayoutView", "align_content": null, "align_items": null, "align_self": null, "border": null, "bottom": null, "display": null, "flex": null, "flex_flow": null, "grid_area": null, "grid_auto_columns": null, "grid_auto_flow": null, "grid_auto_rows": null, "grid_column": null, "grid_gap": null, "grid_row": null, "grid_template_areas": null, "grid_template_columns": null, "grid_template_rows": null, "height": null, "justify_content": null, "justify_items": null, "left": null, "margin": null, "max_height": null, "max_width": null, "min_height": null, "min_width": null, "object_fit": null, "object_position": null, "order": null, "overflow": null, "overflow_x": null, "overflow_y": null, "padding": null, "right": null, "top": null, "visibility": null, "width": null}}, "7586f722fbc845729171a595c91b2444": {"model_module": "@jupyter-widgets/base", "model_name": "LayoutModel", "model_module_version": "1.2.0", "state": {"_model_module": "@jupyter-widgets/base", "_model_module_version": "1.2.0", "_model_name": "LayoutModel", "_view_count": null, "_view_module": "@jupyter-widgets/base", "_view_module_version": "1.2.0", "_view_name": "LayoutView", "align_content": null, "align_items": null, "align_self": null, "border": null, "bottom": null, "display": null, "flex": null, "flex_flow": null, "grid_area": null, "grid_auto_columns": null, "grid_auto_flow": null, "grid_auto_rows": null, "grid_column": null, "grid_gap": null, "grid_row": null, "grid_template_areas": null, "grid_template_columns": null, "grid_template_rows": null, "height": null, "justify_content": null, "justify_items": null, "left": null, "margin": null, "max_height": null, "max_width": null, "min_height": null, "min_width": null, "object_fit": null, "object_position": null, "order": null, "overflow": null, "overflow_x": null, "overflow_y": null, "padding": null, "right": null, "top": null, "visibility": null, "width": null}}, "dba6cfc8e84f4d6baee6e2d2c4b980df": {"model_module": "@jupyter-widgets/controls", "model_name": "DescriptionStyleModel", "model_module_version": "1.5.0", "state": {"_model_module": "@jupyter-widgets/controls", "_model_module_version": "1.5.0", "_model_name": "DescriptionStyleModel", "_view_count": null, "_view_module": "@jupyter-widgets/base", "_view_module_version": "1.2.0", "_view_name": "StyleView", "description_width": ""}}, "59f5fa0209a84ac7a0414a072aa64e97": {"model_module": "@jupyter-widgets/base", "model_name": "LayoutModel", "model_module_version": "1.2.0", "state": {"_model_module": "@jupyter-widgets/base", "_model_module_version": "1.2.0", "_model_name": "LayoutModel", "_view_count": null, "_view_module": "@jupyter-widgets/base", "_view_module_version": "1.2.0", "_view_name": "LayoutView", "align_content": null, "align_items": null, "align_self": null, "border": null, "bottom": null, "display": null, "flex": null, "flex_flow": null, "grid_area": null, "grid_auto_columns": null, "grid_auto_flow": null, "grid_auto_rows": null, "grid_column": null, "grid_gap": null, "grid_row": null, "grid_template_areas": null, "grid_template_columns": null, "grid_template_rows": null, "height": null, "justify_content": null, "justify_items": null, "left": null, "margin": null, "max_height": null, "max_width": null, "min_height": null, "min_width": null, "object_fit": null, "object_position": null, "order": null, "overflow": null, "overflow_x": null, "overflow_y": null, "padding": null, "right": null, "top": null, "visibility": null, "width": null}}, "d80942bfdb1049fdbe8c348c71acd2d3": {"model_module": "@jupyter-widgets/controls", "model_name": "ProgressStyleModel", "model_module_version": "1.5.0", "state": {"_model_module": "@jupyter-widgets/controls", "_model_module_version": "1.5.0", "_model_name": "ProgressStyleModel", "_view_count": null, "_view_module": "@jupyter-widgets/base", "_view_module_version": "1.2.0", "_view_name": "StyleView", "bar_color": null, "description_width": ""}}, "527b0ae986ea4d93a31195ece36ddf00": {"model_module": "@jupyter-widgets/base", "model_name": "LayoutModel", "model_module_version": "1.2.0", "state": {"_model_module": "@jupyter-widgets/base", "_model_module_version": "1.2.0", "_model_name": "LayoutModel", "_view_count": null, "_view_module": "@jupyter-widgets/base", "_view_module_version": "1.2.0", "_view_name": "LayoutView", "align_content": null, "align_items": null, "align_self": null, "border": null, "bottom": null, "display": null, "flex": null, "flex_flow": null, "grid_area": null, "grid_auto_columns": null, "grid_auto_flow": null, "grid_auto_rows": null, "grid_column": null, "grid_gap": null, "grid_row": null, "grid_template_areas": null, "grid_template_columns": null, "grid_template_rows": null, "height": null, "justify_content": null, "justify_items": null, "left": null, "margin": null, "max_height": null, "max_width": null, "min_height": null, "min_width": null, "object_fit": null, "object_position": null, "order": null, "overflow": null, "overflow_x": null, "overflow_y": null, "padding": null, "right": null, "top": null, "visibility": null, "width": null}}, "2491de498acc4203b9b7dcea0f0d33be": {"model_module": "@jupyter-widgets/controls", "model_name": "DescriptionStyleModel", "model_module_version": "1.5.0", "state": {"_model_module": "@jupyter-widgets/controls", "_model_module_version": "1.5.0", "_model_name": "DescriptionStyleModel", "_view_count": null, "_view_module": "@jupyter-widgets/base", "_view_module_version": "1.2.0", "_view_name": "StyleView", "description_width": ""}}}
+</script></section>
 </section>
 </section>
 
