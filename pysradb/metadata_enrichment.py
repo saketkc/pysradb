@@ -224,7 +224,7 @@ class _MetadataExtraction(BaseModel):
     )
 
 
-#DEFAULT_LLM_PROVIDER = "ollama/meditron"
+# DEFAULT_LLM_PROVIDER = "ollama/meditron"
 DEFAULT_LLM_PROVIDER = "ollama/phi3"
 
 
