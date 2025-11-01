@@ -518,7 +518,8 @@
     <span class="p">)</span>
 
 
-<span class="n">DEFAULT_LLM_PROVIDER</span> <span class="o">=</span> <span class="s2">&quot;ollama/meditron&quot;</span>
+<span class="c1">#DEFAULT_LLM_PROVIDER = &quot;ollama/meditron&quot;</span>
+<span class="n">DEFAULT_LLM_PROVIDER</span> <span class="o">=</span> <span class="s2">&quot;ollama/phi3&quot;</span>
 
 
 <div class="viewcode-block" id="load_ontology_reference">
@@ -650,7 +651,7 @@
 <span class="s2">4. anatomical_system: Derive from organ/cell_type using biological knowledge (blood→immune, brain→nervous, liver→digestive, heart→cardiovascular, lung→respiratory). Lowercase.</span>
 <span class="s2">5. disease: Extract ANY disease mentioned. &quot;Normal&quot;/&quot;control&quot;/&quot;WT&quot;→healthy. Lowercase.</span>
 <span class="s2">6. sex: F=female, M=male. Return: male, female, mixed, or Unknown. Lowercase.</span>
-<span class="s2">7. development_stage: From age (0-2=infant, 3-12=child, 13-18=adolescent, 19-64=adult, 65+=aged) or keywords. Lowercase.</span>
+<span class="s2">7. development_stage: From age - handle &#39;y&#39; for years, &#39;m&#39; for months (e.g., 17m=17 months=1.4 years). Use: 0-2y=infant, 3-12y=child, 13-18y=adolescent, 19-64y=adult, 65+=aged. Convert months to years when needed. Lowercase.</span>
 <span class="s2">8. assay: RNA-seq, scRNA-seq, CITE-seq, ATAC-seq, etc.</span>
 <span class="s2">9. organism: Homo sapiens, Mus musculus, or common names. Lowercase unless scientific.</span>
 
