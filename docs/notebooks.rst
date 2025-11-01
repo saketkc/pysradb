@@ -5,7 +5,7 @@ The following Jupyter notebooks demonstrate various features of pysradb:
 
 .. toctree::
    :maxdepth: 1
-   :caption: Key Tutorials
+   :caption:
 
    notebooks/README
    notebooks/01.Python-API_demo.ipynb
@@ -16,7 +16,6 @@ The following Jupyter notebooks demonstrate various features of pysradb:
    notebooks/06.Multiple_SRPs.ipynb
    notebooks/07.Query_Search.ipynb
    notebooks/08.PMC_DOI_Identifiers.ipynb
-   notebooks/09.Metadata_Enrichment_with_LLMs.ipynb
-   notebooks/11.Parse_Bioscience_Search.ipynb
+   notebooks/09.Metadata_enrichment.ipynb
 
 You can also view the complete `notebooks directory on GitHub <https://github.com/saketkc/pysradb/tree/develop/notebooks>`_ for additional tutorials and examples.
