@@ -167,17 +167,19 @@ conda create -c bioconda -n pysradb PYTHON=3.13 pysradb
 
 ### Enriching metadata via CLI
 
-Enrich metadata with standardized biological attributes using LLMs through the command line:
+Enrich metadata with standardized biological attributes using biomedical-specialized LLMs through the command line:
 
 ```bash
-# Basic enrichment with default backend
+# Basic enrichment with default backend (Meditron)
 $ pysradb metadata GSE286254 --detailed --enrich
 
-# Using a specific LLM backend
-$ pysradb metadata GSE286254 --detailed --enrich --enrich-backend ollama/llama3.2
+# Using OpenBioLLM-8B (larger, trained on 500k+ biomedical entries)
+$ pysradb metadata GSE286254 --detailed --enrich --enrich-backend ollama/openbiollm-8b
 ```
 
-Available backends: `ollama/phi3` (default), `ollama/llama3.2`, or other compatible Ollama models.
+Available biomedical backends:
+- `ollama/meditron` (default, 7B - optimized for medical text)
+- `ollama/openbiollm-8b` (8B - trained on 500k+ biomedical entries, superior biomedical performance)
 
 This returns the original metadata plus 9 enriched columns:
 - `guessed_organ`
@@ -307,25 +309,33 @@ db.close()
 Install Ollama: https://ollama.ai
 
 ```bash
-ollama pull phi3
+# Default backend (recommended)
+ollama pull meditron
+
+# Or use OpenBioLLM-8B for better biomedical performance
+ollama pull openbiollm-8b
 ```
 
 #### Advanced Usage
 
 ```python
-# Use different model
+# Use OpenBioLLM-8B backend (trained on 500k+ biomedical entries)
 df = db.metadata("GSE286254", detailed=True, enrich=True,
-                enrich_backend="ollama/llama3.2")
+                enrich_backend="ollama/openbiollm-8b")
 
 # Manual enrichment with custom settings
 from pysradb.metadata_enrichment import create_metadata_extractor, load_ontology_reference
 
-# LLM-based extraction
-extractor_llm = create_metadata_extractor(method="llm", backend="ollama/phi3")
+# LLM-based extraction with default backend (meditron)
+extractor_llm = create_metadata_extractor(method="llm")
 df_enriched = extractor_llm.enrich_dataframe(df, prefix="guessed_")
 
+# LLM-based extraction with specific biomedical backend
+extractor_bio = create_metadata_extractor(method="llm", backend="ollama/openbiollm-8b")
+df_enriched = extractor_bio.enrich_dataframe(df, prefix="guessed_")
+
 # Embedding-based extraction (faster, offline)
-ontology_ref = load_ontology_reference()  
+ontology_ref = load_ontology_reference()
 extractor_emb = create_metadata_extractor(
     method="embedding",
     model="FremyCompany/BioLORD-2023",
