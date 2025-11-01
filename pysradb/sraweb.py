@@ -790,7 +790,23 @@ class SRAweb(SRAdb):
                     metadata_df, text_column=None, prefix="guessed_"
                 )
             except Exception as e:
-                print(f"Warning: Enrichment failed: {e}")
+                error_msg = str(e)
+                if "Ollama is not installed or not running" in error_msg:
+                    print(f"Error: {error_msg}")
+                    print(
+                        "Metadata enrichment requires Ollama to be installed and running."
+                    )
+                    print(
+                        "Please install Ollama from https://ollama.ai/ and follow these steps:"
+                    )
+                    print("1. Start Ollama server: ollama serve")
+                    print("2. Pull a model: ollama pull phi3")
+                    print("3. Try again or use a different enrichment backend")
+                    import sys
+
+                    sys.exit(1)
+                else:
+                    print(f"Warning: Enrichment failed: {e}")
 
         if "run_accession" in metadata_df.columns:
             return metadata_df.sort_values(by="run_accession")
@@ -1156,7 +1172,23 @@ class SRAweb(SRAdb):
                     metadata_df, text_column=None, prefix="guessed_"
                 )
             except Exception as e:
-                print(f"Warning: Enrichment failed: {e}")
+                error_msg = str(e)
+                if "Ollama is not installed or not running" in error_msg:
+                    print(f"Error: {error_msg}")
+                    print(
+                        "Metadata enrichment requires Ollama to be installed and running."
+                    )
+                    print(
+                        "Please install Ollama from https://ollama.ai/ and follow these steps:"
+                    )
+                    print("1. Start Ollama server: ollama serve")
+                    print("2. Pull a model: ollama pull phi3")
+                    print("3. Try again or use a different enrichment backend")
+                    import sys
+
+                    sys.exit(1)
+                else:
+                    print(f"Warning: Enrichment failed: {e}")
 
         return metadata_df
 

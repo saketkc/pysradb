@@ -224,7 +224,7 @@ class _MetadataExtraction(BaseModel):
     )
 
 
-DEFAULT_LLM_PROVIDER = "ollama/openbiollm-8b"
+DEFAULT_LLM_PROVIDER = "ollama/phi3"
 
 
 def load_ontology_reference() -> Dict[str, List[str]]:
@@ -290,6 +290,32 @@ class LLMMetadataExtractor(MetadataExtractor):
             return "GROQ_API_KEY"
         return None
 
+    def _check_ollama_available(self) -> bool:
+        """Check if ollama is installed and running."""
+        try:
+            import subprocess
+            import requests
+
+            try:
+                subprocess.run(
+                    ["ollama", "--version"], capture_output=True, check=True, timeout=10
+                )
+            except (
+                subprocess.CalledProcessError,
+                FileNotFoundError,
+                subprocess.TimeoutExpired,
+            ):
+                return False
+
+            try:
+                response = requests.get("http://localhost:11434/api/tags", timeout=5)
+                return response.status_code == 200
+            except (requests.RequestException, requests.Timeout):
+                return False
+
+        except Exception:
+            return False
+
     def _initialize_client(self):
         try:
             import instructor
@@ -307,6 +333,15 @@ class LLMMetadataExtractor(MetadataExtractor):
             client_kwargs["client_kwargs"].setdefault("base_url", self.base_url)
 
         provider_name = self.provider.split("/")[0].lower()
+
+        if provider_name == "ollama":
+            if not self._check_ollama_available():
+                raise RuntimeError(
+                    "Ollama is not installed or not running. "
+                    "Please install ollama from https://ollama.ai/ and start it with 'ollama serve'. "
+                    "Then pull a model with 'ollama pull phi3' (or another model like 'meditron-7b')."
+                )
+
         if provider_name in ["ollama", "local"] and "mode" not in client_kwargs:
             client_kwargs["mode"] = instructor.Mode.JSON
 
@@ -634,7 +669,6 @@ class EmbeddingMetadataExtractor(MetadataExtractor):
         """
         import numpy as np
 
-        # First try matching the extracted value directly if available
         if value and category in self.reference_categories:
             try:
                 if self.backend == "sentence-transformers":
