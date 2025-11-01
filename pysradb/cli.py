@@ -13,6 +13,7 @@ from rich.console import Console
 from rich.table import Table
 from rich.panel import Panel
 from rich.text import Text
+from rich.columns import Columns
 
 from . import __version__
 from .exceptions import IncorrectFieldException, MissingQueryException
@@ -50,38 +51,99 @@ def pretty_print_df(df, include_header=True):
     def format_value(v):
         """Convert value to string, handling None and pd.NA"""
         if v is None or pd.isna(v):
-            return "-"
+            return "[dim]-[/dim]"
         return str(v)
 
     if df.empty:
-        console.print("[yellow]No results found[/yellow]")
+        console.print("[bright_black]No results found[/bright_black]")
         return
+
+    try:
+        terminal_width = console.width
+    except:
+        terminal_width = 80  # fallback width
+
+    num_columns = len(df.columns)
+    min_col_width = 12  # minimum width per column for readability
+    padding = 2  # padding between columns
+    border_space = 4  # table borders
+
+    # how many columns fit
+    max_cols_per_table = (terminal_width - border_space) // (min_col_width + padding)
+
+    # chuenk
+    if num_columns > max_cols_per_table:
+        console.print(
+            f"[bright_black]Displaying {num_columns} columns in chunks of {max_cols_per_table}[/bright_black]"
+        )
+        console.print()
+
+        for i in range(0, num_columns, max_cols_per_table):
+            chunk_cols = df.columns[i : i + max_cols_per_table]
+            chunk_df = df[chunk_cols]
+
+            console.print(
+                f"[bright_blue]Columns {i+1}-{min(i+max_cols_per_table, num_columns)}:[/bright_blue]"
+            )
+            _create_table(chunk_df, terminal_width, include_header, format_value)
+            console.print()
+    else:
+        _create_table(df, terminal_width, include_header, format_value)
+
+
+def _create_table(df, terminal_width, include_header, format_value):
+    """Helper function to create a rich table with appropriate sizing"""
+
+    num_columns = len(df.columns)
+    min_col_width = 12
+    padding = 2
+    border_space = 4
+
+    available_width = terminal_width - border_space - (padding * (num_columns - 1))
+
+    col_widths = []
+    for column in df.columns:
+        col_name = str(column)
+        sample_data = df[column].head(10).astype(str)
+        max_content_len = max(
+            len(col_name), sample_data.str.len().max() if len(sample_data) > 0 else 0
+        )
+        col_widths.append(max_content_len)
+
+    total_content_width = sum(col_widths)
+    if total_content_width > available_width:
+        scale_factor = available_width / total_content_width
+        final_widths = [max(min_col_width, int(w * scale_factor)) for w in col_widths]
+    else:
+        final_widths = [
+            max(min_col_width, min(w, available_width // num_columns + 5))
+            for w in col_widths
+        ]
 
     table = Table(
         show_header=include_header,
-        header_style="bold cyan",
-        border_style="blue",
-        show_lines=False,
+        header_style="bold bright_blue",
+        border_style="bright_black",
+        show_lines=True,
         padding=(0, 1),
-        box=None,  # Use simple box style for better readability
+        box=None,
         collapse_padding=False,
+        width=terminal_width - 2,
     )
 
-    for column in df.columns:
-        col_name = str(column)
-        sample_data = df[column].head(100).astype(str)
-        max_len = max(
-            len(col_name), sample_data.str.len().max() if len(sample_data) > 0 else 0
-        )
-
-        width = min(max(15, max_len), 50)
-
+    for i, column in enumerate(df.columns):
         table.add_column(
-            col_name, style="green", no_wrap=False, overflow="fold", width=width
+            str(column),
+            style="dim",
+            no_wrap=False,
+            overflow="fold",
+            width=final_widths[i],
+            header_style="bold bright_blue",
         )
 
     for index, row in df.iterrows():
-        table.add_row(*[format_value(v) for v in row.tolist()])
+        formatted_values = [format_value(v) for v in row.tolist()]
+        table.add_row(*formatted_values)
 
     console.print(table)
 
@@ -101,26 +163,26 @@ def _print_save_df(df, saveto=None):
         if file_ext == ".csv":
             df.to_csv(saveto, index=False, header=True)
             console.print(
-                f"[bold green]✓[/bold green] Saved to CSV: [cyan]{saveto}[/cyan]"
+                f"[bright_green]✓[/bright_green] Saved to CSV: [bright_blue]{saveto}[/bright_blue]"
             )
         elif file_ext == ".json":
             df.to_json(saveto, orient="records", indent=2)
             console.print(
-                f"[bold green]✓[/bold green] Saved to JSON: [cyan]{saveto}[/cyan]"
+                f"[bright_green]✓[/bright_green] Saved to JSON: [bright_blue]{saveto}[/bright_blue]"
             )
         elif file_ext in [".tsv", ".txt"]:
             df.to_csv(saveto, index=False, header=True, sep="\t")
             console.print(
-                f"[bold green]✓[/bold green] Saved to TSV: [cyan]{saveto}[/cyan]"
+                f"[bright_green]✓[/bright_green] Saved to TSV: [bright_blue]{saveto}[/bright_blue]"
             )
         else:
             df.to_csv(saveto, index=False, header=True, sep="\t")
             console.print(
-                f"[bold green]✓[/bold green] Saved to file: [cyan]{saveto}[/cyan]"
+                f"[bright_green]✓[/bright_green] Saved to file: [bright_blue]{saveto}[/bright_blue]"
             )
     else:
         if df is None:
-            console.print("[yellow]No data to display[/yellow]")
+            console.print("[bright_black]No data to display[/bright_black]")
         elif len(df.index):
             pretty_print_df(df)
 
@@ -300,7 +362,7 @@ def search(saveto, db, verbosity, return_max, fields):
             )
             instance.search()
     except (MissingQueryException, IncorrectFieldException) as e:
-        console.print(f"[bold red]Error:[/bold red] {e}")
+        console.print(f"[bright_red]Error:[/bright_red] {e}")
         return
     if fields["stats"]:
         instance.show_result_statistics()
@@ -314,8 +376,8 @@ def get_geo_search_info():
     info_text = GeoSearch.info()
     panel = Panel(
         info_text,
-        title="[bold cyan]GeoSearch Information[/bold cyan]",
-        border_style="cyan",
+        title="[bold bright_blue]GeoSearch Information[/bold bright_blue]",
+        border_style="bright_blue",
         padding=(1, 2),
     )
     console.print(panel)
@@ -720,7 +782,7 @@ def geo_matrix(accession, to_tsv, output_dir):
     # Download the GEO Matrix file
     matrix_file = download_geo_matrix(accession, output_dir=output_dir)
     console.print(
-        f"[bold green]✓[/bold green] Downloaded GEO Matrix file to: [cyan]{matrix_file}[/cyan]"
+        f"[bright_green]✓[/bright_green] Downloaded GEO Matrix file to: [bright_blue]{matrix_file}[/bright_blue]"
     )
 
     # If --to-tsv is specified, parse the file to TSV
@@ -728,7 +790,7 @@ def geo_matrix(accession, to_tsv, output_dir):
         output_tsv = os.path.join(output_dir, f"{accession}_matrix.tsv")
         df = parse_geo_matrix_to_tsv(matrix_file, output_tsv)
         console.print(
-            f"[bold green]✓[/bold green] Parsed GEO Matrix file to TSV: [cyan]{output_tsv}[/cyan]"
+            f"[bright_green]✓[/bright_green] Parsed GEO Matrix file to TSV: [bright_blue]{output_tsv}[/bright_blue]"
         )
 
 
