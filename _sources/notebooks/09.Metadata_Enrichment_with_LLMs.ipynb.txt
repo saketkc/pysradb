@@ -300,11 +300,11 @@
         "!ollama pull phi3:latest && ollama list"
       ],
       "metadata": {
+        "id": "poMsNDr3km1l",
+        "outputId": "9654f82b-92d8-4cdb-9441-99f80a197261",
         "colab": {
           "base_uri": "https://localhost:8080/"
-        },
-        "id": "poMsNDr3km1l",
-        "outputId": "9654f82b-92d8-4cdb-9441-99f80a197261"
+        }
       },
       "execution_count": 8,
       "outputs": [
