@@ -445,12 +445,13 @@ SRP098789       SRX2536428           SRR5227313    RNA-Seq          SINGLE -
 </section>
 <section id="id1">
 <h2>Enriching metadata<a class="headerlink" href="#id1" title="Link to this heading">¶</a></h2>
-<p>You can enrich metadata with standardized biological attributes using LLMs through the <code class="docutils literal notranslate"><span class="pre">--enrich</span></code> flag:</p>
+<p>You can enrich metadata with standardized biological attributes using biomedical-specialized LLMs through the <code class="docutils literal notranslate"><span class="pre">--enrich</span></code> flag:</p>
 <section id="basic-enrichment-using-default-backend">
 <h3>Basic enrichment (using default backend)<a class="headerlink" href="#basic-enrichment-using-default-backend" title="Link to this heading">¶</a></h3>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>$ pysradb metadata GSE286254 --detailed --enrich
 </pre></div>
 </div>
+<p>The default uses <strong>Meditron</strong> (7B parameters, trained on medical literature and guidelines), which is optimized for biomedical text understanding.</p>
 <p>This returns the original metadata plus 9 enriched columns:</p>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">guessed_organ</span></code></p></li>
@@ -464,17 +465,17 @@ SRP098789       SRX2536428           SRR5227313    RNA-Seq          SINGLE -
 <li><p><code class="docutils literal notranslate"><span class="pre">guessed_organism</span></code></p></li>
 </ul>
 </section>
-<section id="using-a-specific-llm-backend">
-<h3>Using a specific LLM backend<a class="headerlink" href="#using-a-specific-llm-backend" title="Link to this heading">¶</a></h3>
-<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>$ pysradb metadata GSE286254 --detailed --enrich --enrich-backend ollama/llama3.2
+<section id="using-alternative-biomedical-backends">
+<h3>Using alternative biomedical backends<a class="headerlink" href="#using-alternative-biomedical-backends" title="Link to this heading">¶</a></h3>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>$ pysradb metadata GSE286254 --detailed --enrich --enrich-backend ollama/openbiollm-8b
 </pre></div>
 </div>
-<p>Available backends:</p>
+<p>Available biomedical backends:</p>
 <ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">ollama/phi3</span></code> (default, faster)</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">ollama/llama3.2</span></code> (more capable)</p></li>
-<li><p>Other compatible Ollama models</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ollama/meditron</span></code> (default, 7B - optimized for medical text)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ollama/openbiollm-8b</span></code> (8B - trained on 500k+ biomedical entries, superior biomedical performance)</p></li>
 </ul>
+<p>Both models are specialized for biomedical and clinical text understanding, making them ideal for SRA metadata enrichment.</p>
 <p>For more details on enrichment features and prerequisites, see the <a class="reference internal" href="#enriching-metadata"><span class="std std-ref">Enriching metadata</span></a> section above.</p>
 </section>
 </section>
@@ -756,7 +757,7 @@ projects.</p>
 <li><a class="reference internal" href="#getting-metadata-for-a-sra-project-srp">Getting metadata for a SRA project (SRP)</a></li>
 <li><a class="reference internal" href="#id1">Enriching metadata</a><ul>
 <li><a class="reference internal" href="#basic-enrichment-using-default-backend">Basic enrichment (using default backend)</a></li>
-<li><a class="reference internal" href="#using-a-specific-llm-backend">Using a specific LLM backend</a></li>
+<li><a class="reference internal" href="#using-alternative-biomedical-backends">Using alternative biomedical backends</a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#experiment-accessions-for-a-project-srp-srx">Experiment accessions for a project (SRP =&gt; SRX)</a></li>

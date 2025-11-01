@@ -157,11 +157,13 @@ A more complicated example will consist of multiple assays. For example
 
 ## Enriching metadata
 
-You can enrich metadata with standardized biological attributes using LLMs through the `--enrich` flag:
+You can enrich metadata with standardized biological attributes using biomedical-specialized LLMs through the `--enrich` flag:
 
 ### Basic enrichment (using default backend)
 
     $ pysradb metadata GSE286254 --detailed --enrich
+
+The default uses **Meditron** (7B parameters, trained on medical literature and guidelines), which is optimized for biomedical text understanding.
 
 This returns the original metadata plus 9 enriched columns:
 - `guessed_organ`
@@ -174,14 +176,15 @@ This returns the original metadata plus 9 enriched columns:
 - `guessed_assay`
 - `guessed_organism`
 
-### Using a specific LLM backend
+### Using alternative biomedical backends
 
-    $ pysradb metadata GSE286254 --detailed --enrich --enrich-backend ollama/llama3.2
+    $ pysradb metadata GSE286254 --detailed --enrich --enrich-backend ollama/openbiollm-8b
 
-Available backends:
-- `ollama/phi3` (default, faster)
-- `ollama/llama3.2` (more capable)
-- Other compatible Ollama models
+Available biomedical backends:
+- `ollama/meditron` (default, 7B - optimized for medical text)
+- `ollama/openbiollm-8b` (8B - trained on 500k+ biomedical entries, superior biomedical performance)
+
+Both models are specialized for biomedical and clinical text understanding, making them ideal for SRA metadata enrichment.
 
 For more details on enrichment features and prerequisites, see the [Enriching metadata](#enriching-metadata) section above.
 
