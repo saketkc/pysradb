@@ -9,18 +9,11 @@ description = "A Python package for interacting with SRAdb and downloading datas
 readme = "README.md"
 license = {file = "LICENSE"}
 requires-python = ">=3.9"
-authors = [
-    { name = "Saket Choudhary", email = "saketkc@gmail.com" },
-]
-keywords = [
-    "pysradb",
-]
+authors = [{ name = "Saket Choudhary", email = "saketkc@gmail.com" }]
 classifiers = [
     "Development Status :: 5 - Production/Stable",
-    "Intended Audience :: Healthcare Industry",
     "Intended Audience :: Science/Research",
     "License :: OSI Approved :: BSD License",
-    "Natural Language :: English",
     "Programming Language :: Python :: 3",
     "Programming Language :: Python :: 3.9",
     "Programming Language :: Python :: 3.10",
@@ -39,10 +32,7 @@ dependencies = [
 ]
 
 [project.optional-dependencies]
-enrichment = [
-    "instructor>=1.0.0",
-    "pydantic>=2.0.0",
-]
+enrichment = ["instructor>=1.0.0", "pydantic>=2.0.0", "sentence-transformers>=2.0.0"]
 docs = [
     "sphinx>=4.0",
     "furo>=2023.0.0",
@@ -54,6 +44,9 @@ docs = [
     "sphinxcontrib-gtagjs>=0.2",
     "sphinx-panels>=0.5.2",
 ]
+all = [
+    "pysradb[enrichment,docs]",
+]
 
 [project.scripts]
 pysradb = "pysradb.cli:parse_args"
@@ -61,13 +54,5 @@ pysradb = "pysradb.cli:parse_args"
 [project.urls]
 Homepage = "https://saket-choudhary.me/pysradb"
 
-[tool.distutils.bdist_wheel]
-universal = true
-
 [tool.hatch.version]
 path = "pysradb/__init__.py"
-
-[tool.hatch.build.targets.sdist]
-include = [
-    "/pysradb",
-]

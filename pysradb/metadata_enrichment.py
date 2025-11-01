@@ -224,8 +224,7 @@ class _MetadataExtraction(BaseModel):
     )
 
 
-# DEFAULT_LLM_PROVIDER = "ollama/meditron"
-DEFAULT_LLM_PROVIDER = "ollama/phi3"
+DEFAULT_LLM_PROVIDER = "ollama/openbiollm-8b"
 
 
 def load_ontology_reference() -> Dict[str, List[str]]:
