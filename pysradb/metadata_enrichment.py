@@ -339,7 +339,7 @@ class LLMMetadataExtractor(MetadataExtractor):
                 raise RuntimeError(
                     "Ollama is not installed or not running. "
                     "Please install ollama from https://ollama.ai/ and start it with 'ollama serve'. "
-                    "Then pull a model with 'ollama pull phi3' (or another model like 'meditron-7b')."
+                    "Then pull a model with 'ollama pull phi3:latest' (or another model like 'meditron-7b')."
                 )
 
         if provider_name in ["ollama", "local"] and "mode" not in client_kwargs:
