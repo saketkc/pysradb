@@ -291,6 +291,10 @@
 <span class="kn">from</span><span class="w"> </span><span class="nn">textwrap</span><span class="w"> </span><span class="kn">import</span> <span class="n">dedent</span>
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">rich.console</span><span class="w"> </span><span class="kn">import</span> <span class="n">Console</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">rich.table</span><span class="w"> </span><span class="kn">import</span> <span class="n">Table</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">rich.panel</span><span class="w"> </span><span class="kn">import</span> <span class="n">Panel</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">rich.text</span><span class="w"> </span><span class="kn">import</span> <span class="n">Text</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">.</span><span class="w"> </span><span class="kn">import</span> <span class="n">__version__</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">.exceptions</span><span class="w"> </span><span class="kn">import</span> <span class="n">IncorrectFieldException</span><span class="p">,</span> <span class="n">MissingQueryException</span>
@@ -305,6 +309,8 @@
 <span class="n">pd</span><span class="o">.</span><span class="n">set_option</span><span class="p">(</span><span class="s2">&quot;display.max_columns&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
 
 <span class="n">warnings</span><span class="o">.</span><span class="n">simplefilter</span><span class="p">(</span><span class="n">action</span><span class="o">=</span><span class="s2">&quot;ignore&quot;</span><span class="p">,</span> <span class="n">category</span><span class="o">=</span><span class="ne">FutureWarning</span><span class="p">)</span>
+
+<span class="n">console</span> <span class="o">=</span> <span class="n">Console</span><span class="p">()</span>
 
 
 <div class="viewcode-block" id="CustomFormatterArgP">
@@ -332,7 +338,7 @@
 <div class="viewcode-block" id="pretty_print_df">
 <a class="viewcode-back" href="../../pysradb.html#pysradb.cli.pretty_print_df">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">pretty_print_df</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">include_header</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Pretty print&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Pretty print dataframe using rich formatting&quot;&quot;&quot;</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">format_value</span><span class="p">(</span><span class="n">v</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Convert value to string, handling None and pd.NA&quot;&quot;&quot;</span>
@@ -340,23 +346,69 @@
             <span class="k">return</span> <span class="s2">&quot;-&quot;</span>
         <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
 
-    <span class="k">if</span> <span class="n">include_header</span><span class="p">:</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="nb">list</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="p">))))</span>
+    <span class="k">if</span> <span class="n">df</span><span class="o">.</span><span class="n">empty</span><span class="p">:</span>
+        <span class="n">console</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s2">&quot;[yellow]No results found[/yellow]&quot;</span><span class="p">)</span>
+        <span class="k">return</span>
+
+    <span class="n">table</span> <span class="o">=</span> <span class="n">Table</span><span class="p">(</span>
+        <span class="n">show_header</span><span class="o">=</span><span class="n">include_header</span><span class="p">,</span>
+        <span class="n">header_style</span><span class="o">=</span><span class="s2">&quot;bold cyan&quot;</span><span class="p">,</span>
+        <span class="n">border_style</span><span class="o">=</span><span class="s2">&quot;blue&quot;</span><span class="p">,</span>
+        <span class="n">show_lines</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="n">padding</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
+        <span class="n">box</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>  <span class="c1"># Use simple box style for better readability</span>
+        <span class="n">collapse_padding</span><span class="o">=</span><span class="kc">False</span>
+    <span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">column</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
+        <span class="n">col_name</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">column</span><span class="p">)</span>
+        <span class="n">sample_data</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">column</span><span class="p">]</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span>
+        <span class="n">max_len</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">col_name</span><span class="p">),</span> <span class="n">sample_data</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">len</span><span class="p">()</span><span class="o">.</span><span class="n">max</span><span class="p">()</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">sample_data</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="k">else</span> <span class="mi">0</span><span class="p">)</span>
+
+        <span class="n">width</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="nb">max</span><span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="n">max_len</span><span class="p">),</span> <span class="mi">50</span><span class="p">)</span>
+
+        <span class="n">table</span><span class="o">.</span><span class="n">add_column</span><span class="p">(</span>
+            <span class="n">col_name</span><span class="p">,</span>
+            <span class="n">style</span><span class="o">=</span><span class="s2">&quot;green&quot;</span><span class="p">,</span>
+            <span class="n">no_wrap</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">overflow</span><span class="o">=</span><span class="s2">&quot;fold&quot;</span><span class="p">,</span>
+            <span class="n">width</span><span class="o">=</span><span class="n">width</span>
+        <span class="p">)</span>
+
     <span class="k">for</span> <span class="n">index</span><span class="p">,</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">iterrows</span><span class="p">():</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="n">format_value</span><span class="p">,</span> <span class="n">row</span><span class="o">.</span><span class="n">tolist</span><span class="p">())))</span></div>
+        <span class="n">table</span><span class="o">.</span><span class="n">add_row</span><span class="p">(</span><span class="o">*</span><span class="p">[</span><span class="n">format_value</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">row</span><span class="o">.</span><span class="n">tolist</span><span class="p">()])</span>
+
+    <span class="n">console</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="n">table</span><span class="p">)</span></div>
 
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">_print_save_df</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">saveto</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Save dataframe to file or print with rich formatting.</span>
+
+<span class="sd">    Automatically detects format from file extension:</span>
+<span class="sd">    - .csv: Comma-separated values</span>
+<span class="sd">    - .tsv: Tab-separated values</span>
+<span class="sd">    - .txt: Tab-separated values (text format)</span>
+<span class="sd">    - .json: JSON format</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">saveto</span><span class="p">:</span>
-        <span class="k">if</span> <span class="n">saveto</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;.csv&quot;</span><span class="p">):</span>
-            <span class="c1">#  if the save file format is csv</span>
+        <span class="n">file_ext</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="n">saveto</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="n">file_ext</span> <span class="o">==</span> <span class="s2">&quot;.csv&quot;</span><span class="p">:</span>
             <span class="n">df</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">saveto</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            <span class="n">console</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[bold green]✓[/bold green] Saved to CSV: [cyan]</span><span class="si">{</span><span class="n">saveto</span><span class="si">}</span><span class="s2">[/cyan]&quot;</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">file_ext</span> <span class="o">==</span> <span class="s2">&quot;.json&quot;</span><span class="p">:</span>
+            <span class="n">df</span><span class="o">.</span><span class="n">to_json</span><span class="p">(</span><span class="n">saveto</span><span class="p">,</span> <span class="n">orient</span><span class="o">=</span><span class="s2">&quot;records&quot;</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+            <span class="n">console</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[bold green]✓[/bold green] Saved to JSON: [cyan]</span><span class="si">{</span><span class="n">saveto</span><span class="si">}</span><span class="s2">[/cyan]&quot;</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">file_ext</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;.tsv&quot;</span><span class="p">,</span> <span class="s2">&quot;.txt&quot;</span><span class="p">]:</span>
+            <span class="n">df</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">saveto</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="n">console</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[bold green]✓[/bold green] Saved to TSV: [cyan]</span><span class="si">{</span><span class="n">saveto</span><span class="si">}</span><span class="s2">[/cyan]&quot;</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">df</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">saveto</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="n">console</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[bold green]✓[/bold green] Saved to file: [cyan]</span><span class="si">{</span><span class="n">saveto</span><span class="si">}</span><span class="s2">[/cyan]&quot;</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="k">if</span> <span class="n">df</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="nb">print</span>
+            <span class="n">console</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s2">&quot;[yellow]No data to display[/yellow]&quot;</span><span class="p">)</span>
         <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">index</span><span class="p">):</span>
             <span class="n">pretty_print_df</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
 
@@ -544,7 +596,7 @@
             <span class="p">)</span>
             <span class="n">instance</span><span class="o">.</span><span class="n">search</span><span class="p">()</span>
     <span class="k">except</span> <span class="p">(</span><span class="n">MissingQueryException</span><span class="p">,</span> <span class="n">IncorrectFieldException</span><span class="p">)</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-        <span class="nb">print</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+        <span class="n">console</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[bold red]Error:[/bold red] </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
         <span class="k">return</span>
     <span class="k">if</span> <span class="n">fields</span><span class="p">[</span><span class="s2">&quot;stats&quot;</span><span class="p">]:</span>
         <span class="n">instance</span><span class="o">.</span><span class="n">show_result_statistics</span><span class="p">()</span>
@@ -558,7 +610,10 @@
 <div class="viewcode-block" id="get_geo_search_info">
 <a class="viewcode-back" href="../../pysradb.html#pysradb.cli.get_geo_search_info">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">get_geo_search_info</span><span class="p">():</span>
-    <span class="nb">print</span><span class="p">(</span><span class="n">GeoSearch</span><span class="o">.</span><span class="n">info</span><span class="p">())</span></div>
+    <span class="n">info_text</span> <span class="o">=</span> <span class="n">GeoSearch</span><span class="o">.</span><span class="n">info</span><span class="p">()</span>
+    <span class="n">panel</span> <span class="o">=</span> <span class="n">Panel</span><span class="p">(</span><span class="n">info_text</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s2">&quot;[bold cyan]GeoSearch Information[/bold cyan]&quot;</span><span class="p">,</span>
+                  <span class="n">border_style</span><span class="o">=</span><span class="s2">&quot;cyan&quot;</span><span class="p">,</span> <span class="n">padding</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
+    <span class="n">console</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="n">panel</span><span class="p">)</span></div>
 
 
 
@@ -1052,13 +1107,13 @@
 <span class="k">def</span><span class="w"> </span><span class="nf">geo_matrix</span><span class="p">(</span><span class="n">accession</span><span class="p">,</span> <span class="n">to_tsv</span><span class="p">,</span> <span class="n">output_dir</span><span class="p">):</span>
     <span class="c1"># Download the GEO Matrix file</span>
     <span class="n">matrix_file</span> <span class="o">=</span> <span class="n">download_geo_matrix</span><span class="p">(</span><span class="n">accession</span><span class="p">,</span> <span class="n">output_dir</span><span class="o">=</span><span class="n">output_dir</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Downloaded GEO Matrix file to: </span><span class="si">{</span><span class="n">matrix_file</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">console</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[bold green]✓[/bold green] Downloaded GEO Matrix file to: [cyan]</span><span class="si">{</span><span class="n">matrix_file</span><span class="si">}</span><span class="s2">[/cyan]&quot;</span><span class="p">)</span>
 
     <span class="c1"># If --to-tsv is specified, parse the file to TSV</span>
     <span class="k">if</span> <span class="n">to_tsv</span><span class="p">:</span>
         <span class="n">output_tsv</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">output_dir</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">accession</span><span class="si">}</span><span class="s2">_matrix.tsv&quot;</span><span class="p">)</span>
         <span class="n">df</span> <span class="o">=</span> <span class="n">parse_geo_matrix_to_tsv</span><span class="p">(</span><span class="n">matrix_file</span><span class="p">,</span> <span class="n">output_tsv</span><span class="p">)</span>
-        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Parsed GEO Matrix file to TSV: </span><span class="si">{</span><span class="n">output_tsv</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span></div>
+        <span class="n">console</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[bold green]✓[/bold green] Parsed GEO Matrix file to TSV: [cyan]</span><span class="si">{</span><span class="n">output_tsv</span><span class="si">}</span><span class="s2">[/cyan]&quot;</span><span class="p">)</span></div>
 
 
 
