@@ -371,6 +371,30 @@
         <span class="k">return</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">extract_metadata</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">fields</span><span class="p">)</span> <span class="k">for</span> <span class="n">text</span> <span class="ow">in</span> <span class="n">texts</span><span class="p">]</span></div>
 
 
+    <span class="k">def</span><span class="w"> </span><span class="nf">_find_column_variant</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">df</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span> <span class="n">target_col</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Find a column that matches the target column name with flexible matching.</span>
+
+<span class="sd">        Handles variations like:</span>
+<span class="sd">        - Different casing: cell_type, Cell_Type, CELL_TYPE</span>
+<span class="sd">        - Spaces vs underscores: cell_type, cell type, celltype</span>
+<span class="sd">        - CamelCase: cellType, CellType</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            df: DataFrame to search</span>
+<span class="sd">            target_col: Target column name (e.g., &#39;cell_type&#39;)</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Actual column name if found, None otherwise</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">target_normalized</span> <span class="o">=</span> <span class="n">target_col</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;_&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
+            <span class="n">col_normalized</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">col</span><span class="p">)</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;_&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">col_normalized</span> <span class="o">==</span> <span class="n">target_normalized</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">col</span>
+        <span class="k">return</span> <span class="kc">None</span>
+
 <div class="viewcode-block" id="MetadataExtractor.enrich_dataframe">
 <a class="viewcode-back" href="../../pysradb.html#pysradb.metadata_enrichment.MetadataExtractor.enrich_dataframe">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">enrich_dataframe</span><span class="p">(</span>
@@ -407,6 +431,7 @@
                 <span class="s2">&quot;tissue&quot;</span><span class="p">,</span>
                 <span class="s2">&quot;cell_type&quot;</span><span class="p">,</span>
                 <span class="s2">&quot;disease&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;disease_status&quot;</span><span class="p">,</span>
                 <span class="s2">&quot;treatment&quot;</span><span class="p">,</span>
                 <span class="s2">&quot;compound&quot;</span><span class="p">,</span>
                 <span class="s2">&quot;extract_protocol&quot;</span><span class="p">,</span>
@@ -424,8 +449,9 @@
 
             <span class="n">available_cols</span> <span class="o">=</span> <span class="p">[]</span>
             <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">preferred_columns</span><span class="p">:</span>
-                <span class="k">if</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span> <span class="ow">and</span> <span class="n">col</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">exclude_columns</span><span class="p">:</span>
-                    <span class="n">available_cols</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">col</span><span class="p">)</span>
+                <span class="n">actual_col</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_find_column_variant</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">col</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">actual_col</span> <span class="ow">and</span> <span class="n">actual_col</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">exclude_columns</span><span class="p">:</span>
+                    <span class="n">available_cols</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">actual_col</span><span class="p">)</span>
 
             <span class="k">if</span> <span class="ow">not</span> <span class="n">available_cols</span><span class="p">:</span>
                 <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
@@ -656,7 +682,18 @@
 
         <span class="n">prompt</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;&quot;&quot;Extract biological metadata using ontology-based terminology (UBERON, MONDO, CL).</span>
 
-<span class="s2">CELL TYPE INFERENCE RULES (MOST IMPORTANT):</span>
+<span class="s2">CRITICAL PRIORITY RULE:</span>
+<span class="s2">If a field is explicitly labeled in the metadata, prioritize that information. You may make reasonable generalizations</span>
+<span class="s2">(e.g., &quot;CD19+ B cells&quot; → &quot;b cells&quot;, &quot;CD4+ T cells&quot; → &quot;t cells&quot;), but DO NOT over-generalize to broader categories.</span>
+
+<span class="s2">Examples of CORRECT extraction:</span>
+<span class="s2">- &quot;cell type: CD19+ B cells&quot; → cell_type: &quot;b cells&quot; or &quot;cd19+ b cells&quot; (NOT &quot;pbmc&quot; - too broad)</span>
+<span class="s2">- &quot;cell type: CD4+ T cells&quot; → cell_type: &quot;t cells&quot; or &quot;cd4+ t cells&quot; (NOT &quot;lymphocyte&quot; or &quot;pbmc&quot; - too broad)</span>
+<span class="s2">- &quot;cell type: hepatocytes&quot; → cell_type: &quot;hepatocyte&quot; (NOT &quot;liver cells&quot; - less specific)</span>
+<span class="s2">- &quot;tissue: prefrontal cortex&quot; → tissue: &quot;prefrontal cortex&quot; or &quot;brain&quot; (NOT &quot;nervous tissue&quot; - too broad)</span>
+<span class="s2">- &quot;disease: Multiple sclerosis&quot; → disease: &quot;multiple sclerosis&quot; (NOT &quot;healthy&quot; or &quot;autoimmune disease&quot;)</span>
+
+<span class="s2">CELL TYPE INFERENCE RULES (only when NOT explicitly stated):</span>
 <span class="s2">- Cell types indicate their origin organ/tissue. Use this biological knowledge:</span>
 <span class="s2">  * Blood cells (PBMC, T cell, B cell, lymphocyte, monocyte, macrophage, NK cell) → organ: blood, tissue: peripheral blood, system: immune system</span>
 <span class="s2">  * Brain cells (neuron, astrocyte, microglia, oligodendrocyte) → organ: brain, tissue: brain tissue, system: nervous system</span>
@@ -666,34 +703,35 @@
 <span class="s2">  * Apply similar biological reasoning for other cell types</span>
 
 <span class="s2">EXTRACTION RULES:</span>
-<span class="s2">1. cell_type: Extract from metadata if mentioned. Lowercase.</span>
-<span class="s2">2. organ: Look for explicit organ name OR infer from cell_type using biological knowledge above. Lowercase.</span>
-<span class="s2">3. tissue: Look for explicit tissue OR infer from cell_type/organ using biological knowledge. Lowercase.</span>
-<span class="s2">4. anatomical_system: Derive from organ/cell_type using biological knowledge (blood→immune, brain→nervous, liver→digestive, heart→cardiovascular, lung→respiratory). Lowercase.</span>
-<span class="s2">5. disease: Extract ANY disease mentioned. &quot;Normal&quot;/&quot;control&quot;/&quot;WT&quot;→healthy. Lowercase.</span>
-<span class="s2">6. sex: F=female, M=male. Return: male, female, mixed, or Unknown. Lowercase.</span>
-<span class="s2">7. development_stage: From age - handle &#39;y&#39; for years, &#39;m&#39; for months (e.g., 17m=17 months=1.4 years). Use: 0-2y=infant, 3-12y=child, 13-18y=adolescent, 19-64y=adult, 65+=aged. Convert months to years when needed. Lowercase.</span>
-<span class="s2">8. assay: RNA-seq, scRNA-seq, CITE-seq, ATAC-seq, etc.</span>
-<span class="s2">9. organism: Homo sapiens, Mus musculus, or common names. Lowercase unless scientific.</span>
+<span class="s2">1. **cell_type**: FIRST check for &quot;cell type:&quot;, &quot;cell_type:&quot;, &quot;celltype:&quot; or &quot;cellType:&quot; labels. Use the stated value or reasonable generalization (CD19+ B cells → b cells). NEVER over-generalize to broad categories like &quot;pbmc&quot; or &quot;lymphocyte&quot; when a specific type is stated.</span>
+<span class="s2">2. **disease**: FIRST check for &quot;disease:&quot;, &quot;disease status:&quot;, or &quot;condition:&quot; labels. Use exact disease name. &quot;Normal&quot;/&quot;control&quot;/&quot;WT&quot;→healthy only if NO disease is stated.</span>
+<span class="s2">3. **tissue**: FIRST check for &quot;tissue:&quot;, &quot;source_name:&quot; labels. Use stated value or reasonable generalization. Otherwise infer from cell_type/organ.</span>
+<span class="s2">4. **organ**: Look for explicit organ name OR infer from cell_type/tissue using biological knowledge above. Lowercase.</span>
+<span class="s2">5. **anatomical_system**: Derive from organ/cell_type using biological knowledge (blood→immune, brain→nervous, liver→digestive, heart→cardiovascular, lung→respiratory). Lowercase.</span>
+<span class="s2">6. **sex**: F=female, M=male. Return: male, female, mixed, or Unknown. Lowercase.</span>
+<span class="s2">7. **development_stage**: From age - handle &#39;y&#39; for years, &#39;m&#39; for months (e.g., 17m=17 months=1.4 years). Use: 0-2y=infant, 3-12y=child, 13-18y=adolescent, 19-64y=adult, 65+=aged. Convert months to years when needed. Lowercase.</span>
+<span class="s2">8. **assay**: RNA-seq, scRNA-seq, CITE-seq, ATAC-seq, Bisulfite-Seq, etc. Lowercase.</span>
+<span class="s2">9. **organism**: Homo sapiens, Mus musculus, or common names. Lowercase unless scientific.</span>
 
-<span class="s2">EXAMPLES showing cell_type inference:</span>
-<span class="s2">&quot;cell_type: PBMC&quot; → cell_type: pbmc, organ: blood, tissue: peripheral blood, anatomical_system: immune system</span>
-<span class="s2">&quot;cell_type: neuron&quot; → cell_type: neuron, organ: brain, tissue: brain tissue, anatomical_system: nervous system</span>
-<span class="s2">&quot;cell_type: hepatocyte&quot; → cell_type: hepatocyte, organ: liver, tissue: liver parenchyma, anatomical_system: digestive system</span>
+<span class="s2">EXAMPLES showing CORRECT extraction with reasonable generalization:</span>
+<span class="s2">&quot;cell type: CD19+ B cells, disease status: Multiple sclerosis&quot; → cell_type: &quot;b cells&quot; (acceptable: &quot;cd19+ b cells&quot;), disease: &quot;multiple sclerosis&quot;</span>
+<span class="s2">&quot;cell type: PBMC, tissue: peripheral blood&quot; → cell_type: &quot;pbmc&quot;, tissue: &quot;peripheral blood&quot;</span>
+<span class="s2">&quot;cell_type: CD8+ memory T cells&quot; → cell_type: &quot;t cells&quot; (acceptable: &quot;cd8+ memory t cells&quot;, &quot;memory t cells&quot;)</span>
+<span class="s2">&quot;cell type: activated microglia&quot; → cell_type: &quot;microglia&quot; (acceptable: &quot;activated microglia&quot;)</span>
 
 <span class="s2">Metadata: </span><span class="si">{</span><span class="n">text</span><span class="si">}</span>
 
 <span class="s2">Extract (use &quot;Unknown&quot; only if truly unclear):</span>
 <span class="s2">&quot;&quot;&quot;</span>
         <span class="n">field_descriptions</span> <span class="o">=</span> <span class="p">{</span>
-            <span class="s2">&quot;organ&quot;</span><span class="p">:</span> <span class="s2">&quot;High-level organ (e.g., brain, liver, breast) (lowercase)&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;tissue&quot;</span><span class="p">:</span> <span class="s2">&quot;Specific tissue within organ, or &#39;Unknown&#39; if not mentioned (lowercase)&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;organ&quot;</span><span class="p">:</span> <span class="s2">&quot;High-level organ - use stated value or reasonable generalization (lowercase)&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;tissue&quot;</span><span class="p">:</span> <span class="s2">&quot;Specific tissue - use stated value or reasonable generalization (lowercase)&quot;</span><span class="p">,</span>
             <span class="s2">&quot;anatomical_system&quot;</span><span class="p">:</span> <span class="s2">&quot;Major body system (lowercase)&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;cell_type&quot;</span><span class="p">:</span> <span class="s2">&quot;Specific cell type if mentioned (lowercase)&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;disease&quot;</span><span class="p">:</span> <span class="s2">&quot;Disease or condition - can be ANY disease, or &#39;healthy&#39; for controls (lowercase)&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;cell_type&quot;</span><span class="p">:</span> <span class="s2">&quot;Cell type from stated value - allow reasonable generalization (e.g., &#39;CD19+ B cells&#39; → &#39;b cells&#39;) but NOT over-generalization (NOT &#39;pbmc&#39;) (lowercase)&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;disease&quot;</span><span class="p">:</span> <span class="s2">&quot;Exact disease name if explicitly stated (e.g., &#39;multiple sclerosis&#39;), or &#39;healthy&#39; for controls (lowercase)&quot;</span><span class="p">,</span>
             <span class="s2">&quot;sex&quot;</span><span class="p">:</span> <span class="s2">&quot;Biological sex: &#39;male&#39;, &#39;female&#39;, &#39;mixed&#39;, or &#39;Unknown&#39;&quot;</span><span class="p">,</span>
             <span class="s2">&quot;development_stage&quot;</span><span class="p">:</span> <span class="s2">&quot;Life/developmental stage (lowercase)&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;assay&quot;</span><span class="p">:</span> <span class="s2">&quot;Sequencing or experimental assay type&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;assay&quot;</span><span class="p">:</span> <span class="s2">&quot;Sequencing or experimental assay type (lowercase)&quot;</span><span class="p">,</span>
             <span class="s2">&quot;organism&quot;</span><span class="p">:</span> <span class="s2">&quot;Species (scientific name preferred, or common name)&quot;</span><span class="p">,</span>
         <span class="p">}</span>
 

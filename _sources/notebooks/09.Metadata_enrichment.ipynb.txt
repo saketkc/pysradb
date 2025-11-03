@@ -92,11 +92,9 @@
     }
    ],
    "source": [
-    "\n",
     "from pysradb import SRAweb\n",
     "from pysradb.metadata_enrichment import create_metadata_extractor\n",
-    "from pysradb.search import GeoSearch\n",
-    "\n"
+    "from pysradb.search import GeoSearch"
    ]
   },
   {
