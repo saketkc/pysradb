@@ -21,6 +21,20 @@ jobs:
         python -m pip install --upgrade pip
         pip install -U pip
         pip install -r requirements.txt
+
+    - name: Install Ollama
+      run: |
+        curl -fsSL https://ollama.com/install.sh | sh
+        # Start Ollama service in background
+        ollama serve &
+        # Wait for Ollama to be ready
+        sleep 5
+        # Pull required models for testing
+        ollama pull phi3
+        ollama pull meditron
+        # Verify installation
+        ollama list
+
     - name: Lint with flake8
       run: |
         pip install -U pytest coverage pytest-cov codecov black flake8
@@ -29,6 +43,7 @@ jobs:
         # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide
         flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
         black --check .
+
     - name: Test with pytest
       continue-on-error: true
       run: |

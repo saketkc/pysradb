@@ -209,6 +209,8 @@ def metadata(
             detailed=detailed,
             sample_attribute=desc,
             expand_sample_attributes=expand,
+            enrich=enrich,
+            enrich_backend=enrich_backend if enrich_backend else "ollama/phi3",
         )
         if srp_metadata is not None:
             metadata_frames.append(srp_metadata)
@@ -218,6 +220,8 @@ def metadata(
             gse_ids if len(gse_ids) > 1 else gse_ids[0],
             sample_attribute=desc,
             detailed=detailed,
+            enrich=enrich,
+            enrich_backend=enrich_backend if enrich_backend else "ollama/phi3",
         )
         if not geo_metadata_df.empty:
             metadata_frames.append(geo_metadata_df)
@@ -226,20 +230,6 @@ def metadata(
         df = pd.concat(metadata_frames, ignore_index=True, sort=False)
     else:
         df = pd.DataFrame()
-
-    # Apply enrichment if requested
-    if enrich and not df.empty:
-        if enrich_backend:
-            df = sradb.metadata(
-                gse_ids if gse_ids else srp_ids,
-                detailed=detailed,
-                enrich=True,
-                enrich_backend=enrich_backend,
-            )
-        else:
-            df = sradb.metadata(
-                gse_ids if gse_ids else srp_ids, detailed=detailed, enrich=True
-            )
 
     _print_save_df(df, saveto)
     sradb.close()

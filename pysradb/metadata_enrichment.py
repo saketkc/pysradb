@@ -94,6 +94,30 @@ class MetadataExtractor(ABC):
         """
         return [self.extract_metadata(text, fields) for text in texts]
 
+    def _find_column_variant(self, df: pd.DataFrame, target_col: str) -> Optional[str]:
+        """
+        Find a column that matches the target column name with flexible matching.
+
+        Handles variations like:
+        - Different casing: cell_type, Cell_Type, CELL_TYPE
+        - Spaces vs underscores: cell_type, cell type, celltype
+        - CamelCase: cellType, CellType
+
+        Args:
+            df: DataFrame to search
+            target_col: Target column name (e.g., 'cell_type')
+
+        Returns:
+            Actual column name if found, None otherwise
+        """
+        target_normalized = target_col.lower().replace("_", "").replace(" ", "")
+
+        for col in df.columns:
+            col_normalized = str(col).lower().replace("_", "").replace(" ", "")
+            if col_normalized == target_normalized:
+                return col
+        return None
+
     def enrich_dataframe(
         self,
         df: pd.DataFrame,
@@ -128,6 +152,7 @@ class MetadataExtractor(ABC):
                 "tissue",
                 "cell_type",
                 "disease",
+                "disease_status",
                 "treatment",
                 "compound",
                 "extract_protocol",
@@ -145,8 +170,9 @@ class MetadataExtractor(ABC):
 
             available_cols = []
             for col in preferred_columns:
-                if col in df.columns and col not in exclude_columns:
-                    available_cols.append(col)
+                actual_col = self._find_column_variant(df, col)
+                if actual_col and actual_col not in exclude_columns:
+                    available_cols.append(actual_col)
 
             if not available_cols:
                 raise ValueError(
@@ -370,7 +396,18 @@ class LLMMetadataExtractor(MetadataExtractor):
 
         prompt = f"""Extract biological metadata using ontology-based terminology (UBERON, MONDO, CL).
 
-CELL TYPE INFERENCE RULES (MOST IMPORTANT):
+CRITICAL PRIORITY RULE:
+If a field is explicitly labeled in the metadata, prioritize that information. You may make reasonable generalizations
+(e.g., "CD19+ B cells" → "b cells", "CD4+ T cells" → "t cells"), but DO NOT over-generalize to broader categories.
+
+Examples of CORRECT extraction:
+- "cell type: CD19+ B cells" → cell_type: "b cells" or "cd19+ b cells" (NOT "pbmc" - too broad)
+- "cell type: CD4+ T cells" → cell_type: "t cells" or "cd4+ t cells" (NOT "lymphocyte" or "pbmc" - too broad)
+- "cell type: hepatocytes" → cell_type: "hepatocyte" (NOT "liver cells" - less specific)
+- "tissue: prefrontal cortex" → tissue: "prefrontal cortex" or "brain" (NOT "nervous tissue" - too broad)
+- "disease: Multiple sclerosis" → disease: "multiple sclerosis" (NOT "healthy" or "autoimmune disease")
+
+CELL TYPE INFERENCE RULES (only when NOT explicitly stated):
 - Cell types indicate their origin organ/tissue. Use this biological knowledge:
   * Blood cells (PBMC, T cell, B cell, lymphocyte, monocyte, macrophage, NK cell) → organ: blood, tissue: peripheral blood, system: immune system
   * Brain cells (neuron, astrocyte, microglia, oligodendrocyte) → organ: brain, tissue: brain tissue, system: nervous system
@@ -380,34 +417,35 @@ CELL TYPE INFERENCE RULES (MOST IMPORTANT):
   * Apply similar biological reasoning for other cell types
 
 EXTRACTION RULES:
-1. cell_type: Extract from metadata if mentioned. Lowercase.
-2. organ: Look for explicit organ name OR infer from cell_type using biological knowledge above. Lowercase.
-3. tissue: Look for explicit tissue OR infer from cell_type/organ using biological knowledge. Lowercase.
-4. anatomical_system: Derive from organ/cell_type using biological knowledge (blood→immune, brain→nervous, liver→digestive, heart→cardiovascular, lung→respiratory). Lowercase.
-5. disease: Extract ANY disease mentioned. "Normal"/"control"/"WT"→healthy. Lowercase.
-6. sex: F=female, M=male. Return: male, female, mixed, or Unknown. Lowercase.
-7. development_stage: From age - handle 'y' for years, 'm' for months (e.g., 17m=17 months=1.4 years). Use: 0-2y=infant, 3-12y=child, 13-18y=adolescent, 19-64y=adult, 65+=aged. Convert months to years when needed. Lowercase.
-8. assay: RNA-seq, scRNA-seq, CITE-seq, ATAC-seq, etc.
-9. organism: Homo sapiens, Mus musculus, or common names. Lowercase unless scientific.
+1. **cell_type**: FIRST check for "cell type:", "cell_type:", "celltype:" or "cellType:" labels. Use the stated value or reasonable generalization (CD19+ B cells → b cells). NEVER over-generalize to broad categories like "pbmc" or "lymphocyte" when a specific type is stated.
+2. **disease**: FIRST check for "disease:", "disease status:", or "condition:" labels. Use exact disease name. "Normal"/"control"/"WT"→healthy only if NO disease is stated.
+3. **tissue**: FIRST check for "tissue:", "source_name:" labels. Use stated value or reasonable generalization. Otherwise infer from cell_type/organ.
+4. **organ**: Look for explicit organ name OR infer from cell_type/tissue using biological knowledge above. Lowercase.
+5. **anatomical_system**: Derive from organ/cell_type using biological knowledge (blood→immune, brain→nervous, liver→digestive, heart→cardiovascular, lung→respiratory). Lowercase.
+6. **sex**: F=female, M=male. Return: male, female, mixed, or Unknown. Lowercase.
+7. **development_stage**: From age - handle 'y' for years, 'm' for months (e.g., 17m=17 months=1.4 years). Use: 0-2y=infant, 3-12y=child, 13-18y=adolescent, 19-64y=adult, 65+=aged. Convert months to years when needed. Lowercase.
+8. **assay**: RNA-seq, scRNA-seq, CITE-seq, ATAC-seq, Bisulfite-Seq, etc. Lowercase.
+9. **organism**: Homo sapiens, Mus musculus, or common names. Lowercase unless scientific.
 
-EXAMPLES showing cell_type inference:
-"cell_type: PBMC" → cell_type: pbmc, organ: blood, tissue: peripheral blood, anatomical_system: immune system
-"cell_type: neuron" → cell_type: neuron, organ: brain, tissue: brain tissue, anatomical_system: nervous system
-"cell_type: hepatocyte" → cell_type: hepatocyte, organ: liver, tissue: liver parenchyma, anatomical_system: digestive system
+EXAMPLES showing CORRECT extraction with reasonable generalization:
+"cell type: CD19+ B cells, disease status: Multiple sclerosis" → cell_type: "b cells" (acceptable: "cd19+ b cells"), disease: "multiple sclerosis"
+"cell type: PBMC, tissue: peripheral blood" → cell_type: "pbmc", tissue: "peripheral blood"
+"cell_type: CD8+ memory T cells" → cell_type: "t cells" (acceptable: "cd8+ memory t cells", "memory t cells")
+"cell type: activated microglia" → cell_type: "microglia" (acceptable: "activated microglia")
 
 Metadata: {text}
 
 Extract (use "Unknown" only if truly unclear):
 """
         field_descriptions = {
-            "organ": "High-level organ (e.g., brain, liver, breast) (lowercase)",
-            "tissue": "Specific tissue within organ, or 'Unknown' if not mentioned (lowercase)",
+            "organ": "High-level organ - use stated value or reasonable generalization (lowercase)",
+            "tissue": "Specific tissue - use stated value or reasonable generalization (lowercase)",
             "anatomical_system": "Major body system (lowercase)",
-            "cell_type": "Specific cell type if mentioned (lowercase)",
-            "disease": "Disease or condition - can be ANY disease, or 'healthy' for controls (lowercase)",
+            "cell_type": "Cell type from stated value - allow reasonable generalization (e.g., 'CD19+ B cells' → 'b cells') but NOT over-generalization (NOT 'pbmc') (lowercase)",
+            "disease": "Exact disease name if explicitly stated (e.g., 'multiple sclerosis'), or 'healthy' for controls (lowercase)",
             "sex": "Biological sex: 'male', 'female', 'mixed', or 'Unknown'",
             "development_stage": "Life/developmental stage (lowercase)",
-            "assay": "Sequencing or experimental assay type",
+            "assay": "Sequencing or experimental assay type (lowercase)",
             "organism": "Species (scientific name preferred, or common name)",
         }
 
