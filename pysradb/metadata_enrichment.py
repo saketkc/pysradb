@@ -292,6 +292,20 @@ class LLMMetadataExtractor(MetadataExtractor):
         super().__init__()
         self.provider = backend or DEFAULT_LLM_PROVIDER
 
+        if self.provider.startswith("llamacpp/"):
+            self._is_llamacpp = True
+            self._is_vllm = False
+            self._init_llamacpp_backend(model, **kwargs)
+            return
+
+        if self.provider.startswith("vllm/"):
+            self._is_vllm = True
+            self._is_llamacpp = False
+            self._init_vllm_backend(model, **kwargs)
+            return
+
+        self._is_vllm = False
+        self._is_llamacpp = False
         self.model = model
 
         env_key = self._provider_env_key()
@@ -301,6 +315,34 @@ class LLMMetadataExtractor(MetadataExtractor):
         self.max_retries = max_retries
         self.kwargs = kwargs
         self.client = self._initialize_client()
+
+    def _init_llamacpp_backend(self, model: Optional[str], **kwargs):
+        """Initialize llama-cpp backend."""
+        from .llamacpp_enrichment import LlamaCppMetadataExtractor
+
+        model_id = self.provider[9:]
+        if model:
+            model_id = model
+        if not model_id:
+            model_id = "MoMonir/Llama3-OpenBioLLM-8B-GGUF"
+
+        self.logger.info(f"Using llama-cpp backend with model: {model_id}")
+        self._llamacpp_extractor = LlamaCppMetadataExtractor(
+            model_id=model_id, **kwargs
+        )
+
+    def _init_vllm_backend(self, model: Optional[str], **kwargs):
+        """Initialize vLLM backend."""
+        from .vllm_enrichment import VLLMMetadataExtractor
+
+        model_id = self.provider[5:]
+        if model:
+            model_id = model
+        if not model_id:
+            model_id = "Qwen/Qwen2.5-1.5B-Instruct"
+
+        self.logger.info(f"Using vLLM backend with model: {model_id}")
+        self._vllm_extractor = VLLMMetadataExtractor(model_id=model_id, **kwargs)
 
     def _provider_env_key(self) -> Optional[str]:
         provider_name = self.provider.split("/")[0]
@@ -504,6 +546,15 @@ Respond in JSON format with these exact keys:
         Returns:
             Dictionary with extracted metadata
         """
+        if self._is_llamacpp:
+            result = self._llamacpp_extractor.extract_metadata(text, fields)
+            if hasattr(result, "extracted_metadata"):
+                return result.extracted_metadata
+            return result
+
+        if self._is_vllm:
+            return self._vllm_extractor.extract_metadata(text, fields)
+
         if not text or text.strip() == "":
             return {
                 "organ": "Unknown",
@@ -524,6 +575,37 @@ Respond in JSON format with these exact keys:
             return {field: data.get(field, "Unknown") for field in fields}
 
         return data
+
+    def enrich_dataframe(
+        self,
+        df: pd.DataFrame,
+        text_column: Optional[str] = None,
+        fields: Optional[List[str]] = None,
+        prefix: str = "guessed_",
+        show_progress: bool = True,
+    ) -> pd.DataFrame:
+        """
+        Enrich a DataFrame with extracted metadata.
+
+        Args:
+            df: Input DataFrame
+            text_column: Column containing text to analyze
+            fields: List of metadata fields to extract
+            prefix: Prefix for new columns
+            show_progress: Show progress bar
+
+        Returns:
+            DataFrame with additional metadata columns
+        """
+        if self._is_llamacpp:
+            return self._llamacpp_extractor.enrich_dataframe(df, text_column, fields)
+
+        if self._is_vllm:
+            return self._vllm_extractor.enrich_dataframe(
+                df, text_column, fields, prefix, show_progress
+            )
+
+        return super().enrich_dataframe(df, text_column, fields, prefix, show_progress)
 
 
 class EmbeddingMetadataExtractor(MetadataExtractor):

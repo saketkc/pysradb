@@ -189,10 +189,105 @@ def _print_save_df(df, saveto=None):
 
 ###################### metadata ##############################
 def metadata(
-    srp_id, assay, desc, detailed, expand, saveto, enrich=False, enrich_backend=None
+    srp_id,
+    assay,
+    desc,
+    detailed,
+    expand,
+    saveto,
+    enrich=False,
+    enrich_backend=None,
+    input_file=None,
+    output_dir=None,
 ):
     sradb = SRAweb()
 
+    # If input_file is provided, read IDs from file
+    if input_file:
+        if not os.path.exists(input_file):
+            console.print(f"[red]Error: Input file '{input_file}' not found[/red]")
+            sradb.close()
+            return
+
+        with open(input_file, "r") as f:
+            file_ids = [line.strip() for line in f if line.strip()]
+
+        if not file_ids:
+            console.print(f"[red]Error: No IDs found in '{input_file}'[/red]")
+            sradb.close()
+            return
+
+        # If output_dir is specified, process each ID separately
+        if output_dir:
+            os.makedirs(output_dir, exist_ok=True)
+            console.print(
+                f"[blue]Processing {len(file_ids)} IDs from '{input_file}'[/blue]"
+            )
+            console.print(f"[blue]Output directory: '{output_dir}'[/blue]")
+
+            for idx, accession_id in enumerate(file_ids, 1):
+                console.print(
+                    f"[green]Processing {idx}/{len(file_ids)}: {accession_id}[/green]"
+                )
+
+                # Determine if GSE or SRP/SRX/etc
+                is_gse = isinstance(
+                    accession_id, str
+                ) and accession_id.upper().startswith("GSE")
+
+                try:
+                    if is_gse:
+                        df = sradb.geo_metadata(
+                            accession_id,
+                            sample_attribute=desc,
+                            detailed=detailed,
+                            enrich=enrich,
+                            enrich_backend=(
+                                enrich_backend if enrich_backend else "ollama/phi3"
+                            ),
+                        )
+                    else:
+                        df = sradb.sra_metadata(
+                            accession_id,
+                            assay=assay,
+                            detailed=detailed,
+                            sample_attribute=desc,
+                            expand_sample_attributes=expand,
+                            enrich=enrich,
+                            enrich_backend=(
+                                enrich_backend if enrich_backend else "ollama/phi3"
+                            ),
+                        )
+
+                    if df is not None and not df.empty:
+                        # Save to individual file
+                        output_file = os.path.join(
+                            output_dir, f"{accession_id}_metadata.csv"
+                        )
+                        df.to_csv(output_file, index=False)
+                        console.print(
+                            f"[green]  → Saved to {output_file} ({len(df)} rows)[/green]"
+                        )
+                    else:
+                        console.print(
+                            f"[yellow]  → No metadata found for {accession_id}[/yellow]"
+                        )
+
+                except Exception as e:
+                    console.print(
+                        f"[red]  → Error processing {accession_id}: {str(e)}[/red]"
+                    )
+
+            console.print(
+                f"[blue]Batch processing complete. Files saved to '{output_dir}'[/blue]"
+            )
+            sradb.close()
+            return
+        else:
+            # output_dir not specified, use file IDs as regular input
+            srp_id = file_ids
+
+    # Original single/multiple ID processing (when no input_file or no output_dir)
     srp_ids = []
     gse_ids = []
     for accession in srp_id:
@@ -865,7 +960,21 @@ def parse_args(args=None):
         help="LLM backend for enrichment (e.g., 'ollama/phi3', 'ollama/llama3.2'). "
         "If not specified, uses default backend",
     )
-    subparser.add_argument("srp_id", nargs="+")
+    subparser.add_argument(
+        "--input-file",
+        type=str,
+        default=None,
+        help="Path to file containing list of IDs (one per line). "
+        "When used with --output-dir, processes each ID separately",
+    )
+    subparser.add_argument(
+        "--output-dir",
+        type=str,
+        default=None,
+        help="Directory to save individual metadata files (one per ID). "
+        "Requires --input-file. Files are named as {ID}_metadata.csv",
+    )
+    subparser.add_argument("srp_id", nargs="*", default=[])
     subparser.set_defaults(func=metadata)
 
     # pysradb download
@@ -1532,6 +1641,8 @@ def parse_args(args=None):
             args.saveto,
             args.enrich,
             args.enrich_backend,
+            args.input_file,
+            args.output_dir,
         )
     elif args.command == "download":
         download(
