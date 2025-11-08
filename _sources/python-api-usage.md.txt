@@ -80,7 +80,7 @@ Cell type/tissue informations is usually hidden in the
 [sample_attributes]{.title-ref} column, which can be expanded:
 
 ``` python
-from pysraclient.filter_attrs import expand_sample_attribute_columns
+from pysradb.filter_attrs import expand_sample_attribute_columns
 df = client.sra_metadata('SRP017942')
 expand_sample_attribute_columns(df).head()
 ```

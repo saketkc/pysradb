@@ -56,7 +56,7 @@ $ pysradb metadata SRP265425
 
 ````{tab} Python
 ``` python
-from pysraclient.sraweb import SRAweb
+from pysradb.sraweb import SRAweb
 
 client = SRAweb()
 df = client.metadata("SRP265425")
@@ -97,7 +97,7 @@ $ pysradb metadata SRP265425 --detailed
 
 ````{tab} Python
 ``` python
-from pysraclient.sraweb import SRAweb
+from pysradb.sraweb import SRAweb
 
 client = SRAweb()
 df = client.metadata("SRP265425", detailed=True)
@@ -140,7 +140,7 @@ $ pysradb srp-to-srx SRP098789
 
 ````{tab} Python
 ``` python
-from pysraclient.sraweb import SRAweb
+from pysradb.sraweb import SRAweb
 
 client = SRAweb()
 df = client.srp-to-srx("SRP098789")
@@ -190,7 +190,7 @@ $ pysradb srp-to-srx SRP098789
 
 ````{tab} Python
 ``` python
-from pysraclient.sraweb import SRAweb
+from pysradb.sraweb import SRAweb
 
 client = SRAweb()
 df = client.srp-to-srx("SRP098789")
@@ -247,7 +247,7 @@ $ pysradb download SRP098789
 
 ````{tab} Python
 ``` python
-from pysraclient.sraweb import SRAweb
+from pysradb.sraweb import SRAweb
 
 client = SRAweb()
 client.download("SRP098789")
@@ -267,7 +267,7 @@ $ pysradb metadata SRP276671 --detailed | pysradb download
 
 ````{tab} Python
 ``` python
-from pysraclient.sraweb import SRAweb
+from pysradb.sraweb import SRAweb
 client = SRAweb()
 df = client.sra_metadata('SRP016501', detailed=True)
 client.download(df=df)
@@ -293,7 +293,7 @@ $ pysradb download -t 8 --use_ascp -p SRP002605
 
 ````{tab} Python
 ``` python
-from pysraclient.sraweb import SRAweb
+from pysradb.sraweb import SRAweb
 
 client = SRAweb()
 client.download("SRP098789", use_ascp=True, threads=8)
@@ -319,7 +319,7 @@ $ pysradb metadata SRP276671
 
 ````{tab} Python
 ``` python
-from pysraclient.sraweb import SRAweb
+from pysradb.sraweb import SRAweb
 
 client = SRAweb()
 df = client.sra_metadata('SRP016501')
@@ -356,7 +356,7 @@ $ pysradb metadata SRP276671 --detailed
 
 ````{tab} Python
 ``` python
-from pysraclient.sraweb import SRAweb
+from pysradb.sraweb import SRAweb
 
 client = SRAweb()
 df = client.sra_metadata('SRP016501', detailed=True)
@@ -387,7 +387,7 @@ $ pysradb search -q coronavirus --publication-date 01-08-2020:07-08-2020 --max 1
 
 ````{tab} Python
 ``` python
-from pysraclient.search import SraSearch
+from pysradb.search import SraSearch
 
 instance = SraSearch(return_max=10000, query="coronavirus", publication_date="01-08-2020:07-08-2020")
 instance.search()
@@ -421,7 +421,7 @@ $ pysradb search --db ena -q coronavirus --publication-date 01-08-2020:07-08-202
 
 ````{tab} Python
 ``` python
-from pysraclient.search import EnaSearch
+from pysradb.search import EnaSearch
 
 instance = EnaSearch(return_max=10000, query="coronavirus", publication_date="01-08-2020:07-08-2020")
 instance.search()
@@ -460,7 +460,7 @@ $ pysradb search --db ena --organism "Severe acute respiratory syndrome coronavi
 
 ````{tab} Python
 ``` python
-from pysraclient.search import EnaSearch
+from pysradb.search import EnaSearch
 instance = EnaSearch(return_max=10000, organism="Severe acute respiratory syndrome coronavirus 2")
 instance.search()
 instance.show_result_statistics()
@@ -524,7 +524,7 @@ $ pysradb search --db ena -q e --max 500000 -g
 
 ````{tab} Python
 ``` python
-from pysraclient.search import EnaSearch
+from pysradb.search import EnaSearch
 
 instance = EnaSearch(return_max=500000, "e")
 instance.search()

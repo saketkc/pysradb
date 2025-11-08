@@ -347,7 +347,7 @@ would subset a dataframe in pandas.</p>
 <h2>Use Case 4: Getting cell-type/treatment information from sample_attributes<a class="headerlink" href="#use-case-4-getting-cell-type-treatment-information-from-sample-attributes" title="Link to this heading">¶</a></h2>
 <p>Cell type/tissue informations is usually hidden in the
 [sample_attributes]{.title-ref} column, which can be expanded:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">pysraclient.filter_attrs</span><span class="w"> </span><span class="kn">import</span> <span class="n">expand_sample_attribute_columns</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">pysradb.filter_attrs</span><span class="w"> </span><span class="kn">import</span> <span class="n">expand_sample_attribute_columns</span>
 <span class="n">df</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">sra_metadata</span><span class="p">(</span><span class="s1">&#39;SRP017942&#39;</span><span class="p">)</span>
 <span class="n">expand_sample_attribute_columns</span><span class="p">(</span><span class="n">df</span><span class="p">)</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
 </pre></div>

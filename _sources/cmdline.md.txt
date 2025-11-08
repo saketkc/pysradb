@@ -66,8 +66,6 @@ df = client.metadata("GSE286254", detailed=True, enrich=True)
 # guessed_organ, guessed_tissue, guessed_anatomical_system,
 # guessed_cell_type, guessed_disease, guessed_sex,
 # guessed_development_stage, guessed_assay, guessed_organism
-
-client.close()
 ```
 
 ### Prerequisites
@@ -86,7 +84,7 @@ df = client.metadata("GSE286254", detailed=True, enrich=True,
                 enrich_backend="ollama/llama3.2")
 
 # Manual enrichment with custom settings
-from pysraclient.metadata_enrichment import create_metadata_extractor, load_ontology_reference
+from pysradb.metadata_enrichment import create_metadata_extractor, load_ontology_reference
 
 # LLM-based extraction
 extractor_llm = create_metadata_extractor(method="llm", backend="ollama/phi3")
