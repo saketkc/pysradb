@@ -316,7 +316,6 @@ class VLLMServerManager:
                         logger.warning(
                             f"Timed out reading process output on port {current_port}"
                         )
-                        pass
 
                     if stderr:
                         logger.error(
