@@ -11,9 +11,9 @@ from pysradb.geoweb import GEOweb
 
 @pytest.fixture(scope="module")
 def geoweb_connection():
-    db = GEOweb()
+    client = GEOweb()
     time.sleep(2)
-    return db
+    return client
 
 
 def test_valid_download_links(geoweb_connection):
