@@ -17,7 +17,7 @@ import pandas as pd
 import requests
 from tqdm.autonotebook import tqdm
 
-from .metadata_enrichment import MetadataExtractor, _MetadataExtraction
+from .metadata_enrichment import MetadataExtractor
 
 logger = logging.getLogger(__name__)
 
