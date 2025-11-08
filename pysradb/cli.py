@@ -242,7 +242,7 @@ def metadata(
 
                 try:
                     if is_gse:
-                        df = sradb.geo_metadata(
+                        df = client.geo_metadata(
                             accession_id,
                             sample_attribute=desc,
                             detailed=detailed,
@@ -252,7 +252,7 @@ def metadata(
                             ),
                         )
                     else:
-                        df = sradb.sra_metadata(
+                        df = client.sra_metadata(
                             accession_id,
                             assay=assay,
                             detailed=detailed,
