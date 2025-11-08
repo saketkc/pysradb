@@ -58,8 +58,8 @@ $ pysradb metadata SRP265425
 ``` python
 from pysradb.sraweb import SRAweb
 
-db = SRAweb()
-df = db.metadata("SRP265425")
+client = SRAweb()
+df = client.metadata("SRP265425")
 df
 ```
 ````
@@ -99,8 +99,8 @@ $ pysradb metadata SRP265425 --detailed
 ``` python
 from pysradb.sraweb import SRAweb
 
-db = SRAweb()
-df = db.metadata("SRP265425", detailed=True)
+client = SRAweb()
+df = client.metadata("SRP265425", detailed=True)
 df
 ```
 ````
@@ -142,8 +142,8 @@ $ pysradb srp-to-srx SRP098789
 ``` python
 from pysradb.sraweb import SRAweb
 
-db = SRAweb()
-df = db.srp-to-srx("SRP098789")
+client = SRAweb()
+df = client.srp-to-srx("SRP098789")
 df
 ```
 ````
@@ -192,8 +192,8 @@ $ pysradb srp-to-srx SRP098789
 ``` python
 from pysradb.sraweb import SRAweb
 
-db = SRAweb()
-df = db.srp-to-srx("SRP098789")
+client = SRAweb()
+df = client.srp-to-srx("SRP098789")
 df
 ```
 ````
@@ -249,8 +249,8 @@ $ pysradb download SRP098789
 ``` python
 from pysradb.sraweb import SRAweb
 
-db = SRAweb()
-db.download("SRP098789")
+client = SRAweb()
+client.download("SRP098789")
 ```
 ````
 `````
@@ -268,9 +268,9 @@ $ pysradb metadata SRP276671 --detailed | pysradb download
 ````{tab} Python
 ``` python
 from pysradb.sraweb import SRAweb
-db = SRAweb()
-df = db.sra_metadata('SRP016501', detailed=True)
-db.download(df=df)
+client = SRAweb()
+df = client.sra_metadata('SRP016501', detailed=True)
+client.download(df=df)
 ```
 ````
 `````
@@ -295,8 +295,8 @@ $ pysradb download -t 8 --use_ascp -p SRP002605
 ``` python
 from pysradb.sraweb import SRAweb
 
-db = SRAweb()
-db.download("SRP098789", use_ascp=True, threads=8)
+client = SRAweb()
+client.download("SRP098789", use_ascp=True, threads=8)
 ```
 ````
 `````
@@ -321,8 +321,8 @@ $ pysradb metadata SRP276671
 ``` python
 from pysradb.sraweb import SRAweb
 
-db = SRAweb()
-df = db.sra_metadata('SRP016501')
+client = SRAweb()
+df = client.sra_metadata('SRP016501')
 df
 ```
 ````
@@ -358,8 +358,8 @@ $ pysradb metadata SRP276671 --detailed
 ``` python
 from pysradb.sraweb import SRAweb
 
-db = SRAweb()
-df = db.sra_metadata('SRP016501', detailed=True)
+client = SRAweb()
+df = client.sra_metadata('SRP016501', detailed=True)
 df
 ```
 ````

@@ -15,8 +15,6 @@ import pandas as pd
 import requests
 import xmltodict
 
-from .sradb import SRAdb
-
 warnings.simplefilter(action="ignore", category=FutureWarning)
 
 from xml.sax.saxutils import escape
@@ -79,16 +77,16 @@ def get_retmax(n_records, retmax=500):
         yield i
 
 
-class SRAweb(SRAdb):
+class SRAweb(object):
     def __init__(self, api_key=None):
         """
-        Initialize a SRAwebdb.
+        Initialize SRAweb for API-based access to SRA data.
 
         Parameters
         ----------
 
         api_key: string
-                 API key for ncbi eutils.
+                 API key for ncbi eutils. Optional, but recommended for higher rate limits.
         """
         self.base_url = dict()
         self.base_url["esummary"] = (
@@ -1376,10 +1374,10 @@ class SRAweb(SRAdb):
             DataFrame with metadata (enriched if enrich=True)
 
         Examples:
-            >>> db = SRAweb()
-            >>> df = db.metadata("GSE286254", detailed=True, enrich=True)
-            >>> df = db.metadata("SRP253951", detailed=True, enrich=True)
-            >>> df = db.metadata(["GSE286254", "GSE147507"], enrich=True)
+            >>> client = SRAweb()
+            >>> df = client.metadata("GSE286254", detailed=True, enrich=True)
+            >>> df = client.metadata("SRP253951", detailed=True, enrich=True)
+            >>> df = client.metadata(["GSE286254", "GSE147507"], enrich=True)
         """
         if isinstance(accession, str):
             accessions = [accession]
@@ -2815,7 +2813,3 @@ class SRAweb(SRAdb):
         """
         full_results = self.doi_to_identifiers(dois)
         return full_results[["doi", "pmid", "pmc_id", "srp_ids"]]
-
-    def close(self):
-        # Dummy method to mimick SRAdb() object
-        pass

@@ -58,16 +58,14 @@ Extract standardized biological metadata from SRA/GEO datasets using LLMs.
 ```bash
 from pysradb import SRAweb
 
-db = SRAweb()
+client = SRAweb()
 
-df = db.metadata("GSE286254", detailed=True, enrich=True)
+df = client.metadata("GSE286254", detailed=True, enrich=True)
 
 # Returns original + 9 enriched columns (might not always be complete):
 # guessed_organ, guessed_tissue, guessed_anatomical_system,
 # guessed_cell_type, guessed_disease, guessed_sex,
 # guessed_development_stage, guessed_assay, guessed_organism
-
-db.close()
 ```
 
 ### Prerequisites
@@ -82,7 +80,7 @@ ollama pull phi3
 
 ```bash
 # Use different model
-df = db.metadata("GSE286254", detailed=True, enrich=True,
+df = client.metadata("GSE286254", detailed=True, enrich=True,
                 enrich_backend="ollama/llama3.2")
 
 # Manual enrichment with custom settings

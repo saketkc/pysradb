@@ -4,12 +4,13 @@ import gzip
 import os
 import re
 import sys
+from io import StringIO
 
+import pandas as pd
 import requests
 from lxml import html
 
 from .download import download_file
-from .geodb import GEOdb
 from .utils import _get_url, copyfileobj, get_gzip_uncompressed_size
 
 PY3 = True
@@ -17,7 +18,7 @@ if sys.version_info[0] < 3:
     PY3 = False
 
 
-class GEOweb(GEOdb):
+class GEOweb(object):
     def __init__(self):
         """Initialize GEOweb without any database."""
 
@@ -105,3 +106,68 @@ class GEOweb(GEOdb):
                 prefix = gse + "_"
             geo_path = os.path.join(out_dir, prefix + link)
             download_file(root_url + link, geo_path, show_progress=True)
+
+
+def download_geo_matrix(accession, output_dir="."):
+    """
+    Download a GEO Matrix file for a given GEO accession ID.
+
+    Args:
+        accession (str): GEO accession ID (e.g., 'GSE234190').
+        output_dir (str): Directory to save the downloaded file (default: current directory).
+
+    Returns:
+        str: Path to the downloaded file.
+
+    Raises:
+        Exception: If the download fails.
+    """
+    # Construct the URL for the GEO Matrix file
+    url = f"https://ftp.ncbi.nlm.nih.gov/geo/series/{accession[:-3]}nnn/{accession}/matrix/{accession}_series_matrix.txt.gz"
+
+    # Define the output file path
+    output_file = os.path.join(output_dir, f"{accession}_series_matrix.txt.gz")
+
+    # Download the file using _get_url
+    try:
+        _get_url(url, output_file)
+        return output_file
+    except Exception as e:
+        raise Exception(
+            f"Failed to download GEO Matrix file for {accession}. Exception: {str(e)}"
+        )
+
+
+def parse_geo_matrix_to_tsv(input_file, output_file):
+    """
+    Parse a GEO Matrix file to a TSV file, extracting the expression data.
+
+    Args:
+        input_file (str): Path to the input GEO Matrix file (gzipped).
+        output_file (str): Path to save the output TSV file.
+
+    Returns:
+        pandas.DataFrame: The parsed expression data.
+    """
+    # Read the gzipped file and extract the data section
+    data_lines = []
+    data_section = False
+
+    with gzip.open(input_file, "rt", encoding="utf-8") as f:
+        for line in f:
+            line = line.strip()
+            if line == "!series_matrix_table_begin":
+                data_section = True
+                continue
+            elif line == "!series_matrix_table_end":
+                break
+            if data_section and line:
+                data_lines.append(line)
+
+    # Use pandas.read_csv to parse the data section
+    df = pd.read_csv(StringIO("\n".join(data_lines)), sep="\t", comment="!")
+
+    # Save to TSV
+    df.to_csv(output_file, sep="\t", index=False)
+
+    return df

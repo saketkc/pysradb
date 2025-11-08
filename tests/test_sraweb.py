@@ -10,9 +10,9 @@ from pysradb.sraweb import SRAweb
 
 @pytest.fixture(scope="module")
 def sraweb_connection():
-    db = SRAweb()
+    client = SRAweb()
     time.sleep(2)
-    return db
+    return client
 
 
 def test_sra_metadata(sraweb_connection):

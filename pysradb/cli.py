@@ -17,10 +17,8 @@ from rich.text import Text
 
 from . import __version__
 from .exceptions import IncorrectFieldException, MissingQueryException
-from .geodb import download_geo_matrix, parse_geo_matrix_to_tsv
-from .geoweb import GEOweb
+from .geoweb import GEOweb, download_geo_matrix, parse_geo_matrix_to_tsv
 from .search import EnaSearch, GeoSearch, SraSearch
-from .sradb import SRAdb, download_sradb_file
 from .sraweb import SRAweb
 from .utils import confirm
 
@@ -200,7 +198,16 @@ def metadata(
     input_file=None,
     output_dir=None,
 ):
-    sradb = SRAweb()
+    # Validate that at least one ID was provided
+    if not srp_id:
+        console.print(
+            "[red]Error: No accession IDs provided. Please provide one or more SRP/GSE IDs.[/red]"
+        )
+        console.print("[yellow]Usage: pysradb metadata SRP000001 [SRP000002 ...]")
+        console.print("       pysradb metadata GSE123456[/yellow]")
+        return
+
+    client = SRAweb()
 
     # If input_file is provided, read IDs from file
     if input_file:
@@ -298,7 +305,7 @@ def metadata(
 
     metadata_frames = []
     if srp_ids:
-        srp_metadata = sradb.sra_metadata(
+        srp_metadata = client.sra_metadata(
             srp_ids if len(srp_ids) > 1 else srp_ids[0],
             assay=assay,
             detailed=detailed,
@@ -311,7 +318,7 @@ def metadata(
             metadata_frames.append(srp_metadata)
 
     if gse_ids:
-        geo_metadata_df = sradb.geo_metadata(
+        geo_metadata_df = client.geo_metadata(
             gse_ids if len(gse_ids) > 1 else gse_ids[0],
             sample_attribute=desc,
             detailed=detailed,
@@ -327,7 +334,6 @@ def metadata(
         df = pd.DataFrame()
 
     _print_save_df(df, saveto)
-    sradb.close()
 
 
 ################################################################
@@ -346,14 +352,14 @@ def download(
 ):
     if out_dir is None:
         out_dir = os.path.join(os.getcwd(), "pysradb_downloads")
-    sradb = SRAweb()
+    client = SRAweb()
     geoweb = GEOweb()
     # This block is triggered only if no -p or -g arguments are provided.
     # In this case, the input is taken from the pipe and assumed to be SRA, not GEO
     # TODO: at some point, we need to fix this
     if not srp and not geo:
         df = pd.read_csv(sys.stdin, sep="\t")
-        sradb.download(
+        client.download(
             df=df,
             out_dir=out_dir,
             filter_by_srx=srx,
@@ -365,8 +371,8 @@ def download(
     # This block is triggered for downloads using the -p argument
     if srp:
         for srp_x in srp:
-            metadata = sradb.sra_metadata(srp_x, detailed=True)
-            sradb.download(
+            metadata = client.sra_metadata(srp_x, detailed=True)
+            client.download(
                 df=metadata,
                 out_dir=out_dir,
                 filter_by_srx=srx,
@@ -379,7 +385,6 @@ def download(
         for geo_x in geo:
             links, root_url = geoweb.get_download_links(geo_x)
             geoweb.download(links=links, root_url=root_url, gse=geo_x, out_dir=out_dir)
-    sradb.close()
 
 
 #########################################################
@@ -473,15 +478,14 @@ def get_geo_search_info():
 
 ######################### gse-to-gsm ###############################
 def gse_to_gsm(gse_ids, saveto, detailed, desc, expand):
-    sradb = SRAweb()
-    df = sradb.gse_to_gsm(
+    client = SRAweb()
+    df = client.gse_to_gsm(
         gse_ids,
         detailed=detailed,
         sample_attribute=desc,
         expand_sample_attributes=expand,
     )
     _print_save_df(df, saveto)
-    sradb.close()
 
 
 ####################################################################
@@ -489,15 +493,14 @@ def gse_to_gsm(gse_ids, saveto, detailed, desc, expand):
 
 ######################## gse-to-srp ################################
 def gse_to_srp(gse_ids, saveto, detailed, desc, expand):
-    sradb = SRAweb()
-    df = sradb.gse_to_srp(
+    client = SRAweb()
+    df = client.gse_to_srp(
         gse_ids,
         detailed=detailed,
         sample_attribute=desc,
         expand_sample_attributes=expand,
     )
     _print_save_df(df, saveto)
-    sradb.close()
 
 
 ######################################################################
@@ -505,15 +508,14 @@ def gse_to_srp(gse_ids, saveto, detailed, desc, expand):
 
 ######################### gsm-to-gse #################################
 def gsm_to_gse(gsm_ids, saveto, detailed, desc, expand):
-    sradb = SRAweb()
-    df = sradb.gsm_to_gse(
+    client = SRAweb()
+    df = client.gsm_to_gse(
         gsm_ids,
         detailed=detailed,
         sample_attribute=desc,
         expand_sample_attributes=expand,
     )
     _print_save_df(df, saveto)
-    sradb.close()
 
 
 ########################################################################
@@ -521,15 +523,14 @@ def gsm_to_gse(gsm_ids, saveto, detailed, desc, expand):
 
 ############################ gsm-to-srp ################################
 def gsm_to_srp(gsm_ids, saveto, detailed, desc, expand):
-    sradb = SRAweb()
-    df = sradb.gsm_to_srp(
+    client = SRAweb()
+    df = client.gsm_to_srp(
         gsm_ids,
         detailed=detailed,
         sample_attribute=desc,
         expand_sample_attributes=expand,
     )
     _print_save_df(df, saveto)
-    sradb.close()
 
 
 ########################################################################
@@ -537,15 +538,14 @@ def gsm_to_srp(gsm_ids, saveto, detailed, desc, expand):
 
 ############################ gsm-to-srr ################################
 def gsm_to_srr(gsm_ids, saveto, detailed, desc, expand):
-    sradb = SRAweb()
-    df = sradb.gsm_to_srr(
+    client = SRAweb()
+    df = client.gsm_to_srr(
         gsm_ids,
         detailed=detailed,
         sample_attribute=desc,
         expand_sample_attributes=expand,
     )
     _print_save_df(df, saveto)
-    sradb.close()
 
 
 ########################################################################
@@ -553,15 +553,14 @@ def gsm_to_srr(gsm_ids, saveto, detailed, desc, expand):
 
 ############################ gsm-to-srs ################################
 def gsm_to_srs(gsm_ids, saveto, detailed, desc, expand):
-    sradb = SRAweb()
-    df = sradb.gsm_to_srs(
+    client = SRAweb()
+    df = client.gsm_to_srs(
         gsm_ids,
         detailed=detailed,
         sample_attribute=desc,
         expand_sample_attributes=expand,
     )
     _print_save_df(df, saveto)
-    sradb.close()
 
 
 ########################################################################
@@ -569,15 +568,14 @@ def gsm_to_srs(gsm_ids, saveto, detailed, desc, expand):
 
 ############################# gsm-to-srx ###############################
 def gsm_to_srx(gsm_ids, saveto, detailed, desc, expand):
-    sradb = SRAweb()
-    df = sradb.gsm_to_srx(
+    client = SRAweb()
+    df = client.gsm_to_srx(
         gsm_ids,
         detailed=detailed,
         sample_attribute=desc,
         expand_sample_attributes=expand,
     )
     _print_save_df(df, saveto)
-    sradb.close()
 
 
 #########################################################################
@@ -585,15 +583,14 @@ def gsm_to_srx(gsm_ids, saveto, detailed, desc, expand):
 
 ########################### srp-to-gse ##################################
 def srp_to_gse(srp_id, saveto, detailed, desc, expand):
-    sradb = SRAweb()
-    df = sradb.srp_to_gse(
+    client = SRAweb()
+    df = client.srp_to_gse(
         srp_id,
         detailed=detailed,
         sample_attribute=desc,
         expand_sample_attributes=expand,
     )
     _print_save_df(df, saveto)
-    sradb.close()
 
 
 #########################################################################
@@ -601,15 +598,14 @@ def srp_to_gse(srp_id, saveto, detailed, desc, expand):
 
 ########################### srp-to-srr ##################################
 def srp_to_srr(srp_id, saveto, detailed, desc, expand):
-    sradb = SRAweb()
-    df = sradb.srp_to_srr(
+    client = SRAweb()
+    df = client.srp_to_srr(
         srp_id,
         detailed=detailed,
         sample_attribute=desc,
         expand_sample_attributes=expand,
     )
     _print_save_df(df, saveto)
-    sradb.close()
 
 
 #########################################################################
@@ -617,15 +613,14 @@ def srp_to_srr(srp_id, saveto, detailed, desc, expand):
 
 ########################### srp-to-srs ##################################
 def srp_to_srs(srp_id, saveto, detailed, desc, expand):
-    sradb = SRAweb()
-    df = sradb.srp_to_srs(
+    client = SRAweb()
+    df = client.srp_to_srs(
         srp_id,
         detailed=detailed,
         sample_attribute=desc,
         expand_sample_attributes=expand,
     )
     _print_save_df(df, saveto)
-    sradb.close()
 
 
 #########################################################################
@@ -633,15 +628,14 @@ def srp_to_srs(srp_id, saveto, detailed, desc, expand):
 
 ########################### srp-to-srx ##################################
 def srp_to_srx(srp_id, saveto, detailed, desc, expand):
-    sradb = SRAweb()
-    df = sradb.srp_to_srx(
+    client = SRAweb()
+    df = client.srp_to_srx(
         srp_id,
         detailed=detailed,
         sample_attribute=desc,
         expand_sample_attributes=expand,
     )
     _print_save_df(df, saveto)
-    sradb.close()
 
 
 #########################################################################
@@ -649,15 +643,14 @@ def srp_to_srx(srp_id, saveto, detailed, desc, expand):
 
 ########################### srr-to-gsm ##################################
 def srr_to_gsm(srr_ids, saveto, detailed, desc, expand):
-    sradb = SRAweb()
-    df = sradb.srr_to_gsm(
+    client = SRAweb()
+    df = client.srr_to_gsm(
         srr_ids,
         detailed=detailed,
         sample_attribute=desc,
         expand_sample_attributes=expand,
     )
     _print_save_df(df, saveto)
-    sradb.close()
 
 
 ########################################################################
@@ -665,15 +658,14 @@ def srr_to_gsm(srr_ids, saveto, detailed, desc, expand):
 
 ########################### srr-to-srp ##################################
 def srr_to_srp(srr_ids, saveto, detailed, desc, expand):
-    sradb = SRAweb()
-    df = sradb.srr_to_srp(
+    client = SRAweb()
+    df = client.srr_to_srp(
         srr_ids,
         detailed=detailed,
         sample_attribute=desc,
         expand_sample_attributes=expand,
     )
     _print_save_df(df, saveto)
-    sradb.close()
 
 
 #########################################################################
@@ -681,15 +673,14 @@ def srr_to_srp(srr_ids, saveto, detailed, desc, expand):
 
 ########################### srr-to-srs ##################################
 def srr_to_srs(srr_ids, saveto, detailed, desc, expand):
-    sradb = SRAweb()
-    df = sradb.srr_to_srs(
+    client = SRAweb()
+    df = client.srr_to_srs(
         srr_ids,
         detailed=detailed,
         sample_attribute=desc,
         expand_sample_attributes=expand,
     )
     _print_save_df(df, saveto)
-    sradb.close()
 
 
 #########################################################################
@@ -697,15 +688,14 @@ def srr_to_srs(srr_ids, saveto, detailed, desc, expand):
 
 ########################### srr-to-srx ##################################
 def srr_to_srx(srr_ids, saveto, detailed, desc, expand):
-    sradb = SRAweb()
-    df = sradb.srr_to_srx(
+    client = SRAweb()
+    df = client.srr_to_srx(
         srr_ids,
         detailed=detailed,
         sample_attribute=desc,
         expand_sample_attributes=expand,
     )
     _print_save_df(df, saveto)
-    sradb.close()
 
 
 #########################################################################
@@ -713,15 +703,14 @@ def srr_to_srx(srr_ids, saveto, detailed, desc, expand):
 
 ########################### srs-to-gsm ##################################
 def srs_to_gsm(srs_ids, saveto, detailed, desc, expand):
-    sradb = SRAweb()
-    df = sradb.srs_to_gsm(
+    client = SRAweb()
+    df = client.srs_to_gsm(
         srs_ids,
         detailed=detailed,
         sample_attribute=desc,
         expand_sample_attributes=expand,
     )
     _print_save_df(df, saveto)
-    sradb.close()
 
 
 #########################################################################
@@ -729,15 +718,14 @@ def srs_to_gsm(srs_ids, saveto, detailed, desc, expand):
 
 ########################### srs-to-srx ##################################
 def srs_to_srx(srs_ids, saveto, detailed, desc, expand):
-    sradb = SRAweb()
-    df = sradb.srs_to_srx(
+    client = SRAweb()
+    df = client.srs_to_srx(
         srs_ids,
         detailed=detailed,
         sample_attribute=desc,
         expand_sample_attributes=expand,
     )
     _print_save_df(df, saveto)
-    sradb.close()
 
 
 #########################################################################
@@ -745,15 +733,14 @@ def srs_to_srx(srs_ids, saveto, detailed, desc, expand):
 
 ########################### srx-to-srp ##################################
 def srx_to_srp(srx_ids, saveto, detailed, desc, expand):
-    sradb = SRAweb()
-    df = sradb.srx_to_srp(
+    client = SRAweb()
+    df = client.srx_to_srp(
         srx_ids,
         detailed=detailed,
         sample_attribute=desc,
         expand_sample_attributes=expand,
     )
     _print_save_df(df, saveto)
-    sradb.close()
 
 
 #########################################################################
@@ -761,15 +748,14 @@ def srx_to_srp(srx_ids, saveto, detailed, desc, expand):
 
 ########################### srx-to-srr ##################################
 def srx_to_srr(srx_ids, saveto, detailed, desc, expand):
-    sradb = SRAweb()
-    df = sradb.srx_to_srr(
+    client = SRAweb()
+    df = client.srx_to_srr(
         srx_ids,
         detailed=detailed,
         sample_attribute=desc,
         expand_sample_attributes=expand,
     )
     _print_save_df(df, saveto)
-    sradb.close()
 
 
 #########################################################################
@@ -777,86 +763,75 @@ def srx_to_srr(srx_ids, saveto, detailed, desc, expand):
 
 ########################### srx-to-srs ##################################
 def srx_to_srs(srx_ids, saveto, detailed, desc, expand):
-    sradb = SRAweb()
-    df = sradb.srx_to_srs(
+    client = SRAweb()
+    df = client.srx_to_srs(
         srx_ids,
         detailed=detailed,
         sample_attribute=desc,
         expand_sample_attributes=expand,
     )
     _print_save_df(df, saveto)
-    sradb.close()
 
 
 def srp_to_pmid(srp_ids, saveto):
-    sradb = SRAweb()
-    df = sradb.srp_to_pmid(srp_ids)
+    client = SRAweb()
+    df = client.srp_to_pmid(srp_ids)
     _print_save_df(df, saveto)
-    sradb.close()
 
 
 def sra_to_pmid(sra_ids, saveto):
     """Backward compatibility wrapper for sra_to_pmid"""
-    sradb = SRAweb()
-    df = sradb.sra_to_pmid(sra_ids)
+    client = SRAweb()
+    df = client.sra_to_pmid(sra_ids)
     _print_save_df(df, saveto)
-    sradb.close()
 
 
 def gse_to_pmid(gse_ids, saveto):
-    sradb = SRAweb()
-    df = sradb.gse_to_pmid(gse_ids)
+    client = SRAweb()
+    df = client.gse_to_pmid(gse_ids)
     _print_save_df(df, saveto)
-    sradb.close()
 
 
 def pmid_to_gse(pmid_ids, saveto):
-    sradb = SRAweb()
-    df = sradb.pmid_to_gse(pmid_ids)
+    client = SRAweb()
+    df = client.pmid_to_gse(pmid_ids)
     _print_save_df(df, saveto)
-    sradb.close()
 
 
 def pmid_to_srp(pmid_ids, saveto):
-    sradb = SRAweb()
-    df = sradb.pmid_to_srp(pmid_ids)
+    client = SRAweb()
+    df = client.pmid_to_srp(pmid_ids)
     _print_save_df(df, saveto)
-    sradb.close()
 
 
 def pmc_to_identifiers(pmc_ids, saveto):
-    sradb = SRAweb()
-    df = sradb.pmc_to_identifiers(pmc_ids)
+    client = SRAweb()
+    df = client.pmc_to_identifiers(pmc_ids)
     _print_save_df(df, saveto)
-    sradb.close()
 
 
 def pmid_to_identifiers(pmid_ids, saveto):
-    sradb = SRAweb()
-    df = sradb.pmid_to_identifiers(pmid_ids)
+    client = SRAweb()
+    df = client.pmid_to_identifiers(pmid_ids)
     _print_save_df(df, saveto)
-    sradb.close()
 
 
 def doi_to_gse(doi_ids, saveto):
-    sradb = SRAweb()
-    df = sradb.doi_to_gse(doi_ids)
+    client = SRAweb()
+    df = client.doi_to_gse(doi_ids)
     _print_save_df(df, saveto)
-    sradb.close()
 
 
 def doi_to_srp(doi_ids, saveto):
-    sradb = SRAweb()
-    df = sradb.doi_to_srp(doi_ids)
+    client = SRAweb()
+    df = client.doi_to_srp(doi_ids)
     _print_save_df(df, saveto)
-    sradb.close()
 
 
 def doi_to_identifiers(doi_ids, saveto):
-    sradb = SRAweb()
-    df = sradb.doi_to_identifiers(doi_ids)
+    client = SRAweb()
+    df = client.doi_to_identifiers(doi_ids)
     _print_save_df(df, saveto)
-    sradb.close()
 
 
 #########################################################################

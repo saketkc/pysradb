@@ -6,6 +6,5 @@ __email__ = "saketkc@gmail.com"
 __version__ = "3.0.0.dev0"
 
 from .filter_attrs import expand_sample_attribute_columns
-from .geodb import GEOdb, download_geodb_file
-from .sradb import SRAdb, download_sradb_file
+from .geoweb import GEOweb, download_geo_matrix, parse_geo_matrix_to_tsv
 from .sraweb import SRAweb
