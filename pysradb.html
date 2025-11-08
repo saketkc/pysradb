@@ -2057,6 +2057,26 @@ Set to True by default.</p>
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pysradb.sraweb.</span></span><span class="sig-name descname"><span class="pre">SRAweb</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">api_key</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysradb/sraweb.html#SRAweb"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysradb.sraweb.SRAweb" title="Link to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#pysradb.sradb.SRAdb" title="pysradb.sradb.SRAdb"><code class="xref py py-class docutils literal notranslate"><span class="pre">SRAdb</span></code></a></p>
 <dl class="py method">
+<dt class="sig sig-object py" id="pysradb.sraweb.SRAweb.bioproject_to_srp">
+<span class="sig-name descname"><span class="pre">bioproject_to_srp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">bioproject</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysradb/sraweb.html#SRAweb.bioproject_to_srp"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysradb.sraweb.SRAweb.bioproject_to_srp" title="Link to this definition">¶</a></dt>
+<dd><p>Convert PRJNA BioProject ID to SRP accession</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>bioproject: str</strong></dt><dd><p>BioProject ID (e.g., ‘PRJNA810439’)</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt>srp_accessions: list</dt><dd><p>List of SRP accessions found</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="pysradb.sraweb.SRAweb.close">
 <span class="sig-name descname"><span class="pre">close</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysradb/sraweb.html#SRAweb.close"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysradb.sraweb.SRAweb.close" title="Link to this definition">¶</a></dt>
 <dd><p>Close sqlite connection.</p>
@@ -3231,6 +3251,7 @@ errors.</p>
 </li>
 <li><a class="reference internal" href="#module-pysradb.sraweb">pysradb.sraweb module</a><ul>
 <li><a class="reference internal" href="#pysradb.sraweb.SRAweb"><code class="docutils literal notranslate"><span class="pre">SRAweb</span></code></a><ul>
+<li><a class="reference internal" href="#pysradb.sraweb.SRAweb.bioproject_to_srp"><code class="docutils literal notranslate"><span class="pre">SRAweb.bioproject_to_srp()</span></code></a></li>
 <li><a class="reference internal" href="#pysradb.sraweb.SRAweb.close"><code class="docutils literal notranslate"><span class="pre">SRAweb.close()</span></code></a></li>
 <li><a class="reference internal" href="#pysradb.sraweb.SRAweb.create_esummary_params"><code class="docutils literal notranslate"><span class="pre">SRAweb.create_esummary_params()</span></code></a></li>
 <li><a class="reference internal" href="#pysradb.sraweb.SRAweb.doi_to_gse"><code class="docutils literal notranslate"><span class="pre">SRAweb.doi_to_gse()</span></code></a></li>

@@ -451,6 +451,78 @@
         <span class="k">return</span> <span class="n">json</span></div>
 
 
+<div class="viewcode-block" id="SRAweb.bioproject_to_srp">
+<a class="viewcode-back" href="../../pysradb.html#pysradb.sraweb.SRAweb.bioproject_to_srp">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">bioproject_to_srp</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">bioproject</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Convert PRJNA BioProject ID to SRP accession</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        bioproject: str</span>
+<span class="sd">                   BioProject ID (e.g., &#39;PRJNA810439&#39;)</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        srp_accessions: list</span>
+<span class="sd">                       List of SRP accessions found</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">bioproject</span> <span class="ow">or</span> <span class="n">pd</span><span class="o">.</span><span class="n">isna</span><span class="p">(</span><span class="n">bioproject</span><span class="p">):</span>
+            <span class="k">return</span> <span class="p">[]</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="kn">import</span><span class="w"> </span><span class="nn">re</span>
+
+            <span class="c1"># Search SRA for records with this bioproject</span>
+            <span class="n">search_url</span> <span class="o">=</span> <span class="s2">&quot;https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi&quot;</span>
+            <span class="n">search_params</span> <span class="o">=</span> <span class="p">{</span>
+                <span class="s2">&quot;db&quot;</span><span class="p">:</span> <span class="s2">&quot;sra&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;term&quot;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">bioproject</span><span class="si">}</span><span class="s2">[BioProject]&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;retmode&quot;</span><span class="p">:</span> <span class="s2">&quot;json&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;retmax&quot;</span><span class="p">:</span> <span class="s2">&quot;50&quot;</span>
+            <span class="p">}</span>
+
+            <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">search_url</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="n">search_params</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">30</span><span class="p">)</span>
+            <span class="n">result</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
+            <span class="n">sra_uids</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;esearchresult&quot;</span><span class="p">,</span> <span class="p">{})</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;idlist&quot;</span><span class="p">,</span> <span class="p">[])</span>
+
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">sra_uids</span><span class="p">:</span>
+                <span class="k">return</span> <span class="p">[]</span>
+
+            <span class="c1"># Get summaries to extract SRP accessions</span>
+            <span class="n">summary_url</span> <span class="o">=</span> <span class="s2">&quot;https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esummary.fcgi&quot;</span>
+            <span class="n">srp_set</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+
+            <span class="c1"># Process in batches to avoid too many requests</span>
+            <span class="k">for</span> <span class="n">uid</span> <span class="ow">in</span> <span class="n">sra_uids</span><span class="p">[:</span><span class="mi">10</span><span class="p">]:</span>  <span class="c1"># Limit to first 10</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="n">summary_params</span> <span class="o">=</span> <span class="p">{</span>
+                        <span class="s2">&quot;db&quot;</span><span class="p">:</span> <span class="s2">&quot;sra&quot;</span><span class="p">,</span>
+                        <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="n">uid</span><span class="p">,</span>
+                        <span class="s2">&quot;retmode&quot;</span><span class="p">:</span> <span class="s2">&quot;json&quot;</span>
+                    <span class="p">}</span>
+
+                    <span class="n">summary_response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">summary_url</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="n">summary_params</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">30</span><span class="p">)</span>
+                    <span class="n">summary_result</span> <span class="o">=</span> <span class="n">summary_response</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
+
+                    <span class="k">if</span> <span class="n">uid</span> <span class="ow">in</span> <span class="n">summary_result</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;result&quot;</span><span class="p">,</span> <span class="p">{}):</span>
+                        <span class="n">record</span> <span class="o">=</span> <span class="n">summary_result</span><span class="p">[</span><span class="s2">&quot;result&quot;</span><span class="p">][</span><span class="n">uid</span><span class="p">]</span>
+                        <span class="n">expxml</span> <span class="o">=</span> <span class="n">record</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;expxml&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+
+                        <span class="c1"># Extract SRP using regex from the XML</span>
+                        <span class="n">srp_match</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;Study acc=&quot;(SRP\d+)&quot;&#39;</span><span class="p">,</span> <span class="n">expxml</span><span class="p">)</span>
+                        <span class="k">if</span> <span class="n">srp_match</span><span class="p">:</span>
+                            <span class="n">srp_set</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">srp_match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span>
+
+                    <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mf">0.1</span><span class="p">)</span>  <span class="c1"># Small delay between requests</span>
+                <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+                    <span class="k">continue</span>
+
+            <span class="k">return</span> <span class="nb">sorted</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">srp_set</span><span class="p">))</span>
+
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="k">return</span> <span class="p">[]</span></div>
+
+
 <div class="viewcode-block" id="SRAweb.fetch_ena_fastq">
 <a class="viewcode-back" href="../../pysradb.html#pysradb.sraweb.SRAweb.fetch_ena_fastq">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">fetch_ena_fastq</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">srp</span><span class="p">):</span>
@@ -1463,6 +1535,105 @@
                 <span class="n">na_position</span><span class="o">=</span><span class="s2">&quot;last&quot;</span><span class="p">,</span>
             <span class="p">)</span>
         <span class="n">metadata_df</span> <span class="o">=</span> <span class="n">metadata_df</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">detailed</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">metadata_df</span><span class="o">.</span><span class="n">empty</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">gse_bioproject_map</span> <span class="o">=</span> <span class="p">{}</span>
+                <span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">metadata_df</span><span class="o">.</span><span class="n">iterrows</span><span class="p">():</span>
+                    <span class="n">gse_id</span> <span class="o">=</span> <span class="n">row</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;study_accession&quot;</span><span class="p">)</span>
+                    <span class="n">bioproject</span> <span class="o">=</span> <span class="n">row</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;bioproject&quot;</span><span class="p">)</span>
+                    <span class="k">if</span> <span class="n">gse_id</span> <span class="ow">and</span> <span class="nb">str</span><span class="p">(</span><span class="n">gse_id</span><span class="p">)</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;GSE&quot;</span><span class="p">):</span>
+                        <span class="k">if</span> <span class="n">bioproject</span> <span class="ow">and</span> <span class="nb">str</span><span class="p">(</span><span class="n">bioproject</span><span class="p">)</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;PRJNA&quot;</span><span class="p">):</span>
+                            <span class="n">gse_bioproject_map</span><span class="p">[</span><span class="n">gse_id</span><span class="p">]</span> <span class="o">=</span> <span class="n">bioproject</span>
+
+                <span class="n">gse_srp_map</span> <span class="o">=</span> <span class="p">{}</span>  
+                <span class="n">all_fastq_data</span> <span class="o">=</span> <span class="p">[]</span> 
+
+                <span class="k">for</span> <span class="n">gse_id</span><span class="p">,</span> <span class="n">bioproject</span> <span class="ow">in</span> <span class="n">gse_bioproject_map</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                    <span class="k">try</span><span class="p">:</span>
+                        <span class="n">srp_list</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">bioproject_to_srp</span><span class="p">(</span><span class="n">bioproject</span><span class="p">)</span>
+                        <span class="k">if</span> <span class="n">srp_list</span><span class="p">:</span>
+                            <span class="n">srp</span> <span class="o">=</span> <span class="n">srp_list</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>  <span class="c1"># Use the first SRP found</span>
+                            <span class="n">gse_srp_map</span><span class="p">[</span><span class="n">gse_id</span><span class="p">]</span> <span class="o">=</span> <span class="n">srp</span>
+
+                            <span class="c1"># Fetch SRA metadata and fastq URLs for this SRP</span>
+                            <span class="k">try</span><span class="p">:</span>
+                                <span class="n">sra_metadata_df</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sra_metadata</span><span class="p">(</span><span class="n">srp</span><span class="p">)</span>
+                                <span class="k">if</span> <span class="ow">not</span> <span class="n">sra_metadata_df</span><span class="o">.</span><span class="n">empty</span><span class="p">:</span>
+                                    <span class="n">fastq_df</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fetch_ena_fastq</span><span class="p">(</span><span class="n">srp</span><span class="p">)</span>
+                                    <span class="k">if</span> <span class="ow">not</span> <span class="n">fastq_df</span><span class="o">.</span><span class="n">empty</span><span class="p">:</span>
+                                        <span class="n">merged_df</span> <span class="o">=</span> <span class="n">sra_metadata_df</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span>
+                                            <span class="n">fastq_df</span><span class="p">,</span>
+                                            <span class="n">on</span><span class="o">=</span><span class="s2">&quot;run_accession&quot;</span><span class="p">,</span>
+                                            <span class="n">how</span><span class="o">=</span><span class="s2">&quot;left&quot;</span>
+                                        <span class="p">)</span>
+                                        <span class="n">merged_df</span><span class="p">[</span><span class="s2">&quot;gse_from_bioproject&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">gse_id</span>
+                                        <span class="n">merged_df</span><span class="p">[</span><span class="s2">&quot;srp_from_bioproject&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">srp</span>
+                                        <span class="n">all_fastq_data</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">merged_df</span><span class="p">)</span>
+                                <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sleep_time</span><span class="p">)</span>
+                            <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+                                <span class="k">pass</span>
+                    <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+                        <span class="k">pass</span>
+
+                <span class="c1"># If we found fastq data, merge it with the main metadata via GSM-&gt;SRX-&gt;SRR mapping</span>
+                <span class="k">if</span> <span class="n">all_fastq_data</span> <span class="ow">and</span> <span class="n">sample_accessions</span><span class="p">:</span>
+                    <span class="k">try</span><span class="p">:</span>
+                        <span class="c1"># Combine all fastq data</span>
+                        <span class="n">combined_fastq</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">(</span><span class="n">all_fastq_data</span><span class="p">,</span> <span class="n">ignore_index</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+                        <span class="c1"># Map GSM to SRX for matching</span>
+                        <span class="n">gsm_to_srx_map</span> <span class="o">=</span> <span class="p">{}</span>
+                        <span class="k">for</span> <span class="n">gsm_id</span> <span class="ow">in</span> <span class="n">sample_accessions</span><span class="p">:</span>
+                            <span class="k">try</span><span class="p">:</span>
+                                <span class="n">srx_df</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">gsm_to_srx</span><span class="p">(</span><span class="n">gsm_id</span><span class="p">)</span>
+                                <span class="k">if</span> <span class="ow">not</span> <span class="n">srx_df</span><span class="o">.</span><span class="n">empty</span> <span class="ow">and</span> <span class="s2">&quot;experiment_accession&quot;</span> <span class="ow">in</span> <span class="n">srx_df</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
+                                    <span class="n">srx_list</span> <span class="o">=</span> <span class="n">srx_df</span><span class="p">[</span><span class="s2">&quot;experiment_accession&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">dropna</span><span class="p">()</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+                                    <span class="k">if</span> <span class="n">srx_list</span><span class="p">:</span>
+                                        <span class="n">gsm_to_srx_map</span><span class="p">[</span><span class="n">gsm_id</span><span class="p">]</span> <span class="o">=</span> <span class="n">srx_list</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+                                <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mf">0.1</span><span class="p">)</span>
+                            <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+                                <span class="k">pass</span>
+
+                        <span class="c1"># Add fastq columns to metadata_df</span>
+                        <span class="n">fastq_cols</span> <span class="o">=</span> <span class="p">[</span><span class="n">col</span> <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">combined_fastq</span><span class="o">.</span><span class="n">columns</span>
+                                     <span class="k">if</span> <span class="s2">&quot;fastq&quot;</span> <span class="ow">in</span> <span class="n">col</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">or</span> <span class="s2">&quot;ftp&quot;</span> <span class="ow">in</span> <span class="n">col</span><span class="o">.</span><span class="n">lower</span><span class="p">()]</span>
+                        <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">fastq_cols</span><span class="p">:</span>
+                            <span class="k">if</span> <span class="n">col</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">metadata_df</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
+                                <span class="n">metadata_df</span><span class="p">[</span><span class="n">col</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">NA</span>
+
+                        <span class="c1"># Create a mapping from SRX-&gt;run_accession-&gt;fastq URLs</span>
+                        <span class="n">srx_to_fastq_map</span> <span class="o">=</span> <span class="p">{}</span>
+                        <span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">combined_fastq</span><span class="o">.</span><span class="n">iterrows</span><span class="p">():</span>
+                            <span class="n">srx</span> <span class="o">=</span> <span class="n">row</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;experiment_accession&quot;</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">NA</span><span class="p">)</span>
+                            <span class="n">run_acc</span> <span class="o">=</span> <span class="n">row</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;run_accession&quot;</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">NA</span><span class="p">)</span>
+                            <span class="k">if</span> <span class="ow">not</span> <span class="n">pd</span><span class="o">.</span><span class="n">isna</span><span class="p">(</span><span class="n">srx</span><span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">pd</span><span class="o">.</span><span class="n">isna</span><span class="p">(</span><span class="n">run_acc</span><span class="p">):</span>
+                                <span class="k">if</span> <span class="n">srx</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">srx_to_fastq_map</span><span class="p">:</span>
+                                    <span class="n">srx_to_fastq_map</span><span class="p">[</span><span class="n">srx</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+                                <span class="n">srx_to_fastq_map</span><span class="p">[</span><span class="n">srx</span><span class="p">][</span><span class="n">run_acc</span><span class="p">]</span> <span class="o">=</span> <span class="n">row</span>
+
+                        <span class="c1"># Merge fastq URLs based on GSM-&gt;SRX-&gt;fastq mapping</span>
+                        <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">fastq_cols</span><span class="p">:</span>
+                            <span class="k">def</span><span class="w"> </span><span class="nf">get_fastq_url</span><span class="p">(</span><span class="n">row</span><span class="p">):</span>
+                                <span class="n">gsm</span> <span class="o">=</span> <span class="n">row</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;sample_accession&quot;</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">NA</span><span class="p">)</span>
+                                <span class="k">if</span> <span class="n">pd</span><span class="o">.</span><span class="n">isna</span><span class="p">(</span><span class="n">gsm</span><span class="p">):</span>
+                                    <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">NA</span>
+                                <span class="c1"># Get SRX for this GSM</span>
+                                <span class="n">srx</span> <span class="o">=</span> <span class="n">gsm_to_srx_map</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">gsm</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">NA</span><span class="p">)</span>
+                                <span class="k">if</span> <span class="n">pd</span><span class="o">.</span><span class="n">isna</span><span class="p">(</span><span class="n">srx</span><span class="p">)</span> <span class="ow">or</span> <span class="n">srx</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">srx_to_fastq_map</span><span class="p">:</span>
+                                    <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">NA</span>
+                                <span class="c1"># Get first run accession for this SRX</span>
+                                <span class="n">run_accs</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">srx_to_fastq_map</span><span class="p">[</span><span class="n">srx</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+                                <span class="k">if</span> <span class="n">run_accs</span><span class="p">:</span>
+                                    <span class="n">fastq_row</span> <span class="o">=</span> <span class="n">srx_to_fastq_map</span><span class="p">[</span><span class="n">srx</span><span class="p">][</span><span class="n">run_accs</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span>
+                                    <span class="k">return</span> <span class="n">fastq_row</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">col</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">NA</span><span class="p">)</span>
+                                <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">NA</span>
+
+                            <span class="n">metadata_df</span><span class="p">[</span><span class="n">col</span><span class="p">]</span> <span class="o">=</span> <span class="n">metadata_df</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">get_fastq_url</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+                    <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+                        <span class="k">pass</span>
+            <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+                <span class="k">pass</span>
 
         <span class="c1"># Enrich metadata if requested</span>
         <span class="k">if</span> <span class="n">enrich</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">metadata_df</span><span class="o">.</span><span class="n">empty</span><span class="p">:</span>
