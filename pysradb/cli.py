@@ -213,7 +213,6 @@ def metadata(
     if input_file:
         if not os.path.exists(input_file):
             console.print(f"[red]Error: Input file '{input_file}' not found[/red]")
-            sradb.close()
             return
 
         with open(input_file, "r") as f:
@@ -221,7 +220,6 @@ def metadata(
 
         if not file_ids:
             console.print(f"[red]Error: No IDs found in '{input_file}'[/red]")
-            sradb.close()
             return
 
         # If output_dir is specified, process each ID separately
@@ -288,7 +286,6 @@ def metadata(
             console.print(
                 f"[blue]Batch processing complete. Files saved to '{output_dir}'[/blue]"
             )
-            sradb.close()
             return
         else:
             # output_dir not specified, use file IDs as regular input
