@@ -273,12 +273,13 @@
 <span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">re</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">sys</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">io</span><span class="w"> </span><span class="kn">import</span> <span class="n">StringIO</span>
 
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">requests</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">lxml</span><span class="w"> </span><span class="kn">import</span> <span class="n">html</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">.download</span><span class="w"> </span><span class="kn">import</span> <span class="n">download_file</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">.geodb</span><span class="w"> </span><span class="kn">import</span> <span class="n">GEOdb</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">.utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">_get_url</span><span class="p">,</span> <span class="n">copyfileobj</span><span class="p">,</span> <span class="n">get_gzip_uncompressed_size</span>
 
 <span class="n">PY3</span> <span class="o">=</span> <span class="kc">True</span>
@@ -288,7 +289,7 @@
 
 <div class="viewcode-block" id="GEOweb">
 <a class="viewcode-back" href="../../pysradb.html#pysradb.geoweb.GEOweb">[docs]</a>
-<span class="k">class</span><span class="w"> </span><span class="nc">GEOweb</span><span class="p">(</span><span class="n">GEOdb</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">GEOweb</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialize GEOweb without any database.&quot;&quot;&quot;</span>
 
@@ -382,6 +383,77 @@
             <span class="n">geo_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">out_dir</span><span class="p">,</span> <span class="n">prefix</span> <span class="o">+</span> <span class="n">link</span><span class="p">)</span>
             <span class="n">download_file</span><span class="p">(</span><span class="n">root_url</span> <span class="o">+</span> <span class="n">link</span><span class="p">,</span> <span class="n">geo_path</span><span class="p">,</span> <span class="n">show_progress</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
 </div>
+
+
+
+<div class="viewcode-block" id="download_geo_matrix">
+<a class="viewcode-back" href="../../pysradb.html#pysradb.geoweb.download_geo_matrix">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">download_geo_matrix</span><span class="p">(</span><span class="n">accession</span><span class="p">,</span> <span class="n">output_dir</span><span class="o">=</span><span class="s2">&quot;.&quot;</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Download a GEO Matrix file for a given GEO accession ID.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        accession (str): GEO accession ID (e.g., &#39;GSE234190&#39;).</span>
+<span class="sd">        output_dir (str): Directory to save the downloaded file (default: current directory).</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        str: Path to the downloaded file.</span>
+
+<span class="sd">    Raises:</span>
+<span class="sd">        Exception: If the download fails.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Construct the URL for the GEO Matrix file</span>
+    <span class="n">url</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;https://ftp.ncbi.nlm.nih.gov/geo/series/</span><span class="si">{</span><span class="n">accession</span><span class="p">[:</span><span class="o">-</span><span class="mi">3</span><span class="p">]</span><span class="si">}</span><span class="s2">nnn/</span><span class="si">{</span><span class="n">accession</span><span class="si">}</span><span class="s2">/matrix/</span><span class="si">{</span><span class="n">accession</span><span class="si">}</span><span class="s2">_series_matrix.txt.gz&quot;</span>
+
+    <span class="c1"># Define the output file path</span>
+    <span class="n">output_file</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">output_dir</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">accession</span><span class="si">}</span><span class="s2">_series_matrix.txt.gz&quot;</span><span class="p">)</span>
+
+    <span class="c1"># Download the file using _get_url</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">_get_url</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">output_file</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">output_file</span>
+    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;Failed to download GEO Matrix file for </span><span class="si">{</span><span class="n">accession</span><span class="si">}</span><span class="s2">. Exception: </span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="parse_geo_matrix_to_tsv">
+<a class="viewcode-back" href="../../pysradb.html#pysradb.geoweb.parse_geo_matrix_to_tsv">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">parse_geo_matrix_to_tsv</span><span class="p">(</span><span class="n">input_file</span><span class="p">,</span> <span class="n">output_file</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Parse a GEO Matrix file to a TSV file, extracting the expression data.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        input_file (str): Path to the input GEO Matrix file (gzipped).</span>
+<span class="sd">        output_file (str): Path to save the output TSV file.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        pandas.DataFrame: The parsed expression data.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Read the gzipped file and extract the data section</span>
+    <span class="n">data_lines</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">data_section</span> <span class="o">=</span> <span class="kc">False</span>
+
+    <span class="k">with</span> <span class="n">gzip</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">input_file</span><span class="p">,</span> <span class="s2">&quot;rt&quot;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">f</span><span class="p">:</span>
+            <span class="n">line</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">line</span> <span class="o">==</span> <span class="s2">&quot;!series_matrix_table_begin&quot;</span><span class="p">:</span>
+                <span class="n">data_section</span> <span class="o">=</span> <span class="kc">True</span>
+                <span class="k">continue</span>
+            <span class="k">elif</span> <span class="n">line</span> <span class="o">==</span> <span class="s2">&quot;!series_matrix_table_end&quot;</span><span class="p">:</span>
+                <span class="k">break</span>
+            <span class="k">if</span> <span class="n">data_section</span> <span class="ow">and</span> <span class="n">line</span><span class="p">:</span>
+                <span class="n">data_lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
+
+    <span class="c1"># Use pandas.read_csv to parse the data section</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">StringIO</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">data_lines</span><span class="p">)),</span> <span class="n">sep</span><span class="o">=</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">comment</span><span class="o">=</span><span class="s2">&quot;!&quot;</span><span class="p">)</span>
+
+    <span class="c1"># Save to TSV</span>
+    <span class="n">df</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">output_file</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">df</span></div>
 
 </pre></div>
         </article>

@@ -687,28 +687,39 @@
 <span class="s2">If a field is explicitly labeled in the metadata, prioritize that information. You may make reasonable generalizations</span>
 <span class="s2">(e.g., &quot;CD19+ B cells&quot; → &quot;b cells&quot;, &quot;CD4+ T cells&quot; → &quot;t cells&quot;), but DO NOT over-generalize to broader categories.</span>
 
+<span class="s2">BULK TISSUE AND WHOLE-SAMPLE HANDLING (IMPORTANT):</span>
+<span class="s2">When the metadata contains keywords indicating bulk tissue or whole samples (bulk, PDX, xenograft, tumor, tissue,</span>
+<span class="s2">whole tissue, homogenate), the sample contains MIXED CELL TYPES. Do NOT invent specific cell types:</span>
+<span class="s2">- &quot;bulk RNA-seq from PDX&quot; → cell_type: &quot;Unknown&quot; (NOT &quot;neuron&quot; or any specific cell type)</span>
+<span class="s2">- &quot;tumor tissue&quot; → cell_type: &quot;Unknown&quot;, organ/tissue from source if clear (NOT inferred from invented cell types)</span>
+<span class="s2">- &quot;xenograft&quot; → cell_type: &quot;Unknown&quot; (multiple cell types present)</span>
+<span class="s2">- &quot;whole tissue&quot; → cell_type: &quot;Unknown&quot; (NOT a specific cell type)</span>
+<span class="s2">RULE: If cell_type is not explicitly stated AND the sample is described as bulk/whole/tissue/tumor/PDX, return &quot;Unknown&quot; for cell_type.</span>
+
 <span class="s2">Examples of CORRECT extraction:</span>
 <span class="s2">- &quot;cell type: CD19+ B cells&quot; → cell_type: &quot;b cells&quot; or &quot;cd19+ b cells&quot; (NOT &quot;pbmc&quot; - too broad)</span>
 <span class="s2">- &quot;cell type: CD4+ T cells&quot; → cell_type: &quot;t cells&quot; or &quot;cd4+ t cells&quot; (NOT &quot;lymphocyte&quot; or &quot;pbmc&quot; - too broad)</span>
 <span class="s2">- &quot;cell type: hepatocytes&quot; → cell_type: &quot;hepatocyte&quot; (NOT &quot;liver cells&quot; - less specific)</span>
 <span class="s2">- &quot;tissue: prefrontal cortex&quot; → tissue: &quot;prefrontal cortex&quot; or &quot;brain&quot; (NOT &quot;nervous tissue&quot; - too broad)</span>
 <span class="s2">- &quot;disease: Multiple sclerosis&quot; → disease: &quot;multiple sclerosis&quot; (NOT &quot;healthy&quot; or &quot;autoimmune disease&quot;)</span>
+<span class="s2">- &quot;bulk RNA-seq from PDX&quot; → cell_type: &quot;Unknown&quot; (NOT &quot;neuron&quot; or invented types), organ: &quot;Unknown&quot; if not stated</span>
+<span class="s2">- &quot;sample_description: tumor tissue&quot; → cell_type: &quot;Unknown&quot;, organ: &quot;Unknown&quot; (do not invent)</span>
 
-<span class="s2">CELL TYPE INFERENCE RULES (only when NOT explicitly stated):</span>
-<span class="s2">- Cell types indicate their origin organ/tissue. Use this biological knowledge:</span>
+<span class="s2">CELL TYPE INFERENCE RULES (only when NOT explicitly stated AND NOT bulk/PDX/tumor/whole tissue):</span>
+<span class="s2">- Cell types indicate their origin organ/tissue. Use this biological knowledge ONLY for purified cell populations:</span>
 <span class="s2">  * Blood cells (PBMC, T cell, B cell, lymphocyte, monocyte, macrophage, NK cell) → organ: blood, tissue: peripheral blood, system: immune system</span>
 <span class="s2">  * Brain cells (neuron, astrocyte, microglia, oligodendrocyte) → organ: brain, tissue: brain tissue, system: nervous system</span>
 <span class="s2">  * Liver cells (hepatocyte) → organ: liver, tissue: liver parenchyma, system: digestive system</span>
 <span class="s2">  * Heart cells (cardiomyocyte) → organ: heart, tissue: cardiac tissue, system: cardiovascular system</span>
 <span class="s2">  * Lung cells (pneumocyte, alveolar cell) → organ: lung, tissue: lung parenchyma, system: respiratory system</span>
-<span class="s2">  * Apply similar biological reasoning for other cell types</span>
+<span class="s2">  * Apply similar biological reasoning for OTHER PURIFIED cell types ONLY</span>
 
 <span class="s2">EXTRACTION RULES:</span>
-<span class="s2">1. **cell_type**: FIRST check for &quot;cell type:&quot;, &quot;cell_type:&quot;, &quot;celltype:&quot; or &quot;cellType:&quot; labels. Use the stated value or reasonable generalization (CD19+ B cells → b cells). NEVER over-generalize to broad categories like &quot;pbmc&quot; or &quot;lymphocyte&quot; when a specific type is stated.</span>
+<span class="s2">1. **cell_type**: FIRST check for &quot;cell type:&quot;, &quot;cell_type:&quot;, &quot;celltype:&quot; or &quot;cellType:&quot; labels. If not stated, check if sample is bulk/PDX/tumor/tissue/xenograft - if yes, return &quot;Unknown&quot;. Otherwise, use stated value or reasonable generalization (CD19+ B cells → b cells). NEVER invent cell types.</span>
 <span class="s2">2. **disease**: FIRST check for &quot;disease:&quot;, &quot;disease status:&quot;, or &quot;condition:&quot; labels. Use exact disease name. &quot;Normal&quot;/&quot;control&quot;/&quot;WT&quot;→healthy only if NO disease is stated.</span>
-<span class="s2">3. **tissue**: FIRST check for &quot;tissue:&quot;, &quot;source_name:&quot; labels. Use stated value or reasonable generalization. Otherwise infer from cell_type/organ.</span>
-<span class="s2">4. **organ**: Look for explicit organ name OR infer from cell_type/tissue using biological knowledge above. Lowercase.</span>
-<span class="s2">5. **anatomical_system**: Derive from organ/cell_type using biological knowledge (blood→immune, brain→nervous, liver→digestive, heart→cardiovascular, lung→respiratory). Lowercase.</span>
+<span class="s2">3. **tissue**: FIRST check for &quot;tissue:&quot;, &quot;source_name:&quot; labels. Use stated value or reasonable generalization. Otherwise infer from EXPLICITLY STATED cell_type/organ. Do NOT infer from invented cell types.</span>
+<span class="s2">4. **organ**: Look for explicit organ name. Do NOT infer organ from invented cell types. Return &quot;Unknown&quot; if not stated.</span>
+<span class="s2">5. **anatomical_system**: Derive from EXPLICIT organ/cell_type information only. Return &quot;Unknown&quot; if not determinable.</span>
 <span class="s2">6. **sex**: F=female, M=male. Return: male, female, mixed, or Unknown. Lowercase.</span>
 <span class="s2">7. **development_stage**: From age - handle &#39;y&#39; for years, &#39;m&#39; for months (e.g., 17m=17 months=1.4 years). Use: 0-2y=infant, 3-12y=child, 13-18y=adolescent, 19-64y=adult, 65+=aged. Convert months to years when needed. Lowercase.</span>
 <span class="s2">8. **assay**: RNA-seq, scRNA-seq, CITE-seq, ATAC-seq, Bisulfite-Seq, etc. Lowercase.</span>
@@ -719,21 +730,23 @@
 <span class="s2">&quot;cell type: PBMC, tissue: peripheral blood&quot; → cell_type: &quot;pbmc&quot;, tissue: &quot;peripheral blood&quot;</span>
 <span class="s2">&quot;cell_type: CD8+ memory T cells&quot; → cell_type: &quot;t cells&quot; (acceptable: &quot;cd8+ memory t cells&quot;, &quot;memory t cells&quot;)</span>
 <span class="s2">&quot;cell type: activated microglia&quot; → cell_type: &quot;microglia&quot; (acceptable: &quot;activated microglia&quot;)</span>
+<span class="s2">&quot;sample_description: bulk RNA-seq from PDX, source: breast tumor&quot; → cell_type: &quot;Unknown&quot;, organ: &quot;Unknown&quot;, disease: &quot;Unknown&quot;</span>
+<span class="s2">&quot;sample_source: PDX1, sample_title: MJH1_G1M1, description: bulk RNA-seq&quot; → cell_type: &quot;Unknown&quot;, organ: &quot;Unknown&quot; (do NOT invent &quot;neuron&quot;)</span>
 
 <span class="s2">Metadata: </span><span class="si">{</span><span class="n">text</span><span class="si">}</span>
 
 <span class="s2">Extract (use &quot;Unknown&quot; only if truly unclear):</span>
 <span class="s2">&quot;&quot;&quot;</span>
         <span class="n">field_descriptions</span> <span class="o">=</span> <span class="p">{</span>
-            <span class="s2">&quot;organ&quot;</span><span class="p">:</span> <span class="s2">&quot;High-level organ - use stated value or reasonable generalization (lowercase)&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;tissue&quot;</span><span class="p">:</span> <span class="s2">&quot;Specific tissue - use stated value or reasonable generalization (lowercase)&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;anatomical_system&quot;</span><span class="p">:</span> <span class="s2">&quot;Major body system (lowercase)&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;cell_type&quot;</span><span class="p">:</span> <span class="s2">&quot;Cell type from stated value - allow reasonable generalization (e.g., &#39;CD19+ B cells&#39; → &#39;b cells&#39;) but NOT over-generalization (NOT &#39;pbmc&#39;) (lowercase)&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;disease&quot;</span><span class="p">:</span> <span class="s2">&quot;Exact disease name if explicitly stated (e.g., &#39;multiple sclerosis&#39;), or &#39;healthy&#39; for controls (lowercase)&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;organ&quot;</span><span class="p">:</span> <span class="s2">&quot;High-level organ - use stated value only or return &#39;Unknown&#39;. Do NOT invent from cell types. (lowercase)&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;tissue&quot;</span><span class="p">:</span> <span class="s2">&quot;Specific tissue - use stated value or reasonable generalization from EXPLICIT data only. Return &#39;Unknown&#39; if not stated. (lowercase)&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;anatomical_system&quot;</span><span class="p">:</span> <span class="s2">&quot;Major body system - only if clearly stated or derivable from explicit organ/cell type. Return &#39;Unknown&#39; otherwise. (lowercase)&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;cell_type&quot;</span><span class="p">:</span> <span class="s2">&quot;Cell type ONLY if explicitly stated or if bulk/PDX/tumor/tissue keywords present → return &#39;Unknown&#39;. Allow generalization (CD19+ B cells → b cells) but NEVER invent specific types. (lowercase)&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;disease&quot;</span><span class="p">:</span> <span class="s2">&quot;Exact disease name if explicitly stated (e.g., &#39;multiple sclerosis&#39;), or &#39;healthy&#39; for controls. Return &#39;Unknown&#39; if not stated. (lowercase)&quot;</span><span class="p">,</span>
             <span class="s2">&quot;sex&quot;</span><span class="p">:</span> <span class="s2">&quot;Biological sex: &#39;male&#39;, &#39;female&#39;, &#39;mixed&#39;, or &#39;Unknown&#39;&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;development_stage&quot;</span><span class="p">:</span> <span class="s2">&quot;Life/developmental stage (lowercase)&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;development_stage&quot;</span><span class="p">:</span> <span class="s2">&quot;Life/developmental stage - from age if stated. Return &#39;Unknown&#39; if age not provided. (lowercase)&quot;</span><span class="p">,</span>
             <span class="s2">&quot;assay&quot;</span><span class="p">:</span> <span class="s2">&quot;Sequencing or experimental assay type (lowercase)&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;organism&quot;</span><span class="p">:</span> <span class="s2">&quot;Species (scientific name preferred, or common name)&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;organism&quot;</span><span class="p">:</span> <span class="s2">&quot;Species (scientific name preferred, or common name). Return &#39;Unknown&#39; if not stated.&quot;</span><span class="p">,</span>
         <span class="p">}</span>
 
         <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="n">target_fields</span><span class="p">:</span>

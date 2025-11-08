@@ -284,8 +284,6 @@
 <span class="kn">import</span><span class="w"> </span><span class="nn">requests</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">xmltodict</span>
 
-<span class="kn">from</span><span class="w"> </span><span class="nn">.sradb</span><span class="w"> </span><span class="kn">import</span> <span class="n">SRAdb</span>
-
 <span class="n">warnings</span><span class="o">.</span><span class="n">simplefilter</span><span class="p">(</span><span class="n">action</span><span class="o">=</span><span class="s2">&quot;ignore&quot;</span><span class="p">,</span> <span class="n">category</span><span class="o">=</span><span class="ne">FutureWarning</span><span class="p">)</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">xml.sax.saxutils</span><span class="w"> </span><span class="kn">import</span> <span class="n">escape</span>
@@ -356,16 +354,16 @@
 
 <div class="viewcode-block" id="SRAweb">
 <a class="viewcode-back" href="../../pysradb.html#pysradb.sraweb.SRAweb">[docs]</a>
-<span class="k">class</span><span class="w"> </span><span class="nc">SRAweb</span><span class="p">(</span><span class="n">SRAdb</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">SRAweb</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">api_key</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Initialize a SRAwebdb.</span>
+<span class="sd">        Initialize SRAweb for API-based access to SRA data.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 
 <span class="sd">        api_key: string</span>
-<span class="sd">                 API key for ncbi eutils.</span>
+<span class="sd">                 API key for ncbi eutils. Optional, but recommended for higher rate limits.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">base_url</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">base_url</span><span class="p">[</span><span class="s2">&quot;esummary&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
@@ -1688,10 +1686,10 @@
 <span class="sd">            DataFrame with metadata (enriched if enrich=True)</span>
 
 <span class="sd">        Examples:</span>
-<span class="sd">            &gt;&gt;&gt; db = SRAweb()</span>
-<span class="sd">            &gt;&gt;&gt; df = db.metadata(&quot;GSE286254&quot;, detailed=True, enrich=True)</span>
-<span class="sd">            &gt;&gt;&gt; df = db.metadata(&quot;SRP253951&quot;, detailed=True, enrich=True)</span>
-<span class="sd">            &gt;&gt;&gt; df = db.metadata([&quot;GSE286254&quot;, &quot;GSE147507&quot;], enrich=True)</span>
+<span class="sd">            &gt;&gt;&gt; client = SRAweb()</span>
+<span class="sd">            &gt;&gt;&gt; df = client.metadata(&quot;GSE286254&quot;, detailed=True, enrich=True)</span>
+<span class="sd">            &gt;&gt;&gt; df = client.metadata(&quot;SRP253951&quot;, detailed=True, enrich=True)</span>
+<span class="sd">            &gt;&gt;&gt; df = client.metadata([&quot;GSE286254&quot;, &quot;GSE147507&quot;], enrich=True)</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">accession</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
             <span class="n">accessions</span> <span class="o">=</span> <span class="p">[</span><span class="n">accession</span><span class="p">]</span>

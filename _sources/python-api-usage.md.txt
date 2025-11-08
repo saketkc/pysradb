@@ -11,8 +11,8 @@ SraRunTable.
 
 ``` python
 from pysradb import SRAweb
-db = SRAweb()
-df = db.sra_metadata('SRP098789')
+client = SRAweb()
+df = client.sra_metadata('SRP098789')
 df.head()
 ```
 
@@ -48,9 +48,9 @@ UDP and is [designed to be faster](http://www.skullbox.net/tcpudp.php).
 
 ``` python
 from pysradb import SRAweb
-db = SRAweb()
-df = db.sra_metadata('SRP017942')
-db.download(df)
+client = SRAweb()
+df = client.sra_metadata('SRP017942')
+client.download(df)
 ```
 
 ## Use Case 3: Downloading a subset of experiments
@@ -59,7 +59,7 @@ Often, you need to process only a smaller set of samples from a project
 (SRP). Consider this project which has data spanning four assays.
 
 ``` python
-df = db.sra_metadata('SRP000941')
+df = client.sra_metadata('SRP000941')
 print(df.library_strategy.unique())
 ['ChIP-Seq' 'Bisulfite-Seq' 'RNA-Seq' 'WGS' 'OTHER']
 ```
@@ -71,7 +71,7 @@ would subset a dataframe in pandas.
 
 ``` python
 df_rna = df[df.library_strategy == 'RNA-Seq']
-db.download(df=df_rna, out_dir='/pysradb_downloads')()
+client.download(df=df_rna, out_dir='/pysradb_downloads')()
 ```
 
 ## Use Case 4: Getting cell-type/treatment information from sample_attributes
@@ -80,8 +80,8 @@ Cell type/tissue informations is usually hidden in the
 [sample_attributes]{.title-ref} column, which can be expanded:
 
 ``` python
-from pysradb.filter_attrs import expand_sample_attribute_columns
-df = db.sra_metadata('SRP017942')
+from pysraclient.filter_attrs import expand_sample_attribute_columns
+df = client.sra_metadata('SRP017942')
 expand_sample_attribute_columns(df).head()
 ```
 
@@ -174,7 +174,7 @@ If you want to look up for all projects where [ribosome
 profiling]{.title-ref} appears somewhere in the description:
 
 ``` python
-df = db.search_sra(search_str='"ribosome profiling"')
+df = client.search_sra(search_str='"ribosome profiling"')
 df.head()
 ```
 
@@ -295,10 +295,10 @@ Sometimes you have SRA accessions and want to find the publications that describ
 
 ``` python
 from pysradb import SRAweb
-db = SRAweb()
+client = SRAweb()
 
 # Get PMIDs for a study accession (SRP)
-pmids_df = db.srp_to_pmid('SRP002605')
+pmids_df = client.srp_to_pmid('SRP002605')
 pmids_df.head()
 ```
 
@@ -309,23 +309,23 @@ You can also get PMIDs for other SRA accession types:
 
 ``` python
 # Get PMIDs for run accessions (SRR)
-srr_pmids = db.srr_to_pmid('SRR057511')
+srr_pmids = client.srr_to_pmid('SRR057511')
 
 # Get PMIDs for experiment accessions (SRX) 
-srx_pmids = db.srx_to_pmid('SRX021967')
+srx_pmids = client.srx_to_pmid('SRX021967')
 
 # Get PMIDs for sample accessions (SRS)
-srs_pmids = db.srs_to_pmid('SRS079386')
+srs_pmids = client.srs_to_pmid('SRS079386')
 
 # Get PMIDs for multiple accessions at once
-multi_pmids = db.sra_to_pmid(['SRP002605', 'SRP016501'])
+multi_pmids = client.sra_to_pmid(['SRP002605', 'SRP016501'])
 ```
 
 You can also directly query BioProject accessions for their associated publications:
 
 ``` python  
 # Get PMIDs directly from BioProject accessions
-bioproject_pmids = db.fetch_bioproject_pmids(['PRJNA257197', 'PRJNA129385'])
+bioproject_pmids = client.fetch_bioproject_pmids(['PRJNA257197', 'PRJNA129385'])
 print(bioproject_pmids)
 # Output: {'PRJNA257197': ['25214632'], 'PRJNA129385': ['20703300']}
 ```

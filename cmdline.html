@@ -332,16 +332,16 @@ subcommands:
 <h3>Quickstart<a class="headerlink" href="#quickstart" title="Link to this heading">¶</a></h3>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>from<span class="w"> </span>pysradb<span class="w"> </span>import<span class="w"> </span>SRAweb
 
-<span class="nv">db</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>SRAweb<span class="o">()</span>
+<span class="nv">client</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>SRAweb<span class="o">()</span>
 
-<span class="nv">df</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>db.metadata<span class="o">(</span><span class="s2">&quot;GSE286254&quot;</span>,<span class="w"> </span><span class="nv">detailed</span><span class="o">=</span>True,<span class="w"> </span><span class="nv">enrich</span><span class="o">=</span>True<span class="o">)</span>
+<span class="nv">df</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>client.metadata<span class="o">(</span><span class="s2">&quot;GSE286254&quot;</span>,<span class="w"> </span><span class="nv">detailed</span><span class="o">=</span>True,<span class="w"> </span><span class="nv">enrich</span><span class="o">=</span>True<span class="o">)</span>
 
 <span class="c1"># Returns original + 9 enriched columns (might not always be complete):</span>
 <span class="c1"># guessed_organ, guessed_tissue, guessed_anatomical_system,</span>
 <span class="c1"># guessed_cell_type, guessed_disease, guessed_sex,</span>
 <span class="c1"># guessed_development_stage, guessed_assay, guessed_organism</span>
 
-db.close<span class="o">()</span>
+client.close<span class="o">()</span>
 </pre></div>
 </div>
 </section>
@@ -355,11 +355,11 @@ db.close<span class="o">()</span>
 <section id="advanced-usage">
 <h3>Advanced Usage<a class="headerlink" href="#advanced-usage" title="Link to this heading">¶</a></h3>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Use different model</span>
-<span class="nv">df</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>db.metadata<span class="o">(</span><span class="s2">&quot;GSE286254&quot;</span>,<span class="w"> </span><span class="nv">detailed</span><span class="o">=</span>True,<span class="w"> </span><span class="nv">enrich</span><span class="o">=</span>True,
+<span class="nv">df</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>client.metadata<span class="o">(</span><span class="s2">&quot;GSE286254&quot;</span>,<span class="w"> </span><span class="nv">detailed</span><span class="o">=</span>True,<span class="w"> </span><span class="nv">enrich</span><span class="o">=</span>True,
 <span class="w">                </span><span class="nv">enrich_backend</span><span class="o">=</span><span class="s2">&quot;ollama/llama3.2&quot;</span><span class="o">)</span>
 
 <span class="c1"># Manual enrichment with custom settings</span>
-from<span class="w"> </span>pysradb.metadata_enrichment<span class="w"> </span>import<span class="w"> </span>create_metadata_extractor,<span class="w"> </span>load_ontology_reference
+from<span class="w"> </span>pysraclient.metadata_enrichment<span class="w"> </span>import<span class="w"> </span>create_metadata_extractor,<span class="w"> </span>load_ontology_reference
 
 <span class="c1"># LLM-based extraction</span>
 <span class="nv">extractor_llm</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>create_metadata_extractor<span class="o">(</span><span class="nv">method</span><span class="o">=</span><span class="s2">&quot;llm&quot;</span>,<span class="w"> </span><span class="nv">backend</span><span class="o">=</span><span class="s2">&quot;ollama/phi3&quot;</span><span class="o">)</span>

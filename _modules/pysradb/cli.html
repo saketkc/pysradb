@@ -286,10 +286,8 @@
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">.</span><span class="w"> </span><span class="kn">import</span> <span class="n">__version__</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">.exceptions</span><span class="w"> </span><span class="kn">import</span> <span class="n">IncorrectFieldException</span><span class="p">,</span> <span class="n">MissingQueryException</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">.geodb</span><span class="w"> </span><span class="kn">import</span> <span class="n">download_geo_matrix</span><span class="p">,</span> <span class="n">parse_geo_matrix_to_tsv</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">.geoweb</span><span class="w"> </span><span class="kn">import</span> <span class="n">GEOweb</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.geoweb</span><span class="w"> </span><span class="kn">import</span> <span class="n">GEOweb</span><span class="p">,</span> <span class="n">download_geo_matrix</span><span class="p">,</span> <span class="n">parse_geo_matrix_to_tsv</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">.search</span><span class="w"> </span><span class="kn">import</span> <span class="n">EnaSearch</span><span class="p">,</span> <span class="n">GeoSearch</span><span class="p">,</span> <span class="n">SraSearch</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">.sradb</span><span class="w"> </span><span class="kn">import</span> <span class="n">SRAdb</span><span class="p">,</span> <span class="n">download_sradb_file</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">.sraweb</span><span class="w"> </span><span class="kn">import</span> <span class="n">SRAweb</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">.utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">confirm</span>
 
@@ -474,7 +472,7 @@
 <span class="k">def</span><span class="w"> </span><span class="nf">metadata</span><span class="p">(</span>
     <span class="n">srp_id</span><span class="p">,</span> <span class="n">assay</span><span class="p">,</span> <span class="n">desc</span><span class="p">,</span> <span class="n">detailed</span><span class="p">,</span> <span class="n">expand</span><span class="p">,</span> <span class="n">saveto</span><span class="p">,</span> <span class="n">enrich</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">enrich_backend</span><span class="o">=</span><span class="kc">None</span>
 <span class="p">):</span>
-    <span class="n">sradb</span> <span class="o">=</span> <span class="n">SRAweb</span><span class="p">()</span>
+    <span class="n">client</span> <span class="o">=</span> <span class="n">SRAweb</span><span class="p">()</span>
 
     <span class="n">srp_ids</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="n">gse_ids</span> <span class="o">=</span> <span class="p">[]</span>
@@ -486,7 +484,7 @@
 
     <span class="n">metadata_frames</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="k">if</span> <span class="n">srp_ids</span><span class="p">:</span>
-        <span class="n">srp_metadata</span> <span class="o">=</span> <span class="n">sradb</span><span class="o">.</span><span class="n">sra_metadata</span><span class="p">(</span>
+        <span class="n">srp_metadata</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">sra_metadata</span><span class="p">(</span>
             <span class="n">srp_ids</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">srp_ids</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span> <span class="k">else</span> <span class="n">srp_ids</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
             <span class="n">assay</span><span class="o">=</span><span class="n">assay</span><span class="p">,</span>
             <span class="n">detailed</span><span class="o">=</span><span class="n">detailed</span><span class="p">,</span>
@@ -499,7 +497,7 @@
             <span class="n">metadata_frames</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">srp_metadata</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="n">gse_ids</span><span class="p">:</span>
-        <span class="n">geo_metadata_df</span> <span class="o">=</span> <span class="n">sradb</span><span class="o">.</span><span class="n">geo_metadata</span><span class="p">(</span>
+        <span class="n">geo_metadata_df</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">geo_metadata</span><span class="p">(</span>
             <span class="n">gse_ids</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">gse_ids</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span> <span class="k">else</span> <span class="n">gse_ids</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
             <span class="n">sample_attribute</span><span class="o">=</span><span class="n">desc</span><span class="p">,</span>
             <span class="n">detailed</span><span class="o">=</span><span class="n">detailed</span><span class="p">,</span>
@@ -515,7 +513,7 @@
         <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">()</span>
 
     <span class="n">_print_save_df</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">saveto</span><span class="p">)</span>
-    <span class="n">sradb</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div>
+    <span class="n">client</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div>
 
 
 
@@ -537,14 +535,14 @@
 <span class="p">):</span>
     <span class="k">if</span> <span class="n">out_dir</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">out_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">(),</span> <span class="s2">&quot;pysradb_downloads&quot;</span><span class="p">)</span>
-    <span class="n">sradb</span> <span class="o">=</span> <span class="n">SRAweb</span><span class="p">()</span>
+    <span class="n">client</span> <span class="o">=</span> <span class="n">SRAweb</span><span class="p">()</span>
     <span class="n">geoweb</span> <span class="o">=</span> <span class="n">GEOweb</span><span class="p">()</span>
     <span class="c1"># This block is triggered only if no -p or -g arguments are provided.</span>
     <span class="c1"># In this case, the input is taken from the pipe and assumed to be SRA, not GEO</span>
     <span class="c1"># TODO: at some point, we need to fix this</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">srp</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">geo</span><span class="p">:</span>
         <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">stdin</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">)</span>
-        <span class="n">sradb</span><span class="o">.</span><span class="n">download</span><span class="p">(</span>
+        <span class="n">client</span><span class="o">.</span><span class="n">download</span><span class="p">(</span>
             <span class="n">df</span><span class="o">=</span><span class="n">df</span><span class="p">,</span>
             <span class="n">out_dir</span><span class="o">=</span><span class="n">out_dir</span><span class="p">,</span>
             <span class="n">filter_by_srx</span><span class="o">=</span><span class="n">srx</span><span class="p">,</span>
@@ -556,8 +554,8 @@
     <span class="c1"># This block is triggered for downloads using the -p argument</span>
     <span class="k">if</span> <span class="n">srp</span><span class="p">:</span>
         <span class="k">for</span> <span class="n">srp_x</span> <span class="ow">in</span> <span class="n">srp</span><span class="p">:</span>
-            <span class="n">metadata</span> <span class="o">=</span> <span class="n">sradb</span><span class="o">.</span><span class="n">sra_metadata</span><span class="p">(</span><span class="n">srp_x</span><span class="p">,</span> <span class="n">detailed</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-            <span class="n">sradb</span><span class="o">.</span><span class="n">download</span><span class="p">(</span>
+            <span class="n">metadata</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">sra_metadata</span><span class="p">(</span><span class="n">srp_x</span><span class="p">,</span> <span class="n">detailed</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            <span class="n">client</span><span class="o">.</span><span class="n">download</span><span class="p">(</span>
                 <span class="n">df</span><span class="o">=</span><span class="n">metadata</span><span class="p">,</span>
                 <span class="n">out_dir</span><span class="o">=</span><span class="n">out_dir</span><span class="p">,</span>
                 <span class="n">filter_by_srx</span><span class="o">=</span><span class="n">srx</span><span class="p">,</span>
@@ -570,7 +568,7 @@
         <span class="k">for</span> <span class="n">geo_x</span> <span class="ow">in</span> <span class="n">geo</span><span class="p">:</span>
             <span class="n">links</span><span class="p">,</span> <span class="n">root_url</span> <span class="o">=</span> <span class="n">geoweb</span><span class="o">.</span><span class="n">get_download_links</span><span class="p">(</span><span class="n">geo_x</span><span class="p">)</span>
             <span class="n">geoweb</span><span class="o">.</span><span class="n">download</span><span class="p">(</span><span class="n">links</span><span class="o">=</span><span class="n">links</span><span class="p">,</span> <span class="n">root_url</span><span class="o">=</span><span class="n">root_url</span><span class="p">,</span> <span class="n">gse</span><span class="o">=</span><span class="n">geo_x</span><span class="p">,</span> <span class="n">out_dir</span><span class="o">=</span><span class="n">out_dir</span><span class="p">)</span>
-    <span class="n">sradb</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div>
+    <span class="n">client</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div>
 
 
 
@@ -673,15 +671,15 @@
 <div class="viewcode-block" id="gse_to_gsm">
 <a class="viewcode-back" href="../../pysradb.html#pysradb.cli.gse_to_gsm">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">gse_to_gsm</span><span class="p">(</span><span class="n">gse_ids</span><span class="p">,</span> <span class="n">saveto</span><span class="p">,</span> <span class="n">detailed</span><span class="p">,</span> <span class="n">desc</span><span class="p">,</span> <span class="n">expand</span><span class="p">):</span>
-    <span class="n">sradb</span> <span class="o">=</span> <span class="n">SRAweb</span><span class="p">()</span>
-    <span class="n">df</span> <span class="o">=</span> <span class="n">sradb</span><span class="o">.</span><span class="n">gse_to_gsm</span><span class="p">(</span>
+    <span class="n">client</span> <span class="o">=</span> <span class="n">SRAweb</span><span class="p">()</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">gse_to_gsm</span><span class="p">(</span>
         <span class="n">gse_ids</span><span class="p">,</span>
         <span class="n">detailed</span><span class="o">=</span><span class="n">detailed</span><span class="p">,</span>
         <span class="n">sample_attribute</span><span class="o">=</span><span class="n">desc</span><span class="p">,</span>
         <span class="n">expand_sample_attributes</span><span class="o">=</span><span class="n">expand</span><span class="p">,</span>
     <span class="p">)</span>
     <span class="n">_print_save_df</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">saveto</span><span class="p">)</span>
-    <span class="n">sradb</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div>
+    <span class="n">client</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div>
 
 
 
@@ -692,15 +690,15 @@
 <div class="viewcode-block" id="gse_to_srp">
 <a class="viewcode-back" href="../../pysradb.html#pysradb.cli.gse_to_srp">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">gse_to_srp</span><span class="p">(</span><span class="n">gse_ids</span><span class="p">,</span> <span class="n">saveto</span><span class="p">,</span> <span class="n">detailed</span><span class="p">,</span> <span class="n">desc</span><span class="p">,</span> <span class="n">expand</span><span class="p">):</span>
-    <span class="n">sradb</span> <span class="o">=</span> <span class="n">SRAweb</span><span class="p">()</span>
-    <span class="n">df</span> <span class="o">=</span> <span class="n">sradb</span><span class="o">.</span><span class="n">gse_to_srp</span><span class="p">(</span>
+    <span class="n">client</span> <span class="o">=</span> <span class="n">SRAweb</span><span class="p">()</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">gse_to_srp</span><span class="p">(</span>
         <span class="n">gse_ids</span><span class="p">,</span>
         <span class="n">detailed</span><span class="o">=</span><span class="n">detailed</span><span class="p">,</span>
         <span class="n">sample_attribute</span><span class="o">=</span><span class="n">desc</span><span class="p">,</span>
         <span class="n">expand_sample_attributes</span><span class="o">=</span><span class="n">expand</span><span class="p">,</span>
     <span class="p">)</span>
     <span class="n">_print_save_df</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">saveto</span><span class="p">)</span>
-    <span class="n">sradb</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div>
+    <span class="n">client</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div>
 
 
 
@@ -711,15 +709,15 @@
 <div class="viewcode-block" id="gsm_to_gse">
 <a class="viewcode-back" href="../../pysradb.html#pysradb.cli.gsm_to_gse">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">gsm_to_gse</span><span class="p">(</span><span class="n">gsm_ids</span><span class="p">,</span> <span class="n">saveto</span><span class="p">,</span> <span class="n">detailed</span><span class="p">,</span> <span class="n">desc</span><span class="p">,</span> <span class="n">expand</span><span class="p">):</span>
-    <span class="n">sradb</span> <span class="o">=</span> <span class="n">SRAweb</span><span class="p">()</span>
-    <span class="n">df</span> <span class="o">=</span> <span class="n">sradb</span><span class="o">.</span><span class="n">gsm_to_gse</span><span class="p">(</span>
+    <span class="n">client</span> <span class="o">=</span> <span class="n">SRAweb</span><span class="p">()</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">gsm_to_gse</span><span class="p">(</span>
         <span class="n">gsm_ids</span><span class="p">,</span>
         <span class="n">detailed</span><span class="o">=</span><span class="n">detailed</span><span class="p">,</span>
         <span class="n">sample_attribute</span><span class="o">=</span><span class="n">desc</span><span class="p">,</span>
         <span class="n">expand_sample_attributes</span><span class="o">=</span><span class="n">expand</span><span class="p">,</span>
     <span class="p">)</span>
     <span class="n">_print_save_df</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">saveto</span><span class="p">)</span>
-    <span class="n">sradb</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div>
+    <span class="n">client</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div>
 
 
 
@@ -730,15 +728,15 @@
 <div class="viewcode-block" id="gsm_to_srp">
 <a class="viewcode-back" href="../../pysradb.html#pysradb.cli.gsm_to_srp">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">gsm_to_srp</span><span class="p">(</span><span class="n">gsm_ids</span><span class="p">,</span> <span class="n">saveto</span><span class="p">,</span> <span class="n">detailed</span><span class="p">,</span> <span class="n">desc</span><span class="p">,</span> <span class="n">expand</span><span class="p">):</span>
-    <span class="n">sradb</span> <span class="o">=</span> <span class="n">SRAweb</span><span class="p">()</span>
-    <span class="n">df</span> <span class="o">=</span> <span class="n">sradb</span><span class="o">.</span><span class="n">gsm_to_srp</span><span class="p">(</span>
+    <span class="n">client</span> <span class="o">=</span> <span class="n">SRAweb</span><span class="p">()</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">gsm_to_srp</span><span class="p">(</span>
         <span class="n">gsm_ids</span><span class="p">,</span>
         <span class="n">detailed</span><span class="o">=</span><span class="n">detailed</span><span class="p">,</span>
         <span class="n">sample_attribute</span><span class="o">=</span><span class="n">desc</span><span class="p">,</span>
         <span class="n">expand_sample_attributes</span><span class="o">=</span><span class="n">expand</span><span class="p">,</span>
     <span class="p">)</span>
     <span class="n">_print_save_df</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">saveto</span><span class="p">)</span>
-    <span class="n">sradb</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div>
+    <span class="n">client</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div>
 
 
 
@@ -749,15 +747,15 @@
 <div class="viewcode-block" id="gsm_to_srr">
 <a class="viewcode-back" href="../../pysradb.html#pysradb.cli.gsm_to_srr">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">gsm_to_srr</span><span class="p">(</span><span class="n">gsm_ids</span><span class="p">,</span> <span class="n">saveto</span><span class="p">,</span> <span class="n">detailed</span><span class="p">,</span> <span class="n">desc</span><span class="p">,</span> <span class="n">expand</span><span class="p">):</span>
-    <span class="n">sradb</span> <span class="o">=</span> <span class="n">SRAweb</span><span class="p">()</span>
-    <span class="n">df</span> <span class="o">=</span> <span class="n">sradb</span><span class="o">.</span><span class="n">gsm_to_srr</span><span class="p">(</span>
+    <span class="n">client</span> <span class="o">=</span> <span class="n">SRAweb</span><span class="p">()</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">gsm_to_srr</span><span class="p">(</span>
         <span class="n">gsm_ids</span><span class="p">,</span>
         <span class="n">detailed</span><span class="o">=</span><span class="n">detailed</span><span class="p">,</span>
         <span class="n">sample_attribute</span><span class="o">=</span><span class="n">desc</span><span class="p">,</span>
         <span class="n">expand_sample_attributes</span><span class="o">=</span><span class="n">expand</span><span class="p">,</span>
     <span class="p">)</span>
     <span class="n">_print_save_df</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">saveto</span><span class="p">)</span>
-    <span class="n">sradb</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div>
+    <span class="n">client</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div>
 
 
 
@@ -768,15 +766,15 @@
 <div class="viewcode-block" id="gsm_to_srs">
 <a class="viewcode-back" href="../../pysradb.html#pysradb.cli.gsm_to_srs">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">gsm_to_srs</span><span class="p">(</span><span class="n">gsm_ids</span><span class="p">,</span> <span class="n">saveto</span><span class="p">,</span> <span class="n">detailed</span><span class="p">,</span> <span class="n">desc</span><span class="p">,</span> <span class="n">expand</span><span class="p">):</span>
-    <span class="n">sradb</span> <span class="o">=</span> <span class="n">SRAweb</span><span class="p">()</span>
-    <span class="n">df</span> <span class="o">=</span> <span class="n">sradb</span><span class="o">.</span><span class="n">gsm_to_srs</span><span class="p">(</span>
+    <span class="n">client</span> <span class="o">=</span> <span class="n">SRAweb</span><span class="p">()</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">gsm_to_srs</span><span class="p">(</span>
         <span class="n">gsm_ids</span><span class="p">,</span>
         <span class="n">detailed</span><span class="o">=</span><span class="n">detailed</span><span class="p">,</span>
         <span class="n">sample_attribute</span><span class="o">=</span><span class="n">desc</span><span class="p">,</span>
         <span class="n">expand_sample_attributes</span><span class="o">=</span><span class="n">expand</span><span class="p">,</span>
     <span class="p">)</span>
     <span class="n">_print_save_df</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">saveto</span><span class="p">)</span>
-    <span class="n">sradb</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div>
+    <span class="n">client</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div>
 
 
 
@@ -787,15 +785,15 @@
 <div class="viewcode-block" id="gsm_to_srx">
 <a class="viewcode-back" href="../../pysradb.html#pysradb.cli.gsm_to_srx">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">gsm_to_srx</span><span class="p">(</span><span class="n">gsm_ids</span><span class="p">,</span> <span class="n">saveto</span><span class="p">,</span> <span class="n">detailed</span><span class="p">,</span> <span class="n">desc</span><span class="p">,</span> <span class="n">expand</span><span class="p">):</span>
-    <span class="n">sradb</span> <span class="o">=</span> <span class="n">SRAweb</span><span class="p">()</span>
-    <span class="n">df</span> <span class="o">=</span> <span class="n">sradb</span><span class="o">.</span><span class="n">gsm_to_srx</span><span class="p">(</span>
+    <span class="n">client</span> <span class="o">=</span> <span class="n">SRAweb</span><span class="p">()</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">gsm_to_srx</span><span class="p">(</span>
         <span class="n">gsm_ids</span><span class="p">,</span>
         <span class="n">detailed</span><span class="o">=</span><span class="n">detailed</span><span class="p">,</span>
         <span class="n">sample_attribute</span><span class="o">=</span><span class="n">desc</span><span class="p">,</span>
         <span class="n">expand_sample_attributes</span><span class="o">=</span><span class="n">expand</span><span class="p">,</span>
     <span class="p">)</span>
     <span class="n">_print_save_df</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">saveto</span><span class="p">)</span>
-    <span class="n">sradb</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div>
+    <span class="n">client</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div>
 
 
 
@@ -806,15 +804,15 @@
 <div class="viewcode-block" id="srp_to_gse">
 <a class="viewcode-back" href="../../pysradb.html#pysradb.cli.srp_to_gse">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">srp_to_gse</span><span class="p">(</span><span class="n">srp_id</span><span class="p">,</span> <span class="n">saveto</span><span class="p">,</span> <span class="n">detailed</span><span class="p">,</span> <span class="n">desc</span><span class="p">,</span> <span class="n">expand</span><span class="p">):</span>
-    <span class="n">sradb</span> <span class="o">=</span> <span class="n">SRAweb</span><span class="p">()</span>
-    <span class="n">df</span> <span class="o">=</span> <span class="n">sradb</span><span class="o">.</span><span class="n">srp_to_gse</span><span class="p">(</span>
+    <span class="n">client</span> <span class="o">=</span> <span class="n">SRAweb</span><span class="p">()</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">srp_to_gse</span><span class="p">(</span>
         <span class="n">srp_id</span><span class="p">,</span>
         <span class="n">detailed</span><span class="o">=</span><span class="n">detailed</span><span class="p">,</span>
         <span class="n">sample_attribute</span><span class="o">=</span><span class="n">desc</span><span class="p">,</span>
         <span class="n">expand_sample_attributes</span><span class="o">=</span><span class="n">expand</span><span class="p">,</span>
     <span class="p">)</span>
     <span class="n">_print_save_df</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">saveto</span><span class="p">)</span>
-    <span class="n">sradb</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div>
+    <span class="n">client</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div>
 
 
 
@@ -825,15 +823,15 @@
 <div class="viewcode-block" id="srp_to_srr">
 <a class="viewcode-back" href="../../pysradb.html#pysradb.cli.srp_to_srr">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">srp_to_srr</span><span class="p">(</span><span class="n">srp_id</span><span class="p">,</span> <span class="n">saveto</span><span class="p">,</span> <span class="n">detailed</span><span class="p">,</span> <span class="n">desc</span><span class="p">,</span> <span class="n">expand</span><span class="p">):</span>
-    <span class="n">sradb</span> <span class="o">=</span> <span class="n">SRAweb</span><span class="p">()</span>
-    <span class="n">df</span> <span class="o">=</span> <span class="n">sradb</span><span class="o">.</span><span class="n">srp_to_srr</span><span class="p">(</span>
+    <span class="n">client</span> <span class="o">=</span> <span class="n">SRAweb</span><span class="p">()</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">srp_to_srr</span><span class="p">(</span>
         <span class="n">srp_id</span><span class="p">,</span>
         <span class="n">detailed</span><span class="o">=</span><span class="n">detailed</span><span class="p">,</span>
         <span class="n">sample_attribute</span><span class="o">=</span><span class="n">desc</span><span class="p">,</span>
         <span class="n">expand_sample_attributes</span><span class="o">=</span><span class="n">expand</span><span class="p">,</span>
     <span class="p">)</span>
     <span class="n">_print_save_df</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">saveto</span><span class="p">)</span>
-    <span class="n">sradb</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div>
+    <span class="n">client</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div>
 
 
 
@@ -844,15 +842,15 @@
 <div class="viewcode-block" id="srp_to_srs">
 <a class="viewcode-back" href="../../pysradb.html#pysradb.cli.srp_to_srs">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">srp_to_srs</span><span class="p">(</span><span class="n">srp_id</span><span class="p">,</span> <span class="n">saveto</span><span class="p">,</span> <span class="n">detailed</span><span class="p">,</span> <span class="n">desc</span><span class="p">,</span> <span class="n">expand</span><span class="p">):</span>
-    <span class="n">sradb</span> <span class="o">=</span> <span class="n">SRAweb</span><span class="p">()</span>
-    <span class="n">df</span> <span class="o">=</span> <span class="n">sradb</span><span class="o">.</span><span class="n">srp_to_srs</span><span class="p">(</span>
+    <span class="n">client</span> <span class="o">=</span> <span class="n">SRAweb</span><span class="p">()</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">srp_to_srs</span><span class="p">(</span>
         <span class="n">srp_id</span><span class="p">,</span>
         <span class="n">detailed</span><span class="o">=</span><span class="n">detailed</span><span class="p">,</span>
         <span class="n">sample_attribute</span><span class="o">=</span><span class="n">desc</span><span class="p">,</span>
         <span class="n">expand_sample_attributes</span><span class="o">=</span><span class="n">expand</span><span class="p">,</span>
     <span class="p">)</span>
     <span class="n">_print_save_df</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">saveto</span><span class="p">)</span>
-    <span class="n">sradb</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div>
+    <span class="n">client</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div>
 
 
 
@@ -863,15 +861,15 @@
 <div class="viewcode-block" id="srp_to_srx">
 <a class="viewcode-back" href="../../pysradb.html#pysradb.cli.srp_to_srx">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">srp_to_srx</span><span class="p">(</span><span class="n">srp_id</span><span class="p">,</span> <span class="n">saveto</span><span class="p">,</span> <span class="n">detailed</span><span class="p">,</span> <span class="n">desc</span><span class="p">,</span> <span class="n">expand</span><span class="p">):</span>
-    <span class="n">sradb</span> <span class="o">=</span> <span class="n">SRAweb</span><span class="p">()</span>
-    <span class="n">df</span> <span class="o">=</span> <span class="n">sradb</span><span class="o">.</span><span class="n">srp_to_srx</span><span class="p">(</span>
+    <span class="n">client</span> <span class="o">=</span> <span class="n">SRAweb</span><span class="p">()</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">srp_to_srx</span><span class="p">(</span>
         <span class="n">srp_id</span><span class="p">,</span>
         <span class="n">detailed</span><span class="o">=</span><span class="n">detailed</span><span class="p">,</span>
         <span class="n">sample_attribute</span><span class="o">=</span><span class="n">desc</span><span class="p">,</span>
         <span class="n">expand_sample_attributes</span><span class="o">=</span><span class="n">expand</span><span class="p">,</span>
     <span class="p">)</span>
     <span class="n">_print_save_df</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">saveto</span><span class="p">)</span>
-    <span class="n">sradb</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div>
+    <span class="n">client</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div>
 
 
 
@@ -882,15 +880,15 @@
 <div class="viewcode-block" id="srr_to_gsm">
 <a class="viewcode-back" href="../../pysradb.html#pysradb.cli.srr_to_gsm">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">srr_to_gsm</span><span class="p">(</span><span class="n">srr_ids</span><span class="p">,</span> <span class="n">saveto</span><span class="p">,</span> <span class="n">detailed</span><span class="p">,</span> <span class="n">desc</span><span class="p">,</span> <span class="n">expand</span><span class="p">):</span>
-    <span class="n">sradb</span> <span class="o">=</span> <span class="n">SRAweb</span><span class="p">()</span>
-    <span class="n">df</span> <span class="o">=</span> <span class="n">sradb</span><span class="o">.</span><span class="n">srr_to_gsm</span><span class="p">(</span>
+    <span class="n">client</span> <span class="o">=</span> <span class="n">SRAweb</span><span class="p">()</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">srr_to_gsm</span><span class="p">(</span>
         <span class="n">srr_ids</span><span class="p">,</span>
         <span class="n">detailed</span><span class="o">=</span><span class="n">detailed</span><span class="p">,</span>
         <span class="n">sample_attribute</span><span class="o">=</span><span class="n">desc</span><span class="p">,</span>
         <span class="n">expand_sample_attributes</span><span class="o">=</span><span class="n">expand</span><span class="p">,</span>
     <span class="p">)</span>
     <span class="n">_print_save_df</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">saveto</span><span class="p">)</span>
-    <span class="n">sradb</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div>
+    <span class="n">client</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div>
 
 
 
@@ -901,15 +899,15 @@
 <div class="viewcode-block" id="srr_to_srp">
 <a class="viewcode-back" href="../../pysradb.html#pysradb.cli.srr_to_srp">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">srr_to_srp</span><span class="p">(</span><span class="n">srr_ids</span><span class="p">,</span> <span class="n">saveto</span><span class="p">,</span> <span class="n">detailed</span><span class="p">,</span> <span class="n">desc</span><span class="p">,</span> <span class="n">expand</span><span class="p">):</span>
-    <span class="n">sradb</span> <span class="o">=</span> <span class="n">SRAweb</span><span class="p">()</span>
-    <span class="n">df</span> <span class="o">=</span> <span class="n">sradb</span><span class="o">.</span><span class="n">srr_to_srp</span><span class="p">(</span>
+    <span class="n">client</span> <span class="o">=</span> <span class="n">SRAweb</span><span class="p">()</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">srr_to_srp</span><span class="p">(</span>
         <span class="n">srr_ids</span><span class="p">,</span>
         <span class="n">detailed</span><span class="o">=</span><span class="n">detailed</span><span class="p">,</span>
         <span class="n">sample_attribute</span><span class="o">=</span><span class="n">desc</span><span class="p">,</span>
         <span class="n">expand_sample_attributes</span><span class="o">=</span><span class="n">expand</span><span class="p">,</span>
     <span class="p">)</span>
     <span class="n">_print_save_df</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">saveto</span><span class="p">)</span>
-    <span class="n">sradb</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div>
+    <span class="n">client</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div>
 
 
 
@@ -920,15 +918,15 @@
 <div class="viewcode-block" id="srr_to_srs">
 <a class="viewcode-back" href="../../pysradb.html#pysradb.cli.srr_to_srs">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">srr_to_srs</span><span class="p">(</span><span class="n">srr_ids</span><span class="p">,</span> <span class="n">saveto</span><span class="p">,</span> <span class="n">detailed</span><span class="p">,</span> <span class="n">desc</span><span class="p">,</span> <span class="n">expand</span><span class="p">):</span>
-    <span class="n">sradb</span> <span class="o">=</span> <span class="n">SRAweb</span><span class="p">()</span>
-    <span class="n">df</span> <span class="o">=</span> <span class="n">sradb</span><span class="o">.</span><span class="n">srr_to_srs</span><span class="p">(</span>
+    <span class="n">client</span> <span class="o">=</span> <span class="n">SRAweb</span><span class="p">()</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">srr_to_srs</span><span class="p">(</span>
         <span class="n">srr_ids</span><span class="p">,</span>
         <span class="n">detailed</span><span class="o">=</span><span class="n">detailed</span><span class="p">,</span>
         <span class="n">sample_attribute</span><span class="o">=</span><span class="n">desc</span><span class="p">,</span>
         <span class="n">expand_sample_attributes</span><span class="o">=</span><span class="n">expand</span><span class="p">,</span>
     <span class="p">)</span>
     <span class="n">_print_save_df</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">saveto</span><span class="p">)</span>
-    <span class="n">sradb</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div>
+    <span class="n">client</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div>
 
 
 
@@ -939,15 +937,15 @@
 <div class="viewcode-block" id="srr_to_srx">
 <a class="viewcode-back" href="../../pysradb.html#pysradb.cli.srr_to_srx">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">srr_to_srx</span><span class="p">(</span><span class="n">srr_ids</span><span class="p">,</span> <span class="n">saveto</span><span class="p">,</span> <span class="n">detailed</span><span class="p">,</span> <span class="n">desc</span><span class="p">,</span> <span class="n">expand</span><span class="p">):</span>
-    <span class="n">sradb</span> <span class="o">=</span> <span class="n">SRAweb</span><span class="p">()</span>
-    <span class="n">df</span> <span class="o">=</span> <span class="n">sradb</span><span class="o">.</span><span class="n">srr_to_srx</span><span class="p">(</span>
+    <span class="n">client</span> <span class="o">=</span> <span class="n">SRAweb</span><span class="p">()</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">srr_to_srx</span><span class="p">(</span>
         <span class="n">srr_ids</span><span class="p">,</span>
         <span class="n">detailed</span><span class="o">=</span><span class="n">detailed</span><span class="p">,</span>
         <span class="n">sample_attribute</span><span class="o">=</span><span class="n">desc</span><span class="p">,</span>
         <span class="n">expand_sample_attributes</span><span class="o">=</span><span class="n">expand</span><span class="p">,</span>
     <span class="p">)</span>
     <span class="n">_print_save_df</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">saveto</span><span class="p">)</span>
-    <span class="n">sradb</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div>
+    <span class="n">client</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div>
 
 
 
@@ -958,15 +956,15 @@
 <div class="viewcode-block" id="srs_to_gsm">
 <a class="viewcode-back" href="../../pysradb.html#pysradb.cli.srs_to_gsm">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">srs_to_gsm</span><span class="p">(</span><span class="n">srs_ids</span><span class="p">,</span> <span class="n">saveto</span><span class="p">,</span> <span class="n">detailed</span><span class="p">,</span> <span class="n">desc</span><span class="p">,</span> <span class="n">expand</span><span class="p">):</span>
-    <span class="n">sradb</span> <span class="o">=</span> <span class="n">SRAweb</span><span class="p">()</span>
-    <span class="n">df</span> <span class="o">=</span> <span class="n">sradb</span><span class="o">.</span><span class="n">srs_to_gsm</span><span class="p">(</span>
+    <span class="n">client</span> <span class="o">=</span> <span class="n">SRAweb</span><span class="p">()</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">srs_to_gsm</span><span class="p">(</span>
         <span class="n">srs_ids</span><span class="p">,</span>
         <span class="n">detailed</span><span class="o">=</span><span class="n">detailed</span><span class="p">,</span>
         <span class="n">sample_attribute</span><span class="o">=</span><span class="n">desc</span><span class="p">,</span>
         <span class="n">expand_sample_attributes</span><span class="o">=</span><span class="n">expand</span><span class="p">,</span>
     <span class="p">)</span>
     <span class="n">_print_save_df</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">saveto</span><span class="p">)</span>
-    <span class="n">sradb</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div>
+    <span class="n">client</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div>
 
 
 
@@ -977,15 +975,15 @@
 <div class="viewcode-block" id="srs_to_srx">
 <a class="viewcode-back" href="../../pysradb.html#pysradb.cli.srs_to_srx">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">srs_to_srx</span><span class="p">(</span><span class="n">srs_ids</span><span class="p">,</span> <span class="n">saveto</span><span class="p">,</span> <span class="n">detailed</span><span class="p">,</span> <span class="n">desc</span><span class="p">,</span> <span class="n">expand</span><span class="p">):</span>
-    <span class="n">sradb</span> <span class="o">=</span> <span class="n">SRAweb</span><span class="p">()</span>
-    <span class="n">df</span> <span class="o">=</span> <span class="n">sradb</span><span class="o">.</span><span class="n">srs_to_srx</span><span class="p">(</span>
+    <span class="n">client</span> <span class="o">=</span> <span class="n">SRAweb</span><span class="p">()</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">srs_to_srx</span><span class="p">(</span>
         <span class="n">srs_ids</span><span class="p">,</span>
         <span class="n">detailed</span><span class="o">=</span><span class="n">detailed</span><span class="p">,</span>
         <span class="n">sample_attribute</span><span class="o">=</span><span class="n">desc</span><span class="p">,</span>
         <span class="n">expand_sample_attributes</span><span class="o">=</span><span class="n">expand</span><span class="p">,</span>
     <span class="p">)</span>
     <span class="n">_print_save_df</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">saveto</span><span class="p">)</span>
-    <span class="n">sradb</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div>
+    <span class="n">client</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div>
 
 
 
@@ -996,15 +994,15 @@
 <div class="viewcode-block" id="srx_to_srp">
 <a class="viewcode-back" href="../../pysradb.html#pysradb.cli.srx_to_srp">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">srx_to_srp</span><span class="p">(</span><span class="n">srx_ids</span><span class="p">,</span> <span class="n">saveto</span><span class="p">,</span> <span class="n">detailed</span><span class="p">,</span> <span class="n">desc</span><span class="p">,</span> <span class="n">expand</span><span class="p">):</span>
-    <span class="n">sradb</span> <span class="o">=</span> <span class="n">SRAweb</span><span class="p">()</span>
-    <span class="n">df</span> <span class="o">=</span> <span class="n">sradb</span><span class="o">.</span><span class="n">srx_to_srp</span><span class="p">(</span>
+    <span class="n">client</span> <span class="o">=</span> <span class="n">SRAweb</span><span class="p">()</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">srx_to_srp</span><span class="p">(</span>
         <span class="n">srx_ids</span><span class="p">,</span>
         <span class="n">detailed</span><span class="o">=</span><span class="n">detailed</span><span class="p">,</span>
         <span class="n">sample_attribute</span><span class="o">=</span><span class="n">desc</span><span class="p">,</span>
         <span class="n">expand_sample_attributes</span><span class="o">=</span><span class="n">expand</span><span class="p">,</span>
     <span class="p">)</span>
     <span class="n">_print_save_df</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">saveto</span><span class="p">)</span>
-    <span class="n">sradb</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div>
+    <span class="n">client</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div>
 
 
 
@@ -1015,15 +1013,15 @@
 <div class="viewcode-block" id="srx_to_srr">
 <a class="viewcode-back" href="../../pysradb.html#pysradb.cli.srx_to_srr">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">srx_to_srr</span><span class="p">(</span><span class="n">srx_ids</span><span class="p">,</span> <span class="n">saveto</span><span class="p">,</span> <span class="n">detailed</span><span class="p">,</span> <span class="n">desc</span><span class="p">,</span> <span class="n">expand</span><span class="p">):</span>
-    <span class="n">sradb</span> <span class="o">=</span> <span class="n">SRAweb</span><span class="p">()</span>
-    <span class="n">df</span> <span class="o">=</span> <span class="n">sradb</span><span class="o">.</span><span class="n">srx_to_srr</span><span class="p">(</span>
+    <span class="n">client</span> <span class="o">=</span> <span class="n">SRAweb</span><span class="p">()</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">srx_to_srr</span><span class="p">(</span>
         <span class="n">srx_ids</span><span class="p">,</span>
         <span class="n">detailed</span><span class="o">=</span><span class="n">detailed</span><span class="p">,</span>
         <span class="n">sample_attribute</span><span class="o">=</span><span class="n">desc</span><span class="p">,</span>
         <span class="n">expand_sample_attributes</span><span class="o">=</span><span class="n">expand</span><span class="p">,</span>
     <span class="p">)</span>
     <span class="n">_print_save_df</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">saveto</span><span class="p">)</span>
-    <span class="n">sradb</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div>
+    <span class="n">client</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div>
 
 
 
@@ -1034,25 +1032,25 @@
 <div class="viewcode-block" id="srx_to_srs">
 <a class="viewcode-back" href="../../pysradb.html#pysradb.cli.srx_to_srs">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">srx_to_srs</span><span class="p">(</span><span class="n">srx_ids</span><span class="p">,</span> <span class="n">saveto</span><span class="p">,</span> <span class="n">detailed</span><span class="p">,</span> <span class="n">desc</span><span class="p">,</span> <span class="n">expand</span><span class="p">):</span>
-    <span class="n">sradb</span> <span class="o">=</span> <span class="n">SRAweb</span><span class="p">()</span>
-    <span class="n">df</span> <span class="o">=</span> <span class="n">sradb</span><span class="o">.</span><span class="n">srx_to_srs</span><span class="p">(</span>
+    <span class="n">client</span> <span class="o">=</span> <span class="n">SRAweb</span><span class="p">()</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">srx_to_srs</span><span class="p">(</span>
         <span class="n">srx_ids</span><span class="p">,</span>
         <span class="n">detailed</span><span class="o">=</span><span class="n">detailed</span><span class="p">,</span>
         <span class="n">sample_attribute</span><span class="o">=</span><span class="n">desc</span><span class="p">,</span>
         <span class="n">expand_sample_attributes</span><span class="o">=</span><span class="n">expand</span><span class="p">,</span>
     <span class="p">)</span>
     <span class="n">_print_save_df</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">saveto</span><span class="p">)</span>
-    <span class="n">sradb</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div>
+    <span class="n">client</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div>
 
 
 
 <div class="viewcode-block" id="srp_to_pmid">
 <a class="viewcode-back" href="../../pysradb.html#pysradb.cli.srp_to_pmid">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">srp_to_pmid</span><span class="p">(</span><span class="n">srp_ids</span><span class="p">,</span> <span class="n">saveto</span><span class="p">):</span>
-    <span class="n">sradb</span> <span class="o">=</span> <span class="n">SRAweb</span><span class="p">()</span>
-    <span class="n">df</span> <span class="o">=</span> <span class="n">sradb</span><span class="o">.</span><span class="n">srp_to_pmid</span><span class="p">(</span><span class="n">srp_ids</span><span class="p">)</span>
+    <span class="n">client</span> <span class="o">=</span> <span class="n">SRAweb</span><span class="p">()</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">srp_to_pmid</span><span class="p">(</span><span class="n">srp_ids</span><span class="p">)</span>
     <span class="n">_print_save_df</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">saveto</span><span class="p">)</span>
-    <span class="n">sradb</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div>
+    <span class="n">client</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div>
 
 
 
@@ -1060,90 +1058,90 @@
 <a class="viewcode-back" href="../../pysradb.html#pysradb.cli.sra_to_pmid">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">sra_to_pmid</span><span class="p">(</span><span class="n">sra_ids</span><span class="p">,</span> <span class="n">saveto</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Backward compatibility wrapper for sra_to_pmid&quot;&quot;&quot;</span>
-    <span class="n">sradb</span> <span class="o">=</span> <span class="n">SRAweb</span><span class="p">()</span>
-    <span class="n">df</span> <span class="o">=</span> <span class="n">sradb</span><span class="o">.</span><span class="n">sra_to_pmid</span><span class="p">(</span><span class="n">sra_ids</span><span class="p">)</span>
+    <span class="n">client</span> <span class="o">=</span> <span class="n">SRAweb</span><span class="p">()</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">sra_to_pmid</span><span class="p">(</span><span class="n">sra_ids</span><span class="p">)</span>
     <span class="n">_print_save_df</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">saveto</span><span class="p">)</span>
-    <span class="n">sradb</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div>
+    <span class="n">client</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div>
 
 
 
 <div class="viewcode-block" id="gse_to_pmid">
 <a class="viewcode-back" href="../../pysradb.html#pysradb.cli.gse_to_pmid">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">gse_to_pmid</span><span class="p">(</span><span class="n">gse_ids</span><span class="p">,</span> <span class="n">saveto</span><span class="p">):</span>
-    <span class="n">sradb</span> <span class="o">=</span> <span class="n">SRAweb</span><span class="p">()</span>
-    <span class="n">df</span> <span class="o">=</span> <span class="n">sradb</span><span class="o">.</span><span class="n">gse_to_pmid</span><span class="p">(</span><span class="n">gse_ids</span><span class="p">)</span>
+    <span class="n">client</span> <span class="o">=</span> <span class="n">SRAweb</span><span class="p">()</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">gse_to_pmid</span><span class="p">(</span><span class="n">gse_ids</span><span class="p">)</span>
     <span class="n">_print_save_df</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">saveto</span><span class="p">)</span>
-    <span class="n">sradb</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div>
+    <span class="n">client</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div>
 
 
 
 <div class="viewcode-block" id="pmid_to_gse">
 <a class="viewcode-back" href="../../pysradb.html#pysradb.cli.pmid_to_gse">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">pmid_to_gse</span><span class="p">(</span><span class="n">pmid_ids</span><span class="p">,</span> <span class="n">saveto</span><span class="p">):</span>
-    <span class="n">sradb</span> <span class="o">=</span> <span class="n">SRAweb</span><span class="p">()</span>
-    <span class="n">df</span> <span class="o">=</span> <span class="n">sradb</span><span class="o">.</span><span class="n">pmid_to_gse</span><span class="p">(</span><span class="n">pmid_ids</span><span class="p">)</span>
+    <span class="n">client</span> <span class="o">=</span> <span class="n">SRAweb</span><span class="p">()</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">pmid_to_gse</span><span class="p">(</span><span class="n">pmid_ids</span><span class="p">)</span>
     <span class="n">_print_save_df</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">saveto</span><span class="p">)</span>
-    <span class="n">sradb</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div>
+    <span class="n">client</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div>
 
 
 
 <div class="viewcode-block" id="pmid_to_srp">
 <a class="viewcode-back" href="../../pysradb.html#pysradb.cli.pmid_to_srp">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">pmid_to_srp</span><span class="p">(</span><span class="n">pmid_ids</span><span class="p">,</span> <span class="n">saveto</span><span class="p">):</span>
-    <span class="n">sradb</span> <span class="o">=</span> <span class="n">SRAweb</span><span class="p">()</span>
-    <span class="n">df</span> <span class="o">=</span> <span class="n">sradb</span><span class="o">.</span><span class="n">pmid_to_srp</span><span class="p">(</span><span class="n">pmid_ids</span><span class="p">)</span>
+    <span class="n">client</span> <span class="o">=</span> <span class="n">SRAweb</span><span class="p">()</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">pmid_to_srp</span><span class="p">(</span><span class="n">pmid_ids</span><span class="p">)</span>
     <span class="n">_print_save_df</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">saveto</span><span class="p">)</span>
-    <span class="n">sradb</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div>
+    <span class="n">client</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div>
 
 
 
 <div class="viewcode-block" id="pmc_to_identifiers">
 <a class="viewcode-back" href="../../pysradb.html#pysradb.cli.pmc_to_identifiers">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">pmc_to_identifiers</span><span class="p">(</span><span class="n">pmc_ids</span><span class="p">,</span> <span class="n">saveto</span><span class="p">):</span>
-    <span class="n">sradb</span> <span class="o">=</span> <span class="n">SRAweb</span><span class="p">()</span>
-    <span class="n">df</span> <span class="o">=</span> <span class="n">sradb</span><span class="o">.</span><span class="n">pmc_to_identifiers</span><span class="p">(</span><span class="n">pmc_ids</span><span class="p">)</span>
+    <span class="n">client</span> <span class="o">=</span> <span class="n">SRAweb</span><span class="p">()</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">pmc_to_identifiers</span><span class="p">(</span><span class="n">pmc_ids</span><span class="p">)</span>
     <span class="n">_print_save_df</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">saveto</span><span class="p">)</span>
-    <span class="n">sradb</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div>
+    <span class="n">client</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div>
 
 
 
 <div class="viewcode-block" id="pmid_to_identifiers">
 <a class="viewcode-back" href="../../pysradb.html#pysradb.cli.pmid_to_identifiers">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">pmid_to_identifiers</span><span class="p">(</span><span class="n">pmid_ids</span><span class="p">,</span> <span class="n">saveto</span><span class="p">):</span>
-    <span class="n">sradb</span> <span class="o">=</span> <span class="n">SRAweb</span><span class="p">()</span>
-    <span class="n">df</span> <span class="o">=</span> <span class="n">sradb</span><span class="o">.</span><span class="n">pmid_to_identifiers</span><span class="p">(</span><span class="n">pmid_ids</span><span class="p">)</span>
+    <span class="n">client</span> <span class="o">=</span> <span class="n">SRAweb</span><span class="p">()</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">pmid_to_identifiers</span><span class="p">(</span><span class="n">pmid_ids</span><span class="p">)</span>
     <span class="n">_print_save_df</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">saveto</span><span class="p">)</span>
-    <span class="n">sradb</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div>
+    <span class="n">client</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div>
 
 
 
 <div class="viewcode-block" id="doi_to_gse">
 <a class="viewcode-back" href="../../pysradb.html#pysradb.cli.doi_to_gse">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">doi_to_gse</span><span class="p">(</span><span class="n">doi_ids</span><span class="p">,</span> <span class="n">saveto</span><span class="p">):</span>
-    <span class="n">sradb</span> <span class="o">=</span> <span class="n">SRAweb</span><span class="p">()</span>
-    <span class="n">df</span> <span class="o">=</span> <span class="n">sradb</span><span class="o">.</span><span class="n">doi_to_gse</span><span class="p">(</span><span class="n">doi_ids</span><span class="p">)</span>
+    <span class="n">client</span> <span class="o">=</span> <span class="n">SRAweb</span><span class="p">()</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">doi_to_gse</span><span class="p">(</span><span class="n">doi_ids</span><span class="p">)</span>
     <span class="n">_print_save_df</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">saveto</span><span class="p">)</span>
-    <span class="n">sradb</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div>
+    <span class="n">client</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div>
 
 
 
 <div class="viewcode-block" id="doi_to_srp">
 <a class="viewcode-back" href="../../pysradb.html#pysradb.cli.doi_to_srp">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">doi_to_srp</span><span class="p">(</span><span class="n">doi_ids</span><span class="p">,</span> <span class="n">saveto</span><span class="p">):</span>
-    <span class="n">sradb</span> <span class="o">=</span> <span class="n">SRAweb</span><span class="p">()</span>
-    <span class="n">df</span> <span class="o">=</span> <span class="n">sradb</span><span class="o">.</span><span class="n">doi_to_srp</span><span class="p">(</span><span class="n">doi_ids</span><span class="p">)</span>
+    <span class="n">client</span> <span class="o">=</span> <span class="n">SRAweb</span><span class="p">()</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">doi_to_srp</span><span class="p">(</span><span class="n">doi_ids</span><span class="p">)</span>
     <span class="n">_print_save_df</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">saveto</span><span class="p">)</span>
-    <span class="n">sradb</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div>
+    <span class="n">client</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div>
 
 
 
 <div class="viewcode-block" id="doi_to_identifiers">
 <a class="viewcode-back" href="../../pysradb.html#pysradb.cli.doi_to_identifiers">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">doi_to_identifiers</span><span class="p">(</span><span class="n">doi_ids</span><span class="p">,</span> <span class="n">saveto</span><span class="p">):</span>
-    <span class="n">sradb</span> <span class="o">=</span> <span class="n">SRAweb</span><span class="p">()</span>
-    <span class="n">df</span> <span class="o">=</span> <span class="n">sradb</span><span class="o">.</span><span class="n">doi_to_identifiers</span><span class="p">(</span><span class="n">doi_ids</span><span class="p">)</span>
+    <span class="n">client</span> <span class="o">=</span> <span class="n">SRAweb</span><span class="p">()</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">doi_to_identifiers</span><span class="p">(</span><span class="n">doi_ids</span><span class="p">)</span>
     <span class="n">_print_save_df</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">saveto</span><span class="p">)</span>
-    <span class="n">sradb</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div>
+    <span class="n">client</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div>
 
 
 

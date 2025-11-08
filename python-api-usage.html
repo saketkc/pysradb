@@ -284,8 +284,8 @@ with it. This is generally reflected in the
 <a class="reference external" href="https://www.ncbi.nlm.nih.gov/Traces/study/?acc=SRP098789">example</a> of a
 SraRunTable.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">pysradb</span><span class="w"> </span><span class="kn">import</span> <span class="n">SRAweb</span>
-<span class="n">db</span> <span class="o">=</span> <span class="n">SRAweb</span><span class="p">()</span>
-<span class="n">df</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">sra_metadata</span><span class="p">(</span><span class="s1">&#39;SRP098789&#39;</span><span class="p">)</span>
+<span class="n">client</span> <span class="o">=</span> <span class="n">SRAweb</span><span class="p">()</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">sra_metadata</span><span class="p">(</span><span class="s1">&#39;SRP098789&#39;</span><span class="p">)</span>
 <span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
 </pre></div>
 </div>
@@ -319,9 +319,9 @@ cases easily, without worrying about which runs (SRR) need to be merged.</p>
 <p>We strongly recommend installing [aspera-client]{.title-ref} which uses
 UDP and is <a class="reference external" href="http://www.skullbox.net/tcpudp.php">designed to be faster</a>.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">pysradb</span><span class="w"> </span><span class="kn">import</span> <span class="n">SRAweb</span>
-<span class="n">db</span> <span class="o">=</span> <span class="n">SRAweb</span><span class="p">()</span>
-<span class="n">df</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">sra_metadata</span><span class="p">(</span><span class="s1">&#39;SRP017942&#39;</span><span class="p">)</span>
-<span class="n">db</span><span class="o">.</span><span class="n">download</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+<span class="n">client</span> <span class="o">=</span> <span class="n">SRAweb</span><span class="p">()</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">sra_metadata</span><span class="p">(</span><span class="s1">&#39;SRP017942&#39;</span><span class="p">)</span>
+<span class="n">client</span><span class="o">.</span><span class="n">download</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
 </pre></div>
 </div>
 </section>
@@ -329,7 +329,7 @@ UDP and is <a class="reference external" href="http://www.skullbox.net/tcpudp.ph
 <h2>Use Case 3: Downloading a subset of experiments<a class="headerlink" href="#use-case-3-downloading-a-subset-of-experiments" title="Link to this heading">¶</a></h2>
 <p>Often, you need to process only a smaller set of samples from a project
 (SRP). Consider this project which has data spanning four assays.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">sra_metadata</span><span class="p">(</span><span class="s1">&#39;SRP000941&#39;</span><span class="p">)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">sra_metadata</span><span class="p">(</span><span class="s1">&#39;SRP000941&#39;</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">library_strategy</span><span class="o">.</span><span class="n">unique</span><span class="p">())</span>
 <span class="p">[</span><span class="s1">&#39;ChIP-Seq&#39;</span> <span class="s1">&#39;Bisulfite-Seq&#39;</span> <span class="s1">&#39;RNA-Seq&#39;</span> <span class="s1">&#39;WGS&#39;</span> <span class="s1">&#39;OTHER&#39;</span><span class="p">]</span>
 </pre></div>
@@ -339,7 +339,7 @@ samples and would just want to download that subset. This is simple
 using [pysradb]{.title-ref} since the metadata can be subset just as you
 would subset a dataframe in pandas.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">df_rna</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="o">.</span><span class="n">library_strategy</span> <span class="o">==</span> <span class="s1">&#39;RNA-Seq&#39;</span><span class="p">]</span>
-<span class="n">db</span><span class="o">.</span><span class="n">download</span><span class="p">(</span><span class="n">df</span><span class="o">=</span><span class="n">df_rna</span><span class="p">,</span> <span class="n">out_dir</span><span class="o">=</span><span class="s1">&#39;/pysradb_downloads&#39;</span><span class="p">)()</span>
+<span class="n">client</span><span class="o">.</span><span class="n">download</span><span class="p">(</span><span class="n">df</span><span class="o">=</span><span class="n">df_rna</span><span class="p">,</span> <span class="n">out_dir</span><span class="o">=</span><span class="s1">&#39;/pysradb_downloads&#39;</span><span class="p">)()</span>
 </pre></div>
 </div>
 </section>
@@ -347,8 +347,8 @@ would subset a dataframe in pandas.</p>
 <h2>Use Case 4: Getting cell-type/treatment information from sample_attributes<a class="headerlink" href="#use-case-4-getting-cell-type-treatment-information-from-sample-attributes" title="Link to this heading">¶</a></h2>
 <p>Cell type/tissue informations is usually hidden in the
 [sample_attributes]{.title-ref} column, which can be expanded:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">pysradb.filter_attrs</span><span class="w"> </span><span class="kn">import</span> <span class="n">expand_sample_attribute_columns</span>
-<span class="n">df</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">sra_metadata</span><span class="p">(</span><span class="s1">&#39;SRP017942&#39;</span><span class="p">)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">pysraclient.filter_attrs</span><span class="w"> </span><span class="kn">import</span> <span class="n">expand_sample_attribute_columns</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">sra_metadata</span><span class="p">(</span><span class="s1">&#39;SRP017942&#39;</span><span class="p">)</span>
 <span class="n">expand_sample_attribute_columns</span><span class="p">(</span><span class="n">df</span><span class="p">)</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
 </pre></div>
 </div>
@@ -438,7 +438,7 @@ hours) control</p></td>
 <p>Another common operation that we do on SRA is seach, plain text search.</p>
 <p>If you want to look up for all projects where [ribosome
 profiling]{.title-ref} appears somewhere in the description:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">search_sra</span><span class="p">(</span><span class="n">search_str</span><span class="o">=</span><span class="s1">&#39;&quot;ribosome profiling&quot;&#39;</span><span class="p">)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">search_sra</span><span class="p">(</span><span class="n">search_str</span><span class="o">=</span><span class="s1">&#39;&quot;ribosome profiling&quot;&#39;</span><span class="p">)</span>
 <span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
 </pre></div>
 </div>
@@ -556,10 +556,10 @@ doesn’t need to be exact.</p>
 <h2>Use Case 8: Finding publications (PMIDs) associated with SRA data<a class="headerlink" href="#use-case-8-finding-publications-pmids-associated-with-sra-data" title="Link to this heading">¶</a></h2>
 <p>Sometimes you have SRA accessions and want to find the publications that describe the data generation.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">pysradb</span><span class="w"> </span><span class="kn">import</span> <span class="n">SRAweb</span>
-<span class="n">db</span> <span class="o">=</span> <span class="n">SRAweb</span><span class="p">()</span>
+<span class="n">client</span> <span class="o">=</span> <span class="n">SRAweb</span><span class="p">()</span>
 
 <span class="c1"># Get PMIDs for a study accession (SRP)</span>
-<span class="n">pmids_df</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">srp_to_pmid</span><span class="p">(</span><span class="s1">&#39;SRP002605&#39;</span><span class="p">)</span>
+<span class="n">pmids_df</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">srp_to_pmid</span><span class="p">(</span><span class="s1">&#39;SRP002605&#39;</span><span class="p">)</span>
 <span class="n">pmids_df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
 </pre></div>
 </div>
@@ -569,21 +569,21 @@ SRP002605      PRJNA129385   20703300
 </div>
 <p>You can also get PMIDs for other SRA accession types:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Get PMIDs for run accessions (SRR)</span>
-<span class="n">srr_pmids</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">srr_to_pmid</span><span class="p">(</span><span class="s1">&#39;SRR057511&#39;</span><span class="p">)</span>
+<span class="n">srr_pmids</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">srr_to_pmid</span><span class="p">(</span><span class="s1">&#39;SRR057511&#39;</span><span class="p">)</span>
 
 <span class="c1"># Get PMIDs for experiment accessions (SRX) </span>
-<span class="n">srx_pmids</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">srx_to_pmid</span><span class="p">(</span><span class="s1">&#39;SRX021967&#39;</span><span class="p">)</span>
+<span class="n">srx_pmids</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">srx_to_pmid</span><span class="p">(</span><span class="s1">&#39;SRX021967&#39;</span><span class="p">)</span>
 
 <span class="c1"># Get PMIDs for sample accessions (SRS)</span>
-<span class="n">srs_pmids</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">srs_to_pmid</span><span class="p">(</span><span class="s1">&#39;SRS079386&#39;</span><span class="p">)</span>
+<span class="n">srs_pmids</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">srs_to_pmid</span><span class="p">(</span><span class="s1">&#39;SRS079386&#39;</span><span class="p">)</span>
 
 <span class="c1"># Get PMIDs for multiple accessions at once</span>
-<span class="n">multi_pmids</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">sra_to_pmid</span><span class="p">([</span><span class="s1">&#39;SRP002605&#39;</span><span class="p">,</span> <span class="s1">&#39;SRP016501&#39;</span><span class="p">])</span>
+<span class="n">multi_pmids</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">sra_to_pmid</span><span class="p">([</span><span class="s1">&#39;SRP002605&#39;</span><span class="p">,</span> <span class="s1">&#39;SRP016501&#39;</span><span class="p">])</span>
 </pre></div>
 </div>
 <p>You can also directly query BioProject accessions for their associated publications:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Get PMIDs directly from BioProject accessions</span>
-<span class="n">bioproject_pmids</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">fetch_bioproject_pmids</span><span class="p">([</span><span class="s1">&#39;PRJNA257197&#39;</span><span class="p">,</span> <span class="s1">&#39;PRJNA129385&#39;</span><span class="p">])</span>
+<span class="n">bioproject_pmids</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">fetch_bioproject_pmids</span><span class="p">([</span><span class="s1">&#39;PRJNA257197&#39;</span><span class="p">,</span> <span class="s1">&#39;PRJNA129385&#39;</span><span class="p">])</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">bioproject_pmids</span><span class="p">)</span>
 <span class="c1"># Output: {&#39;PRJNA257197&#39;: [&#39;25214632&#39;], &#39;PRJNA129385&#39;: [&#39;20703300&#39;]}</span>
 </pre></div>
