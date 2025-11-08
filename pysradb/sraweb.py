@@ -168,6 +168,75 @@ class SRAweb(SRAdb):
             raise RuntimeError("Unable to parse xml: {}".format(xml))
         return json
 
+    def bioproject_to_srp(self, bioproject):
+        """Convert PRJNA BioProject ID to SRP accession
+
+        Parameters
+        ----------
+        bioproject: str
+                   BioProject ID (e.g., 'PRJNA810439')
+
+        Returns
+        -------
+        srp_accessions: list
+                       List of SRP accessions found
+        """
+        if not bioproject or pd.isna(bioproject):
+            return []
+
+        try:
+            import re
+
+            # Search SRA for records with this bioproject
+            search_url = "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi"
+            search_params = {
+                "db": "sra",
+                "term": f"{bioproject}[BioProject]",
+                "retmode": "json",
+                "retmax": "50"
+            }
+
+            response = requests.get(search_url, params=search_params, timeout=30)
+            result = response.json()
+            sra_uids = result.get("esearchresult", {}).get("idlist", [])
+
+            if not sra_uids:
+                return []
+
+            # Get summaries to extract SRP accessions
+            summary_url = "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esummary.fcgi"
+            srp_set = set()
+
+            # Process in batches to avoid too many requests
+            for uid in sra_uids[:10]:  # Limit to first 10
+                try:
+                    summary_params = {
+                        "db": "sra",
+                        "id": uid,
+                        "retmode": "json"
+                    }
+
+                    summary_response = requests.get(summary_url, params=summary_params, timeout=30)
+                    summary_result = summary_response.json()
+
+                    if uid in summary_result.get("result", {}):
+                        record = summary_result["result"][uid]
+                        expxml = record.get("expxml", "")
+
+                        # Extract SRP using regex from the XML
+                        srp_match = re.search(r'Study acc="(SRP\d+)"', expxml)
+                        if srp_match:
+                            srp_set.add(srp_match.group(1))
+
+                    time.sleep(0.1)  # Small delay between requests
+                except Exception:
+                    continue
+
+            return sorted(list(srp_set))
+
+        except Exception as e:
+            return []
+
     def fetch_ena_fastq(self, srp):
         """Fetch FASTQ records from ENA (EXPERIMENTAL)
 
@@ -1157,6 +1226,105 @@ class SRAweb(SRAdb):
                 na_position="last",
             )
         metadata_df = metadata_df.reset_index(drop=True)
+
+        if detailed and not metadata_df.empty:
+            try:
+                gse_bioproject_map = {}
+                for _, row in metadata_df.iterrows():
+                    gse_id = row.get("study_accession")
+                    bioproject = row.get("bioproject")
+                    if gse_id and str(gse_id).startswith("GSE"):
+                        if bioproject and str(bioproject).startswith("PRJNA"):
+                            gse_bioproject_map[gse_id] = bioproject
+
+                gse_srp_map = {}  
+                all_fastq_data = [] 
+
+                for gse_id, bioproject in gse_bioproject_map.items():
+                    try:
+                        srp_list = self.bioproject_to_srp(bioproject)
+                        if srp_list:
+                            srp = srp_list[0]  # Use the first SRP found
+                            gse_srp_map[gse_id] = srp
+
+                            # Fetch SRA metadata and fastq URLs for this SRP
+                            try:
+                                sra_metadata_df = self.sra_metadata(srp)
+                                if not sra_metadata_df.empty:
+                                    fastq_df = self.fetch_ena_fastq(srp)
+                                    if not fastq_df.empty:
+                                        merged_df = sra_metadata_df.merge(
+                                            fastq_df,
+                                            on="run_accession",
+                                            how="left"
+                                        )
+                                        merged_df["gse_from_bioproject"] = gse_id
+                                        merged_df["srp_from_bioproject"] = srp
+                                        all_fastq_data.append(merged_df)
+                                time.sleep(self.sleep_time)
+                            except Exception:
+                                pass
+                    except Exception:
+                        pass
+
+                # If we found fastq data, merge it with the main metadata via GSM->SRX->SRR mapping
+                if all_fastq_data and sample_accessions:
+                    try:
+                        # Combine all fastq data
+                        combined_fastq = pd.concat(all_fastq_data, ignore_index=True)
+
+                        # Map GSM to SRX for matching
+                        gsm_to_srx_map = {}
+                        for gsm_id in sample_accessions:
+                            try:
+                                srx_df = self.gsm_to_srx(gsm_id)
+                                if not srx_df.empty and "experiment_accession" in srx_df.columns:
+                                    srx_list = srx_df["experiment_accession"].dropna().tolist()
+                                    if srx_list:
+                                        gsm_to_srx_map[gsm_id] = srx_list[0]
+                                time.sleep(0.1)
+                            except Exception:
+                                pass
+
+                        # Add fastq columns to metadata_df
+                        fastq_cols = [col for col in combined_fastq.columns
+                                     if "fastq" in col.lower() or "ftp" in col.lower()]
+                        for col in fastq_cols:
+                            if col not in metadata_df.columns:
+                                metadata_df[col] = pd.NA
+
+                        # Create a mapping from SRX->run_accession->fastq URLs
+                        srx_to_fastq_map = {}
+                        for _, row in combined_fastq.iterrows():
+                            srx = row.get("experiment_accession", pd.NA)
+                            run_acc = row.get("run_accession", pd.NA)
+                            if not pd.isna(srx) and not pd.isna(run_acc):
+                                if srx not in srx_to_fastq_map:
+                                    srx_to_fastq_map[srx] = {}
+                                srx_to_fastq_map[srx][run_acc] = row
+
+                        # Merge fastq URLs based on GSM->SRX->fastq mapping
+                        for col in fastq_cols:
+                            def get_fastq_url(row):
+                                gsm = row.get("sample_accession", pd.NA)
+                                if pd.isna(gsm):
+                                    return pd.NA
+                                # Get SRX for this GSM
+                                srx = gsm_to_srx_map.get(gsm, pd.NA)
+                                if pd.isna(srx) or srx not in srx_to_fastq_map:
+                                    return pd.NA
+                                # Get first run accession for this SRX
+                                run_accs = list(srx_to_fastq_map[srx].keys())
+                                if run_accs:
+                                    fastq_row = srx_to_fastq_map[srx][run_accs[0]]
+                                    return fastq_row.get(col, pd.NA)
+                                return pd.NA
+
+                            metadata_df[col] = metadata_df.apply(get_fastq_url, axis=1)
+                    except Exception:
+                        pass
+            except Exception:
+                pass
 
         # Enrich metadata if requested
         if enrich and not metadata_df.empty:
