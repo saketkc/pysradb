@@ -472,6 +472,15 @@
 <span class="k">def</span><span class="w"> </span><span class="nf">metadata</span><span class="p">(</span>
     <span class="n">srp_id</span><span class="p">,</span> <span class="n">assay</span><span class="p">,</span> <span class="n">desc</span><span class="p">,</span> <span class="n">detailed</span><span class="p">,</span> <span class="n">expand</span><span class="p">,</span> <span class="n">saveto</span><span class="p">,</span> <span class="n">enrich</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">enrich_backend</span><span class="o">=</span><span class="kc">None</span>
 <span class="p">):</span>
+    <span class="c1"># Validate that at least one ID was provided</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">srp_id</span><span class="p">:</span>
+        <span class="n">console</span><span class="o">.</span><span class="n">print</span><span class="p">(</span>
+            <span class="s2">&quot;[red]Error: No accession IDs provided. Please provide one or more SRP/GSE IDs.[/red]&quot;</span>
+        <span class="p">)</span>
+        <span class="n">console</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s2">&quot;[yellow]Usage: pysradb metadata SRP000001 [SRP000002 ...]&quot;</span><span class="p">)</span>
+        <span class="n">console</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s2">&quot;       pysradb metadata GSE123456[/yellow]&quot;</span><span class="p">)</span>
+        <span class="k">return</span>
+
     <span class="n">client</span> <span class="o">=</span> <span class="n">SRAweb</span><span class="p">()</span>
 
     <span class="n">srp_ids</span> <span class="o">=</span> <span class="p">[]</span>
