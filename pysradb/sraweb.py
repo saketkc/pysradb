@@ -2813,4 +2813,3 @@ class SRAweb(object):
         """
         full_results = self.doi_to_identifiers(dois)
         return full_results[["doi", "pmid", "pmc_id", "srp_ids"]]
-
