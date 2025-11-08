@@ -320,6 +320,7 @@ class LLMMetadataExtractor(MetadataExtractor):
         """Check if ollama is installed and running."""
         try:
             import subprocess
+
             import requests
 
             try:
@@ -400,28 +401,39 @@ CRITICAL PRIORITY RULE:
 If a field is explicitly labeled in the metadata, prioritize that information. You may make reasonable generalizations
 (e.g., "CD19+ B cells" → "b cells", "CD4+ T cells" → "t cells"), but DO NOT over-generalize to broader categories.
 
+BULK TISSUE AND WHOLE-SAMPLE HANDLING (IMPORTANT):
+When the metadata contains keywords indicating bulk tissue or whole samples (bulk, PDX, xenograft, tumor, tissue,
+whole tissue, homogenate), the sample contains MIXED CELL TYPES. Do NOT invent specific cell types:
+- "bulk RNA-seq from PDX" → cell_type: "Unknown" (NOT "neuron" or any specific cell type)
+- "tumor tissue" → cell_type: "Unknown", organ/tissue from source if clear (NOT inferred from invented cell types)
+- "xenograft" → cell_type: "Unknown" (multiple cell types present)
+- "whole tissue" → cell_type: "Unknown" (NOT a specific cell type)
+RULE: If cell_type is not explicitly stated AND the sample is described as bulk/whole/tissue/tumor/PDX, return "Unknown" for cell_type.
+
 Examples of CORRECT extraction:
 - "cell type: CD19+ B cells" → cell_type: "b cells" or "cd19+ b cells" (NOT "pbmc" - too broad)
 - "cell type: CD4+ T cells" → cell_type: "t cells" or "cd4+ t cells" (NOT "lymphocyte" or "pbmc" - too broad)
 - "cell type: hepatocytes" → cell_type: "hepatocyte" (NOT "liver cells" - less specific)
 - "tissue: prefrontal cortex" → tissue: "prefrontal cortex" or "brain" (NOT "nervous tissue" - too broad)
 - "disease: Multiple sclerosis" → disease: "multiple sclerosis" (NOT "healthy" or "autoimmune disease")
+- "bulk RNA-seq from PDX" → cell_type: "Unknown" (NOT "neuron" or invented types), organ: "Unknown" if not stated
+- "sample_description: tumor tissue" → cell_type: "Unknown", organ: "Unknown" (do not invent)
 
-CELL TYPE INFERENCE RULES (only when NOT explicitly stated):
-- Cell types indicate their origin organ/tissue. Use this biological knowledge:
+CELL TYPE INFERENCE RULES (only when NOT explicitly stated AND NOT bulk/PDX/tumor/whole tissue):
+- Cell types indicate their origin organ/tissue. Use this biological knowledge ONLY for purified cell populations:
   * Blood cells (PBMC, T cell, B cell, lymphocyte, monocyte, macrophage, NK cell) → organ: blood, tissue: peripheral blood, system: immune system
   * Brain cells (neuron, astrocyte, microglia, oligodendrocyte) → organ: brain, tissue: brain tissue, system: nervous system
   * Liver cells (hepatocyte) → organ: liver, tissue: liver parenchyma, system: digestive system
   * Heart cells (cardiomyocyte) → organ: heart, tissue: cardiac tissue, system: cardiovascular system
   * Lung cells (pneumocyte, alveolar cell) → organ: lung, tissue: lung parenchyma, system: respiratory system
-  * Apply similar biological reasoning for other cell types
+  * Apply similar biological reasoning for OTHER PURIFIED cell types ONLY
 
 EXTRACTION RULES:
-1. **cell_type**: FIRST check for "cell type:", "cell_type:", "celltype:" or "cellType:" labels. Use the stated value or reasonable generalization (CD19+ B cells → b cells). NEVER over-generalize to broad categories like "pbmc" or "lymphocyte" when a specific type is stated.
+1. **cell_type**: FIRST check for "cell type:", "cell_type:", "celltype:" or "cellType:" labels. If not stated, check if sample is bulk/PDX/tumor/tissue/xenograft - if yes, return "Unknown". Otherwise, use stated value or reasonable generalization (CD19+ B cells → b cells). NEVER invent cell types.
 2. **disease**: FIRST check for "disease:", "disease status:", or "condition:" labels. Use exact disease name. "Normal"/"control"/"WT"→healthy only if NO disease is stated.
-3. **tissue**: FIRST check for "tissue:", "source_name:" labels. Use stated value or reasonable generalization. Otherwise infer from cell_type/organ.
-4. **organ**: Look for explicit organ name OR infer from cell_type/tissue using biological knowledge above. Lowercase.
-5. **anatomical_system**: Derive from organ/cell_type using biological knowledge (blood→immune, brain→nervous, liver→digestive, heart→cardiovascular, lung→respiratory). Lowercase.
+3. **tissue**: FIRST check for "tissue:", "source_name:" labels. Use stated value or reasonable generalization. Otherwise infer from EXPLICITLY STATED cell_type/organ. Do NOT infer from invented cell types.
+4. **organ**: Look for explicit organ name. Do NOT infer organ from invented cell types. Return "Unknown" if not stated.
+5. **anatomical_system**: Derive from EXPLICIT organ/cell_type information only. Return "Unknown" if not determinable.
 6. **sex**: F=female, M=male. Return: male, female, mixed, or Unknown. Lowercase.
 7. **development_stage**: From age - handle 'y' for years, 'm' for months (e.g., 17m=17 months=1.4 years). Use: 0-2y=infant, 3-12y=child, 13-18y=adolescent, 19-64y=adult, 65+=aged. Convert months to years when needed. Lowercase.
 8. **assay**: RNA-seq, scRNA-seq, CITE-seq, ATAC-seq, Bisulfite-Seq, etc. Lowercase.
@@ -432,21 +444,23 @@ EXAMPLES showing CORRECT extraction with reasonable generalization:
 "cell type: PBMC, tissue: peripheral blood" → cell_type: "pbmc", tissue: "peripheral blood"
 "cell_type: CD8+ memory T cells" → cell_type: "t cells" (acceptable: "cd8+ memory t cells", "memory t cells")
 "cell type: activated microglia" → cell_type: "microglia" (acceptable: "activated microglia")
+"sample_description: bulk RNA-seq from PDX, source: breast tumor" → cell_type: "Unknown", organ: "Unknown", disease: "Unknown"
+"sample_source: PDX1, sample_title: MJH1_G1M1, description: bulk RNA-seq" → cell_type: "Unknown", organ: "Unknown" (do NOT invent "neuron")
 
 Metadata: {text}
 
 Extract (use "Unknown" only if truly unclear):
 """
         field_descriptions = {
-            "organ": "High-level organ - use stated value or reasonable generalization (lowercase)",
-            "tissue": "Specific tissue - use stated value or reasonable generalization (lowercase)",
-            "anatomical_system": "Major body system (lowercase)",
-            "cell_type": "Cell type from stated value - allow reasonable generalization (e.g., 'CD19+ B cells' → 'b cells') but NOT over-generalization (NOT 'pbmc') (lowercase)",
-            "disease": "Exact disease name if explicitly stated (e.g., 'multiple sclerosis'), or 'healthy' for controls (lowercase)",
+            "organ": "High-level organ - use stated value only or return 'Unknown'. Do NOT invent from cell types. (lowercase)",
+            "tissue": "Specific tissue - use stated value or reasonable generalization from EXPLICIT data only. Return 'Unknown' if not stated. (lowercase)",
+            "anatomical_system": "Major body system - only if clearly stated or derivable from explicit organ/cell type. Return 'Unknown' otherwise. (lowercase)",
+            "cell_type": "Cell type ONLY if explicitly stated or if bulk/PDX/tumor/tissue keywords present → return 'Unknown'. Allow generalization (CD19+ B cells → b cells) but NEVER invent specific types. (lowercase)",
+            "disease": "Exact disease name if explicitly stated (e.g., 'multiple sclerosis'), or 'healthy' for controls. Return 'Unknown' if not stated. (lowercase)",
             "sex": "Biological sex: 'male', 'female', 'mixed', or 'Unknown'",
-            "development_stage": "Life/developmental stage (lowercase)",
+            "development_stage": "Life/developmental stage - from age if stated. Return 'Unknown' if age not provided. (lowercase)",
             "assay": "Sequencing or experimental assay type (lowercase)",
-            "organism": "Species (scientific name preferred, or common name)",
+            "organism": "Species (scientific name preferred, or common name). Return 'Unknown' if not stated.",
         }
 
         for field in target_fields:
