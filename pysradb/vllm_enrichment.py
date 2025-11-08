@@ -465,12 +465,11 @@ class VLLMMetadataExtractor(MetadataExtractor):
         if not logprobs:
             return 0.0
 
-        # Extract log probabilities for the top token
-        log_probs = []
-        for token_logprob in logprobs:
-            if token_logprob and "logprob" in token_logprob:
-                log_probs.append(token_logprob["logprob"])
-
+        log_probs = [
+            token_logprob["logprob"]
+            for token_logprob in logprobs
+            if token_logprob and "logprob" in token_logprob
+        ]
         if not log_probs:
             return 0.0
 
