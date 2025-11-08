@@ -189,6 +189,15 @@ def _print_save_df(df, saveto=None):
 def metadata(
     srp_id, assay, desc, detailed, expand, saveto, enrich=False, enrich_backend=None
 ):
+    # Validate that at least one ID was provided
+    if not srp_id:
+        console.print(
+            "[red]Error: No accession IDs provided. Please provide one or more SRP/GSE IDs.[/red]"
+        )
+        console.print("[yellow]Usage: pysradb metadata SRP000001 [SRP000002 ...]")
+        console.print("       pysradb metadata GSE123456[/yellow]")
+        return
+
     client = SRAweb()
 
     srp_ids = []
