@@ -320,6 +320,7 @@ class LLMMetadataExtractor(MetadataExtractor):
         """Check if ollama is installed and running."""
         try:
             import subprocess
+
             import requests
 
             try:

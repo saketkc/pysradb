@@ -193,7 +193,7 @@ class SRAweb(SRAdb):
                 "db": "sra",
                 "term": f"{bioproject}[BioProject]",
                 "retmode": "json",
-                "retmax": "50"
+                "retmax": "50",
             }
 
             response = requests.get(search_url, params=search_params, timeout=30)
@@ -210,13 +210,11 @@ class SRAweb(SRAdb):
             # Process in batches to avoid too many requests
             for uid in sra_uids[:10]:  # Limit to first 10
                 try:
-                    summary_params = {
-                        "db": "sra",
-                        "id": uid,
-                        "retmode": "json"
-                    }
+                    summary_params = {"db": "sra", "id": uid, "retmode": "json"}
 
-                    summary_response = requests.get(summary_url, params=summary_params, timeout=30)
+                    summary_response = requests.get(
+                        summary_url, params=summary_params, timeout=30
+                    )
                     summary_result = summary_response.json()
 
                     if uid in summary_result.get("result", {}):
@@ -1237,8 +1235,8 @@ class SRAweb(SRAdb):
                         if bioproject and str(bioproject).startswith("PRJNA"):
                             gse_bioproject_map[gse_id] = bioproject
 
-                gse_srp_map = {}  
-                all_fastq_data = [] 
+                gse_srp_map = {}
+                all_fastq_data = []
 
                 for gse_id, bioproject in gse_bioproject_map.items():
                     try:
@@ -1254,9 +1252,7 @@ class SRAweb(SRAdb):
                                     fastq_df = self.fetch_ena_fastq(srp)
                                     if not fastq_df.empty:
                                         merged_df = sra_metadata_df.merge(
-                                            fastq_df,
-                                            on="run_accession",
-                                            how="left"
+                                            fastq_df, on="run_accession", how="left"
                                         )
                                         merged_df["gse_from_bioproject"] = gse_id
                                         merged_df["srp_from_bioproject"] = srp
@@ -1278,8 +1274,13 @@ class SRAweb(SRAdb):
                         for gsm_id in sample_accessions:
                             try:
                                 srx_df = self.gsm_to_srx(gsm_id)
-                                if not srx_df.empty and "experiment_accession" in srx_df.columns:
-                                    srx_list = srx_df["experiment_accession"].dropna().tolist()
+                                if (
+                                    not srx_df.empty
+                                    and "experiment_accession" in srx_df.columns
+                                ):
+                                    srx_list = (
+                                        srx_df["experiment_accession"].dropna().tolist()
+                                    )
                                     if srx_list:
                                         gsm_to_srx_map[gsm_id] = srx_list[0]
                                 time.sleep(0.1)
@@ -1287,8 +1288,11 @@ class SRAweb(SRAdb):
                                 pass
 
                         # Add fastq columns to metadata_df
-                        fastq_cols = [col for col in combined_fastq.columns
-                                     if "fastq" in col.lower() or "ftp" in col.lower()]
+                        fastq_cols = [
+                            col
+                            for col in combined_fastq.columns
+                            if "fastq" in col.lower() or "ftp" in col.lower()
+                        ]
                         for col in fastq_cols:
                             if col not in metadata_df.columns:
                                 metadata_df[col] = pd.NA
@@ -1305,6 +1309,7 @@ class SRAweb(SRAdb):
 
                         # Merge fastq URLs based on GSM->SRX->fastq mapping
                         for col in fastq_cols:
+
                             def get_fastq_url(row):
                                 gsm = row.get("sample_accession", pd.NA)
                                 if pd.isna(gsm):
