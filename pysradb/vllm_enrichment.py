@@ -307,7 +307,7 @@ class VLLMServerManager:
                         self.process.terminate()
                         try:
                             stdout, stderr = self.process.communicate(timeout=2)
-                        except:
+                        except Exception:
                             pass
                 elif self.process:
                     try:
