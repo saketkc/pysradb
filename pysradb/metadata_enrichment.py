@@ -292,6 +292,11 @@ class LLMMetadataExtractor(MetadataExtractor):
         super().__init__()
         self.provider = backend or DEFAULT_LLM_PROVIDER
 
+        # Initialize backend flags before conditional branches
+        # to prevent AttributeError if accessed before the specific branch
+        self._is_llamacpp = False
+        self._is_vllm = False
+
         if self.provider.startswith("llamacpp/"):
             self._is_llamacpp = True
             self._is_vllm = False
@@ -303,9 +308,6 @@ class LLMMetadataExtractor(MetadataExtractor):
             self._is_llamacpp = False
             self._init_vllm_backend(model, **kwargs)
             return
-
-        self._is_vllm = False
-        self._is_llamacpp = False
         self.model = model
 
         env_key = self._provider_env_key()
