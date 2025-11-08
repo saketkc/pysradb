@@ -357,7 +357,7 @@ class VLLMServerManager:
         try:
             response = requests.get(f"{self.base_url}/models", timeout=5)
             return response.status_code == 200
-        except:
+        except Exception:
             return False
 
     def stop(self):
