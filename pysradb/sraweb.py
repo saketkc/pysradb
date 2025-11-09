@@ -57,18 +57,26 @@ def _order_first(df, column_order_list):
 
 
 def _retry_response(base_url, payload, key, max_retries=10):
-    """Rerty fetching esummary if API rate limit exceeeds"""
+    """Retry fetching response if API rate limit exceeded or transient errors occur"""
     for index, _ in enumerate(range(max_retries)):
         try:
             request = requests.get(base_url, params=OrderedDict(payload))
             response = request.json()
+
+            # Retry on transient errors
+            if "ERROR" in response or "ERROR" in response.get(key, {}):
+                time.sleep(index + 1)
+                continue
+
             results = response[key]
             return response
-        except KeyError:
+        except (KeyError, requests.exceptions.JSONDecodeError):
             # sleep for increasing times
             time.sleep(index + 1)
             continue
-    raise RuntimeError("Failed to fetch esummary. API rate limit exceeded.")
+    raise RuntimeError(
+        "Failed to fetch response. NCBI API rate limit exceeded or server error."
+    )
 
 
 def get_retmax(n_records, retmax=500):
@@ -366,15 +374,29 @@ class SRAweb(object):
                 sys.stderr.write(error_msg)
                 raise ValueError(error_msg) from e
 
-            # retry again
+        # NCBI server error
+        if "ERROR" in esearch_response:
+            error_msg = esearch_response.get("ERROR", "Unknown error")
+            raise RuntimeError(f"NCBI search backend error: {error_msg}")
 
-        if "esummaryresult" in esearch_response:
+        if "esearchresult" not in esearch_response:
             print("No result found")
             return
         if "error" in esearch_response:
             # API rate limite exceeded
             esearch_response = _retry_response(
                 self.base_url["esearch"], payload, "esearchresult"
+            )
+
+        # Retry for transient NCBI server errors
+        if "ERROR" in esearch_response.get("esearchresult", {}):
+            esearch_response = _retry_response(
+                self.base_url["esearch"], payload, "esearchresult"
+            )
+
+        if "count" not in esearch_response["esearchresult"]:
+            raise RuntimeError(
+                f"NCBI API response missing 'count' field. Response: {esearch_response['esearchresult']}"
             )
 
         n_records = int(esearch_response["esearchresult"]["count"])
