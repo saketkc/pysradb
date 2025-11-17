@@ -419,6 +419,44 @@ def test_fetch_bioproject_pmids_multiple(sraweb_connection):
     assert result["PRJNA200000"] == []
 
 
+def test_search_pmc_by_bioproject(sraweb_connection):
+    """Test PMC search fallback for bioproject IDs"""
+    # PRJEB39301 doesn't have PMIDs in bioproject XML but is cited in PMC (PMC8379757)
+    pmids = sraweb_connection._search_pmc_by_bioproject("PRJEB39301")
+    assert isinstance(pmids, list)
+    assert len(pmids) > 0
+    # Should find PMID 34419158 (from PMC8379757)
+    assert "34419158" in pmids
+
+
+def test_fetch_bioproject_pmids_with_pmc_fallback(sraweb_connection):
+    """Test that fetch_bioproject_pmids falls back to PMC search when XML has no PMIDs"""
+    # PRJEB39301 - bioproject XML has no publications, but PMC search should find them
+    result = sraweb_connection.fetch_bioproject_pmids("PRJEB39301")
+    assert isinstance(result, dict)
+    assert "PRJEB39301" in result
+    assert isinstance(result["PRJEB39301"], list)
+    # Should have found PMID via PMC fallback
+    assert len(result["PRJEB39301"]) > 0
+    assert "34419158" in result["PRJEB39301"]
+
+
+def test_srp_to_pmid_with_pmc_fallback(sraweb_connection):
+    """Test srp_to_pmid with bioproject that uses PMC fallback"""
+    # ERP122802 uses PRJEB39301 which requires PMC fallback to find PMID
+    df = sraweb_connection.srp_to_pmid("ERP122802")
+    assert isinstance(df, pd.DataFrame)
+    assert "srp_accession" in df.columns
+    assert "bioproject" in df.columns
+    assert "pmid" in df.columns
+    # Check that we got a result for ERP122802
+    assert len(df) > 0
+    erp_row = df[df["srp_accession"] == "ERP122802"]
+    assert len(erp_row) > 0
+    # Should have PMID 34419158 via PMC fallback
+    assert erp_row.iloc[0]["pmid"] == "34419158"
+
+
 def test_sra_to_pmid(sraweb_connection):
     """Test SRA to PMID functionality (backward compatibility)"""
     df = sraweb_connection.sra_to_pmid("SRP002605")

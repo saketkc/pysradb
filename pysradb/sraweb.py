@@ -1776,6 +1776,10 @@ class SRAweb(object):
                         match for match in matches if len(match) >= 7
                     ]  # PMIDs are typically 7+ digits
 
+                # If no PMIDs found in bioproject XML, try searching PMC by bioproject ID
+                if not pmids:
+                    pmids = self._search_pmc_by_bioproject(bioproject)
+
                 bioproject_pmids[bioproject] = list(set(pmids))  # Remove duplicates
                 time.sleep(self.sleep_time)
 
@@ -2142,6 +2146,77 @@ class SRAweb(object):
             pass
 
         return gse_ids
+
+    def _search_pmc_by_bioproject(self, bioproject_id):
+        """Search PubMed Central for PMIDs using BioProject accession ID
+
+        This provides a fallback mechanism when the BioProject XML doesn't contain
+        publication metadata but the research has been published and is cited in PMC.
+
+        Parameters
+        ----------
+        bioproject_id: str
+                      BioProject accession ID (e.g., PRJEB39301, PRJNA123456)
+
+        Returns
+        -------
+        pmids: list
+              List of PMIDs found associated with the bioproject
+        """
+        try:
+            search_url = (
+                "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi"
+            )
+            search_params = {
+                "db": "pmc",
+                "term": bioproject_id,
+                "retmode": "json",
+                "retmax": "10",
+            }
+
+            response = requests.get(search_url, params=search_params, timeout=60)
+            response.raise_for_status()
+            result = response.json()
+
+            pmc_ids = result.get("esearchresult", {}).get("idlist", [])
+            if not pmc_ids:
+                return []
+
+            # Get primary PMIDs for each PMC article
+            summary_url = (
+                "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esummary.fcgi"
+            )
+            summary_params = {
+                "db": "pmc",
+                "id": ",".join(pmc_ids),
+                "retmode": "json",
+            }
+
+            summary_response = requests.get(
+                summary_url, params=summary_params, timeout=60
+            )
+            summary_result = summary_response.json()
+
+            pmids = []
+            # Extract primary PMID for each PMC article
+            for pmc_id in pmc_ids:
+                if pmc_id in summary_result.get("result", {}):
+                    article = summary_result["result"][pmc_id]
+                    articleids = article.get("articleids", [])
+
+                    # Find the primary PMID
+                    for aid in articleids:
+                        if aid.get("idtype") == "pmid":
+                            primary_pmid = aid.get("value")
+                            if primary_pmid and primary_pmid not in pmids:
+                                pmids.append(primary_pmid)
+                            break
+
+            return pmids
+
+        except Exception as e:
+            # Silently fail and return empty list for fallback mechanism
+            return []
 
     def search_pmc_for_external_sources(self, external_sources):
         """Search PubMed Central for PMIDs using external source identifiers
