@@ -153,17 +153,20 @@ class MetadataExtractor(ABC):
                 "cell_type",
                 "disease",
                 "disease_status",
+                "phenotype",
                 "treatment",
+                "sample_treatment_protocol_ch1",
                 "compound",
+                "strain",
                 "extract_protocol",
                 "label_protocol",
                 "sample_summary",
                 "description",
+                "study_title",
+                "study_summary",
             ]
 
             exclude_columns = [
-                "study_title",
-                "study_summary",
                 "series_title",
                 "series_summary",
             ]
