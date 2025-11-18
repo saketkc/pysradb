@@ -2164,9 +2164,7 @@ class SRAweb(object):
               List of PMIDs found associated with the bioproject
         """
         try:
-            search_url = (
-                "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi"
-            )
+            search_url = "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi"
             search_params = {
                 "db": "pmc",
                 "term": bioproject_id,
@@ -2183,9 +2181,7 @@ class SRAweb(object):
                 return []
 
             # Get primary PMIDs for each PMC article
-            summary_url = (
-                "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esummary.fcgi"
-            )
+            summary_url = "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esummary.fcgi"
             summary_params = {
                 "db": "pmc",
                 "id": ",".join(pmc_ids),
