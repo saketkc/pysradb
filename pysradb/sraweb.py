@@ -57,18 +57,26 @@ def _order_first(df, column_order_list):
 
 
 def _retry_response(base_url, payload, key, max_retries=10):
-    """Rerty fetching esummary if API rate limit exceeeds"""
+    """Retry fetching response if API rate limit exceeded or transient errors occur"""
     for index, _ in enumerate(range(max_retries)):
         try:
             request = requests.get(base_url, params=OrderedDict(payload))
             response = request.json()
+
+            # Retry on transient errors
+            if "ERROR" in response or "ERROR" in response.get(key, {}):
+                time.sleep(index + 1)
+                continue
+
             results = response[key]
             return response
-        except KeyError:
+        except (KeyError, requests.exceptions.JSONDecodeError):
             # sleep for increasing times
             time.sleep(index + 1)
             continue
-    raise RuntimeError("Failed to fetch esummary. API rate limit exceeded.")
+    raise RuntimeError(
+        "Failed to fetch response. NCBI API rate limit exceeded or server error."
+    )
 
 
 def get_retmax(n_records, retmax=500):
@@ -105,17 +113,17 @@ class SRAweb(object):
         self.esearch_params = {}
         self.esearch_params["sra"] = [
             ("db", "sra"),
-            ("usehistory", "n"),
+            ("usehistory", "y"),
             ("retmode", "json"),
         ]
         self.esearch_params["geo"] = [
             ("db", "gds"),
-            ("usehistory", "n"),
+            ("usehistory", "y"),
             ("retmode", "json"),
         ]
         self.efetch_params = [
             ("db", "sra"),
-            ("usehistory", "n"),
+            ("usehistory", "y"),
             ("retmode", "runinfo"),
         ]
 
@@ -343,38 +351,52 @@ class SRAweb(object):
         if isinstance(term, list):
             term = " OR ".join(term)
         payload += [("term", term)]
-        request = requests.post(self.base_url["esearch"], data=OrderedDict(payload))
-        try:
-            esearch_response = request.json()
-        except JSONDecodeError:
-            sys.stderr.write(
-                "Unable to parse esummary response json: {}{}. Will retry once.".format(
-                    request.text, os.linesep
-                )
-            )
-            retry_after = request.headers.get("Retry-After", 1)
-            time.sleep(int(retry_after))
+
+        # Retry initial esearch request with exponential backoff for transient errors
+        esearch_response = None
+        max_retries = 10
+        for attempt in range(max_retries):
             request = requests.post(self.base_url["esearch"], data=OrderedDict(payload))
             try:
                 esearch_response = request.json()
-            except JSONDecodeError as e:
-                error_msg = (
-                    "Unable to parse esummary response json: {}{}. Aborting.".format(
+            except JSONDecodeError:
+                sys.stderr.write(
+                    "Unable to parse esearch response json: {}{}. Will retry.".format(
                         request.text, os.linesep
                     )
                 )
-                sys.stderr.write(error_msg)
-                raise ValueError(error_msg) from e
+                time.sleep(attempt + 1)
+                continue
 
-            # retry again
+            # Check if we got a valid response without errors
+            if "esearchresult" in esearch_response:
+                # Check for transient error in esearchresult
+                if "ERROR" not in esearch_response.get("esearchresult", {}):
+                    # Valid response, break out of retry loop
+                    break
+                else:
+                    # Transient error, retry
+                    time.sleep(attempt + 1)
+                    continue
+            elif "ERROR" in esearch_response:
+                # Top-level ERROR, retry
+                time.sleep(attempt + 1)
+                continue
+            else:
+                # Unexpected response format
+                time.sleep(attempt + 1)
+                continue
 
-        if "esummaryresult" in esearch_response:
+        if esearch_response is None:
+            raise RuntimeError("Failed to get esearch response after retries")
+
+        if "esearchresult" not in esearch_response:
             print("No result found")
             return
-        if "error" in esearch_response:
-            # API rate limite exceeded
-            esearch_response = _retry_response(
-                self.base_url["esearch"], payload, "esearchresult"
+
+        if "count" not in esearch_response["esearchresult"]:
+            raise RuntimeError(
+                f"NCBI API response missing 'count' field. Response: {esearch_response['esearchresult']}"
             )
 
         n_records = int(esearch_response["esearchresult"]["count"])
@@ -385,18 +407,52 @@ class SRAweb(object):
             payload += self.create_esummary_params(esearch_response["esearchresult"])
             payload = OrderedDict(payload)
             payload["retstart"] = retstart
-            request = requests.get(
-                self.base_url["esummary"], params=OrderedDict(payload)
-            )
-            try:
-                response = request.json()
-            except JSONDecodeError:
-                time.sleep(1)
-                response = _retry_response(self.base_url["esummary"], payload, "result")
+
+            # Retry esummary with exponential backoff for transient errors
+            response = None
+            for attempt in range(10):
+                try:
+                    request = requests.get(
+                        self.base_url["esummary"],
+                        params=OrderedDict(payload),
+                        timeout=30,
+                    )
+                    response = request.json()
+                    # Check if response is valid
+                    if "result" in response and response["result"]:
+                        break
+                    else:
+                        # Empty or invalid result, retry
+                        time.sleep(attempt + 1)
+                        continue
+                except (JSONDecodeError, requests.exceptions.RequestException) as e:
+                    # JSONDecodeError: malformed JSON response
+                    # RequestException: network/timeout errors
+                    # Both are transient, retry with backoff
+                    sys.stderr.write(
+                        f"Transient error fetching esummary (attempt {attempt+1}/10): {type(e).__name__}\n"
+                    )
+                    time.sleep(attempt + 1)
+                    continue
+
+            if response is None:
+                # Failed to get any response after retries
+                sys.stderr.write(
+                    f"Warning: Failed to fetch esummary for retstart={retstart}. Skipping.\n"
+                )
+                continue
 
             if "error" in response:
-                # API rate limite exceeded
-                response = _retry_response(self.base_url["esummary"], payload, "result")
+                # API rate limit exceeded, use existing retry logic
+                try:
+                    response = _retry_response(
+                        self.base_url["esummary"], payload, "result"
+                    )
+                except RuntimeError:
+                    sys.stderr.write(
+                        f"Warning: Failed to fetch esummary for retstart={retstart}. Skipping.\n"
+                    )
+                    continue
             if retstart == 0:
                 results = response["result"]
             else:
@@ -416,16 +472,49 @@ class SRAweb(object):
             term = " OR ".join(term)
         payload += [("term", term)]
 
-        request = requests.get(self.base_url["esearch"], params=OrderedDict(payload))
-        esearch_response = request.json()
-        if "esummaryresult" in esearch_response:
+        # Retry initial esearch request with exponential backoff for transient errors
+        esearch_response = None
+        max_retries = 10
+        for attempt in range(max_retries):
+            request = requests.get(
+                self.base_url["esearch"], params=OrderedDict(payload)
+            )
+            try:
+                esearch_response = request.json()
+            except JSONDecodeError:
+                sys.stderr.write(
+                    "Unable to parse esearch response json. Will retry.{}\n".format(
+                        request.text[:100]
+                    )
+                )
+                time.sleep(attempt + 1)
+                continue
+
+            # Check if we got a valid response without errors
+            if "esearchresult" in esearch_response:
+                # Check for transient error in esearchresult
+                if "ERROR" not in esearch_response.get("esearchresult", {}):
+                    # Valid response, break out of retry loop
+                    break
+                else:
+                    # Transient error, retry
+                    time.sleep(attempt + 1)
+                    continue
+            elif "ERROR" in esearch_response:
+                # Top-level ERROR, retry
+                time.sleep(attempt + 1)
+                continue
+            else:
+                # Unexpected response format
+                time.sleep(attempt + 1)
+                continue
+
+        if esearch_response is None:
+            raise RuntimeError("Failed to get esearch response after retries")
+
+        if "esearchresult" not in esearch_response:
             print("No result found")
             return
-        if "error" in esearch_response:
-            # API rate limite exceeded
-            esearch_response = _retry_response(
-                self.base_url["esearch"], payload, "esearchresult"
-            )
 
         n_records = int(esearch_response["esearchresult"]["count"])
 
