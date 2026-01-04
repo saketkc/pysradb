@@ -851,34 +851,18 @@ class SRAweb(object):
 
         # Enrich metadata if requested
         if enrich and not metadata_df.empty:
-            from pysradb.enrichment import enrich_df
+            from pysradb.enrichment import (
+                EnrichmentError,
+                ModelLoadingError,
+                enrich_df,
+            )
 
-            metadata_df = enrich_df(metadata_df, basic_cols)
-            # try:
-            #     from pysradb.metadata_enrichment import create_metadata_extractor
-
-            #     extractor = create_metadata_extractor(
-            #         method="llm", backend=enrich_backend
-            #     )
-            #     metadata_df = extractor.enrich_dataframe(
-            #         metadata_df, text_column=None, prefix="guessed_"
-            #     )
-            # except Exception as e:
-            #     error_msg = str(e)
-            #     if "Ollama is not installed or not running" in error_msg:
-            #         print(f"Error: {error_msg}")
-            #         print(
-            #             "Metadata enrichment requires Ollama to be installed and running."
-            #         )
-            #         print(
-            #             "Please install Ollama from https://ollama.ai/ and follow these steps:"
-            #         )
-            #         print("1. Start Ollama server: ollama serve")
-            #         print("2. Pull a model: ollama pull phi3")
-            #         print("3. Try again or use a different enrichment backend")
-            #         raise
-            #     else:
-            #         print(f"Warning: Enrichment failed: {e}")
+            try:
+                metadata_df = enrich_df(metadata_df, basic_cols, enrich_backend)
+            except ModelLoadingError as e:
+                raise ModelLoadingError(e.model_name, e.original_error)
+            except EnrichmentError as e:
+                raise EnrichmentError(f"Metadata enrichment failed: {e}")
 
         if "run_accession" in metadata_df.columns:
             return metadata_df.sort_values(by="run_accession")

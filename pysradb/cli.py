@@ -210,29 +210,184 @@ def metadata(
 
     metadata_frames = []
     if srp_ids:
-        srp_metadata = client.sra_metadata(
-            srp_ids if len(srp_ids) > 1 else srp_ids[0],
-            assay=assay,
-            detailed=detailed,
-            sample_attribute=desc,
-            expand_sample_attributes=expand,
-            enrich=enrich,
-            # TODO: Change the default backend!
-            enrich_backend=enrich_backend if enrich_backend else "ollama/phi3",
-        )
-        if srp_metadata is not None:
-            metadata_frames.append(srp_metadata)
+        try:
+            srp_metadata = client.sra_metadata(
+                srp_ids if len(srp_ids) > 1 else srp_ids[0],
+                assay=assay,
+                detailed=detailed,
+                sample_attribute=desc,
+                expand_sample_attributes=expand,
+                enrich=enrich,
+                # TODO: Change the default backend!
+                enrich_backend=enrich_backend
+                if enrich_backend
+                else "ollama/granite4:3b",
+            )
+            if srp_metadata is not None:
+                metadata_frames.append(srp_metadata)
+        except Exception as e:
+            error_msg = str(e)
+            if "Failed to load model" in error_msg:
+                console.print("[red]Error: Failed to load enrichment model.[/red]")
+                console.print(
+                    "[yellow]Please ensure the required models are installed:[/yellow]"
+                )
+                console.print(
+                    "  1. For embedding model: pip install sentence-transformers"
+                )
+                # Provide LLM-specific guidance based on requested backend
+                provider = (
+                    enrich_backend.split("/", 1)[0] if enrich_backend else "ollama"
+                )
+                model_hint = (
+                    enrich_backend.split("/", 1)[1]
+                    if (enrich_backend and "/" in enrich_backend)
+                    else "granite4:3b"
+                )
+                if provider == "ollama":
+                    console.print("  2. For LLM: Install Ollama from https://ollama.ai")
+                    console.print("     Then run: ollama serve")
+                    console.print(f"     Then pull the model: ollama pull {model_hint}")
+                elif provider == "lmstudio":
+                    console.print(
+                        "  2. For LLM: Ensure LM Studio is installed and running"
+                    )
+                    console.print(
+                        "     Consult LM Studio docs for pulling or registering models."
+                    )
+                else:
+                    console.print(
+                        f"  2. For LLM: Ensure {provider} backend is available and the model is installed"
+                    )
+                return
+            elif "connect" in error_msg.lower() or "connection" in error_msg.lower():
+                provider = (
+                    enrich_backend.split("/", 1)[0] if enrich_backend else "ollama"
+                )
+                model_hint = (
+                    enrich_backend.split("/", 1)[1]
+                    if (enrich_backend and "/" in enrich_backend)
+                    else "granite4:3b"
+                )
+                if provider == "ollama":
+                    console.print(
+                        "[red]Error: Cannot connect to Ollama server or load model.[/red]"
+                    )
+                    console.print(
+                        "[yellow]Please ensure Ollama is installed and running:[/yellow]"
+                    )
+                    console.print("  1. Install Ollama from https://ollama.ai")
+                    console.print("  2. Start Ollama: ollama serve")
+                    console.print(f"  3. Pull the model: ollama pull {model_hint}")
+                elif provider == "lmstudio":
+                    console.print(
+                        "[red]Error: Cannot connect to LM Studio or load model.[/red]"
+                    )
+                    console.print(
+                        "[yellow]Please ensure LM Studio is running and the model is available.[/yellow]"
+                    )
+                    console.print("  1. Check LM Studio documentation for model setup")
+                else:
+                    console.print(
+                        f"[red]Error: Cannot connect to {provider} backend or load model.[/red]"
+                    )
+                    console.print(
+                        "[yellow]Please ensure the backend/service is running and the requested model is available.[/yellow]"
+                    )
+                return
+            elif "enrichment" in error_msg.lower():
+                console.print("[red]Error: Metadata enrichment failed.[/red]")
+                console.print(f"[yellow]Details: {error_msg}[/yellow]")
+                return
+            else:
+                raise
 
     if gse_ids:
-        geo_metadata_df = client.geo_metadata(
-            gse_ids if len(gse_ids) > 1 else gse_ids[0],
-            sample_attribute=desc,
-            detailed=detailed,
-            enrich=enrich,
-            enrich_backend=enrich_backend if enrich_backend else "ollama/phi3",
-        )
-        if not geo_metadata_df.empty:
-            metadata_frames.append(geo_metadata_df)
+        try:
+            geo_metadata_df = client.geo_metadata(
+                gse_ids if len(gse_ids) > 1 else gse_ids[0],
+                sample_attribute=desc,
+                detailed=detailed,
+                enrich=enrich,
+                enrich_backend=enrich_backend if enrich_backend else "ollama/phi3",
+            )
+            if not geo_metadata_df.empty:
+                metadata_frames.append(geo_metadata_df)
+        except Exception as e:
+            error_msg = str(e)
+            if "Failed to load model" in error_msg:
+                console.print("[red]Error: Failed to load enrichment model.[/red]")
+                console.print(
+                    "[yellow]Please ensure the required models are installed:[/yellow]"
+                )
+                console.print(
+                    "  1. For embedding model: pip install sentence-transformers"
+                )
+                provider = (
+                    enrich_backend.split("/", 1)[0] if enrich_backend else "ollama"
+                )
+                model_hint = (
+                    enrich_backend.split("/", 1)[1]
+                    if (enrich_backend and "/" in enrich_backend)
+                    else "granite4:3b"
+                )
+                if provider == "ollama":
+                    console.print("  2. For LLM: Install Ollama from https://ollama.ai")
+                    console.print("     Then run: ollama serve")
+                    console.print(f"     Then pull the model: ollama pull {model_hint}")
+                elif provider == "lmstudio":
+                    console.print(
+                        "  2. For LLM: Ensure LM Studio is installed and running"
+                    )
+                    console.print(
+                        "     Consult LM Studio docs for pulling or registering models."
+                    )
+                else:
+                    console.print(
+                        f"  2. For LLM: Ensure {provider} backend is available and the model is installed"
+                    )
+                return
+            elif "connect" in error_msg.lower() or "connection" in error_msg.lower():
+                provider = (
+                    enrich_backend.split("/", 1)[0] if enrich_backend else "ollama"
+                )
+                model_hint = (
+                    enrich_backend.split("/", 1)[1]
+                    if (enrich_backend and "/" in enrich_backend)
+                    else "granite4:3b"
+                )
+                if provider == "ollama":
+                    console.print(
+                        "[red]Error: Cannot connect to Ollama server or load model.[/red]"
+                    )
+                    console.print(
+                        "[yellow]Please ensure Ollama is installed and running:[/yellow]"
+                    )
+                    console.print("  1. Install Ollama from https://ollama.ai")
+                    console.print("  2. Start Ollama: ollama serve")
+                    console.print(f"  3. Pull the model: ollama pull {model_hint}")
+                elif provider == "lmstudio":
+                    console.print(
+                        "[red]Error: Cannot connect to LM Studio or load model.[/red]"
+                    )
+                    console.print(
+                        "[yellow]Please ensure LM Studio is running and the model is available.[/yellow]"
+                    )
+                    console.print("  1. Check LM Studio documentation for model setup")
+                else:
+                    console.print(
+                        f"[red]Error: Cannot connect to {provider} backend or load model.[/red]"
+                    )
+                    console.print(
+                        "[yellow]Please ensure the backend/service is running and the requested model is available.[/yellow]"
+                    )
+                return
+            elif "enrichment" in error_msg.lower():
+                console.print("[red]Error: Metadata enrichment failed.[/red]")
+                console.print(f"[yellow]Details: {error_msg}[/yellow]")
+                return
+            else:
+                raise
 
     if metadata_frames:
         df = pd.concat(metadata_frames, ignore_index=True, sort=False)
