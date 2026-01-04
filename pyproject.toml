@@ -31,22 +31,6 @@ dependencies = [
     "xmltodict>=0.12.0",
 ]
 
-[project.optional-dependencies]
-enrichment = ["instructor>=1.0.0", "pydantic>=2.0.0", "sentence-transformers>=2.0.0"]
-docs = [
-    "sphinx>=4.0",
-    "furo>=2023.0.0",
-    "sphinx-tabs>=3.4.1",
-    "numpydoc>=1.5.0",
-    "nbsphinx>=0.8.0",
-    "myst-parser>=0.18.0",
-    "ipython>=7.0",
-    "sphinxcontrib-gtagjs>=0.2",
-    "sphinx-panels>=0.5.2",
-]
-all = [
-    "pysradb[enrichment,docs]",
-]
 
 [project.scripts]
 pysradb = "pysradb.cli:parse_args"
