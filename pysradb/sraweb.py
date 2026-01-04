@@ -504,6 +504,10 @@ class SRAweb(object):
         enrich_backend="ollama/phi3",
         **kwargs,
     ):
+        # NOTE: We need to get all the info we can while enriching our data
+        if enrich:
+            detailed = True
+
         esummary_result = self.get_esummary_response("sra", srp)
         try:
             uids = esummary_result["uids"]
@@ -651,6 +655,7 @@ class SRAweb(object):
         metadata_df = metadata_df.replace(
             regex=r"^@xmlns.*", value=pd.NA
         ).infer_objects(copy=False)
+        basic_cols = metadata_df.columns
         if not detailed:
             return metadata_df
 
@@ -810,7 +815,8 @@ class SRAweb(object):
         metadata_df.columns = [x.lower().strip() for x in metadata_df.columns]
 
         # Add PMID column when detailed=True and include_pmids=True
-        if include_pmids:
+        # Not fetching pmids when user asks for enriched output
+        if not enrich or include_pmids:
             try:
                 sra_accessions = [srp] if isinstance(srp, str) else srp
                 pmid_df = self.sra_to_pmid(sra_accessions)
@@ -845,31 +851,34 @@ class SRAweb(object):
 
         # Enrich metadata if requested
         if enrich and not metadata_df.empty:
-            try:
-                from pysradb.metadata_enrichment import create_metadata_extractor
+            from pysradb.enrichment import enrich_df
 
-                extractor = create_metadata_extractor(
-                    method="llm", backend=enrich_backend
-                )
-                metadata_df = extractor.enrich_dataframe(
-                    metadata_df, text_column=None, prefix="guessed_"
-                )
-            except Exception as e:
-                error_msg = str(e)
-                if "Ollama is not installed or not running" in error_msg:
-                    print(f"Error: {error_msg}")
-                    print(
-                        "Metadata enrichment requires Ollama to be installed and running."
-                    )
-                    print(
-                        "Please install Ollama from https://ollama.ai/ and follow these steps:"
-                    )
-                    print("1. Start Ollama server: ollama serve")
-                    print("2. Pull a model: ollama pull phi3")
-                    print("3. Try again or use a different enrichment backend")
-                    raise
-                else:
-                    print(f"Warning: Enrichment failed: {e}")
+            metadata_df = enrich_df(metadata_df, basic_cols)
+            # try:
+            #     from pysradb.metadata_enrichment import create_metadata_extractor
+
+            #     extractor = create_metadata_extractor(
+            #         method="llm", backend=enrich_backend
+            #     )
+            #     metadata_df = extractor.enrich_dataframe(
+            #         metadata_df, text_column=None, prefix="guessed_"
+            #     )
+            # except Exception as e:
+            #     error_msg = str(e)
+            #     if "Ollama is not installed or not running" in error_msg:
+            #         print(f"Error: {error_msg}")
+            #         print(
+            #             "Metadata enrichment requires Ollama to be installed and running."
+            #         )
+            #         print(
+            #             "Please install Ollama from https://ollama.ai/ and follow these steps:"
+            #         )
+            #         print("1. Start Ollama server: ollama serve")
+            #         print("2. Pull a model: ollama pull phi3")
+            #         print("3. Try again or use a different enrichment backend")
+            #         raise
+            #     else:
+            #         print(f"Warning: Enrichment failed: {e}")
 
         if "run_accession" in metadata_df.columns:
             return metadata_df.sort_values(by="run_accession")

@@ -81,7 +81,7 @@ def pretty_print_df(df, include_header=True):
             chunk_df = df[chunk_cols]
 
             console.print(
-                f"[bright_blue]Columns {i+1}-{min(i+max_cols_per_table, num_columns)}:[/bright_blue]"
+                f"[bright_blue]Columns {i + 1}-{min(i + max_cols_per_table, num_columns)}:[/bright_blue]"
             )
             _create_table(chunk_df, terminal_width, include_header, format_value)
             console.print()
@@ -217,6 +217,7 @@ def metadata(
             sample_attribute=desc,
             expand_sample_attributes=expand,
             enrich=enrich,
+            # TODO: Change the default backend!
             enrich_backend=enrich_backend if enrich_backend else "ollama/phi3",
         )
         if srp_metadata is not None:
@@ -769,9 +770,7 @@ def parse_args(args=None):
             """\
     pysradb: Query NGS metadata and data from NCBI Sequence Read Archive.
     version: {}.
-    Citation: 10.12688/f1000research.18676.1""".format(
-                __version__
-            )
+    Citation: 10.12688/f1000research.18676.1""".format(__version__)
         ),
         formatter_class=CustomFormatterArgP,
     )
