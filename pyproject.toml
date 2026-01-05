@@ -8,7 +8,7 @@ dynamic = ["version"]
 description = "A Python package for interacting with SRAdb and downloading datasets from SRA/ENA/GEO"
 readme = "README.md"
 license = {file = "LICENSE"}
-requires-python = ">=3.9"
+requires-python = ">=3.9,<3.13"
 authors = [{ name = "Saket Choudhary", email = "saketkc@gmail.com" }]
 classifiers = [
     "Development Status :: 5 - Production/Stable",
@@ -33,20 +33,21 @@ dependencies = [
 
 [project.optional-dependencies]
 docs = [
-    "sphinx>=4.0",
-    "furo>=2023.0.0",
+    "sphinx>=7",
+    "furo>=2024.0.0",
     "sphinx-tabs>=3.4.1",
     "numpydoc>=1.5.0",
     "nbsphinx>=0.8.0",
     "myst-parser>=0.18.0",
     "ipython>=7.0",
     "sphinxcontrib-gtagjs>=0.2",
-    "sphinx-panels>=0.5.2",
+    "sphinx-design>=0.5.0"
 ]
 enrichment = [
-    "vllm>=0.11.0",
     "torch>=2.8.0",
+    "vllm>=0.11.0 ; platform_system == 'Linux'",
     "langchain>=0.3.27",
+    "langchain-core>=0.3.81",
     "langchain-community>=0.3.31",
     "langchain-ollama>=0.3.10",
     "langchain-openai>=0.3.35",
