@@ -501,7 +501,7 @@ class SRAweb(object):
         output_read_lengths=False,
         include_pmids=False,
         enrich=False,
-        enrich_backend="ollama/phi3",
+        enrich_backend="ollama/granite4:3b",
         **kwargs,
     ):
         # NOTE: We need to get all the info we can while enriching our data
@@ -816,7 +816,7 @@ class SRAweb(object):
 
         # Add PMID column when detailed=True and include_pmids=True
         # Not fetching pmids when user asks for enriched output
-        if not enrich or include_pmids:
+        if include_pmids:
             try:
                 sra_accessions = [srp] if isinstance(srp, str) else srp
                 pmid_df = self.sra_to_pmid(sra_accessions)
@@ -851,18 +851,9 @@ class SRAweb(object):
 
         # Enrich metadata if requested
         if enrich and not metadata_df.empty:
-            from pysradb.enrichment import (
-                EnrichmentError,
-                ModelLoadingError,
-                enrich_df,
-            )
+            from pysradb.enrichment import enrich_df
 
-            try:
-                metadata_df = enrich_df(metadata_df, basic_cols, enrich_backend)
-            except ModelLoadingError as e:
-                raise ModelLoadingError(e.model_name, e.original_error)
-            except EnrichmentError as e:
-                raise EnrichmentError(f"Metadata enrichment failed: {e}")
+            metadata_df = enrich_df(metadata_df, list(basic_cols), enrich_backend)
 
         if "run_accession" in metadata_df.columns:
             return metadata_df.sort_values(by="run_accession")
@@ -982,6 +973,9 @@ class SRAweb(object):
         enrich_backend="ollama/phi3",
         **kwargs,
     ):
+        if enrich:
+            detailed = True
+
         if isinstance(gse, str):
             gse = [gse]
         if not gse:
@@ -1324,31 +1318,9 @@ class SRAweb(object):
 
         # Enrich metadata if requested
         if enrich and not metadata_df.empty:
-            try:
-                from pysradb.metadata_enrichment import create_metadata_extractor
+            from pysradb.enrichment import enrich_df
 
-                extractor = create_metadata_extractor(
-                    method="llm", backend=enrich_backend
-                )
-                metadata_df = extractor.enrich_dataframe(
-                    metadata_df, text_column=None, prefix="guessed_"
-                )
-            except Exception as e:
-                error_msg = str(e)
-                if "Ollama is not installed or not running" in error_msg:
-                    print(f"Error: {error_msg}")
-                    print(
-                        "Metadata enrichment requires Ollama to be installed and running."
-                    )
-                    print(
-                        "Please install Ollama from https://ollama.ai/ and follow these steps:"
-                    )
-                    print("1. Start Ollama server: ollama serve")
-                    print("2. Pull a model: ollama pull phi3")
-                    print("3. Try again or use a different enrichment backend")
-                    raise
-                else:
-                    print(f"Warning: Enrichment failed: {e}")
+            metadata_df = enrich_df(metadata_df, enrichment_backend=enrich_backend)
 
         return metadata_df
 

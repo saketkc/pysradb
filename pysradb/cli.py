@@ -2,25 +2,20 @@
 
 import argparse
 import os
-import re
 import sys
 import warnings
-from io import StringIO
 from textwrap import dedent
 
 import pandas as pd
-from rich.columns import Columns
 from rich.console import Console
 from rich.panel import Panel
 from rich.table import Table
-from rich.text import Text
 
 from . import __version__
 from .exceptions import IncorrectFieldException, MissingQueryException
 from .geoweb import GEOweb, download_geo_matrix, parse_geo_matrix_to_tsv
 from .search import EnaSearch, GeoSearch, SraSearch
 from .sraweb import SRAweb
-from .utils import confirm
 
 pd.set_option("display.max_rows", None)
 pd.set_option("display.max_columns", None)
@@ -72,7 +67,10 @@ def pretty_print_df(df, include_header=True):
     # chuenk
     if num_columns > max_cols_per_table:
         console.print(
-            f"[bright_black]Displaying {num_columns} columns in chunks of {max_cols_per_table}[/bright_black]"
+            (
+                f"[bright_black]Displaying {num_columns} columns in chunks of "
+                f"{max_cols_per_table}[/bright_black]"
+            )
         )
         console.print()
 
@@ -81,7 +79,8 @@ def pretty_print_df(df, include_header=True):
             chunk_df = df[chunk_cols]
 
             console.print(
-                f"[bright_blue]Columns {i + 1}-{min(i + max_cols_per_table, num_columns)}:[/bright_blue]"
+                f"[bright_blue]Columns {i + 1}-"
+                f"{min(i + max_cols_per_table, num_columns)}:[/bright_blue]"
             )
             _create_table(chunk_df, terminal_width, include_header, format_value)
             console.print()
@@ -161,22 +160,34 @@ def _print_save_df(df, saveto=None):
         if file_ext == ".csv":
             df.to_csv(saveto, index=False, header=True)
             console.print(
-                f"[bright_green]✓[/bright_green] Saved to CSV: [bright_blue]{saveto}[/bright_blue]"
+                (
+                    f"[bright_green]✓[/bright_green] Saved to CSV: "
+                    f"[bright_blue]{saveto}[/bright_blue]"
+                )
             )
         elif file_ext == ".json":
             df.to_json(saveto, orient="records", indent=2)
             console.print(
-                f"[bright_green]✓[/bright_green] Saved to JSON: [bright_blue]{saveto}[/bright_blue]"
+                (
+                    f"[bright_green]✓[/bright_green] Saved to JSON: "
+                    f"[bright_blue]{saveto}[/bright_blue]"
+                )
             )
         elif file_ext in [".tsv", ".txt"]:
             df.to_csv(saveto, index=False, header=True, sep="\t")
             console.print(
-                f"[bright_green]✓[/bright_green] Saved to TSV: [bright_blue]{saveto}[/bright_blue]"
+                (
+                    f"[bright_green]✓[/bright_green] Saved to TSV: "
+                    f"[bright_blue]{saveto}[/bright_blue]"
+                )
             )
         else:
             df.to_csv(saveto, index=False, header=True, sep="\t")
             console.print(
-                f"[bright_green]✓[/bright_green] Saved to file: [bright_blue]{saveto}[/bright_blue]"
+                (
+                    f"[bright_green]✓[/bright_green] Saved to file: "
+                    f"[bright_blue]{saveto}[/bright_blue]"
+                )
             )
     else:
         if df is None:
@@ -192,7 +203,10 @@ def metadata(
     # Validate that at least one ID was provided
     if not srp_id:
         console.print(
-            "[red]Error: No accession IDs provided. Please provide one or more SRP/GSE IDs.[/red]"
+            (
+                "[red]Error: No accession IDs provided. "
+                "Please provide one or more SRP/GSE IDs.[/red]"
+            )
         )
         console.print("[yellow]Usage: pysradb metadata SRP000001 [SRP000002 ...]")
         console.print("       pysradb metadata GSE123456[/yellow]")
@@ -218,10 +232,9 @@ def metadata(
                 sample_attribute=desc,
                 expand_sample_attributes=expand,
                 enrich=enrich,
-                # TODO: Change the default backend!
-                enrich_backend=enrich_backend
-                if enrich_backend
-                else "ollama/granite4:3b",
+                enrich_backend=(
+                    enrich_backend if enrich_backend else "ollama/granite4:3b"
+                ),
             )
             if srp_metadata is not None:
                 metadata_frames.append(srp_metadata)
@@ -257,7 +270,10 @@ def metadata(
                     )
                 else:
                     console.print(
-                        f"  2. For LLM: Ensure {provider} backend is available and the model is installed"
+                        (
+                            f"  2. For LLM: Ensure {provider} backend is available "
+                            "and the model is installed"
+                        )
                     )
                 return
             elif "connect" in error_msg.lower() or "connection" in error_msg.lower():
@@ -271,10 +287,12 @@ def metadata(
                 )
                 if provider == "ollama":
                     console.print(
-                        "[red]Error: Cannot connect to Ollama server or load model.[/red]"
+                        "[red]Error: Cannot connect to Ollama server "
+                        "or load model.[/red]"
                     )
                     console.print(
-                        "[yellow]Please ensure Ollama is installed and running:[/yellow]"
+                        "[yellow]Please ensure Ollama is installed "
+                        "and running:[/yellow]"
                     )
                     console.print("  1. Install Ollama from https://ollama.ai")
                     console.print("  2. Start Ollama: ollama serve")
@@ -284,15 +302,21 @@ def metadata(
                         "[red]Error: Cannot connect to LM Studio or load model.[/red]"
                     )
                     console.print(
-                        "[yellow]Please ensure LM Studio is running and the model is available.[/yellow]"
+                        (
+                            "[yellow]Please ensure LM Studio is running and the "
+                            "model is available."
+                            "[/yellow]"
+                        )
                     )
                     console.print("  1. Check LM Studio documentation for model setup")
                 else:
                     console.print(
-                        f"[red]Error: Cannot connect to {provider} backend or load model.[/red]"
+                        f"[red]Error: Cannot connect to {provider} backend "
+                        "or load model.[/red]"
                     )
                     console.print(
-                        "[yellow]Please ensure the backend/service is running and the requested model is available.[/yellow]"
+                        "[yellow]Please ensure the backend/service is running "
+                        "and the requested model is available.[/yellow]"
                     )
                 return
             elif "enrichment" in error_msg.lower():
@@ -309,7 +333,9 @@ def metadata(
                 sample_attribute=desc,
                 detailed=detailed,
                 enrich=enrich,
-                enrich_backend=enrich_backend if enrich_backend else "ollama/phi3",
+                enrich_backend=(
+                    enrich_backend if enrich_backend else "ollama/granite4:3b"
+                ),
             )
             if not geo_metadata_df.empty:
                 metadata_frames.append(geo_metadata_df)
@@ -344,7 +370,8 @@ def metadata(
                     )
                 else:
                     console.print(
-                        f"  2. For LLM: Ensure {provider} backend is available and the model is installed"
+                        f"  2. For LLM: Ensure {provider} backend is available "
+                        "and the model is installed"
                     )
                 return
             elif "connect" in error_msg.lower() or "connection" in error_msg.lower():
@@ -358,10 +385,12 @@ def metadata(
                 )
                 if provider == "ollama":
                     console.print(
-                        "[red]Error: Cannot connect to Ollama server or load model.[/red]"
+                        "[red]Error: Cannot connect to Ollama server "
+                        "or load model.[/red]"
                     )
                     console.print(
-                        "[yellow]Please ensure Ollama is installed and running:[/yellow]"
+                        "[yellow]Please ensure Ollama is installed "
+                        "and running:[/yellow]"
                     )
                     console.print("  1. Install Ollama from https://ollama.ai")
                     console.print("  2. Start Ollama: ollama serve")
@@ -371,15 +400,18 @@ def metadata(
                         "[red]Error: Cannot connect to LM Studio or load model.[/red]"
                     )
                     console.print(
-                        "[yellow]Please ensure LM Studio is running and the model is available.[/yellow]"
+                        "[yellow]Please ensure LM Studio is running "
+                        "and the model is available.[/yellow]"
                     )
                     console.print("  1. Check LM Studio documentation for model setup")
                 else:
                     console.print(
-                        f"[red]Error: Cannot connect to {provider} backend or load model.[/red]"
+                        f"[red]Error: Cannot connect to {provider} backend "
+                        "or load model.[/red]"
                     )
                     console.print(
-                        "[yellow]Please ensure the backend/service is running and the requested model is available.[/yellow]"
+                        "[yellow]Please ensure the backend/service is running "
+                        "and the requested model is available.[/yellow]"
                     )
                 return
             elif "enrichment" in error_msg.lower():
@@ -903,7 +935,8 @@ def geo_matrix(accession, to_tsv, output_dir):
     # Download the GEO Matrix file
     matrix_file = download_geo_matrix(accession, output_dir=output_dir)
     console.print(
-        f"[bright_green]✓[/bright_green] Downloaded GEO Matrix file to: [bright_blue]{matrix_file}[/bright_blue]"
+        f"[bright_green]✓[/bright_green] Downloaded GEO Matrix file to: "
+        f"[bright_blue]{matrix_file}[/bright_blue]"
     )
 
     # If --to-tsv is specified, parse the file to TSV
@@ -911,7 +944,8 @@ def geo_matrix(accession, to_tsv, output_dir):
         output_tsv = os.path.join(output_dir, f"{accession}_matrix.tsv")
         df = parse_geo_matrix_to_tsv(matrix_file, output_tsv)
         console.print(
-            f"[bright_green]✓[/bright_green] Parsed GEO Matrix file to TSV: [bright_blue]{output_tsv}[/bright_blue]"
+            f"[bright_green]✓[/bright_green] Parsed GEO Matrix file to TSV: "
+            f"[bright_blue]{output_tsv}[/bright_blue]"
         )
 
 
@@ -925,7 +959,9 @@ def parse_args(args=None):
             """\
     pysradb: Query NGS metadata and data from NCBI Sequence Read Archive.
     version: {}.
-    Citation: 10.12688/f1000research.18676.1""".format(__version__)
+    Citation: 10.12688/f1000research.18676.1""".format(
+                __version__
+            )
         ),
         formatter_class=CustomFormatterArgP,
     )
@@ -946,7 +982,10 @@ def parse_args(args=None):
         action="version",
         version=dedent(
             """
-        Choudhary, Saket. "pysradb: A Python Package to Query next-Generation Sequencing Metadata and Data from NCBI Sequence Read Archive." F1000Research, vol. 8, F1000 (Faculty of 1000 Ltd), Apr. 2019, p. 532 (https://f1000research.com/articles/8-532/v1)
+        Choudhary, Saket. "pysradb: A Python Package to Query next-Generation Sequencing
+        Metadata and Data from NCBI Sequence Read Archive."
+        F1000Research, vol. 8, F1000 (Faculty of 1000 Ltd), Apr. 2019, p. 532
+        (https://f1000research.com/articles/8-532/v1)
 
         @article{Choudhary2019,
         doi = {10.12688/f1000research.18676.1},
@@ -957,7 +996,8 @@ def parse_args(args=None):
         volume = {8},
         pages = {532},
         author = {Saket Choudhary},
-        title = {pysradb: A {P}ython package to query next-generation sequencing metadata and data from {NCBI} {S}equence {R}ead {A}rchive},
+        title = {pysradb: A {P}ython package to query next-generation sequencing
+        metadata and data from {NCBI} {S}equence {R}ead {A}rchive},
         journal = {F1000Research}
         }
         """
@@ -1036,7 +1076,8 @@ def parse_args(args=None):
         help=(
             "Generates graphs to illustrate the search result. "
             "By default all graphs are generated. \n"
-            "Alternatively, select a subset from the options below in a space-separated string:\n"
+            "Alternatively, select a subset from the options below "
+            "in a space-separated string:\n"
             "daterange, organism, source, selection, platform, basecount"
         ),
     )
@@ -1059,14 +1100,16 @@ def parse_args(args=None):
             "0: run accession only\n"
             "1: run accession and experiment title\n"
             "2: accession numbers, titles and sequencing information\n"
-            "3: records in 2 and other information such as download url, sample attributes, etc"
+            "3: records in 2 and other information such as download url, "
+            "sample attributes, etc"
         ),
         type=int,
     )
     subparser.add_argument(
         "--run-description",
         action="store_true",
-        help="Displays run accessions and descriptions only. Equivalent to --verbosity 1",
+        help="Displays run accessions and descriptions only. "
+        "Equivalent to --verbosity 1",
     )
     subparser.add_argument(
         "--detailed",
@@ -1084,8 +1127,10 @@ def parse_args(args=None):
         "-q",
         "--query",
         nargs="+",
-        help="Main query string. Note that if no query is supplied, at least one of the "
-        "following flags must be present:",
+        help=(
+            "Main query string. Note that if no query is supplied, at least one of the "
+            "following flags must be present:"
+        ),
     )
     subparser.add_argument("-A", "--accession", help="Accession number")
     subparser.add_argument(
@@ -1107,9 +1152,11 @@ def parse_args(args=None):
     subparser.add_argument(
         "-D",
         "--publication-date",
-        help="Publication date of the run in the format dd-mm-yyyy. If a date range is desired, "
-        "enter the start date, followed by end date, separated by a colon ':'.\n "
-        "Example: 01-01-2010:31-12-2010",
+        help=(
+            "Publication date of the run in the format dd-mm-yyyy. "
+            "If a date range is desired, enter the start date, followed by end date, "
+            "separated by a colon ':'.\n Example: 01-01-2010:31-12-2010"
+        ),
     )
     subparser.add_argument("-P", "--platform", nargs="+", help="Sequencing platform")
     subparser.add_argument("-E", "--selection", nargs="+", help="Library selection")
@@ -1124,15 +1171,22 @@ def parse_args(args=None):
         "-I",
         "--geo-info",
         action="store_true",
-        help="Displays information on how to query GEO DataSets via 'pysradb search --db geo ...', "
-        "including accepted inputs for -G/--geo-query, -Y/--geo-dataset-type and -Z/--geo-entry-type. ",
+        help=(
+            "Displays information on how to query GEO DataSets via "
+            "'pysradb search --db geo ...', "
+            "including accepted inputs for -G/--geo-query, -Y/--geo-dataset-type "
+            "and -Z/--geo-entry-type. "
+        ),
     )
     subparser.add_argument(
         "-G",
         "--geo-query",
         nargs="+",
-        help="Main query string for GEO DataSet. This flag is only used when db is set to be geo."
-        "Please refer to 'pysradb search --geo-info' for more details.",
+        help=(
+            "Main query string for GEO DataSet. "
+            "This flag is only used when db is set to be geo."
+            "Please refer to 'pysradb search --geo-info' for more details."
+        ),
     )
     subparser.add_argument(
         "-Y",
@@ -1652,6 +1706,14 @@ def parse_args(args=None):
 
     args = parser.parse_args(args=None if sys.argv[1:] else ["--help"])
     if args.command == "metadata":
+        if args.enrich:
+            backend = (
+                args.enrich_backend if args.enrich_backend else "ollama/granite4:3b"
+            )
+            console.print(
+                f"Enriching metadata with {backend.replace(':', '-')}",
+                style="green",
+            )
         metadata(
             args.srp_id,
             args.assay,
