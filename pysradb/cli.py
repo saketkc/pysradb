@@ -16,6 +16,7 @@ from .exceptions import IncorrectFieldException, MissingQueryException
 from .geoweb import GEOweb, download_geo_matrix, parse_geo_matrix_to_tsv
 from .search import EnaSearch, GeoSearch, SraSearch
 from .sraweb import SRAweb
+from .mcp import start_mcp_server
 
 pd.set_option("display.max_rows", None)
 pd.set_option("display.max_columns", None)
@@ -1704,6 +1705,10 @@ def parse_args(args=None):
     subparser.add_argument("doi_ids", nargs="+", help="DOI(s)")
     subparser.set_defaults(func=doi_to_identifiers)
 
+    # pysradb mcp
+    subparser = subparsers.add_parser("mcp", help="Start MCP server")
+    subparser.set_defaults(func=start_mcp_server)
+
     args = parser.parse_args(args=None if sys.argv[1:] else ["--help"])
     if args.command == "metadata":
         if args.enrich:
@@ -1807,6 +1812,8 @@ def parse_args(args=None):
         doi_to_srp(args.doi_ids, args.saveto)
     elif args.command == "doi-to-identifiers":
         doi_to_identifiers(args.doi_ids, args.saveto)
+    elif args.command == "mcp":
+        start_mcp_server()
 
 
 if __name__ == "__main__":

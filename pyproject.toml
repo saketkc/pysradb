@@ -8,7 +8,7 @@ dynamic = ["version"]
 description = "A Python package for interacting with SRAdb and downloading datasets from SRA/ENA/GEO"
 readme = "README.md"
 license = {file = "LICENSE"}
-requires-python = ">=3.9,<3.13"
+requires-python = ">=3.10"
 authors = [{ name = "Saket Choudhary", email = "saketkc@gmail.com" }]
 classifiers = [
     "Development Status :: 5 - Production/Stable",
@@ -53,8 +53,11 @@ enrichment = [
     "langchain-openai>=0.3.35",
     "sentence-transformers>=5.1.2",
 ]
+mcp = [
+    "fastmcp>=2.14.2",
+]
 all = [
-    "pysradb[enrichment,docs]",
+    "pysradb[enrichment,docs, mcp]",
 ]
 
 
