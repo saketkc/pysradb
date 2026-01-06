@@ -142,7 +142,7 @@ class QuerySearch:
             "title": title,
         }
         for k in self.fields:
-            if type(self.fields[k]) == list:
+            if type(self.fields[k]) is list:
                 self.fields[k] = " ".join(self.fields[k])
         self.df = pd.DataFrame()
         # Verify that not all query fields are empty
@@ -450,7 +450,7 @@ class QuerySearch:
 
     def _list_stat(self, stat_header):
         stat = self.stats[stat_header]
-        if type(stat) != dict:
+        if type(stat) is not dict:
             return f"  {stat_header}: {stat}\n"
         keys = sorted(stat.keys())
         stat_breakdown = "\n"
@@ -731,6 +731,7 @@ class SraSearch(QuerySearch):
         strategy=None,
         title=None,
         suppress_validation=False,
+        progress_disabled=False,
     ):
         super().__init__(
             verbosity,
@@ -751,6 +752,7 @@ class SraSearch(QuerySearch):
         self.entries = {}
         self.number_entries = 0
         self.uids = []
+        self.progress_disabled = progress_disabled
 
     def search(self):
         # Step 1: retrieves the list of uids that satisfies the input
@@ -772,7 +774,7 @@ class SraSearch(QuerySearch):
                     f"No results found for the following search query: \n {self.fields}"
                 )
                 return  # If no queries found, return nothing
-            pbar = tqdm(total=len(self.uids))
+            pbar = tqdm(total=len(self.uids), disable=self.progress_disabled)
             for i in range(0, len(self.uids), SRA_SEARCH_GROUP_SIZE):
                 current_uids = ",".join(
                     self.uids[i : min(i + SRA_SEARCH_GROUP_SIZE, len(self.uids))]
@@ -793,10 +795,10 @@ class SraSearch(QuerySearch):
             self._format_result()
 
         except requests.exceptions.Timeout:
-            sys.exit(f"Connection to the server has timed out. Please retry.")
+            sys.exit("Connection to the server has timed out. Please retry.")
         except requests.exceptions.HTTPError:
             sys.exit(
-                f"HTTPError: This is likely caused by an invalid search query: "
+                "HTTPError: This is likely caused by an invalid search query: "
                 f"\nURL queried: {r.url} \nUser query: {self.fields}"
             )
 
@@ -1083,7 +1085,7 @@ class SraSearch(QuerySearch):
                 library_layout = child.find("./LIBRARY_DESCRIPTOR/LIBRARY_LAYOUT")
                 if library_layout:
                     library_layout = library_layout[0]
-                    self._update_entry(f"library_layout", library_layout.tag)
+                    self._update_entry("library_layout", library_layout.tag)
                     # If library layout is paired, information such as nominal
                     # standard deviation and length, etc are provided as well.
                     if library_layout.tag == "PAIRED":
@@ -1264,7 +1266,7 @@ class EnaSearch(QuerySearch):
             r.raise_for_status()
             self._format_result(r.json())
         except requests.exceptions.Timeout:
-            sys.exit(f"Connection to the server has timed out. Please retry.")
+            sys.exit("Connection to the server has timed out. Please retry.")
         except requests.exceptions.HTTPError:
             sys.exit(
                 f"HTTPError: This is likely caused by an invalid search query: "
@@ -1306,7 +1308,7 @@ class EnaSearch(QuerySearch):
         if self.fields["layout"]:
             term += rf'library_layout="{self.fields["layout"].upper()}" AND '
         if self.fields["mbases"]:
-            if type(self.fields["mbases"]) != int:
+            if type(self.fields["mbases"]) is not int:
                 raise IncorrectFieldException(
                     f"Incorrect mbases format: {self.fields['mbases']}\n"
                     f"--mbases must be an integer"
@@ -1344,7 +1346,7 @@ class EnaSearch(QuerySearch):
         # Currently, if the user does not specify a query field, the query will
         # be matched to experiment_title (aka description),
         # or one of the accession fields
-        stats_columns = ()
+        # stats_columns = ()
         payload = {
             "query": self._format_query_string(),
             "result": "read_run",
@@ -1562,7 +1564,7 @@ class GeoSearch(SraSearch):
             "organism": organism,
         }
         for k in self.geo_fields:
-            if type(self.geo_fields[k]) == list:
+            if type(self.geo_fields[k]) is list:
                 self.geo_fields[k] = " ".join(self.geo_fields[k])
         self.search_sra = True
         self.search_geo = True
@@ -1739,7 +1741,7 @@ class GeoSearch(SraSearch):
                 pbar.close()
                 self._format_result()
             except requests.exceptions.Timeout:
-                sys.exit(f"Connection to the server has timed out. Please retry.")
+                sys.exit("Connection to the server has timed out. Please retry.")
             except requests.exceptions.HTTPError:
                 sys.exit(
                     f"HTTPError: This is likely caused by an invalid search query: "

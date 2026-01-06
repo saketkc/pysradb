@@ -9,15 +9,15 @@ import warnings
 from collections import OrderedDict
 from json.decoder import JSONDecodeError
 from xml.parsers.expat import ExpatError
+from xml.sax.saxutils import escape
 
-import numpy as np
 import pandas as pd
 import requests
 import xmltodict
 
-warnings.simplefilter(action="ignore", category=FutureWarning)
+from .search import SraSearch
 
-from xml.sax.saxutils import escape
+warnings.simplefilter(action="ignore", category=FutureWarning)
 
 
 def xmlescape(data):
@@ -230,7 +230,7 @@ class SRAweb(object):
 
             return sorted(list(srp_set))
 
-        except Exception as e:
+        except Exception:
             return []
 
     def fetch_ena_fastq(self, srp):
@@ -439,7 +439,7 @@ class SRAweb(object):
             request_text = request.text.strip()
             try:
                 request_json = request.json()
-            except:
+            except Exception:
                 request_json = {}  # eval(request_text)
 
             if "error" in request_json:
@@ -1667,8 +1667,15 @@ class SRAweb(object):
         srx_df = self.sra_metadata(srx, **kwargs)
         return _order_first(srx_df, ["experiment_accession", "sample_accession"])
 
-    def search(self, *args, **kwargs):
-        raise NotImplementedError("Search not yet implemented for Web")
+    def search(self, query: str, detailed: bool = False, max: int = 20) -> pd.DataFrame:
+        instance = SraSearch(
+            verbosity=3 if detailed else 2,
+            query=query,
+            return_max=max,
+            progress_disabled=True,
+        )
+        instance.search()
+        return instance.get_df()[["experiment_accession", "experiment_title"]]
 
     def fetch_bioproject_pmids(self, bioprojects):
         """Fetch PMIDs for given BioProject accessions

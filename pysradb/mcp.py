@@ -77,8 +77,19 @@ def gse_to_publication(gse: str) -> list[dict]:
     return fetch_publications(pmids)
 
 
-def search(query: str) -> list[dict]:
-    df = client.search(query=query, detailed=True)
+@mcp.tool(
+    name="search_or_find",
+    description="Given a search query this tool searches for datasets from the SRA database and returns a dict.",
+)
+def search(query: str, max_results: int = 10) -> dict:
+    """Given a search query this tool searches
+    for datasets from the SRA database and returns a dict.
+    max_results determines the maximum results it will return.
+    If unspecified by user, max_results is 10.
+    No need to expand search beyond this.
+    """
+    df = client.search(query=query, detailed=False, max=max_results)
+    return df.to_dict() if not df.empty else None
 
 
 def fetch_publications(pmids: list[str]) -> list[dict]:

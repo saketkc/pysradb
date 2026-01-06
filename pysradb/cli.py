@@ -54,7 +54,7 @@ def pretty_print_df(df, include_header=True):
 
     try:
         terminal_width = console.width
-    except:
+    except Exception:
         terminal_width = 80  # fallback width
 
     num_columns = len(df.columns)
@@ -485,7 +485,7 @@ def download(
 
 
 ######################### search #################################
-def search(saveto, db, verbosity, return_max, fields):
+def search(saveto, db, verbosity, return_max, fields, return_df=False):
     if fields["run_description"]:
         verbosity = 1
     if fields["detailed"]:
@@ -553,7 +553,10 @@ def search(saveto, db, verbosity, return_max, fields):
     if fields["graphs"]:
         graph_types = tuple(fields["graphs"].split())
         instance.visualise_results(graph_types, False)
-    _print_save_df(instance.get_df(), saveto)
+    if return_df:
+        return instance.get_df()
+    else:
+        _print_save_df(instance.get_df(), saveto)
 
 
 def get_geo_search_info():
