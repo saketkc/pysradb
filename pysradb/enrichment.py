@@ -1,13 +1,17 @@
 import json
+import os
 
 import pandas as pd
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_ollama import ChatOllama
 from langchain_openai import ChatOpenAI
 from langgraph.graph import END, START, StateGraph
+from rich.console import Console
 from sentence_transformers import SentenceTransformer, util
 from torch import Tensor
 from typing_extensions import TypedDict
+
+console = Console()
 
 
 def enrich_df(
@@ -19,7 +23,13 @@ def enrich_df(
         return json.dumps({k: d[k] for k in keys if k in d})
 
     # The embedding model for narrowing down context
+
+    console.print("Setting up embedding model...")
+    os.environ["TOKENIZERS_PARALLELISM"] = "false"
+    os.environ["HF_HUB_DISABLE_PROGRESS_BARS"] = "1"
     model = SentenceTransformer("abhinand/MedEmbed-large-v0.1")
+    console.print("Embedding model set up complete")
+    console.print("Enriching metadata in progress...")
 
     if enrichment_backend.startswith("ollama/"):
         ollama_model = enrichment_backend.split("ollama/")[-1]
@@ -175,6 +185,8 @@ def enrich_df(
         if keys:
             key = keys.pop()
             age_value = state["attributes"][key]
+            if not age_value:
+                return {"age": None}
             if age_value.strip().lower() in na_strings:
                 return {"age": None}
             else:
@@ -360,4 +372,4 @@ def enrich_df(
     #     if basic_cols
     #     else attribute_cols
     # )
-    return detailed_df[ENRICHED_COLS]
+    return detailed_df[["experiment_accession"] + ENRICHED_COLS]
