@@ -24,6 +24,9 @@ def enrich_df(
 
     # The embedding model for narrowing down context
 
+    if len(detailed_df) > 10:
+        detailed_df = detailed_df.sample(n=10, random_state=42)
+
     console.print("Setting up embedding model...")
     os.environ["TOKENIZERS_PARALLELISM"] = "false"
     os.environ["HF_HUB_DISABLE_PROGRESS_BARS"] = "1"
