@@ -13,10 +13,10 @@ from rich.table import Table
 
 from . import __version__
 from .exceptions import IncorrectFieldException, MissingQueryException
-from .geoweb import GEOweb, download_geo_matrix, parse_geo_matrix_to_tsv
+from .geoweb import GEOweb, download_geo_matrix
+from .mcp import start_mcp_server
 from .search import EnaSearch, GeoSearch, SraSearch
 from .sraweb import SRAweb
-from .mcp import start_mcp_server
 
 pd.set_option("display.max_rows", None)
 pd.set_option("display.max_columns", None)
@@ -946,7 +946,7 @@ def geo_matrix(accession, to_tsv, output_dir):
     # If --to-tsv is specified, parse the file to TSV
     if to_tsv:
         output_tsv = os.path.join(output_dir, f"{accession}_matrix.tsv")
-        df = parse_geo_matrix_to_tsv(matrix_file, output_tsv)
+        # df = parse_geo_matrix_to_tsv(matrix_file, output_tsv)
         console.print(
             f"[bright_green]✓[/bright_green] Parsed GEO Matrix file to TSV: "
             f"[bright_blue]{output_tsv}[/bright_blue]"

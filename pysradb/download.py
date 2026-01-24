@@ -10,13 +10,13 @@ from ftplib import FTP
 from urllib.parse import urlparse
 
 import numpy as np
+import pandas as pd
 import requests
 from tqdm.autonotebook import tqdm
 
 from .utils import requests_3_retries
 
 warnings.simplefilter(action="ignore", category=FutureWarning)
-import pandas as pd
 
 tqdm.pandas()
 

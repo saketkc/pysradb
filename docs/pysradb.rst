@@ -4,14 +4,6 @@ pysradb package
 Submodules
 ----------
 
-pysradb.basedb module
----------------------
-
-.. automodule:: pysradb.basedb
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
 pysradb.cli module
 ------------------
 
@@ -24,6 +16,14 @@ pysradb.download module
 -----------------------
 
 .. automodule:: pysradb.download
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+pysradb.enrichment module
+-------------------------
+
+.. automodule:: pysradb.enrichment
    :members:
    :undoc-members:
    :show-inheritance:
@@ -44,18 +44,18 @@ pysradb.filter\_attrs module
    :undoc-members:
    :show-inheritance:
 
-pysradb.geodb module
---------------------
-
-.. automodule:: pysradb.geodb
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
 pysradb.geoweb module
 ---------------------
 
 .. automodule:: pysradb.geoweb
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+pysradb.mcp module
+------------------
+
+.. automodule:: pysradb.mcp
    :members:
    :undoc-members:
    :show-inheritance:
@@ -72,14 +72,6 @@ pysradb.search module
 ---------------------
 
 .. automodule:: pysradb.search
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-pysradb.sradb module
---------------------
-
-.. automodule:: pysradb.sradb
    :members:
    :undoc-members:
    :show-inheritance:
