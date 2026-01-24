@@ -22,11 +22,6 @@ def enrich_df(
     def filter_dict(d: dict, keys: list[str]) -> str:
         return json.dumps({k: d[k] for k in keys if k in d})
 
-    # The embedding model for narrowing down context
-
-    if len(detailed_df) > 10:
-        detailed_df = detailed_df.sample(n=10, random_state=42)
-
     console.print("Setting up embedding model...")
     os.environ["TOKENIZERS_PARALLELISM"] = "false"
     os.environ["HF_HUB_DISABLE_PROGRESS_BARS"] = "1"
