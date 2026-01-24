@@ -4491,6 +4491,7 @@ all = [
     { name = "sphinx", version = "8.1.3", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.11'" },
     { name = "sphinx", version = "8.2.3", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.11'" },
     { name = "sphinx-design" },
+    { name = "sphinx-panels" },
     { name = "sphinx-tabs" },
     { name = "sphinxcontrib-gtagjs" },
     { name = "torch" },
@@ -4506,6 +4507,7 @@ docs = [
     { name = "sphinx", version = "8.1.3", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.11'" },
     { name = "sphinx", version = "8.2.3", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.11'" },
     { name = "sphinx-design" },
+    { name = "sphinx-panels" },
     { name = "sphinx-tabs" },
     { name = "sphinxcontrib-gtagjs" },
 ]
@@ -4553,10 +4555,12 @@ requires-dist = [
     { name = "rich", specifier = ">=10.0.0" },
     { name = "sentence-transformers", marker = "extra == 'all'", specifier = ">=5.1.2" },
     { name = "sentence-transformers", marker = "extra == 'enrichment'", specifier = ">=5.1.2" },
-    { name = "sphinx", marker = "extra == 'all'", specifier = ">=7" },
-    { name = "sphinx", marker = "extra == 'docs'", specifier = ">=7" },
+    { name = "sphinx", marker = "extra == 'all'", specifier = ">=7,<9" },
+    { name = "sphinx", marker = "extra == 'docs'", specifier = ">=7,<9" },
     { name = "sphinx-design", marker = "extra == 'all'", specifier = ">=0.5.0" },
     { name = "sphinx-design", marker = "extra == 'docs'", specifier = ">=0.5.0" },
+    { name = "sphinx-panels", marker = "extra == 'all'", specifier = ">=0.4.1" },
+    { name = "sphinx-panels", marker = "extra == 'docs'", specifier = ">=0.4.1" },
     { name = "sphinx-tabs", marker = "extra == 'all'", specifier = ">=3.4.1" },
     { name = "sphinx-tabs", marker = "extra == 'docs'", specifier = ">=3.4.1" },
     { name = "sphinxcontrib-gtagjs", marker = "extra == 'all'", specifier = ">=0.2" },
@@ -5781,6 +5785,20 @@ dependencies = [
 sdist = { url = "https://files.pythonhosted.org/packages/2b/69/b34e0cb5336f09c6866d53b4a19d76c227cdec1bbc7ac4de63ca7d58c9c7/sphinx_design-0.6.1.tar.gz", hash = "sha256:b44eea3719386d04d765c1a8257caca2b3e6f8421d7b3a5e742c0fd45f84e632", size = 2193689, upload-time = "2024-08-02T13:48:44.277Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/c6/43/65c0acbd8cc6f50195a3a1fc195c404988b15c67090e73c7a41a9f57d6bd/sphinx_design-0.6.1-py3-none-any.whl", hash = "sha256:b11f37db1a802a183d61b159d9a202314d4d2fe29c163437001324fe2f19549c", size = 2215338, upload-time = "2024-08-02T13:48:42.106Z" },
+]
+
+[[package]]
+name = "sphinx-panels"
+version = "0.4.1"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "docutils" },
+    { name = "sphinx", version = "8.1.3", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.11'" },
+    { name = "sphinx", version = "8.2.3", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.11'" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/b8/46/ca13f9739ba9783665be13ae8c066793d50ef50d75654160fd26c2812553/sphinx-panels-0.4.1.tar.gz", hash = "sha256:dc3c0add09b4264d3328d1b90857d429d9af65ae356d3ff7e437901946077533", size = 72668, upload-time = "2020-06-30T01:18:07.99Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/74/27/7f145fcbdd6d53990df2d4d22a9766bd47fca2ddf58a77c6476a9b9d4653/sphinx_panels-0.4.1-py3-none-any.whl", hash = "sha256:21c86a21f1109b00be87be9e057882ac8ca559d83805e58145a9f9a90f41d4df", size = 74331, upload-time = "2020-06-30T01:18:06.78Z" },
 ]
 
 [[package]]
