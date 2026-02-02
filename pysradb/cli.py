@@ -25,6 +25,17 @@ warnings.simplefilter(action="ignore", category=FutureWarning)
 
 console = Console()
 
+ENRICHED_COLS = {
+    "age",
+    "sex",
+    "ethnicity",
+    "phenotype",
+    "cell_type",
+    "tissue",
+    "strain",
+    "disease",
+}
+
 
 class CustomFormatterArgP(
     argparse.ArgumentDefaultsHelpFormatter, argparse.RawDescriptionHelpFormatter
@@ -39,7 +50,7 @@ class ArgParser(argparse.ArgumentParser):
         sys.exit(2)
 
 
-def pretty_print_df(df, include_header=True):
+def pretty_print_df(df, include_header=True, enriched_cols=None):
     """Pretty print dataframe using rich formatting"""
 
     def format_value(v):
@@ -83,13 +94,19 @@ def pretty_print_df(df, include_header=True):
                 f"[bright_blue]Columns {i + 1}-"
                 f"{min(i + max_cols_per_table, num_columns)}:[/bright_blue]"
             )
-            _create_table(chunk_df, terminal_width, include_header, format_value)
+            _create_table(
+                chunk_df,
+                terminal_width,
+                include_header,
+                format_value,
+                enriched_cols,
+            )
             console.print()
     else:
-        _create_table(df, terminal_width, include_header, format_value)
+        _create_table(df, terminal_width, include_header, format_value, enriched_cols)
 
 
-def _create_table(df, terminal_width, include_header, format_value):
+def _create_table(df, terminal_width, include_header, format_value, enriched_cols):
     """Helper function to create a rich table with appropriate sizing"""
 
     num_columns = len(df.columns)
@@ -101,7 +118,10 @@ def _create_table(df, terminal_width, include_header, format_value):
 
     col_widths = []
     for column in df.columns:
-        col_name = str(column)
+        display_name = (
+            f"*{column}" if enriched_cols and column in enriched_cols else str(column)
+        )
+        col_name = str(display_name)
         sample_data = df[column].head(10).astype(str)
         max_content_len = max(
             len(col_name), sample_data.str.len().max() if len(sample_data) > 0 else 0
@@ -131,7 +151,7 @@ def _create_table(df, terminal_width, include_header, format_value):
 
     for i, column in enumerate(df.columns):
         table.add_column(
-            str(column),
+            f"*{column}" if enriched_cols and column in enriched_cols else str(column),
             style="dim",
             no_wrap=False,
             overflow="fold",
@@ -146,7 +166,7 @@ def _create_table(df, terminal_width, include_header, format_value):
     console.print(table)
 
 
-def _print_save_df(df, saveto=None):
+def _print_save_df(df, saveto=None, enriched_cols=None):
     """Save dataframe to file or print with rich formatting.
 
     Automatically detects format from file extension:
@@ -194,12 +214,20 @@ def _print_save_df(df, saveto=None):
         if df is None:
             console.print("[bright_black]No data to display[/bright_black]")
         elif len(df.index):
-            pretty_print_df(df)
+            pretty_print_df(df, enriched_cols=enriched_cols)
 
 
 ###################### metadata ##############################
 def metadata(
-    srp_id, assay, desc, detailed, expand, saveto, enrich=False, enrich_backend=None
+    srp_id,
+    assay,
+    desc,
+    detailed,
+    expand,
+    saveto,
+    enrich=False,
+    enrich_backend=None,
+    embed_model=None,
 ):
     # Validate that at least one ID was provided
     if not srp_id:
@@ -211,6 +239,12 @@ def metadata(
         )
         console.print("[yellow]Usage: pysradb metadata SRP000001 [SRP000002 ...]")
         console.print("       pysradb metadata GSE123456[/yellow]")
+        return
+    if enrich and detailed:
+        console.print(
+            "[red]Error:[/red] --detailed cannot be used with --enrich. "
+            "Enrichment uses the pysraweb API output."
+        )
         return
 
     client = SRAweb()
@@ -235,6 +269,9 @@ def metadata(
                 enrich=enrich,
                 enrich_backend=(
                     enrich_backend if enrich_backend else "ollama/granite4:3b"
+                ),
+                embedding_model=(
+                    embed_model if embed_model else "abhinand/MedEmbed-large-v0.1"
                 ),
             )
             if srp_metadata is not None:
@@ -337,6 +374,9 @@ def metadata(
                 enrich_backend=(
                     enrich_backend if enrich_backend else "ollama/granite4:3b"
                 ),
+                embedding_model=(
+                    embed_model if embed_model else "abhinand/MedEmbed-large-v0.1"
+                ),
             )
             if not geo_metadata_df.empty:
                 metadata_frames.append(geo_metadata_df)
@@ -427,7 +467,7 @@ def metadata(
     else:
         df = pd.DataFrame()
 
-    _print_save_df(df, saveto)
+    _print_save_df(df, saveto, enriched_cols=ENRICHED_COLS if enrich else None)
 
 
 ################################################################
@@ -1038,6 +1078,16 @@ def parse_args(args=None):
         default=None,
         help="LLM model for enrichment (e.g., 'ollama/phi3', 'ollama/llama3.2'). "
         "If not specified, uses default backend",
+    )
+    subparser.add_argument(
+        "--embed-model",
+        dest="embed_model",
+        type=str,
+        default=None,
+        help=(
+            "Embedding model for enrichment (e.g., "
+            "'abhinand/MedEmbed-large-v0.1'). If not specified, uses default"
+        ),
     )
     subparser.add_argument("srp_id", nargs="+")
     subparser.set_defaults(func=metadata)
@@ -1732,6 +1782,7 @@ def parse_args(args=None):
             args.saveto,
             args.enrich,
             args.enrich_backend,
+            args.embed_model,
         )
     elif args.command == "download":
         download(

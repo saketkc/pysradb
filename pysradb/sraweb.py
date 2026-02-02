@@ -506,11 +506,26 @@ class SRAweb(object):
         include_pmids=False,
         enrich=False,
         enrich_backend="ollama/granite4:3b",
+        embedding_model="abhinand/MedEmbed-large-v0.1",
         **kwargs,
     ):
         # NOTE: When enriching, use pysraweb API and flatten like the UI table.
         if enrich:
-            return self._pysraweb_sra_metadata(srp)
+            if detailed:
+                raise ValueError(
+                    "detailed is not supported with enrich; enrichment uses "
+                    "the pysraweb API output."
+                )
+            df = self._pysraweb_sra_metadata(srp)
+            if df is None or df.empty:
+                return df
+            from pysradb.enrichment import enrich_df
+
+            return enrich_df(
+                df,
+                enrichment_backend=enrich_backend,
+                embedding_model=embedding_model,
+            )
 
         esummary_result = self.get_esummary_response("sra", srp)
         try:
@@ -975,10 +990,25 @@ class SRAweb(object):
         include_pmids=False,
         enrich=False,
         enrich_backend="ollama/phi3",
+        embedding_model="abhinand/MedEmbed-large-v0.1",
         **kwargs,
     ):
         if enrich:
-            return self._pysraweb_geo_metadata(gse)
+            if detailed:
+                raise ValueError(
+                    "detailed is not supported with enrich; enrichment uses "
+                    "the pysraweb API output."
+                )
+            df = self._pysraweb_geo_metadata(gse)
+            if df is None or df.empty:
+                return df
+            from pysradb.enrichment import enrich_df
+
+            return enrich_df(
+                df,
+                enrichment_backend=enrich_backend,
+                embedding_model=embedding_model,
+            )
 
         if isinstance(gse, str):
             gse = [gse]
