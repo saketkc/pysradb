@@ -1,6 +1,7 @@
 import json
 import os
 import concurrent.futures
+import importlib.util
 import time
 
 from langchain_core.prompts import ChatPromptTemplate
@@ -27,6 +28,16 @@ def _get_embedding_model(model_name: str):
         _EMBEDDING_MODELS[model_name] = SentenceTransformer(model_name)
         console.print("Embedding model set up complete")
     return _EMBEDDING_MODELS[model_name]
+
+
+def _warn_if_vllm_missing():
+    if importlib.util.find_spec("vllm") is None:
+        console.print(
+            "[yellow]vLLM backend selected, but the optional 'vllm' dependency "
+            "is not installed. Install it with `pip install pysradb[vllm]` "
+            "(Linux) if you plan to run a local vLLM server. If you are using "
+            "a remote vLLM endpoint, you can ignore this warning.[/yellow]"
+        )
 
 
 def enrich_df(
@@ -56,6 +67,7 @@ def enrich_df(
             temperature=0,
         )
     elif enrichment_backend.startswith("vllm/"):
+        _warn_if_vllm_missing()
         vllm_model = enrichment_backend.split("vllm/")[-1]
         llm = ChatOpenAI(
             model=vllm_model,
@@ -64,6 +76,7 @@ def enrich_df(
             temperature=0,
         )
     elif enrichment_backend == "vllm":
+        _warn_if_vllm_missing()
         llm = ChatOpenAI(
             model="ibm-granite/granite-4.0-micro",
             base_url="http://localhost:8000/v1",

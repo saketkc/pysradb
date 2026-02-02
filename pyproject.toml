@@ -45,7 +45,6 @@ docs = [
     "sphinx-panels>=0.4.1",
 ]
 enrichment = [
-    "vllm>=0.11.0 ; platform_system == 'Linux'",
     "langchain>=0.3.27",
     "langchain-core>=0.3.81",
     "langchain-community>=0.3.31",
@@ -53,11 +52,14 @@ enrichment = [
     "langchain-openai>=0.3.35",
     "sentence-transformers>=5.1.2",
 ]
+vllm = [
+    "vllm>=0.11.0 ; platform_system == 'Linux'",
+]
 mcp = [
     "fastmcp>=2.14.2",
 ]
 all = [
-    "pysradb[enrichment,docs, mcp]",
+    "pysradb[enrichment,vllm,docs, mcp]",
 ]
 
 
