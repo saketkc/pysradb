@@ -45,7 +45,6 @@ docs = [
     "sphinx-panels>=0.4.1",
 ]
 enrichment = [
-    "torch>=2.8.0",
     "vllm>=0.11.0 ; platform_system == 'Linux'",
     "langchain>=0.3.27",
     "langchain-core>=0.3.81",

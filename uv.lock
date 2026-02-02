@@ -4494,7 +4494,6 @@ all = [
     { name = "sphinx-panels" },
     { name = "sphinx-tabs" },
     { name = "sphinxcontrib-gtagjs" },
-    { name = "torch" },
     { name = "vllm", marker = "sys_platform == 'linux'" },
 ]
 docs = [
@@ -4518,7 +4517,6 @@ enrichment = [
     { name = "langchain-ollama" },
     { name = "langchain-openai" },
     { name = "sentence-transformers" },
-    { name = "torch" },
     { name = "vllm", marker = "sys_platform == 'linux'" },
 ]
 mcp = [
@@ -4565,8 +4563,6 @@ requires-dist = [
     { name = "sphinx-tabs", marker = "extra == 'docs'", specifier = ">=3.4.1" },
     { name = "sphinxcontrib-gtagjs", marker = "extra == 'all'", specifier = ">=0.2" },
     { name = "sphinxcontrib-gtagjs", marker = "extra == 'docs'", specifier = ">=0.2" },
-    { name = "torch", marker = "extra == 'all'", specifier = ">=2.8.0" },
-    { name = "torch", marker = "extra == 'enrichment'", specifier = ">=2.8.0" },
     { name = "tqdm", specifier = ">=4.62.1" },
     { name = "vllm", marker = "sys_platform == 'linux' and extra == 'all'", specifier = ">=0.11.0" },
     { name = "vllm", marker = "sys_platform == 'linux' and extra == 'enrichment'", specifier = ">=0.11.0" },

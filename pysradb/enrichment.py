@@ -8,7 +8,6 @@ from langchain_openai import ChatOpenAI
 from langgraph.graph import END, START, StateGraph
 from rich.console import Console
 from sentence_transformers import SentenceTransformer, util
-from torch import Tensor
 from typing_extensions import TypedDict
 
 console = Console()
@@ -67,7 +66,7 @@ def enrich_df(
             )
         )
 
-    def get_relevant_keys(term: str, embeddings: Tensor, keys: list[str]) -> list[str]:
+    def get_relevant_keys(term: str, embeddings, keys: list[str]) -> list[str]:
         if len(keys) == 0:
             return []
         query = model.encode(term, convert_to_tensor=True)
@@ -83,20 +82,20 @@ def enrich_df(
                 relevant_keys.append(keys[i])
         return relevant_keys
 
-    def get_sex_keys(embeddings: Tensor, keys: list[str]):
+    def get_sex_keys(embeddings, keys: list[str]):
         return get_relevant_keys("sex", embeddings, keys) + get_relevant_keys(
             "gender", embeddings, keys
         )
 
-    def get_age_keys(embeddings: Tensor, keys: list[str]):
+    def get_age_keys(embeddings, keys: list[str]):
         return get_relevant_keys("age", embeddings, keys)
 
-    def get_cell_type_keys(embeddings: Tensor, keys: list[str]):
+    def get_cell_type_keys(embeddings, keys: list[str]):
         return get_relevant_keys("cell type", embeddings, keys) + get_relevant_keys(
             "histological", embeddings, keys
         )
 
-    def get_tissue_keys(embeddings: Tensor, keys: list[str]):
+    def get_tissue_keys(embeddings, keys: list[str]):
         return (
             get_relevant_keys("tissue", embeddings, keys)
             + get_relevant_keys("organ", embeddings, keys)
@@ -104,18 +103,18 @@ def enrich_df(
             + get_relevant_keys("tumor site", embeddings, keys)
         )
 
-    def get_phenotype_keys(embeddings: Tensor, keys: list[str]):
+    def get_phenotype_keys(embeddings, keys: list[str]):
         return get_relevant_keys("phenotype", embeddings, keys)
 
-    def get_strain_keys(embeddings: Tensor, keys: list[str]):
+    def get_strain_keys(embeddings, keys: list[str]):
         return get_relevant_keys("strain", embeddings, keys)
 
-    def get_ethnicity_keys(embeddings: Tensor, keys: list[str]):
+    def get_ethnicity_keys(embeddings, keys: list[str]):
         return get_relevant_keys("ethnicity", embeddings, keys) + get_relevant_keys(
             "population", embeddings, keys
         )
 
-    def get_disease_keys(embeddings: Tensor, keys: list[str]):
+    def get_disease_keys(embeddings, keys: list[str]):
         return (
             get_relevant_keys("disease", embeddings, keys)
             + get_relevant_keys("tumor", embeddings, keys)
@@ -127,7 +126,7 @@ def enrich_df(
             + get_relevant_keys("subject status", embeddings, keys)
         )
 
-    # def get_host_keys(embeddings: Tensor, keys: list[str]):
+    # def get_host_keys(embeddings, keys: list[str]):
     #     return get_relevant_keys("host", embeddings, keys)
 
     def get_refined_keys(raw_keys: list[str]) -> list[str]:
@@ -165,7 +164,7 @@ def enrich_df(
 
     class State(TypedDict):
         attributes: dict
-        embeddings: Tensor
+        embeddings: object
         raw_keys: list[str]
         age: str | None
         sex: str | None
