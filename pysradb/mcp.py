@@ -1,6 +1,6 @@
 import time
 import requests
-from mcp.server.fastmcp import FastMCP
+from fastmcp import FastMCP
 
 from .sraweb import SRAweb
 
