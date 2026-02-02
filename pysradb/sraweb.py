@@ -1,6 +1,7 @@
 """Utilities to interact with SRA online"""
 
 import concurrent.futures
+import json
 import os
 import re
 import sys
@@ -101,6 +102,9 @@ class SRAweb(object):
 
         self.ena_fastq_search_url = "https://www.ebi.ac.uk/ena/portal/api/filereport"
         self.ena_params = [("result", "read_run"), ("fields", "fastq_ftp")]
+        self.pysraweb_api_url = os.environ.get(
+            "PYSRAWEB_API_URL", "https://pysraweb.saketlab.org/api"
+        )
 
         self.esearch_params = {}
         self.esearch_params["sra"] = [
@@ -504,9 +508,9 @@ class SRAweb(object):
         enrich_backend="ollama/granite4:3b",
         **kwargs,
     ):
-        # NOTE: We need to get all the info we can while enriching our data
+        # NOTE: When enriching, use pysraweb API and flatten like the UI table.
         if enrich:
-            detailed = True
+            return self._pysraweb_sra_metadata(srp)
 
         esummary_result = self.get_esummary_response("sra", srp)
         try:
@@ -974,7 +978,7 @@ class SRAweb(object):
         **kwargs,
     ):
         if enrich:
-            detailed = True
+            return self._pysraweb_geo_metadata(gse)
 
         if isinstance(gse, str):
             gse = [gse]
@@ -1323,6 +1327,284 @@ class SRAweb(object):
             metadata_df = enrich_df(metadata_df, enrichment_backend=enrich_backend)
 
         return metadata_df
+
+    def _pysraweb_get_json(self, path, params=None, timeout=30):
+        url = f"{self.pysraweb_api_url.rstrip('/')}/{path.lstrip('/')}"
+        response = requests.get(url, params=params, timeout=timeout)
+        response.raise_for_status()
+        return response.json()
+
+    def _pysraweb_fetch_samples(self, accessions):
+        if not accessions:
+            return {}
+        unique_accessions = [acc for acc in dict.fromkeys(accessions) if acc]
+        samples = {}
+
+        def fetch_one(acc):
+            try:
+                return acc, self._pysraweb_get_json(f"sample/{acc}")
+            except Exception:
+                return acc, None
+
+        with concurrent.futures.ThreadPoolExecutor(max_workers=10) as executor:
+            futures = [executor.submit(fetch_one, acc) for acc in unique_accessions]
+            for future in concurrent.futures.as_completed(futures):
+                acc, data = future.result()
+                if data:
+                    samples[acc] = data
+        return samples
+
+    def _pysraweb_sra_metadata(self, srp):
+        if isinstance(srp, str):
+            srp_list = [srp]
+        else:
+            srp_list = srp or []
+
+        all_rows = []
+        attribute_keys = []
+        attribute_keys_seen = set()
+
+        for accession in srp_list:
+            try:
+                experiments = self._pysraweb_get_json(
+                    f"project/{accession}/experiments"
+                )
+            except Exception:
+                continue
+
+            if not experiments:
+                continue
+
+            sample_accessions = [
+                exp.get("samples", [None])[0] for exp in experiments if exp
+            ]
+            samples_map = self._pysraweb_fetch_samples(sample_accessions)
+
+            for exp in experiments:
+                if not exp:
+                    continue
+                sample_acc = None
+                if isinstance(exp.get("samples"), list) and exp.get("samples"):
+                    sample_acc = exp.get("samples")[0]
+                sample = samples_map.get(sample_acc) if sample_acc else None
+
+                attributes_json = None
+                if sample and "attributes_json" in sample:
+                    attributes_json = sample.get("attributes_json")
+                    if isinstance(attributes_json, str):
+                        try:
+                            attributes_json = json.loads(attributes_json)
+                        except Exception:
+                            attributes_json = None
+
+                if isinstance(attributes_json, dict):
+                    for key in attributes_json.keys():
+                        if key not in attribute_keys_seen:
+                            attribute_keys.append(key)
+                            attribute_keys_seen.add(key)
+
+                row = OrderedDict(
+                    [
+                        ("Accession", exp.get("accession", pd.NA)),
+                        ("Title", exp.get("title", pd.NA)),
+                        (
+                            "Library",
+                            exp.get("library_name")
+                            or exp.get("library_strategy")
+                            or pd.NA,
+                        ),
+                        ("Layout", exp.get("library_layout", pd.NA)),
+                        ("Platform", exp.get("platform", pd.NA)),
+                        ("Instrument", exp.get("instrument_model", pd.NA)),
+                        ("Sample", sample_acc or pd.NA),
+                        ("Sample Alias", sample.get("alias", pd.NA) if sample else pd.NA),
+                        ("Sample Title", sample.get("title", pd.NA) if sample else pd.NA),
+                        (
+                            "Description",
+                            sample.get("description", pd.NA) if sample else pd.NA,
+                        ),
+                        (
+                            "Scientific Name",
+                            sample.get("scientific_name", pd.NA) if sample else pd.NA,
+                        ),
+                        ("Taxon ID", sample.get("taxon_id", pd.NA) if sample else pd.NA),
+                    ]
+                )
+                if isinstance(attributes_json, dict):
+                    for key, value in attributes_json.items():
+                        row[key] = value
+                all_rows.append(row)
+
+        if not all_rows:
+            return pd.DataFrame()
+
+        df = pd.DataFrame(all_rows)
+        ordered_columns = [
+            "Accession",
+            "Title",
+            "Library",
+            "Layout",
+            "Platform",
+            "Instrument",
+            "Sample",
+            "Sample Alias",
+            "Sample Title",
+            "Description",
+            "Scientific Name",
+            "Taxon ID",
+        ] + attribute_keys
+        for col in ordered_columns:
+            if col not in df.columns:
+                df[col] = pd.NA
+        df = df.loc[:, ordered_columns]
+        return df.replace("", pd.NA)
+
+    def _pysraweb_geo_metadata(self, gse):
+        if isinstance(gse, str):
+            gse_list = [gse]
+        else:
+            gse_list = gse or []
+
+        all_rows = []
+        characteristic_tags = []
+        characteristic_tags_seen = set()
+
+        for accession in gse_list:
+            try:
+                samples = self._pysraweb_get_json(f"geo/series/{accession}/samples")
+            except Exception:
+                continue
+
+            if not samples:
+                continue
+
+            for sample in samples:
+                channels = sample.get("channels") or []
+                for channel in channels:
+                    characteristics = channel.get("Characteristics")
+                    if isinstance(characteristics, list):
+                        for char in characteristics:
+                            tag = char.get("@tag")
+                            if tag:
+                                if tag not in characteristic_tags_seen:
+                                    characteristic_tags.append(tag)
+                                    characteristic_tags_seen.add(tag)
+                    elif isinstance(characteristics, dict):
+                        tag = characteristics.get("@tag")
+                        if tag:
+                            if tag not in characteristic_tags_seen:
+                                characteristic_tags.append(tag)
+                                characteristic_tags_seen.add(tag)
+
+        for accession in gse_list:
+            try:
+                samples = self._pysraweb_get_json(f"geo/series/{accession}/samples")
+            except Exception:
+                continue
+
+            if not samples:
+                continue
+
+            for sample in samples:
+                channels = sample.get("channels") or []
+                if not channels:
+                    row = OrderedDict(
+                        [
+                            ("Sample", sample.get("accession", pd.NA)),
+                            ("Title", sample.get("title", pd.NA)),
+                            ("Description", sample.get("description", pd.NA)),
+                            ("Channel Count", sample.get("channel_count", pd.NA)),
+                            ("Sample Type", sample.get("sample_type", pd.NA)),
+                            ("Platform", sample.get("platform_ref", pd.NA)),
+                            ("Channel Position", pd.NA),
+                            ("Label", pd.NA),
+                            ("Source", pd.NA),
+                            ("Molecule", pd.NA),
+                            ("Organism", pd.NA),
+                            ("Label Protocol", pd.NA),
+                            ("Extract Protocol", pd.NA),
+                        ]
+                    )
+                    for tag in characteristic_tags:
+                        row[tag] = pd.NA
+                    row["Hybridization Protocol"] = sample.get(
+                        "hybridization_protocol", pd.NA
+                    )
+                    row["Scan Protocol"] = sample.get("scan_protocol", pd.NA)
+                    all_rows.append(row)
+                    continue
+
+                for idx, channel in enumerate(channels):
+                    char_map = {}
+                    characteristics = channel.get("Characteristics")
+                    if isinstance(characteristics, list):
+                        for char in characteristics:
+                            tag = char.get("@tag")
+                            if tag:
+                                char_map[tag] = char.get("#text", pd.NA)
+                    elif isinstance(characteristics, dict):
+                        tag = characteristics.get("@tag")
+                        if tag:
+                            char_map[tag] = characteristics.get("#text", pd.NA)
+
+                    row = OrderedDict(
+                        [
+                            ("Sample", sample.get("accession", pd.NA)),
+                            ("Title", sample.get("title", pd.NA)),
+                            ("Description", sample.get("description", pd.NA)),
+                            ("Channel Count", sample.get("channel_count", pd.NA)),
+                            ("Sample Type", sample.get("sample_type", pd.NA)),
+                            ("Platform", sample.get("platform_ref", pd.NA)),
+                            (
+                                "Channel Position",
+                                channel.get("@position", idx + 1),
+                            ),
+                            ("Label", channel.get("Label", pd.NA)),
+                            ("Source", channel.get("Source", pd.NA)),
+                            ("Molecule", channel.get("Molecule", pd.NA)),
+                            (
+                                "Organism",
+                                (channel.get("Organism") or {}).get("#text", pd.NA),
+                            ),
+                            ("Label Protocol", channel.get("Label-Protocol", pd.NA)),
+                            ("Extract Protocol", channel.get("Extract-Protocol", pd.NA)),
+                        ]
+                    )
+                    for tag in characteristic_tags:
+                        row[tag] = char_map.get(tag, pd.NA)
+                    row["Hybridization Protocol"] = sample.get(
+                        "hybridization_protocol", pd.NA
+                    )
+                    row["Scan Protocol"] = sample.get("scan_protocol", pd.NA)
+                    all_rows.append(row)
+
+        if not all_rows:
+            return pd.DataFrame()
+
+        df = pd.DataFrame(all_rows)
+        ordered_columns = [
+            "Sample",
+            "Title",
+            "Description",
+            "Channel Count",
+            "Sample Type",
+            "Platform",
+            "Channel Position",
+            "Label",
+            "Source",
+            "Molecule",
+            "Organism",
+            "Label Protocol",
+            "Extract Protocol",
+        ] + characteristic_tags + [
+            "Hybridization Protocol",
+            "Scan Protocol",
+        ]
+        for col in ordered_columns:
+            if col not in df.columns:
+                df[col] = pd.NA
+        df = df.loc[:, ordered_columns]
+        return df.replace("", pd.NA)
 
     def metadata(self, accession, **kwargs):
         """
