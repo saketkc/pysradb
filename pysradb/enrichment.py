@@ -365,6 +365,7 @@ def enrich_df(
         proceed_all = confirm(
             (
                 f"Dataframe has {len(detailed_df)} rows. "
+                "More rows will take longer to enrich. "
                 "Enrich all rows? Choose 'n' to enrich only the first 15 for "
                 "a quick review."
             )
