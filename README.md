@@ -174,7 +174,7 @@ Enrich metadata with standardized biological attributes using biomedical-special
 $ pysradb metadata GSE286254 --detailed --enrich
 
 # Using OpenBioLLM-8B (larger, trained on 500k+ biomedical entries)
-$ pysradb metadata GSE286254 --detailed --enrich --enrich-backend ollama/openbiollm-8b
+$ pysradb metadata GSE286254 --detailed --enrich --model ollama/openbiollm-8b
 ```
 
 Available biomedical backends:

@@ -176,7 +176,7 @@ This returns the original metadata plus 9 enriched columns:
 
 ### Using alternative biomedical backends
 
-    $ pysradb metadata GSE286254 --detailed --enrich --enrich-backend ollama/openbiollm-8b
+    $ pysradb metadata GSE286254 --detailed --enrich --model ollama/openbiollm-8b
 
 Available biomedical backends:
 - `ollama/meditron` (default, 7B - optimized for medical text)

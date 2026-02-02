@@ -1032,10 +1032,11 @@ def parse_args(args=None):
         help="Enrich metadata with standardized biological attributes using LLMs",
     )
     subparser.add_argument(
-        "--enrich-backend",
+        "--model",
+        dest="enrich_backend",
         type=str,
         default=None,
-        help="LLM backend for enrichment (e.g., 'ollama/phi3', 'ollama/llama3.2'). "
+        help="LLM model for enrichment (e.g., 'ollama/phi3', 'ollama/llama3.2'). "
         "If not specified, uses default backend",
     )
     subparser.add_argument("srp_id", nargs="+")
