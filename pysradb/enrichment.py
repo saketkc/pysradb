@@ -2,6 +2,7 @@ import json
 import os
 import concurrent.futures
 import importlib.util
+import math
 import time
 
 from langchain_core.prompts import ChatPromptTemplate
@@ -46,6 +47,21 @@ def enrich_df(
     enrichment_backend="ollama/granite4:3b",
     embedding_model="abhinand/MedEmbed-large-v0.1",
 ):
+    def _coerce_str(value):
+        if value is None:
+            return None
+        if isinstance(value, float) and math.isnan(value):
+            return None
+        if isinstance(value, str):
+            return value
+        return str(value)
+
+    def _normalized(value):
+        text = _coerce_str(value)
+        if text is None:
+            return None
+        return text.strip().lower()
+
     def filter_dict(d: dict, keys: list[str]) -> str:
         return json.dumps({k: d[k] for k in keys if k in d})
 
@@ -208,12 +224,13 @@ def enrich_df(
         if keys:
             key = keys.pop()
             age_value = state["attributes"][key]
-            if not age_value:
+            age_text = _coerce_str(age_value)
+            if not age_text:
                 return {"age": None}
-            if age_value.strip().lower() in na_strings:
+            if _normalized(age_text) in na_strings:
                 return {"age": None}
             else:
-                return {"age": age_value}
+                return {"age": age_text}
         else:
             return {"age": None}
 
@@ -224,9 +241,10 @@ def enrich_df(
         keys = get_sex_keys(state["embeddings"], state["raw_keys"])
         if keys:
             key = keys.pop()
-            if state["attributes"][key].lower() in ["male", "m"]:
+            sex_value = _normalized(state["attributes"].get(key))
+            if sex_value in ["male", "m"]:
                 return {"sex": "Male"}
-            elif state["attributes"][key].lower() in ["female", "f"]:
+            elif sex_value in ["female", "f"]:
                 return {"sex": "Female"}
             else:
                 return {"sex": None}
@@ -238,11 +256,12 @@ def enrich_df(
         if keys:
             if len(keys) == 1:
                 tissue = state["attributes"][keys.pop()]
-                if tissue:
-                    if tissue.lower() in na_strings:
+                tissue_text = _coerce_str(tissue)
+                if tissue_text:
+                    if _normalized(tissue_text) in na_strings:
                         return {"tissue": None}
                     else:
-                        return {"tissue": tissue}
+                        return {"tissue": tissue_text}
                 else:
                     return {"tissue": None}
             else:
@@ -304,12 +323,10 @@ def enrich_df(
         if keys:
             # If there's an explicit "disease" key, use it directly
             if "disease" in keys:
-                disease_value = state["attributes"].get("disease")
+                disease_value = _coerce_str(state["attributes"].get("disease"))
                 if disease_value is None:
                     return {"disease": None}
-                if not isinstance(disease_value, str):
-                    disease_value = str(disease_value)
-                if disease_value.strip().lower() in na_strings:
+                if _normalized(disease_value) in na_strings:
                     return {"disease": None}
                 return {"disease": disease_value}
             # Otherwise, use LLM to infer from available data

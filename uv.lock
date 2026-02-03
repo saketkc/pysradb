@@ -4465,6 +4465,7 @@ wheels = [
 name = "pysradb"
 source = { editable = "." }
 dependencies = [
+    { name = "fastmcp" },
     { name = "lxml" },
     { name = "pandas" },
     { name = "requests" },
@@ -4475,7 +4476,6 @@ dependencies = [
 
 [package.optional-dependencies]
 all = [
-    { name = "fastmcp" },
     { name = "furo" },
     { name = "ipython", version = "8.37.0", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.11'" },
     { name = "ipython", version = "9.8.0", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.11'" },
@@ -4517,16 +4517,14 @@ enrichment = [
     { name = "langchain-ollama" },
     { name = "langchain-openai" },
     { name = "sentence-transformers" },
-    { name = "vllm", marker = "sys_platform == 'linux'" },
 ]
-mcp = [
-    { name = "fastmcp" },
+vllm = [
+    { name = "vllm", marker = "sys_platform == 'linux'" },
 ]
 
 [package.metadata]
 requires-dist = [
-    { name = "fastmcp", marker = "extra == 'all'", specifier = ">=2.14.2" },
-    { name = "fastmcp", marker = "extra == 'mcp'", specifier = ">=2.14.2" },
+    { name = "fastmcp", specifier = ">=2.14.2" },
     { name = "furo", marker = "extra == 'all'", specifier = ">=2024.0.0" },
     { name = "furo", marker = "extra == 'docs'", specifier = ">=2024.0.0" },
     { name = "ipython", marker = "extra == 'all'", specifier = ">=7.0" },
@@ -4565,10 +4563,10 @@ requires-dist = [
     { name = "sphinxcontrib-gtagjs", marker = "extra == 'docs'", specifier = ">=0.2" },
     { name = "tqdm", specifier = ">=4.62.1" },
     { name = "vllm", marker = "sys_platform == 'linux' and extra == 'all'", specifier = ">=0.11.0" },
-    { name = "vllm", marker = "sys_platform == 'linux' and extra == 'enrichment'", specifier = ">=0.11.0" },
+    { name = "vllm", marker = "sys_platform == 'linux' and extra == 'vllm'", specifier = ">=0.11.0" },
     { name = "xmltodict", specifier = ">=0.12.0" },
 ]
-provides-extras = ["all", "docs", "enrichment", "mcp"]
+provides-extras = ["all", "docs", "enrichment", "vllm"]
 
 [[package]]
 name = "python-dateutil"
