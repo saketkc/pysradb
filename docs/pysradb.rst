@@ -52,14 +52,6 @@ pysradb.geoweb module
    :show-inheritance:
    :undoc-members:
 
-pysradb.mcp module
-------------------
-
-.. automodule:: pysradb.mcp
-   :members:
-   :show-inheritance:
-   :undoc-members:
-
 pysradb.metadata\_enrichment module
 -----------------------------------
 

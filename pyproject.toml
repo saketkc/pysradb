@@ -29,7 +29,6 @@ dependencies = [
     "rich>=10.0.0",
     "tqdm>=4.62.1",
     "xmltodict>=0.12.0",
-    "fastmcp>=2.14.2",
 ]
 
 [project.optional-dependencies]
