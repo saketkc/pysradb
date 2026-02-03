@@ -393,6 +393,7 @@ def enrich_df(
     )
     refined_keys = get_refined_keys(attribute_cols)
     key_embeddings = model.encode(refined_keys, convert_to_tensor=True)
+
     def _enrich_row(item):
         i, each_row = item
         state = workflow.invoke(
