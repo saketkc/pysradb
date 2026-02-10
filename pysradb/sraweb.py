@@ -1391,8 +1391,7 @@ class SRAweb(object):
             srp_list = srp or []
 
         all_rows = []
-        attribute_keys = []
-        attribute_keys_seen = set()
+        attribute_keys = set()
 
         for accession in srp_list:
             try:
@@ -1405,33 +1404,39 @@ class SRAweb(object):
             if not experiments:
                 continue
 
-            sample_accessions = [
-                exp.get("samples", [None])[0] for exp in experiments if exp
-            ]
+            sample_accessions = []
+            for exp in experiments:
+                if (
+                    exp
+                    and isinstance(exp.get("samples"), list)
+                    and len(exp.get("samples")) > 0
+                ):
+                    sample_accessions.append(exp["samples"][0])
             samples_map = self._pysraweb_fetch_samples(sample_accessions)
+
+            parsed_attributes = {}
+            for sample_acc, sample in samples_map.items():
+                attrs = sample.get("attributes_json")
+                if isinstance(attrs, str):
+                    try:
+                        attrs = json.loads(attrs)
+                    except Exception:
+                        attrs = None
+                if isinstance(attrs, dict):
+                    parsed_attributes[sample_acc] = attrs
+                    attribute_keys.update(attrs.keys())
+                else:
+                    parsed_attributes[sample_acc] = None
 
             for exp in experiments:
                 if not exp:
                     continue
-                sample_acc = None
-                if isinstance(exp.get("samples"), list) and exp.get("samples"):
-                    sample_acc = exp.get("samples")[0]
+                if not isinstance(exp.get("samples"), list) or not exp.get("samples"):
+                    # Match flatten contract: skip experiments with no sample.
+                    continue
+
+                sample_acc = exp["samples"][0]
                 sample = samples_map.get(sample_acc) if sample_acc else None
-
-                attributes_json = None
-                if sample and "attributes_json" in sample:
-                    attributes_json = sample.get("attributes_json")
-                    if isinstance(attributes_json, str):
-                        try:
-                            attributes_json = json.loads(attributes_json)
-                        except Exception:
-                            attributes_json = None
-
-                if isinstance(attributes_json, dict):
-                    for key in attributes_json.keys():
-                        if key not in attribute_keys_seen:
-                            attribute_keys.append(key)
-                            attribute_keys_seen.add(key)
 
                 row = OrderedDict(
                     [
@@ -1460,15 +1465,27 @@ class SRAweb(object):
                         ("Taxon ID", sample.get("taxon_id", pd.NA) if sample else pd.NA),
                     ]
                 )
-                if isinstance(attributes_json, dict):
-                    for key, value in attributes_json.items():
-                        row[key] = value
+                row["_attributes_json"] = parsed_attributes.get(sample_acc)
                 all_rows.append(row)
 
         if not all_rows:
             return pd.DataFrame()
 
-        df = pd.DataFrame(all_rows)
+        sorted_attribute_keys = sorted(
+            [key for key in attribute_keys if key is not None]
+        )
+        normalized_rows = []
+        for row in all_rows:
+            normalized = OrderedDict(row)
+            attrs = normalized.pop("_attributes_json", None)
+            for key in sorted_attribute_keys:
+                if isinstance(attrs, dict):
+                    normalized[key] = attrs.get(key, pd.NA)
+                else:
+                    normalized[key] = pd.NA
+            normalized_rows.append(normalized)
+
+        df = pd.DataFrame(normalized_rows)
         ordered_columns = [
             "Accession",
             "Title",
@@ -1482,7 +1499,7 @@ class SRAweb(object):
             "Description",
             "Scientific Name",
             "Taxon ID",
-        ] + attribute_keys
+        ] + sorted_attribute_keys
         for col in ordered_columns:
             if col not in df.columns:
                 df[col] = pd.NA
@@ -1496,8 +1513,8 @@ class SRAweb(object):
             gse_list = gse or []
 
         all_rows = []
-        characteristic_tags = []
-        characteristic_tags_seen = set()
+        all_samples = []
+        characteristic_tags = set()
 
         for accession in gse_list:
             try:
@@ -1507,106 +1524,93 @@ class SRAweb(object):
 
             if not samples:
                 continue
+            all_samples.extend(samples)
 
-            for sample in samples:
-                channels = sample.get("channels") or []
-                for channel in channels:
+        for sample in all_samples:
+            channels = sample.get("channels") or []
+            for channel in channels:
+                characteristics = channel.get("Characteristics")
+                if isinstance(characteristics, list):
+                    for char in characteristics:
+                        if isinstance(char, dict):
+                            tag = char.get("@tag")
+                            if tag is not None:
+                                characteristic_tags.add(tag)
+                elif isinstance(characteristics, dict):
+                    tag = characteristics.get("@tag")
+                    if tag is not None:
+                        characteristic_tags.add(tag)
+
+        sorted_characteristic_tags = sorted(characteristic_tags)
+
+        for sample in all_samples:
+            channels = sample.get("channels") or [None]
+            for idx, channel in enumerate(channels):
+                char_map = {}
+                if channel:
                     characteristics = channel.get("Characteristics")
                     if isinstance(characteristics, list):
                         for char in characteristics:
-                            tag = char.get("@tag")
-                            if tag:
-                                if tag not in characteristic_tags_seen:
-                                    characteristic_tags.append(tag)
-                                    characteristic_tags_seen.add(tag)
+                            if isinstance(char, dict):
+                                char_map[char.get("@tag")] = char.get("#text")
                     elif isinstance(characteristics, dict):
-                        tag = characteristics.get("@tag")
-                        if tag:
-                            if tag not in characteristic_tags_seen:
-                                characteristic_tags.append(tag)
-                                characteristic_tags_seen.add(tag)
+                        char_map[characteristics.get("@tag")] = characteristics.get(
+                            "#text"
+                        )
 
-        for accession in gse_list:
-            try:
-                samples = self._pysraweb_get_json(f"geo/series/{accession}/samples")
-            except Exception:
-                continue
+                organism_value = pd.NA
+                if channel:
+                    organism = channel.get("Organism")
+                    if isinstance(organism, dict):
+                        organism_value = organism.get("#text", pd.NA)
+                    elif isinstance(organism, list):
+                        first_organism = organism[0] if organism else None
+                        if isinstance(first_organism, dict):
+                            organism_value = first_organism.get("#text", pd.NA)
+                        elif first_organism is not None:
+                            organism_value = first_organism
+                    elif organism is not None:
+                        organism_value = organism
 
-            if not samples:
-                continue
-
-            for sample in samples:
-                channels = sample.get("channels") or []
-                if not channels:
-                    row = OrderedDict(
-                        [
-                            ("Sample", sample.get("accession", pd.NA)),
-                            ("Title", sample.get("title", pd.NA)),
-                            ("Description", sample.get("description", pd.NA)),
-                            ("Channel Count", sample.get("channel_count", pd.NA)),
-                            ("Sample Type", sample.get("sample_type", pd.NA)),
-                            ("Platform", sample.get("platform_ref", pd.NA)),
-                            ("Channel Position", pd.NA),
-                            ("Label", pd.NA),
-                            ("Source", pd.NA),
-                            ("Molecule", pd.NA),
-                            ("Organism", pd.NA),
-                            ("Label Protocol", pd.NA),
-                            ("Extract Protocol", pd.NA),
-                        ]
-                    )
-                    for tag in characteristic_tags:
-                        row[tag] = pd.NA
-                    row["Hybridization Protocol"] = sample.get(
-                        "hybridization_protocol", pd.NA
-                    )
-                    row["Scan Protocol"] = sample.get("scan_protocol", pd.NA)
-                    all_rows.append(row)
-                    continue
-
-                for idx, channel in enumerate(channels):
-                    char_map = {}
-                    characteristics = channel.get("Characteristics")
-                    if isinstance(characteristics, list):
-                        for char in characteristics:
-                            tag = char.get("@tag")
-                            if tag:
-                                char_map[tag] = char.get("#text", pd.NA)
-                    elif isinstance(characteristics, dict):
-                        tag = characteristics.get("@tag")
-                        if tag:
-                            char_map[tag] = characteristics.get("#text", pd.NA)
-
-                    row = OrderedDict(
-                        [
-                            ("Sample", sample.get("accession", pd.NA)),
-                            ("Title", sample.get("title", pd.NA)),
-                            ("Description", sample.get("description", pd.NA)),
-                            ("Channel Count", sample.get("channel_count", pd.NA)),
-                            ("Sample Type", sample.get("sample_type", pd.NA)),
-                            ("Platform", sample.get("platform_ref", pd.NA)),
-                            (
-                                "Channel Position",
-                                channel.get("@position", idx + 1),
-                            ),
-                            ("Label", channel.get("Label", pd.NA)),
-                            ("Source", channel.get("Source", pd.NA)),
-                            ("Molecule", channel.get("Molecule", pd.NA)),
-                            (
-                                "Organism",
-                                (channel.get("Organism") or {}).get("#text", pd.NA),
-                            ),
-                            ("Label Protocol", channel.get("Label-Protocol", pd.NA)),
-                            ("Extract Protocol", channel.get("Extract-Protocol", pd.NA)),
-                        ]
-                    )
-                    for tag in characteristic_tags:
-                        row[tag] = char_map.get(tag, pd.NA)
-                    row["Hybridization Protocol"] = sample.get(
-                        "hybridization_protocol", pd.NA
-                    )
-                    row["Scan Protocol"] = sample.get("scan_protocol", pd.NA)
-                    all_rows.append(row)
+                row = OrderedDict(
+                    [
+                        ("Sample", sample.get("accession", pd.NA)),
+                        ("Title", sample.get("title", pd.NA)),
+                        ("Description", sample.get("description", pd.NA)),
+                        ("Channel Count", sample.get("channel_count", pd.NA)),
+                        ("Sample Type", sample.get("sample_type", pd.NA)),
+                        ("Platform", sample.get("platform_ref", pd.NA)),
+                        (
+                            "Channel Position",
+                            channel.get("@position") if channel else idx + 1,
+                        ),
+                        ("Label", channel.get("Label", pd.NA) if channel else pd.NA),
+                        ("Source", channel.get("Source", pd.NA) if channel else pd.NA),
+                        (
+                            "Molecule",
+                            channel.get("Molecule", pd.NA) if channel else pd.NA,
+                        ),
+                        ("Organism", organism_value),
+                        (
+                            "Label Protocol",
+                            channel.get("Label-Protocol", pd.NA) if channel else pd.NA,
+                        ),
+                        (
+                            "Extract Protocol",
+                            channel.get("Extract-Protocol", pd.NA)
+                            if channel
+                            else pd.NA,
+                        ),
+                        (
+                            "Hybridization Protocol",
+                            sample.get("hybridization_protocol", pd.NA),
+                        ),
+                        ("Scan Protocol", sample.get("scan_protocol", pd.NA)),
+                    ]
+                )
+                for tag in sorted_characteristic_tags:
+                    row[tag] = char_map.get(tag, pd.NA)
+                all_rows.append(row)
 
         if not all_rows:
             return pd.DataFrame()
@@ -1626,10 +1630,9 @@ class SRAweb(object):
             "Organism",
             "Label Protocol",
             "Extract Protocol",
-        ] + characteristic_tags + [
             "Hybridization Protocol",
             "Scan Protocol",
-        ]
+        ] + sorted_characteristic_tags
         for col in ordered_columns:
             if col not in df.columns:
                 df[col] = pd.NA
