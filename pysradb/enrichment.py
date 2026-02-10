@@ -390,6 +390,15 @@ def enrich_df(
         "disease",
     ]
 
+    # Pandas can infer numeric dtypes for pre-existing enrichment columns.
+    # Force object-compatible columns so string outputs (e.g., "PDX1") do not
+    # fail assignment on newer pandas versions.
+    for col in ENRICHED_COLS:
+        if col in detailed_df.columns:
+            detailed_df[col] = detailed_df[col].astype("object")
+        else:
+            detailed_df[col] = pd.Series(pd.NA, index=detailed_df.index, dtype="object")
+
     max_preview_rows = 15
     if len(detailed_df) > max_preview_rows:
         proceed_all = confirm(
