@@ -928,6 +928,18 @@ def gse_to_pmid(gse_ids, saveto):
     _print_save_df(df, saveto)
 
 
+def ae_to_pmid(ae_ids, saveto):
+    client = SRAweb()
+    df = client.ae_to_pmid(ae_ids)
+    _print_save_df(df, saveto)
+
+
+def ena_to_pmid(ena_ids, saveto):
+    client = SRAweb()
+    df = client.ena_to_pmid(ena_ids)
+    _print_save_df(df, saveto)
+
+
 def pmid_to_gse(pmid_ids, saveto):
     client = SRAweb()
     df = client.pmid_to_gse(pmid_ids)
@@ -1706,6 +1718,24 @@ def parse_args(args=None):
     subparser.add_argument("gse_ids", nargs="+", help="GSE accession(s)")
     subparser.set_defaults(func=gse_to_pmid)
 
+    # pysradb ae-to-pmid
+    subparser = subparsers.add_parser(
+        "ae-to-pmid", help="Get PMIDs for ArrayExpress accessions"
+    )
+    subparser.add_argument("--saveto", help="Save output to file")
+    subparser.add_argument("ae_ids", nargs="+", help="ArrayExpress accession(s)")
+    subparser.set_defaults(func=ae_to_pmid)
+
+    # pysradb ena-to-pmid
+    subparser = subparsers.add_parser(
+        "ena-to-pmid", help="Get PMIDs for ENA/BioProject accessions"
+    )
+    subparser.add_argument("--saveto", help="Save output to file")
+    subparser.add_argument(
+        "ena_ids", nargs="+", help="ENA accession(s) (PRJEB/PRJNA/PRJD)"
+    )
+    subparser.set_defaults(func=ena_to_pmid)
+
     # pysradb pmid-to-gse
     subparser = subparsers.add_parser(
         "pmid-to-gse", help="Get GSE accessions from PMIDs"
@@ -1757,7 +1787,6 @@ def parse_args(args=None):
     subparser.add_argument("--saveto", help="Save output to file")
     subparser.add_argument("doi_ids", nargs="+", help="DOI(s)")
     subparser.set_defaults(func=doi_to_identifiers)
-
 
     args = parser.parse_args(args=None if sys.argv[1:] else ["--help"])
     if args.command == "metadata":
@@ -1849,6 +1878,10 @@ def parse_args(args=None):
         srp_to_pmid(args.srp_ids, args.saveto)
     elif args.command == "gse-to-pmid":
         gse_to_pmid(args.gse_ids, args.saveto)
+    elif args.command == "ae-to-pmid":
+        ae_to_pmid(args.ae_ids, args.saveto)
+    elif args.command == "ena-to-pmid":
+        ena_to_pmid(args.ena_ids, args.saveto)
     elif args.command == "pmid-to-gse":
         pmid_to_gse(args.pmid_ids, args.saveto)
     elif args.command == "pmid-to-srp":

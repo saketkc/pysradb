@@ -1452,8 +1452,14 @@ class SRAweb(object):
                         ("Platform", exp.get("platform", pd.NA)),
                         ("Instrument", exp.get("instrument_model", pd.NA)),
                         ("Sample", sample_acc or pd.NA),
-                        ("Sample Alias", sample.get("alias", pd.NA) if sample else pd.NA),
-                        ("Sample Title", sample.get("title", pd.NA) if sample else pd.NA),
+                        (
+                            "Sample Alias",
+                            sample.get("alias", pd.NA) if sample else pd.NA,
+                        ),
+                        (
+                            "Sample Title",
+                            sample.get("title", pd.NA) if sample else pd.NA,
+                        ),
                         (
                             "Description",
                             sample.get("description", pd.NA) if sample else pd.NA,
@@ -1462,7 +1468,10 @@ class SRAweb(object):
                             "Scientific Name",
                             sample.get("scientific_name", pd.NA) if sample else pd.NA,
                         ),
-                        ("Taxon ID", sample.get("taxon_id", pd.NA) if sample else pd.NA),
+                        (
+                            "Taxon ID",
+                            sample.get("taxon_id", pd.NA) if sample else pd.NA,
+                        ),
                     ]
                 )
                 row["_attributes_json"] = parsed_attributes.get(sample_acc)
@@ -1597,9 +1606,11 @@ class SRAweb(object):
                         ),
                         (
                             "Extract Protocol",
-                            channel.get("Extract-Protocol", pd.NA)
-                            if channel
-                            else pd.NA,
+                            (
+                                channel.get("Extract-Protocol", pd.NA)
+                                if channel
+                                else pd.NA
+                            ),
                         ),
                         (
                             "Hybridization Protocol",
@@ -2640,6 +2651,143 @@ class SRAweb(object):
                     "pmid": smallest_pmid,
                 }
             )
+
+        return pd.DataFrame(results)
+
+    def ae_to_pmid(self, ae_accessions):
+        """Get PMIDs for ArrayExpress accessions by searching Europe PMC
+
+        Parameters
+        ----------
+        ae_accessions: list or str
+                      ArrayExpress accession(s) (e.g. E-MTAB-*, E-GEOD-*)
+
+        Returns
+        -------
+        ae_pmid_df: pandas.DataFrame
+                   DataFrame with columns [ae_accession, pmid]
+        """
+        if isinstance(ae_accessions, str):
+            ae_accessions = [ae_accessions]
+
+        results = []
+        for acc in ae_accessions:
+            pmid = pd.NA
+            try:
+                r = requests.get(
+                    "https://www.ebi.ac.uk/europepmc/webservices/rest/search",
+                    params={
+                        "query": f'"{acc}"',
+                        "resultType": "lite",
+                        "format": "json",
+                        "pageSize": 10,
+                    },
+                    timeout=60,
+                )
+                r.raise_for_status()
+                hits = r.json().get("resultList", {}).get("result", [])
+                pmids = [
+                    h["pmid"] for h in hits if h.get("pmid") and h["pmid"].isdigit()
+                ]
+                if pmids:
+                    pmid = self._get_smallest_pmid(pmids)
+                else:
+                    pmc_pmids = self.search_pmc_for_external_sources([acc])
+                    if pmc_pmids:
+                        pmid = self._get_smallest_pmid(pmc_pmids)
+
+                time.sleep(self.sleep_time)
+
+            except Exception:
+                pass
+
+            results.append({"ae_accession": acc, "pmid": pmid})
+
+        return pd.DataFrame(results)
+
+    def ena_to_pmid(self, ena_accessions):
+        """Get PMIDs for ENA/BioProject accessions via NCBI elink
+
+        Uses BioProject → PubMed linkage in NCBI for PRJNA/PRJEB/PRJD
+        accessions, with Europe PMC as fallback.
+
+        Parameters
+        ----------
+        ena_accessions: list or str
+                       ENA study accession(s) (e.g. PRJEB*, PRJNA*, PRJD*)
+
+        Returns
+        -------
+        ena_pmid_df: pandas.DataFrame
+                    DataFrame with columns [ena_accession, pmid]
+        """
+        if isinstance(ena_accessions, str):
+            ena_accessions = [ena_accessions]
+
+        results = []
+        for acc in ena_accessions:
+            pmid = pd.NA
+            try:
+                # Step 1: resolve accession to BioProject numeric ID
+                r = requests.get(
+                    self.base_url["esearch"],
+                    params={
+                        "db": "bioproject",
+                        "term": f"{acc}[Project Accession]",
+                        "retmode": "json",
+                    },
+                    timeout=60,
+                )
+                r.raise_for_status()
+                bp_ids = r.json().get("esearchresult", {}).get("idlist", [])
+
+                if bp_ids:
+                    # Step 2: elink BioProject → PubMed
+                    r2 = requests.get(
+                        "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/elink.fcgi",
+                        params={
+                            "dbfrom": "bioproject",
+                            "db": "pubmed",
+                            "id": bp_ids[0],
+                            "retmode": "json",
+                        },
+                        timeout=60,
+                    )
+                    r2.raise_for_status()
+                    pmids = []
+                    for ls in r2.json().get("linksets", []):
+                        for ldb in ls.get("linksetdbs", []):
+                            pmids.extend(str(x) for x in ldb.get("links", []))
+
+                    if pmids:
+                        pmid = self._get_smallest_pmid(pmids)
+
+                # Fallback: Europe PMC
+                if pd.isna(pmid):
+                    r3 = requests.get(
+                        "https://www.ebi.ac.uk/europepmc/webservices/rest/search",
+                        params={
+                            "query": f'"{acc}"',
+                            "resultType": "lite",
+                            "format": "json",
+                            "pageSize": 10,
+                        },
+                        timeout=60,
+                    )
+                    r3.raise_for_status()
+                    hits = r3.json().get("resultList", {}).get("result", [])
+                    epmc_pmids = [
+                        h["pmid"] for h in hits if h.get("pmid") and h["pmid"].isdigit()
+                    ]
+                    if epmc_pmids:
+                        pmid = self._get_smallest_pmid(epmc_pmids)
+
+                time.sleep(self.sleep_time)
+
+            except Exception:
+                pass
+
+            results.append({"ena_accession": acc, "pmid": pmid})
 
         return pd.DataFrame(results)
 
