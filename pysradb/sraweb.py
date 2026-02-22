@@ -2117,6 +2117,14 @@ class SRAweb(object):
         if not any(pmids for pmids in bioproject_pmids.values()):
             external_pmids = self._search_fallback_pmids(srp_accessions)
 
+        # If still no PMIDs, try Europe PMC as final fallback
+        if not external_pmids:
+            for srp_acc in srp_accessions:
+                epmc_pmids = self._search_europepmc(srp_acc)
+                if epmc_pmids:
+                    external_pmids = epmc_pmids
+                    break
+
         # Build results - one row per unique SRP accession
         results = []
         for _, row in metadata_df.iterrows():
@@ -2199,6 +2207,36 @@ class SRAweb(object):
                 pmid_ints.append(pmid)  # Keep non-numeric as-is
 
         return str(min(pmid_ints))
+
+    def _search_europepmc(self, query):
+        """Search Europe PMC for PMIDs matching a query string
+
+        Parameters
+        ----------
+        query: str
+               Search query (e.g. an accession like 'SRP033481' or 'GSE12345')
+
+        Returns
+        -------
+        pmids: list
+              List of PMIDs found
+        """
+        try:
+            r = requests.get(
+                "https://www.ebi.ac.uk/europepmc/webservices/rest/search",
+                params={
+                    "query": f'"{query}"',
+                    "resultType": "lite",
+                    "format": "json",
+                    "pageSize": 10,
+                },
+                timeout=60,
+            )
+            r.raise_for_status()
+            hits = r.json().get("resultList", {}).get("result", [])
+            return [h["pmid"] for h in hits if h.get("pmid") and h["pmid"].isdigit()]
+        except Exception:
+            return []
 
     def extract_external_sources(self, metadata_df):
         """Extract external source identifiers from SRA metadata
@@ -2643,6 +2681,9 @@ class SRAweb(object):
         results = []
         for gse_acc in gse_accessions:
             pmids = self.search_pmc_for_external_sources([gse_acc])
+            # Fallback: Europe PMC
+            if not pmids:
+                pmids = self._search_europepmc(gse_acc)
             smallest_pmid = self._get_smallest_pmid(pmids) if pmids else pd.NA
 
             results.append(
@@ -2673,34 +2714,15 @@ class SRAweb(object):
         results = []
         for acc in ae_accessions:
             pmid = pd.NA
-            try:
-                r = requests.get(
-                    "https://www.ebi.ac.uk/europepmc/webservices/rest/search",
-                    params={
-                        "query": f'"{acc}"',
-                        "resultType": "lite",
-                        "format": "json",
-                        "pageSize": 10,
-                    },
-                    timeout=60,
-                )
-                r.raise_for_status()
-                hits = r.json().get("resultList", {}).get("result", [])
-                pmids = [
-                    h["pmid"] for h in hits if h.get("pmid") and h["pmid"].isdigit()
-                ]
-                if pmids:
-                    pmid = self._get_smallest_pmid(pmids)
-                else:
-                    pmc_pmids = self.search_pmc_for_external_sources([acc])
-                    if pmc_pmids:
-                        pmid = self._get_smallest_pmid(pmc_pmids)
+            pmids = self._search_europepmc(acc)
+            if pmids:
+                pmid = self._get_smallest_pmid(pmids)
+            else:
+                pmc_pmids = self.search_pmc_for_external_sources([acc])
+                if pmc_pmids:
+                    pmid = self._get_smallest_pmid(pmc_pmids)
 
-                time.sleep(self.sleep_time)
-
-            except Exception:
-                pass
-
+            time.sleep(self.sleep_time)
             results.append({"ae_accession": acc, "pmid": pmid})
 
         return pd.DataFrame(results)
@@ -2764,21 +2786,7 @@ class SRAweb(object):
 
                 # Fallback: Europe PMC
                 if pd.isna(pmid):
-                    r3 = requests.get(
-                        "https://www.ebi.ac.uk/europepmc/webservices/rest/search",
-                        params={
-                            "query": f'"{acc}"',
-                            "resultType": "lite",
-                            "format": "json",
-                            "pageSize": 10,
-                        },
-                        timeout=60,
-                    )
-                    r3.raise_for_status()
-                    hits = r3.json().get("resultList", {}).get("result", [])
-                    epmc_pmids = [
-                        h["pmid"] for h in hits if h.get("pmid") and h["pmid"].isdigit()
-                    ]
+                    epmc_pmids = self._search_europepmc(acc)
                     if epmc_pmids:
                         pmid = self._get_smallest_pmid(epmc_pmids)
 
