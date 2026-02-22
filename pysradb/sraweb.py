@@ -9,6 +9,7 @@ import time
 import warnings
 from collections import OrderedDict
 from json.decoder import JSONDecodeError
+from xml.etree import ElementTree as ET
 from xml.parsers.expat import ExpatError
 from xml.sax.saxutils import escape
 
@@ -123,10 +124,11 @@ class SRAweb(object):
             ("retmode", "runinfo"),
         ]
 
-        if api_key is not None:
-            self.esearch_params["sra"].append(("api_key", str(api_key)))
-            self.esearch_params["geo"].append(("api_key", str(api_key)))
-            self.efetch_params.append(("api_key", str(api_key)))
+        self.api_key = str(api_key) if api_key is not None else None
+        if self.api_key:
+            self.esearch_params["sra"].append(("api_key", self.api_key))
+            self.esearch_params["geo"].append(("api_key", self.api_key))
+            self.efetch_params.append(("api_key", self.api_key))
             self.sleep_time = 1 / 10
         else:
             self.sleep_time = 1 / 3
@@ -2087,13 +2089,15 @@ class SRAweb(object):
 
         return bioproject_pmids
 
-    def srp_to_pmid(self, srp_accessions):
+    def srp_to_pmid(self, srp_accessions, detailed=False):
         """Get PMIDs associated with SRP accessions
 
         Parameters
         ----------
         srp_accessions: list or str
                        SRP accession(s)
+        detailed: bool
+                 If True, include publication metadata (title, journal, doi, pub_date, authors)
 
         Returns
         -------
@@ -2146,7 +2150,12 @@ class SRAweb(object):
                 }
             )
 
-        return pd.DataFrame(results).drop_duplicates()
+        result_df = pd.DataFrame(results).drop_duplicates()
+
+        if detailed:
+            result_df = self._enrich_with_publication_metadata(result_df)
+
+        return result_df
 
     def _search_fallback_pmids(self, srp_accessions):
         """Search for PMIDs using fallback strategies (external sources + direct SRA search + GSE search)"""
@@ -2237,6 +2246,416 @@ class SRAweb(object):
             return [h["pmid"] for h in hits if h.get("pmid") and h["pmid"].isdigit()]
         except Exception:
             return []
+
+    def pmid_info(self, ids, detailed=False):
+        """Get publication metadata and journal metrics for PMIDs, PMCIDs, or DOIs.
+
+        Parameters
+        ----------
+        ids: list or str
+             PMID(s), PMCID(s) (e.g. PMC4589343), or DOI(s)
+        detailed: bool
+                 If True, also look up associated GEO/SRA datasets.
+
+        Returns
+        -------
+        DataFrame with publication metadata, journal metrics, citation count,
+        and (when detailed) associated GEO/SRA accessions.
+        """
+        if isinstance(ids, str):
+            ids = [ids]
+
+        resolved = [
+            {"input_id": raw_id, "pmid": self._resolve_to_pmid(raw_id.strip())}
+            for raw_id in ids
+        ]
+
+        result_df = pd.DataFrame(resolved)
+        if result_df.empty:
+            return result_df
+
+        valid_pmids = self._valid_pmids(result_df)
+        if not valid_pmids:
+            return result_df
+
+        meta_df = self.fetch_pmid_metadata(valid_pmids)
+        if not meta_df.empty:
+            result_df["pmid"] = result_df["pmid"].astype(str)
+            result_df = result_df.merge(meta_df, on="pmid", how="left")
+            result_df = self.fetch_journal_metrics(result_df)
+
+        if detailed:
+            datasets = [self._find_datasets_for_pmid(p) for p in valid_pmids]
+            ds_df = pd.DataFrame(datasets, columns=["gse", "srp"])
+            ds_df["pmid"] = valid_pmids
+            result_df = result_df.merge(ds_df, on="pmid", how="left")
+
+        if (
+            "input_id" in result_df.columns
+            and (result_df["input_id"] == result_df["pmid"]).all()
+        ):
+            result_df = result_df.drop(columns=["input_id"])
+
+        return result_df
+
+    def _resolve_to_pmid(self, raw_id):
+        """Resolve a PMID, PMCID, or DOI to a PMID string via Europe PMC."""
+        if raw_id.upper().startswith("PMC"):
+            query = f"PMCID:{raw_id}"
+        elif "/" in raw_id:
+            query = f"DOI:{raw_id}"
+        elif raw_id.isdigit():
+            query = f"ext_id:{raw_id} src:med"
+        else:
+            query = f'"{raw_id}"'
+        try:
+            r = requests.get(
+                "https://www.ebi.ac.uk/europepmc/webservices/rest/search",
+                params={
+                    "query": query,
+                    "resultType": "lite",
+                    "format": "json",
+                    "pageSize": 1,
+                },
+                timeout=60,
+            )
+            r.raise_for_status()
+            hits = r.json().get("resultList", {}).get("result", [])
+            time.sleep(self.sleep_time)
+            if hits and hits[0].get("pmid"):
+                return hits[0]["pmid"]
+        except Exception:
+            pass
+        return pd.NA
+
+    def _ncbi_params(self, params):
+        """Return params dict with api_key injected if available."""
+        if self.api_key:
+            params["api_key"] = self.api_key
+        return params
+
+    def _elink_ids(self, pmid, db, linkname):
+        """Get linked database IDs for a PMID via NCBI elink."""
+        r = requests.get(
+            "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/elink.fcgi",
+            params=self._ncbi_params(
+                {"dbfrom": "pubmed", "db": db, "id": pmid, "retmode": "json"}
+            ),
+            timeout=30,
+        )
+        r.raise_for_status()
+        for ls in r.json().get("linksets", []):
+            for ldb in ls.get("linksetdbs", []):
+                if ldb.get("linkname") == linkname:
+                    return [str(lid) for lid in ldb.get("links", [])]
+        return []
+
+    def _find_datasets_for_pmid(self, pmid):
+        """Find GEO and SRA accessions linked to a PMID via NCBI elink.
+
+        Returns (gse, srp) where each is a comma-separated string of accessions.
+        """
+        gse, srp = "", ""
+        try:
+            gds_ids = self._elink_ids(pmid, "gds", "pubmed_gds")
+            if gds_ids:
+                r = requests.get(
+                    self.base_url["esummary"],
+                    params=self._ncbi_params(
+                        {"db": "gds", "id": ",".join(gds_ids[:5]), "retmode": "json"}
+                    ),
+                    timeout=30,
+                )
+                r.raise_for_status()
+                data = r.json().get("result", {})
+                gse_accs = {
+                    data.get(gid, {}).get("accession", "") for gid in gds_ids[:5]
+                }
+                gse = ", ".join(sorted(a for a in gse_accs if a.startswith("GSE")))
+            time.sleep(self.sleep_time)
+
+            sra_ids = self._elink_ids(pmid, "sra", "pubmed_sra")
+            if sra_ids:
+                r = requests.get(
+                    self.base_url["esummary"],
+                    params=self._ncbi_params(
+                        {"db": "sra", "id": ",".join(sra_ids[:5]), "retmode": "json"}
+                    ),
+                    timeout=30,
+                )
+                r.raise_for_status()
+                data = r.json().get("result", {})
+                srp_accs = set()
+                for sid in sra_ids[:5]:
+                    srp_accs.update(
+                        re.findall(
+                            r'acc="(SRP\d+)"', data.get(sid, {}).get("expxml", "")
+                        )
+                    )
+                srp = ", ".join(sorted(srp_accs))
+            time.sleep(self.sleep_time)
+        except Exception:
+            pass
+        return gse, srp
+
+    @staticmethod
+    def _valid_pmids(df):
+        """Extract valid PMID strings from a DataFrame's pmid column."""
+        return [
+            p
+            for p in df["pmid"].dropna().astype(str).tolist()
+            if p not in ("<NA>", "nan")
+        ]
+
+    def _enrich_with_publication_metadata(self, result_df):
+        """Merge publication metadata and journal metrics into a PMID result DataFrame."""
+        if result_df.empty:
+            return result_df
+        valid_pmids = self._valid_pmids(result_df)
+        if not valid_pmids:
+            return result_df
+        meta_df = self.fetch_pmid_metadata(valid_pmids)
+        if meta_df.empty:
+            return result_df
+        result_df["pmid"] = result_df["pmid"].astype(str)
+        result_df = result_df.merge(meta_df, on="pmid", how="left")
+        return self.fetch_journal_metrics(result_df)
+
+    _PMID_META_COLS = [
+        "pmid",
+        "title",
+        "journal",
+        "doi",
+        "pub_date",
+        "authors",
+        "issn",
+        "citation_count",
+    ]
+
+    _JOURNAL_METRIC_COLS = [
+        "journal_h_index",
+        "journal_i10_index",
+        "journal_2yr_mean_citedness",
+        "journal_cited_by_count",
+        "journal_works_count",
+    ]
+
+    def fetch_pmid_metadata(self, pmids):
+        """Fetch publication metadata for PMIDs.
+
+        Parameters
+        ----------
+        pmids: list or str
+               PMID(s)
+
+        Returns
+        -------
+        DataFrame with columns: pmid, title, journal, doi, pub_date, authors,
+                                issn, citation_count
+        """
+        if isinstance(pmids, str):
+            pmids = [pmids]
+        pmids = [str(p) for p in pmids if str(p) not in ("<NA>", "nan")]
+        if not pmids:
+            return pd.DataFrame(columns=self._PMID_META_COLS)
+
+        results = {}
+        self._fetch_pmid_metadata_ncbi(pmids, results)
+
+        for pmid in (p for p in pmids if p not in results):
+            self._fetch_pmid_metadata_epmc(pmid, results)
+
+        if not results:
+            return pd.DataFrame(columns=self._PMID_META_COLS)
+
+        for pmid, entry in results.items():
+            entry["citation_count"] = self._fetch_citation_count(
+                pmid, entry.get("doi", "")
+            )
+
+        return pd.DataFrame([results[p] for p in pmids if p in results])
+
+    def _fetch_pmid_metadata_ncbi(self, pmids, results):
+        """Batch-query NCBI PubMed efetch for full author names, populating *results* in-place."""
+        try:
+            r = requests.get(
+                self.base_url["efetch"],
+                params=self._ncbi_params(
+                    {"db": "pubmed", "id": ",".join(pmids), "retmode": "xml"}
+                ),
+                timeout=60,
+            )
+            r.raise_for_status()
+            xml_text = re.sub(r"<!DOCTYPE[^>]*>", "", r.content.decode("utf-8"))
+            root = ET.fromstring(xml_text)
+        except Exception:
+            return
+
+        for article in root.findall(".//PubmedArticle"):
+            pmid = article.findtext(".//PMID", "")
+            if not pmid:
+                continue
+
+            journal_el = article.find(".//Journal")
+            pub_date = journal_el.find(".//PubDate") if journal_el is not None else None
+            date_parts = []
+            if pub_date is not None:
+                medline_date = pub_date.findtext("MedlineDate", "")
+                if medline_date:
+                    date_parts = [medline_date]
+                else:
+                    for field in ("Year", "Month", "Day"):
+                        val = pub_date.findtext(field, "")
+                        if val:
+                            date_parts.append(val)
+
+            doi_els = [
+                e for e in article.findall(".//ArticleId") if e.get("IdType") == "doi"
+            ]
+            authors = ", ".join(
+                f"{a.findtext('ForeName', '')} {a.findtext('LastName', '')}".strip()
+                for a in article.findall(".//Author")
+                if a.findtext("LastName")
+            )
+
+            results[pmid] = {
+                "pmid": pmid,
+                "title": article.findtext(".//ArticleTitle", ""),
+                "journal": (
+                    journal_el.findtext("Title", "") if journal_el is not None else ""
+                ),
+                "doi": doi_els[0].text if doi_els else "",
+                "pub_date": " ".join(date_parts),
+                "authors": authors,
+                "issn": (
+                    journal_el.findtext("ISSN", "") if journal_el is not None else ""
+                ),
+            }
+
+    def _fetch_pmid_metadata_epmc(self, pmid, results):
+        """Query Europe PMC for a single PMID, populating *results* dict in-place."""
+        try:
+            r = requests.get(
+                "https://www.ebi.ac.uk/europepmc/webservices/rest/search",
+                params={
+                    "query": f"ext_id:{pmid} src:med",
+                    "resultType": "core",
+                    "format": "json",
+                    "pageSize": 1,
+                },
+                timeout=60,
+            )
+            r.raise_for_status()
+            hits = r.json().get("resultList", {}).get("result", [])
+            if hits:
+                hit = hits[0]
+                journal_obj = hit.get("journalInfo", {}).get("journal", {})
+                author_list = hit.get("authorList", {}).get("author", [])
+                if author_list:
+                    authors = ", ".join(
+                        f"{a.get('firstName', '')} {a.get('lastName', '')}".strip()
+                        for a in author_list
+                        if a.get("lastName")
+                    )
+                else:
+                    authors = hit.get("authorString", "")
+                results[pmid] = {
+                    "pmid": pmid,
+                    "title": hit.get("title", ""),
+                    "journal": hit.get("journalTitle") or journal_obj.get("title", ""),
+                    "doi": hit.get("doi", ""),
+                    "pub_date": hit.get("firstPublicationDate", ""),
+                    "authors": authors,
+                    "issn": journal_obj.get("essn", "") or journal_obj.get("issn", ""),
+                }
+            time.sleep(self.sleep_time)
+        except Exception:
+            pass
+
+    def _fetch_citation_count(self, pmid, doi):
+        """Get citation count from OpenAlex by DOI (preferred) or PMID."""
+        for lookup_id in filter(None, [f"doi:{doi}" if doi else None, f"pmid:{pmid}"]):
+            try:
+                r = requests.get(
+                    f"https://api.openalex.org/works/{lookup_id}", timeout=30
+                )
+                if r.status_code == 200:
+                    return r.json().get("cited_by_count", pd.NA)
+            except Exception:
+                pass
+        return pd.NA
+
+    def fetch_journal_metrics(self, journal_df):
+        """Add OpenAlex journal quality metrics to a DataFrame containing a ``journal`` column.
+
+        Parameters
+        ----------
+        journal_df: DataFrame with ``journal`` (required) and ``issn`` (optional) columns.
+
+        Returns
+        -------
+        Same DataFrame with added columns: journal_h_index, journal_i10_index,
+        journal_2yr_mean_citedness, journal_cited_by_count, journal_works_count.
+        """
+        if journal_df.empty or "journal" not in journal_df.columns:
+            for col in self._JOURNAL_METRIC_COLS:
+                journal_df[col] = pd.NA
+            return journal_df
+
+        has_issn = "issn" in journal_df.columns
+        if has_issn:
+            unique_journals = (
+                journal_df[["journal", "issn"]].drop_duplicates().values.tolist()
+            )
+        else:
+            unique_journals = [[j, ""] for j in journal_df["journal"].dropna().unique()]
+
+        cache = {}
+        for journal_name, issn in unique_journals:
+            if not journal_name or journal_name in cache:
+                continue
+            cache[journal_name] = self._openalex_source_lookup(issn, journal_name)
+
+        for col in self._JOURNAL_METRIC_COLS:
+            journal_df[col] = journal_df["journal"].map(
+                lambda j, c=col: cache.get(j, {}).get(c, pd.NA)
+            )
+        return journal_df
+
+    def _openalex_source_lookup(self, issn, journal_name):
+        """Look up a journal in OpenAlex by ISSN then name. Returns metrics dict."""
+        empty = dict.fromkeys(self._JOURNAL_METRIC_COLS, pd.NA)
+        source = None
+        try:
+            for params in filter(
+                None,
+                [
+                    {"filter": f"issn:{issn}", "per_page": 1} if issn else None,
+                    {"search": journal_name, "per_page": 1} if journal_name else None,
+                ],
+            ):
+                r = requests.get(
+                    "https://api.openalex.org/sources", params=params, timeout=30
+                )
+                r.raise_for_status()
+                hits = r.json().get("results", [])
+                if hits:
+                    source = hits[0]
+                    break
+        except Exception:
+            return empty
+
+        if source is None:
+            return empty
+
+        stats = source.get("summary_stats", {})
+        return {
+            "journal_h_index": stats.get("h_index", pd.NA),
+            "journal_i10_index": stats.get("i10_index", pd.NA),
+            "journal_2yr_mean_citedness": stats.get("2yr_mean_citedness", pd.NA),
+            "journal_cited_by_count": source.get("cited_by_count", pd.NA),
+            "journal_works_count": source.get("works_count", pd.NA),
+        }
 
     def extract_external_sources(self, metadata_df):
         """Extract external source identifiers from SRA metadata
@@ -2662,13 +3081,15 @@ class SRAweb(object):
         """Get PMIDs for Sample Accessions (SRS)"""
         return self.sra_to_pmid(srs)
 
-    def gse_to_pmid(self, gse_accessions):
+    def gse_to_pmid(self, gse_accessions, detailed=False):
         """Get PMIDs for GSE accessions by searching PubMed Central
 
         Parameters
         ----------
         gse_accessions: list or str
                        GSE accession(s)
+        detailed: bool
+                 If True, include publication metadata (title, journal, doi, pub_date, authors)
 
         Returns
         -------
@@ -2693,7 +3114,12 @@ class SRAweb(object):
                 }
             )
 
-        return pd.DataFrame(results)
+        result_df = pd.DataFrame(results)
+
+        if detailed:
+            result_df = self._enrich_with_publication_metadata(result_df)
+
+        return result_df
 
     def ae_to_pmid(self, ae_accessions):
         """Get PMIDs for ArrayExpress accessions by searching Europe PMC

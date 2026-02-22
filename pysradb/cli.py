@@ -909,9 +909,9 @@ def srx_to_srs(srx_ids, saveto, detailed, desc, expand):
     _print_save_df(df, saveto)
 
 
-def srp_to_pmid(srp_ids, saveto):
+def srp_to_pmid(srp_ids, saveto, detailed=False):
     client = SRAweb()
-    df = client.srp_to_pmid(srp_ids)
+    df = client.srp_to_pmid(srp_ids, detailed=detailed)
     _print_save_df(df, saveto)
 
 
@@ -922,9 +922,15 @@ def sra_to_pmid(sra_ids, saveto):
     _print_save_df(df, saveto)
 
 
-def gse_to_pmid(gse_ids, saveto):
+def gse_to_pmid(gse_ids, saveto, detailed=False):
     client = SRAweb()
-    df = client.gse_to_pmid(gse_ids)
+    df = client.gse_to_pmid(gse_ids, detailed=detailed)
+    _print_save_df(df, saveto)
+
+
+def pmid_info(ids, saveto, detailed=False):
+    client = SRAweb()
+    df = client.pmid_info(ids, detailed=detailed)
     _print_save_df(df, saveto)
 
 
@@ -1707,6 +1713,11 @@ def parse_args(args=None):
         "srp-to-pmid", help="Get PMIDs for SRP accessions"
     )
     subparser.add_argument("--saveto", help="Save output to file")
+    subparser.add_argument(
+        "--detailed",
+        action="store_true",
+        help="Include publication metadata (title, journal, DOI, pub_date, authors)",
+    )
     subparser.add_argument("srp_ids", nargs="+", help="SRP accession(s)")
     subparser.set_defaults(func=srp_to_pmid)
 
@@ -1715,6 +1726,11 @@ def parse_args(args=None):
         "gse-to-pmid", help="Get PMIDs for GSE accessions"
     )
     subparser.add_argument("--saveto", help="Save output to file")
+    subparser.add_argument(
+        "--detailed",
+        action="store_true",
+        help="Include publication metadata (title, journal, DOI, pub_date, authors)",
+    )
     subparser.add_argument("gse_ids", nargs="+", help="GSE accession(s)")
     subparser.set_defaults(func=gse_to_pmid)
 
@@ -1735,6 +1751,20 @@ def parse_args(args=None):
         "ena_ids", nargs="+", help="ENA accession(s) (PRJEB/PRJNA/PRJD)"
     )
     subparser.set_defaults(func=ena_to_pmid)
+
+    # pysradb pmid-info
+    subparser = subparsers.add_parser(
+        "pmid-info",
+        help="Get publication metadata and journal metrics for PMIDs, PMCIDs, or DOIs",
+    )
+    subparser.add_argument("--saveto", help="Save output to file")
+    subparser.add_argument(
+        "--detailed",
+        action="store_true",
+        help="Also look up associated GEO/SRA datasets",
+    )
+    subparser.add_argument("ids", nargs="+", help="PMID(s), PMCID(s), or DOI(s)")
+    subparser.set_defaults(func=pmid_info)
 
     # pysradb pmid-to-gse
     subparser = subparsers.add_parser(
@@ -1875,13 +1905,15 @@ def parse_args(args=None):
     elif args.command == "geo-matrix":
         geo_matrix(args.accession, args.to_tsv, args.output_dir)
     elif args.command == "srp-to-pmid":
-        srp_to_pmid(args.srp_ids, args.saveto)
+        srp_to_pmid(args.srp_ids, args.saveto, args.detailed)
     elif args.command == "gse-to-pmid":
-        gse_to_pmid(args.gse_ids, args.saveto)
+        gse_to_pmid(args.gse_ids, args.saveto, args.detailed)
     elif args.command == "ae-to-pmid":
         ae_to_pmid(args.ae_ids, args.saveto)
     elif args.command == "ena-to-pmid":
         ena_to_pmid(args.ena_ids, args.saveto)
+    elif args.command == "pmid-info":
+        pmid_info(args.ids, args.saveto, args.detailed)
     elif args.command == "pmid-to-gse":
         pmid_to_gse(args.pmid_ids, args.saveto)
     elif args.command == "pmid-to-srp":
