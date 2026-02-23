@@ -22,6 +22,12 @@ from .search import SraSearch
 warnings.simplefilter(action="ignore", category=FutureWarning)
 
 
+class OpenAlexError(RuntimeError):
+    """Raised when OpenAlex API returns a non-transient error (rate limit, auth, etc.)."""
+
+    pass
+
+
 def xmlescape(data):
     return escape(data, entities={"'": "&apos;", '"': "&quot;"})
 
@@ -80,7 +86,7 @@ def get_retmax(n_records, retmax=500):
 
 
 class SRAweb(object):
-    def __init__(self, api_key=None):
+    def __init__(self, api_key=None, openalex_api_key=None, openalex_email=None):
         """
         Initialize SRAweb for API-based access to SRA data.
 
@@ -89,6 +95,13 @@ class SRAweb(object):
 
         api_key: string
                  API key for ncbi eutils. Optional, but recommended for higher rate limits.
+        openalex_api_key: string
+                 API key for OpenAlex. 
+                 Get a free key at https://openalex.org/settings/api
+                 Falls back to OPENALEX_API_KEY environment variable.
+        openalex_email: string
+                 Email for OpenAlex polite pool (higher rate limits).
+                 Falls back to OPENALEX_EMAIL environment variable.
         """
         self.base_url = dict()
         self.base_url["esummary"] = (
@@ -132,6 +145,9 @@ class SRAweb(object):
             self.sleep_time = 1 / 10
         else:
             self.sleep_time = 1 / 3
+
+        self.openalex_api_key = openalex_api_key or os.environ.get("OPENALEX_API_KEY")
+        self.openalex_email = openalex_email or os.environ.get("OPENALEX_EMAIL")
 
     @staticmethod
     def format_xml(string):
@@ -2572,15 +2588,48 @@ class SRAweb(object):
         except Exception:
             pass
 
+    def _openalex_request(self, url, params=None, timeout=30):
+        """Make an authenticated OpenAlex API request.
+
+        Raises
+        ------
+        OpenAlexError
+            On HTTP 429 (rate limit), 401/403 (auth), or any response whose
+            JSON body contains an ``"error"`` key
+        """
+        if params is None:
+            params = {}
+        if self.openalex_api_key:
+            params["api_key"] = self.openalex_api_key
+        if self.openalex_email:
+            params["mailto"] = self.openalex_email
+        r = requests.get(url, params=params, timeout=timeout)
+        if r.status_code in (429, 401, 403):
+            try:
+                body = r.json()
+                msg = body.get("message", body.get("error", r.text[:300]))
+            except Exception:
+                msg = r.text[:300]
+            raise OpenAlexError(f"OpenAlex API error (HTTP {r.status_code}): {msg}")
+        return r
+
     def _fetch_citation_count(self, pmid, doi):
-        """Get citation count from OpenAlex by DOI (preferred) or PMID."""
+        """Get citation count from OpenAlex by DOI (preferred) or PMID.
+
+        Raises
+        ------
+        OpenAlexError
+            If the API returns a rate-limit or authentication error.
+        """
         for lookup_id in filter(None, [f"doi:{doi}" if doi else None, f"pmid:{pmid}"]):
             try:
-                r = requests.get(
-                    f"https://api.openalex.org/works/{lookup_id}", timeout=30
+                r = self._openalex_request(
+                    f"https://api.openalex.org/works/{lookup_id}"
                 )
                 if r.status_code == 200:
                     return r.json().get("cited_by_count", pd.NA)
+            except OpenAlexError:
+                raise
             except Exception:
                 pass
         return pd.NA
@@ -2623,7 +2672,13 @@ class SRAweb(object):
         return journal_df
 
     def _openalex_source_lookup(self, issn, journal_name):
-        """Look up a journal in OpenAlex by ISSN then name. Returns metrics dict."""
+        """Look up a journal in OpenAlex by ISSN then name. Returns metrics dict.
+
+        Raises
+        ------
+        OpenAlexError
+            If the API returns a rate-limit or authentication error.
+        """
         empty = dict.fromkeys(self._JOURNAL_METRIC_COLS, pd.NA)
         source = None
         try:
@@ -2634,14 +2689,16 @@ class SRAweb(object):
                     {"search": journal_name, "per_page": 1} if journal_name else None,
                 ],
             ):
-                r = requests.get(
-                    "https://api.openalex.org/sources", params=params, timeout=30
+                r = self._openalex_request(
+                    "https://api.openalex.org/sources", params=params
                 )
                 r.raise_for_status()
                 hits = r.json().get("results", [])
                 if hits:
                     source = hits[0]
                     break
+        except OpenAlexError:
+            raise
         except Exception:
             return empty
 
