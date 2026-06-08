@@ -2263,7 +2263,7 @@ class SRAweb(object):
         except Exception:
             return []
 
-    def pmid_info(self, ids, detailed=False):
+    def pmid_info(self, ids, detailed=False, skip_journal_metrics=False):
         """Get publication metadata and journal metrics for PMIDs, PMCIDs, or DOIs.
 
         Parameters
@@ -2272,6 +2272,12 @@ class SRAweb(object):
              PMID(s), PMCID(s) (e.g. PMC4589343), or DOI(s)
         detailed: bool
                  If True, also look up associated GEO/SRA datasets.
+        skip_journal_metrics: bool
+                 If True, skip the OpenAlex journal metrics lookup (h-index,
+                 i10-index, etc.). Citation counts are still fetched per-PMID.
+                 Useful for large batch runs since citation lookups are free
+                 singleton requests while journal metrics use paid list/search
+                 requests on the OpenAlex API.
 
         Returns
         -------
@@ -2298,7 +2304,12 @@ class SRAweb(object):
         if not meta_df.empty:
             result_df["pmid"] = result_df["pmid"].astype(str)
             result_df = result_df.merge(meta_df, on="pmid", how="left")
-            result_df = self.fetch_journal_metrics(result_df)
+            if skip_journal_metrics:
+                for col in self._JOURNAL_METRIC_COLS:
+                    if col not in result_df.columns:
+                        result_df[col] = pd.NA
+            else:
+                result_df = self.fetch_journal_metrics(result_df)
 
         if detailed:
             datasets = [self._find_datasets_for_pmid(p) for p in valid_pmids]
