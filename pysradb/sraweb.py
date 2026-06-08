@@ -86,7 +86,9 @@ def get_retmax(n_records, retmax=500):
 
 
 class SRAweb(object):
-    def __init__(self, api_key=None, openalex_api_key=None, openalex_email=None):
+    def __init__(
+        self, api_key=None, openalex_api_key=None, openalex_email=None, verbose=True
+    ):
         """
         Initialize SRAweb for API-based access to SRA data.
 
@@ -96,12 +98,14 @@ class SRAweb(object):
         api_key: string
                  API key for ncbi eutils. Optional, but recommended for higher rate limits.
         openalex_api_key: string
-                 API key for OpenAlex. 
+                 API key for OpenAlex.
                  Get a free key at https://openalex.org/settings/api
                  Falls back to OPENALEX_API_KEY environment variable.
         openalex_email: string
                  Email for OpenAlex polite pool (higher rate limits).
                  Falls back to OPENALEX_EMAIL environment variable.
+        verbose: bool
+                 Print warning/info messages. Default True.
         """
         self.base_url = dict()
         self.base_url["esummary"] = (
@@ -148,6 +152,7 @@ class SRAweb(object):
 
         self.openalex_api_key = openalex_api_key or os.environ.get("OPENALEX_API_KEY")
         self.openalex_email = openalex_email or os.environ.get("OPENALEX_EMAIL")
+        self.verbose = verbose
 
     @staticmethod
     def format_xml(string):
@@ -391,7 +396,8 @@ class SRAweb(object):
             # retry again
 
         if "esummaryresult" in esearch_response:
-            print("No result found")
+            if self.verbose:
+                print("No result found")
             return
         if "error" in esearch_response:
             # API rate limite exceeded
@@ -441,7 +447,8 @@ class SRAweb(object):
         request = requests.get(self.base_url["esearch"], params=OrderedDict(payload))
         esearch_response = request.json()
         if "esummaryresult" in esearch_response:
-            print("No result found")
+            if self.verbose:
+                print("No result found")
             return
         if "error" in esearch_response:
             # API rate limite exceeded
@@ -902,7 +909,10 @@ class SRAweb(object):
         try:
             uids = result["uids"]
         except KeyError:
-            print("No results found for {} | Obtained result: {}".format(gse, result))
+            if self.verbose:
+                print(
+                    "No results found for {} | Obtained result: {}".format(gse, result)
+                )
             return None
         gse_records = []
         for uid in uids:
@@ -928,7 +938,8 @@ class SRAweb(object):
                 record["samples"] = samples
             gse_records.append(record)
         if not len(gse_records):
-            print("No results found for {}".format(gse))
+            if self.verbose:
+                print("No results found for {}".format(gse))
             return None
         return pd.DataFrame(gse_records)
 
@@ -994,7 +1005,8 @@ class SRAweb(object):
                 gsm_data[gsm] = metadata
 
             except Exception as e:
-                print(f"Warning: Could not fetch SOFT data for {gsm}: {e}")
+                if self.verbose:
+                    print(f"Warning: Could not fetch SOFT data for {gsm}: {e}")
                 gsm_data[gsm] = {}
 
         return gsm_data

@@ -19,8 +19,15 @@ if sys.version_info[0] < 3:
 
 
 class GEOweb(object):
-    def __init__(self):
-        """Initialize GEOweb without any database."""
+    def __init__(self, verbose=True):
+        """Initialize GEOweb without any database.
+
+        Parameters
+        ----------
+        verbose: bool
+                 Print file download information. Default True.
+        """
+        self.verbose = verbose
 
     def get_download_links(self, gse):
         """Obtain all links from the GEO FTP page.
@@ -83,10 +90,11 @@ class GEOweb(object):
         os.makedirs(out_dir, exist_ok=True)
 
         # Display files to be downloaded
-        print("\nThe following files will be downloaded: \n")
-        for link in links:
-            print(link)
-        print(os.linesep)
+        if verbose:
+            print("\nThe following files will be downloaded: \n")
+            for link in links:
+                print(link)
+            print(os.linesep)
         # Check if we can access list of files in the tar file
         tar_list = [i for i in links if ".tar" in i]
         if "filelist.txt" in links:
