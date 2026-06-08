@@ -5,6 +5,7 @@ import ntpath
 import os
 import shlex
 import subprocess
+import sys
 import urllib.request as urllib_request
 import warnings
 
@@ -281,15 +282,22 @@ def confirm(preceeding_text):
     -------
     response: bool
     """
+    env_override = os.environ.get("PYSRADB_CONFIRM")
+    if env_override is not None:
+        return env_override.lower() in ["1", "yes", "y", "true"]
+    if not sys.stdin.isatty():
+        return True
+
     print(os.linesep, flush=True)
     notification_str = "Please respond with 'y' or 'n'"
     while True:
         choice = input("{} [Y/n]: ".format(preceeding_text)).lower()
         if choice in ["yes", "y"] or not choice:
             return True
-        if choice in ["no", "n"]:
+        elif choice in ["no", "n"]:
             return False
-        print(notification_str, flush=True)
+        else:
+            print(notification_str, flush=True)
 
 
 def copyfileobj(fsrc, fdst, bufsize=16384, filesize=None, desc=""):
