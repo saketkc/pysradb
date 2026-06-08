@@ -2508,9 +2508,18 @@ class SRAweb(object):
             return pd.DataFrame(columns=self._PMID_META_COLS)
 
         for pmid, entry in results.items():
-            entry["citation_count"] = self._fetch_citation_count(
-                pmid, entry.get("doi", "")
-            )
+            try:
+                entry["citation_count"] = self._fetch_citation_count(
+                    pmid, entry.get("doi", "")
+                )
+            except OpenAlexError as e:
+                if self.verbose:
+                    print(
+                        f"Warning: failed to fetch citation count from OpenAlex for PMID={pmid}, "
+                        f"DOI={entry.get('doi', '')}: {e}",
+                        file=sys.stderr,
+                    )
+                entry["citation_count"] = pd.NA
 
         return pd.DataFrame([results[p] for p in pmids if p in results])
 
@@ -2686,7 +2695,16 @@ class SRAweb(object):
         for journal_name, issn in unique_journals:
             if not journal_name or journal_name in cache:
                 continue
-            cache[journal_name] = self._openalex_source_lookup(issn, journal_name)
+            try:
+                cache[journal_name] = self._openalex_source_lookup(issn, journal_name)
+            except OpenAlexError as e:
+                if self.verbose:
+                    print(
+                        f"Warning: failed to fetch journal metrics from OpenAlex "
+                        f"for journal={journal_name}, issn={issn}: {e}",
+                        file=sys.stderr,
+                    )
+                cache[journal_name] = dict.fromkeys(self._JOURNAL_METRIC_COLS, pd.NA)
 
         for col in self._JOURNAL_METRIC_COLS:
             journal_df[col] = journal_df["journal"].map(
