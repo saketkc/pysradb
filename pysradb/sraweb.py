@@ -391,7 +391,8 @@ class SRAweb(object):
                     error_msg = "Unable to parse esummary response json: {}{}. Aborting.".format(
                         request.text, os.linesep
                     )
-                    sys.stderr.write(error_msg)
+                    if self.verbose:
+                        sys.stderr.write(error_msg)
 
                 raise ValueError(error_msg) from e
 
@@ -482,7 +483,8 @@ class SRAweb(object):
                 except KeyError:
                     if request_json["error"] == "error forwarding request":
                         error_msg = "Encountered error while making request.\n"
-                        sys.stderr.write(error_msg)
+                        if self.verbose:
+                            sys.stderr.write(error_msg)
                         raise RuntimeError(error_msg.strip())
                 time.sleep(int(retry_after))
                 # try again
@@ -493,7 +495,11 @@ class SRAweb(object):
                 try:
                     request_json = request.json()
                     if request_json["error"] == "error forwarding request":
-                        sys.stderr.write("Encountered error while making request.\n")
+                        if self.verbose:
+                            sys.stderr.write(
+                                "Encountered error while making request.\n"
+                            )
+
                         return
                 except:
                     request_json = {}  # eval(request_text)
@@ -506,13 +512,18 @@ class SRAweb(object):
                 response = exp_response.get("EXPERIMENT_PACKAGE", {})
             except ExpatError as e:
                 error_msg = "Unable to parse xml: {}{}".format(request_text, os.linesep)
-                sys.stderr.write(error_msg)
+                if self.verbose:
+                    sys.stderr.write(error_msg)
+
                 raise ValueError(error_msg.strip()) from e
             if not response:
                 error_msg = "Unable to parse xml response. Received: {}{}".format(
                     xml_response, os.linesep
                 )
-                sys.stderr.write(error_msg)
+
+                if self.verbose:
+                    sys.stderr.write(error_msg)
+
                 raise ValueError(error_msg.strip())
             if retstart == 0:
                 results = response
