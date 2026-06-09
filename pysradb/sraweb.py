@@ -374,23 +374,25 @@ class SRAweb(object):
         try:
             esearch_response = request.json()
         except JSONDecodeError:
-            sys.stderr.write(
-                "Unable to parse esummary response json: {}{}. Will retry once.".format(
-                    request.text, os.linesep
+            if self.verbose:
+                sys.stderr.write(
+                    "Unable to parse esummary response json: {}{}. Will retry once.".format(
+                        request.text, os.linesep
+                    )
                 )
-            )
+
             retry_after = request.headers.get("Retry-After", 1)
             time.sleep(int(retry_after))
             request = requests.post(self.base_url["esearch"], data=OrderedDict(payload))
             try:
                 esearch_response = request.json()
             except JSONDecodeError as e:
-                error_msg = (
-                    "Unable to parse esummary response json: {}{}. Aborting.".format(
+                if self.verbose:
+                    error_msg = "Unable to parse esummary response json: {}{}. Aborting.".format(
                         request.text, os.linesep
                     )
-                )
-                sys.stderr.write(error_msg)
+                    sys.stderr.write(error_msg)
+
                 raise ValueError(error_msg) from e
 
             # retry again
