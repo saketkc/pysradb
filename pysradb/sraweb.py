@@ -2092,7 +2092,13 @@ class SRAweb(object):
                                 publications = [publications]
 
                             for pub in publications:
-                                pub_id = pub.get("@id", "")
+                                if isinstance(pub, dict):
+                                    pub_id = pub.get("@id", "")
+                                elif isinstance(pub, str):
+                                    pub_id = pub
+                                else:
+                                    pub_id = ""
+
                                 if pub_id and pub_id.isdigit():
                                     pmids.append(pub_id)
 
