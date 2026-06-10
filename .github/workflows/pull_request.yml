@@ -6,67 +6,48 @@ jobs:
   test:
     runs-on: ubuntu-latest
     strategy:
+      fail-fast: false
       matrix:
-        python-version: [3.9, '3.10', '3.11', '3.12', '3.13']
+        python-version: ['3.10', '3.11', '3.12', '3.13']
 
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v4
     - name: Set up Python ${{ matrix.python-version }}
-      uses: actions/setup-python@v1
+      uses: actions/setup-python@v5
       with:
         python-version: ${{ matrix.python-version }}
+        cache: pip
 
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
-        pip install -U pip
-        pip install -r requirements.txt
+        python -m pip install --editable ".[test]"
 
-    - name: Install Ollama
+    - name: Lint
       run: |
-        curl -fsSL https://ollama.com/install.sh | sh
-        # Start Ollama service in background
-        ollama serve &
-        # Wait for Ollama to be ready
-        sleep 5
-        # Pull required models for testing
-        ollama pull phi3
-        ollama pull meditron
-        # Verify installation
-        ollama list
+        flake8 pysradb tests --count --select=E9,F63,F7,F82 --show-source --statistics
 
-    - name: Lint with flake8
+    - name: Test
       run: |
-        pip install -U pytest coverage pytest-cov codecov black flake8
-        # stop the build if there are Python syntax errors or undefined names
-        flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
-        # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide
-        flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
-        black --check .
-
-    - name: Test with pytest
-      continue-on-error: true
+        coverage run --source pysradb -m pytest
+        coverage report -m
+    - name: Build package
       run: |
-        pip install --editable ".[enrichment]"
-        pip install pytest
-        pytest
-        make coverage
-        codecov
+        python -m build
 
   docs:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v4
     - name: Set up Python 3.11
-      uses: actions/setup-python@v1
+      uses: actions/setup-python@v5
       with:
         python-version: '3.11'
+        cache: pip
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
-        pip install -r requirements.txt
-        pip install ".[enrichment]"
-        pip install sphinx myst-parser sphinxcontrib-gtagjs ipython numpydoc sphinx-tabs furo nbsphinx sphinx-panels
+        python -m pip install --editable ".[docs]"
     - name: Install Pandoc
       run: |
         sudo apt-get update

@@ -77,25 +77,21 @@ Notebook](https://colab.research.google.com/drive/1C60V-jkcNZiaCra_V5iEyFs318jgV
 . Note that this requires only an active internet connection (no
 additional downloads are made).
 
-The following notebooks document all the possible features of
-\`pysradb\`:
+The following notebooks provide a curated path through the most common
+`pysradb` workflows. Download-oriented notebooks preview commands and
+selected rows instead of fetching large sequencing files during documentation
+builds.
 
-1.  [Python
-    API](https://colab.research.google.com/github/saketkc/pysradb/blob/master/notebooks/01.Python-API_demo.ipynb)
-2.  [Downloading datasets from SRA - command
-    line](https://colab.research.google.com/github/saketkc/pysradb/blob/master/notebooks/02.Commandline_download.ipynb)
-3.  [Parallely download multiple datasets - Python
-    API](https://colab.research.google.com/github/saketkc/pysradb/blob/master/notebooks/03.ParallelDownload.ipynb)
-4.  [Converting SRA-to-fastq - command line (requires
-    conda)](https://colab.research.google.com/github/saketkc/pysradb/blob/master/notebooks/04.SRA_to_fastq_conda.ipynb)
-5.  [Downloading subsets of a project - Python
-    API](https://colab.research.google.com/github/saketkc/pysradb/blob/master/notebooks/05.Downloading_subsets_of_a_project.ipynb)
-6.  [Metadata for multiple
-    SRPs](https://colab.research.google.com/github/saketkc/pysradb/blob/master/notebooks/06.Multiple_SRPs.ipynb)
-7.  [Searching
-    SRA/GEO/ENA](https://colab.research.google.com/github/saketkc/pysradb/blob/master/notebooks/07.Query_Search.ipynb)
-8. [Extracting identifiers from PMC/DOI](https://colab.research.google.com/github/saketkc/pysradb/blob/master/notebooks/08.PMC_DOI_Identifiers.ipynb)
-9. [Metadata Enrichment with LLMs](https://colab.research.google.com/github/saketkc/pysradb/blob/develop/notebooks/09.Metadata_enrichment.ipynb)
+1. [Python API quickstart](https://colab.research.google.com/github/saketkc/pysradb/blob/develop/notebooks/01.Python-API_demo.ipynb)
+2. [Command-line download preview](https://colab.research.google.com/github/saketkc/pysradb/blob/develop/notebooks/02.Commandline_download.ipynb)
+3. [Parallel download planning with the Python API](https://colab.research.google.com/github/saketkc/pysradb/blob/develop/notebooks/03.ParallelDownload.ipynb)
+4. [Converting SRA to FASTQ using Conda](https://colab.research.google.com/github/saketkc/pysradb/blob/develop/notebooks/04.SRA_to_fastq_conda.ipynb)
+5. [Selecting subsets of a project](https://colab.research.google.com/github/saketkc/pysradb/blob/develop/notebooks/05.Downloading_subsets_of_a_project.ipynb)
+6. [Metadata for multiple SRPs](https://colab.research.google.com/github/saketkc/pysradb/blob/develop/notebooks/06.Multiple_SRPs.ipynb)
+7. [Searching SRA, GEO, and ENA](https://colab.research.google.com/github/saketkc/pysradb/blob/develop/notebooks/07.Query_Search.ipynb)
+8. [Extracting identifiers from PMC and DOI records](https://colab.research.google.com/github/saketkc/pysradb/blob/develop/notebooks/08.PMC_DOI_Identifiers.ipynb)
+9. [Metadata enrichment with optional LLM backends](https://colab.research.google.com/github/saketkc/pysradb/blob/develop/notebooks/09.Metadata_enrichment.ipynb)
+10. [Parsing BioScience search results](https://colab.research.google.com/github/saketkc/pysradb/blob/develop/notebooks/10.Parse_Bioscience_Search.ipynb)
 
 ## Installation
 
@@ -167,30 +163,21 @@ conda create -c bioconda -n pysradb PYTHON=3.13 pysradb
 
 ### Enriching metadata via CLI
 
-Enrich metadata with standardized biological attributes using biomedical-specialized LLMs through the command line:
+Enrich detailed metadata with optional LLM-backed inference through the command
+line. This requires `pysradb[enrichment]` and a running backend such as Ollama.
 
 ```bash
-# Basic enrichment with default backend (Meditron)
+# Basic enrichment with the default backend
 $ pysradb metadata GSE286254 --detailed --enrich
 
-# Using OpenBioLLM-8B (larger, trained on 500k+ biomedical entries)
-$ pysradb metadata GSE286254 --detailed --enrich --enrich-backend ollama/openbiollm-8b
+# Use another local Ollama model
+$ pysradb metadata GSE286254 --detailed --enrich --model ollama/llama3.2
 ```
 
-Available biomedical backends:
-- `ollama/meditron` (default, 7B - optimized for medical text)
-- `ollama/openbiollm-8b` (8B - trained on 500k+ biomedical entries, superior biomedical performance)
-
-This returns the original metadata plus 9 enriched columns:
-- `guessed_organ`
-- `guessed_tissue`
-- `guessed_anatomical_system`
-- `guessed_cell_type`
-- `guessed_disease`
-- `guessed_sex`
-- `guessed_development_stage`
-- `guessed_assay`
-- `guessed_organism`
+Supported backend formats are `ollama/<model>`, `lmstudio/<model>`,
+`vllm/<model>`, and `vllm`. Enrichment returns identifier columns plus inferred
+columns such as `age`, `sex`, `ethnicity`, `phenotype`, `cell_type`, `tissue`,
+`strain`, and `disease`.
 
 For more details on enrichment features, prerequisites, and Python API usage, see the [Enriching metadata](#enriching-metadata) section below.
 
@@ -284,7 +271,11 @@ Extract database identifiers (GSE, PRJNA, SRP, etc.) from PubMed Central article
 
 ### Enriching metadata
 
-Extract standardized biological metadata from SRA/GEO datasets using LLMs.
+Metadata enrichment is available as an optional workflow. It uses embedding
+models plus an LLM backend to infer fields such as age, sex, tissue, disease,
+strain, phenotype, cell type, and ethnicity from detailed metadata columns.
+Install the enrichment extra and configure an Ollama, LM Studio, or vLLM
+endpoint before using it.
 
 #### Quickstart
 
@@ -293,57 +284,51 @@ from pysradb import SRAweb
 
 client = SRAweb()
 
-df = client.metadata("GSE286254", detailed=True, enrich=True)
+df = client.metadata(
+    "GSE286254",
+    detailed=True,
+    enrich=True,
+    enrich_backend="ollama/granite4:3b",
+)
 
-# Returns original + 9 enriched columns (might not always be complete):
-# guessed_organ, guessed_tissue, guessed_anatomical_system,
-# guessed_cell_type, guessed_disease, guessed_sex,
-# guessed_development_stage, guessed_assay, guessed_organism
+# Returns identifier columns plus inferred metadata columns:
+# age, sex, ethnicity, phenotype, cell_type, tissue, strain, disease
 ```
 
 
 #### Prerequisites
 
-Install Ollama: https://ollama.ai
+Install the optional dependencies and prepare a backend:
 
 ```bash
-# Default backend (recommended)
-ollama pull meditron
-
-# Or use OpenBioLLM-8B for better biomedical performance
-ollama pull openbiollm-8b
+python -m pip install "pysradb[enrichment]"
+ollama pull granite4:3b
 ```
 
 #### Advanced Usage
 
 ```python
-# Use OpenBioLLM-8B backend (trained on 500k+ biomedical entries)
 client = SRAweb()
-df = client.metadata("GSE286254", detailed=True, enrich=True,
-                enrich_backend="ollama/openbiollm-8b")
 
-# Manual enrichment with custom settings
-from pysradb.metadata_enrichment import create_metadata_extractor, load_ontology_reference
-
-# LLM-based extraction with default backend (meditron)
-extractor_llm = create_metadata_extractor(method="llm")
-df_enriched = extractor_llm.enrich_dataframe(df, prefix="guessed_")
-
-# LLM-based extraction with specific biomedical backend
-extractor_bio = create_metadata_extractor(method="llm", backend="ollama/openbiollm-8b")
-df_enriched = extractor_bio.enrich_dataframe(df, prefix="guessed_")
-
-# Embedding-based extraction (faster, offline)
-ontology_ref = load_ontology_reference()
-extractor_emb = create_metadata_extractor(
-    method="embedding",
-    model="FremyCompany/BioLORD-2023",
-    reference_categories=ontology_ref
+# Use another local Ollama model.
+df = client.metadata(
+    "GSE286254",
+    detailed=True,
+    enrich=True,
+    enrich_backend="ollama/llama3.2",
 )
-df_enriched = extractor_emb.enrich_dataframe(df, prefix="guessed_")
+
+# Use LM Studio or vLLM-compatible endpoints.
+df = client.metadata(
+    "GSE286254",
+    detailed=True,
+    enrich=True,
+    enrich_backend="lmstudio/local-model",
+)
 ```
 
-See [Notebook 09](notebooks/09.Metadata_Enrichment_with_LLMs.ipynb) for detailed examples.
+See [Notebook 09](notebooks/09.Metadata_enrichment.ipynb) for a runnable
+overview that previews setup without starting local model services.
 
 
 ### Downloading supplementary files from GEO

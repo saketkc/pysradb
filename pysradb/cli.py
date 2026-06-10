@@ -2,25 +2,20 @@
 
 import argparse
 import os
-import re
 import sys
 import warnings
-from io import StringIO
 from textwrap import dedent
 
 import pandas as pd
-from rich.columns import Columns
 from rich.console import Console
 from rich.panel import Panel
 from rich.table import Table
-from rich.text import Text
 
 from . import __version__
 from .exceptions import IncorrectFieldException, MissingQueryException
-from .geoweb import GEOweb, download_geo_matrix, parse_geo_matrix_to_tsv
+from .geoweb import GEOweb, download_geo_matrix
 from .search import EnaSearch, GeoSearch, SraSearch
 from .sraweb import SRAweb
-from .utils import confirm
 
 pd.set_option("display.max_rows", None)
 pd.set_option("display.max_columns", None)
@@ -28,6 +23,17 @@ pd.set_option("display.max_columns", None)
 warnings.simplefilter(action="ignore", category=FutureWarning)
 
 console = Console()
+
+ENRICHED_COLS = {
+    "age",
+    "sex",
+    "ethnicity",
+    "phenotype",
+    "cell_type",
+    "tissue",
+    "strain",
+    "disease",
+}
 
 
 class CustomFormatterArgP(
@@ -43,7 +49,7 @@ class ArgParser(argparse.ArgumentParser):
         sys.exit(2)
 
 
-def pretty_print_df(df, include_header=True):
+def pretty_print_df(df, include_header=True, enriched_cols=None):
     """Pretty print dataframe using rich formatting"""
 
     def format_value(v):
@@ -58,7 +64,7 @@ def pretty_print_df(df, include_header=True):
 
     try:
         terminal_width = console.width
-    except:
+    except Exception:
         terminal_width = 80  # fallback width
 
     num_columns = len(df.columns)
@@ -72,7 +78,10 @@ def pretty_print_df(df, include_header=True):
     # chuenk
     if num_columns > max_cols_per_table:
         console.print(
-            f"[bright_black]Displaying {num_columns} columns in chunks of {max_cols_per_table}[/bright_black]"
+            (
+                f"[bright_black]Displaying {num_columns} columns in chunks of "
+                f"{max_cols_per_table}[/bright_black]"
+            )
         )
         console.print()
 
@@ -81,15 +90,22 @@ def pretty_print_df(df, include_header=True):
             chunk_df = df[chunk_cols]
 
             console.print(
-                f"[bright_blue]Columns {i+1}-{min(i+max_cols_per_table, num_columns)}:[/bright_blue]"
+                f"[bright_blue]Columns {i + 1}-"
+                f"{min(i + max_cols_per_table, num_columns)}:[/bright_blue]"
             )
-            _create_table(chunk_df, terminal_width, include_header, format_value)
+            _create_table(
+                chunk_df,
+                terminal_width,
+                include_header,
+                format_value,
+                enriched_cols,
+            )
             console.print()
     else:
-        _create_table(df, terminal_width, include_header, format_value)
+        _create_table(df, terminal_width, include_header, format_value, enriched_cols)
 
 
-def _create_table(df, terminal_width, include_header, format_value):
+def _create_table(df, terminal_width, include_header, format_value, enriched_cols):
     """Helper function to create a rich table with appropriate sizing"""
 
     num_columns = len(df.columns)
@@ -101,7 +117,10 @@ def _create_table(df, terminal_width, include_header, format_value):
 
     col_widths = []
     for column in df.columns:
-        col_name = str(column)
+        display_name = (
+            f"*{column}" if enriched_cols and column in enriched_cols else str(column)
+        )
+        col_name = str(display_name)
         sample_data = df[column].head(10).astype(str)
         max_content_len = max(
             len(col_name), sample_data.str.len().max() if len(sample_data) > 0 else 0
@@ -131,7 +150,7 @@ def _create_table(df, terminal_width, include_header, format_value):
 
     for i, column in enumerate(df.columns):
         table.add_column(
-            str(column),
+            f"*{column}" if enriched_cols and column in enriched_cols else str(column),
             style="dim",
             no_wrap=False,
             overflow="fold",
@@ -146,7 +165,7 @@ def _create_table(df, terminal_width, include_header, format_value):
     console.print(table)
 
 
-def _print_save_df(df, saveto=None):
+def _print_save_df(df, saveto=None, enriched_cols=None):
     """Save dataframe to file or print with rich formatting.
 
     Automatically detects format from file extension:
@@ -161,41 +180,70 @@ def _print_save_df(df, saveto=None):
         if file_ext == ".csv":
             df.to_csv(saveto, index=False, header=True)
             console.print(
-                f"[bright_green]✓[/bright_green] Saved to CSV: [bright_blue]{saveto}[/bright_blue]"
+                (
+                    f"[bright_green]✓[/bright_green] Saved to CSV: "
+                    f"[bright_blue]{saveto}[/bright_blue]"
+                )
             )
         elif file_ext == ".json":
             df.to_json(saveto, orient="records", indent=2)
             console.print(
-                f"[bright_green]✓[/bright_green] Saved to JSON: [bright_blue]{saveto}[/bright_blue]"
+                (
+                    f"[bright_green]✓[/bright_green] Saved to JSON: "
+                    f"[bright_blue]{saveto}[/bright_blue]"
+                )
             )
         elif file_ext in [".tsv", ".txt"]:
             df.to_csv(saveto, index=False, header=True, sep="\t")
             console.print(
-                f"[bright_green]✓[/bright_green] Saved to TSV: [bright_blue]{saveto}[/bright_blue]"
+                (
+                    f"[bright_green]✓[/bright_green] Saved to TSV: "
+                    f"[bright_blue]{saveto}[/bright_blue]"
+                )
             )
         else:
             df.to_csv(saveto, index=False, header=True, sep="\t")
             console.print(
-                f"[bright_green]✓[/bright_green] Saved to file: [bright_blue]{saveto}[/bright_blue]"
+                (
+                    f"[bright_green]✓[/bright_green] Saved to file: "
+                    f"[bright_blue]{saveto}[/bright_blue]"
+                )
             )
     else:
         if df is None:
             console.print("[bright_black]No data to display[/bright_black]")
         elif len(df.index):
-            pretty_print_df(df)
+            pretty_print_df(df, enriched_cols=enriched_cols)
 
 
 ###################### metadata ##############################
 def metadata(
-    srp_id, assay, desc, detailed, expand, saveto, enrich=False, enrich_backend=None
+    srp_id,
+    assay,
+    desc,
+    detailed,
+    expand,
+    saveto,
+    enrich=False,
+    enrich_backend=None,
+    embed_model=None,
 ):
     # Validate that at least one ID was provided
     if not srp_id:
         console.print(
-            "[red]Error: No accession IDs provided. Please provide one or more SRP/GSE IDs.[/red]"
+            (
+                "[red]Error: No accession IDs provided. "
+                "Please provide one or more SRP/GSE IDs.[/red]"
+            )
         )
         console.print("[yellow]Usage: pysradb metadata SRP000001 [SRP000002 ...]")
         console.print("       pysradb metadata GSE123456[/yellow]")
+        return
+    if enrich and detailed:
+        console.print(
+            "[red]Error:[/red] --detailed cannot be used with --enrich. "
+            "Enrichment uses the pysraweb API output."
+        )
         return
 
     client = SRAweb()
@@ -210,35 +258,215 @@ def metadata(
 
     metadata_frames = []
     if srp_ids:
-        srp_metadata = client.sra_metadata(
-            srp_ids if len(srp_ids) > 1 else srp_ids[0],
-            assay=assay,
-            detailed=detailed,
-            sample_attribute=desc,
-            expand_sample_attributes=expand,
-            enrich=enrich,
-            enrich_backend=enrich_backend if enrich_backend else "ollama/phi3",
-        )
-        if srp_metadata is not None:
-            metadata_frames.append(srp_metadata)
+        try:
+            srp_metadata = client.sra_metadata(
+                srp_ids if len(srp_ids) > 1 else srp_ids[0],
+                assay=assay,
+                detailed=detailed,
+                sample_attribute=desc,
+                expand_sample_attributes=expand,
+                enrich=enrich,
+                enrich_backend=(
+                    enrich_backend if enrich_backend else "ollama/granite4:3b"
+                ),
+                embedding_model=(
+                    embed_model if embed_model else "abhinand/MedEmbed-large-v0.1"
+                ),
+            )
+            if srp_metadata is not None:
+                metadata_frames.append(srp_metadata)
+        except Exception as e:
+            error_msg = str(e)
+            if "Failed to load model" in error_msg:
+                console.print("[red]Error: Failed to load enrichment model.[/red]")
+                console.print(
+                    "[yellow]Please ensure the required models are installed:[/yellow]"
+                )
+                console.print(
+                    "  1. For embedding model: pip install sentence-transformers"
+                )
+                # Provide LLM-specific guidance based on requested backend
+                provider = (
+                    enrich_backend.split("/", 1)[0] if enrich_backend else "ollama"
+                )
+                model_hint = (
+                    enrich_backend.split("/", 1)[1]
+                    if (enrich_backend and "/" in enrich_backend)
+                    else "granite4:3b"
+                )
+                if provider == "ollama":
+                    console.print("  2. For LLM: Install Ollama from https://ollama.ai")
+                    console.print("     Then run: ollama serve")
+                    console.print(f"     Then pull the model: ollama pull {model_hint}")
+                elif provider == "lmstudio":
+                    console.print(
+                        "  2. For LLM: Ensure LM Studio is installed and running"
+                    )
+                    console.print(
+                        "     Consult LM Studio docs for pulling or registering models."
+                    )
+                else:
+                    console.print(
+                        (
+                            f"  2. For LLM: Ensure {provider} backend is available "
+                            "and the model is installed"
+                        )
+                    )
+                return
+            elif "connect" in error_msg.lower() or "connection" in error_msg.lower():
+                provider = (
+                    enrich_backend.split("/", 1)[0] if enrich_backend else "ollama"
+                )
+                model_hint = (
+                    enrich_backend.split("/", 1)[1]
+                    if (enrich_backend and "/" in enrich_backend)
+                    else "granite4:3b"
+                )
+                if provider == "ollama":
+                    console.print(
+                        "[red]Error: Cannot connect to Ollama server "
+                        "or load model.[/red]"
+                    )
+                    console.print(
+                        "[yellow]Please ensure Ollama is installed "
+                        "and running:[/yellow]"
+                    )
+                    console.print("  1. Install Ollama from https://ollama.ai")
+                    console.print("  2. Start Ollama: ollama serve")
+                    console.print(f"  3. Pull the model: ollama pull {model_hint}")
+                elif provider == "lmstudio":
+                    console.print(
+                        "[red]Error: Cannot connect to LM Studio or load model.[/red]"
+                    )
+                    console.print(
+                        (
+                            "[yellow]Please ensure LM Studio is running and the "
+                            "model is available."
+                            "[/yellow]"
+                        )
+                    )
+                    console.print("  1. Check LM Studio documentation for model setup")
+                else:
+                    console.print(
+                        f"[red]Error: Cannot connect to {provider} backend "
+                        "or load model.[/red]"
+                    )
+                    console.print(
+                        "[yellow]Please ensure the backend/service is running "
+                        "and the requested model is available.[/yellow]"
+                    )
+                return
+            elif "enrichment" in error_msg.lower():
+                console.print("[red]Error: Metadata enrichment failed.[/red]")
+                console.print(f"[yellow]Details: {error_msg}[/yellow]")
+                return
+            else:
+                raise
 
     if gse_ids:
-        geo_metadata_df = client.geo_metadata(
-            gse_ids if len(gse_ids) > 1 else gse_ids[0],
-            sample_attribute=desc,
-            detailed=detailed,
-            enrich=enrich,
-            enrich_backend=enrich_backend if enrich_backend else "ollama/phi3",
-        )
-        if not geo_metadata_df.empty:
-            metadata_frames.append(geo_metadata_df)
+        try:
+            geo_metadata_df = client.geo_metadata(
+                gse_ids if len(gse_ids) > 1 else gse_ids[0],
+                sample_attribute=desc,
+                detailed=detailed,
+                enrich=enrich,
+                enrich_backend=(
+                    enrich_backend if enrich_backend else "ollama/granite4:3b"
+                ),
+                embedding_model=(
+                    embed_model if embed_model else "abhinand/MedEmbed-large-v0.1"
+                ),
+            )
+            if not geo_metadata_df.empty:
+                metadata_frames.append(geo_metadata_df)
+        except Exception as e:
+            error_msg = str(e)
+            if "Failed to load model" in error_msg:
+                console.print("[red]Error: Failed to load enrichment model.[/red]")
+                console.print(
+                    "[yellow]Please ensure the required models are installed:[/yellow]"
+                )
+                console.print(
+                    "  1. For embedding model: pip install sentence-transformers"
+                )
+                provider = (
+                    enrich_backend.split("/", 1)[0] if enrich_backend else "ollama"
+                )
+                model_hint = (
+                    enrich_backend.split("/", 1)[1]
+                    if (enrich_backend and "/" in enrich_backend)
+                    else "granite4:3b"
+                )
+                if provider == "ollama":
+                    console.print("  2. For LLM: Install Ollama from https://ollama.ai")
+                    console.print("     Then run: ollama serve")
+                    console.print(f"     Then pull the model: ollama pull {model_hint}")
+                elif provider == "lmstudio":
+                    console.print(
+                        "  2. For LLM: Ensure LM Studio is installed and running"
+                    )
+                    console.print(
+                        "     Consult LM Studio docs for pulling or registering models."
+                    )
+                else:
+                    console.print(
+                        f"  2. For LLM: Ensure {provider} backend is available "
+                        "and the model is installed"
+                    )
+                return
+            elif "connect" in error_msg.lower() or "connection" in error_msg.lower():
+                provider = (
+                    enrich_backend.split("/", 1)[0] if enrich_backend else "ollama"
+                )
+                model_hint = (
+                    enrich_backend.split("/", 1)[1]
+                    if (enrich_backend and "/" in enrich_backend)
+                    else "granite4:3b"
+                )
+                if provider == "ollama":
+                    console.print(
+                        "[red]Error: Cannot connect to Ollama server "
+                        "or load model.[/red]"
+                    )
+                    console.print(
+                        "[yellow]Please ensure Ollama is installed "
+                        "and running:[/yellow]"
+                    )
+                    console.print("  1. Install Ollama from https://ollama.ai")
+                    console.print("  2. Start Ollama: ollama serve")
+                    console.print(f"  3. Pull the model: ollama pull {model_hint}")
+                elif provider == "lmstudio":
+                    console.print(
+                        "[red]Error: Cannot connect to LM Studio or load model.[/red]"
+                    )
+                    console.print(
+                        "[yellow]Please ensure LM Studio is running "
+                        "and the model is available.[/yellow]"
+                    )
+                    console.print("  1. Check LM Studio documentation for model setup")
+                else:
+                    console.print(
+                        f"[red]Error: Cannot connect to {provider} backend "
+                        "or load model.[/red]"
+                    )
+                    console.print(
+                        "[yellow]Please ensure the backend/service is running "
+                        "and the requested model is available.[/yellow]"
+                    )
+                return
+            elif "enrichment" in error_msg.lower():
+                console.print("[red]Error: Metadata enrichment failed.[/red]")
+                console.print(f"[yellow]Details: {error_msg}[/yellow]")
+                return
+            else:
+                raise
 
     if metadata_frames:
         df = pd.concat(metadata_frames, ignore_index=True, sort=False)
     else:
         df = pd.DataFrame()
 
-    _print_save_df(df, saveto)
+    _print_save_df(df, saveto, enriched_cols=ENRICHED_COLS if enrich else None)
 
 
 ################################################################
@@ -296,7 +524,7 @@ def download(
 
 
 ######################### search #################################
-def search(saveto, db, verbosity, return_max, fields):
+def search(saveto, db, verbosity, return_max, fields, return_df=False):
     if fields["run_description"]:
         verbosity = 1
     if fields["detailed"]:
@@ -364,7 +592,10 @@ def search(saveto, db, verbosity, return_max, fields):
     if fields["graphs"]:
         graph_types = tuple(fields["graphs"].split())
         instance.visualise_results(graph_types, False)
-    _print_save_df(instance.get_df(), saveto)
+    if return_df:
+        return instance.get_df()
+    else:
+        _print_save_df(instance.get_df(), saveto)
 
 
 def get_geo_search_info():
@@ -678,9 +909,9 @@ def srx_to_srs(srx_ids, saveto, detailed, desc, expand):
     _print_save_df(df, saveto)
 
 
-def srp_to_pmid(srp_ids, saveto):
+def srp_to_pmid(srp_ids, saveto, detailed=False):
     client = SRAweb()
-    df = client.srp_to_pmid(srp_ids)
+    df = client.srp_to_pmid(srp_ids, detailed=detailed)
     _print_save_df(df, saveto)
 
 
@@ -691,9 +922,27 @@ def sra_to_pmid(sra_ids, saveto):
     _print_save_df(df, saveto)
 
 
-def gse_to_pmid(gse_ids, saveto):
+def gse_to_pmid(gse_ids, saveto, detailed=False):
     client = SRAweb()
-    df = client.gse_to_pmid(gse_ids)
+    df = client.gse_to_pmid(gse_ids, detailed=detailed)
+    _print_save_df(df, saveto)
+
+
+def pmid_info(ids, saveto, detailed=False):
+    client = SRAweb()
+    df = client.pmid_info(ids, detailed=detailed)
+    _print_save_df(df, saveto)
+
+
+def ae_to_pmid(ae_ids, saveto):
+    client = SRAweb()
+    df = client.ae_to_pmid(ae_ids)
+    _print_save_df(df, saveto)
+
+
+def ena_to_pmid(ena_ids, saveto):
+    client = SRAweb()
+    df = client.ena_to_pmid(ena_ids)
     _print_save_df(df, saveto)
 
 
@@ -747,15 +996,17 @@ def geo_matrix(accession, to_tsv, output_dir):
     # Download the GEO Matrix file
     matrix_file = download_geo_matrix(accession, output_dir=output_dir)
     console.print(
-        f"[bright_green]✓[/bright_green] Downloaded GEO Matrix file to: [bright_blue]{matrix_file}[/bright_blue]"
+        f"[bright_green]✓[/bright_green] Downloaded GEO Matrix file to: "
+        f"[bright_blue]{matrix_file}[/bright_blue]"
     )
 
     # If --to-tsv is specified, parse the file to TSV
     if to_tsv:
         output_tsv = os.path.join(output_dir, f"{accession}_matrix.tsv")
-        df = parse_geo_matrix_to_tsv(matrix_file, output_tsv)
+        # df = parse_geo_matrix_to_tsv(matrix_file, output_tsv)
         console.print(
-            f"[bright_green]✓[/bright_green] Parsed GEO Matrix file to TSV: [bright_blue]{output_tsv}[/bright_blue]"
+            f"[bright_green]✓[/bright_green] Parsed GEO Matrix file to TSV: "
+            f"[bright_blue]{output_tsv}[/bright_blue]"
         )
 
 
@@ -792,7 +1043,10 @@ def parse_args(args=None):
         action="version",
         version=dedent(
             """
-        Choudhary, Saket. "pysradb: A Python Package to Query next-Generation Sequencing Metadata and Data from NCBI Sequence Read Archive." F1000Research, vol. 8, F1000 (Faculty of 1000 Ltd), Apr. 2019, p. 532 (https://f1000research.com/articles/8-532/v1)
+        Choudhary, Saket. "pysradb: A Python Package to Query next-Generation Sequencing
+        Metadata and Data from NCBI Sequence Read Archive."
+        F1000Research, vol. 8, F1000 (Faculty of 1000 Ltd), Apr. 2019, p. 532
+        (https://f1000research.com/articles/8-532/v1)
 
         @article{Choudhary2019,
         doi = {10.12688/f1000research.18676.1},
@@ -803,7 +1057,8 @@ def parse_args(args=None):
         volume = {8},
         pages = {532},
         author = {Saket Choudhary},
-        title = {pysradb: A {P}ython package to query next-generation sequencing metadata and data from {NCBI} {S}equence {R}ead {A}rchive},
+        title = {pysradb: A {P}ython package to query next-generation sequencing
+        metadata and data from {NCBI} {S}equence {R}ead {A}rchive},
         journal = {F1000Research}
         }
         """
@@ -834,11 +1089,22 @@ def parse_args(args=None):
         help="Enrich metadata with standardized biological attributes using LLMs",
     )
     subparser.add_argument(
-        "--enrich-backend",
+        "--model",
+        dest="enrich_backend",
         type=str,
         default=None,
-        help="LLM backend for enrichment (e.g., 'ollama/phi3', 'ollama/llama3.2'). "
+        help="LLM model for enrichment (e.g., 'ollama/granite4:3b', 'ollama/llama3.2'). "
         "If not specified, uses default backend",
+    )
+    subparser.add_argument(
+        "--embed-model",
+        dest="embed_model",
+        type=str,
+        default=None,
+        help=(
+            "Embedding model for enrichment (e.g., "
+            "'abhinand/MedEmbed-large-v0.1'). If not specified, uses default"
+        ),
     )
     subparser.add_argument("srp_id", nargs="+")
     subparser.set_defaults(func=metadata)
@@ -882,7 +1148,8 @@ def parse_args(args=None):
         help=(
             "Generates graphs to illustrate the search result. "
             "By default all graphs are generated. \n"
-            "Alternatively, select a subset from the options below in a space-separated string:\n"
+            "Alternatively, select a subset from the options below "
+            "in a space-separated string:\n"
             "daterange, organism, source, selection, platform, basecount"
         ),
     )
@@ -905,14 +1172,16 @@ def parse_args(args=None):
             "0: run accession only\n"
             "1: run accession and experiment title\n"
             "2: accession numbers, titles and sequencing information\n"
-            "3: records in 2 and other information such as download url, sample attributes, etc"
+            "3: records in 2 and other information such as download url, "
+            "sample attributes, etc"
         ),
         type=int,
     )
     subparser.add_argument(
         "--run-description",
         action="store_true",
-        help="Displays run accessions and descriptions only. Equivalent to --verbosity 1",
+        help="Displays run accessions and descriptions only. "
+        "Equivalent to --verbosity 1",
     )
     subparser.add_argument(
         "--detailed",
@@ -930,8 +1199,10 @@ def parse_args(args=None):
         "-q",
         "--query",
         nargs="+",
-        help="Main query string. Note that if no query is supplied, at least one of the "
-        "following flags must be present:",
+        help=(
+            "Main query string. Note that if no query is supplied, at least one of the "
+            "following flags must be present:"
+        ),
     )
     subparser.add_argument("-A", "--accession", help="Accession number")
     subparser.add_argument(
@@ -953,9 +1224,11 @@ def parse_args(args=None):
     subparser.add_argument(
         "-D",
         "--publication-date",
-        help="Publication date of the run in the format dd-mm-yyyy. If a date range is desired, "
-        "enter the start date, followed by end date, separated by a colon ':'.\n "
-        "Example: 01-01-2010:31-12-2010",
+        help=(
+            "Publication date of the run in the format dd-mm-yyyy. "
+            "If a date range is desired, enter the start date, followed by end date, "
+            "separated by a colon ':'.\n Example: 01-01-2010:31-12-2010"
+        ),
     )
     subparser.add_argument("-P", "--platform", nargs="+", help="Sequencing platform")
     subparser.add_argument("-E", "--selection", nargs="+", help="Library selection")
@@ -970,15 +1243,22 @@ def parse_args(args=None):
         "-I",
         "--geo-info",
         action="store_true",
-        help="Displays information on how to query GEO DataSets via 'pysradb search --db geo ...', "
-        "including accepted inputs for -G/--geo-query, -Y/--geo-dataset-type and -Z/--geo-entry-type. ",
+        help=(
+            "Displays information on how to query GEO DataSets via "
+            "'pysradb search --db geo ...', "
+            "including accepted inputs for -G/--geo-query, -Y/--geo-dataset-type "
+            "and -Z/--geo-entry-type. "
+        ),
     )
     subparser.add_argument(
         "-G",
         "--geo-query",
         nargs="+",
-        help="Main query string for GEO DataSet. This flag is only used when db is set to be geo."
-        "Please refer to 'pysradb search --geo-info' for more details.",
+        help=(
+            "Main query string for GEO DataSet. "
+            "This flag is only used when db is set to be geo."
+            "Please refer to 'pysradb search --geo-info' for more details."
+        ),
     )
     subparser.add_argument(
         "-Y",
@@ -1038,7 +1318,7 @@ def parse_args(args=None):
         "--expand", action="store_true", help="Should sample_attribute be expanded"
     )
     subparser.add_argument("gse_ids", nargs="+")
-    subparser.set_defaults(func=gse_to_gsm)
+    subparser.set_defaults(func=gse_to_srp)
 
     # pysradb gsm-to-gse
     subparser = subparsers.add_parser("gsm-to-gse", help="Get GSE for a GSM")
@@ -1433,6 +1713,11 @@ def parse_args(args=None):
         "srp-to-pmid", help="Get PMIDs for SRP accessions"
     )
     subparser.add_argument("--saveto", help="Save output to file")
+    subparser.add_argument(
+        "--detailed",
+        action="store_true",
+        help="Include publication metadata (title, journal, DOI, pub_date, authors)",
+    )
     subparser.add_argument("srp_ids", nargs="+", help="SRP accession(s)")
     subparser.set_defaults(func=srp_to_pmid)
 
@@ -1441,8 +1726,45 @@ def parse_args(args=None):
         "gse-to-pmid", help="Get PMIDs for GSE accessions"
     )
     subparser.add_argument("--saveto", help="Save output to file")
+    subparser.add_argument(
+        "--detailed",
+        action="store_true",
+        help="Include publication metadata (title, journal, DOI, pub_date, authors)",
+    )
     subparser.add_argument("gse_ids", nargs="+", help="GSE accession(s)")
     subparser.set_defaults(func=gse_to_pmid)
+
+    # pysradb ae-to-pmid
+    subparser = subparsers.add_parser(
+        "ae-to-pmid", help="Get PMIDs for ArrayExpress accessions"
+    )
+    subparser.add_argument("--saveto", help="Save output to file")
+    subparser.add_argument("ae_ids", nargs="+", help="ArrayExpress accession(s)")
+    subparser.set_defaults(func=ae_to_pmid)
+
+    # pysradb ena-to-pmid
+    subparser = subparsers.add_parser(
+        "ena-to-pmid", help="Get PMIDs for ENA/BioProject accessions"
+    )
+    subparser.add_argument("--saveto", help="Save output to file")
+    subparser.add_argument(
+        "ena_ids", nargs="+", help="ENA accession(s) (PRJEB/PRJNA/PRJD)"
+    )
+    subparser.set_defaults(func=ena_to_pmid)
+
+    # pysradb pmid-info
+    subparser = subparsers.add_parser(
+        "pmid-info",
+        help="Get publication metadata and journal metrics for PMIDs, PMCIDs, or DOIs",
+    )
+    subparser.add_argument("--saveto", help="Save output to file")
+    subparser.add_argument(
+        "--detailed",
+        action="store_true",
+        help="Also look up associated GEO/SRA datasets",
+    )
+    subparser.add_argument("ids", nargs="+", help="PMID(s), PMCID(s), or DOI(s)")
+    subparser.set_defaults(func=pmid_info)
 
     # pysradb pmid-to-gse
     subparser = subparsers.add_parser(
@@ -1496,8 +1818,17 @@ def parse_args(args=None):
     subparser.add_argument("doi_ids", nargs="+", help="DOI(s)")
     subparser.set_defaults(func=doi_to_identifiers)
 
-    args = parser.parse_args(args=None if sys.argv[1:] else ["--help"])
+    parsed_args = args if args is not None else (None if sys.argv[1:] else ["--help"])
+    args = parser.parse_args(parsed_args)
     if args.command == "metadata":
+        if args.enrich:
+            backend = (
+                args.enrich_backend if args.enrich_backend else "ollama/granite4:3b"
+            )
+            console.print(
+                f"Enriching metadata with {backend.replace(':', '-')}",
+                style="green",
+            )
         metadata(
             args.srp_id,
             args.assay,
@@ -1507,6 +1838,7 @@ def parse_args(args=None):
             args.saveto,
             args.enrich,
             args.enrich_backend,
+            args.embed_model,
         )
     elif args.command == "download":
         download(
@@ -1574,9 +1906,15 @@ def parse_args(args=None):
     elif args.command == "geo-matrix":
         geo_matrix(args.accession, args.to_tsv, args.output_dir)
     elif args.command == "srp-to-pmid":
-        srp_to_pmid(args.srp_ids, args.saveto)
+        srp_to_pmid(args.srp_ids, args.saveto, args.detailed)
     elif args.command == "gse-to-pmid":
-        gse_to_pmid(args.gse_ids, args.saveto)
+        gse_to_pmid(args.gse_ids, args.saveto, args.detailed)
+    elif args.command == "ae-to-pmid":
+        ae_to_pmid(args.ae_ids, args.saveto)
+    elif args.command == "ena-to-pmid":
+        ena_to_pmid(args.ena_ids, args.saveto)
+    elif args.command == "pmid-info":
+        pmid_info(args.ids, args.saveto, args.detailed)
     elif args.command == "pmid-to-gse":
         pmid_to_gse(args.pmid_ids, args.saveto)
     elif args.command == "pmid-to-srp":

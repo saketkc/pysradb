@@ -8,14 +8,13 @@ dynamic = ["version"]
 description = "A Python package for interacting with SRAdb and downloading datasets from SRA/ENA/GEO"
 readme = "README.md"
 license = {file = "LICENSE"}
-requires-python = ">=3.9"
+requires-python = ">=3.10"
 authors = [{ name = "Saket Choudhary", email = "saketkc@gmail.com" }]
 classifiers = [
     "Development Status :: 5 - Production/Stable",
     "Intended Audience :: Science/Research",
     "License :: OSI Approved :: BSD License",
     "Programming Language :: Python :: 3",
-    "Programming Language :: Python :: 3.9",
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
@@ -32,27 +31,61 @@ dependencies = [
 ]
 
 [project.optional-dependencies]
-enrichment = ["instructor>=1.0.0", "pydantic>=2.0.0", "sentence-transformers>=2.0.0"]
 docs = [
-    "sphinx>=4.0",
-    "furo>=2023.0.0",
+    "sphinx>=7",
+    "furo>=2024.0.0",
     "sphinx-tabs>=3.4.1",
     "numpydoc>=1.5.0",
     "nbsphinx>=0.8.0",
     "myst-parser>=0.18.0",
     "ipython>=7.0",
+    "ipykernel>=6.0.0",
+    "ipywidgets>=8.0.0",
+    "joblib>=1.0.0",
     "sphinxcontrib-gtagjs>=0.2",
-    "sphinx-panels>=0.5.2",
+    "sphinx-design>=0.5.0",
+    "sphinx-sitemap>=2.6.0",
 ]
+test = [
+    "black>=24.0.0",
+    "build>=1.2.0",
+    "coverage[toml]>=7.0.0",
+    "flake8>=7.0.0",
+    "pytest>=8.0.0",
+    "pytest-cov>=5.0.0",
+]
+enrichment = [
+    "langchain-core>=1.0",
+    "langchain-ollama>=1.0",
+    "langchain-openai>=1.0",
+    "langgraph>=1.0",
+    "sentence-transformers>=5.0",
+]
+vllm = [
+    "vllm>=0.11.0 ; platform_system == 'Linux'",
+]
+
+mcp = [
+    "mcp>=1.25.0",
+]
+
 all = [
-    "pysradb[enrichment,docs]",
+    "pysradb[enrichment,vllm,docs,test,mcp]",
 ]
+
 
 [project.scripts]
 pysradb = "pysradb.cli:parse_args"
+pysradb-mcp = "pysradb.mcp_server:main"
 
 [project.urls]
 Homepage = "https://saket-choudhary.me/pysradb"
 
 [tool.hatch.version]
 path = "pysradb/__init__.py"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+markers = [
+    "slow: tests that call slower external services",
+]

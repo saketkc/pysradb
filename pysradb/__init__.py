@@ -7,4 +7,4 @@ __version__ = "3.0.0.dev0"
 
 from .filter_attrs import expand_sample_attribute_columns
 from .geoweb import GEOweb, download_geo_matrix, parse_geo_matrix_to_tsv
-from .sraweb import SRAweb
+from .sraweb import OpenAlexError, SRAweb

@@ -24,7 +24,18 @@ import sys
 # import guzzle_sphinx_theme
 import pysradb
 
-autodoc_mock_imports = ["xmltodict", "numpy", "pandas", "requests", "tqdm"]
+autodoc_mock_imports = [
+    "langchain_core",
+    "langchain_ollama",
+    "langchain_openai",
+    "langgraph",
+    "sentence_transformers",
+    "xmltodict",
+    "numpy",
+    "pandas",
+    "requests",
+    "tqdm",
+]
 
 sys.path.insert(0, os.path.abspath(".."))
 
@@ -48,16 +59,15 @@ extensions = [
     "sphinx.ext.inheritance_diagram",
     "numpydoc",
     "sphinx_tabs.tabs",
-    "sphinx_panels",
+    "sphinx_design",
     "sphinxcontrib.gtagjs",
     "myst_parser",
     "nbsphinx",
+    "sphinx_sitemap",
 ]
 gtagjs_ids = [
     "G-CKQZFCEENZ",
 ]
-
-panels_add_bootstrap_css = False
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ["_templates"]
@@ -75,6 +85,33 @@ master_doc = "index"
 project = "pysradb"
 copyright = "2023, Saket Choudhary"
 author = "Saket Choudhary"
+html_title = "pysradb: SRA, ENA, and GEO metadata search"
+html_short_title = "pysradb"
+html_baseurl = "https://saket-choudhary.me/pysradb/"
+html_extra_path = ["robots.txt"]
+html_meta = {
+    "description": (
+        "pysradb is a Python package and command-line tool for searching SRA, "
+        "ENA, and GEO metadata, converting sequencing accessions, extracting "
+        "publication identifiers, and preparing reproducible download workflows."
+    ),
+    "keywords": (
+        "pysradb, SRA metadata, ENA metadata, GEO metadata, Sequence Read Archive, "
+        "bioinformatics, genomics, RNA-seq, accession conversion, Python"
+    ),
+    "og:title": "pysradb: SRA, ENA, and GEO metadata search",
+    "og:description": (
+        "Search public sequencing metadata, convert accessions, link publications, "
+        "and prepare SRA/ENA download workflows from Python or the command line."
+    ),
+    "og:type": "website",
+    "og:url": html_baseurl,
+    "twitter:card": "summary",
+    "twitter:title": "pysradb",
+    "twitter:description": (
+        "Python and CLI tools for public sequencing metadata across SRA, ENA, and GEO."
+    ),
+}
 # The version info for the project you're documenting, acts as replacement
 # for |version| and |release|, also used in various other places throughout
 # the built documents.
@@ -116,17 +153,46 @@ html_theme = "furo"
 #
 html_theme_options = {
     "light_css_variables": {
-        "color-brand-primary": "#0066cc",
+        "font-stack": "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Segoe UI', sans-serif",
+        "font-stack--monospace": "'SFMono-Regular', ui-monospace, 'Cascadia Code', 'Liberation Mono', Menlo, monospace",
+        "color-brand-primary": "#007aff",
         "color-brand-content": "#0066cc",
-        "color-code-background": "#f5f5f5",
-        "color-inline-code-background": "#f0f0f0",
+        "color-api-name": "#1d1d1f",
+        "color-api-pre-name": "#6e6e73",
+        "color-background-primary": "#ffffff",
+        "color-background-secondary": "#f5f5f7",
+        "color-background-hover": "#f2f2f7",
+        "color-code-background": "#f5f5f7",
+        "color-inline-code-background": "#f2f2f7",
+        "color-sidebar-background": "#fbfbfd",
+        "color-sidebar-background-border": "#d2d2d7",
+        "color-toc-background": "#ffffff",
+        "color-toc-background-border": "#d2d2d7",
+        "color-admonition-background": "#f5f5f7",
+        "color-admonition-title-background": "#e8f2ff",
     },
     "dark_css_variables": {
-        "color-brand-primary": "#3b82f6",
-        "color-brand-content": "#3b82f6",
-        "color-code-background": "#1e293b",
-        "color-inline-code-background": "#334155",
+        "font-stack": "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Segoe UI', sans-serif",
+        "font-stack--monospace": "'SFMono-Regular', ui-monospace, 'Cascadia Code', 'Liberation Mono', Menlo, monospace",
+        "color-brand-primary": "#0a84ff",
+        "color-brand-content": "#409cff",
+        "color-api-name": "#f5f5f7",
+        "color-api-pre-name": "#a1a1a6",
+        "color-background-primary": "#1d1d1f",
+        "color-background-secondary": "#2c2c2e",
+        "color-background-hover": "#3a3a3c",
+        "color-code-background": "#2c2c2e",
+        "color-inline-code-background": "#3a3a3c",
+        "color-sidebar-background": "#161617",
+        "color-sidebar-background-border": "#38383a",
+        "color-toc-background": "#1d1d1f",
+        "color-toc-background-border": "#38383a",
+        "color-admonition-background": "#2c2c2e",
+        "color-admonition-title-background": "#06345f",
     },
+    "source_repository": "https://github.com/saketkc/pysradb/",
+    "source_branch": "develop",
+    "source_directory": "docs/",
 }
 
 # Add any paths that contain custom static files (such as style sheets) here,
@@ -222,6 +288,11 @@ html_css_files = [
 ]
 
 # NBSphinx configuration
-nbsphinx_execute = "never"
+nbsphinx_execute = "always"
+nbsphinx_execute_arguments = [
+    "--InlineBackend.figure_formats={'svg', 'pdf'}",
+]
+nbsphinx_kernel_name = "python3"
+nbsphinx_timeout = 900
 exclude_patterns.append("**/.ipynb_checkpoints")
 exclude_patterns.append("notebooks/.ipynb_checkpoints")

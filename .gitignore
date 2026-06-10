@@ -110,3 +110,4 @@ venv.bak/
 *.sqlite.gz
 
 geoweb_downloads/
+.DS_Store

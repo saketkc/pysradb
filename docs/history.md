@@ -2,6 +2,24 @@
 
 <details open>
 <summary style="cursor: pointer; font-weight: bold; font-size: 1.1em; margin-top: 0.5em;">
+Unreleased
+</summary>
+
+
+- Modernize GitHub Actions for tests, documentation builds, and package publishing.
+- Build documentation with the Furo theme and refreshed site styling.
+- Execute notebooks during documentation builds while keeping large downloads and local model services as explicit previews.
+- Add optional metadata enrichment documentation that reflects the current `pysradb.enrichment` API and backend requirements.
+- Restore `SRAweb.download()` support used by the command-line download workflow.
+- Fix `gse-to-srp` command routing and GSE-to-SRP fallback behavior when GEO rows lack SRP accessions.
+- Add SEO metadata, sitemap support, and `robots.txt` for the documentation site.
+- Refresh notebook ordering, notebook links, and documentation flow.
+
+
+</details>
+
+<details open>
+<summary style="cursor: pointer; font-weight: bold; font-size: 1.1em; margin-top: 0.5em;">
 2.5.1 (2025-10-29)
 </summary>
 
@@ -382,4 +400,3 @@ compatible documentation.
 -   First release on PyPI.
 
 </details>
-

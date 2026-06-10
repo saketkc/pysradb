@@ -68,6 +68,7 @@ See :doc:`quickstart` for other examples.
    quickstart
    cmdline
    python-api-usage
+   mcp
    case_studies
    notebooks
    commands

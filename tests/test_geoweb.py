@@ -7,13 +7,26 @@ import pandas as pd
 import pytest
 
 from pysradb.geoweb import GEOweb
+from tests.conftest import skip_on_network_failure
+
+
+class NetworkTolerantGEOweb:
+    def __init__(self, client):
+        self._client = client
+
+    def __getattr__(self, name):
+        attr = getattr(self._client, name)
+        if not callable(attr):
+            return attr
+
+        return skip_on_network_failure(attr)
 
 
 @pytest.fixture(scope="module")
 def geoweb_connection():
     client = GEOweb()
     time.sleep(2)
-    return client
+    return NetworkTolerantGEOweb(client)
 
 
 def test_valid_download_links(geoweb_connection):

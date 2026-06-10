@@ -1,6 +1,7 @@
 """Utilities to interact with SRA online"""
 
 import concurrent.futures
+import json
 import os
 import re
 import sys
@@ -8,16 +9,25 @@ import time
 import warnings
 from collections import OrderedDict
 from json.decoder import JSONDecodeError
+from xml.etree import ElementTree as ET
 from xml.parsers.expat import ExpatError
+from xml.sax.saxutils import escape
 
-import numpy as np
 import pandas as pd
 import requests
 import xmltodict
 
+from .download import download_file, get_file_size
+from .search import SraSearch
+from .utils import confirm
+
 warnings.simplefilter(action="ignore", category=FutureWarning)
 
-from xml.sax.saxutils import escape
+
+class OpenAlexError(RuntimeError):
+    """Raised when OpenAlex API returns a non-transient error (rate limit, auth, etc.)."""
+
+    pass
 
 
 def xmlescape(data):
@@ -78,7 +88,9 @@ def get_retmax(n_records, retmax=500):
 
 
 class SRAweb(object):
-    def __init__(self, api_key=None):
+    def __init__(
+        self, api_key=None, openalex_api_key=None, openalex_email=None, verbose=True
+    ):
         """
         Initialize SRAweb for API-based access to SRA data.
 
@@ -87,6 +99,15 @@ class SRAweb(object):
 
         api_key: string
                  API key for ncbi eutils. Optional, but recommended for higher rate limits.
+        openalex_api_key: string
+                 API key for OpenAlex.
+                 Get a free key at https://openalex.org/settings/api
+                 Falls back to OPENALEX_API_KEY environment variable.
+        openalex_email: string
+                 Email for OpenAlex polite pool (higher rate limits).
+                 Falls back to OPENALEX_EMAIL environment variable.
+        verbose: bool
+                 Print warning/info messages. Default True.
         """
         self.base_url = dict()
         self.base_url["esummary"] = (
@@ -101,6 +122,9 @@ class SRAweb(object):
 
         self.ena_fastq_search_url = "https://www.ebi.ac.uk/ena/portal/api/filereport"
         self.ena_params = [("result", "read_run"), ("fields", "fastq_ftp")]
+        self.pysraweb_api_url = os.environ.get(
+            "PYSRAWEB_API_URL", "https://pysraweb.saketlab.org/api"
+        )
 
         self.esearch_params = {}
         self.esearch_params["sra"] = [
@@ -119,13 +143,18 @@ class SRAweb(object):
             ("retmode", "runinfo"),
         ]
 
-        if api_key is not None:
-            self.esearch_params["sra"].append(("api_key", str(api_key)))
-            self.esearch_params["geo"].append(("api_key", str(api_key)))
-            self.efetch_params.append(("api_key", str(api_key)))
+        self.api_key = str(api_key) if api_key is not None else None
+        if self.api_key:
+            self.esearch_params["sra"].append(("api_key", self.api_key))
+            self.esearch_params["geo"].append(("api_key", self.api_key))
+            self.efetch_params.append(("api_key", self.api_key))
             self.sleep_time = 1 / 10
         else:
             self.sleep_time = 1 / 3
+
+        self.openalex_api_key = openalex_api_key or os.environ.get("OPENALEX_API_KEY")
+        self.openalex_email = openalex_email or os.environ.get("OPENALEX_EMAIL")
+        self.verbose = verbose
 
     @staticmethod
     def format_xml(string):
@@ -133,11 +162,11 @@ class SRAweb(object):
 
         Parameters
         ----------
-        string: str
+        string : str
 
         Returns
-        --------
-        xml: str
+        -------
+        str
         """
         # string = unescape(string.strip())
         string = string.strip()
@@ -230,7 +259,7 @@ class SRAweb(object):
 
             return sorted(list(srp_set))
 
-        except Exception as e:
+        except Exception:
             return []
 
     def fetch_ena_fastq(self, srp):
@@ -347,29 +376,33 @@ class SRAweb(object):
         try:
             esearch_response = request.json()
         except JSONDecodeError:
-            sys.stderr.write(
-                "Unable to parse esummary response json: {}{}. Will retry once.".format(
-                    request.text, os.linesep
+            if self.verbose:
+                sys.stderr.write(
+                    "Unable to parse esummary response json: {}{}. Will retry once.".format(
+                        request.text, os.linesep
+                    )
                 )
-            )
+
             retry_after = request.headers.get("Retry-After", 1)
             time.sleep(int(retry_after))
             request = requests.post(self.base_url["esearch"], data=OrderedDict(payload))
             try:
                 esearch_response = request.json()
             except JSONDecodeError as e:
-                error_msg = (
-                    "Unable to parse esummary response json: {}{}. Aborting.".format(
+                if self.verbose:
+                    error_msg = "Unable to parse esummary response json: {}{}. Aborting.".format(
                         request.text, os.linesep
                     )
-                )
-                sys.stderr.write(error_msg)
+                    if self.verbose:
+                        sys.stderr.write(error_msg)
+
                 raise ValueError(error_msg) from e
 
             # retry again
 
         if "esummaryresult" in esearch_response:
-            print("No result found")
+            if self.verbose:
+                print("No result found")
             return
         if "error" in esearch_response:
             # API rate limite exceeded
@@ -419,7 +452,8 @@ class SRAweb(object):
         request = requests.get(self.base_url["esearch"], params=OrderedDict(payload))
         esearch_response = request.json()
         if "esummaryresult" in esearch_response:
-            print("No result found")
+            if self.verbose:
+                print("No result found")
             return
         if "error" in esearch_response:
             # API rate limite exceeded
@@ -439,7 +473,7 @@ class SRAweb(object):
             request_text = request.text.strip()
             try:
                 request_json = request.json()
-            except:
+            except Exception:
                 request_json = {}  # eval(request_text)
 
             if "error" in request_json:
@@ -451,7 +485,8 @@ class SRAweb(object):
                 except KeyError:
                     if request_json["error"] == "error forwarding request":
                         error_msg = "Encountered error while making request.\n"
-                        sys.stderr.write(error_msg)
+                        if self.verbose:
+                            sys.stderr.write(error_msg)
                         raise RuntimeError(error_msg.strip())
                 time.sleep(int(retry_after))
                 # try again
@@ -462,7 +497,11 @@ class SRAweb(object):
                 try:
                     request_json = request.json()
                     if request_json["error"] == "error forwarding request":
-                        sys.stderr.write("Encountered error while making request.\n")
+                        if self.verbose:
+                            sys.stderr.write(
+                                "Encountered error while making request.\n"
+                            )
+
                         return
                 except:
                     request_json = {}  # eval(request_text)
@@ -475,13 +514,18 @@ class SRAweb(object):
                 response = exp_response.get("EXPERIMENT_PACKAGE", {})
             except ExpatError as e:
                 error_msg = "Unable to parse xml: {}{}".format(request_text, os.linesep)
-                sys.stderr.write(error_msg)
+                if self.verbose:
+                    sys.stderr.write(error_msg)
+
                 raise ValueError(error_msg.strip()) from e
             if not response:
                 error_msg = "Unable to parse xml response. Received: {}{}".format(
                     xml_response, os.linesep
                 )
-                sys.stderr.write(error_msg)
+
+                if self.verbose:
+                    sys.stderr.write(error_msg)
+
                 raise ValueError(error_msg.strip())
             if retstart == 0:
                 results = response
@@ -501,9 +545,28 @@ class SRAweb(object):
         output_read_lengths=False,
         include_pmids=False,
         enrich=False,
-        enrich_backend="ollama/phi3",
+        enrich_backend="ollama/granite4:3b",
+        embedding_model="abhinand/MedEmbed-large-v0.1",
         **kwargs,
     ):
+        # NOTE: When enriching, use pysraweb API and flatten like the UI table.
+        if enrich:
+            if detailed:
+                raise ValueError(
+                    "detailed is not supported with enrich; enrichment uses "
+                    "the pysraweb API output."
+                )
+            df = self._pysraweb_sra_metadata(srp)
+            if df is None or df.empty:
+                return df
+            from pysradb.enrichment import enrich_df
+
+            return enrich_df(
+                df,
+                enrichment_backend=enrich_backend,
+                embedding_model=embedding_model,
+            )
+
         esummary_result = self.get_esummary_response("sra", srp)
         try:
             uids = esummary_result["uids"]
@@ -651,6 +714,7 @@ class SRAweb(object):
         metadata_df = metadata_df.replace(
             regex=r"^@xmlns.*", value=pd.NA
         ).infer_objects(copy=False)
+        basic_cols = metadata_df.columns
         if not detailed:
             return metadata_df
 
@@ -810,6 +874,7 @@ class SRAweb(object):
         metadata_df.columns = [x.lower().strip() for x in metadata_df.columns]
 
         # Add PMID column when detailed=True and include_pmids=True
+        # Not fetching pmids when user asks for enriched output
         if include_pmids:
             try:
                 sra_accessions = [srp] if isinstance(srp, str) else srp
@@ -903,31 +968,9 @@ class SRAweb(object):
                 metadata_df["experiment_geo_accession"] = pd.NA
 
         if enrich and not metadata_df.empty:
-            try:
-                from pysradb.metadata_enrichment import create_metadata_extractor
+            from pysradb.enrichment import enrich_df
 
-                extractor = create_metadata_extractor(
-                    method="llm", backend=enrich_backend
-                )
-                metadata_df = extractor.enrich_dataframe(
-                    metadata_df, text_column=None, prefix="guessed_"
-                )
-            except Exception as e:
-                error_msg = str(e)
-                if "Ollama is not installed or not running" in error_msg:
-                    print(f"Error: {error_msg}")
-                    print(
-                        "Metadata enrichment requires Ollama to be installed and running."
-                    )
-                    print(
-                        "Please install Ollama from https://ollama.ai/ and follow these steps:"
-                    )
-                    print("1. Start Ollama server: ollama serve")
-                    print("2. Pull a model: ollama pull phi3")
-                    print("3. Try again or use a different enrichment backend")
-                    raise
-                else:
-                    print(f"Warning: Enrichment failed: {e}")
+            metadata_df = enrich_df(metadata_df, list(basic_cols), enrich_backend)
 
         if "run_accession" in metadata_df.columns:
             return metadata_df.sort_values(by="run_accession")
@@ -939,7 +982,10 @@ class SRAweb(object):
         try:
             uids = result["uids"]
         except KeyError:
-            print("No results found for {} | Obtained result: {}".format(gse, result))
+            if self.verbose:
+                print(
+                    "No results found for {} | Obtained result: {}".format(gse, result)
+                )
             return None
         gse_records = []
         for uid in uids:
@@ -965,7 +1011,8 @@ class SRAweb(object):
                 record["samples"] = samples
             gse_records.append(record)
         if not len(gse_records):
-            print("No results found for {}".format(gse))
+            if self.verbose:
+                print("No results found for {}".format(gse))
             return None
         return pd.DataFrame(gse_records)
 
@@ -1031,7 +1078,8 @@ class SRAweb(object):
                 gsm_data[gsm] = metadata
 
             except Exception as e:
-                print(f"Warning: Could not fetch SOFT data for {gsm}: {e}")
+                if self.verbose:
+                    print(f"Warning: Could not fetch SOFT data for {gsm}: {e}")
                 gsm_data[gsm] = {}
 
         return gsm_data
@@ -1044,9 +1092,27 @@ class SRAweb(object):
         expand_sample_attributes=False,
         include_pmids=False,
         enrich=False,
-        enrich_backend="ollama/phi3",
+        enrich_backend="ollama/granite4:3b",
+        embedding_model="abhinand/MedEmbed-large-v0.1",
         **kwargs,
     ):
+        if enrich:
+            if detailed:
+                raise ValueError(
+                    "detailed is not supported with enrich; enrichment uses "
+                    "the pysraweb API output."
+                )
+            df = self._pysraweb_geo_metadata(gse)
+            if df is None or df.empty:
+                return df
+            from pysradb.enrichment import enrich_df
+
+            return enrich_df(
+                df,
+                enrichment_backend=enrich_backend,
+                embedding_model=embedding_model,
+            )
+
         if isinstance(gse, str):
             gse = [gse]
         if not gse:
@@ -1434,33 +1500,303 @@ class SRAweb(object):
 
         # Enrich metadata if requested
         if enrich and not metadata_df.empty:
-            try:
-                from pysradb.metadata_enrichment import create_metadata_extractor
+            from pysradb.enrichment import enrich_df
 
-                extractor = create_metadata_extractor(
-                    method="llm", backend=enrich_backend
-                )
-                metadata_df = extractor.enrich_dataframe(
-                    metadata_df, text_column=None, prefix="guessed_"
-                )
-            except Exception as e:
-                error_msg = str(e)
-                if "Ollama is not installed or not running" in error_msg:
-                    print(f"Error: {error_msg}")
-                    print(
-                        "Metadata enrichment requires Ollama to be installed and running."
-                    )
-                    print(
-                        "Please install Ollama from https://ollama.ai/ and follow these steps:"
-                    )
-                    print("1. Start Ollama server: ollama serve")
-                    print("2. Pull a model: ollama pull phi3")
-                    print("3. Try again or use a different enrichment backend")
-                    raise
-                else:
-                    print(f"Warning: Enrichment failed: {e}")
+            metadata_df = enrich_df(metadata_df, enrichment_backend=enrich_backend)
 
         return metadata_df
+
+    def _pysraweb_get_json(self, path, params=None, timeout=30):
+        url = f"{self.pysraweb_api_url.rstrip('/')}/{path.lstrip('/')}"
+        response = requests.get(url, params=params, timeout=timeout)
+        response.raise_for_status()
+        return response.json()
+
+    def _pysraweb_fetch_samples(self, accessions):
+        if not accessions:
+            return {}
+        unique_accessions = [acc for acc in dict.fromkeys(accessions) if acc]
+        samples = {}
+
+        def fetch_one(acc):
+            try:
+                return acc, self._pysraweb_get_json(f"sample/{acc}")
+            except Exception:
+                return acc, None
+
+        with concurrent.futures.ThreadPoolExecutor(max_workers=10) as executor:
+            futures = [executor.submit(fetch_one, acc) for acc in unique_accessions]
+            for future in concurrent.futures.as_completed(futures):
+                acc, data = future.result()
+                if data:
+                    samples[acc] = data
+        return samples
+
+    def _pysraweb_sra_metadata(self, srp):
+        if isinstance(srp, str):
+            srp_list = [srp]
+        else:
+            srp_list = srp or []
+
+        all_rows = []
+        attribute_keys = set()
+
+        for accession in srp_list:
+            try:
+                experiments = self._pysraweb_get_json(
+                    f"project/{accession}/experiments"
+                )
+            except Exception:
+                continue
+
+            if not experiments:
+                continue
+
+            sample_accessions = []
+            for exp in experiments:
+                if (
+                    exp
+                    and isinstance(exp.get("samples"), list)
+                    and len(exp.get("samples")) > 0
+                ):
+                    sample_accessions.append(exp["samples"][0])
+            samples_map = self._pysraweb_fetch_samples(sample_accessions)
+
+            parsed_attributes = {}
+            for sample_acc, sample in samples_map.items():
+                attrs = sample.get("attributes_json")
+                if isinstance(attrs, str):
+                    try:
+                        attrs = json.loads(attrs)
+                    except Exception:
+                        attrs = None
+                if isinstance(attrs, dict):
+                    parsed_attributes[sample_acc] = attrs
+                    attribute_keys.update(attrs.keys())
+                else:
+                    parsed_attributes[sample_acc] = None
+
+            for exp in experiments:
+                if not exp:
+                    continue
+                if not isinstance(exp.get("samples"), list) or not exp.get("samples"):
+                    # Match flatten contract: skip experiments with no sample.
+                    continue
+
+                sample_acc = exp["samples"][0]
+                sample = samples_map.get(sample_acc) if sample_acc else None
+
+                row = OrderedDict(
+                    [
+                        ("Accession", exp.get("accession", pd.NA)),
+                        ("Title", exp.get("title", pd.NA)),
+                        (
+                            "Library",
+                            exp.get("library_name")
+                            or exp.get("library_strategy")
+                            or pd.NA,
+                        ),
+                        ("Layout", exp.get("library_layout", pd.NA)),
+                        ("Platform", exp.get("platform", pd.NA)),
+                        ("Instrument", exp.get("instrument_model", pd.NA)),
+                        ("Sample", sample_acc or pd.NA),
+                        (
+                            "Sample Alias",
+                            sample.get("alias", pd.NA) if sample else pd.NA,
+                        ),
+                        (
+                            "Sample Title",
+                            sample.get("title", pd.NA) if sample else pd.NA,
+                        ),
+                        (
+                            "Description",
+                            sample.get("description", pd.NA) if sample else pd.NA,
+                        ),
+                        (
+                            "Scientific Name",
+                            sample.get("scientific_name", pd.NA) if sample else pd.NA,
+                        ),
+                        (
+                            "Taxon ID",
+                            sample.get("taxon_id", pd.NA) if sample else pd.NA,
+                        ),
+                    ]
+                )
+                row["_attributes_json"] = parsed_attributes.get(sample_acc)
+                all_rows.append(row)
+
+        if not all_rows:
+            return pd.DataFrame()
+
+        sorted_attribute_keys = sorted(
+            [key for key in attribute_keys if key is not None]
+        )
+        normalized_rows = []
+        for row in all_rows:
+            normalized = OrderedDict(row)
+            attrs = normalized.pop("_attributes_json", None)
+            for key in sorted_attribute_keys:
+                if isinstance(attrs, dict):
+                    normalized[key] = attrs.get(key, pd.NA)
+                else:
+                    normalized[key] = pd.NA
+            normalized_rows.append(normalized)
+
+        df = pd.DataFrame(normalized_rows)
+        ordered_columns = [
+            "Accession",
+            "Title",
+            "Library",
+            "Layout",
+            "Platform",
+            "Instrument",
+            "Sample",
+            "Sample Alias",
+            "Sample Title",
+            "Description",
+            "Scientific Name",
+            "Taxon ID",
+        ] + sorted_attribute_keys
+        for col in ordered_columns:
+            if col not in df.columns:
+                df[col] = pd.NA
+        df = df.loc[:, ordered_columns]
+        return df.replace("", pd.NA)
+
+    def _pysraweb_geo_metadata(self, gse):
+        if isinstance(gse, str):
+            gse_list = [gse]
+        else:
+            gse_list = gse or []
+
+        all_rows = []
+        all_samples = []
+        characteristic_tags = set()
+
+        for accession in gse_list:
+            try:
+                samples = self._pysraweb_get_json(f"geo/series/{accession}/samples")
+            except Exception:
+                continue
+
+            if not samples:
+                continue
+            all_samples.extend(samples)
+
+        for sample in all_samples:
+            channels = sample.get("channels") or []
+            for channel in channels:
+                characteristics = channel.get("Characteristics")
+                if isinstance(characteristics, list):
+                    for char in characteristics:
+                        if isinstance(char, dict):
+                            tag = char.get("@tag")
+                            if tag is not None:
+                                characteristic_tags.add(tag)
+                elif isinstance(characteristics, dict):
+                    tag = characteristics.get("@tag")
+                    if tag is not None:
+                        characteristic_tags.add(tag)
+
+        sorted_characteristic_tags = sorted(characteristic_tags)
+
+        for sample in all_samples:
+            channels = sample.get("channels") or [None]
+            for idx, channel in enumerate(channels):
+                char_map = {}
+                if channel:
+                    characteristics = channel.get("Characteristics")
+                    if isinstance(characteristics, list):
+                        for char in characteristics:
+                            if isinstance(char, dict):
+                                char_map[char.get("@tag")] = char.get("#text")
+                    elif isinstance(characteristics, dict):
+                        char_map[characteristics.get("@tag")] = characteristics.get(
+                            "#text"
+                        )
+
+                organism_value = pd.NA
+                if channel:
+                    organism = channel.get("Organism")
+                    if isinstance(organism, dict):
+                        organism_value = organism.get("#text", pd.NA)
+                    elif isinstance(organism, list):
+                        first_organism = organism[0] if organism else None
+                        if isinstance(first_organism, dict):
+                            organism_value = first_organism.get("#text", pd.NA)
+                        elif first_organism is not None:
+                            organism_value = first_organism
+                    elif organism is not None:
+                        organism_value = organism
+
+                row = OrderedDict(
+                    [
+                        ("Sample", sample.get("accession", pd.NA)),
+                        ("Title", sample.get("title", pd.NA)),
+                        ("Description", sample.get("description", pd.NA)),
+                        ("Channel Count", sample.get("channel_count", pd.NA)),
+                        ("Sample Type", sample.get("sample_type", pd.NA)),
+                        ("Platform", sample.get("platform_ref", pd.NA)),
+                        (
+                            "Channel Position",
+                            channel.get("@position") if channel else idx + 1,
+                        ),
+                        ("Label", channel.get("Label", pd.NA) if channel else pd.NA),
+                        ("Source", channel.get("Source", pd.NA) if channel else pd.NA),
+                        (
+                            "Molecule",
+                            channel.get("Molecule", pd.NA) if channel else pd.NA,
+                        ),
+                        ("Organism", organism_value),
+                        (
+                            "Label Protocol",
+                            channel.get("Label-Protocol", pd.NA) if channel else pd.NA,
+                        ),
+                        (
+                            "Extract Protocol",
+                            (
+                                channel.get("Extract-Protocol", pd.NA)
+                                if channel
+                                else pd.NA
+                            ),
+                        ),
+                        (
+                            "Hybridization Protocol",
+                            sample.get("hybridization_protocol", pd.NA),
+                        ),
+                        ("Scan Protocol", sample.get("scan_protocol", pd.NA)),
+                    ]
+                )
+                for tag in sorted_characteristic_tags:
+                    row[tag] = char_map.get(tag, pd.NA)
+                all_rows.append(row)
+
+        if not all_rows:
+            return pd.DataFrame()
+
+        df = pd.DataFrame(all_rows)
+        ordered_columns = [
+            "Sample",
+            "Title",
+            "Description",
+            "Channel Count",
+            "Sample Type",
+            "Platform",
+            "Channel Position",
+            "Label",
+            "Source",
+            "Molecule",
+            "Organism",
+            "Label Protocol",
+            "Extract Protocol",
+            "Hybridization Protocol",
+            "Scan Protocol",
+        ] + sorted_characteristic_tags
+        for col in ordered_columns:
+            if col not in df.columns:
+                df[col] = pd.NA
+        df = df.loc[:, ordered_columns]
+        return df.replace("", pd.NA)
 
     def metadata(self, accession, **kwargs):
         """
@@ -1468,15 +1804,22 @@ class SRAweb(object):
 
         Automatically detects accession type and calls appropriate method.
 
-        Args:
-            accession: ``SRP``/``GSE`` accession(s) - can be string or list
-            kwargs: Additional parameters passed to ``sra_metadata()`` or ``geo_metadata()``
-                     (e.g., ``detailed``, ``enrich``, ``enrich_backend``, ``sample_attribute``, etc.)
+        Parameters
+        ----------
+        accession : str or list
+            ``SRP``/``GSE`` accession(s).
+        **kwargs
+            Additional parameters passed to ``sra_metadata()`` or
+            ``geo_metadata()``. Examples include ``detailed``, ``enrich``,
+            ``enrich_backend``, and ``sample_attribute``.
 
-        Returns:
-            DataFrame with metadata (enriched if enrich=True)
+        Returns
+        -------
+        pandas.DataFrame
+            Metadata table, enriched if ``enrich=True``.
 
-        Examples:
+        Examples
+        --------
             >>> client = SRAweb()
             >>> df = client.metadata("GSE286254", detailed=True, enrich=True)
             >>> df = client.metadata("SRP253951", detailed=True, enrich=True)
@@ -1502,6 +1845,124 @@ class SRAweb(object):
                 f"Unsupported accession type: {first_acc}. "
                 "Supported types: GSE (GEO Series), SRP (SRA Project)"
             )
+
+    def download(
+        self,
+        df,
+        out_dir=None,
+        filter_by_srx=None,
+        skip_confirmation=False,
+        use_ascp=False,
+        url_col="public_url",
+        threads=1,
+    ):
+        """Download files described by a detailed SRA metadata table.
+
+        Parameters
+        ----------
+        df : pandas.DataFrame
+            Detailed metadata with run accessions and download URL columns.
+        out_dir : str, optional
+            Root output directory. Defaults to ``pysradb_downloads`` in the
+            current working directory.
+        filter_by_srx : list, optional
+            Experiment accessions to keep before downloading.
+        skip_confirmation : bool
+            If ``True``, start downloads without prompting.
+        use_ascp : bool
+            Reserved for compatibility. Aspera downloads are no longer handled
+            by this method.
+        url_col : str
+            Preferred URL column. Falls back to common detailed metadata URL
+            columns when the requested column is unavailable.
+        threads : int
+            Number of concurrent download workers.
+        """
+        if use_ascp:
+            raise NotImplementedError("Aspera downloads are not supported.")
+        if df is None or df.empty:
+            return pd.DataFrame()
+        if out_dir is None:
+            out_dir = os.path.join(os.getcwd(), "pysradb_downloads")
+        if filter_by_srx:
+            df = df[df["experiment_accession"].isin(filter_by_srx)]
+        if df.empty:
+            return pd.DataFrame()
+
+        url_candidates = [
+            url_col,
+            "download_url",
+            "public_url",
+            "ena_fastq_http",
+            "sra_url",
+        ]
+        available_url_cols = [col for col in url_candidates if col in df.columns]
+        if not available_url_cols:
+            raise ValueError(
+                "No supported download URL column found. Expected one of: "
+                + ", ".join(dict.fromkeys(url_candidates))
+            )
+
+        download_df = df.copy()
+        download_df["download_url"] = pd.NA
+        for candidate in available_url_cols:
+            values = download_df[candidate]
+            download_df["download_url"] = download_df["download_url"].where(
+                download_df["download_url"].notna(), values
+            )
+        download_df = download_df[download_df["download_url"].notna()].copy()
+        if download_df.empty:
+            return download_df
+
+        def _row_path(row):
+            parts = [
+                out_dir,
+                str(row.get("study_accession", "unknown_study")),
+                str(row.get("experiment_accession", "unknown_experiment")),
+            ]
+            file_name = os.path.basename(str(row.download_url).split("?")[0])
+            if not file_name:
+                file_name = str(row.get("run_accession", "download"))
+            return os.path.join(*parts, file_name)
+
+        download_df["out_dir"] = download_df.apply(_row_path, axis=1)
+        try:
+            download_df["filesize"] = download_df.apply(
+                lambda row: get_file_size(row, url_col), axis=1
+            )
+        except Exception:
+            download_df["filesize"] = pd.NA
+
+        if not skip_confirmation and not confirm(
+            "The following files will be downloaded:\n{}".format(
+                download_df[
+                    [
+                        col
+                        for col in [
+                            "run_accession",
+                            "study_accession",
+                            "experiment_accession",
+                            "download_url",
+                            "out_dir",
+                            "filesize",
+                        ]
+                        if col in download_df.columns
+                    ]
+                ].to_string(index=False)
+            )
+        ):
+            return download_df
+
+        def _download_row(row):
+            os.makedirs(os.path.dirname(row.out_dir), exist_ok=True)
+            download_file(row.download_url, row.out_dir, show_progress=True)
+
+        max_workers = max(1, int(threads or 1))
+        with concurrent.futures.ThreadPoolExecutor(max_workers=max_workers) as executor:
+            list(
+                executor.map(_download_row, [row for _, row in download_df.iterrows()])
+            )
+        return download_df
 
     def gse_to_gsm(self, gse, **kwargs):
         if isinstance(gse, str):
@@ -1552,8 +2013,7 @@ class SRAweb(object):
             common_gses = set(gse_df.study_alias.unique()).intersection(gse)
             if len(common_gses) < len(gse):
                 gse_df_subset = None
-            # Check if GSE entries have valid SRA accessions
-            # If any study_accessions are NaN, fall back to extracting from GSM entries
+            # If any GSE entries have no direct SRA accession, fall back to GSM/SRX.
             elif gse_df_subset["study_accession"].isna().any():
                 gse_df_subset = None
         if gse_df_subset is None:
@@ -1822,8 +2282,15 @@ class SRAweb(object):
         srx_df = self.sra_metadata(srx, **kwargs)
         return _order_first(srx_df, ["experiment_accession", "sample_accession"])
 
-    def search(self, *args, **kwargs):
-        raise NotImplementedError("Search not yet implemented for Web")
+    def search(self, query: str, detailed: bool = False, max: int = 20) -> pd.DataFrame:
+        instance = SraSearch(
+            verbosity=3 if detailed else 2,
+            query=query,
+            return_max=max,
+            progress_disabled=True,
+        )
+        instance.search()
+        return instance.get_df()[["experiment_accession", "experiment_title"]]
 
     def fetch_bioproject_pmids(self, bioprojects):
         """Fetch PMIDs for given BioProject accessions
@@ -1884,7 +2351,13 @@ class SRAweb(object):
                                 publications = [publications]
 
                             for pub in publications:
-                                pub_id = pub.get("@id", "")
+                                if isinstance(pub, dict):
+                                    pub_id = pub.get("@id", "")
+                                elif isinstance(pub, str):
+                                    pub_id = pub
+                                else:
+                                    pub_id = ""
+
                                 if pub_id and pub_id.isdigit():
                                     pmids.append(pub_id)
 
@@ -1909,13 +2382,15 @@ class SRAweb(object):
 
         return bioproject_pmids
 
-    def srp_to_pmid(self, srp_accessions):
+    def srp_to_pmid(self, srp_accessions, detailed=False):
         """Get PMIDs associated with SRP accessions
 
         Parameters
         ----------
         srp_accessions: list or str
                        SRP accession(s)
+        detailed: bool
+                 If True, include publication metadata (title, journal, doi, pub_date, authors)
 
         Returns
         -------
@@ -1939,6 +2414,14 @@ class SRAweb(object):
         if not any(pmids for pmids in bioproject_pmids.values()):
             external_pmids = self._search_fallback_pmids(srp_accessions)
 
+        # If still no PMIDs, try Europe PMC as final fallback
+        if not external_pmids:
+            for srp_acc in srp_accessions:
+                epmc_pmids = self._search_europepmc(srp_acc)
+                if epmc_pmids:
+                    external_pmids = epmc_pmids
+                    break
+
         # Build results - one row per unique SRP accession
         results = []
         for _, row in metadata_df.iterrows():
@@ -1960,7 +2443,12 @@ class SRAweb(object):
                 }
             )
 
-        return pd.DataFrame(results).drop_duplicates()
+        result_df = pd.DataFrame(results).drop_duplicates()
+
+        if detailed:
+            result_df = self._enrich_with_publication_metadata(result_df)
+
+        return result_df
 
     def _search_fallback_pmids(self, srp_accessions):
         """Search for PMIDs using fallback strategies (external sources + direct SRA search + GSE search)"""
@@ -2021,6 +2509,516 @@ class SRAweb(object):
                 pmid_ints.append(pmid)  # Keep non-numeric as-is
 
         return str(min(pmid_ints))
+
+    def _search_europepmc(self, query):
+        """Search Europe PMC for PMIDs matching a query string
+
+        Parameters
+        ----------
+        query: str
+               Search query (e.g. an accession like 'SRP033481' or 'GSE12345')
+
+        Returns
+        -------
+        pmids: list
+              List of PMIDs found
+        """
+        try:
+            r = requests.get(
+                "https://www.ebi.ac.uk/europepmc/webservices/rest/search",
+                params={
+                    "query": f'"{query}"',
+                    "resultType": "lite",
+                    "format": "json",
+                    "pageSize": 10,
+                },
+                timeout=60,
+            )
+            r.raise_for_status()
+            hits = r.json().get("resultList", {}).get("result", [])
+            return [h["pmid"] for h in hits if h.get("pmid") and h["pmid"].isdigit()]
+        except Exception:
+            return []
+
+    def pmid_info(self, ids, detailed=False, skip_journal_metrics=False):
+        """Get publication metadata and journal metrics for PMIDs, PMCIDs, or DOIs.
+
+        Parameters
+        ----------
+        ids: list or str
+             PMID(s), PMCID(s) (e.g. PMC4589343), or DOI(s)
+        detailed: bool
+                 If True, also look up associated GEO/SRA datasets.
+        skip_journal_metrics: bool
+                 If True, skip the OpenAlex journal metrics lookup (h-index,
+                 i10-index, etc.). Citation counts are still fetched per-PMID.
+                 Useful for large batch runs since citation lookups are free
+                 singleton requests while journal metrics use paid list/search
+                 requests on the OpenAlex API.
+
+        Returns
+        -------
+        DataFrame with publication metadata, journal metrics, citation count,
+        and (when detailed) associated GEO/SRA accessions.
+        """
+        if isinstance(ids, str):
+            ids = [ids]
+
+        resolved = [
+            {"input_id": raw_id, "pmid": self._resolve_to_pmid(raw_id.strip())}
+            for raw_id in ids
+        ]
+
+        result_df = pd.DataFrame(resolved)
+        if result_df.empty:
+            return result_df
+
+        valid_pmids = self._valid_pmids(result_df)
+        if not valid_pmids:
+            return result_df
+
+        meta_df = self.fetch_pmid_metadata(valid_pmids)
+        if not meta_df.empty:
+            result_df["pmid"] = result_df["pmid"].astype(str)
+            result_df = result_df.merge(meta_df, on="pmid", how="left")
+            if skip_journal_metrics:
+                for col in self._JOURNAL_METRIC_COLS:
+                    if col not in result_df.columns:
+                        result_df[col] = pd.NA
+            else:
+                result_df = self.fetch_journal_metrics(result_df)
+
+        if detailed:
+            datasets = [self._find_datasets_for_pmid(p) for p in valid_pmids]
+            ds_df = pd.DataFrame(datasets, columns=["gse", "srp"])
+            ds_df["pmid"] = valid_pmids
+            result_df = result_df.merge(ds_df, on="pmid", how="left")
+
+        if (
+            "input_id" in result_df.columns
+            and (result_df["input_id"] == result_df["pmid"]).all()
+        ):
+            result_df = result_df.drop(columns=["input_id"])
+
+        return result_df
+
+    def _resolve_to_pmid(self, raw_id):
+        """Resolve a PMID, PMCID, or DOI to a PMID string via Europe PMC."""
+        if raw_id.upper().startswith("PMC"):
+            query = f"PMCID:{raw_id}"
+        elif "/" in raw_id:
+            query = f"DOI:{raw_id}"
+        elif raw_id.isdigit():
+            query = f"ext_id:{raw_id} src:med"
+        else:
+            query = f'"{raw_id}"'
+        try:
+            r = requests.get(
+                "https://www.ebi.ac.uk/europepmc/webservices/rest/search",
+                params={
+                    "query": query,
+                    "resultType": "lite",
+                    "format": "json",
+                    "pageSize": 1,
+                },
+                timeout=60,
+            )
+            r.raise_for_status()
+            hits = r.json().get("resultList", {}).get("result", [])
+            time.sleep(self.sleep_time)
+            if hits and hits[0].get("pmid"):
+                return hits[0]["pmid"]
+        except Exception:
+            pass
+        return pd.NA
+
+    def _ncbi_params(self, params):
+        """Return params dict with api_key injected if available."""
+        if self.api_key:
+            params["api_key"] = self.api_key
+        return params
+
+    def _elink_ids(self, pmid, db, linkname):
+        """Get linked database IDs for a PMID via NCBI elink."""
+        r = requests.get(
+            "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/elink.fcgi",
+            params=self._ncbi_params(
+                {"dbfrom": "pubmed", "db": db, "id": pmid, "retmode": "json"}
+            ),
+            timeout=30,
+        )
+        r.raise_for_status()
+        for ls in r.json().get("linksets", []):
+            for ldb in ls.get("linksetdbs", []):
+                if ldb.get("linkname") == linkname:
+                    return [str(lid) for lid in ldb.get("links", [])]
+        return []
+
+    def _find_datasets_for_pmid(self, pmid):
+        """Find GEO and SRA accessions linked to a PMID via NCBI elink.
+
+        Returns (gse, srp) where each is a comma-separated string of accessions.
+        """
+        gse, srp = "", ""
+        try:
+            gds_ids = self._elink_ids(pmid, "gds", "pubmed_gds")
+            if gds_ids:
+                r = requests.get(
+                    self.base_url["esummary"],
+                    params=self._ncbi_params(
+                        {"db": "gds", "id": ",".join(gds_ids[:5]), "retmode": "json"}
+                    ),
+                    timeout=30,
+                )
+                r.raise_for_status()
+                data = r.json().get("result", {})
+                gse_accs = {
+                    data.get(gid, {}).get("accession", "") for gid in gds_ids[:5]
+                }
+                gse = ", ".join(sorted(a for a in gse_accs if a.startswith("GSE")))
+            time.sleep(self.sleep_time)
+
+            sra_ids = self._elink_ids(pmid, "sra", "pubmed_sra")
+            if sra_ids:
+                r = requests.get(
+                    self.base_url["esummary"],
+                    params=self._ncbi_params(
+                        {"db": "sra", "id": ",".join(sra_ids[:5]), "retmode": "json"}
+                    ),
+                    timeout=30,
+                )
+                r.raise_for_status()
+                data = r.json().get("result", {})
+                srp_accs = set()
+                for sid in sra_ids[:5]:
+                    srp_accs.update(
+                        re.findall(
+                            r'acc="(SRP\d+)"', data.get(sid, {}).get("expxml", "")
+                        )
+                    )
+                srp = ", ".join(sorted(srp_accs))
+            time.sleep(self.sleep_time)
+        except Exception:
+            pass
+        return gse, srp
+
+    @staticmethod
+    def _valid_pmids(df):
+        """Extract valid PMID strings from a DataFrame's pmid column."""
+        return [
+            p
+            for p in df["pmid"].dropna().astype(str).tolist()
+            if p not in ("<NA>", "nan")
+        ]
+
+    def _enrich_with_publication_metadata(self, result_df):
+        """Merge publication metadata and journal metrics into a PMID result DataFrame."""
+        if result_df.empty:
+            return result_df
+        valid_pmids = self._valid_pmids(result_df)
+        if not valid_pmids:
+            return result_df
+        meta_df = self.fetch_pmid_metadata(valid_pmids)
+        if meta_df.empty:
+            return result_df
+        result_df["pmid"] = result_df["pmid"].astype(str)
+        result_df = result_df.merge(meta_df, on="pmid", how="left")
+        return self.fetch_journal_metrics(result_df)
+
+    _PMID_META_COLS = [
+        "pmid",
+        "title",
+        "journal",
+        "doi",
+        "pub_date",
+        "authors",
+        "issn",
+        "citation_count",
+    ]
+
+    _JOURNAL_METRIC_COLS = [
+        "journal_h_index",
+        "journal_i10_index",
+        "journal_2yr_mean_citedness",
+        "journal_cited_by_count",
+        "journal_works_count",
+    ]
+
+    def fetch_pmid_metadata(self, pmids):
+        """Fetch publication metadata for PMIDs.
+
+        Parameters
+        ----------
+        pmids: list or str
+               PMID(s)
+
+        Returns
+        -------
+        DataFrame with columns: pmid, title, journal, doi, pub_date, authors,
+                                issn, citation_count
+        """
+        if isinstance(pmids, str):
+            pmids = [pmids]
+        pmids = [str(p) for p in pmids if str(p) not in ("<NA>", "nan")]
+        if not pmids:
+            return pd.DataFrame(columns=self._PMID_META_COLS)
+
+        results = {}
+        self._fetch_pmid_metadata_ncbi(pmids, results)
+
+        for pmid in (p for p in pmids if p not in results):
+            self._fetch_pmid_metadata_epmc(pmid, results)
+
+        if not results:
+            return pd.DataFrame(columns=self._PMID_META_COLS)
+
+        for pmid, entry in results.items():
+            try:
+                entry["citation_count"] = self._fetch_citation_count(
+                    pmid, entry.get("doi", "")
+                )
+            except OpenAlexError as e:
+                if self.verbose:
+                    print(
+                        f"Warning: failed to fetch citation count from OpenAlex for PMID={pmid}, "
+                        f"DOI={entry.get('doi', '')}: {e}",
+                        file=sys.stderr,
+                    )
+                entry["citation_count"] = pd.NA
+
+        return pd.DataFrame([results[p] for p in pmids if p in results])
+
+    def _fetch_pmid_metadata_ncbi(self, pmids, results):
+        """Batch-query NCBI PubMed efetch for full author names, populating *results* in-place."""
+        try:
+            r = requests.get(
+                self.base_url["efetch"],
+                params=self._ncbi_params(
+                    {"db": "pubmed", "id": ",".join(pmids), "retmode": "xml"}
+                ),
+                timeout=60,
+            )
+            r.raise_for_status()
+            xml_text = re.sub(r"<!DOCTYPE[^>]*>", "", r.content.decode("utf-8"))
+            root = ET.fromstring(xml_text)
+        except Exception:
+            return
+
+        for article in root.findall(".//PubmedArticle"):
+            pmid = article.findtext(".//PMID", "")
+            if not pmid:
+                continue
+
+            journal_el = article.find(".//Journal")
+            pub_date = journal_el.find(".//PubDate") if journal_el is not None else None
+            date_parts = []
+            if pub_date is not None:
+                medline_date = pub_date.findtext("MedlineDate", "")
+                if medline_date:
+                    date_parts = [medline_date]
+                else:
+                    for field in ("Year", "Month", "Day"):
+                        val = pub_date.findtext(field, "")
+                        if val:
+                            date_parts.append(val)
+
+            doi_els = [
+                e for e in article.findall(".//ArticleId") if e.get("IdType") == "doi"
+            ]
+            authors = ", ".join(
+                f"{a.findtext('ForeName', '')} {a.findtext('LastName', '')}".strip()
+                for a in article.findall(".//Author")
+                if a.findtext("LastName")
+            )
+
+            results[pmid] = {
+                "pmid": pmid,
+                "title": article.findtext(".//ArticleTitle", ""),
+                "journal": (
+                    journal_el.findtext("Title", "") if journal_el is not None else ""
+                ),
+                "doi": doi_els[0].text if doi_els else "",
+                "pub_date": " ".join(date_parts),
+                "authors": authors,
+                "issn": (
+                    journal_el.findtext("ISSN", "") if journal_el is not None else ""
+                ),
+            }
+
+    def _fetch_pmid_metadata_epmc(self, pmid, results):
+        """Query Europe PMC for a single PMID, populating *results* dict in-place."""
+        try:
+            r = requests.get(
+                "https://www.ebi.ac.uk/europepmc/webservices/rest/search",
+                params={
+                    "query": f"ext_id:{pmid} src:med",
+                    "resultType": "core",
+                    "format": "json",
+                    "pageSize": 1,
+                },
+                timeout=60,
+            )
+            r.raise_for_status()
+            hits = r.json().get("resultList", {}).get("result", [])
+            if hits:
+                hit = hits[0]
+                journal_obj = hit.get("journalInfo", {}).get("journal", {})
+                author_list = hit.get("authorList", {}).get("author", [])
+                if author_list:
+                    authors = ", ".join(
+                        f"{a.get('firstName', '')} {a.get('lastName', '')}".strip()
+                        for a in author_list
+                        if a.get("lastName")
+                    )
+                else:
+                    authors = hit.get("authorString", "")
+                results[pmid] = {
+                    "pmid": pmid,
+                    "title": hit.get("title", ""),
+                    "journal": hit.get("journalTitle") or journal_obj.get("title", ""),
+                    "doi": hit.get("doi", ""),
+                    "pub_date": hit.get("firstPublicationDate", ""),
+                    "authors": authors,
+                    "issn": journal_obj.get("essn", "") or journal_obj.get("issn", ""),
+                }
+            time.sleep(self.sleep_time)
+        except Exception:
+            pass
+
+    def _openalex_request(self, url, params=None, timeout=30):
+        """Make an authenticated OpenAlex API request.
+
+        Raises
+        ------
+        OpenAlexError
+            On HTTP 429 (rate limit), 401/403 (auth), or any response whose
+            JSON body contains an ``"error"`` key
+        """
+        if params is None:
+            params = {}
+        if self.openalex_api_key:
+            params["api_key"] = self.openalex_api_key
+        if self.openalex_email:
+            params["mailto"] = self.openalex_email
+        r = requests.get(url, params=params, timeout=timeout)
+        if r.status_code in (429, 401, 403):
+            try:
+                body = r.json()
+                msg = body.get("message", body.get("error", r.text[:300]))
+            except Exception:
+                msg = r.text[:300]
+            raise OpenAlexError(f"OpenAlex API error (HTTP {r.status_code}): {msg}")
+        return r
+
+    def _fetch_citation_count(self, pmid, doi):
+        """Get citation count from OpenAlex by DOI (preferred) or PMID.
+
+        Raises
+        ------
+        OpenAlexError
+            If the API returns a rate-limit or authentication error.
+        """
+        for lookup_id in filter(None, [f"doi:{doi}" if doi else None, f"pmid:{pmid}"]):
+            try:
+                r = self._openalex_request(
+                    f"https://api.openalex.org/works/{lookup_id}"
+                )
+                if r.status_code == 200:
+                    return r.json().get("cited_by_count", pd.NA)
+            except OpenAlexError:
+                raise
+            except Exception:
+                pass
+        return pd.NA
+
+    def fetch_journal_metrics(self, journal_df):
+        """Add OpenAlex journal quality metrics to a DataFrame containing a ``journal`` column.
+
+        Parameters
+        ----------
+        journal_df: DataFrame with ``journal`` (required) and ``issn`` (optional) columns.
+
+        Returns
+        -------
+        Same DataFrame with added columns: journal_h_index, journal_i10_index,
+        journal_2yr_mean_citedness, journal_cited_by_count, journal_works_count.
+        """
+        if journal_df.empty or "journal" not in journal_df.columns:
+            for col in self._JOURNAL_METRIC_COLS:
+                journal_df[col] = pd.NA
+            return journal_df
+
+        has_issn = "issn" in journal_df.columns
+        if has_issn:
+            unique_journals = (
+                journal_df[["journal", "issn"]].drop_duplicates().values.tolist()
+            )
+        else:
+            unique_journals = [[j, ""] for j in journal_df["journal"].dropna().unique()]
+
+        cache = {}
+        for journal_name, issn in unique_journals:
+            if not journal_name or journal_name in cache:
+                continue
+            try:
+                cache[journal_name] = self._openalex_source_lookup(issn, journal_name)
+            except OpenAlexError as e:
+                if self.verbose:
+                    print(
+                        f"Warning: failed to fetch journal metrics from OpenAlex "
+                        f"for journal={journal_name}, issn={issn}: {e}",
+                        file=sys.stderr,
+                    )
+                cache[journal_name] = dict.fromkeys(self._JOURNAL_METRIC_COLS, pd.NA)
+
+        for col in self._JOURNAL_METRIC_COLS:
+            journal_df[col] = journal_df["journal"].map(
+                lambda j, c=col: cache.get(j, {}).get(c, pd.NA)
+            )
+        return journal_df
+
+    def _openalex_source_lookup(self, issn, journal_name):
+        """Look up a journal in OpenAlex by ISSN then name. Returns metrics dict.
+
+        Raises
+        ------
+        OpenAlexError
+            If the API returns a rate-limit or authentication error.
+        """
+        empty = dict.fromkeys(self._JOURNAL_METRIC_COLS, pd.NA)
+        source = None
+        try:
+            for params in filter(
+                None,
+                [
+                    {"filter": f"issn:{issn}", "per_page": 1} if issn else None,
+                    {"search": journal_name, "per_page": 1} if journal_name else None,
+                ],
+            ):
+                r = self._openalex_request(
+                    "https://api.openalex.org/sources", params=params
+                )
+                r.raise_for_status()
+                hits = r.json().get("results", [])
+                if hits:
+                    source = hits[0]
+                    break
+        except OpenAlexError:
+            raise
+        except Exception:
+            return empty
+
+        if source is None:
+            return empty
+
+        stats = source.get("summary_stats", {})
+        return {
+            "journal_h_index": stats.get("h_index", pd.NA),
+            "journal_i10_index": stats.get("i10_index", pd.NA),
+            "journal_2yr_mean_citedness": stats.get("2yr_mean_citedness", pd.NA),
+            "journal_cited_by_count": source.get("cited_by_count", pd.NA),
+            "journal_works_count": source.get("works_count", pd.NA),
+        }
 
     def extract_external_sources(self, metadata_df):
         """Extract external source identifiers from SRA metadata
@@ -2298,7 +3296,7 @@ class SRAweb(object):
 
             pmc_ids = result.get("esearchresult", {}).get("idlist", [])
             if not pmc_ids:
-                return []
+                return self._search_europepmc(bioproject_id)
 
             # Get primary PMIDs for each PMC article
             summary_url = "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esummary.fcgi"
@@ -2328,7 +3326,10 @@ class SRAweb(object):
                                 pmids.append(primary_pmid)
                             break
 
-            return pmids
+            if pmids:
+                return pmids
+
+            return self._search_europepmc(bioproject_id)
 
         except Exception as e:
             # Silently fail and return empty list for fallback mechanism
@@ -2446,13 +3447,15 @@ class SRAweb(object):
         """Get PMIDs for Sample Accessions (SRS)"""
         return self.sra_to_pmid(srs)
 
-    def gse_to_pmid(self, gse_accessions):
+    def gse_to_pmid(self, gse_accessions, detailed=False):
         """Get PMIDs for GSE accessions by searching PubMed Central
 
         Parameters
         ----------
         gse_accessions: list or str
                        GSE accession(s)
+        detailed: bool
+                 If True, include publication metadata (title, journal, doi, pub_date, authors)
 
         Returns
         -------
@@ -2465,6 +3468,9 @@ class SRAweb(object):
         results = []
         for gse_acc in gse_accessions:
             pmids = self.search_pmc_for_external_sources([gse_acc])
+            # Fallback: Europe PMC
+            if not pmids:
+                pmids = self._search_europepmc(gse_acc)
             smallest_pmid = self._get_smallest_pmid(pmids) if pmids else pd.NA
 
             results.append(
@@ -2473,6 +3479,115 @@ class SRAweb(object):
                     "pmid": smallest_pmid,
                 }
             )
+
+        result_df = pd.DataFrame(results)
+
+        if detailed:
+            result_df = self._enrich_with_publication_metadata(result_df)
+
+        return result_df
+
+    def ae_to_pmid(self, ae_accessions):
+        """Get PMIDs for ArrayExpress accessions by searching Europe PMC
+
+        Parameters
+        ----------
+        ae_accessions: list or str
+                      ArrayExpress accession(s) (e.g. E-MTAB-*, E-GEOD-*)
+
+        Returns
+        -------
+        ae_pmid_df: pandas.DataFrame
+                   DataFrame with columns [ae_accession, pmid]
+        """
+        if isinstance(ae_accessions, str):
+            ae_accessions = [ae_accessions]
+
+        results = []
+        for acc in ae_accessions:
+            pmid = pd.NA
+            pmids = self._search_europepmc(acc)
+            if pmids:
+                pmid = self._get_smallest_pmid(pmids)
+            else:
+                pmc_pmids = self.search_pmc_for_external_sources([acc])
+                if pmc_pmids:
+                    pmid = self._get_smallest_pmid(pmc_pmids)
+
+            time.sleep(self.sleep_time)
+            results.append({"ae_accession": acc, "pmid": pmid})
+
+        return pd.DataFrame(results)
+
+    def ena_to_pmid(self, ena_accessions):
+        """Get PMIDs for ENA/BioProject accessions via NCBI elink
+
+        Uses BioProject → PubMed linkage in NCBI for PRJNA/PRJEB/PRJD
+        accessions, with Europe PMC as fallback.
+
+        Parameters
+        ----------
+        ena_accessions: list or str
+                       ENA study accession(s) (e.g. PRJEB*, PRJNA*, PRJD*)
+
+        Returns
+        -------
+        ena_pmid_df: pandas.DataFrame
+                    DataFrame with columns [ena_accession, pmid]
+        """
+        if isinstance(ena_accessions, str):
+            ena_accessions = [ena_accessions]
+
+        results = []
+        for acc in ena_accessions:
+            pmid = pd.NA
+            try:
+                # Step 1: resolve accession to BioProject numeric ID
+                r = requests.get(
+                    self.base_url["esearch"],
+                    params={
+                        "db": "bioproject",
+                        "term": f"{acc}[Project Accession]",
+                        "retmode": "json",
+                    },
+                    timeout=60,
+                )
+                r.raise_for_status()
+                bp_ids = r.json().get("esearchresult", {}).get("idlist", [])
+
+                if bp_ids:
+                    # Step 2: elink BioProject → PubMed
+                    r2 = requests.get(
+                        "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/elink.fcgi",
+                        params={
+                            "dbfrom": "bioproject",
+                            "db": "pubmed",
+                            "id": bp_ids[0],
+                            "retmode": "json",
+                        },
+                        timeout=60,
+                    )
+                    r2.raise_for_status()
+                    pmids = []
+                    for ls in r2.json().get("linksets", []):
+                        for ldb in ls.get("linksetdbs", []):
+                            pmids.extend(str(x) for x in ldb.get("links", []))
+
+                    if pmids:
+                        pmid = self._get_smallest_pmid(pmids)
+
+                # Fallback: Europe PMC
+                if pd.isna(pmid):
+                    epmc_pmids = self._search_europepmc(acc)
+                    if epmc_pmids:
+                        pmid = self._get_smallest_pmid(epmc_pmids)
+
+                time.sleep(self.sleep_time)
+
+            except Exception:
+                pass
+
+            results.append({"ena_accession": acc, "pmid": pmid})
 
         return pd.DataFrame(results)
 
