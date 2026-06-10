@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://saket-choudhary.me/pysradb/sitemap.xml

@@ -1093,7 +1093,7 @@ def parse_args(args=None):
         dest="enrich_backend",
         type=str,
         default=None,
-        help="LLM model for enrichment (e.g., 'ollama/phi3', 'ollama/llama3.2'). "
+        help="LLM model for enrichment (e.g., 'ollama/granite4:3b', 'ollama/llama3.2'). "
         "If not specified, uses default backend",
     )
     subparser.add_argument(
@@ -1318,7 +1318,7 @@ def parse_args(args=None):
         "--expand", action="store_true", help="Should sample_attribute be expanded"
     )
     subparser.add_argument("gse_ids", nargs="+")
-    subparser.set_defaults(func=gse_to_gsm)
+    subparser.set_defaults(func=gse_to_srp)
 
     # pysradb gsm-to-gse
     subparser = subparsers.add_parser("gsm-to-gse", help="Get GSE for a GSM")
@@ -1818,7 +1818,8 @@ def parse_args(args=None):
     subparser.add_argument("doi_ids", nargs="+", help="DOI(s)")
     subparser.set_defaults(func=doi_to_identifiers)
 
-    args = parser.parse_args(args=None if sys.argv[1:] else ["--help"])
+    parsed_args = args if args is not None else (None if sys.argv[1:] else ["--help"])
+    args = parser.parse_args(parsed_args)
     if args.command == "metadata":
         if args.enrich:
             backend = (

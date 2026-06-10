@@ -1,0 +1,172 @@
+# pysradb
+
+> pysradb is a Python package and command-line tool for searching public sequencing metadata across NCBI SRA, ENA, and GEO; converting accessions; linking datasets to publications; extracting identifiers from articles; and preparing reproducible SRA/ENA/GEO download workflows.
+
+pysradb is intended for bioinformatics and genomics users who need programmatic access to public sequencing metadata and run-level download URLs. It exposes both the `pysradb` CLI and a pandas-based Python API centered on `pysradb.SRAweb`.
+
+Current source version in this repository: `3.0.0.dev0`. The package metadata requires Python `>=3.10`. Stable installs are available with `pip install pysradb` or `conda install -c bioconda pysradb`; development installs should use `python -m pip install --editable ".[test,docs]"`.
+
+Primary public documentation: <https://saket-choudhary.me/pysradb/>
+
+Source repository: <https://github.com/saketkc/pysradb>
+
+## Start Here
+
+- [Documentation home](https://saket-choudhary.me/pysradb/): Overview, quick example, citation, and top-level navigation.
+- [Quickstart](https://saket-choudhary.me/pysradb/quickstart.html): First examples for metadata, detailed metadata, accession conversion, downloads, search, and notebooks.
+- [Installation](https://saket-choudhary.me/pysradb/installation.html): Stable, conda, and source installation instructions.
+- [Command-line usage](https://saket-choudhary.me/pysradb/cmdline.html): Main CLI reference and examples for `metadata`, `download`, `search`, accession conversion, publication mapping, and enrichment.
+- [Python API usage](https://saket-choudhary.me/pysradb/python-api-usage.html): Examples using `SRAweb`, returned pandas DataFrames, downloads, metadata filtering, and sample-attribute expansion.
+- [API reference](https://saket-choudhary.me/pysradb/pysradb.html): Autodoc reference for public modules including `sraweb`, `geoweb`, `search`, `download`, `filter_attrs`, and `enrichment`.
+- [MCP server](https://saket-choudhary.me/pysradb/mcp.html): Optional local Model Context Protocol server for agent access to read-oriented metadata tools.
+
+## Common Workflows
+
+- [Metadata lookup](https://saket-choudhary.me/pysradb/quickstart.html#metadata): Use `pysradb metadata SRP265425` or `SRAweb().metadata("SRP265425")` for study metadata.
+- [Detailed metadata and file URLs](https://saket-choudhary.me/pysradb/quickstart.html#metadata): Add `--detailed` in the CLI or `detailed=True` in Python to include run-level details and SRA/ENA download URLs.
+- [Download planning and execution](https://saket-choudhary.me/pysradb/quickstart.html#downloading-sequencing-data): Use `pysradb download -p SRP...`, pipe detailed metadata into `pysradb download`, or call `SRAweb().download(...)`.
+- [Search SRA, ENA, and GEO](https://saket-choudhary.me/pysradb/cmdline.html#searching-datasets): Use `pysradb search` with `--db sra`, `--db ena`, or `--db geo`, plus filters such as query text, organism, layout, platform, source, strategy, and date.
+- [Accession conversion](https://saket-choudhary.me/pysradb/cmdline.html): Convert among common GEO/SRA accessions including GSE, GSM, SRP, SRX, SRS, and SRR.
+- [Publication and identifier mapping](https://saket-choudhary.me/pysradb/cmdline.html): Map SRP/GSE/PMID/PMC/DOI identifiers and extract external dataset identifiers from PubMed Central or DOI-linked articles.
+- [GEO matrix downloads](https://saket-choudhary.me/pysradb/cmdline.html): Use `geo-matrix` or `pysradb.geoweb` helpers to download and parse GEO Series Matrix files.
+- [Sample attribute expansion](https://saket-choudhary.me/pysradb/python-api-usage.html): Use `pysradb.filter_attrs.expand_sample_attribute_columns` or CLI `--desc --expand` when sample metadata is embedded in `sample_attribute`.
+- [Metadata enrichment](https://saket-choudhary.me/pysradb/cmdline.html#enriching-metadata): Optional LLM-backed inference for standardized biological fields such as age, sex, ethnicity, phenotype, cell type, tissue, strain, and disease.
+- [MCP access](https://saket-choudhary.me/pysradb/mcp.html): Install `pysradb[mcp]` and run `pysradb-mcp` as a local stdio subprocess for MCP-capable assistants.
+
+## Tutorials
+
+- [Tutorials and notebooks](https://saket-choudhary.me/pysradb/notebooks.html): Ordered learning path for Python API usage, CLI downloads, parallel download planning, subset selection, multi-project metadata, search, identifiers, enrichment, and BioScience parsing.
+- [Notebooks on GitHub](https://github.com/saketkc/pysradb/tree/develop/notebooks): Source notebooks used by the documentation.
+- [Case studies](https://saket-choudhary.me/pysradb/case_studies.html): End-to-end examples for dataset discovery, metadata inspection, accession conversion, and downloads.
+
+## Source Files For Agents
+
+- [`pysradb/sraweb.py`](https://github.com/saketkc/pysradb/blob/develop/pysradb/sraweb.py): Main Python API, including `SRAweb`, metadata retrieval, accession conversion, search, downloads, PMID/DOI/PMC mapping, and identifier extraction.
+- [`pysradb/cli.py`](https://github.com/saketkc/pysradb/blob/develop/pysradb/cli.py): CLI parser, subcommands, argument names, output formatting, and command-to-API routing.
+- [`pysradb/search.py`](https://github.com/saketkc/pysradb/blob/develop/pysradb/search.py): `SraSearch`, `EnaSearch`, and `GeoSearch` query builders and result parsing.
+- [`pysradb/geoweb.py`](https://github.com/saketkc/pysradb/blob/develop/pysradb/geoweb.py): GEO supplementary file and Series Matrix helpers.
+- [`pysradb/filter_attrs.py`](https://github.com/saketkc/pysradb/blob/develop/pysradb/filter_attrs.py): Sample-attribute expansion and simple biological metadata guessing helpers.
+- [`pysradb/enrichment.py`](https://github.com/saketkc/pysradb/blob/develop/pysradb/enrichment.py): Optional metadata enrichment implementation and backend integration.
+- [`pysradb/mcp_server.py`](https://github.com/saketkc/pysradb/blob/develop/pysradb/mcp_server.py): Optional MCP server exposing bounded read tools for metadata, search, accession conversion, ENA/GEO URL discovery, publication metadata, and identifier mapping.
+- [`pyproject.toml`](https://github.com/saketkc/pysradb/blob/develop/pyproject.toml): Current package metadata, dependencies, optional extras, supported Python versions, and console script entry point.
+- [`CONTRIBUTING.md`](https://github.com/saketkc/pysradb/blob/develop/CONTRIBUTING.md): Development setup, test, lint, packaging, and docs build commands.
+- [`HISTORY.md`](https://github.com/saketkc/pysradb/blob/develop/HISTORY.md): Release history and unreleased changes.
+
+## CLI Summary
+
+The console script is `pysradb`. Use `pysradb --help`, `pysradb --version`, and `pysradb --citation` for top-level help.
+
+The optional MCP console script is `pysradb-mcp`. It defaults to local stdio transport and does not require a hosted web server.
+
+Important subcommands:
+
+- `metadata`: Fetch metadata for one or more SRP or GSE accessions.
+- `download`: Download SRA or GEO data, optionally from piped metadata.
+- `search`: Search SRA, ENA, or GEO.
+- `gse-to-gsm`, `gse-to-srp`, `gsm-to-gse`, `gsm-to-srp`, `gsm-to-srr`, `gsm-to-srs`, `gsm-to-srx`: Convert GEO accessions to related GEO/SRA accessions.
+- `srp-to-gse`, `srp-to-srr`, `srp-to-srs`, `srp-to-srx`: Convert SRA project accessions.
+- `srr-to-gsm`, `srr-to-srp`, `srr-to-srs`, `srr-to-srx`, `srs-to-gsm`, `srs-to-srx`, `srx-to-srp`, `srx-to-srr`, `srx-to-srs`: Convert run, sample, and experiment accessions.
+- `geo-matrix`: Download and parse GEO Series Matrix files.
+- `srp-to-pmid`, `gse-to-pmid`, `pmid-to-gse`, `pmid-to-srp`, `pmc-to-identifiers`, `pmid-to-identifiers`, `doi-to-gse`, `doi-to-srp`, `doi-to-identifiers`: Map publication and dataset identifiers.
+- `pysradb-mcp`: Run the optional MCP server after installing `pysradb[mcp]`.
+
+Common CLI options:
+
+- `--saveto`: Save tabular output. `.csv`, `.json`, `.tsv`, and `.txt` are handled explicitly.
+- `--detailed`: Return richer metadata or conversion results.
+- `--desc`: Include `sample_attribute`.
+- `--expand`: Expand `sample_attribute` fields into columns where supported.
+- `--enrich`: Enable optional LLM-backed metadata enrichment for `metadata`.
+- `--model`: Select enrichment backend, for example `ollama/granite4:3b`, `ollama/llama3.2`, `lmstudio/<model>`, `vllm/<model>`, or `vllm`.
+- `--embed-model`: Select the embedding model for enrichment.
+
+## Python API Summary
+
+Prefer public imports from `pysradb` or explicit module imports:
+
+```python
+from pysradb import SRAweb, GEOweb, expand_sample_attribute_columns
+```
+
+Core Python APIs:
+
+- `SRAweb().metadata(accession, **kwargs)`: General metadata entry point for SRP and GSE accessions.
+- `SRAweb().sra_metadata(srp, detailed=False, ...)`: SRA metadata and download URLs.
+- `SRAweb().geo_metadata(gse, detailed=False, ...)`: GEO metadata.
+- `SRAweb().download(...)`: Download files from detailed metadata or accession-derived metadata.
+- `SRAweb().search(query, detailed=False, max=20)`: SRA search convenience method.
+- `SRAweb().gse_to_srp(...)`, `gsm_to_srr(...)`, `srp_to_srx(...)`, and related methods: Accession conversion helpers.
+- `SRAweb().srp_to_pmid(...)`, `gse_to_pmid(...)`, `pmid_to_identifiers(...)`, `doi_to_identifiers(...)`: Publication and identifier workflows.
+- `GEOweb().get_download_links(...)` and `GEOweb().download(...)`: GEO supplementary download helpers.
+- `download_geo_matrix(...)` and `parse_geo_matrix_to_tsv(...)`: GEO Series Matrix helpers.
+- `expand_sample_attribute_columns(df)`: Expand `sample_attribute` key-value text into DataFrame columns.
+
+Most data-returning APIs return pandas `DataFrame` objects. Network access to NCBI, ENA, GEO, Europe PMC, OpenAlex, or DOI-linked resources may be required depending on the workflow.
+
+## Optional Enrichment
+
+Install enrichment dependencies with:
+
+```bash
+python -m pip install "pysradb[enrichment]"
+```
+
+The enrichment workflow uses embeddings plus an LLM backend. Supported backend prefixes in the current code and docs are `ollama/`, `lmstudio/`, and `vllm/`, plus bare `vllm`. The default backend in the current CLI is `ollama/granite4:3b`; the default embedding model is `abhinand/MedEmbed-large-v0.1`.
+
+For Ollama-backed enrichment, install and run Ollama separately, then pull the requested model. Enrichment is optional and should not be assumed available in basic installations.
+
+Important caveat from the current CLI implementation: `metadata --enrich` cannot be combined with `--detailed`; enrichment uses the pysraweb API output path.
+
+## Optional MCP Server
+
+Install MCP support with:
+
+```bash
+python -m pip install "pysradb[mcp]"
+```
+
+Run the local stdio MCP server with:
+
+```bash
+pysradb-mcp
+```
+
+MCP uses the word "server" for the tool-providing process. The default `pysradb-mcp` mode is not a hosted web server; an MCP client starts it as a local subprocess and communicates over stdin/stdout.
+
+The server exposes read-oriented tools grouped around:
+
+- Capability discovery: `list_capabilities`.
+- Metadata and search: `get_metadata`, `get_sra_metadata`, `get_geo_metadata`, `get_gds_results`, `get_gsm_soft_metadata`, `search_datasets`.
+- Accession and URL discovery: `convert_accession`, `convert_bioproject_to_srp`, `get_ena_fastq_urls`, `get_geo_supplementary_links`, `get_geo_matrix_url`.
+- Publication metadata and mappings: `get_publication_info`, `get_publication_metadata`, `get_pmids_for_bioproject`, `get_pmids_for_sra_accession`, `get_pmids_for_gse`, `get_pmids_for_arrayexpress`, `get_pmids_for_ena_or_bioproject`, `convert_doi_to_pmid`, `convert_pmid_to_pmc`.
+- Identifier extraction: `map_publication_identifiers`, `get_identifiers_from_pmc`, `get_identifiers_from_pmid`, `get_identifiers_from_doi`, `get_gse_from_pmid`, `get_srp_from_pmid`, `get_gse_from_doi`, `get_srp_from_doi`, `search_pmc_for_external_source`, `get_pmc_fulltext_excerpt`, `extract_identifiers_from_text`.
+
+Bulk sequencing downloads and GEO file downloads are intentionally not exposed through MCP because they can consume substantial disk, bandwidth, and time.
+
+## Development
+
+- Run tests: `pytest -s -v tests` or `coverage run --source pysradb -m pytest`.
+- Run lint: `flake8 pysradb tests`.
+- Build docs: `make docs`.
+- Build package: `python -m build`.
+- Documentation uses Sphinx, Furo, MyST Markdown, nbsphinx, and autodoc.
+- Tests live in `tests/` and include fixtures under `tests/data/`.
+
+## Guidance For AI Assistants
+
+- Prefer `pyproject.toml`, `pysradb/__init__.py`, and source code over stale packaging metadata if version or dependency information conflicts.
+- Prefer public APIs exported from `pysradb.__init__` and documented `SRAweb` methods over private helper methods whose names start with `_`.
+- Preserve accession terminology exactly: GSE/GSM are GEO identifiers; SRP/SRX/SRS/SRR are SRA study, experiment, sample, and run identifiers; PMID/PMC/DOI are publication identifiers; PRJNA is a BioProject identifier.
+- Do not invent CLI flags. Check `pysradb/cli.py` or the command-line documentation before suggesting commands.
+- Warn users before commands that download sequencing files, because datasets can be large.
+- Mention that metadata/search/download workflows require internet access and depend on external public services.
+- When showing pandas examples, assume results are DataFrames and can be filtered with ordinary pandas operations.
+- If public docs and current source disagree, say which source was used and prefer the current repository source for code-level advice.
+
+## Citation
+
+If pysradb is used in research, cite:
+
+Choudhary, Saket. "pysradb: A Python Package to Query next-Generation Sequencing Metadata and Data from NCBI Sequence Read Archive." F1000Research 8, 532 (2019). DOI: <https://doi.org/10.12688/f1000research.18676.1>
+
+Citation metadata is also available in [`CITATION.cff`](https://github.com/saketkc/pysradb/blob/develop/CITATION.cff).

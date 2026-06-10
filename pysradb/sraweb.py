@@ -17,7 +17,9 @@ import pandas as pd
 import requests
 import xmltodict
 
+from .download import download_file, get_file_size
 from .search import SraSearch
+from .utils import confirm
 
 warnings.simplefilter(action="ignore", category=FutureWarning)
 
@@ -160,11 +162,11 @@ class SRAweb(object):
 
         Parameters
         ----------
-        string: str
+        string : str
 
         Returns
-        --------
-        xml: str
+        -------
+        str
         """
         # string = unescape(string.strip())
         string = string.strip()
@@ -1032,7 +1034,7 @@ class SRAweb(object):
         expand_sample_attributes=False,
         include_pmids=False,
         enrich=False,
-        enrich_backend="ollama/phi3",
+        enrich_backend="ollama/granite4:3b",
         embedding_model="abhinand/MedEmbed-large-v0.1",
         **kwargs,
     ):
@@ -1699,15 +1701,22 @@ class SRAweb(object):
 
         Automatically detects accession type and calls appropriate method.
 
-        Args:
-            accession: ``SRP``/``GSE`` accession(s) - can be string or list
-            kwargs: Additional parameters passed to ``sra_metadata()`` or ``geo_metadata()``
-                     (e.g., ``detailed``, ``enrich``, ``enrich_backend``, ``sample_attribute``, etc.)
+        Parameters
+        ----------
+        accession : str or list
+            ``SRP``/``GSE`` accession(s).
+        **kwargs
+            Additional parameters passed to ``sra_metadata()`` or
+            ``geo_metadata()``. Examples include ``detailed``, ``enrich``,
+            ``enrich_backend``, and ``sample_attribute``.
 
-        Returns:
-            DataFrame with metadata (enriched if enrich=True)
+        Returns
+        -------
+        pandas.DataFrame
+            Metadata table, enriched if ``enrich=True``.
 
-        Examples:
+        Examples
+        --------
             >>> client = SRAweb()
             >>> df = client.metadata("GSE286254", detailed=True, enrich=True)
             >>> df = client.metadata("SRP253951", detailed=True, enrich=True)
@@ -1733,6 +1742,122 @@ class SRAweb(object):
                 f"Unsupported accession type: {first_acc}. "
                 "Supported types: GSE (GEO Series), SRP (SRA Project)"
             )
+
+    def download(
+        self,
+        df,
+        out_dir=None,
+        filter_by_srx=None,
+        skip_confirmation=False,
+        use_ascp=False,
+        url_col="public_url",
+        threads=1,
+    ):
+        """Download files described by a detailed SRA metadata table.
+
+        Parameters
+        ----------
+        df : pandas.DataFrame
+            Detailed metadata with run accessions and download URL columns.
+        out_dir : str, optional
+            Root output directory. Defaults to ``pysradb_downloads`` in the
+            current working directory.
+        filter_by_srx : list, optional
+            Experiment accessions to keep before downloading.
+        skip_confirmation : bool
+            If ``True``, start downloads without prompting.
+        use_ascp : bool
+            Reserved for compatibility. Aspera downloads are no longer handled
+            by this method.
+        url_col : str
+            Preferred URL column. Falls back to common detailed metadata URL
+            columns when the requested column is unavailable.
+        threads : int
+            Number of concurrent download workers.
+        """
+        if use_ascp:
+            raise NotImplementedError("Aspera downloads are not supported.")
+        if df is None or df.empty:
+            return pd.DataFrame()
+        if out_dir is None:
+            out_dir = os.path.join(os.getcwd(), "pysradb_downloads")
+        if filter_by_srx:
+            df = df[df["experiment_accession"].isin(filter_by_srx)]
+        if df.empty:
+            return pd.DataFrame()
+
+        url_candidates = [
+            url_col,
+            "download_url",
+            "public_url",
+            "ena_fastq_http",
+            "sra_url",
+        ]
+        available_url_cols = [col for col in url_candidates if col in df.columns]
+        if not available_url_cols:
+            raise ValueError(
+                "No supported download URL column found. Expected one of: "
+                + ", ".join(dict.fromkeys(url_candidates))
+            )
+
+        download_df = df.copy()
+        download_df["download_url"] = pd.NA
+        for candidate in available_url_cols:
+            values = download_df[candidate]
+            download_df["download_url"] = download_df["download_url"].where(
+                download_df["download_url"].notna(), values
+            )
+        download_df = download_df[download_df["download_url"].notna()].copy()
+        if download_df.empty:
+            return download_df
+
+        def _row_path(row):
+            parts = [
+                out_dir,
+                str(row.get("study_accession", "unknown_study")),
+                str(row.get("experiment_accession", "unknown_experiment")),
+            ]
+            file_name = os.path.basename(str(row.download_url).split("?")[0])
+            if not file_name:
+                file_name = str(row.get("run_accession", "download"))
+            return os.path.join(*parts, file_name)
+
+        download_df["out_dir"] = download_df.apply(_row_path, axis=1)
+        try:
+            download_df["filesize"] = download_df.apply(
+                lambda row: get_file_size(row, url_col), axis=1
+            )
+        except Exception:
+            download_df["filesize"] = pd.NA
+
+        if not skip_confirmation and not confirm(
+            "The following files will be downloaded:\n{}".format(
+                download_df[
+                    [
+                        col
+                        for col in [
+                            "run_accession",
+                            "study_accession",
+                            "experiment_accession",
+                            "download_url",
+                            "out_dir",
+                            "filesize",
+                        ]
+                        if col in download_df.columns
+                    ]
+                ].to_string(index=False)
+            )
+        ):
+            return download_df
+
+        def _download_row(row):
+            os.makedirs(os.path.dirname(row.out_dir), exist_ok=True)
+            download_file(row.download_url, row.out_dir, show_progress=True)
+
+        max_workers = max(1, int(threads or 1))
+        with concurrent.futures.ThreadPoolExecutor(max_workers=max_workers) as executor:
+            list(executor.map(_download_row, [row for _, row in download_df.iterrows()]))
+        return download_df
 
     def gse_to_gsm(self, gse, **kwargs):
         if isinstance(gse, str):
@@ -1779,18 +1904,22 @@ class SRAweb(object):
         )
         gse_df_subset = None
         if "GSE" in gse_df.entrytype.unique():
-            gse_df_subset = gse_df[gse_df.entrytype == "GSE"]
-            common_gses = set(gse_df.study_alias.unique()).intersection(gse)
+            gse_df_subset = gse_df[
+                (gse_df.entrytype == "GSE") & (gse_df.study_accession.notna())
+            ]
+            common_gses = set(gse_df_subset.study_alias.unique()).intersection(gse)
             if len(common_gses) < len(gse):
                 gse_df_subset = None
         if gse_df_subset is None:
             # sometimes SRX ids are returned instead of an entire project
             # see https://github.com/saketkc/pysradb/issues/186
             # GSE: GSE209835; SRP =SRP388275
-            gse_df_subset_gse = gse_df[gse_df.entrytype == "GSE"]
-            gse_of_interest = list(set(gse).difference(gse_df.study_alias.unique()))
+            gse_df_subset_gse = gse_df[
+                (gse_df.entrytype == "GSE") & (gse_df.study_accession.notna())
+            ]
+            gse_of_interest = list(set(gse).difference(gse_df_subset_gse.study_alias))
             gse_df_subset_other = gse_df[gse_df.entrytype != "GSE"]
-            srx = gse_df_subset_other.study_accession.tolist()
+            srx = gse_df_subset_other.study_accession.dropna().tolist()
             srp_df = self.srx_to_srp(srx)
             srp_unique = list(
                 set(srp_df.study_accession.unique()).difference(

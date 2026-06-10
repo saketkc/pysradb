@@ -5,6 +5,7 @@ import math
 import os
 import time
 
+import pandas as pd
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_ollama import ChatOllama
 from langchain_openai import ChatOpenAI
@@ -21,7 +22,6 @@ _EMBEDDING_MODELS = {}
 
 
 def _get_embedding_model(model_name: str):
-    global _EMBEDDING_MODELS
     if model_name not in _EMBEDDING_MODELS:
         console.print("Setting up embedding model...")
         os.environ["TOKENIZERS_PARALLELISM"] = "false"

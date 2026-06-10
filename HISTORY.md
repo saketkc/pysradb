@@ -1,16 +1,18 @@
 # History
 
+
 # 3.0.0 (Unreleased) - BREAKING CHANGES
+
 
 ## Removal of legacy SQLite support
 
 **All local SQLite database support has been removed.** This is a major breaking change and was long overdue.
+Legacy local SQLite databases are outdated and rarely used. SRAweb (API-based) provides better, real-time data with no maintenance overhead.
 
 - **Removed**: `SRAdb`, `GEOdb`, and `BASEdb` classes
 - **Removed**: `download_sradb_file()` and `download_geodb_file()` functions
-- **Removed**: Files: `sradb.py`, `geodb.py`, `basedb.py`
-- **Why**: Legacy local SQLite databases are outdated and rarely used. SRAweb (API-based) provides better, real-time data with no maintenance overhead.
-
+- Fix `gse-to-srp` command routing and GSE-to-SRP fallback behavior when GEO rows lack SRP accessions.
+- Refresh notebook ordering, notebook links, and documentation flow.
 
 # 2.5.1 (2025-10-29)
 

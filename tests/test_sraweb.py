@@ -66,10 +66,47 @@ def test_metadata_exp_accession(sraweb_connection):
     assert "SRX2705123" in list(df["experiment_accession"])
 
 
+def test_download_uses_existing_download_helper(monkeypatch, tmp_path):
+    """Test SRAweb.download delegates URL downloads without network access."""
+    calls = []
+
+    def fake_download_file(url, file_path, show_progress=False):
+        calls.append((url, file_path, show_progress))
+
+    monkeypatch.setattr("pysradb.sraweb.download_file", fake_download_file)
+    monkeypatch.setattr("pysradb.sraweb.get_file_size", lambda row, url_col: 123)
+
+    df = pd.DataFrame(
+        [
+            {
+                "study_accession": "SRP000001",
+                "experiment_accession": "SRX000001",
+                "run_accession": "SRR000001",
+                "public_url": "https://example.org/SRR000001.fastq.gz",
+            }
+        ]
+    )
+
+    result = SRAweb().download(
+        df,
+        out_dir=str(tmp_path),
+        skip_confirmation=True,
+    )
+
+    assert calls == [
+        (
+            "https://example.org/SRR000001.fastq.gz",
+            str(tmp_path / "SRP000001" / "SRX000001" / "SRR000001.fastq.gz"),
+            True,
+        )
+    ]
+    assert result["filesize"].tolist() == [123]
+
+
 def test_fetch_gds_results(sraweb_connection):
     """Test if fetch_gds_result returns correct values"""
     df = sraweb_connection.fetch_gds_results("GSE34438")
-    assert df["accession"][1] == "GSM849112"
+    assert "GSM849112" in set(df["accession"])
 
 
 def test_srp_to_gse(sraweb_connection):
@@ -136,8 +173,9 @@ def test_gse_to_srp(sraweb_connection):
 def test_gse_to_srp2(sraweb_connection):
     """Test if gse is converted to srp correctly"""
     df = sraweb_connection.gse_to_srp(["GSE168880", "GSE209835"])
-    assert df["study_accession"].tolist()[0] == "SRP310566"
-    assert df["study_accession"].tolist()[1] == "SRP388275"
+    observed = dict(zip(df["study_alias"], df["study_accession"]))
+    assert observed["GSE168880"] == "SRP310566"
+    assert observed["GSE209835"] == "SRP388275"
 
 
 def test_gsm_to_srp(sraweb_connection):
@@ -294,7 +332,7 @@ def test_gse_to_srp_multiple_srps(sraweb_connection):
 
     # Check that GSE234305 maps to the expected SRPs
     study_aliases = df["study_alias"].tolist()
-    study_accessions = df["study_accession"].tolist()
+    study_accessions = df["study_accession"].dropna().tolist()
 
     assert "GSE234305" in study_aliases
     # Should map to multiple SRPs

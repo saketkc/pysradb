@@ -15,33 +15,20 @@ also wish to refer to the [API Documentation](commands.rst).
 
 ## Notebooks
 
-A Google Colaboratory version of most used commands are available in
-this [Colab
-Notebook](https://colab.research.google.com/drive/1C60V-jkcNZiaCra_V5iEyFs318jgVoUR)
-. Colab runs Python 3.6 while `pysradb` requires Python 3.7+ and hence
-the notebooks no longer run on Colab, but can be downloaded and run
-locally.
+The notebooks provide a curated path through the most common `pysradb`
+workflows. Download-oriented notebooks preview commands and selected rows
+instead of fetching large sequencing files during documentation builds.
 
-The following notebooks document all the possible features of `pysradb`:
-
-1.  [Python
-    API](https://colab.research.google.com/github/saketkc/pysradb/blob/master/notebooks/01.Python-API_demo.ipynb)
-2.  [Downloading datasets from SRA - command
-    line](https://colab.research.google.com/github/saketkc/pysradb/blob/master/notebooks/02.Commandline_download.ipynb)
-3.  [Parallely download multiple datasets - Python
-    API](https://colab.research.google.com/github/saketkc/pysradb/blob/master/notebooks/03.ParallelDownload.ipynb)
-4.  [Converting SRA-to-fastq - command line (requires
-    conda)](https://colab.research.google.com/github/saketkc/pysradb/blob/master/notebooks/04.SRA_to_fastq_conda.ipynb)
-5.  [Downloading subsets of a project - Python
-    API](https://colab.research.google.com/github/saketkc/pysradb/blob/master/notebooks/05.Downloading_subsets_of_a_project.ipynb)
-6.  [Download
-    BAMs](https://colab.research.google.com/github/saketkc/pysradb/blob/master/notebooks/06.Download_BAMs.ipynb)
-7.  [Metadata for multiple
-    SRPs](https://colab.research.google.com/github/saketkc/pysradb/blob/master/notebooks/07.Multiple_SRPs.ipynb)
-8.  [Multithreaded fastq downloads using Aspera
-    Client](https://colab.research.google.com/github/saketkc/pysradb/blob/master/notebooks/08.pysradb_ascp_multithreaded.ipynb)
-9.  [Searching
-    SRA/GEO/ENA](https://colab.research.google.com/github/saketkc/pysradb/blob/master/notebooks/09.Query_Search.ipynb)
+1. [Python API quickstart](https://colab.research.google.com/github/saketkc/pysradb/blob/develop/notebooks/01.Python-API_demo.ipynb)
+2. [Command-line download preview](https://colab.research.google.com/github/saketkc/pysradb/blob/develop/notebooks/02.Commandline_download.ipynb)
+3. [Parallel download planning with the Python API](https://colab.research.google.com/github/saketkc/pysradb/blob/develop/notebooks/03.ParallelDownload.ipynb)
+4. [Converting SRA to FASTQ using Conda](https://colab.research.google.com/github/saketkc/pysradb/blob/develop/notebooks/04.SRA_to_fastq_conda.ipynb)
+5. [Selecting subsets of a project](https://colab.research.google.com/github/saketkc/pysradb/blob/develop/notebooks/05.Downloading_subsets_of_a_project.ipynb)
+6. [Metadata for multiple SRPs](https://colab.research.google.com/github/saketkc/pysradb/blob/develop/notebooks/06.Multiple_SRPs.ipynb)
+7. [Searching SRA, GEO, and ENA](https://colab.research.google.com/github/saketkc/pysradb/blob/develop/notebooks/07.Query_Search.ipynb)
+8. [Extracting identifiers from PMC and DOI records](https://colab.research.google.com/github/saketkc/pysradb/blob/develop/notebooks/08.PMC_DOI_Identifiers.ipynb)
+9. [Metadata enrichment with optional LLM backends](https://colab.research.google.com/github/saketkc/pysradb/blob/develop/notebooks/09.Metadata_enrichment.ipynb)
+10. [Parsing BioScience search results](https://colab.research.google.com/github/saketkc/pysradb/blob/develop/notebooks/10.Parse_Bioscience_Search.ipynb)
 
 ## Metadata
 
@@ -301,8 +288,8 @@ client.download("SRP098789", use_ascp=True, threads=8)
 ````
 `````
 
-Refer to the notebook for [(shallow) time
-benchmarks](https://colab.research.google.com/github/saketkc/pysradb/blob/master/notebooks/08.pysradb_ascp_multithreaded.ipynb).
+For download planning examples, see the
+[parallel download notebook](https://colab.research.google.com/github/saketkc/pysradb/blob/develop/notebooks/03.ParallelDownload.ipynb).
 
 ------------------------------------------------------------------------
 
@@ -586,4 +573,3 @@ available graphs that will be generated:
         srx-to-srp          Get SRP for a SRX
         srx-to-srr          Get SRR for a SRX
         srx-to-srs          Get SRS for a SRX
-

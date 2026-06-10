@@ -48,10 +48,9 @@ If you are proposing a feature:
 -   Remember that this is a volunteer-driven project, and that
     contributions are welcome :)
 
-## Get Started!
+## Get Started
 
-Ready to contribute? Here\'s how to set up [pysradb]{.title-ref} for
-local development.
+Ready to contribute? Here is how to set up `pysradb` for local development.
 
 1.  Fork the [pysradb]{.title-ref} repo on GitHub.
 
@@ -61,15 +60,12 @@ local development.
     $ git clone git@github.com:your_name_here/pysradb.git
     ```
 
-3.  Install your local copy into a virtualenv. Assuming you have
-    virtualenvwrapper installed, this is how you set up your fork for
-    local development (If python \--version is less than 3.0, run [\$
-    mkvirtualenv pysradb \--python=py3]{.title-ref} instead):
+3.  Install your local copy in editable mode with the development extras:
 
     ``` shell
-    $ mkvirtualenv pysradb
     $ cd pysradb/
-    $ python setup.py develop
+    $ python -m pip install --upgrade pip
+    $ python -m pip install --editable ".[test,docs]"
     ```
 
 4.  Create a branch for local development:
@@ -80,17 +76,18 @@ local development.
 
     Now you can make your changes locally.
 
-5.  When you\'re done making changes, check that your changes pass
-    flake8 and the tests, including testing other Python versions with
-    tox:
+5.  When you are done making changes, check that lint, tests,
+    packaging, and documentation pass locally:
 
     ``` shell
     $ flake8 pysradb tests
-    $ python setup.py test or py.test
-    $ tox
+    $ coverage run --source pysradb -m pytest
+    $ coverage report -m
+    $ python -m build
+    $ make docs
     ```
 
-    To get flake8 and tox, just pip install them into your virtualenv.
+    The docs build includes notebooks and uses the Furo Sphinx theme.
 
 6.  Commit your changes and push your branch to GitHub:
 
@@ -102,6 +99,10 @@ local development.
 
 7.  Submit a pull request through the GitHub website.
 
+Direct pushes to protected branches are discouraged. Use a pull request
+for normal changes so tests, package build, and documentation build run
+before the change is merged.
+
 ## Pull Request Guidelines
 
 Before you submit a pull request, check that it meets these guidelines:
@@ -110,27 +111,27 @@ Before you submit a pull request, check that it meets these guidelines:
 2.  If the pull request adds functionality, the docs should be updated.
     Put your new functionality into a function with a docstring, and add
     the feature to the list in README.rst.
-3.  The pull request should work for Python 2.7, 3.4, 3.5 and 3.6, and
-    for PyPy. Make sure that the tests pass for all supported Python
-    versions.
+3.  The pull request should work for the Python versions declared in
+    `pyproject.toml`. GitHub Actions runs tests across the supported
+    Python matrix.
 
 ## Tips
 
 To run a subset of tests:
 
 ``` shell
-$ py.test tests.test_pysradb
+$ pytest tests/test_sraweb.py
 ```
 
 ## Deploying
 
-A reminder for the maintainers on how to deploy. Make sure all your
-changes are committed (including an entry in HISTORY.rst). Then run:
+A reminder for maintainers: releases are built from `pyproject.toml`.
+Make sure all changes are committed and reviewed through a pull request
+before creating a GitHub release.
 
 ``` shell
-$ bumpversion patch # possible: major / minor / patch
-$ git push
-$ git push --tags
+$ python -m build
 ```
 
-CI will then deploy to PyPI if tests pass.
+The publish workflow uploads the built artifacts to PyPI when a GitHub
+release is created.
