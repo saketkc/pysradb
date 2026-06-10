@@ -6,6 +6,7 @@ import pandas as pd
 import pytest
 
 from pysradb.search import *
+from tests.conftest import skip_on_network_failure
 
 # =========================== pytest fixtures ============================
 # pytest fixtures containing simulated input/outputs for various functions
@@ -916,6 +917,7 @@ def test_invalid_search_query(invalid_search_inputs):
 # ======================== SraSearch component tests ======================
 
 
+@skip_on_network_failure
 def test_sra_search_1():
     instance = SraSearch(
         3, 1000, query="ribosome profiling", publication_date="01-10-2012:01-01-2013"
@@ -927,6 +929,7 @@ def test_sra_search_1():
     assert found_accessions == set(expected_accessions)
 
 
+@skip_on_network_failure
 def test_sra_uids(sra_uids):
     instance = SraSearch(
         3, 1000, query="ribosome profiling", publication_date="01-10-2012:01-01-2013"
@@ -1174,6 +1177,7 @@ def missing_query_test_geo(empty_search_inputs_geo):
             QuerySearch(*empty_search_input)
 
 
+@skip_on_network_failure
 def test_geo_search_1():
     instance = GeoSearch(3, 1000, geo_query="human")
     instance.search()

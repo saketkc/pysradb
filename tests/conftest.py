@@ -6,9 +6,11 @@ from urllib.error import HTTPError, URLError
 
 import pytest
 import requests
+import urllib3
 
 NETWORK_EXCEPTIONS = (
     requests.RequestException,
+    urllib3.exceptions.HTTPError,
     HTTPException,
     HTTPError,
     URLError,
