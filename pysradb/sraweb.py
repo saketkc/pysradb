@@ -1856,7 +1856,9 @@ class SRAweb(object):
 
         max_workers = max(1, int(threads or 1))
         with concurrent.futures.ThreadPoolExecutor(max_workers=max_workers) as executor:
-            list(executor.map(_download_row, [row for _, row in download_df.iterrows()]))
+            list(
+                executor.map(_download_row, [row for _, row in download_df.iterrows()])
+            )
         return download_df
 
     def gse_to_gsm(self, gse, **kwargs):
@@ -1904,20 +1906,25 @@ class SRAweb(object):
         )
         gse_df_subset = None
         if "GSE" in gse_df.entrytype.unique():
-            gse_df_subset = gse_df[
-                (gse_df.entrytype == "GSE") & (gse_df.study_accession.notna())
-            ]
-            common_gses = set(gse_df_subset.study_alias.unique()).intersection(gse)
+            gse_df_subset = gse_df[gse_df.entrytype == "GSE"]
+            common_gses = set(gse_df.study_alias.unique()).intersection(gse)
             if len(common_gses) < len(gse):
+                gse_df_subset = None
+            # If any GSE entries have no direct SRA accession, fall back to GSM/SRX.
+            elif gse_df_subset["study_accession"].isna().any():
                 gse_df_subset = None
         if gse_df_subset is None:
             # sometimes SRX ids are returned instead of an entire project
             # see https://github.com/saketkc/pysradb/issues/186
             # GSE: GSE209835; SRP =SRP388275
-            gse_df_subset_gse = gse_df[
-                (gse_df.entrytype == "GSE") & (gse_df.study_accession.notna())
-            ]
-            gse_of_interest = list(set(gse).difference(gse_df_subset_gse.study_alias))
+            gse_df_subset_gse = gse_df[gse_df.entrytype == "GSE"]
+            gses_without_srp = gse_df_subset_gse[
+                gse_df_subset_gse.study_accession.isna()
+            ].study_alias.tolist()
+            gse_of_interest = (
+                list(set(gse).difference(gse_df.study_alias.unique()))
+                + gses_without_srp
+            )
             gse_df_subset_other = gse_df[gse_df.entrytype != "GSE"]
             srx = gse_df_subset_other.study_accession.dropna().tolist()
             srp_df = self.srx_to_srp(srx)
@@ -1940,7 +1947,10 @@ class SRAweb(object):
             else:
                 # If no pairs, create empty DataFrame with correct columns
                 new_gse_df = pd.DataFrame(columns=["study_alias", "study_accession"])
-            gse_df_subset = pd.concat([gse_df_subset_gse, new_gse_df])
+            gse_df_subset_gse_valid = gse_df_subset_gse[
+                gse_df_subset_gse.study_accession.notna()
+            ]
+            gse_df_subset = pd.concat([gse_df_subset_gse_valid, new_gse_df])
         gse_df_subset = gse_df_subset.loc[gse_df_subset.study_alias.isin(gse)]
         return gse_df_subset[["study_alias", "study_accession"]].drop_duplicates()
 

@@ -6,13 +6,26 @@ import pandas as pd
 import pytest
 
 from pysradb.sraweb import SRAweb
+from tests.conftest import skip_on_network_failure
+
+
+class NetworkTolerantSRAweb:
+    def __init__(self, client):
+        self._client = client
+
+    def __getattr__(self, name):
+        attr = getattr(self._client, name)
+        if not callable(attr):
+            return attr
+
+        return skip_on_network_failure(attr)
 
 
 @pytest.fixture(scope="module")
 def sraweb_connection():
     client = SRAweb()
     time.sleep(2)
-    return client
+    return NetworkTolerantSRAweb(client)
 
 
 def test_sra_metadata(sraweb_connection):
@@ -176,6 +189,22 @@ def test_gse_to_srp2(sraweb_connection):
     observed = dict(zip(df["study_alias"], df["study_accession"]))
     assert observed["GSE168880"] == "SRP310566"
     assert observed["GSE209835"] == "SRP388275"
+
+
+def test_gse_to_srp_with_nan_sra(sraweb_connection):
+    """Test gse_to_srp when GSE has NaN SRA field but GSM entries have SRX values
+
+    GSE192742 has no direct SRA link in the GSE entry, but GSM entries contain
+    SRX accessions (like SRX13549307).
+
+    Expected: SRP352825 (and possibly SRP352824 depending on GSM distribution)
+    """
+    df = sraweb_connection.gse_to_srp("GSE192742")
+    assert not df.empty
+    assert "GSE192742" in df["study_alias"].tolist()
+    srps = df["study_accession"].tolist()
+    assert "SRP352825" in srps
+    assert all(pd.notna(srps))
 
 
 def test_gsm_to_srp(sraweb_connection):
