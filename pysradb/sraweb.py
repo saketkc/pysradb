@@ -908,7 +908,65 @@ class SRAweb(object):
             regex=r"^@xmlns.*", value=pd.NA
         ).infer_objects(copy=False)
 
-        # Enrich metadata if requested
+        # Add GSE and GSM columns when detailed=True
+        if detailed:
+            try:
+                unique_srps = metadata_df["study_accession"].dropna().unique().tolist()
+                if unique_srps:
+                    gse_df = self.srp_to_gse(unique_srps)
+                    if gse_df is not None and not gse_df.empty:
+                        srp_to_gse_map = {}
+                        for _, row in gse_df.iterrows():
+                            srp_acc = row.get("study_accession")
+                            gse_acc = row.get("study_alias")
+                            if not pd.isna(srp_acc) and not pd.isna(gse_acc):
+                                if srp_acc not in srp_to_gse_map:
+                                    srp_to_gse_map[srp_acc] = []
+                                srp_to_gse_map[srp_acc].append(gse_acc)
+
+                        metadata_df["study_geo_accession"] = metadata_df[
+                            "study_accession"
+                        ].map(
+                            lambda x: (
+                                ",".join(srp_to_gse_map.get(x, []))
+                                if x in srp_to_gse_map
+                                else pd.NA
+                            )
+                        )
+                        metadata_df["study_geo_accession"] = metadata_df[
+                            "study_geo_accession"
+                        ].replace("", pd.NA)
+                    else:
+                        metadata_df["study_geo_accession"] = pd.NA
+                else:
+                    metadata_df["study_geo_accession"] = pd.NA
+
+                unique_srxs = (
+                    metadata_df["experiment_accession"].dropna().unique().tolist()
+                )
+                if unique_srxs:
+                    gsm_response = self.fetch_gds_results(unique_srxs)
+                    if gsm_response is not None and not gsm_response.empty:
+                        srx_to_gsm_map = {}
+                        for _, row in gsm_response.iterrows():
+                            if row.get("entrytype") == "GSM":
+                                gsm_acc = row.get("accession")
+                                srx_acc = row.get("SRA")
+                                if not pd.isna(srx_acc) and not pd.isna(gsm_acc):
+                                    srx_to_gsm_map[srx_acc] = gsm_acc
+
+                        metadata_df["experiment_geo_accession"] = metadata_df[
+                            "experiment_accession"
+                        ].map(lambda x: srx_to_gsm_map.get(x, pd.NA))
+                    else:
+                        metadata_df["experiment_geo_accession"] = pd.NA
+                else:
+                    metadata_df["experiment_geo_accession"] = pd.NA
+
+            except Exception as e:
+                metadata_df["study_geo_accession"] = pd.NA
+                metadata_df["experiment_geo_accession"] = pd.NA
+
         if enrich and not metadata_df.empty:
             from pysradb.enrichment import enrich_df
 
@@ -1122,6 +1180,40 @@ class SRAweb(object):
             if detailed:
                 gsm_soft_data = self.fetch_gsm_soft(sample_accessions)
 
+        # Get SRP mappings for all GSE IDs using gse_to_srp
+        gse_to_srp_map = {}
+        if gse and detailed:
+            try:
+                srp_df = self.gse_to_srp(gse)
+                if not srp_df.empty:
+                    # Group by study_alias and join multiple SRPs with comma
+                    for gse_id in gse:
+                        srps = (
+                            srp_df[srp_df["study_alias"] == gse_id]["study_accession"]
+                            .dropna()
+                            .tolist()
+                        )
+                        if srps:
+                            gse_to_srp_map[gse_id] = ",".join(srps)
+            except Exception:
+                pass
+
+        # Get SRX mappings for all GSM samples
+        gsm_to_srx_map = {}
+        if sample_accessions and detailed:
+            try:
+                # Use fetch_gds_results to get SRX from GSM entries
+                gsm_response = self.fetch_gds_results(sample_accessions)
+                if gsm_response is not None and not gsm_response.empty:
+                    for _, row in gsm_response.iterrows():
+                        if row.get("entrytype") == "GSM":
+                            gsm_acc = row.get("accession")
+                            srx = row.get("SRA")
+                            if gsm_acc and srx and not pd.isna(srx):
+                                gsm_to_srx_map[gsm_acc] = srx
+            except Exception:
+                pass
+
         rows = []
         for record in gse_records:
             study_accession = record.get("accession", pd.NA)
@@ -1154,12 +1246,19 @@ class SRAweb(object):
                 ]
             )
 
+            # Add SRP column when detailed=True
+            if detailed:
+                base_row["study_sra_accession"] = gse_to_srp_map.get(
+                    study_accession, pd.NA
+                )
+
             if sample_attribute:
                 base_row["sample_summary"] = pd.NA
             if detailed:
                 base_row["sample_ftp"] = pd.NA
                 base_row["sample_supplementary"] = pd.NA
                 base_row["sample_geo2r"] = pd.NA
+                base_row["experiment_sra_accession"] = pd.NA
                 # Add SOFT metadata fields
                 base_row["sample_type"] = pd.NA
                 base_row["sample_source_name"] = pd.NA
@@ -1188,6 +1287,10 @@ class SRAweb(object):
                             "suppfile", pd.NA
                         )
                         row["sample_geo2r"] = sample_entry.get("geo2r", pd.NA)
+                        # Add SRX from gsm_to_srx_map
+                        row["experiment_sra_accession"] = gsm_to_srx_map.get(
+                            sample_acc, pd.NA
+                        )
 
                         # Add SOFT metadata - extract ALL available fields
                         soft_data = gsm_soft_data.get(sample_acc, {})
@@ -1918,6 +2021,7 @@ class SRAweb(object):
             # see https://github.com/saketkc/pysradb/issues/186
             # GSE: GSE209835; SRP =SRP388275
             gse_df_subset_gse = gse_df[gse_df.entrytype == "GSE"]
+            # Include GSEs that are missing OR have NaN study_accessions
             gses_without_srp = gse_df_subset_gse[
                 gse_df_subset_gse.study_accession.isna()
             ].study_alias.tolist()
@@ -1926,6 +2030,7 @@ class SRAweb(object):
                 + gses_without_srp
             )
             gse_df_subset_other = gse_df[gse_df.entrytype != "GSE"]
+            # Filter out NaN values from study_accession before converting to SRP
             srx = gse_df_subset_other.study_accession.dropna().tolist()
             srp_df = self.srx_to_srp(srx)
             srp_unique = list(
@@ -1947,6 +2052,8 @@ class SRAweb(object):
             else:
                 # If no pairs, create empty DataFrame with correct columns
                 new_gse_df = pd.DataFrame(columns=["study_alias", "study_accession"])
+            # Filter out GSE entries with NaN study_accession before concatenating
+            # as we've already created new pairs for them
             gse_df_subset_gse_valid = gse_df_subset_gse[
                 gse_df_subset_gse.study_accession.notna()
             ]
@@ -3189,7 +3296,7 @@ class SRAweb(object):
 
             pmc_ids = result.get("esearchresult", {}).get("idlist", [])
             if not pmc_ids:
-                return []
+                return self._search_europepmc(bioproject_id)
 
             # Get primary PMIDs for each PMC article
             summary_url = "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esummary.fcgi"
@@ -3219,7 +3326,10 @@ class SRAweb(object):
                                 pmids.append(primary_pmid)
                             break
 
-            return pmids
+            if pmids:
+                return pmids
+
+            return self._search_europepmc(bioproject_id)
 
         except Exception as e:
             # Silently fail and return empty list for fallback mechanism
