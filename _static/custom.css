@@ -1,35 +1,90 @@
-/* Override Pygments code block background color for light mode */
+:root {
+  --pysradb-content-width: 46rem;
+  --pysradb-radius: 10px;
+}
+
+body {
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+.content {
+  line-height: 1.58;
+}
+
+.content h1,
+.content h2,
+.content h3 {
+  letter-spacing: 0;
+}
+
+.content h1 {
+  font-weight: 700;
+}
+
+.content h2,
+.content h3 {
+  font-weight: 650;
+}
+
+.sidebar-drawer,
+.toc-drawer {
+  backdrop-filter: saturate(180%) blur(18px);
+}
+
+.sidebar-brand-text {
+  font-weight: 650;
+  letter-spacing: 0;
+}
+
+.content code,
+.content pre,
 .highlight {
-  background: #f5f5f5 !important;
+  border-radius: var(--pysradb-radius);
 }
 
-/* Ensure code block background uses our color */
+.content a {
+  text-underline-offset: 0.16em;
+}
+
+.content a:hover {
+  text-decoration-thickness: 0.12em;
+}
+
+.admonition {
+  border-radius: var(--pysradb-radius);
+}
+
+/* Override Pygments code block background color for light mode. */
+.highlight {
+  background: #f5f5f7 !important;
+}
+
+/* Ensure code block background uses our color. */
 .highlight pre {
-  background: #f5f5f5 !important;
+  background: #f5f5f7 !important;
 }
 
-/* Override inline code highlighting */
 .highlighttable {
-  background: #f5f5f5 !important;
+  background: #f5f5f7 !important;
 }
 
 .highlighttable td.linenos {
-  background: #f5f5f5 !important;
+  background: #f5f5f7 !important;
 }
 
-/* Dark mode overrides */
 [data-theme="dark"] .highlight {
-  background: #1e293b !important;
+  background: #2c2c2e !important;
 }
 
 [data-theme="dark"] .highlight pre {
-  background: #1e293b !important;
+  background: #2c2c2e !important;
 }
 
 [data-theme="dark"] .highlighttable {
-  background: #1e293b !important;
+  background: #2c2c2e !important;
 }
 
 [data-theme="dark"] .highlighttable td.linenos {
-  background: #1e293b !important;
+  background: #2c2c2e !important;
 }

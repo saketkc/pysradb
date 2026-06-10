@@ -51,56 +51,61 @@
 
 ## Enriching metadata
 
-Extract standardized biological metadata from SRA/GEO datasets using LLMs.
+Metadata enrichment is available as an optional workflow. It uses embedding
+models plus an LLM backend to infer fields such as age, sex, tissue, disease,
+strain, phenotype, cell type, and ethnicity from detailed metadata columns.
+Install the enrichment extra and configure an Ollama, LM Studio, or vLLM
+endpoint before using it.
 
 ### Quickstart
 
-```bash
+```python
 from pysradb import SRAweb
 
 client = SRAweb()
 
-df = client.metadata("GSE286254", detailed=True, enrich=True)
+df = client.metadata(
+    "GSE286254",
+    detailed=True,
+    enrich=True,
+    enrich_backend="ollama/granite4:3b",
+)
 
-# Returns original + 9 enriched columns (might not always be complete):
-# guessed_organ, guessed_tissue, guessed_anatomical_system,
-# guessed_cell_type, guessed_disease, guessed_sex,
-# guessed_development_stage, guessed_assay, guessed_organism
+# Returns identifier columns plus inferred metadata columns:
+# age, sex, ethnicity, phenotype, cell_type, tissue, strain, disease
 ```
 
 ### Prerequisites
 
-Install Ollama: <https://ollama.ai>
+Install the optional dependencies and prepare a backend:
 
 ```bash
-ollama pull phi3
+python -m pip install "pysradb[enrichment]"
+ollama pull granite4:3b
 ```
 
 ### Advanced Usage
 
-```bash
-# Use different model
-df = client.metadata("GSE286254", detailed=True, enrich=True,
-                enrich_backend="ollama/llama3.2")
-
-# Manual enrichment with custom settings
-from pysradb.metadata_enrichment import create_metadata_extractor, load_ontology_reference
-
-# LLM-based extraction
-extractor_llm = create_metadata_extractor(method="llm", backend="ollama/phi3")
-df_enriched = extractor_llm.enrich_dataframe(df, prefix="guessed_")
-
-# Embedding-based extraction (faster, offline)
-ontology_ref = load_ontology_reference()
-extractor_emb = create_metadata_extractor(
-    method="embedding",
-    model="FremyCompany/BioLORD-2023",
-    reference_categories=ontology_ref
+```python
+# Use another local Ollama model.
+df = client.metadata(
+    "GSE286254",
+    detailed=True,
+    enrich=True,
+    enrich_backend="ollama/llama3.2",
 )
-df_enriched = extractor_emb.enrich_dataframe(df, prefix="guessed_")
+
+# Use LM Studio or vLLM-compatible endpoints.
+df = client.metadata(
+    "GSE286254",
+    detailed=True,
+    enrich=True,
+    enrich_backend="lmstudio/local-model",
+)
 ```
 
-See [Notebook 09](https://github.com/saketkc/pysradb/blob/develop/notebooks/09.Metadata_Enrichment_with_LLMs.ipynb) for detailed examples.
+See [Notebook 09](https://github.com/saketkc/pysradb/blob/develop/notebooks/09.Metadata_enrichment.ipynb)
+for a runnable overview that previews setup without starting local model services.
 
 ## Getting metadata for a SRA project (SRP)
 
@@ -155,34 +160,23 @@ A more complicated example will consist of multiple assays. For example
 
 ## Enriching metadata
 
-You can enrich metadata with standardized biological attributes using biomedical-specialized LLMs through the `--enrich` flag:
+You can enrich detailed metadata with optional LLM-backed inference through the
+`--enrich` flag. This requires `pysradb[enrichment]` and a running backend such
+as Ollama.
 
-### Basic enrichment (using default backend)
+### Basic enrichment
 
     $ pysradb metadata GSE286254 --detailed --enrich
 
-The default uses **Meditron** (7B parameters, trained on medical literature and guidelines), which is optimized for biomedical text understanding.
+Enrichment returns identifier columns plus inferred columns such as `age`,
+`sex`, `ethnicity`, `phenotype`, `cell_type`, `tissue`, `strain`, and `disease`.
 
-This returns the original metadata plus 9 enriched columns:
-- `guessed_organ`
-- `guessed_tissue`
-- `guessed_anatomical_system`
-- `guessed_cell_type`
-- `guessed_disease`
-- `guessed_sex`
-- `guessed_development_stage`
-- `guessed_assay`
-- `guessed_organism`
+### Using alternative backends
 
-### Using alternative biomedical backends
+    $ pysradb metadata GSE286254 --detailed --enrich --model ollama/llama3.2
 
-    $ pysradb metadata GSE286254 --detailed --enrich --enrich-backend ollama/openbiollm-8b
-
-Available biomedical backends:
-- `ollama/meditron` (default, 7B - optimized for medical text)
-- `ollama/openbiollm-8b` (8B - trained on 500k+ biomedical entries, superior biomedical performance)
-
-Both models are specialized for biomedical and clinical text understanding, making them ideal for SRA metadata enrichment.
+Supported backend formats are `ollama/<model>`, `lmstudio/<model>`,
+`vllm/<model>`, and `vllm`.
 
 For more details on enrichment features and prerequisites, see the [Enriching metadata](#enriching-metadata) section above.
 

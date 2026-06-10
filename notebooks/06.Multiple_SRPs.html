@@ -13,19 +13,19 @@
             gtag('config', 'G-CKQZFCEENZ');
             
         </script>
-    <link rel="index" title="Index" href="../genindex.html"><link rel="search" title="Search" href="../search.html">
+    <link rel="index" title="Index" href="../genindex.html"><link rel="search" title="Search" href="../search.html"><link rel="next" title="Query and Search" href="07.Query_Search.html"><link rel="prev" title="Selecting Subsets of a Project" href="05.Downloading_subsets_of_a_project.html">
+        <link rel="canonical" href="https://saket-choudhary.me/pysradb/notebooks/06.Multiple_SRPs.html">
         <link rel="prefetch" href="../_static/pysradb_v3.png" as="image">
 
-    <!-- Generated with Sphinx 8.2.3 and Furo 2025.09.25 -->
-        <title>Querying Multiple Projects - pysradb 3.0.0.dev0 documentation</title>
+    <!-- Generated with Sphinx 9.0.4 and Furo 2025.12.19 -->
+        <title>Querying Multiple Projects - pysradb: SRA, ENA, and GEO metadata search</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
-    <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?v=580074bf" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?v=7bdb33bb" />
     <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=4ae1632d" />
-    <link rel="stylesheet" type="text/css" href="../_static/sphinx-dropdown.css?v=995e94df" />
-    <link rel="stylesheet" type="text/css" href="../_static/panels-bootstrap.min.css?v=21c0b90a" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
     <link rel="stylesheet" type="text/css" href="../_static/nbsphinx-code-cells.css?v=2aa19091" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo-extensions.css?v=8dab3a3b" />
-    <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=76ddadce" />
+    <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=c673637a" />
     
     
 
@@ -34,30 +34,69 @@
   body {
     --color-code-background: #eeffcc;
   --color-code-foreground: black;
-  --color-brand-primary: #0066cc;
+  --font-stack: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Segoe UI', sans-serif;
+  --font-stack--monospace: 'SFMono-Regular', ui-monospace, 'Cascadia Code', 'Liberation Mono', Menlo, monospace;
+  --color-brand-primary: #007aff;
   --color-brand-content: #0066cc;
-  --color-code-background: #f5f5f5;
-  --color-inline-code-background: #f0f0f0;
+  --color-api-name: #1d1d1f;
+  --color-api-pre-name: #6e6e73;
+  --color-background-primary: #ffffff;
+  --color-background-secondary: #f5f5f7;
+  --color-background-hover: #f2f2f7;
+  --color-code-background: #f5f5f7;
+  --color-inline-code-background: #f2f2f7;
+  --color-sidebar-background: #fbfbfd;
+  --color-sidebar-background-border: #d2d2d7;
+  --color-toc-background: #ffffff;
+  --color-toc-background-border: #d2d2d7;
+  --color-admonition-background: #f5f5f7;
+  --color-admonition-title-background: #e8f2ff;
   
   }
   @media not print {
     body[data-theme="dark"] {
       --color-code-background: #202020;
   --color-code-foreground: #d0d0d0;
-  --color-brand-primary: #3b82f6;
-  --color-brand-content: #3b82f6;
-  --color-code-background: #1e293b;
-  --color-inline-code-background: #334155;
+  --font-stack: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Segoe UI', sans-serif;
+  --font-stack--monospace: 'SFMono-Regular', ui-monospace, 'Cascadia Code', 'Liberation Mono', Menlo, monospace;
+  --color-brand-primary: #0a84ff;
+  --color-brand-content: #409cff;
+  --color-api-name: #f5f5f7;
+  --color-api-pre-name: #a1a1a6;
+  --color-background-primary: #1d1d1f;
+  --color-background-secondary: #2c2c2e;
+  --color-background-hover: #3a3a3c;
+  --color-code-background: #2c2c2e;
+  --color-inline-code-background: #3a3a3c;
+  --color-sidebar-background: #161617;
+  --color-sidebar-background-border: #38383a;
+  --color-toc-background: #1d1d1f;
+  --color-toc-background-border: #38383a;
+  --color-admonition-background: #2c2c2e;
+  --color-admonition-title-background: #06345f;
   
     }
     @media (prefers-color-scheme: dark) {
       body:not([data-theme="light"]) {
         --color-code-background: #202020;
   --color-code-foreground: #d0d0d0;
-  --color-brand-primary: #3b82f6;
-  --color-brand-content: #3b82f6;
-  --color-code-background: #1e293b;
-  --color-inline-code-background: #334155;
+  --font-stack: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Segoe UI', sans-serif;
+  --font-stack--monospace: 'SFMono-Regular', ui-monospace, 'Cascadia Code', 'Liberation Mono', Menlo, monospace;
+  --color-brand-primary: #0a84ff;
+  --color-brand-content: #409cff;
+  --color-api-name: #f5f5f7;
+  --color-api-pre-name: #a1a1a6;
+  --color-background-primary: #1d1d1f;
+  --color-background-secondary: #2c2c2e;
+  --color-background-hover: #3a3a3c;
+  --color-code-background: #2c2c2e;
+  --color-inline-code-background: #3a3a3c;
+  --color-sidebar-background: #161617;
+  --color-sidebar-background-border: #38383a;
+  --color-toc-background: #1d1d1f;
+  --color-toc-background-border: #38383a;
+  --color-admonition-background: #2c2c2e;
+  --color-admonition-title-background: #06345f;
   
       }
     }
@@ -189,7 +228,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../index.html"><div class="brand">pysradb 3.0.0.dev0 documentation</div></a>
+      <a href="../index.html"><div class="brand">pysradb: SRA, ENA, and GEO metadata search</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -213,7 +252,7 @@
     <img class="sidebar-logo" src="../_static/pysradb_v3.png" alt="Logo"/>
   </div>
   
-  <span class="sidebar-brand-text">pysradb 3.0.0.dev0 documentation</span>
+  <span class="sidebar-brand-text">pysradb: SRA, ENA, and GEO metadata search</span>
   
 </a><form class="sidebar-search-container" method="get" action="../search.html" role="search">
   <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
@@ -221,18 +260,32 @@
   <input type="hidden" name="area" value="default">
 </form>
 <div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
-  <ul>
+  <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../quickstart.html">Quickstart</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../cmdline.html">CLI</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../python-api-usage.html">Python API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mcp.html">MCP server</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../case_studies.html">Case Studies</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../notebooks.html">Tutorials &amp; Notebooks</a></li>
+<li class="toctree-l1 current has-children"><a class="reference internal" href="../notebooks.html">Tutorials &amp; Notebooks</a><input aria-label="Toggle navigation of Tutorials &amp; Notebooks" checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="README.html">pysradb notebooks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="01.Python-API_demo.html">Python API Demo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="02.Commandline_download.html">Command-line Download</a></li>
+<li class="toctree-l2"><a class="reference internal" href="03.ParallelDownload.html">Parallel Download</a></li>
+<li class="toctree-l2"><a class="reference internal" href="04.SRA_to_fastq_conda.html">Converting SRA to FASTQ using Conda</a></li>
+<li class="toctree-l2"><a class="reference internal" href="05.Downloading_subsets_of_a_project.html">Selecting Subsets of a Project</a></li>
+<li class="toctree-l2 current current-page"><a class="current reference internal" href="#">Querying Multiple Projects</a></li>
+<li class="toctree-l2"><a class="reference internal" href="07.Query_Search.html">Query and Search</a></li>
+<li class="toctree-l2"><a class="reference internal" href="08.PMC_DOI_Identifiers.html">Extract Identifiers from PMC/DOI</a></li>
+<li class="toctree-l2"><a class="reference internal" href="09.Metadata_enrichment.html">Metadata Enrichment with Optional LLM Backends</a></li>
+<li class="toctree-l2"><a class="reference internal" href="10.Parse_Bioscience_Search.html">Parse BioScience Search</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="../commands.html">API Documentation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../contributing.html">Contributing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../authors.html">Credits</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../history.html">History</a></li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../modules.html">pysradb</a><input aria-label="Toggle navigation of pysradb" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../modules.html">pysradb</a><input aria-label="Toggle navigation of pysradb" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../pysradb.html">pysradb package</a></li>
 </ul>
 </li>
@@ -256,12 +309,16 @@
         </a>
         <div class="content-icon-container">
           <div class="view-this-page">
-  <a class="muted-link" href="../_sources/notebooks/06.Multiple_SRPs.ipynb.txt" title="View this page">
+  <a class="muted-link" href="https://github.com/saketkc/pysradb/blob/develop/docs/notebooks/06.Multiple_SRPs.ipynb?plain=true" title="View this page">
     <svg><use href="#svg-eye"></use></svg>
     <span class="visually-hidden">View this page</span>
   </a>
-</div>
-<div class="theme-toggle-container theme-toggle-content">
+</div><div class="edit-this-page">
+  <a class="muted-link" href="https://github.com/saketkc/pysradb/edit/develop/docs/notebooks/06.Multiple_SRPs.ipynb" rel="edit" title="Edit this page">
+    <svg><use href="#svg-pencil"></use></svg>
+    <span class="visually-hidden">Edit this page</span>
+  </a>
+</div><div class="theme-toggle-container theme-toggle-content">
             <button class="theme-toggle" aria-label="Toggle Light / Dark / Auto color theme">
               <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
               <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
@@ -278,8 +335,8 @@
 <section id="Querying-Multiple-Projects">
 <h1>Querying Multiple Projects<a class="headerlink" href="#Querying-Multiple-Projects" title="Link to this heading">¶</a></h1>
 <p>This notebook demonstrates how to query and export metadata from multiple SRA projects at once.</p>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Install pysradb if not already installed</span>
@@ -296,8 +353,25 @@
 </pre></div>
 </div>
 </div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+pysradb 3.0.0.dev0 is already installed
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+/home/runner/work/pysradb/pysradb/pysradb/download.py:15: TqdmExperimentalWarning: Using `tqdm.autonotebook.tqdm` in notebook mode. Use `tqdm.tqdm` instead to force console mode (e.g. in jupyter console)
+  from tqdm.autonotebook import tqdm
+</pre></div></div>
+</div>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># pip install git+https://github.com/saketkc/pysradb.git</span>
@@ -305,7 +379,7 @@
 </div>
 </div>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">SRP_list</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;ERP009675</span>
@@ -474,8 +548,8 @@
 </pre></div>
 </div>
 </div>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">sys</span>
@@ -496,16 +570,6 @@
 </pre></div>
 </div>
 </div>
-<div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area stderr docutils container">
-<div class="highlight"><pre>
-/home/saket/miniforge3/lib/python3.12/site-packages/pysradb/utils.py:14: TqdmExperimentalWarning: Using `tqdm.autonotebook.tqdm` in notebook mode. Use `tqdm.tqdm` instead to force console mode (e.g. in jupyter console)
-  from tqdm.autonotebook import tqdm
-Error with SRP045252
-</pre></div></div>
-</div>
 <script type="application/vnd.jupyter.widget-state+json">
 {"state": {}, "version_major": 2, "version_minor": 0}
 </script></section>
@@ -515,8 +579,26 @@ Error with SRP045252
       <footer>
         
         <div class="related-pages">
-          
-          
+          <a class="next-page" href="07.Query_Search.html">
+              <div class="page-info">
+                <div class="context">
+                  <span>Next</span>
+                </div>
+                <div class="title">Query and Search</div>
+              </div>
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+            </a>
+          <a class="prev-page" href="05.Downloading_subsets_of_a_project.html">
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+              <div class="page-info">
+                <div class="context">
+                  <span>Previous</span>
+                </div>
+                
+                <div class="title">Selecting Subsets of a Project</div>
+                
+              </div>
+            </a>
         </div>
         <div class="bottom-of-page">
           <div class="left-details">
@@ -542,12 +624,14 @@ Error with SRP045252
     </aside>
   </div>
 </div><script src="../_static/documentation_options.js?v=afcbd73c"></script>
-    <script src="../_static/doctools.js?v=9bcbadda"></script>
-    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../_static/scripts/furo.js?v=46bd48cc"></script>
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@jupyter-widgets/html-manager@^1.0.1/dist/embed-amd.js"></script>
     <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
-    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-mml-chtml.js"></script>
     <script src="../_static/copy-button.js?v=5b6a40c7"></script>
     </body>
 </html>

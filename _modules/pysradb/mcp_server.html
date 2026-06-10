@@ -1,0 +1,1055 @@
+<!doctype html>
+<html class="no-js" lang="en" data-content_root="../../">
+  <head><meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="color-scheme" content="light dark">
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-CKQZFCEENZ"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            
+            gtag('config', 'G-CKQZFCEENZ');
+            
+        </script>
+    <link rel="index" title="Index" href="../../genindex.html"><link rel="search" title="Search" href="../../search.html">
+        <link rel="canonical" href="https://saket-choudhary.me/pysradb/_modules/pysradb/mcp_server.html">
+        <link rel="prefetch" href="../../_static/pysradb_v3.png" as="image">
+
+    <!-- Generated with Sphinx 9.0.4 and Furo 2025.12.19 -->
+        <title>pysradb.mcp_server - pysradb: SRA, ENA, and GEO metadata search</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?v=7bdb33bb" />
+    <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=4ae1632d" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/furo-extensions.css?v=8dab3a3b" />
+    <link rel="stylesheet" type="text/css" href="../../_static/custom.css?v=c673637a" />
+    
+    
+
+
+<style>
+  body {
+    --color-code-background: #eeffcc;
+  --color-code-foreground: black;
+  --font-stack: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Segoe UI', sans-serif;
+  --font-stack--monospace: 'SFMono-Regular', ui-monospace, 'Cascadia Code', 'Liberation Mono', Menlo, monospace;
+  --color-brand-primary: #007aff;
+  --color-brand-content: #0066cc;
+  --color-api-name: #1d1d1f;
+  --color-api-pre-name: #6e6e73;
+  --color-background-primary: #ffffff;
+  --color-background-secondary: #f5f5f7;
+  --color-background-hover: #f2f2f7;
+  --color-code-background: #f5f5f7;
+  --color-inline-code-background: #f2f2f7;
+  --color-sidebar-background: #fbfbfd;
+  --color-sidebar-background-border: #d2d2d7;
+  --color-toc-background: #ffffff;
+  --color-toc-background-border: #d2d2d7;
+  --color-admonition-background: #f5f5f7;
+  --color-admonition-title-background: #e8f2ff;
+  
+  }
+  @media not print {
+    body[data-theme="dark"] {
+      --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  --font-stack: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Segoe UI', sans-serif;
+  --font-stack--monospace: 'SFMono-Regular', ui-monospace, 'Cascadia Code', 'Liberation Mono', Menlo, monospace;
+  --color-brand-primary: #0a84ff;
+  --color-brand-content: #409cff;
+  --color-api-name: #f5f5f7;
+  --color-api-pre-name: #a1a1a6;
+  --color-background-primary: #1d1d1f;
+  --color-background-secondary: #2c2c2e;
+  --color-background-hover: #3a3a3c;
+  --color-code-background: #2c2c2e;
+  --color-inline-code-background: #3a3a3c;
+  --color-sidebar-background: #161617;
+  --color-sidebar-background-border: #38383a;
+  --color-toc-background: #1d1d1f;
+  --color-toc-background-border: #38383a;
+  --color-admonition-background: #2c2c2e;
+  --color-admonition-title-background: #06345f;
+  
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  --font-stack: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Segoe UI', sans-serif;
+  --font-stack--monospace: 'SFMono-Regular', ui-monospace, 'Cascadia Code', 'Liberation Mono', Menlo, monospace;
+  --color-brand-primary: #0a84ff;
+  --color-brand-content: #409cff;
+  --color-api-name: #f5f5f7;
+  --color-api-pre-name: #a1a1a6;
+  --color-background-primary: #1d1d1f;
+  --color-background-secondary: #2c2c2e;
+  --color-background-hover: #3a3a3c;
+  --color-code-background: #2c2c2e;
+  --color-inline-code-background: #3a3a3c;
+  --color-sidebar-background: #161617;
+  --color-sidebar-background-border: #38383a;
+  --color-toc-background: #1d1d1f;
+  --color-toc-background-border: #38383a;
+  --color-admonition-background: #2c2c2e;
+  --color-admonition-title-background: #06345f;
+  
+      }
+    }
+  }
+</style></head>
+  <body>
+    
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-with-moon" viewBox="0 0 24 24">
+    <title>Auto light/dark, in light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path style="opacity: 50%" d="M 5.411 14.504 C 5.471 14.504 5.532 14.504 5.591 14.504 C 3.639 16.319 4.383 19.569 6.931 20.352 C 7.693 20.586 8.512 20.551 9.25 20.252 C 8.023 23.207 4.056 23.725 2.11 21.184 C 0.166 18.642 1.702 14.949 4.874 14.536 C 5.051 14.512 5.231 14.5 5.411 14.5 L 5.411 14.504 Z"/>
+      <line x1="14.5" y1="3.25" x2="14.5" y2="1.25"/>
+      <line x1="14.5" y1="15.85" x2="14.5" y2="17.85"/>
+      <line x1="10.044" y1="5.094" x2="8.63" y2="3.68"/>
+      <line x1="19" y1="14.05" x2="20.414" y2="15.464"/>
+      <line x1="8.2" y1="9.55" x2="6.2" y2="9.55"/>
+      <line x1="20.8" y1="9.55" x2="22.8" y2="9.55"/>
+      <line x1="10.044" y1="14.006" x2="8.63" y2="15.42"/>
+      <line x1="19" y1="5.05" x2="20.414" y2="3.636"/>
+      <circle cx="14.5" cy="9.55" r="3.6"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon-with-sun" viewBox="0 0 24 24">
+    <title>Auto light/dark, in dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path d="M 8.282 7.007 C 8.385 7.007 8.494 7.007 8.595 7.007 C 5.18 10.184 6.481 15.869 10.942 17.24 C 12.275 17.648 13.706 17.589 15 17.066 C 12.851 22.236 5.91 23.143 2.505 18.696 C -0.897 14.249 1.791 7.786 7.342 7.063 C 7.652 7.021 7.965 7 8.282 7 L 8.282 7.007 Z"/>
+      <line style="opacity: 50%" x1="18" y1="3.705" x2="18" y2="2.5"/>
+      <line style="opacity: 50%" x1="18" y1="11.295" x2="18" y2="12.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="4.816" x2="14.464" y2="3.964"/>
+      <line style="opacity: 50%" x1="20.711" y1="10.212" x2="21.563" y2="11.063"/>
+      <line style="opacity: 50%" x1="14.205" y1="7.5" x2="13.001" y2="7.5"/>
+      <line style="opacity: 50%" x1="21.795" y1="7.5" x2="23" y2="7.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="10.184" x2="14.464" y2="11.036"/>
+      <line style="opacity: 50%" x1="20.711" y1="4.789" x2="21.563" y2="3.937"/>
+      <circle style="opacity: 50%" cx="18" cy="7.5" r="2.169"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-pencil" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-pencil-code">
+      <path d="M4 20h4l10.5 -10.5a2.828 2.828 0 1 0 -4 -4l-10.5 10.5v4" />
+      <path d="M13.5 6.5l4 4" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+  <symbol id="svg-eye" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-eye-code">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
+      <path
+        d="M11.11 17.958c-3.209 -.307 -5.91 -2.293 -8.11 -5.958c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6c-.21 .352 -.427 .688 -.647 1.008" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation" aria-label="Toggle site navigation sidebar">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc" aria-label="Toggle table of contents sidebar">
+<label class="overlay sidebar-overlay" for="__navigation"></label>
+<label class="overlay toc-overlay" for="__toc"></label>
+
+<a class="skip-to-content muted-link" href="#furo-main-content">Skip to content</a>
+
+
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <span class="icon"><svg><use href="#svg-menu"></use></svg></span>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="../../index.html"><div class="brand">pysradb: SRA, ENA, and GEO metadata search</div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle" aria-label="Toggle Light / Dark / Auto color theme">
+          <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+          <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon no-toc" for="__toc">
+        <span class="icon"><svg><use href="#svg-toc"></use></svg></span>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="../../index.html">
+  <div class="sidebar-logo-container">
+    <img class="sidebar-logo" src="../../_static/pysradb_v3.png" alt="Logo"/>
+  </div>
+  
+  <span class="sidebar-brand-text">pysradb: SRA, ENA, and GEO metadata search</span>
+  
+</a><form class="sidebar-search-container" method="get" action="../../search.html" role="search">
+  <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
+  <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../quickstart.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../cmdline.html">CLI</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../python-api-usage.html">Python API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../mcp.html">MCP server</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../case_studies.html">Case Studies</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../notebooks.html">Tutorials &amp; Notebooks</a><input aria-label="Toggle navigation of Tutorials &amp; Notebooks" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../notebooks/README.html">pysradb notebooks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../notebooks/01.Python-API_demo.html">Python API Demo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../notebooks/02.Commandline_download.html">Command-line Download</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../notebooks/03.ParallelDownload.html">Parallel Download</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../notebooks/04.SRA_to_fastq_conda.html">Converting SRA to FASTQ using Conda</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../notebooks/05.Downloading_subsets_of_a_project.html">Selecting Subsets of a Project</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../notebooks/06.Multiple_SRPs.html">Querying Multiple Projects</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../notebooks/07.Query_Search.html">Query and Search</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../notebooks/08.PMC_DOI_Identifiers.html">Extract Identifiers from PMC/DOI</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../notebooks/09.Metadata_enrichment.html">Metadata Enrichment with Optional LLM Backends</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../notebooks/10.Parse_Bioscience_Search.html">Parse BioScience Search</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../commands.html">API Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../contributing.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../authors.html">Credits</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../history.html">History</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../modules.html">pysradb</a><input aria-label="Toggle navigation of pysradb" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../pysradb.html">pysradb package</a></li>
+</ul>
+</li>
+</ul>
+
+</div>
+</div>
+
+      </div>
+      
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
+        <div class="content-icon-container">
+          <div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle" aria-label="Toggle Light / Dark / Auto color theme">
+              <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+              <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon no-toc" for="__toc">
+            <span class="icon"><svg><use href="#svg-toc"></use></svg></span>
+          </label>
+        </div>
+        <article role="main" id="furo-main-content">
+          <h1>Source code for pysradb.mcp_server</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;Model Context Protocol server for pysradb.</span>
+
+<span class="sd">The MCP dependency is optional. Install with ``pysradb[mcp]`` before running</span>
+<span class="sd">the ``pysradb-mcp`` console script.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">__future__</span><span class="w"> </span><span class="kn">import</span> <span class="n">annotations</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">argparse</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">math</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Any</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">.</span><span class="w"> </span><span class="kn">import</span> <span class="n">__version__</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.filter_attrs</span><span class="w"> </span><span class="kn">import</span> <span class="n">expand_sample_attribute_columns</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.geoweb</span><span class="w"> </span><span class="kn">import</span> <span class="n">GEOweb</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.search</span><span class="w"> </span><span class="kn">import</span> <span class="n">EnaSearch</span><span class="p">,</span> <span class="n">GeoSearch</span><span class="p">,</span> <span class="n">SraSearch</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.sraweb</span><span class="w"> </span><span class="kn">import</span> <span class="n">SRAweb</span>
+
+<span class="n">MAX_RECORDS_LIMIT</span> <span class="o">=</span> <span class="mi">100</span>
+<span class="n">DEFAULT_RECORDS_LIMIT</span> <span class="o">=</span> <span class="mi">20</span>
+
+<span class="n">ACCESSION_CONVERSIONS</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;gse_to_gsm&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;gse_to_srp&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;gsm_to_gse&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;gsm_to_srp&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;gsm_to_srr&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;gsm_to_srs&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;gsm_to_srx&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;srp_to_gse&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;srp_to_srr&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;srp_to_srs&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;srp_to_srx&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;srr_to_gsm&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;srr_to_srp&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;srr_to_srs&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;srr_to_srx&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;srs_to_gsm&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;srs_to_srx&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;srx_to_gsm&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;srx_to_srp&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;srx_to_srr&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;srx_to_srs&quot;</span><span class="p">,</span>
+<span class="p">}</span>
+
+<span class="n">MCP_TOOL_NAMES</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s2">&quot;list_capabilities&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;get_metadata&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;get_sra_metadata&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;get_geo_metadata&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;get_gds_results&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;get_gsm_soft_metadata&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;search_datasets&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;convert_accession&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;convert_bioproject_to_srp&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;get_ena_fastq_urls&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;get_geo_supplementary_links&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;get_geo_matrix_url&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;map_publication_identifiers&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;get_publication_info&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;get_publication_metadata&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;get_pmids_for_bioproject&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;get_pmids_for_sra_accession&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;get_pmids_for_gse&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;get_pmids_for_arrayexpress&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;get_pmids_for_ena_or_bioproject&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;convert_doi_to_pmid&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;convert_pmid_to_pmc&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;get_identifiers_from_pmc&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;get_identifiers_from_pmid&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;get_identifiers_from_doi&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;get_gse_from_pmid&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;get_srp_from_pmid&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;get_gse_from_doi&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;get_srp_from_doi&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;search_pmc_for_external_source&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;get_pmc_fulltext_excerpt&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;extract_identifiers_from_text&quot;</span><span class="p">,</span>
+<span class="p">]</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_json_safe</span><span class="p">(</span><span class="n">value</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Convert pandas/numpy null-like values into JSON-safe values.&quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">value</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">None</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">pd</span><span class="o">.</span><span class="n">isna</span><span class="p">(</span><span class="n">value</span><span class="p">):</span>
+            <span class="k">return</span> <span class="kc">None</span>
+    <span class="k">except</span> <span class="p">(</span><span class="ne">TypeError</span><span class="p">,</span> <span class="ne">ValueError</span><span class="p">):</span>
+        <span class="k">pass</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">float</span><span class="p">)</span> <span class="ow">and</span> <span class="n">math</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">value</span><span class="p">):</span>
+        <span class="k">return</span> <span class="kc">None</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">{</span><span class="nb">str</span><span class="p">(</span><span class="n">k</span><span class="p">):</span> <span class="n">_json_safe</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">value</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="p">(</span><span class="nb">list</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">,</span> <span class="nb">set</span><span class="p">)):</span>
+        <span class="k">return</span> <span class="p">[</span><span class="n">_json_safe</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">value</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">value</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_limited_records</span><span class="p">(</span>
+    <span class="n">df</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">limit</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">DEFAULT_RECORDS_LIMIT</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return a compact, JSON-serializable DataFrame payload.&quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">df</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">()</span>
+
+    <span class="n">safe_limit</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">min</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">limit</span><span class="p">),</span> <span class="n">MAX_RECORDS_LIMIT</span><span class="p">))</span>
+    <span class="n">records</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="n">safe_limit</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">({</span><span class="n">pd</span><span class="o">.</span><span class="n">NA</span><span class="p">:</span> <span class="kc">None</span><span class="p">})</span><span class="o">.</span><span class="n">to_dict</span><span class="p">(</span><span class="n">orient</span><span class="o">=</span><span class="s2">&quot;records&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="p">{</span>
+        <span class="s2">&quot;columns&quot;</span><span class="p">:</span> <span class="nb">list</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="p">),</span>
+        <span class="s2">&quot;records&quot;</span><span class="p">:</span> <span class="n">_json_safe</span><span class="p">(</span><span class="n">records</span><span class="p">),</span>
+        <span class="s2">&quot;returned&quot;</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="n">records</span><span class="p">),</span>
+        <span class="s2">&quot;total_rows&quot;</span><span class="p">:</span> <span class="nb">int</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">index</span><span class="p">)),</span>
+        <span class="s2">&quot;truncated&quot;</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">index</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">safe_limit</span><span class="p">,</span>
+    <span class="p">}</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_client</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">SRAweb</span><span class="p">:</span>
+    <span class="k">return</span> <span class="n">SRAweb</span><span class="p">()</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_geo_client</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">GEOweb</span><span class="p">:</span>
+    <span class="k">return</span> <span class="n">GEOweb</span><span class="p">(</span><span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="list_capabilities">
+<a class="viewcode-back" href="../../pysradb.html#pysradb.mcp_server.list_capabilities">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">list_capabilities</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;List the MCP tools and intentionally omitted side-effecting workflows.&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="p">{</span>
+        <span class="s2">&quot;tools&quot;</span><span class="p">:</span> <span class="n">MCP_TOOL_NAMES</span><span class="p">,</span>
+        <span class="s2">&quot;accession_conversions&quot;</span><span class="p">:</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">ACCESSION_CONVERSIONS</span><span class="p">),</span>
+        <span class="s2">&quot;search_databases&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;sra&quot;</span><span class="p">,</span> <span class="s2">&quot;ena&quot;</span><span class="p">,</span> <span class="s2">&quot;geo&quot;</span><span class="p">],</span>
+        <span class="s2">&quot;max_records_limit&quot;</span><span class="p">:</span> <span class="n">MAX_RECORDS_LIMIT</span><span class="p">,</span>
+        <span class="s2">&quot;omitted_by_design&quot;</span><span class="p">:</span> <span class="p">[</span>
+            <span class="s2">&quot;bulk_sra_download&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;bulk_ena_download&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;geo_file_download&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;geo_matrix_download&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;metadata_enrichment_with_local_llm&quot;</span><span class="p">,</span>
+        <span class="p">],</span>
+        <span class="s2">&quot;omission_reason&quot;</span><span class="p">:</span> <span class="p">(</span>
+            <span class="s2">&quot;MCP tools are read-oriented. Large downloads and local LLM &quot;</span>
+            <span class="s2">&quot;enrichment can consume substantial disk, bandwidth, time, or &quot;</span>
+            <span class="s2">&quot;local compute and should remain explicit CLI/Python workflows.&quot;</span>
+        <span class="p">),</span>
+    <span class="p">}</span></div>
+
+
+
+<div class="viewcode-block" id="get_metadata">
+<a class="viewcode-back" href="../../pysradb.html#pysradb.mcp_server.get_metadata">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_metadata</span><span class="p">(</span>
+    <span class="n">accession</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">detailed</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n">include_sample_attributes</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n">expand_sample_attributes</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n">limit</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">DEFAULT_RECORDS_LIMIT</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Fetch SRA or GEO metadata for an SRP or GSE accession.&quot;&quot;&quot;</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">_client</span><span class="p">()</span><span class="o">.</span><span class="n">metadata</span><span class="p">(</span>
+        <span class="n">accession</span><span class="p">,</span>
+        <span class="n">detailed</span><span class="o">=</span><span class="n">detailed</span><span class="p">,</span>
+        <span class="n">sample_attribute</span><span class="o">=</span><span class="n">include_sample_attributes</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="k">if</span> <span class="n">expand_sample_attributes</span> <span class="ow">and</span> <span class="s2">&quot;sample_attribute&quot;</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
+        <span class="n">df</span> <span class="o">=</span> <span class="n">expand_sample_attribute_columns</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">_limited_records</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="n">limit</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="get_sra_metadata">
+<a class="viewcode-back" href="../../pysradb.html#pysradb.mcp_server.get_sra_metadata">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_sra_metadata</span><span class="p">(</span>
+    <span class="n">srp</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">detailed</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n">include_sample_attributes</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n">expand_sample_attributes</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n">include_pmids</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n">limit</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">DEFAULT_RECORDS_LIMIT</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Fetch SRA metadata for SRP, SRR, SRX, SRS, GSM, or related accessions.&quot;&quot;&quot;</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">_client</span><span class="p">()</span><span class="o">.</span><span class="n">sra_metadata</span><span class="p">(</span>
+        <span class="n">srp</span><span class="p">,</span>
+        <span class="n">detailed</span><span class="o">=</span><span class="n">detailed</span><span class="p">,</span>
+        <span class="n">sample_attribute</span><span class="o">=</span><span class="n">include_sample_attributes</span><span class="p">,</span>
+        <span class="n">expand_sample_attributes</span><span class="o">=</span><span class="n">expand_sample_attributes</span><span class="p">,</span>
+        <span class="n">include_pmids</span><span class="o">=</span><span class="n">include_pmids</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="k">return</span> <span class="n">_limited_records</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="n">limit</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="get_geo_metadata">
+<a class="viewcode-back" href="../../pysradb.html#pysradb.mcp_server.get_geo_metadata">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_geo_metadata</span><span class="p">(</span>
+    <span class="n">gse</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">detailed</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n">include_sample_attributes</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n">expand_sample_attributes</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n">include_pmids</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n">limit</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">DEFAULT_RECORDS_LIMIT</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Fetch GEO metadata for a GSE accession.&quot;&quot;&quot;</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">_client</span><span class="p">()</span><span class="o">.</span><span class="n">geo_metadata</span><span class="p">(</span>
+        <span class="n">gse</span><span class="p">,</span>
+        <span class="n">detailed</span><span class="o">=</span><span class="n">detailed</span><span class="p">,</span>
+        <span class="n">sample_attribute</span><span class="o">=</span><span class="n">include_sample_attributes</span><span class="p">,</span>
+        <span class="n">expand_sample_attributes</span><span class="o">=</span><span class="n">expand_sample_attributes</span><span class="p">,</span>
+        <span class="n">include_pmids</span><span class="o">=</span><span class="n">include_pmids</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="k">return</span> <span class="n">_limited_records</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="n">limit</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="get_gds_results">
+<a class="viewcode-back" href="../../pysradb.html#pysradb.mcp_server.get_gds_results">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_gds_results</span><span class="p">(</span>
+    <span class="n">gse</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">limit</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">DEFAULT_RECORDS_LIMIT</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Fetch NCBI GEO DataSets summary results for a GSE accession.&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">_limited_records</span><span class="p">(</span><span class="n">_client</span><span class="p">()</span><span class="o">.</span><span class="n">fetch_gds_results</span><span class="p">(</span><span class="n">gse</span><span class="p">),</span> <span class="n">limit</span><span class="o">=</span><span class="n">limit</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="get_gsm_soft_metadata">
+<a class="viewcode-back" href="../../pysradb.html#pysradb.mcp_server.get_gsm_soft_metadata">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_gsm_soft_metadata</span><span class="p">(</span><span class="n">gsm_ids</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Fetch parsed GEO SOFT metadata for one or more GSM accessions.&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">_json_safe</span><span class="p">(</span><span class="n">_client</span><span class="p">()</span><span class="o">.</span><span class="n">fetch_gsm_soft</span><span class="p">(</span><span class="n">gsm_ids</span><span class="p">))</span></div>
+
+
+
+<div class="viewcode-block" id="search_datasets">
+<a class="viewcode-back" href="../../pysradb.html#pysradb.mcp_server.search_datasets">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">search_datasets</span><span class="p">(</span>
+    <span class="n">query</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">db</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;sra&quot;</span><span class="p">,</span>
+    <span class="n">max_results</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">DEFAULT_RECORDS_LIMIT</span><span class="p">,</span>
+    <span class="n">detailed</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Search public sequencing metadata in SRA, ENA, or GEO.&quot;&quot;&quot;</span>
+    <span class="n">db</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+    <span class="n">verbosity</span> <span class="o">=</span> <span class="mi">3</span> <span class="k">if</span> <span class="n">detailed</span> <span class="k">else</span> <span class="mi">2</span>
+    <span class="n">query_terms</span> <span class="o">=</span> <span class="p">[</span><span class="n">query</span><span class="p">]</span>
+
+    <span class="k">if</span> <span class="n">db</span> <span class="o">==</span> <span class="s2">&quot;sra&quot;</span><span class="p">:</span>
+        <span class="n">searcher</span> <span class="o">=</span> <span class="n">SraSearch</span><span class="p">(</span><span class="n">verbosity</span><span class="p">,</span> <span class="n">max_results</span><span class="p">,</span> <span class="n">query</span><span class="o">=</span><span class="n">query_terms</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">db</span> <span class="o">==</span> <span class="s2">&quot;ena&quot;</span><span class="p">:</span>
+        <span class="n">searcher</span> <span class="o">=</span> <span class="n">EnaSearch</span><span class="p">(</span><span class="n">verbosity</span><span class="p">,</span> <span class="n">max_results</span><span class="p">,</span> <span class="n">query</span><span class="o">=</span><span class="n">query_terms</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">db</span> <span class="o">==</span> <span class="s2">&quot;geo&quot;</span><span class="p">:</span>
+        <span class="n">searcher</span> <span class="o">=</span> <span class="n">GeoSearch</span><span class="p">(</span><span class="n">verbosity</span><span class="p">,</span> <span class="n">max_results</span><span class="p">,</span> <span class="n">query</span><span class="o">=</span><span class="n">query_terms</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;db must be one of: sra, ena, geo&quot;</span><span class="p">)</span>
+
+    <span class="n">searcher</span><span class="o">.</span><span class="n">search</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">_limited_records</span><span class="p">(</span><span class="n">searcher</span><span class="o">.</span><span class="n">get_df</span><span class="p">(),</span> <span class="n">limit</span><span class="o">=</span><span class="n">max_results</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="convert_accession">
+<a class="viewcode-back" href="../../pysradb.html#pysradb.mcp_server.convert_accession">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">convert_accession</span><span class="p">(</span>
+    <span class="n">accession</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">target</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">detailed</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n">include_sample_attributes</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n">expand_sample_attributes</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n">limit</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">DEFAULT_RECORDS_LIMIT</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Convert between common GEO and SRA accessions.&quot;&quot;&quot;</span>
+    <span class="n">target</span> <span class="o">=</span> <span class="n">target</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+    <span class="n">prefix</span> <span class="o">=</span> <span class="n">accession</span><span class="p">[:</span><span class="mi">3</span><span class="p">]</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+    <span class="n">method_name</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">prefix</span><span class="si">}</span><span class="s2">_to_</span><span class="si">{</span><span class="n">target</span><span class="si">}</span><span class="s2">&quot;</span>
+
+    <span class="k">if</span> <span class="n">method_name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">ACCESSION_CONVERSIONS</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+            <span class="s2">&quot;Unsupported conversion. Use a GSE, GSM, SRP, SRR, SRS, or SRX &quot;</span>
+            <span class="s2">&quot;accession and target one of gse, gsm, srp, srr, srs, or srx.&quot;</span>
+        <span class="p">)</span>
+
+    <span class="n">method</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">_client</span><span class="p">(),</span> <span class="n">method_name</span><span class="p">)</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">method</span><span class="p">(</span>
+        <span class="n">accession</span><span class="p">,</span>
+        <span class="n">detailed</span><span class="o">=</span><span class="n">detailed</span><span class="p">,</span>
+        <span class="n">sample_attribute</span><span class="o">=</span><span class="n">include_sample_attributes</span><span class="p">,</span>
+        <span class="n">expand_sample_attributes</span><span class="o">=</span><span class="n">expand_sample_attributes</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="k">return</span> <span class="n">_limited_records</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="n">limit</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="convert_bioproject_to_srp">
+<a class="viewcode-back" href="../../pysradb.html#pysradb.mcp_server.convert_bioproject_to_srp">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">convert_bioproject_to_srp</span><span class="p">(</span><span class="n">bioproject</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Convert a PRJNA BioProject accession to matching SRP accessions.&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="p">{</span>
+        <span class="s2">&quot;bioproject&quot;</span><span class="p">:</span> <span class="n">bioproject</span><span class="p">,</span>
+        <span class="s2">&quot;srp_accessions&quot;</span><span class="p">:</span> <span class="n">_client</span><span class="p">()</span><span class="o">.</span><span class="n">bioproject_to_srp</span><span class="p">(</span><span class="n">bioproject</span><span class="p">),</span>
+    <span class="p">}</span></div>
+
+
+
+<div class="viewcode-block" id="get_ena_fastq_urls">
+<a class="viewcode-back" href="../../pysradb.html#pysradb.mcp_server.get_ena_fastq_urls">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_ena_fastq_urls</span><span class="p">(</span><span class="n">srp</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">limit</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">DEFAULT_RECORDS_LIMIT</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Fetch ENA FASTQ URLs for an SRA project accession without downloading files.&quot;&quot;&quot;</span>
+    <span class="n">urls</span> <span class="o">=</span> <span class="n">_client</span><span class="p">()</span><span class="o">.</span><span class="n">fetch_ena_fastq</span><span class="p">(</span><span class="n">srp</span><span class="p">)</span>
+    <span class="n">safe_limit</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">min</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">limit</span><span class="p">),</span> <span class="n">MAX_RECORDS_LIMIT</span><span class="p">))</span>
+    <span class="k">return</span> <span class="p">{</span>
+        <span class="s2">&quot;accession&quot;</span><span class="p">:</span> <span class="n">srp</span><span class="p">,</span>
+        <span class="s2">&quot;urls&quot;</span><span class="p">:</span> <span class="n">urls</span><span class="p">[:</span><span class="n">safe_limit</span><span class="p">],</span>
+        <span class="s2">&quot;returned&quot;</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="n">urls</span><span class="p">[:</span><span class="n">safe_limit</span><span class="p">]),</span>
+        <span class="s2">&quot;total_urls&quot;</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="n">urls</span><span class="p">),</span>
+        <span class="s2">&quot;truncated&quot;</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="n">urls</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">safe_limit</span><span class="p">,</span>
+    <span class="p">}</span></div>
+
+
+
+<div class="viewcode-block" id="get_geo_supplementary_links">
+<a class="viewcode-back" href="../../pysradb.html#pysradb.mcp_server.get_geo_supplementary_links">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_geo_supplementary_links</span><span class="p">(</span><span class="n">gse</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;List GEO supplementary file links for a GSE accession without downloading.&quot;&quot;&quot;</span>
+    <span class="n">links</span><span class="p">,</span> <span class="n">root_url</span> <span class="o">=</span> <span class="n">_geo_client</span><span class="p">()</span><span class="o">.</span><span class="n">get_download_links</span><span class="p">(</span><span class="n">gse</span><span class="p">)</span>
+    <span class="k">return</span> <span class="p">{</span>
+        <span class="s2">&quot;gse&quot;</span><span class="p">:</span> <span class="n">gse</span><span class="p">,</span>
+        <span class="s2">&quot;root_url&quot;</span><span class="p">:</span> <span class="n">root_url</span><span class="p">,</span>
+        <span class="s2">&quot;links&quot;</span><span class="p">:</span> <span class="n">links</span><span class="p">,</span>
+        <span class="s2">&quot;absolute_urls&quot;</span><span class="p">:</span> <span class="p">[</span><span class="n">root_url</span> <span class="o">+</span> <span class="n">link</span> <span class="k">for</span> <span class="n">link</span> <span class="ow">in</span> <span class="n">links</span><span class="p">],</span>
+    <span class="p">}</span></div>
+
+
+
+<div class="viewcode-block" id="get_geo_matrix_url">
+<a class="viewcode-back" href="../../pysradb.html#pysradb.mcp_server.get_geo_matrix_url">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_geo_matrix_url</span><span class="p">(</span><span class="n">accession</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return the GEO Series Matrix URL for a GSE accession without downloading.&quot;&quot;&quot;</span>
+    <span class="n">url</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="s2">&quot;https://ftp.ncbi.nlm.nih.gov/geo/series/&quot;</span>
+        <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">accession</span><span class="p">[:</span><span class="o">-</span><span class="mi">3</span><span class="p">]</span><span class="si">}</span><span class="s2">nnn/</span><span class="si">{</span><span class="n">accession</span><span class="si">}</span><span class="s2">/matrix/</span><span class="si">{</span><span class="n">accession</span><span class="si">}</span><span class="s2">_series_matrix.txt.gz&quot;</span>
+    <span class="p">)</span>
+    <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;accession&quot;</span><span class="p">:</span> <span class="n">accession</span><span class="p">,</span> <span class="s2">&quot;url&quot;</span><span class="p">:</span> <span class="n">url</span><span class="p">}</span></div>
+
+
+
+<div class="viewcode-block" id="map_publication_identifiers">
+<a class="viewcode-back" href="../../pysradb.html#pysradb.mcp_server.map_publication_identifiers">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">map_publication_identifiers</span><span class="p">(</span>
+    <span class="n">identifier</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">target</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;identifiers&quot;</span><span class="p">,</span>
+    <span class="n">detailed</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n">limit</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">DEFAULT_RECORDS_LIMIT</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Map SRP, GSE, PMID, PMC, or DOI identifiers to publications or datasets.&quot;&quot;&quot;</span>
+    <span class="n">target</span> <span class="o">=</span> <span class="n">target</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;-&quot;</span><span class="p">,</span> <span class="s2">&quot;_&quot;</span><span class="p">)</span>
+    <span class="n">source</span> <span class="o">=</span> <span class="n">identifier</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;:&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+    <span class="n">client</span> <span class="o">=</span> <span class="n">_client</span><span class="p">()</span>
+
+    <span class="k">if</span> <span class="n">identifier</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;SRP&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">target</span> <span class="ow">in</span> <span class="p">{</span><span class="s2">&quot;pmid&quot;</span><span class="p">,</span> <span class="s2">&quot;pmids&quot;</span><span class="p">}:</span>
+        <span class="n">df</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">srp_to_pmid</span><span class="p">(</span><span class="n">identifier</span><span class="p">,</span> <span class="n">detailed</span><span class="o">=</span><span class="n">detailed</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">identifier</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;GSE&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">target</span> <span class="ow">in</span> <span class="p">{</span><span class="s2">&quot;pmid&quot;</span><span class="p">,</span> <span class="s2">&quot;pmids&quot;</span><span class="p">}:</span>
+        <span class="n">df</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">gse_to_pmid</span><span class="p">(</span><span class="n">identifier</span><span class="p">,</span> <span class="n">detailed</span><span class="o">=</span><span class="n">detailed</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">identifier</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;PMC&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">target</span> <span class="o">==</span> <span class="s2">&quot;identifiers&quot;</span><span class="p">:</span>
+        <span class="n">df</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">pmc_to_identifiers</span><span class="p">(</span><span class="n">identifier</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">identifier</span><span class="o">.</span><span class="n">isdigit</span><span class="p">()</span> <span class="ow">and</span> <span class="n">target</span> <span class="o">==</span> <span class="s2">&quot;identifiers&quot;</span><span class="p">:</span>
+        <span class="n">df</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">pmid_to_identifiers</span><span class="p">(</span><span class="n">identifier</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">identifier</span><span class="o">.</span><span class="n">isdigit</span><span class="p">()</span> <span class="ow">and</span> <span class="n">target</span> <span class="o">==</span> <span class="s2">&quot;gse&quot;</span><span class="p">:</span>
+        <span class="n">df</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">pmid_to_gse</span><span class="p">(</span><span class="n">identifier</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">identifier</span><span class="o">.</span><span class="n">isdigit</span><span class="p">()</span> <span class="ow">and</span> <span class="n">target</span> <span class="o">==</span> <span class="s2">&quot;srp&quot;</span><span class="p">:</span>
+        <span class="n">df</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">pmid_to_srp</span><span class="p">(</span><span class="n">identifier</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">source</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;10.&quot;</span><span class="p">)</span> <span class="ow">or</span> <span class="s2">&quot;/&quot;</span> <span class="ow">in</span> <span class="n">identifier</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">target</span> <span class="o">==</span> <span class="s2">&quot;identifiers&quot;</span><span class="p">:</span>
+            <span class="n">df</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">doi_to_identifiers</span><span class="p">(</span><span class="n">identifier</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">target</span> <span class="o">==</span> <span class="s2">&quot;gse&quot;</span><span class="p">:</span>
+            <span class="n">df</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">doi_to_gse</span><span class="p">(</span><span class="n">identifier</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">target</span> <span class="o">==</span> <span class="s2">&quot;srp&quot;</span><span class="p">:</span>
+            <span class="n">df</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">doi_to_srp</span><span class="p">(</span><span class="n">identifier</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;For DOI inputs, target must be identifiers, gse, or srp.&quot;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+            <span class="s2">&quot;Unsupported mapping. Use SRP/GSE with target=pmid, PMID with &quot;</span>
+            <span class="s2">&quot;target=identifiers/gse/srp, PMC with target=identifiers, or DOI &quot;</span>
+            <span class="s2">&quot;with target=identifiers/gse/srp.&quot;</span>
+        <span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">_limited_records</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="n">limit</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="get_publication_info">
+<a class="viewcode-back" href="../../pysradb.html#pysradb.mcp_server.get_publication_info">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_publication_info</span><span class="p">(</span>
+    <span class="n">ids</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">detailed</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n">skip_journal_metrics</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n">limit</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">DEFAULT_RECORDS_LIMIT</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Get publication metadata and journal metrics for PMIDs, PMCIDs, or DOIs.&quot;&quot;&quot;</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">_client</span><span class="p">()</span><span class="o">.</span><span class="n">pmid_info</span><span class="p">(</span>
+        <span class="n">ids</span><span class="p">,</span>
+        <span class="n">detailed</span><span class="o">=</span><span class="n">detailed</span><span class="p">,</span>
+        <span class="n">skip_journal_metrics</span><span class="o">=</span><span class="n">skip_journal_metrics</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="k">return</span> <span class="n">_limited_records</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="n">limit</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="get_publication_metadata">
+<a class="viewcode-back" href="../../pysradb.html#pysradb.mcp_server.get_publication_metadata">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_publication_metadata</span><span class="p">(</span>
+    <span class="n">pmids</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">limit</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">DEFAULT_RECORDS_LIMIT</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Fetch title, journal, DOI, date, authors, ISSN, and citation counts for PMIDs.&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">_limited_records</span><span class="p">(</span><span class="n">_client</span><span class="p">()</span><span class="o">.</span><span class="n">fetch_pmid_metadata</span><span class="p">(</span><span class="n">pmids</span><span class="p">),</span> <span class="n">limit</span><span class="o">=</span><span class="n">limit</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="get_pmids_for_bioproject">
+<a class="viewcode-back" href="../../pysradb.html#pysradb.mcp_server.get_pmids_for_bioproject">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_pmids_for_bioproject</span><span class="p">(</span><span class="n">bioproject</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Fetch PMIDs associated with BioProject accessions.&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">_json_safe</span><span class="p">(</span><span class="n">_client</span><span class="p">()</span><span class="o">.</span><span class="n">fetch_bioproject_pmids</span><span class="p">(</span><span class="n">bioproject</span><span class="p">))</span></div>
+
+
+
+<div class="viewcode-block" id="get_pmids_for_sra_accession">
+<a class="viewcode-back" href="../../pysradb.html#pysradb.mcp_server.get_pmids_for_sra_accession">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_pmids_for_sra_accession</span><span class="p">(</span>
+    <span class="n">accession</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">detailed</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n">limit</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">DEFAULT_RECORDS_LIMIT</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Get PMIDs for SRP, SRR, SRX, SRS, or other SRA accessions.&quot;&quot;&quot;</span>
+    <span class="n">client</span> <span class="o">=</span> <span class="n">_client</span><span class="p">()</span>
+    <span class="n">prefix</span> <span class="o">=</span> <span class="n">accession</span><span class="p">[:</span><span class="mi">3</span><span class="p">]</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">prefix</span> <span class="o">==</span> <span class="s2">&quot;SRP&quot;</span><span class="p">:</span>
+        <span class="n">df</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">srp_to_pmid</span><span class="p">(</span><span class="n">accession</span><span class="p">,</span> <span class="n">detailed</span><span class="o">=</span><span class="n">detailed</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">prefix</span> <span class="o">==</span> <span class="s2">&quot;SRR&quot;</span><span class="p">:</span>
+        <span class="n">df</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">srr_to_pmid</span><span class="p">(</span><span class="n">accession</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">prefix</span> <span class="o">==</span> <span class="s2">&quot;SRX&quot;</span><span class="p">:</span>
+        <span class="n">df</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">srx_to_pmid</span><span class="p">(</span><span class="n">accession</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">prefix</span> <span class="o">==</span> <span class="s2">&quot;SRS&quot;</span><span class="p">:</span>
+        <span class="n">df</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">srs_to_pmid</span><span class="p">(</span><span class="n">accession</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">df</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">sra_to_pmid</span><span class="p">(</span><span class="n">accession</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">_limited_records</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="n">limit</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="get_pmids_for_gse">
+<a class="viewcode-back" href="../../pysradb.html#pysradb.mcp_server.get_pmids_for_gse">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_pmids_for_gse</span><span class="p">(</span>
+    <span class="n">gse</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">detailed</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n">limit</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">DEFAULT_RECORDS_LIMIT</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Get PMIDs for GSE accessions.&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">_limited_records</span><span class="p">(</span><span class="n">_client</span><span class="p">()</span><span class="o">.</span><span class="n">gse_to_pmid</span><span class="p">(</span><span class="n">gse</span><span class="p">,</span> <span class="n">detailed</span><span class="o">=</span><span class="n">detailed</span><span class="p">),</span> <span class="n">limit</span><span class="o">=</span><span class="n">limit</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="get_pmids_for_arrayexpress">
+<a class="viewcode-back" href="../../pysradb.html#pysradb.mcp_server.get_pmids_for_arrayexpress">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_pmids_for_arrayexpress</span><span class="p">(</span>
+    <span class="n">accession</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">limit</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">DEFAULT_RECORDS_LIMIT</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Get PMIDs for ArrayExpress accessions.&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">_limited_records</span><span class="p">(</span><span class="n">_client</span><span class="p">()</span><span class="o">.</span><span class="n">ae_to_pmid</span><span class="p">(</span><span class="n">accession</span><span class="p">),</span> <span class="n">limit</span><span class="o">=</span><span class="n">limit</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="get_pmids_for_ena_or_bioproject">
+<a class="viewcode-back" href="../../pysradb.html#pysradb.mcp_server.get_pmids_for_ena_or_bioproject">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_pmids_for_ena_or_bioproject</span><span class="p">(</span>
+    <span class="n">accession</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">limit</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">DEFAULT_RECORDS_LIMIT</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Get PMIDs for ENA or BioProject accessions such as PRJEB or PRJNA.&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">_limited_records</span><span class="p">(</span><span class="n">_client</span><span class="p">()</span><span class="o">.</span><span class="n">ena_to_pmid</span><span class="p">(</span><span class="n">accession</span><span class="p">),</span> <span class="n">limit</span><span class="o">=</span><span class="n">limit</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="convert_doi_to_pmid">
+<a class="viewcode-back" href="../../pysradb.html#pysradb.mcp_server.convert_doi_to_pmid">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">convert_doi_to_pmid</span><span class="p">(</span><span class="n">doi</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Convert DOI identifiers to PMIDs.&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">_json_safe</span><span class="p">(</span><span class="n">_client</span><span class="p">()</span><span class="o">.</span><span class="n">doi_to_pmid</span><span class="p">(</span><span class="n">doi</span><span class="p">))</span></div>
+
+
+
+<div class="viewcode-block" id="convert_pmid_to_pmc">
+<a class="viewcode-back" href="../../pysradb.html#pysradb.mcp_server.convert_pmid_to_pmc">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">convert_pmid_to_pmc</span><span class="p">(</span><span class="n">pmid</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Convert PMID identifiers to PMC identifiers.&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">_json_safe</span><span class="p">(</span><span class="n">_client</span><span class="p">()</span><span class="o">.</span><span class="n">pmid_to_pmc</span><span class="p">(</span><span class="n">pmid</span><span class="p">))</span></div>
+
+
+
+<div class="viewcode-block" id="get_identifiers_from_pmc">
+<a class="viewcode-back" href="../../pysradb.html#pysradb.mcp_server.get_identifiers_from_pmc">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_identifiers_from_pmc</span><span class="p">(</span>
+    <span class="n">pmc_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">convert_missing</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="n">limit</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">DEFAULT_RECORDS_LIMIT</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Extract GSE, PRJNA, SRP, SRR, SRX, and SRS identifiers from PMC articles.&quot;&quot;&quot;</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">_client</span><span class="p">()</span><span class="o">.</span><span class="n">pmc_to_identifiers</span><span class="p">(</span><span class="n">pmc_id</span><span class="p">,</span> <span class="n">convert_missing</span><span class="o">=</span><span class="n">convert_missing</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">_limited_records</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="n">limit</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="get_identifiers_from_pmid">
+<a class="viewcode-back" href="../../pysradb.html#pysradb.mcp_server.get_identifiers_from_pmid">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_identifiers_from_pmid</span><span class="p">(</span>
+    <span class="n">pmid</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">limit</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">DEFAULT_RECORDS_LIMIT</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Extract dataset identifiers from PubMed articles via PMC links.&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">_limited_records</span><span class="p">(</span><span class="n">_client</span><span class="p">()</span><span class="o">.</span><span class="n">pmid_to_identifiers</span><span class="p">(</span><span class="n">pmid</span><span class="p">),</span> <span class="n">limit</span><span class="o">=</span><span class="n">limit</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="get_identifiers_from_doi">
+<a class="viewcode-back" href="../../pysradb.html#pysradb.mcp_server.get_identifiers_from_doi">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_identifiers_from_doi</span><span class="p">(</span>
+    <span class="n">doi</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">limit</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">DEFAULT_RECORDS_LIMIT</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Extract dataset identifiers from DOI-linked articles.&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">_limited_records</span><span class="p">(</span><span class="n">_client</span><span class="p">()</span><span class="o">.</span><span class="n">doi_to_identifiers</span><span class="p">(</span><span class="n">doi</span><span class="p">),</span> <span class="n">limit</span><span class="o">=</span><span class="n">limit</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="get_gse_from_pmid">
+<a class="viewcode-back" href="../../pysradb.html#pysradb.mcp_server.get_gse_from_pmid">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_gse_from_pmid</span><span class="p">(</span><span class="n">pmid</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">limit</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">DEFAULT_RECORDS_LIMIT</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Get GSE accessions from PMIDs.&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">_limited_records</span><span class="p">(</span><span class="n">_client</span><span class="p">()</span><span class="o">.</span><span class="n">pmid_to_gse</span><span class="p">(</span><span class="n">pmid</span><span class="p">),</span> <span class="n">limit</span><span class="o">=</span><span class="n">limit</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="get_srp_from_pmid">
+<a class="viewcode-back" href="../../pysradb.html#pysradb.mcp_server.get_srp_from_pmid">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_srp_from_pmid</span><span class="p">(</span><span class="n">pmid</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">limit</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">DEFAULT_RECORDS_LIMIT</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Get SRP accessions from PMIDs.&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">_limited_records</span><span class="p">(</span><span class="n">_client</span><span class="p">()</span><span class="o">.</span><span class="n">pmid_to_srp</span><span class="p">(</span><span class="n">pmid</span><span class="p">),</span> <span class="n">limit</span><span class="o">=</span><span class="n">limit</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="get_gse_from_doi">
+<a class="viewcode-back" href="../../pysradb.html#pysradb.mcp_server.get_gse_from_doi">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_gse_from_doi</span><span class="p">(</span><span class="n">doi</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">limit</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">DEFAULT_RECORDS_LIMIT</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Get GSE accessions from DOIs.&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">_limited_records</span><span class="p">(</span><span class="n">_client</span><span class="p">()</span><span class="o">.</span><span class="n">doi_to_gse</span><span class="p">(</span><span class="n">doi</span><span class="p">),</span> <span class="n">limit</span><span class="o">=</span><span class="n">limit</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="get_srp_from_doi">
+<a class="viewcode-back" href="../../pysradb.html#pysradb.mcp_server.get_srp_from_doi">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_srp_from_doi</span><span class="p">(</span><span class="n">doi</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">limit</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">DEFAULT_RECORDS_LIMIT</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Get SRP accessions from DOIs.&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">_limited_records</span><span class="p">(</span><span class="n">_client</span><span class="p">()</span><span class="o">.</span><span class="n">doi_to_srp</span><span class="p">(</span><span class="n">doi</span><span class="p">),</span> <span class="n">limit</span><span class="o">=</span><span class="n">limit</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="search_pmc_for_external_source">
+<a class="viewcode-back" href="../../pysradb.html#pysradb.mcp_server.search_pmc_for_external_source">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">search_pmc_for_external_source</span><span class="p">(</span><span class="n">identifier</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Search PMC for PMIDs mentioning an external source such as SRP or GSE.&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="p">{</span>
+        <span class="s2">&quot;identifier&quot;</span><span class="p">:</span> <span class="n">identifier</span><span class="p">,</span>
+        <span class="s2">&quot;pmids&quot;</span><span class="p">:</span> <span class="n">_client</span><span class="p">()</span><span class="o">.</span><span class="n">search_pmc_for_external_sources</span><span class="p">([</span><span class="n">identifier</span><span class="p">]),</span>
+    <span class="p">}</span></div>
+
+
+
+<div class="viewcode-block" id="get_pmc_fulltext_excerpt">
+<a class="viewcode-back" href="../../pysradb.html#pysradb.mcp_server.get_pmc_fulltext_excerpt">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_pmc_fulltext_excerpt</span><span class="p">(</span><span class="n">pmc_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">char_limit</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">4000</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Fetch a bounded PMC full-text XML excerpt for inspection.&quot;&quot;&quot;</span>
+    <span class="n">safe_limit</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">min</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">char_limit</span><span class="p">),</span> <span class="mi">20000</span><span class="p">))</span>
+    <span class="n">text</span> <span class="o">=</span> <span class="n">_client</span><span class="p">()</span><span class="o">.</span><span class="n">fetch_pmc_fulltext</span><span class="p">(</span><span class="n">pmc_id</span><span class="p">)</span> <span class="ow">or</span> <span class="s2">&quot;&quot;</span>
+    <span class="k">return</span> <span class="p">{</span>
+        <span class="s2">&quot;pmc_id&quot;</span><span class="p">:</span> <span class="n">pmc_id</span> <span class="k">if</span> <span class="n">pmc_id</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;PMC&quot;</span><span class="p">)</span> <span class="k">else</span> <span class="sa">f</span><span class="s2">&quot;PMC</span><span class="si">{</span><span class="n">pmc_id</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;text&quot;</span><span class="p">:</span> <span class="n">text</span><span class="p">[:</span><span class="n">safe_limit</span><span class="p">],</span>
+        <span class="s2">&quot;returned_chars&quot;</span><span class="p">:</span> <span class="nb">min</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">text</span><span class="p">),</span> <span class="n">safe_limit</span><span class="p">),</span>
+        <span class="s2">&quot;total_chars&quot;</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="n">text</span><span class="p">),</span>
+        <span class="s2">&quot;truncated&quot;</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="n">text</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">safe_limit</span><span class="p">,</span>
+    <span class="p">}</span></div>
+
+
+
+<div class="viewcode-block" id="extract_identifiers_from_text">
+<a class="viewcode-back" href="../../pysradb.html#pysradb.mcp_server.extract_identifiers_from_text">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">extract_identifiers_from_text</span><span class="p">(</span><span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Extract dataset identifiers from supplied text without network access.&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">_client</span><span class="p">()</span><span class="o">.</span><span class="n">extract_identifiers_from_text</span><span class="p">(</span><span class="n">text</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="create_server">
+<a class="viewcode-back" href="../../pysradb.html#pysradb.mcp_server.create_server">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">create_server</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Create and configure the pysradb MCP server.&quot;&quot;&quot;</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">mcp.server.fastmcp</span><span class="w"> </span><span class="kn">import</span> <span class="n">FastMCP</span>
+    <span class="k">except</span> <span class="ne">ImportError</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>  <span class="c1"># pragma: no cover - exercised without optional dep</span>
+        <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span>
+            <span class="s2">&quot;MCP support requires the optional dependency. Install with: &quot;</span>
+            <span class="s1">&#39;python -m pip install &quot;pysradb[mcp]&quot;&#39;</span>
+        <span class="p">)</span> <span class="kn">from</span><span class="w"> </span><span class="nn">exc</span>
+
+    <span class="n">mcp</span> <span class="o">=</span> <span class="n">FastMCP</span><span class="p">(</span><span class="s2">&quot;pysradb&quot;</span><span class="p">)</span>
+
+    <span class="nd">@mcp</span><span class="o">.</span><span class="n">resource</span><span class="p">(</span><span class="s2">&quot;pysradb://about&quot;</span><span class="p">)</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">about</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Describe this MCP server and its safety constraints.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;pysradb </span><span class="si">{</span><span class="n">__version__</span><span class="si">}</span><span class="s2"> MCP server. Provides read-oriented tools for &quot;</span>
+            <span class="s2">&quot;SRA, ENA, and GEO metadata search, accession conversion, and &quot;</span>
+            <span class="s2">&quot;publication identifier mapping. Bulk sequencing downloads are not &quot;</span>
+            <span class="s2">&quot;exposed as MCP tools.&quot;</span>
+        <span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">tool</span> <span class="ow">in</span> <span class="p">[</span>
+        <span class="n">list_capabilities</span><span class="p">,</span>
+        <span class="n">get_metadata</span><span class="p">,</span>
+        <span class="n">get_sra_metadata</span><span class="p">,</span>
+        <span class="n">get_geo_metadata</span><span class="p">,</span>
+        <span class="n">get_gds_results</span><span class="p">,</span>
+        <span class="n">get_gsm_soft_metadata</span><span class="p">,</span>
+        <span class="n">search_datasets</span><span class="p">,</span>
+        <span class="n">convert_accession</span><span class="p">,</span>
+        <span class="n">convert_bioproject_to_srp</span><span class="p">,</span>
+        <span class="n">get_ena_fastq_urls</span><span class="p">,</span>
+        <span class="n">get_geo_supplementary_links</span><span class="p">,</span>
+        <span class="n">get_geo_matrix_url</span><span class="p">,</span>
+        <span class="n">map_publication_identifiers</span><span class="p">,</span>
+        <span class="n">get_publication_info</span><span class="p">,</span>
+        <span class="n">get_publication_metadata</span><span class="p">,</span>
+        <span class="n">get_pmids_for_bioproject</span><span class="p">,</span>
+        <span class="n">get_pmids_for_sra_accession</span><span class="p">,</span>
+        <span class="n">get_pmids_for_gse</span><span class="p">,</span>
+        <span class="n">get_pmids_for_arrayexpress</span><span class="p">,</span>
+        <span class="n">get_pmids_for_ena_or_bioproject</span><span class="p">,</span>
+        <span class="n">convert_doi_to_pmid</span><span class="p">,</span>
+        <span class="n">convert_pmid_to_pmc</span><span class="p">,</span>
+        <span class="n">get_identifiers_from_pmc</span><span class="p">,</span>
+        <span class="n">get_identifiers_from_pmid</span><span class="p">,</span>
+        <span class="n">get_identifiers_from_doi</span><span class="p">,</span>
+        <span class="n">get_gse_from_pmid</span><span class="p">,</span>
+        <span class="n">get_srp_from_pmid</span><span class="p">,</span>
+        <span class="n">get_gse_from_doi</span><span class="p">,</span>
+        <span class="n">get_srp_from_doi</span><span class="p">,</span>
+        <span class="n">search_pmc_for_external_source</span><span class="p">,</span>
+        <span class="n">get_pmc_fulltext_excerpt</span><span class="p">,</span>
+        <span class="n">extract_identifiers_from_text</span><span class="p">,</span>
+    <span class="p">]:</span>
+        <span class="n">mcp</span><span class="o">.</span><span class="n">tool</span><span class="p">()(</span><span class="n">tool</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">mcp</span></div>
+
+
+
+<div class="viewcode-block" id="main">
+<a class="viewcode-back" href="../../pysradb.html#pysradb.mcp_server.main">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="n">argv</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Run the pysradb MCP server.&quot;&quot;&quot;</span>
+    <span class="n">parser</span> <span class="o">=</span> <span class="n">argparse</span><span class="o">.</span><span class="n">ArgumentParser</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s2">&quot;Run the pysradb MCP server.&quot;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+        <span class="s2">&quot;--transport&quot;</span><span class="p">,</span>
+        <span class="n">choices</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;stdio&quot;</span><span class="p">,</span> <span class="s2">&quot;streamable-http&quot;</span><span class="p">],</span>
+        <span class="n">default</span><span class="o">=</span><span class="s2">&quot;stdio&quot;</span><span class="p">,</span>
+        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;MCP transport to use.&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">args</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse_args</span><span class="p">(</span><span class="n">argv</span><span class="p">)</span>
+
+    <span class="n">server</span> <span class="o">=</span> <span class="n">create_server</span><span class="p">()</span>
+    <span class="n">server</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">transport</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">transport</span><span class="p">)</span></div>
+
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="n">main</span><span class="p">()</span>
+</pre></div>
+        </article>
+      </div>
+      <footer>
+        
+        <div class="related-pages">
+          
+          
+        </div>
+        <div class="bottom-of-page">
+          <div class="left-details">
+            <div class="copyright">
+                Copyright &#169; 2023, Saket Choudhary
+            </div>
+            Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
+            
+            <a href="https://github.com/pradyunsg/furo">Furo</a>
+            
+          </div>
+          <div class="right-details">
+            
+          </div>
+        </div>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer no-toc">
+      
+      
+      
+    </aside>
+  </div>
+</div><script src="../../_static/documentation_options.js?v=afcbd73c"></script>
+    <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../../_static/scripts/furo.js?v=46bd48cc"></script>
+    <script src="../../_static/design-tabs.js?v=f930bc37"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@jupyter-widgets/html-manager@^1.0.1/dist/embed-amd.js"></script>
+    <script src="../../_static/copy-button.js?v=5b6a40c7"></script>
+    </body>
+</html>

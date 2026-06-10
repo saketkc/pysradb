@@ -13,19 +13,19 @@
             gtag('config', 'G-CKQZFCEENZ');
             
         </script>
-    <link rel="index" title="Index" href="../genindex.html"><link rel="search" title="Search" href="../search.html">
+    <link rel="index" title="Index" href="../genindex.html"><link rel="search" title="Search" href="../search.html"><link rel="next" title="Parse BioScience Search" href="10.Parse_Bioscience_Search.html"><link rel="prev" title="Extract Identifiers from PMC/DOI" href="08.PMC_DOI_Identifiers.html">
+        <link rel="canonical" href="https://saket-choudhary.me/pysradb/notebooks/09.Metadata_enrichment.html">
         <link rel="prefetch" href="../_static/pysradb_v3.png" as="image">
 
-    <!-- Generated with Sphinx 8.2.3 and Furo 2025.09.25 -->
-        <title>Metadata Enrichment with LLMs - pysradb 3.0.0.dev0 documentation</title>
+    <!-- Generated with Sphinx 9.0.4 and Furo 2025.12.19 -->
+        <title>Metadata Enrichment with Optional LLM Backends - pysradb: SRA, ENA, and GEO metadata search</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
-    <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?v=580074bf" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?v=7bdb33bb" />
     <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=4ae1632d" />
-    <link rel="stylesheet" type="text/css" href="../_static/sphinx-dropdown.css?v=995e94df" />
-    <link rel="stylesheet" type="text/css" href="../_static/panels-bootstrap.min.css?v=21c0b90a" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
     <link rel="stylesheet" type="text/css" href="../_static/nbsphinx-code-cells.css?v=2aa19091" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo-extensions.css?v=8dab3a3b" />
-    <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=76ddadce" />
+    <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=c673637a" />
     
     
 
@@ -34,30 +34,69 @@
   body {
     --color-code-background: #eeffcc;
   --color-code-foreground: black;
-  --color-brand-primary: #0066cc;
+  --font-stack: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Segoe UI', sans-serif;
+  --font-stack--monospace: 'SFMono-Regular', ui-monospace, 'Cascadia Code', 'Liberation Mono', Menlo, monospace;
+  --color-brand-primary: #007aff;
   --color-brand-content: #0066cc;
-  --color-code-background: #f5f5f5;
-  --color-inline-code-background: #f0f0f0;
+  --color-api-name: #1d1d1f;
+  --color-api-pre-name: #6e6e73;
+  --color-background-primary: #ffffff;
+  --color-background-secondary: #f5f5f7;
+  --color-background-hover: #f2f2f7;
+  --color-code-background: #f5f5f7;
+  --color-inline-code-background: #f2f2f7;
+  --color-sidebar-background: #fbfbfd;
+  --color-sidebar-background-border: #d2d2d7;
+  --color-toc-background: #ffffff;
+  --color-toc-background-border: #d2d2d7;
+  --color-admonition-background: #f5f5f7;
+  --color-admonition-title-background: #e8f2ff;
   
   }
   @media not print {
     body[data-theme="dark"] {
       --color-code-background: #202020;
   --color-code-foreground: #d0d0d0;
-  --color-brand-primary: #3b82f6;
-  --color-brand-content: #3b82f6;
-  --color-code-background: #1e293b;
-  --color-inline-code-background: #334155;
+  --font-stack: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Segoe UI', sans-serif;
+  --font-stack--monospace: 'SFMono-Regular', ui-monospace, 'Cascadia Code', 'Liberation Mono', Menlo, monospace;
+  --color-brand-primary: #0a84ff;
+  --color-brand-content: #409cff;
+  --color-api-name: #f5f5f7;
+  --color-api-pre-name: #a1a1a6;
+  --color-background-primary: #1d1d1f;
+  --color-background-secondary: #2c2c2e;
+  --color-background-hover: #3a3a3c;
+  --color-code-background: #2c2c2e;
+  --color-inline-code-background: #3a3a3c;
+  --color-sidebar-background: #161617;
+  --color-sidebar-background-border: #38383a;
+  --color-toc-background: #1d1d1f;
+  --color-toc-background-border: #38383a;
+  --color-admonition-background: #2c2c2e;
+  --color-admonition-title-background: #06345f;
   
     }
     @media (prefers-color-scheme: dark) {
       body:not([data-theme="light"]) {
         --color-code-background: #202020;
   --color-code-foreground: #d0d0d0;
-  --color-brand-primary: #3b82f6;
-  --color-brand-content: #3b82f6;
-  --color-code-background: #1e293b;
-  --color-inline-code-background: #334155;
+  --font-stack: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Segoe UI', sans-serif;
+  --font-stack--monospace: 'SFMono-Regular', ui-monospace, 'Cascadia Code', 'Liberation Mono', Menlo, monospace;
+  --color-brand-primary: #0a84ff;
+  --color-brand-content: #409cff;
+  --color-api-name: #f5f5f7;
+  --color-api-pre-name: #a1a1a6;
+  --color-background-primary: #1d1d1f;
+  --color-background-secondary: #2c2c2e;
+  --color-background-hover: #3a3a3c;
+  --color-code-background: #2c2c2e;
+  --color-inline-code-background: #3a3a3c;
+  --color-sidebar-background: #161617;
+  --color-sidebar-background-border: #38383a;
+  --color-toc-background: #1d1d1f;
+  --color-toc-background-border: #38383a;
+  --color-admonition-background: #2c2c2e;
+  --color-admonition-title-background: #06345f;
   
       }
     }
@@ -189,7 +228,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../index.html"><div class="brand">pysradb 3.0.0.dev0 documentation</div></a>
+      <a href="../index.html"><div class="brand">pysradb: SRA, ENA, and GEO metadata search</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -213,7 +252,7 @@
     <img class="sidebar-logo" src="../_static/pysradb_v3.png" alt="Logo"/>
   </div>
   
-  <span class="sidebar-brand-text">pysradb 3.0.0.dev0 documentation</span>
+  <span class="sidebar-brand-text">pysradb: SRA, ENA, and GEO metadata search</span>
   
 </a><form class="sidebar-search-container" method="get" action="../search.html" role="search">
   <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
@@ -221,18 +260,32 @@
   <input type="hidden" name="area" value="default">
 </form>
 <div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
-  <ul>
+  <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../quickstart.html">Quickstart</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../cmdline.html">CLI</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../python-api-usage.html">Python API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mcp.html">MCP server</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../case_studies.html">Case Studies</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../notebooks.html">Tutorials &amp; Notebooks</a></li>
+<li class="toctree-l1 current has-children"><a class="reference internal" href="../notebooks.html">Tutorials &amp; Notebooks</a><input aria-label="Toggle navigation of Tutorials &amp; Notebooks" checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="README.html">pysradb notebooks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="01.Python-API_demo.html">Python API Demo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="02.Commandline_download.html">Command-line Download</a></li>
+<li class="toctree-l2"><a class="reference internal" href="03.ParallelDownload.html">Parallel Download</a></li>
+<li class="toctree-l2"><a class="reference internal" href="04.SRA_to_fastq_conda.html">Converting SRA to FASTQ using Conda</a></li>
+<li class="toctree-l2"><a class="reference internal" href="05.Downloading_subsets_of_a_project.html">Selecting Subsets of a Project</a></li>
+<li class="toctree-l2"><a class="reference internal" href="06.Multiple_SRPs.html">Querying Multiple Projects</a></li>
+<li class="toctree-l2"><a class="reference internal" href="07.Query_Search.html">Query and Search</a></li>
+<li class="toctree-l2"><a class="reference internal" href="08.PMC_DOI_Identifiers.html">Extract Identifiers from PMC/DOI</a></li>
+<li class="toctree-l2 current current-page"><a class="current reference internal" href="#">Metadata Enrichment with Optional LLM Backends</a></li>
+<li class="toctree-l2"><a class="reference internal" href="10.Parse_Bioscience_Search.html">Parse BioScience Search</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="../commands.html">API Documentation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../contributing.html">Contributing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../authors.html">Credits</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../history.html">History</a></li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../modules.html">pysradb</a><input aria-label="Toggle navigation of pysradb" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../modules.html">pysradb</a><input aria-label="Toggle navigation of pysradb" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../pysradb.html">pysradb package</a></li>
 </ul>
 </li>
@@ -256,12 +309,16 @@
         </a>
         <div class="content-icon-container">
           <div class="view-this-page">
-  <a class="muted-link" href="../_sources/notebooks/09.Metadata_enrichment.ipynb.txt" title="View this page">
+  <a class="muted-link" href="https://github.com/saketkc/pysradb/blob/develop/docs/notebooks/09.Metadata_enrichment.ipynb?plain=true" title="View this page">
     <svg><use href="#svg-eye"></use></svg>
     <span class="visually-hidden">View this page</span>
   </a>
-</div>
-<div class="theme-toggle-container theme-toggle-content">
+</div><div class="edit-this-page">
+  <a class="muted-link" href="https://github.com/saketkc/pysradb/edit/develop/docs/notebooks/09.Metadata_enrichment.ipynb" rel="edit" title="Edit this page">
+    <svg><use href="#svg-pencil"></use></svg>
+    <span class="visually-hidden">Edit this page</span>
+  </a>
+</div><div class="theme-toggle-container theme-toggle-content">
             <button class="theme-toggle" aria-label="Toggle Light / Dark / Auto color theme">
               <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
               <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
@@ -274,15 +331,11 @@
           </label>
         </div>
         <article role="main" id="furo-main-content">
-          <p><a class="reference external" href="https://colab.research.google.com/github/saketkc/pysradb/blob/develop/notebooks/09.Metadata_Enrichment_with_LLMs.ipynb"><img alt="Open In Colab" src="https://colab.research.google.com/assets/colab-badge.svg" /></a></p>
-<section id="Metadata-Enrichment-with-LLMs">
-<h1>Metadata Enrichment with LLMs<a class="headerlink" href="#Metadata-Enrichment-with-LLMs" title="Link to this heading">¶</a></h1>
-<p>pysradb now helps you ‘enrich’ your metadata frame by leveraging recent advancements in (fast) (S)LLMs. The parsed metadata can be fed to an LLM that is ‘instructed’ to enrich the metadata by returning 9 ontology-based fields:: <code class="docutils literal notranslate"><span class="pre">organ</span></code>, <code class="docutils literal notranslate"><span class="pre">tissue</span></code>, <code class="docutils literal notranslate"><span class="pre">anatomical_system</span></code>, <code class="docutils literal notranslate"><span class="pre">cell_type</span></code>, <code class="docutils literal notranslate"><span class="pre">disease</span></code>, <code class="docutils literal notranslate"><span class="pre">sex</span></code>, <code class="docutils literal notranslate"><span class="pre">development_stage</span></code>, <code class="docutils literal notranslate"><span class="pre">assay</span></code>, <code class="docutils literal notranslate"><span class="pre">organism</span></code></p>
-<p>There are two approaches in which this is possible:</p>
-<ul class="simple">
-<li><p><strong>LLMs</strong> (<a class="reference external" href="https://ollama.com/download">Requires Ollama</a> - local, no API keys)</p></li>
-<li><p><strong>Embeddings</strong> (<a class="reference external" href="https://huggingface.co/sentence-transformers">Using sentence-transformers</a> with <a class="reference external" href="https://arxiv.org/abs/2311.16075">BioLORD</a> embedding model)</p></li>
-</ul>
+          <p><a class="reference external" href="https://colab.research.google.com/github/saketkc/pysradb/blob/develop/notebooks/09.Metadata_enrichment.ipynb"><img alt="Open In Colab" src="https://colab.research.google.com/assets/colab-badge.svg" /></a></p>
+<section id="Metadata-Enrichment-with-Optional-LLM-Backends">
+<h1>Metadata Enrichment with Optional LLM Backends<a class="headerlink" href="#Metadata-Enrichment-with-Optional-LLM-Backends" title="Link to this heading">¶</a></h1>
+<p>pysradb can enrich detailed metadata by combining a sentence-transformer embedding model with an LLM backend. The workflow infers standardized columns for <code class="docutils literal notranslate"><span class="pre">age</span></code>, <code class="docutils literal notranslate"><span class="pre">sex</span></code>, <code class="docutils literal notranslate"><span class="pre">ethnicity</span></code>, <code class="docutils literal notranslate"><span class="pre">phenotype</span></code>, <code class="docutils literal notranslate"><span class="pre">cell_type</span></code>, <code class="docutils literal notranslate"><span class="pre">tissue</span></code>, <code class="docutils literal notranslate"><span class="pre">strain</span></code>, and <code class="docutils literal notranslate"><span class="pre">disease</span></code> when enough source metadata is available.</p>
+<p>This feature is optional. It requires <code class="docutils literal notranslate"><span class="pre">pysradb[enrichment]</span></code>, an embedding model download on first use, and a configured Ollama, LM Studio, or vLLM-compatible endpoint.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
 </pre></div>
@@ -301,163 +354,53 @@
 </pre></div>
 </div>
 </div>
-<div class="nboutput nblast docutils container">
+<div class="nboutput docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Installing pysradb from GitHub...
-  Installing build dependencies ... done
-  Getting requirements to build wheel ... done
-  Preparing metadata (pyproject.toml) ... done
-  Building wheel for pysradb (pyproject.toml) ... done
-pysradb installed successfully!
+pysradb 3.0.0.dev0 is already installed
 </pre></div></div>
-</div>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">pysradb</span><span class="w"> </span><span class="kn">import</span> <span class="n">SRAweb</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">pysradb.metadata_enrichment</span><span class="w"> </span><span class="kn">import</span> <span class="n">create_metadata_extractor</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">pysradb.search</span><span class="w"> </span><span class="kn">import</span> <span class="n">GeoSearch</span>
-</pre></div>
-</div>
 </div>
 <div class="nboutput nblast docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area stderr docutils container">
 <div class="highlight"><pre>
-/usr/local/lib/python3.12/dist-packages/pysradb/utils.py:16: TqdmExperimentalWarning: Using `tqdm.autonotebook.tqdm` in notebook mode. Use `tqdm.tqdm` instead to force console mode (e.g. in jupyter console)
+/home/runner/work/pysradb/pysradb/pysradb/download.py:15: TqdmExperimentalWarning: Using `tqdm.autonotebook.tqdm` in notebook mode. Use `tqdm.tqdm` instead to force console mode (e.g. in jupyter console)
   from tqdm.autonotebook import tqdm
 </pre></div></div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">pysradb</span><span class="w"> </span><span class="kn">import</span> <span class="n">SRAweb</span>
+</pre></div>
+</div>
 </div>
 <section id="Quick-Start">
 <h2>Quick Start<a class="headerlink" href="#Quick-Start" title="Link to this heading">¶</a></h2>
 <p>One line enrichment!</p>
-<p><strong>Prerequisites</strong>: Install Ollama (<a class="reference external" href="https://ollama.ai">https://ollama.ai</a>) and pull a model: <code class="docutils literal notranslate"><span class="pre">ollama</span> <span class="pre">pull</span> <span class="pre">phi3</span></code></p>
+<p><strong>Prerequisites</strong>: install the enrichment extra and prepare a local backend, for example Ollama with <code class="docutils literal notranslate"><span class="pre">ollama</span> <span class="pre">pull</span> <span class="pre">granite4:3b</span></code>.</p>
 <p>The easiest way to enrich metadata is using the <code class="docutils literal notranslate"><span class="pre">enrich=True</span></code> parameter:</p>
-<div class="nbinput docutils container">
+<div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span><span class="w"> </span>sudo<span class="w"> </span>apt<span class="w"> </span>update<span class="w"> </span>-qq<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>sudo<span class="w"> </span>apt<span class="w"> </span>install<span class="w"> </span>-qq<span class="w"> </span>pciutils<span class="w"> </span>lshw<span class="w"> </span>systemd
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Optional local setup for LLM enrichment:</span>
+<span class="c1">#   1. Install pysradb with: python -m pip install &quot;pysradb[enrichment]&quot;</span>
+<span class="c1">#   2. Install Ollama from https://ollama.com/download</span>
+<span class="c1">#   3. Run: ollama pull granite4:3b</span>
+<span class="c1"># The documentation build does not install or start system services.</span>
 </pre></div>
 </div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-Hit:1 https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2204/x86_64  InRelease
-Get:2 https://cloud.r-project.org/bin/linux/ubuntu jammy-cran40/ InRelease [3,632 B]
-Hit:3 https://cli.github.com/packages stable InRelease
-Get:4 http://security.ubuntu.com/ubuntu jammy-security InRelease [129 kB]
-Get:5 https://r2u.stat.illinois.edu/ubuntu jammy InRelease [6,555 B]
-Hit:6 http://archive.ubuntu.com/ubuntu jammy InRelease
-Get:7 http://archive.ubuntu.com/ubuntu jammy-updates InRelease [128 kB]
-Hit:8 https://ppa.launchpadcontent.net/deadsnakes/ppa/ubuntu jammy InRelease
-Get:9 https://r2u.stat.illinois.edu/ubuntu jammy/main all Packages [9,413 kB]
-Get:10 http://security.ubuntu.com/ubuntu jammy-security/universe amd64 Packages [1,288 kB]
-Hit:11 https://ppa.launchpadcontent.net/graphics-drivers/ppa/ubuntu jammy InRelease
-Hit:12 https://ppa.launchpadcontent.net/ubuntugis/ppa/ubuntu jammy InRelease
-Get:13 http://security.ubuntu.com/ubuntu jammy-security/main amd64 Packages [3,479 kB]
-Get:14 http://archive.ubuntu.com/ubuntu jammy-backports InRelease [127 kB]
-Get:15 https://r2u.stat.illinois.edu/ubuntu jammy/main amd64 Packages [2,822 kB]
-Get:16 http://archive.ubuntu.com/ubuntu jammy-updates/universe amd64 Packages [1,594 kB]
-Get:17 http://archive.ubuntu.com/ubuntu jammy-updates/restricted amd64 Packages [6,148 kB]
-Get:18 http://archive.ubuntu.com/ubuntu jammy-updates/main amd64 Packages [3,847 kB]
-Fetched 29.0 MB in 3s (8,430 kB/s)
-Reading package lists...
-Building dependency tree...
-Reading state information...
-46 packages can be upgraded. Run &#39;apt list --upgradable&#39; to see them.
-<span class="ansi-yellow-intense-fg ansi-bold">W: </span>Skipping acquire of configured file &#39;main/source/Sources&#39; as repository &#39;https://r2u.stat.illinois.edu/ubuntu jammy InRelease&#39; does not seem to provide it (sources.list entry misspelt?)
-Reading package lists...
-Building dependency tree...
-Reading state information...
-systemd is already the newest version (249.11-0ubuntu3.17).
-systemd set to manually installed.
-The following additional packages will be installed:
-  libpci3 pci.ids usb.ids
-The following NEW packages will be installed:
-  libpci3 lshw pci.ids pciutils usb.ids
-0 upgraded, 5 newly installed, 0 to remove and 46 not upgraded.
-Need to get 883 kB of archives.
-After this operation, 3,256 kB of additional disk space will be used.
-Get:1 http://archive.ubuntu.com/ubuntu jammy-updates/main amd64 pci.ids all 0.0~2022.01.22-1ubuntu0.1 [251 kB]
-Get:2 http://archive.ubuntu.com/ubuntu jammy/main amd64 libpci3 amd64 1:3.7.0-6 [28.9 kB]
-Get:3 http://archive.ubuntu.com/ubuntu jammy/main amd64 lshw amd64 02.19.git.2021.06.19.996aaad9c7-2build1 [321 kB]
-Get:4 http://archive.ubuntu.com/ubuntu jammy/main amd64 pciutils amd64 1:3.7.0-6 [63.6 kB]
-Get:5 http://archive.ubuntu.com/ubuntu jammy/main amd64 usb.ids all 2022.04.02-1 [219 kB]
-Fetched 883 kB in 1s (686 kB/s)
-debconf: unable to initialize frontend: Dialog
-debconf: (No usable dialog-like program is installed, so the dialog based frontend cannot be used. at /usr/share/perl5/Debconf/FrontEnd/Dialog.pm line 78, &lt;&gt; line 5.)
-debconf: falling back to frontend: Readline
-debconf: unable to initialize frontend: Readline
-debconf: (This frontend requires a controlling tty.)
-debconf: falling back to frontend: Teletype
-dpkg-preconfigure: unable to re-open stdin:
-Selecting previously unselected package pci.ids.
-(Reading database ... 125080 files and directories currently installed.)
-Preparing to unpack .../pci.ids_0.0~2022.01.22-1ubuntu0.1_all.deb ...
-Unpacking pci.ids (0.0~2022.01.22-1ubuntu0.1) ...
-Selecting previously unselected package libpci3:amd64.
-Preparing to unpack .../libpci3_1%3a3.7.0-6_amd64.deb ...
-Unpacking libpci3:amd64 (1:3.7.0-6) ...
-Selecting previously unselected package lshw.
-Preparing to unpack .../lshw_02.19.git.2021.06.19.996aaad9c7-2build1_amd64.deb ...
-Unpacking lshw (02.19.git.2021.06.19.996aaad9c7-2build1) ...
-Selecting previously unselected package pciutils.
-Preparing to unpack .../pciutils_1%3a3.7.0-6_amd64.deb ...
-Unpacking pciutils (1:3.7.0-6) ...
-Selecting previously unselected package usb.ids.
-Preparing to unpack .../usb.ids_2022.04.02-1_all.deb ...
-Unpacking usb.ids (2022.04.02-1) ...
-Setting up pci.ids (0.0~2022.01.22-1ubuntu0.1) ...
-Setting up lshw (02.19.git.2021.06.19.996aaad9c7-2build1) ...
-Setting up usb.ids (2022.04.02-1) ...
-Setting up libpci3:amd64 (1:3.7.0-6) ...
-Setting up pciutils (1:3.7.0-6) ...
-Processing triggers for man-db (2.10.2-1) ...
-Processing triggers for libc-bin (2.35-0ubuntu3.8) ...
-/sbin/ldconfig.real: /usr/local/lib/libumf.so.1 is not a symbolic link
-
-/sbin/ldconfig.real: /usr/local/lib/libtcm.so.1 is not a symbolic link
-
-/sbin/ldconfig.real: /usr/local/lib/libhwloc.so.15 is not a symbolic link
-
-/sbin/ldconfig.real: /usr/local/lib/libur_loader.so.0 is not a symbolic link
-
-/sbin/ldconfig.real: /usr/local/lib/libtbbbind_2_0.so.3 is not a symbolic link
-
-/sbin/ldconfig.real: /usr/local/lib/libur_adapter_opencl.so.0 is not a symbolic link
-
-/sbin/ldconfig.real: /usr/local/lib/libtbb.so.12 is not a symbolic link
-
-/sbin/ldconfig.real: /usr/local/lib/libtbbbind_2_5.so.3 is not a symbolic link
-
-/sbin/ldconfig.real: /usr/local/lib/libur_adapter_level_zero_v2.so.0 is not a symbolic link
-
-/sbin/ldconfig.real: /usr/local/lib/libtbbmalloc_proxy.so.2 is not a symbolic link
-
-/sbin/ldconfig.real: /usr/local/lib/libtcm_debug.so.1 is not a symbolic link
-
-/sbin/ldconfig.real: /usr/local/lib/libtbbmalloc.so.2 is not a symbolic link
-
-/sbin/ldconfig.real: /usr/local/lib/libur_adapter_level_zero.so.0 is not a symbolic link
-
-/sbin/ldconfig.real: /usr/local/lib/libtbbbind.so.3 is not a symbolic link
-
-</pre></div></div>
 </div>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>curl<span class="w"> </span>-fsSL<span class="w"> </span>https://ollama.com/install.sh<span class="w"> </span><span class="p">|</span><span class="w"> </span>sh
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Ollama setup is optional and is intentionally not run in this notebook build.&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -466,42 +409,208 @@ Processing triggers for libc-bin (2.35-0ubuntu3.8) ...
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-&gt;&gt;&gt; Installing ollama to /usr/local
-&gt;&gt;&gt; Downloading Linux amd64 bundle
-######################################################################## 100.0%
-&gt;&gt;&gt; Creating ollama user...
-&gt;&gt;&gt; Adding ollama user to video group...
-&gt;&gt;&gt; Adding current user to ollama group...
-&gt;&gt;&gt; Creating ollama systemd service...
-<span class="ansi-red-intense-fg ansi-bold">WARNING:</span> systemd is not running
-&gt;&gt;&gt; NVIDIA GPU installed.
-&gt;&gt;&gt; The Ollama API is now available at 127.0.0.1:11434.
-&gt;&gt;&gt; Install complete. Run &#34;ollama&#34; from the command line.
+Ollama setup is optional and is intentionally not run in this notebook build.
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Start Ollama locally with: ollama serve&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Start Ollama locally with: ollama serve
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Pull a model locally with: ollama pull granite4:3b&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Pull a model locally with: ollama pull granite4:3b
 </pre></div></div>
 </div>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>nohup<span class="w"> </span>ollama<span class="w"> </span>serve<span class="w"> </span>&gt;<span class="w"> </span>ollama.log<span class="w"> </span><span class="m">2</span>&gt;<span class="p">&amp;</span><span class="m">1</span><span class="w"> </span><span class="p">&amp;</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">db</span> <span class="o">=</span> <span class="n">SRAweb</span><span class="p">()</span>
+
+<span class="n">df</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">metadata</span><span class="p">(</span><span class="s2">&quot;GSE155673&quot;</span><span class="p">)</span>
+<span class="n">display</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">())</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;To enrich this table with Ollama, run:&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;db.metadata(&quot;GSE155673&quot;, enrich=True, enrich_backend=&quot;ollama/granite4:3b&quot;)&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>study_accession</th>
+      <th>study_title</th>
+      <th>study_summary</th>
+      <th>organism_name</th>
+      <th>platform_accession</th>
+      <th>platform_title</th>
+      <th>experiment_type</th>
+      <th>bioproject</th>
+      <th>submission_date</th>
+      <th>supplementary_files</th>
+      <th>series_ftp</th>
+      <th>sample_accession</th>
+      <th>sample_title</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>GSE155673</td>
+      <td>Systems biological assessment of immunity to s...</td>
+      <td>CITE-seq of 7 patients with COVID-19 and 5 hea...</td>
+      <td>Homo sapiens</td>
+      <td>GPL20301</td>
+      <td>NaN</td>
+      <td>Expression profiling by high throughput sequen...</td>
+      <td>PRJNA655740</td>
+      <td>2020/08/07</td>
+      <td>CSV, MTX, TSV</td>
+      <td>ftp://ftp.ncbi.nlm.nih.gov/geo/series/GSE155nn...</td>
+      <td>GSM4712885</td>
+      <td>cov_01_RNA</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>GSE155673</td>
+      <td>Systems biological assessment of immunity to s...</td>
+      <td>CITE-seq of 7 patients with COVID-19 and 5 hea...</td>
+      <td>Homo sapiens</td>
+      <td>GPL20301</td>
+      <td>NaN</td>
+      <td>Expression profiling by high throughput sequen...</td>
+      <td>PRJNA655740</td>
+      <td>2020/08/07</td>
+      <td>CSV, MTX, TSV</td>
+      <td>ftp://ftp.ncbi.nlm.nih.gov/geo/series/GSE155nn...</td>
+      <td>GSM4712886</td>
+      <td>cov_01_antibody</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>GSE155673</td>
+      <td>Systems biological assessment of immunity to s...</td>
+      <td>CITE-seq of 7 patients with COVID-19 and 5 hea...</td>
+      <td>Homo sapiens</td>
+      <td>GPL20301</td>
+      <td>NaN</td>
+      <td>Expression profiling by high throughput sequen...</td>
+      <td>PRJNA655740</td>
+      <td>2020/08/07</td>
+      <td>CSV, MTX, TSV</td>
+      <td>ftp://ftp.ncbi.nlm.nih.gov/geo/series/GSE155nn...</td>
+      <td>GSM4712887</td>
+      <td>cov_02_RNA</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>GSE155673</td>
+      <td>Systems biological assessment of immunity to s...</td>
+      <td>CITE-seq of 7 patients with COVID-19 and 5 hea...</td>
+      <td>Homo sapiens</td>
+      <td>GPL20301</td>
+      <td>NaN</td>
+      <td>Expression profiling by high throughput sequen...</td>
+      <td>PRJNA655740</td>
+      <td>2020/08/07</td>
+      <td>CSV, MTX, TSV</td>
+      <td>ftp://ftp.ncbi.nlm.nih.gov/geo/series/GSE155nn...</td>
+      <td>GSM4712888</td>
+      <td>cov_02_antibody</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>GSE155673</td>
+      <td>Systems biological assessment of immunity to s...</td>
+      <td>CITE-seq of 7 patients with COVID-19 and 5 hea...</td>
+      <td>Homo sapiens</td>
+      <td>GPL20301</td>
+      <td>NaN</td>
+      <td>Expression profiling by high throughput sequen...</td>
+      <td>PRJNA655740</td>
+      <td>2020/08/07</td>
+      <td>CSV, MTX, TSV</td>
+      <td>ftp://ftp.ncbi.nlm.nih.gov/geo/series/GSE155nn...</td>
+      <td>GSM4712889</td>
+      <td>cov_03_RNA</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
 </div>
 <div class="nboutput nblast docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-
-NAME           ID              SIZE      MODIFIED
-phi3:latest    4f2222927938    2.2 GB    Less than a second ago
+To enrich this table with Ollama, run:
+db.metadata(&#34;GSE155673&#34;, enrich=True, enrich_backend=&#34;ollama/granite4:3b&#34;)
 </pre></div></div>
 </div>
+</section>
+<hr class="docutils" />
+<section id="Backend-Configuration">
+<h2>Backend Configuration<a class="headerlink" href="#Backend-Configuration" title="Link to this heading">¶</a></h2>
+<p>Use <code class="docutils literal notranslate"><span class="pre">enrich_backend</span></code> to select the LLM endpoint and <code class="docutils literal notranslate"><span class="pre">embedding_model</span></code> to select the sentence-transformer model used to identify relevant metadata fields.</p>
+<section id="LLM-Backend-Example">
+<h3>LLM Backend Example<a class="headerlink" href="#LLM-Backend-Example" title="Link to this heading">¶</a></h3>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>ollama<span class="w"> </span>pull<span class="w"> </span>phi3:latest<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>ollama<span class="w"> </span>list
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">enrichment_example</span> <span class="o">=</span> <span class="s1">&#39;&#39;&#39;</span>
+<span class="s1">from pysradb import SRAweb</span>
+
+<span class="s1">db = SRAweb()</span>
+<span class="s1">df = db.metadata(</span>
+<span class="s1">    &quot;GSE155673&quot;,</span>
+<span class="s1">    enrich=True,</span>
+<span class="s1">    enrich_backend=&quot;ollama/granite4:3b&quot;,</span>
+<span class="s1">)</span>
+<span class="s1">&#39;&#39;&#39;</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">enrichment_example</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -511,653 +620,62 @@ phi3:latest    4f2222927938    2.2 GB    Less than a second ago
 <div class="output_area docutils container">
 <div class="highlight"><pre>
 
-NAME           ID              SIZE      MODIFIED
-phi3:latest    4f2222927938    2.2 GB    Less than a second ago
+from pysradb import SRAweb
+
+db = SRAweb()
+df = db.metadata(
+    &#34;GSE155673&#34;,
+    enrich=True,
+    enrich_backend=&#34;ollama/granite4:3b&#34;,
+)
+
 </pre></div></div>
 </div>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">pysradb.sraweb</span><span class="w"> </span><span class="kn">import</span> <span class="n">SRAweb</span>
-
-<span class="n">db</span> <span class="o">=</span> <span class="n">SRAweb</span><span class="p">()</span>
-
-<span class="n">df</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">metadata</span><span class="p">(</span><span class="s2">&quot;GSE155673&quot;</span><span class="p">,</span> <span class="n">detailed</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">enrich</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-
-<span class="n">cols</span> <span class="o">=</span> <span class="p">[</span>
-    <span class="s2">&quot;sample_title&quot;</span><span class="p">,</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">expected_cols</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s2">&quot;age&quot;</span><span class="p">,</span>
     <span class="s2">&quot;sex&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;guessed_sex&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;ethnicity&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;phenotype&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;cell_type&quot;</span><span class="p">,</span>
     <span class="s2">&quot;tissue&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;guessed_tissue&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;guessed_organ&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;guessed_anatomical_system&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;guessed_cell_type&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;guessed_organ&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;guessed_tissue&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;guessed_disease&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;strain&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;disease&quot;</span><span class="p">,</span>
 <span class="p">]</span>
-<span class="n">display</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="n">cols</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Enrichment adds standardized columns such as:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;, &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">expected_cols</span><span class="p">))</span>
 </pre></div>
 </div>
-</div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<script type="application/vnd.jupyter.widget-view+json">{"model_id": "a2f7696242804d329dea1bd1d07c642a", "version_major": 2, "version_minor": 0}</script></div>
 </div>
 <div class="nboutput nblast docutils container">
 <div class="prompt empty docutils container">
 </div>
-<div class="output_area rendered_html docutils container">
-  <div id="df-5b60a1f2-7d39-461e-ba62-eb39669e6c53" class="colab-df-container">
-    <div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>sample_title</th>
-      <th>sex</th>
-      <th>guessed_sex</th>
-      <th>tissue</th>
-      <th>guessed_tissue</th>
-      <th>guessed_organ</th>
-      <th>guessed_anatomical_system</th>
-      <th>guessed_cell_type</th>
-      <th>guessed_organ</th>
-      <th>guessed_tissue</th>
-      <th>guessed_disease</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>0</th>
-      <td>cov_01_RNA</td>
-      <td>F</td>
-      <td>female</td>
-      <td>&lt;NA&gt;</td>
-      <td>peripheral blood</td>
-      <td>blood</td>
-      <td>immune system</td>
-      <td>pbmc</td>
-      <td>blood</td>
-      <td>peripheral blood</td>
-      <td>covid-19</td>
-    </tr>
-    <tr>
-      <th>1</th>
-      <td>cov_01_antibody</td>
-      <td>F</td>
-      <td>female</td>
-      <td>&lt;NA&gt;</td>
-      <td>peripheral blood</td>
-      <td>blood</td>
-      <td>immune system</td>
-      <td>pbmc</td>
-      <td>blood</td>
-      <td>peripheral blood</td>
-      <td>covid-19</td>
-    </tr>
-    <tr>
-      <th>2</th>
-      <td>cov_02_RNA</td>
-      <td>F</td>
-      <td>female</td>
-      <td>&lt;NA&gt;</td>
-      <td>peripheral blood</td>
-      <td>blood</td>
-      <td>immune system</td>
-      <td>pbmc</td>
-      <td>blood</td>
-      <td>peripheral blood</td>
-      <td>covid-19</td>
-    </tr>
-    <tr>
-      <th>3</th>
-      <td>cov_02_antibody</td>
-      <td>F</td>
-      <td>female</td>
-      <td>&lt;NA&gt;</td>
-      <td>peripheral blood</td>
-      <td>blood</td>
-      <td>immune system</td>
-      <td>pbmc</td>
-      <td>blood</td>
-      <td>peripheral blood</td>
-      <td>covid-19</td>
-    </tr>
-    <tr>
-      <th>4</th>
-      <td>cov_03_RNA</td>
-      <td>F</td>
-      <td>female</td>
-      <td>&lt;NA&gt;</td>
-      <td>peripheral blood</td>
-      <td>blood</td>
-      <td>immune system</td>
-      <td>pbmc</td>
-      <td>blood</td>
-      <td>peripheral blood</td>
-      <td>covid-19</td>
-    </tr>
-    <tr>
-      <th>5</th>
-      <td>cov_03_antibody</td>
-      <td>F</td>
-      <td>female</td>
-      <td>&lt;NA&gt;</td>
-      <td>peripheral blood</td>
-      <td>blood</td>
-      <td>immune system</td>
-      <td>pbmc</td>
-      <td>blood</td>
-      <td>peripheral blood</td>
-      <td>covid-19</td>
-    </tr>
-    <tr>
-      <th>6</th>
-      <td>cov_04_RNA</td>
-      <td>M</td>
-      <td>male</td>
-      <td>&lt;NA&gt;</td>
-      <td>peripheral blood</td>
-      <td>blood</td>
-      <td>immune system</td>
-      <td>pbmc</td>
-      <td>blood</td>
-      <td>peripheral blood</td>
-      <td>covid-19</td>
-    </tr>
-    <tr>
-      <th>7</th>
-      <td>cov_04_antibody</td>
-      <td>M</td>
-      <td>male</td>
-      <td>&lt;NA&gt;</td>
-      <td>peripheral blood</td>
-      <td>blood</td>
-      <td>immune system</td>
-      <td>pbmc</td>
-      <td>blood</td>
-      <td>peripheral blood</td>
-      <td>covid-19</td>
-    </tr>
-    <tr>
-      <th>8</th>
-      <td>cov_07_RNA</td>
-      <td>F</td>
-      <td>female</td>
-      <td>&lt;NA&gt;</td>
-      <td>peripheral blood</td>
-      <td>blood</td>
-      <td>immune system</td>
-      <td>pbmc</td>
-      <td>blood</td>
-      <td>peripheral blood</td>
-      <td>healthy</td>
-    </tr>
-    <tr>
-      <th>9</th>
-      <td>cov_07_antibody</td>
-      <td>F</td>
-      <td>female</td>
-      <td>&lt;NA&gt;</td>
-      <td>peripheral blood</td>
-      <td>blood</td>
-      <td>immune system</td>
-      <td>pbmc</td>
-      <td>blood</td>
-      <td>peripheral blood</td>
-      <td>healthy</td>
-    </tr>
-    <tr>
-      <th>10</th>
-      <td>cov_08_RNA</td>
-      <td>F</td>
-      <td>female</td>
-      <td>&lt;NA&gt;</td>
-      <td>peripheral blood</td>
-      <td>blood</td>
-      <td>immune system</td>
-      <td>pbmc</td>
-      <td>blood</td>
-      <td>peripheral blood</td>
-      <td>healthy</td>
-    </tr>
-    <tr>
-      <th>11</th>
-      <td>cov_08_antibody</td>
-      <td>F</td>
-      <td>female</td>
-      <td>&lt;NA&gt;</td>
-      <td>peripheral blood</td>
-      <td>blood</td>
-      <td>immune system</td>
-      <td>pbmc</td>
-      <td>blood</td>
-      <td>peripheral blood</td>
-      <td>healthy</td>
-    </tr>
-    <tr>
-      <th>12</th>
-      <td>cov_09_RNA</td>
-      <td>M</td>
-      <td>male</td>
-      <td>&lt;NA&gt;</td>
-      <td>peripheral blood</td>
-      <td>blood</td>
-      <td>immune system</td>
-      <td>pbmc</td>
-      <td>blood</td>
-      <td>peripheral blood</td>
-      <td>healthy</td>
-    </tr>
-    <tr>
-      <th>13</th>
-      <td>cov_09_antibody</td>
-      <td>M</td>
-      <td>male</td>
-      <td>&lt;NA&gt;</td>
-      <td>peripheral blood</td>
-      <td>blood</td>
-      <td>immune system</td>
-      <td>pbmc</td>
-      <td>blood</td>
-      <td>peripheral blood</td>
-      <td>healthy</td>
-    </tr>
-    <tr>
-      <th>14</th>
-      <td>cov_10_RNA</td>
-      <td>F</td>
-      <td>female</td>
-      <td>&lt;NA&gt;</td>
-      <td>peripheral blood</td>
-      <td>blood</td>
-      <td>immune system</td>
-      <td>pbmc</td>
-      <td>blood</td>
-      <td>peripheral blood</td>
-      <td>covid-19</td>
-    </tr>
-    <tr>
-      <th>15</th>
-      <td>cov_10_antibody</td>
-      <td>F</td>
-      <td>female</td>
-      <td>&lt;NA&gt;</td>
-      <td>peripheral blood</td>
-      <td>blood</td>
-      <td>immune system</td>
-      <td>pbmc</td>
-      <td>blood</td>
-      <td>peripheral blood</td>
-      <td>covid-19</td>
-    </tr>
-    <tr>
-      <th>16</th>
-      <td>cov_11_RNA</td>
-      <td>M</td>
-      <td>male</td>
-      <td>&lt;NA&gt;</td>
-      <td>peripheral blood</td>
-      <td>blood</td>
-      <td>immune system</td>
-      <td>pbmc</td>
-      <td>blood</td>
-      <td>peripheral blood</td>
-      <td>covid-19</td>
-    </tr>
-    <tr>
-      <th>17</th>
-      <td>cov_11_antibody</td>
-      <td>M</td>
-      <td>male</td>
-      <td>&lt;NA&gt;</td>
-      <td>peripheral blood</td>
-      <td>blood</td>
-      <td>immune system</td>
-      <td>pbmc</td>
-      <td>blood</td>
-      <td>peripheral blood</td>
-      <td>covid-19</td>
-    </tr>
-    <tr>
-      <th>18</th>
-      <td>cov_12_RNA</td>
-      <td>F</td>
-      <td>female</td>
-      <td>&lt;NA&gt;</td>
-      <td>peripheral blood</td>
-      <td>blood</td>
-      <td>immune system</td>
-      <td>pbmc</td>
-      <td>blood</td>
-      <td>peripheral blood</td>
-      <td>covid-19</td>
-    </tr>
-    <tr>
-      <th>19</th>
-      <td>cov_12_antibody</td>
-      <td>F</td>
-      <td>female</td>
-      <td>&lt;NA&gt;</td>
-      <td>peripheral blood</td>
-      <td>blood</td>
-      <td>immune system</td>
-      <td>pbmc</td>
-      <td>blood</td>
-      <td>peripheral blood</td>
-      <td>covid-19</td>
-    </tr>
-    <tr>
-      <th>20</th>
-      <td>cov_17_RNA</td>
-      <td>M</td>
-      <td>male</td>
-      <td>&lt;NA&gt;</td>
-      <td>peripheral blood</td>
-      <td>blood</td>
-      <td>immune system</td>
-      <td>pbmc</td>
-      <td>blood</td>
-      <td>peripheral blood</td>
-      <td>healthy</td>
-    </tr>
-    <tr>
-      <th>21</th>
-      <td>cov_17_antibody</td>
-      <td>M</td>
-      <td>male</td>
-      <td>&lt;NA&gt;</td>
-      <td>peripheral blood</td>
-      <td>blood</td>
-      <td>immune system</td>
-      <td>pbmc</td>
-      <td>blood</td>
-      <td>peripheral blood</td>
-      <td>healthy</td>
-    </tr>
-    <tr>
-      <th>22</th>
-      <td>cov_18_RNA</td>
-      <td>F</td>
-      <td>female</td>
-      <td>&lt;NA&gt;</td>
-      <td>peripheral blood</td>
-      <td>blood</td>
-      <td>immune system</td>
-      <td>pbmc</td>
-      <td>blood</td>
-      <td>peripheral blood</td>
-      <td>healthy</td>
-    </tr>
-    <tr>
-      <th>23</th>
-      <td>cov_18_antibody</td>
-      <td>F</td>
-      <td>female</td>
-      <td>&lt;NA&gt;</td>
-      <td>peripheral blood</td>
-      <td>blood</td>
-      <td>immune system</td>
-      <td>pbmc</td>
-      <td>blood</td>
-      <td>peripheral blood</td>
-      <td>healthy</td>
-    </tr>
-  </tbody>
-</table>
-</div>
-    <div class="colab-df-buttons">
-
-  <div class="colab-df-container">
-    <button class="colab-df-convert" onclick="convertToInteractive('df-5b60a1f2-7d39-461e-ba62-eb39669e6c53')"
-            title="Convert this dataframe to an interactive table."
-            style="display:none;">
-
-  <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960">
-    <path d="M120-120v-720h720v720H120Zm60-500h600v-160H180v160Zm220 220h160v-160H400v160Zm0 220h160v-160H400v160ZM180-400h160v-160H180v160Zm440 0h160v-160H620v160ZM180-180h160v-160H180v160Zm440 0h160v-160H620v160Z"/>
-  </svg>
-    </button>
-
-  <style>
-    .colab-df-container {
-      display:flex;
-      gap: 12px;
-    }
-
-    .colab-df-convert {
-      background-color: #E8F0FE;
-      border: none;
-      border-radius: 50%;
-      cursor: pointer;
-      display: none;
-      fill: #1967D2;
-      height: 32px;
-      padding: 0 0 0 0;
-      width: 32px;
-    }
-
-    .colab-df-convert:hover {
-      background-color: #E2EBFA;
-      box-shadow: 0px 1px 2px rgba(60, 64, 67, 0.3), 0px 1px 3px 1px rgba(60, 64, 67, 0.15);
-      fill: #174EA6;
-    }
-
-    .colab-df-buttons div {
-      margin-bottom: 4px;
-    }
-
-    [theme=dark] .colab-df-convert {
-      background-color: #3B4455;
-      fill: #D2E3FC;
-    }
-
-    [theme=dark] .colab-df-convert:hover {
-      background-color: #434B5C;
-      box-shadow: 0px 1px 3px 1px rgba(0, 0, 0, 0.15);
-      filter: drop-shadow(0px 1px 2px rgba(0, 0, 0, 0.3));
-      fill: #FFFFFF;
-    }
-  </style>
-
-    <script>
-      const buttonEl =
-        document.querySelector('#df-5b60a1f2-7d39-461e-ba62-eb39669e6c53 button.colab-df-convert');
-      buttonEl.style.display =
-        google.colab.kernel.accessAllowed ? 'block' : 'none';
-
-      async function convertToInteractive(key) {
-        const element = document.querySelector('#df-5b60a1f2-7d39-461e-ba62-eb39669e6c53');
-        const dataTable =
-          await google.colab.kernel.invokeFunction('convertToInteractive',
-                                                    [key], {});
-        if (!dataTable) return;
-
-        const docLinkHtml = 'Like what you see? Visit the ' +
-          '<a target="_blank" href=https://colab.research.google.com/notebooks/data_table.ipynb>data table notebook</a>'
-          + ' to learn more about interactive tables.';
-        element.innerHTML = '';
-        dataTable['output_type'] = 'display_data';
-        await google.colab.output.renderOutput(dataTable, element);
-        const docLink = document.createElement('div');
-        docLink.innerHTML = docLinkHtml;
-        element.appendChild(docLink);
-      }
-    </script>
-  </div>
-
-
-    <div id="df-73eb09f2-ad70-460f-9c38-cd80d61f3236">
-      <button class="colab-df-quickchart" onclick="quickchart('df-73eb09f2-ad70-460f-9c38-cd80d61f3236')"
-                title="Suggest charts"
-                style="display:none;">
-
-<svg xmlns="http://www.w3.org/2000/svg" height="24px"viewBox="0 0 24 24"
-     width="24px">
-    <g>
-        <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 17H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4z"/>
-    </g>
-</svg>
-      </button>
-
-<style>
-  .colab-df-quickchart {
-      --bg-color: #E8F0FE;
-      --fill-color: #1967D2;
-      --hover-bg-color: #E2EBFA;
-      --hover-fill-color: #174EA6;
-      --disabled-fill-color: #AAA;
-      --disabled-bg-color: #DDD;
-  }
-
-  [theme=dark] .colab-df-quickchart {
-      --bg-color: #3B4455;
-      --fill-color: #D2E3FC;
-      --hover-bg-color: #434B5C;
-      --hover-fill-color: #FFFFFF;
-      --disabled-bg-color: #3B4455;
-      --disabled-fill-color: #666;
-  }
-
-  .colab-df-quickchart {
-    background-color: var(--bg-color);
-    border: none;
-    border-radius: 50%;
-    cursor: pointer;
-    display: none;
-    fill: var(--fill-color);
-    height: 32px;
-    padding: 0;
-    width: 32px;
-  }
-
-  .colab-df-quickchart:hover {
-    background-color: var(--hover-bg-color);
-    box-shadow: 0 1px 2px rgba(60, 64, 67, 0.3), 0 1px 3px 1px rgba(60, 64, 67, 0.15);
-    fill: var(--button-hover-fill-color);
-  }
-
-  .colab-df-quickchart-complete:disabled,
-  .colab-df-quickchart-complete:disabled:hover {
-    background-color: var(--disabled-bg-color);
-    fill: var(--disabled-fill-color);
-    box-shadow: none;
-  }
-
-  .colab-df-spinner {
-    border: 2px solid var(--fill-color);
-    border-color: transparent;
-    border-bottom-color: var(--fill-color);
-    animation:
-      spin 1s steps(1) infinite;
-  }
-
-  @keyframes spin {
-    0% {
-      border-color: transparent;
-      border-bottom-color: var(--fill-color);
-      border-left-color: var(--fill-color);
-    }
-    20% {
-      border-color: transparent;
-      border-left-color: var(--fill-color);
-      border-top-color: var(--fill-color);
-    }
-    30% {
-      border-color: transparent;
-      border-left-color: var(--fill-color);
-      border-top-color: var(--fill-color);
-      border-right-color: var(--fill-color);
-    }
-    40% {
-      border-color: transparent;
-      border-right-color: var(--fill-color);
-      border-top-color: var(--fill-color);
-    }
-    60% {
-      border-color: transparent;
-      border-right-color: var(--fill-color);
-    }
-    80% {
-      border-color: transparent;
-      border-right-color: var(--fill-color);
-      border-bottom-color: var(--fill-color);
-    }
-    90% {
-      border-color: transparent;
-      border-bottom-color: var(--fill-color);
-    }
-  }
-</style>
-
-      <script>
-        async function quickchart(key) {
-          const quickchartButtonEl =
-            document.querySelector('#' + key + ' button');
-          quickchartButtonEl.disabled = true;  // To prevent multiple clicks.
-          quickchartButtonEl.classList.add('colab-df-spinner');
-          try {
-            const charts = await google.colab.kernel.invokeFunction(
-                'suggestCharts', [key], {});
-          } catch (error) {
-            console.error('Error during call to suggestCharts:', error);
-          }
-          quickchartButtonEl.classList.remove('colab-df-spinner');
-          quickchartButtonEl.classList.add('colab-df-quickchart-complete');
-        }
-        (() => {
-          let quickchartButtonEl =
-            document.querySelector('#df-73eb09f2-ad70-460f-9c38-cd80d61f3236 button');
-          quickchartButtonEl.style.display =
-            google.colab.kernel.accessAllowed ? 'block' : 'none';
-        })();
-      </script>
-    </div>
-
-    </div>
-  </div></div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Enrichment adds standardized columns such as:
+age, sex, ethnicity, phenotype, cell_type, tissue, strain, disease
+</pre></div></div>
 </div>
 </section>
-<hr class="docutils" />
-<section id="Manual-Enrichment">
-<h2>Manual Enrichment<a class="headerlink" href="#Manual-Enrichment" title="Link to this heading">¶</a></h2>
-<p>For more control, you can manually create extractors and enrich DataFrames:</p>
-<section id="Manual-LLM-Based-Enrichment">
-<h3>Manual LLM-Based Enrichment<a class="headerlink" href="#Manual-LLM-Based-Enrichment" title="Link to this heading">¶</a></h3>
+<section id="Embedding-Model-Example">
+<h3>Embedding Model Example<a class="headerlink" href="#Embedding-Model-Example" title="Link to this heading">¶</a></h3>
+<p>The embedding model is still required because pysradb uses it to find relevant metadata fields before invoking the LLM backend.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create LLM extractor</span>
-<span class="n">extractor_llm</span> <span class="o">=</span> <span class="n">create_metadata_extractor</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s2">&quot;llm&quot;</span><span class="p">,</span> <span class="n">backend</span><span class="o">=</span><span class="s2">&quot;ollama/phi3&quot;</span><span class="p">)</span>
-
-<span class="c1"># Test extraction</span>
-<span class="n">text</span> <span class="o">=</span> <span class="p">(</span>
-    <span class="s2">&quot;Single-cell RNA-seq of CD4+ T cells from breast cancer patients. sex: F. age: 55&quot;</span>
-<span class="p">)</span>
-<span class="n">result</span> <span class="o">=</span> <span class="n">extractor_llm</span><span class="o">.</span><span class="n">extract_metadata</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
-
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Extracted metadata:&quot;</span><span class="p">)</span>
-<span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">result</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-    <span class="k">if</span> <span class="n">value</span> <span class="o">!=</span> <span class="s2">&quot;Unknown&quot;</span><span class="p">:</span>
-        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  </span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">value</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">embedding_example</span> <span class="o">=</span> <span class="s1">&#39;&#39;&#39;</span>
+<span class="s1">df = db.metadata(</span>
+<span class="s1">    &quot;GSE155673&quot;,</span>
+<span class="s1">    enrich=True,</span>
+<span class="s1">    enrich_backend=&quot;ollama/granite4:3b&quot;,</span>
+<span class="s1">    embedding_model=&quot;abhinand/MedEmbed-large-v0.1&quot;,</span>
+<span class="s1">)</span>
+<span class="s1">&#39;&#39;&#39;</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">embedding_example</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -1166,448 +684,14 @@ phi3:latest    4f2222927938    2.2 GB    Less than a second ago
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Extracted metadata:
-  organ: breast
-  anatomical_system: digestive system
-  cell_type: cd4+ t cell
-  disease: cancer
-  sex: female
-  development_stage: adult
-  assay: single-cell rna seq
-  organism: homo sapiens
-</pre></div></div>
-</div>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">if</span> <span class="ow">not</span> <span class="n">df</span><span class="o">.</span><span class="n">empty</span><span class="p">:</span>
-    <span class="n">df_enriched</span> <span class="o">=</span> <span class="n">extractor_llm</span><span class="o">.</span><span class="n">enrich_dataframe</span><span class="p">(</span>
-        <span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">3</span><span class="p">),</span> <span class="n">text_column</span><span class="o">=</span><span class="s2">&quot;sample_title&quot;</span><span class="p">,</span> <span class="n">prefix</span><span class="o">=</span><span class="s2">&quot;guessed_&quot;</span>
-    <span class="p">)</span>
 
-    <span class="n">cols</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;sample_title&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="p">[</span>
-        <span class="n">c</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">df_enriched</span><span class="o">.</span><span class="n">columns</span> <span class="k">if</span> <span class="n">c</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;guessed_&quot;</span><span class="p">)</span>
-    <span class="p">]</span>
-    <span class="n">display</span><span class="p">(</span><span class="n">df_enriched</span><span class="p">[</span><span class="n">cols</span><span class="p">])</span>
-</pre></div>
-</div>
-</div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<script type="application/vnd.jupyter.widget-view+json">{"model_id": "dc19794504464b64a7ab7e46612406bb", "version_major": 2, "version_minor": 0}</script></div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area rendered_html docutils container">
-  <div id="df-990d6313-4c66-45d6-9989-cc56a0ddbdd2" class="colab-df-container">
-    <div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
+df = db.metadata(
+    &#34;GSE155673&#34;,
+    enrich=True,
+    enrich_backend=&#34;ollama/granite4:3b&#34;,
+    embedding_model=&#34;abhinand/MedEmbed-large-v0.1&#34;,
+)
 
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>sample_title</th>
-      <th>guessed_organ</th>
-      <th>guessed_tissue</th>
-      <th>guessed_anatomical_system</th>
-      <th>guessed_cell_type</th>
-      <th>guessed_disease</th>
-      <th>guessed_sex</th>
-      <th>guessed_development_stage</th>
-      <th>guessed_assay</th>
-      <th>guessed_organism</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>0</th>
-      <td>cov_01_RNA</td>
-      <td>brain</td>
-      <td>brain tissue</td>
-      <td>nervous system</td>
-      <td>neuron</td>
-      <td>healthy</td>
-      <td>unknown</td>
-      <td>adult</td>
-      <td>rna-seq</td>
-      <td>homo sapiens</td>
-    </tr>
-    <tr>
-      <th>1</th>
-      <td>cov_01_antibody</td>
-      <td>unknown</td>
-      <td>unknown</td>
-      <td>unknown</td>
-      <td>pbmc</td>
-      <td>healthy</td>
-      <td>unknown</td>
-      <td>adult</td>
-      <td>rna-seq</td>
-      <td>homo sapiens</td>
-    </tr>
-    <tr>
-      <th>2</th>
-      <td>cov_02_RNA</td>
-      <td>brain</td>
-      <td>brain tissue</td>
-      <td>nervous system</td>
-      <td>neuron</td>
-      <td>healthy</td>
-      <td>unknown</td>
-      <td>adult</td>
-      <td>rna-seq</td>
-      <td>homo sapiens</td>
-    </tr>
-  </tbody>
-</table>
-</div>
-    <div class="colab-df-buttons">
-
-  <div class="colab-df-container">
-    <button class="colab-df-convert" onclick="convertToInteractive('df-990d6313-4c66-45d6-9989-cc56a0ddbdd2')"
-            title="Convert this dataframe to an interactive table."
-            style="display:none;">
-
-  <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960">
-    <path d="M120-120v-720h720v720H120Zm60-500h600v-160H180v160Zm220 220h160v-160H400v160Zm0 220h160v-160H400v160ZM180-400h160v-160H180v160Zm440 0h160v-160H620v160ZM180-180h160v-160H180v160Zm440 0h160v-160H620v160Z"/>
-  </svg>
-    </button>
-
-  <style>
-    .colab-df-container {
-      display:flex;
-      gap: 12px;
-    }
-
-    .colab-df-convert {
-      background-color: #E8F0FE;
-      border: none;
-      border-radius: 50%;
-      cursor: pointer;
-      display: none;
-      fill: #1967D2;
-      height: 32px;
-      padding: 0 0 0 0;
-      width: 32px;
-    }
-
-    .colab-df-convert:hover {
-      background-color: #E2EBFA;
-      box-shadow: 0px 1px 2px rgba(60, 64, 67, 0.3), 0px 1px 3px 1px rgba(60, 64, 67, 0.15);
-      fill: #174EA6;
-    }
-
-    .colab-df-buttons div {
-      margin-bottom: 4px;
-    }
-
-    [theme=dark] .colab-df-convert {
-      background-color: #3B4455;
-      fill: #D2E3FC;
-    }
-
-    [theme=dark] .colab-df-convert:hover {
-      background-color: #434B5C;
-      box-shadow: 0px 1px 3px 1px rgba(0, 0, 0, 0.15);
-      filter: drop-shadow(0px 1px 2px rgba(0, 0, 0, 0.3));
-      fill: #FFFFFF;
-    }
-  </style>
-
-    <script>
-      const buttonEl =
-        document.querySelector('#df-990d6313-4c66-45d6-9989-cc56a0ddbdd2 button.colab-df-convert');
-      buttonEl.style.display =
-        google.colab.kernel.accessAllowed ? 'block' : 'none';
-
-      async function convertToInteractive(key) {
-        const element = document.querySelector('#df-990d6313-4c66-45d6-9989-cc56a0ddbdd2');
-        const dataTable =
-          await google.colab.kernel.invokeFunction('convertToInteractive',
-                                                    [key], {});
-        if (!dataTable) return;
-
-        const docLinkHtml = 'Like what you see? Visit the ' +
-          '<a target="_blank" href=https://colab.research.google.com/notebooks/data_table.ipynb>data table notebook</a>'
-          + ' to learn more about interactive tables.';
-        element.innerHTML = '';
-        dataTable['output_type'] = 'display_data';
-        await google.colab.output.renderOutput(dataTable, element);
-        const docLink = document.createElement('div');
-        docLink.innerHTML = docLinkHtml;
-        element.appendChild(docLink);
-      }
-    </script>
-  </div>
-
-
-    <div id="df-1f613cfd-309f-4229-8426-1b6373d3bcda">
-      <button class="colab-df-quickchart" onclick="quickchart('df-1f613cfd-309f-4229-8426-1b6373d3bcda')"
-                title="Suggest charts"
-                style="display:none;">
-
-<svg xmlns="http://www.w3.org/2000/svg" height="24px"viewBox="0 0 24 24"
-     width="24px">
-    <g>
-        <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 17H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4z"/>
-    </g>
-</svg>
-      </button>
-
-<style>
-  .colab-df-quickchart {
-      --bg-color: #E8F0FE;
-      --fill-color: #1967D2;
-      --hover-bg-color: #E2EBFA;
-      --hover-fill-color: #174EA6;
-      --disabled-fill-color: #AAA;
-      --disabled-bg-color: #DDD;
-  }
-
-  [theme=dark] .colab-df-quickchart {
-      --bg-color: #3B4455;
-      --fill-color: #D2E3FC;
-      --hover-bg-color: #434B5C;
-      --hover-fill-color: #FFFFFF;
-      --disabled-bg-color: #3B4455;
-      --disabled-fill-color: #666;
-  }
-
-  .colab-df-quickchart {
-    background-color: var(--bg-color);
-    border: none;
-    border-radius: 50%;
-    cursor: pointer;
-    display: none;
-    fill: var(--fill-color);
-    height: 32px;
-    padding: 0;
-    width: 32px;
-  }
-
-  .colab-df-quickchart:hover {
-    background-color: var(--hover-bg-color);
-    box-shadow: 0 1px 2px rgba(60, 64, 67, 0.3), 0 1px 3px 1px rgba(60, 64, 67, 0.15);
-    fill: var(--button-hover-fill-color);
-  }
-
-  .colab-df-quickchart-complete:disabled,
-  .colab-df-quickchart-complete:disabled:hover {
-    background-color: var(--disabled-bg-color);
-    fill: var(--disabled-fill-color);
-    box-shadow: none;
-  }
-
-  .colab-df-spinner {
-    border: 2px solid var(--fill-color);
-    border-color: transparent;
-    border-bottom-color: var(--fill-color);
-    animation:
-      spin 1s steps(1) infinite;
-  }
-
-  @keyframes spin {
-    0% {
-      border-color: transparent;
-      border-bottom-color: var(--fill-color);
-      border-left-color: var(--fill-color);
-    }
-    20% {
-      border-color: transparent;
-      border-left-color: var(--fill-color);
-      border-top-color: var(--fill-color);
-    }
-    30% {
-      border-color: transparent;
-      border-left-color: var(--fill-color);
-      border-top-color: var(--fill-color);
-      border-right-color: var(--fill-color);
-    }
-    40% {
-      border-color: transparent;
-      border-right-color: var(--fill-color);
-      border-top-color: var(--fill-color);
-    }
-    60% {
-      border-color: transparent;
-      border-right-color: var(--fill-color);
-    }
-    80% {
-      border-color: transparent;
-      border-right-color: var(--fill-color);
-      border-bottom-color: var(--fill-color);
-    }
-    90% {
-      border-color: transparent;
-      border-bottom-color: var(--fill-color);
-    }
-  }
-</style>
-
-      <script>
-        async function quickchart(key) {
-          const quickchartButtonEl =
-            document.querySelector('#' + key + ' button');
-          quickchartButtonEl.disabled = true;  // To prevent multiple clicks.
-          quickchartButtonEl.classList.add('colab-df-spinner');
-          try {
-            const charts = await google.colab.kernel.invokeFunction(
-                'suggestCharts', [key], {});
-          } catch (error) {
-            console.error('Error during call to suggestCharts:', error);
-          }
-          quickchartButtonEl.classList.remove('colab-df-spinner');
-          quickchartButtonEl.classList.add('colab-df-quickchart-complete');
-        }
-        (() => {
-          let quickchartButtonEl =
-            document.querySelector('#df-1f613cfd-309f-4229-8426-1b6373d3bcda button');
-          quickchartButtonEl.style.display =
-            google.colab.kernel.accessAllowed ? 'block' : 'none';
-        })();
-      </script>
-    </div>
-
-    </div>
-  </div></div>
-</div>
-</section>
-<section id="Manual-Embedding-Based-Enrichment">
-<h3>Manual Embedding-Based Enrichment<a class="headerlink" href="#Manual-Embedding-Based-Enrichment" title="Link to this heading">¶</a></h3>
-<p>Faster than LLMs, works offline. Load comprehensive ontology reference (31K+ terms):</p>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Load ontology reference (31K+ terms from UBERON, MONDO, CL)</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">pysradb.metadata_enrichment</span><span class="w"> </span><span class="kn">import</span> <span class="n">load_ontology_reference</span>
-
-<span class="n">ontology_ref</span> <span class="o">=</span> <span class="n">load_ontology_reference</span><span class="p">()</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Loaded </span><span class="si">{</span><span class="nb">sum</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">v</span><span class="p">)</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">v</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="n">ontology_ref</span><span class="o">.</span><span class="n">values</span><span class="p">())</span><span class="si">:</span><span class="s2">,</span><span class="si">}</span><span class="s2"> ontology terms&quot;</span><span class="p">)</span>
-
-<span class="c1"># Create embedding extractor</span>
-<span class="n">extractor_emb</span> <span class="o">=</span> <span class="n">create_metadata_extractor</span><span class="p">(</span>
-    <span class="n">method</span><span class="o">=</span><span class="s2">&quot;embedding&quot;</span><span class="p">,</span>
-    <span class="n">model</span><span class="o">=</span><span class="s2">&quot;FremyCompany/BioLORD-2023&quot;</span><span class="p">,</span>
-    <span class="n">reference_categories</span><span class="o">=</span><span class="n">ontology_ref</span><span class="p">,</span>
-<span class="p">)</span>
-
-<span class="n">text</span> <span class="o">=</span> <span class="s2">&quot;scRNA-seq of CD8+ T cells from melanoma patients&quot;</span>
-<span class="n">result</span> <span class="o">=</span> <span class="n">extractor_emb</span><span class="o">.</span><span class="n">extract_metadata</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Extracted: </span><span class="si">{</span><span class="n">result</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-Loaded 698 ontology terms
-</pre></div></div>
-</div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area stderr docutils container">
-<div class="highlight"><pre>
-/usr/local/lib/python3.12/dist-packages/huggingface_hub/utils/_auth.py:94: UserWarning:
-The secret `HF_TOKEN` does not exist in your Colab secrets.
-To authenticate with the Hugging Face Hub, create a token in your settings tab (https://huggingface.co/settings/tokens), set it as secret in your Google Colab and restart your session.
-You will be able to reuse this secret in all of your notebooks.
-Please note that authentication is recommended but still optional to access public models or datasets.
-  warnings.warn(
-</pre></div></div>
-</div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<script type="application/vnd.jupyter.widget-view+json">{"model_id": "3e50af1eca894c3399d048aefbb845f1", "version_major": 2, "version_minor": 0}</script></div>
-</div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<script type="application/vnd.jupyter.widget-view+json">{"model_id": "ac3a7eb327fa4ac88391346776f3d7dc", "version_major": 2, "version_minor": 0}</script></div>
-</div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<script type="application/vnd.jupyter.widget-view+json">{"model_id": "feece831475f496b97f77ac2ff53047f", "version_major": 2, "version_minor": 0}</script></div>
-</div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<script type="application/vnd.jupyter.widget-view+json">{"model_id": "6de015b4578841a8a1061350e15da8b3", "version_major": 2, "version_minor": 0}</script></div>
-</div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<script type="application/vnd.jupyter.widget-view+json">{"model_id": "3f4bcc5af37b4317b2a1d4c130b5a373", "version_major": 2, "version_minor": 0}</script></div>
-</div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<script type="application/vnd.jupyter.widget-view+json">{"model_id": "894f6addaa1d46f89a3bfc24b11365cd", "version_major": 2, "version_minor": 0}</script></div>
-</div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<script type="application/vnd.jupyter.widget-view+json">{"model_id": "8941e47c2fc34df0876c4924b43362c3", "version_major": 2, "version_minor": 0}</script></div>
-</div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<script type="application/vnd.jupyter.widget-view+json">{"model_id": "594fe5c3fb8d41ce827935b752501bc2", "version_major": 2, "version_minor": 0}</script></div>
-</div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<script type="application/vnd.jupyter.widget-view+json">{"model_id": "74583c53d9104717aa07b95fd7709ec8", "version_major": 2, "version_minor": 0}</script></div>
-</div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<script type="application/vnd.jupyter.widget-view+json">{"model_id": "8f62c3240b7b40d9ab87be96b6662a3c", "version_major": 2, "version_minor": 0}</script></div>
-</div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<script type="application/vnd.jupyter.widget-view+json">{"model_id": "f0ea129b00ed4cb6b5374de37e9c6639", "version_major": 2, "version_minor": 0}</script></div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-
-Extracted: {&#39;organ&#39;: &#39;Unknown&#39;, &#39;tissue&#39;: &#39;Unknown&#39;, &#39;anatomical_system&#39;: &#39;Unknown&#39;, &#39;cell_type&#39;: &#39;CD8 T cell&#39;, &#39;disease&#39;: &#39;melanoma&#39;, &#39;sex&#39;: &#39;Unknown&#39;, &#39;development_stage&#39;: &#39;Unknown&#39;, &#39;assay&#39;: &#39;microRNA sequencing&#39;, &#39;organism&#39;: &#39;Unknown&#39;}
 </pre></div></div>
 </div>
 <script type="application/vnd.jupyter.widget-state+json">
@@ -1621,8 +705,26 @@ Extracted: {&#39;organ&#39;: &#39;Unknown&#39;, &#39;tissue&#39;: &#39;Unknown&#
       <footer>
         
         <div class="related-pages">
-          
-          
+          <a class="next-page" href="10.Parse_Bioscience_Search.html">
+              <div class="page-info">
+                <div class="context">
+                  <span>Next</span>
+                </div>
+                <div class="title">Parse BioScience Search</div>
+              </div>
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+            </a>
+          <a class="prev-page" href="08.PMC_DOI_Identifiers.html">
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+              <div class="page-info">
+                <div class="context">
+                  <span>Previous</span>
+                </div>
+                
+                <div class="title">Extract Identifiers from PMC/DOI</div>
+                
+              </div>
+            </a>
         </div>
         <div class="bottom-of-page">
           <div class="left-details">
@@ -1653,11 +755,11 @@ Extracted: {&#39;organ&#39;: &#39;Unknown&#39;, &#39;tissue&#39;: &#39;Unknown&#
         <div class="toc-tree-container">
           <div class="toc-tree">
             <ul>
-<li><a class="reference internal" href="#">Metadata Enrichment with LLMs</a><ul>
+<li><a class="reference internal" href="#">Metadata Enrichment with Optional LLM Backends</a><ul>
 <li><a class="reference internal" href="#Quick-Start">Quick Start</a></li>
-<li><a class="reference internal" href="#Manual-Enrichment">Manual Enrichment</a><ul>
-<li><a class="reference internal" href="#Manual-LLM-Based-Enrichment">Manual LLM-Based Enrichment</a></li>
-<li><a class="reference internal" href="#Manual-Embedding-Based-Enrichment">Manual Embedding-Based Enrichment</a></li>
+<li><a class="reference internal" href="#Backend-Configuration">Backend Configuration</a><ul>
+<li><a class="reference internal" href="#LLM-Backend-Example">LLM Backend Example</a></li>
+<li><a class="reference internal" href="#Embedding-Model-Example">Embedding Model Example</a></li>
 </ul>
 </li>
 </ul>
@@ -1672,12 +774,14 @@ Extracted: {&#39;organ&#39;: &#39;Unknown&#39;, &#39;tissue&#39;: &#39;Unknown&#
     </aside>
   </div>
 </div><script src="../_static/documentation_options.js?v=afcbd73c"></script>
-    <script src="../_static/doctools.js?v=9bcbadda"></script>
-    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../_static/scripts/furo.js?v=46bd48cc"></script>
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@jupyter-widgets/html-manager@^1.0.1/dist/embed-amd.js"></script>
     <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
-    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-mml-chtml.js"></script>
     <script src="../_static/copy-button.js?v=5b6a40c7"></script>
     </body>
 </html>

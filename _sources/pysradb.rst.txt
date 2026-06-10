@@ -20,6 +20,14 @@ pysradb.download module
    :show-inheritance:
    :undoc-members:
 
+pysradb.enrichment module
+-------------------------
+
+.. automodule:: pysradb.enrichment
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
 pysradb.exceptions module
 -------------------------
 
@@ -44,10 +52,10 @@ pysradb.geoweb module
    :show-inheritance:
    :undoc-members:
 
-pysradb.metadata\_enrichment module
------------------------------------
+pysradb.mcp\_server module
+--------------------------
 
-.. automodule:: pysradb.metadata_enrichment
+.. automodule:: pysradb.mcp_server
    :members:
    :show-inheritance:
    :undoc-members:

@@ -13,17 +13,17 @@
             
         </script>
     <link rel="index" title="Index" href="../../genindex.html"><link rel="search" title="Search" href="../../search.html">
+        <link rel="canonical" href="https://saket-choudhary.me/pysradb/_modules/pysradb/cli.html">
         <link rel="prefetch" href="../../_static/pysradb_v3.png" as="image">
 
-    <!-- Generated with Sphinx 8.2.3 and Furo 2025.09.25 -->
-        <title>pysradb.cli - pysradb 3.0.0.dev0 documentation</title>
+    <!-- Generated with Sphinx 9.0.4 and Furo 2025.12.19 -->
+        <title>pysradb.cli - pysradb: SRA, ENA, and GEO metadata search</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
-    <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?v=580074bf" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?v=7bdb33bb" />
     <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=4ae1632d" />
-    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-dropdown.css?v=995e94df" />
-    <link rel="stylesheet" type="text/css" href="../../_static/panels-bootstrap.min.css?v=21c0b90a" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=95c83b7e" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/furo-extensions.css?v=8dab3a3b" />
-    <link rel="stylesheet" type="text/css" href="../../_static/custom.css?v=76ddadce" />
+    <link rel="stylesheet" type="text/css" href="../../_static/custom.css?v=c673637a" />
     
     
 
@@ -32,30 +32,69 @@
   body {
     --color-code-background: #eeffcc;
   --color-code-foreground: black;
-  --color-brand-primary: #0066cc;
+  --font-stack: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Segoe UI', sans-serif;
+  --font-stack--monospace: 'SFMono-Regular', ui-monospace, 'Cascadia Code', 'Liberation Mono', Menlo, monospace;
+  --color-brand-primary: #007aff;
   --color-brand-content: #0066cc;
-  --color-code-background: #f5f5f5;
-  --color-inline-code-background: #f0f0f0;
+  --color-api-name: #1d1d1f;
+  --color-api-pre-name: #6e6e73;
+  --color-background-primary: #ffffff;
+  --color-background-secondary: #f5f5f7;
+  --color-background-hover: #f2f2f7;
+  --color-code-background: #f5f5f7;
+  --color-inline-code-background: #f2f2f7;
+  --color-sidebar-background: #fbfbfd;
+  --color-sidebar-background-border: #d2d2d7;
+  --color-toc-background: #ffffff;
+  --color-toc-background-border: #d2d2d7;
+  --color-admonition-background: #f5f5f7;
+  --color-admonition-title-background: #e8f2ff;
   
   }
   @media not print {
     body[data-theme="dark"] {
       --color-code-background: #202020;
   --color-code-foreground: #d0d0d0;
-  --color-brand-primary: #3b82f6;
-  --color-brand-content: #3b82f6;
-  --color-code-background: #1e293b;
-  --color-inline-code-background: #334155;
+  --font-stack: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Segoe UI', sans-serif;
+  --font-stack--monospace: 'SFMono-Regular', ui-monospace, 'Cascadia Code', 'Liberation Mono', Menlo, monospace;
+  --color-brand-primary: #0a84ff;
+  --color-brand-content: #409cff;
+  --color-api-name: #f5f5f7;
+  --color-api-pre-name: #a1a1a6;
+  --color-background-primary: #1d1d1f;
+  --color-background-secondary: #2c2c2e;
+  --color-background-hover: #3a3a3c;
+  --color-code-background: #2c2c2e;
+  --color-inline-code-background: #3a3a3c;
+  --color-sidebar-background: #161617;
+  --color-sidebar-background-border: #38383a;
+  --color-toc-background: #1d1d1f;
+  --color-toc-background-border: #38383a;
+  --color-admonition-background: #2c2c2e;
+  --color-admonition-title-background: #06345f;
   
     }
     @media (prefers-color-scheme: dark) {
       body:not([data-theme="light"]) {
         --color-code-background: #202020;
   --color-code-foreground: #d0d0d0;
-  --color-brand-primary: #3b82f6;
-  --color-brand-content: #3b82f6;
-  --color-code-background: #1e293b;
-  --color-inline-code-background: #334155;
+  --font-stack: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Segoe UI', sans-serif;
+  --font-stack--monospace: 'SFMono-Regular', ui-monospace, 'Cascadia Code', 'Liberation Mono', Menlo, monospace;
+  --color-brand-primary: #0a84ff;
+  --color-brand-content: #409cff;
+  --color-api-name: #f5f5f7;
+  --color-api-pre-name: #a1a1a6;
+  --color-background-primary: #1d1d1f;
+  --color-background-secondary: #2c2c2e;
+  --color-background-hover: #3a3a3c;
+  --color-code-background: #2c2c2e;
+  --color-inline-code-background: #3a3a3c;
+  --color-sidebar-background: #161617;
+  --color-sidebar-background-border: #38383a;
+  --color-toc-background: #1d1d1f;
+  --color-toc-background-border: #38383a;
+  --color-admonition-background: #2c2c2e;
+  --color-admonition-title-background: #06345f;
   
       }
     }
@@ -187,7 +226,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../index.html"><div class="brand">pysradb 3.0.0.dev0 documentation</div></a>
+      <a href="../../index.html"><div class="brand">pysradb: SRA, ENA, and GEO metadata search</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -211,7 +250,7 @@
     <img class="sidebar-logo" src="../../_static/pysradb_v3.png" alt="Logo"/>
   </div>
   
-  <span class="sidebar-brand-text">pysradb 3.0.0.dev0 documentation</span>
+  <span class="sidebar-brand-text">pysradb: SRA, ENA, and GEO metadata search</span>
   
 </a><form class="sidebar-search-container" method="get" action="../../search.html" role="search">
   <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
@@ -224,13 +263,27 @@
 <li class="toctree-l1"><a class="reference internal" href="../../quickstart.html">Quickstart</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../cmdline.html">CLI</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../python-api-usage.html">Python API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../mcp.html">MCP server</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../case_studies.html">Case Studies</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../notebooks.html">Tutorials &amp; Notebooks</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../notebooks.html">Tutorials &amp; Notebooks</a><input aria-label="Toggle navigation of Tutorials &amp; Notebooks" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../notebooks/README.html">pysradb notebooks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../notebooks/01.Python-API_demo.html">Python API Demo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../notebooks/02.Commandline_download.html">Command-line Download</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../notebooks/03.ParallelDownload.html">Parallel Download</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../notebooks/04.SRA_to_fastq_conda.html">Converting SRA to FASTQ using Conda</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../notebooks/05.Downloading_subsets_of_a_project.html">Selecting Subsets of a Project</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../notebooks/06.Multiple_SRPs.html">Querying Multiple Projects</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../notebooks/07.Query_Search.html">Query and Search</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../notebooks/08.PMC_DOI_Identifiers.html">Extract Identifiers from PMC/DOI</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../notebooks/09.Metadata_enrichment.html">Metadata Enrichment with Optional LLM Backends</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../notebooks/10.Parse_Bioscience_Search.html">Parse BioScience Search</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="../../commands.html">API Documentation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../contributing.html">Contributing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../authors.html">Credits</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../history.html">History</a></li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../../modules.html">pysradb</a><input aria-label="Toggle navigation of pysradb" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../modules.html">pysradb</a><input aria-label="Toggle navigation of pysradb" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../pysradb.html">pysradb package</a></li>
 </ul>
 </li>
@@ -271,25 +324,20 @@
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">argparse</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">re</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">sys</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">warnings</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">io</span><span class="w"> </span><span class="kn">import</span> <span class="n">StringIO</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">textwrap</span><span class="w"> </span><span class="kn">import</span> <span class="n">dedent</span>
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">rich.columns</span><span class="w"> </span><span class="kn">import</span> <span class="n">Columns</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">rich.console</span><span class="w"> </span><span class="kn">import</span> <span class="n">Console</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">rich.panel</span><span class="w"> </span><span class="kn">import</span> <span class="n">Panel</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">rich.table</span><span class="w"> </span><span class="kn">import</span> <span class="n">Table</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">rich.text</span><span class="w"> </span><span class="kn">import</span> <span class="n">Text</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">.</span><span class="w"> </span><span class="kn">import</span> <span class="n">__version__</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">.exceptions</span><span class="w"> </span><span class="kn">import</span> <span class="n">IncorrectFieldException</span><span class="p">,</span> <span class="n">MissingQueryException</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">.geoweb</span><span class="w"> </span><span class="kn">import</span> <span class="n">GEOweb</span><span class="p">,</span> <span class="n">download_geo_matrix</span><span class="p">,</span> <span class="n">parse_geo_matrix_to_tsv</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.geoweb</span><span class="w"> </span><span class="kn">import</span> <span class="n">GEOweb</span><span class="p">,</span> <span class="n">download_geo_matrix</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">.search</span><span class="w"> </span><span class="kn">import</span> <span class="n">EnaSearch</span><span class="p">,</span> <span class="n">GeoSearch</span><span class="p">,</span> <span class="n">SraSearch</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">.sraweb</span><span class="w"> </span><span class="kn">import</span> <span class="n">SRAweb</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">.utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">confirm</span>
 
 <span class="n">pd</span><span class="o">.</span><span class="n">set_option</span><span class="p">(</span><span class="s2">&quot;display.max_rows&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
 <span class="n">pd</span><span class="o">.</span><span class="n">set_option</span><span class="p">(</span><span class="s2">&quot;display.max_columns&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
@@ -297,6 +345,17 @@
 <span class="n">warnings</span><span class="o">.</span><span class="n">simplefilter</span><span class="p">(</span><span class="n">action</span><span class="o">=</span><span class="s2">&quot;ignore&quot;</span><span class="p">,</span> <span class="n">category</span><span class="o">=</span><span class="ne">FutureWarning</span><span class="p">)</span>
 
 <span class="n">console</span> <span class="o">=</span> <span class="n">Console</span><span class="p">()</span>
+
+<span class="n">ENRICHED_COLS</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;age&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;sex&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;ethnicity&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;phenotype&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;cell_type&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;tissue&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;strain&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;disease&quot;</span><span class="p">,</span>
+<span class="p">}</span>
 
 
 <div class="viewcode-block" id="CustomFormatterArgP">
@@ -323,7 +382,7 @@
 
 <div class="viewcode-block" id="pretty_print_df">
 <a class="viewcode-back" href="../../pysradb.html#pysradb.cli.pretty_print_df">[docs]</a>
-<span class="k">def</span><span class="w"> </span><span class="nf">pretty_print_df</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">include_header</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">pretty_print_df</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">include_header</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">enriched_cols</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Pretty print dataframe using rich formatting&quot;&quot;&quot;</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">format_value</span><span class="p">(</span><span class="n">v</span><span class="p">):</span>
@@ -338,7 +397,7 @@
 
     <span class="k">try</span><span class="p">:</span>
         <span class="n">terminal_width</span> <span class="o">=</span> <span class="n">console</span><span class="o">.</span><span class="n">width</span>
-    <span class="k">except</span><span class="p">:</span>
+    <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
         <span class="n">terminal_width</span> <span class="o">=</span> <span class="mi">80</span>  <span class="c1"># fallback width</span>
 
     <span class="n">num_columns</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="p">)</span>
@@ -352,7 +411,10 @@
     <span class="c1"># chuenk</span>
     <span class="k">if</span> <span class="n">num_columns</span> <span class="o">&gt;</span> <span class="n">max_cols_per_table</span><span class="p">:</span>
         <span class="n">console</span><span class="o">.</span><span class="n">print</span><span class="p">(</span>
-            <span class="sa">f</span><span class="s2">&quot;[bright_black]Displaying </span><span class="si">{</span><span class="n">num_columns</span><span class="si">}</span><span class="s2"> columns in chunks of </span><span class="si">{</span><span class="n">max_cols_per_table</span><span class="si">}</span><span class="s2">[/bright_black]&quot;</span>
+            <span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;[bright_black]Displaying </span><span class="si">{</span><span class="n">num_columns</span><span class="si">}</span><span class="s2"> columns in chunks of &quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">max_cols_per_table</span><span class="si">}</span><span class="s2">[/bright_black]&quot;</span>
+            <span class="p">)</span>
         <span class="p">)</span>
         <span class="n">console</span><span class="o">.</span><span class="n">print</span><span class="p">()</span>
 
@@ -361,16 +423,23 @@
             <span class="n">chunk_df</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">chunk_cols</span><span class="p">]</span>
 
             <span class="n">console</span><span class="o">.</span><span class="n">print</span><span class="p">(</span>
-                <span class="sa">f</span><span class="s2">&quot;[bright_blue]Columns </span><span class="si">{</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="si">}</span><span class="s2">-</span><span class="si">{</span><span class="nb">min</span><span class="p">(</span><span class="n">i</span><span class="o">+</span><span class="n">max_cols_per_table</span><span class="p">,</span><span class="w"> </span><span class="n">num_columns</span><span class="p">)</span><span class="si">}</span><span class="s2">:[/bright_blue]&quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;[bright_blue]Columns </span><span class="si">{</span><span class="n">i</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="si">}</span><span class="s2">-&quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="nb">min</span><span class="p">(</span><span class="n">i</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">max_cols_per_table</span><span class="p">,</span><span class="w"> </span><span class="n">num_columns</span><span class="p">)</span><span class="si">}</span><span class="s2">:[/bright_blue]&quot;</span>
             <span class="p">)</span>
-            <span class="n">_create_table</span><span class="p">(</span><span class="n">chunk_df</span><span class="p">,</span> <span class="n">terminal_width</span><span class="p">,</span> <span class="n">include_header</span><span class="p">,</span> <span class="n">format_value</span><span class="p">)</span>
+            <span class="n">_create_table</span><span class="p">(</span>
+                <span class="n">chunk_df</span><span class="p">,</span>
+                <span class="n">terminal_width</span><span class="p">,</span>
+                <span class="n">include_header</span><span class="p">,</span>
+                <span class="n">format_value</span><span class="p">,</span>
+                <span class="n">enriched_cols</span><span class="p">,</span>
+            <span class="p">)</span>
             <span class="n">console</span><span class="o">.</span><span class="n">print</span><span class="p">()</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="n">_create_table</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">terminal_width</span><span class="p">,</span> <span class="n">include_header</span><span class="p">,</span> <span class="n">format_value</span><span class="p">)</span></div>
+        <span class="n">_create_table</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">terminal_width</span><span class="p">,</span> <span class="n">include_header</span><span class="p">,</span> <span class="n">format_value</span><span class="p">,</span> <span class="n">enriched_cols</span><span class="p">)</span></div>
 
 
 
-<span class="k">def</span><span class="w"> </span><span class="nf">_create_table</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">terminal_width</span><span class="p">,</span> <span class="n">include_header</span><span class="p">,</span> <span class="n">format_value</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_create_table</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">terminal_width</span><span class="p">,</span> <span class="n">include_header</span><span class="p">,</span> <span class="n">format_value</span><span class="p">,</span> <span class="n">enriched_cols</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Helper function to create a rich table with appropriate sizing&quot;&quot;&quot;</span>
 
     <span class="n">num_columns</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="p">)</span>
@@ -382,7 +451,10 @@
 
     <span class="n">col_widths</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="k">for</span> <span class="n">column</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
-        <span class="n">col_name</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">column</span><span class="p">)</span>
+        <span class="n">display_name</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;*</span><span class="si">{</span><span class="n">column</span><span class="si">}</span><span class="s2">&quot;</span> <span class="k">if</span> <span class="n">enriched_cols</span> <span class="ow">and</span> <span class="n">column</span> <span class="ow">in</span> <span class="n">enriched_cols</span> <span class="k">else</span> <span class="nb">str</span><span class="p">(</span><span class="n">column</span><span class="p">)</span>
+        <span class="p">)</span>
+        <span class="n">col_name</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">display_name</span><span class="p">)</span>
         <span class="n">sample_data</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">column</span><span class="p">]</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span>
         <span class="n">max_content_len</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span>
             <span class="nb">len</span><span class="p">(</span><span class="n">col_name</span><span class="p">),</span> <span class="n">sample_data</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">len</span><span class="p">()</span><span class="o">.</span><span class="n">max</span><span class="p">()</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">sample_data</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="k">else</span> <span class="mi">0</span>
@@ -412,7 +484,7 @@
 
     <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">column</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="p">):</span>
         <span class="n">table</span><span class="o">.</span><span class="n">add_column</span><span class="p">(</span>
-            <span class="nb">str</span><span class="p">(</span><span class="n">column</span><span class="p">),</span>
+            <span class="sa">f</span><span class="s2">&quot;*</span><span class="si">{</span><span class="n">column</span><span class="si">}</span><span class="s2">&quot;</span> <span class="k">if</span> <span class="n">enriched_cols</span> <span class="ow">and</span> <span class="n">column</span> <span class="ow">in</span> <span class="n">enriched_cols</span> <span class="k">else</span> <span class="nb">str</span><span class="p">(</span><span class="n">column</span><span class="p">),</span>
             <span class="n">style</span><span class="o">=</span><span class="s2">&quot;dim&quot;</span><span class="p">,</span>
             <span class="n">no_wrap</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
             <span class="n">overflow</span><span class="o">=</span><span class="s2">&quot;fold&quot;</span><span class="p">,</span>
@@ -427,7 +499,7 @@
     <span class="n">console</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="n">table</span><span class="p">)</span>
 
 
-<span class="k">def</span><span class="w"> </span><span class="nf">_print_save_df</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">saveto</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_print_save_df</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">saveto</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">enriched_cols</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Save dataframe to file or print with rich formatting.</span>
 
 <span class="sd">    Automatically detects format from file extension:</span>
@@ -442,43 +514,72 @@
         <span class="k">if</span> <span class="n">file_ext</span> <span class="o">==</span> <span class="s2">&quot;.csv&quot;</span><span class="p">:</span>
             <span class="n">df</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">saveto</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
             <span class="n">console</span><span class="o">.</span><span class="n">print</span><span class="p">(</span>
-                <span class="sa">f</span><span class="s2">&quot;[bright_green]✓[/bright_green] Saved to CSV: [bright_blue]</span><span class="si">{</span><span class="n">saveto</span><span class="si">}</span><span class="s2">[/bright_blue]&quot;</span>
+                <span class="p">(</span>
+                    <span class="sa">f</span><span class="s2">&quot;[bright_green]✓[/bright_green] Saved to CSV: &quot;</span>
+                    <span class="sa">f</span><span class="s2">&quot;[bright_blue]</span><span class="si">{</span><span class="n">saveto</span><span class="si">}</span><span class="s2">[/bright_blue]&quot;</span>
+                <span class="p">)</span>
             <span class="p">)</span>
         <span class="k">elif</span> <span class="n">file_ext</span> <span class="o">==</span> <span class="s2">&quot;.json&quot;</span><span class="p">:</span>
             <span class="n">df</span><span class="o">.</span><span class="n">to_json</span><span class="p">(</span><span class="n">saveto</span><span class="p">,</span> <span class="n">orient</span><span class="o">=</span><span class="s2">&quot;records&quot;</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
             <span class="n">console</span><span class="o">.</span><span class="n">print</span><span class="p">(</span>
-                <span class="sa">f</span><span class="s2">&quot;[bright_green]✓[/bright_green] Saved to JSON: [bright_blue]</span><span class="si">{</span><span class="n">saveto</span><span class="si">}</span><span class="s2">[/bright_blue]&quot;</span>
+                <span class="p">(</span>
+                    <span class="sa">f</span><span class="s2">&quot;[bright_green]✓[/bright_green] Saved to JSON: &quot;</span>
+                    <span class="sa">f</span><span class="s2">&quot;[bright_blue]</span><span class="si">{</span><span class="n">saveto</span><span class="si">}</span><span class="s2">[/bright_blue]&quot;</span>
+                <span class="p">)</span>
             <span class="p">)</span>
         <span class="k">elif</span> <span class="n">file_ext</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;.tsv&quot;</span><span class="p">,</span> <span class="s2">&quot;.txt&quot;</span><span class="p">]:</span>
             <span class="n">df</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">saveto</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">)</span>
             <span class="n">console</span><span class="o">.</span><span class="n">print</span><span class="p">(</span>
-                <span class="sa">f</span><span class="s2">&quot;[bright_green]✓[/bright_green] Saved to TSV: [bright_blue]</span><span class="si">{</span><span class="n">saveto</span><span class="si">}</span><span class="s2">[/bright_blue]&quot;</span>
+                <span class="p">(</span>
+                    <span class="sa">f</span><span class="s2">&quot;[bright_green]✓[/bright_green] Saved to TSV: &quot;</span>
+                    <span class="sa">f</span><span class="s2">&quot;[bright_blue]</span><span class="si">{</span><span class="n">saveto</span><span class="si">}</span><span class="s2">[/bright_blue]&quot;</span>
+                <span class="p">)</span>
             <span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">df</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">saveto</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">)</span>
             <span class="n">console</span><span class="o">.</span><span class="n">print</span><span class="p">(</span>
-                <span class="sa">f</span><span class="s2">&quot;[bright_green]✓[/bright_green] Saved to file: [bright_blue]</span><span class="si">{</span><span class="n">saveto</span><span class="si">}</span><span class="s2">[/bright_blue]&quot;</span>
+                <span class="p">(</span>
+                    <span class="sa">f</span><span class="s2">&quot;[bright_green]✓[/bright_green] Saved to file: &quot;</span>
+                    <span class="sa">f</span><span class="s2">&quot;[bright_blue]</span><span class="si">{</span><span class="n">saveto</span><span class="si">}</span><span class="s2">[/bright_blue]&quot;</span>
+                <span class="p">)</span>
             <span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="k">if</span> <span class="n">df</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">console</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s2">&quot;[bright_black]No data to display[/bright_black]&quot;</span><span class="p">)</span>
         <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">index</span><span class="p">):</span>
-            <span class="n">pretty_print_df</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+            <span class="n">pretty_print_df</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">enriched_cols</span><span class="o">=</span><span class="n">enriched_cols</span><span class="p">)</span>
 
 
 <span class="c1">###################### metadata ##############################</span>
 <div class="viewcode-block" id="metadata">
 <a class="viewcode-back" href="../../pysradb.html#pysradb.cli.metadata">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">metadata</span><span class="p">(</span>
-    <span class="n">srp_id</span><span class="p">,</span> <span class="n">assay</span><span class="p">,</span> <span class="n">desc</span><span class="p">,</span> <span class="n">detailed</span><span class="p">,</span> <span class="n">expand</span><span class="p">,</span> <span class="n">saveto</span><span class="p">,</span> <span class="n">enrich</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">enrich_backend</span><span class="o">=</span><span class="kc">None</span>
+    <span class="n">srp_id</span><span class="p">,</span>
+    <span class="n">assay</span><span class="p">,</span>
+    <span class="n">desc</span><span class="p">,</span>
+    <span class="n">detailed</span><span class="p">,</span>
+    <span class="n">expand</span><span class="p">,</span>
+    <span class="n">saveto</span><span class="p">,</span>
+    <span class="n">enrich</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">enrich_backend</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">embed_model</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
 <span class="p">):</span>
     <span class="c1"># Validate that at least one ID was provided</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">srp_id</span><span class="p">:</span>
         <span class="n">console</span><span class="o">.</span><span class="n">print</span><span class="p">(</span>
-            <span class="s2">&quot;[red]Error: No accession IDs provided. Please provide one or more SRP/GSE IDs.[/red]&quot;</span>
+            <span class="p">(</span>
+                <span class="s2">&quot;[red]Error: No accession IDs provided. &quot;</span>
+                <span class="s2">&quot;Please provide one or more SRP/GSE IDs.[/red]&quot;</span>
+            <span class="p">)</span>
         <span class="p">)</span>
         <span class="n">console</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s2">&quot;[yellow]Usage: pysradb metadata SRP000001 [SRP000002 ...]&quot;</span><span class="p">)</span>
         <span class="n">console</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s2">&quot;       pysradb metadata GSE123456[/yellow]&quot;</span><span class="p">)</span>
+        <span class="k">return</span>
+    <span class="k">if</span> <span class="n">enrich</span> <span class="ow">and</span> <span class="n">detailed</span><span class="p">:</span>
+        <span class="n">console</span><span class="o">.</span><span class="n">print</span><span class="p">(</span>
+            <span class="s2">&quot;[red]Error:[/red] --detailed cannot be used with --enrich. &quot;</span>
+            <span class="s2">&quot;Enrichment uses the pysraweb API output.&quot;</span>
+        <span class="p">)</span>
         <span class="k">return</span>
 
     <span class="n">client</span> <span class="o">=</span> <span class="n">SRAweb</span><span class="p">()</span>
@@ -493,35 +594,215 @@
 
     <span class="n">metadata_frames</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="k">if</span> <span class="n">srp_ids</span><span class="p">:</span>
-        <span class="n">srp_metadata</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">sra_metadata</span><span class="p">(</span>
-            <span class="n">srp_ids</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">srp_ids</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span> <span class="k">else</span> <span class="n">srp_ids</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
-            <span class="n">assay</span><span class="o">=</span><span class="n">assay</span><span class="p">,</span>
-            <span class="n">detailed</span><span class="o">=</span><span class="n">detailed</span><span class="p">,</span>
-            <span class="n">sample_attribute</span><span class="o">=</span><span class="n">desc</span><span class="p">,</span>
-            <span class="n">expand_sample_attributes</span><span class="o">=</span><span class="n">expand</span><span class="p">,</span>
-            <span class="n">enrich</span><span class="o">=</span><span class="n">enrich</span><span class="p">,</span>
-            <span class="n">enrich_backend</span><span class="o">=</span><span class="n">enrich_backend</span> <span class="k">if</span> <span class="n">enrich_backend</span> <span class="k">else</span> <span class="s2">&quot;ollama/phi3&quot;</span><span class="p">,</span>
-        <span class="p">)</span>
-        <span class="k">if</span> <span class="n">srp_metadata</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">metadata_frames</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">srp_metadata</span><span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">srp_metadata</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">sra_metadata</span><span class="p">(</span>
+                <span class="n">srp_ids</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">srp_ids</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span> <span class="k">else</span> <span class="n">srp_ids</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+                <span class="n">assay</span><span class="o">=</span><span class="n">assay</span><span class="p">,</span>
+                <span class="n">detailed</span><span class="o">=</span><span class="n">detailed</span><span class="p">,</span>
+                <span class="n">sample_attribute</span><span class="o">=</span><span class="n">desc</span><span class="p">,</span>
+                <span class="n">expand_sample_attributes</span><span class="o">=</span><span class="n">expand</span><span class="p">,</span>
+                <span class="n">enrich</span><span class="o">=</span><span class="n">enrich</span><span class="p">,</span>
+                <span class="n">enrich_backend</span><span class="o">=</span><span class="p">(</span>
+                    <span class="n">enrich_backend</span> <span class="k">if</span> <span class="n">enrich_backend</span> <span class="k">else</span> <span class="s2">&quot;ollama/granite4:3b&quot;</span>
+                <span class="p">),</span>
+                <span class="n">embedding_model</span><span class="o">=</span><span class="p">(</span>
+                    <span class="n">embed_model</span> <span class="k">if</span> <span class="n">embed_model</span> <span class="k">else</span> <span class="s2">&quot;abhinand/MedEmbed-large-v0.1&quot;</span>
+                <span class="p">),</span>
+            <span class="p">)</span>
+            <span class="k">if</span> <span class="n">srp_metadata</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">metadata_frames</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">srp_metadata</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="n">error_msg</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+            <span class="k">if</span> <span class="s2">&quot;Failed to load model&quot;</span> <span class="ow">in</span> <span class="n">error_msg</span><span class="p">:</span>
+                <span class="n">console</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s2">&quot;[red]Error: Failed to load enrichment model.[/red]&quot;</span><span class="p">)</span>
+                <span class="n">console</span><span class="o">.</span><span class="n">print</span><span class="p">(</span>
+                    <span class="s2">&quot;[yellow]Please ensure the required models are installed:[/yellow]&quot;</span>
+                <span class="p">)</span>
+                <span class="n">console</span><span class="o">.</span><span class="n">print</span><span class="p">(</span>
+                    <span class="s2">&quot;  1. For embedding model: pip install sentence-transformers&quot;</span>
+                <span class="p">)</span>
+                <span class="c1"># Provide LLM-specific guidance based on requested backend</span>
+                <span class="n">provider</span> <span class="o">=</span> <span class="p">(</span>
+                    <span class="n">enrich_backend</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="k">if</span> <span class="n">enrich_backend</span> <span class="k">else</span> <span class="s2">&quot;ollama&quot;</span>
+                <span class="p">)</span>
+                <span class="n">model_hint</span> <span class="o">=</span> <span class="p">(</span>
+                    <span class="n">enrich_backend</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
+                    <span class="k">if</span> <span class="p">(</span><span class="n">enrich_backend</span> <span class="ow">and</span> <span class="s2">&quot;/&quot;</span> <span class="ow">in</span> <span class="n">enrich_backend</span><span class="p">)</span>
+                    <span class="k">else</span> <span class="s2">&quot;granite4:3b&quot;</span>
+                <span class="p">)</span>
+                <span class="k">if</span> <span class="n">provider</span> <span class="o">==</span> <span class="s2">&quot;ollama&quot;</span><span class="p">:</span>
+                    <span class="n">console</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s2">&quot;  2. For LLM: Install Ollama from https://ollama.ai&quot;</span><span class="p">)</span>
+                    <span class="n">console</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s2">&quot;     Then run: ollama serve&quot;</span><span class="p">)</span>
+                    <span class="n">console</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;     Then pull the model: ollama pull </span><span class="si">{</span><span class="n">model_hint</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+                <span class="k">elif</span> <span class="n">provider</span> <span class="o">==</span> <span class="s2">&quot;lmstudio&quot;</span><span class="p">:</span>
+                    <span class="n">console</span><span class="o">.</span><span class="n">print</span><span class="p">(</span>
+                        <span class="s2">&quot;  2. For LLM: Ensure LM Studio is installed and running&quot;</span>
+                    <span class="p">)</span>
+                    <span class="n">console</span><span class="o">.</span><span class="n">print</span><span class="p">(</span>
+                        <span class="s2">&quot;     Consult LM Studio docs for pulling or registering models.&quot;</span>
+                    <span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">console</span><span class="o">.</span><span class="n">print</span><span class="p">(</span>
+                        <span class="p">(</span>
+                            <span class="sa">f</span><span class="s2">&quot;  2. For LLM: Ensure </span><span class="si">{</span><span class="n">provider</span><span class="si">}</span><span class="s2"> backend is available &quot;</span>
+                            <span class="s2">&quot;and the model is installed&quot;</span>
+                        <span class="p">)</span>
+                    <span class="p">)</span>
+                <span class="k">return</span>
+            <span class="k">elif</span> <span class="s2">&quot;connect&quot;</span> <span class="ow">in</span> <span class="n">error_msg</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">or</span> <span class="s2">&quot;connection&quot;</span> <span class="ow">in</span> <span class="n">error_msg</span><span class="o">.</span><span class="n">lower</span><span class="p">():</span>
+                <span class="n">provider</span> <span class="o">=</span> <span class="p">(</span>
+                    <span class="n">enrich_backend</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="k">if</span> <span class="n">enrich_backend</span> <span class="k">else</span> <span class="s2">&quot;ollama&quot;</span>
+                <span class="p">)</span>
+                <span class="n">model_hint</span> <span class="o">=</span> <span class="p">(</span>
+                    <span class="n">enrich_backend</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
+                    <span class="k">if</span> <span class="p">(</span><span class="n">enrich_backend</span> <span class="ow">and</span> <span class="s2">&quot;/&quot;</span> <span class="ow">in</span> <span class="n">enrich_backend</span><span class="p">)</span>
+                    <span class="k">else</span> <span class="s2">&quot;granite4:3b&quot;</span>
+                <span class="p">)</span>
+                <span class="k">if</span> <span class="n">provider</span> <span class="o">==</span> <span class="s2">&quot;ollama&quot;</span><span class="p">:</span>
+                    <span class="n">console</span><span class="o">.</span><span class="n">print</span><span class="p">(</span>
+                        <span class="s2">&quot;[red]Error: Cannot connect to Ollama server &quot;</span>
+                        <span class="s2">&quot;or load model.[/red]&quot;</span>
+                    <span class="p">)</span>
+                    <span class="n">console</span><span class="o">.</span><span class="n">print</span><span class="p">(</span>
+                        <span class="s2">&quot;[yellow]Please ensure Ollama is installed &quot;</span>
+                        <span class="s2">&quot;and running:[/yellow]&quot;</span>
+                    <span class="p">)</span>
+                    <span class="n">console</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s2">&quot;  1. Install Ollama from https://ollama.ai&quot;</span><span class="p">)</span>
+                    <span class="n">console</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s2">&quot;  2. Start Ollama: ollama serve&quot;</span><span class="p">)</span>
+                    <span class="n">console</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  3. Pull the model: ollama pull </span><span class="si">{</span><span class="n">model_hint</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+                <span class="k">elif</span> <span class="n">provider</span> <span class="o">==</span> <span class="s2">&quot;lmstudio&quot;</span><span class="p">:</span>
+                    <span class="n">console</span><span class="o">.</span><span class="n">print</span><span class="p">(</span>
+                        <span class="s2">&quot;[red]Error: Cannot connect to LM Studio or load model.[/red]&quot;</span>
+                    <span class="p">)</span>
+                    <span class="n">console</span><span class="o">.</span><span class="n">print</span><span class="p">(</span>
+                        <span class="p">(</span>
+                            <span class="s2">&quot;[yellow]Please ensure LM Studio is running and the &quot;</span>
+                            <span class="s2">&quot;model is available.&quot;</span>
+                            <span class="s2">&quot;[/yellow]&quot;</span>
+                        <span class="p">)</span>
+                    <span class="p">)</span>
+                    <span class="n">console</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s2">&quot;  1. Check LM Studio documentation for model setup&quot;</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">console</span><span class="o">.</span><span class="n">print</span><span class="p">(</span>
+                        <span class="sa">f</span><span class="s2">&quot;[red]Error: Cannot connect to </span><span class="si">{</span><span class="n">provider</span><span class="si">}</span><span class="s2"> backend &quot;</span>
+                        <span class="s2">&quot;or load model.[/red]&quot;</span>
+                    <span class="p">)</span>
+                    <span class="n">console</span><span class="o">.</span><span class="n">print</span><span class="p">(</span>
+                        <span class="s2">&quot;[yellow]Please ensure the backend/service is running &quot;</span>
+                        <span class="s2">&quot;and the requested model is available.[/yellow]&quot;</span>
+                    <span class="p">)</span>
+                <span class="k">return</span>
+            <span class="k">elif</span> <span class="s2">&quot;enrichment&quot;</span> <span class="ow">in</span> <span class="n">error_msg</span><span class="o">.</span><span class="n">lower</span><span class="p">():</span>
+                <span class="n">console</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s2">&quot;[red]Error: Metadata enrichment failed.[/red]&quot;</span><span class="p">)</span>
+                <span class="n">console</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[yellow]Details: </span><span class="si">{</span><span class="n">error_msg</span><span class="si">}</span><span class="s2">[/yellow]&quot;</span><span class="p">)</span>
+                <span class="k">return</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">raise</span>
 
     <span class="k">if</span> <span class="n">gse_ids</span><span class="p">:</span>
-        <span class="n">geo_metadata_df</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">geo_metadata</span><span class="p">(</span>
-            <span class="n">gse_ids</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">gse_ids</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span> <span class="k">else</span> <span class="n">gse_ids</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
-            <span class="n">sample_attribute</span><span class="o">=</span><span class="n">desc</span><span class="p">,</span>
-            <span class="n">detailed</span><span class="o">=</span><span class="n">detailed</span><span class="p">,</span>
-            <span class="n">enrich</span><span class="o">=</span><span class="n">enrich</span><span class="p">,</span>
-            <span class="n">enrich_backend</span><span class="o">=</span><span class="n">enrich_backend</span> <span class="k">if</span> <span class="n">enrich_backend</span> <span class="k">else</span> <span class="s2">&quot;ollama/phi3&quot;</span><span class="p">,</span>
-        <span class="p">)</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="n">geo_metadata_df</span><span class="o">.</span><span class="n">empty</span><span class="p">:</span>
-            <span class="n">metadata_frames</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">geo_metadata_df</span><span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">geo_metadata_df</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">geo_metadata</span><span class="p">(</span>
+                <span class="n">gse_ids</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">gse_ids</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span> <span class="k">else</span> <span class="n">gse_ids</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+                <span class="n">sample_attribute</span><span class="o">=</span><span class="n">desc</span><span class="p">,</span>
+                <span class="n">detailed</span><span class="o">=</span><span class="n">detailed</span><span class="p">,</span>
+                <span class="n">enrich</span><span class="o">=</span><span class="n">enrich</span><span class="p">,</span>
+                <span class="n">enrich_backend</span><span class="o">=</span><span class="p">(</span>
+                    <span class="n">enrich_backend</span> <span class="k">if</span> <span class="n">enrich_backend</span> <span class="k">else</span> <span class="s2">&quot;ollama/granite4:3b&quot;</span>
+                <span class="p">),</span>
+                <span class="n">embedding_model</span><span class="o">=</span><span class="p">(</span>
+                    <span class="n">embed_model</span> <span class="k">if</span> <span class="n">embed_model</span> <span class="k">else</span> <span class="s2">&quot;abhinand/MedEmbed-large-v0.1&quot;</span>
+                <span class="p">),</span>
+            <span class="p">)</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">geo_metadata_df</span><span class="o">.</span><span class="n">empty</span><span class="p">:</span>
+                <span class="n">metadata_frames</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">geo_metadata_df</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="n">error_msg</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+            <span class="k">if</span> <span class="s2">&quot;Failed to load model&quot;</span> <span class="ow">in</span> <span class="n">error_msg</span><span class="p">:</span>
+                <span class="n">console</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s2">&quot;[red]Error: Failed to load enrichment model.[/red]&quot;</span><span class="p">)</span>
+                <span class="n">console</span><span class="o">.</span><span class="n">print</span><span class="p">(</span>
+                    <span class="s2">&quot;[yellow]Please ensure the required models are installed:[/yellow]&quot;</span>
+                <span class="p">)</span>
+                <span class="n">console</span><span class="o">.</span><span class="n">print</span><span class="p">(</span>
+                    <span class="s2">&quot;  1. For embedding model: pip install sentence-transformers&quot;</span>
+                <span class="p">)</span>
+                <span class="n">provider</span> <span class="o">=</span> <span class="p">(</span>
+                    <span class="n">enrich_backend</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="k">if</span> <span class="n">enrich_backend</span> <span class="k">else</span> <span class="s2">&quot;ollama&quot;</span>
+                <span class="p">)</span>
+                <span class="n">model_hint</span> <span class="o">=</span> <span class="p">(</span>
+                    <span class="n">enrich_backend</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
+                    <span class="k">if</span> <span class="p">(</span><span class="n">enrich_backend</span> <span class="ow">and</span> <span class="s2">&quot;/&quot;</span> <span class="ow">in</span> <span class="n">enrich_backend</span><span class="p">)</span>
+                    <span class="k">else</span> <span class="s2">&quot;granite4:3b&quot;</span>
+                <span class="p">)</span>
+                <span class="k">if</span> <span class="n">provider</span> <span class="o">==</span> <span class="s2">&quot;ollama&quot;</span><span class="p">:</span>
+                    <span class="n">console</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s2">&quot;  2. For LLM: Install Ollama from https://ollama.ai&quot;</span><span class="p">)</span>
+                    <span class="n">console</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s2">&quot;     Then run: ollama serve&quot;</span><span class="p">)</span>
+                    <span class="n">console</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;     Then pull the model: ollama pull </span><span class="si">{</span><span class="n">model_hint</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+                <span class="k">elif</span> <span class="n">provider</span> <span class="o">==</span> <span class="s2">&quot;lmstudio&quot;</span><span class="p">:</span>
+                    <span class="n">console</span><span class="o">.</span><span class="n">print</span><span class="p">(</span>
+                        <span class="s2">&quot;  2. For LLM: Ensure LM Studio is installed and running&quot;</span>
+                    <span class="p">)</span>
+                    <span class="n">console</span><span class="o">.</span><span class="n">print</span><span class="p">(</span>
+                        <span class="s2">&quot;     Consult LM Studio docs for pulling or registering models.&quot;</span>
+                    <span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">console</span><span class="o">.</span><span class="n">print</span><span class="p">(</span>
+                        <span class="sa">f</span><span class="s2">&quot;  2. For LLM: Ensure </span><span class="si">{</span><span class="n">provider</span><span class="si">}</span><span class="s2"> backend is available &quot;</span>
+                        <span class="s2">&quot;and the model is installed&quot;</span>
+                    <span class="p">)</span>
+                <span class="k">return</span>
+            <span class="k">elif</span> <span class="s2">&quot;connect&quot;</span> <span class="ow">in</span> <span class="n">error_msg</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">or</span> <span class="s2">&quot;connection&quot;</span> <span class="ow">in</span> <span class="n">error_msg</span><span class="o">.</span><span class="n">lower</span><span class="p">():</span>
+                <span class="n">provider</span> <span class="o">=</span> <span class="p">(</span>
+                    <span class="n">enrich_backend</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="k">if</span> <span class="n">enrich_backend</span> <span class="k">else</span> <span class="s2">&quot;ollama&quot;</span>
+                <span class="p">)</span>
+                <span class="n">model_hint</span> <span class="o">=</span> <span class="p">(</span>
+                    <span class="n">enrich_backend</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
+                    <span class="k">if</span> <span class="p">(</span><span class="n">enrich_backend</span> <span class="ow">and</span> <span class="s2">&quot;/&quot;</span> <span class="ow">in</span> <span class="n">enrich_backend</span><span class="p">)</span>
+                    <span class="k">else</span> <span class="s2">&quot;granite4:3b&quot;</span>
+                <span class="p">)</span>
+                <span class="k">if</span> <span class="n">provider</span> <span class="o">==</span> <span class="s2">&quot;ollama&quot;</span><span class="p">:</span>
+                    <span class="n">console</span><span class="o">.</span><span class="n">print</span><span class="p">(</span>
+                        <span class="s2">&quot;[red]Error: Cannot connect to Ollama server &quot;</span>
+                        <span class="s2">&quot;or load model.[/red]&quot;</span>
+                    <span class="p">)</span>
+                    <span class="n">console</span><span class="o">.</span><span class="n">print</span><span class="p">(</span>
+                        <span class="s2">&quot;[yellow]Please ensure Ollama is installed &quot;</span>
+                        <span class="s2">&quot;and running:[/yellow]&quot;</span>
+                    <span class="p">)</span>
+                    <span class="n">console</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s2">&quot;  1. Install Ollama from https://ollama.ai&quot;</span><span class="p">)</span>
+                    <span class="n">console</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s2">&quot;  2. Start Ollama: ollama serve&quot;</span><span class="p">)</span>
+                    <span class="n">console</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  3. Pull the model: ollama pull </span><span class="si">{</span><span class="n">model_hint</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+                <span class="k">elif</span> <span class="n">provider</span> <span class="o">==</span> <span class="s2">&quot;lmstudio&quot;</span><span class="p">:</span>
+                    <span class="n">console</span><span class="o">.</span><span class="n">print</span><span class="p">(</span>
+                        <span class="s2">&quot;[red]Error: Cannot connect to LM Studio or load model.[/red]&quot;</span>
+                    <span class="p">)</span>
+                    <span class="n">console</span><span class="o">.</span><span class="n">print</span><span class="p">(</span>
+                        <span class="s2">&quot;[yellow]Please ensure LM Studio is running &quot;</span>
+                        <span class="s2">&quot;and the model is available.[/yellow]&quot;</span>
+                    <span class="p">)</span>
+                    <span class="n">console</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s2">&quot;  1. Check LM Studio documentation for model setup&quot;</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">console</span><span class="o">.</span><span class="n">print</span><span class="p">(</span>
+                        <span class="sa">f</span><span class="s2">&quot;[red]Error: Cannot connect to </span><span class="si">{</span><span class="n">provider</span><span class="si">}</span><span class="s2"> backend &quot;</span>
+                        <span class="s2">&quot;or load model.[/red]&quot;</span>
+                    <span class="p">)</span>
+                    <span class="n">console</span><span class="o">.</span><span class="n">print</span><span class="p">(</span>
+                        <span class="s2">&quot;[yellow]Please ensure the backend/service is running &quot;</span>
+                        <span class="s2">&quot;and the requested model is available.[/yellow]&quot;</span>
+                    <span class="p">)</span>
+                <span class="k">return</span>
+            <span class="k">elif</span> <span class="s2">&quot;enrichment&quot;</span> <span class="ow">in</span> <span class="n">error_msg</span><span class="o">.</span><span class="n">lower</span><span class="p">():</span>
+                <span class="n">console</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s2">&quot;[red]Error: Metadata enrichment failed.[/red]&quot;</span><span class="p">)</span>
+                <span class="n">console</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[yellow]Details: </span><span class="si">{</span><span class="n">error_msg</span><span class="si">}</span><span class="s2">[/yellow]&quot;</span><span class="p">)</span>
+                <span class="k">return</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">raise</span>
 
     <span class="k">if</span> <span class="n">metadata_frames</span><span class="p">:</span>
         <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">(</span><span class="n">metadata_frames</span><span class="p">,</span> <span class="n">ignore_index</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">sort</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">()</span>
 
-    <span class="n">_print_save_df</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">saveto</span><span class="p">)</span></div>
+    <span class="n">_print_save_df</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">saveto</span><span class="p">,</span> <span class="n">enriched_cols</span><span class="o">=</span><span class="n">ENRICHED_COLS</span> <span class="k">if</span> <span class="n">enrich</span> <span class="k">else</span> <span class="kc">None</span><span class="p">)</span></div>
 
 
 
@@ -585,7 +866,7 @@
 <span class="c1">######################### search #################################</span>
 <div class="viewcode-block" id="search">
 <a class="viewcode-back" href="../../pysradb.html#pysradb.cli.search">[docs]</a>
-<span class="k">def</span><span class="w"> </span><span class="nf">search</span><span class="p">(</span><span class="n">saveto</span><span class="p">,</span> <span class="n">db</span><span class="p">,</span> <span class="n">verbosity</span><span class="p">,</span> <span class="n">return_max</span><span class="p">,</span> <span class="n">fields</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">search</span><span class="p">(</span><span class="n">saveto</span><span class="p">,</span> <span class="n">db</span><span class="p">,</span> <span class="n">verbosity</span><span class="p">,</span> <span class="n">return_max</span><span class="p">,</span> <span class="n">fields</span><span class="p">,</span> <span class="n">return_df</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
     <span class="k">if</span> <span class="n">fields</span><span class="p">[</span><span class="s2">&quot;run_description&quot;</span><span class="p">]:</span>
         <span class="n">verbosity</span> <span class="o">=</span> <span class="mi">1</span>
     <span class="k">if</span> <span class="n">fields</span><span class="p">[</span><span class="s2">&quot;detailed&quot;</span><span class="p">]:</span>
@@ -653,7 +934,10 @@
     <span class="k">if</span> <span class="n">fields</span><span class="p">[</span><span class="s2">&quot;graphs&quot;</span><span class="p">]:</span>
         <span class="n">graph_types</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">fields</span><span class="p">[</span><span class="s2">&quot;graphs&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">())</span>
         <span class="n">instance</span><span class="o">.</span><span class="n">visualise_results</span><span class="p">(</span><span class="n">graph_types</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
-    <span class="n">_print_save_df</span><span class="p">(</span><span class="n">instance</span><span class="o">.</span><span class="n">get_df</span><span class="p">(),</span> <span class="n">saveto</span><span class="p">)</span></div>
+    <span class="k">if</span> <span class="n">return_df</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">instance</span><span class="o">.</span><span class="n">get_df</span><span class="p">()</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">_print_save_df</span><span class="p">(</span><span class="n">instance</span><span class="o">.</span><span class="n">get_df</span><span class="p">(),</span> <span class="n">saveto</span><span class="p">)</span></div>
 
 
 
@@ -1033,9 +1317,9 @@
 
 <div class="viewcode-block" id="srp_to_pmid">
 <a class="viewcode-back" href="../../pysradb.html#pysradb.cli.srp_to_pmid">[docs]</a>
-<span class="k">def</span><span class="w"> </span><span class="nf">srp_to_pmid</span><span class="p">(</span><span class="n">srp_ids</span><span class="p">,</span> <span class="n">saveto</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">srp_to_pmid</span><span class="p">(</span><span class="n">srp_ids</span><span class="p">,</span> <span class="n">saveto</span><span class="p">,</span> <span class="n">detailed</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
     <span class="n">client</span> <span class="o">=</span> <span class="n">SRAweb</span><span class="p">()</span>
-    <span class="n">df</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">srp_to_pmid</span><span class="p">(</span><span class="n">srp_ids</span><span class="p">)</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">srp_to_pmid</span><span class="p">(</span><span class="n">srp_ids</span><span class="p">,</span> <span class="n">detailed</span><span class="o">=</span><span class="n">detailed</span><span class="p">)</span>
     <span class="n">_print_save_df</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">saveto</span><span class="p">)</span></div>
 
 
@@ -1052,9 +1336,36 @@
 
 <div class="viewcode-block" id="gse_to_pmid">
 <a class="viewcode-back" href="../../pysradb.html#pysradb.cli.gse_to_pmid">[docs]</a>
-<span class="k">def</span><span class="w"> </span><span class="nf">gse_to_pmid</span><span class="p">(</span><span class="n">gse_ids</span><span class="p">,</span> <span class="n">saveto</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">gse_to_pmid</span><span class="p">(</span><span class="n">gse_ids</span><span class="p">,</span> <span class="n">saveto</span><span class="p">,</span> <span class="n">detailed</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
     <span class="n">client</span> <span class="o">=</span> <span class="n">SRAweb</span><span class="p">()</span>
-    <span class="n">df</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">gse_to_pmid</span><span class="p">(</span><span class="n">gse_ids</span><span class="p">)</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">gse_to_pmid</span><span class="p">(</span><span class="n">gse_ids</span><span class="p">,</span> <span class="n">detailed</span><span class="o">=</span><span class="n">detailed</span><span class="p">)</span>
+    <span class="n">_print_save_df</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">saveto</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="pmid_info">
+<a class="viewcode-back" href="../../pysradb.html#pysradb.cli.pmid_info">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">pmid_info</span><span class="p">(</span><span class="n">ids</span><span class="p">,</span> <span class="n">saveto</span><span class="p">,</span> <span class="n">detailed</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="n">client</span> <span class="o">=</span> <span class="n">SRAweb</span><span class="p">()</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">pmid_info</span><span class="p">(</span><span class="n">ids</span><span class="p">,</span> <span class="n">detailed</span><span class="o">=</span><span class="n">detailed</span><span class="p">)</span>
+    <span class="n">_print_save_df</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">saveto</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="ae_to_pmid">
+<a class="viewcode-back" href="../../pysradb.html#pysradb.cli.ae_to_pmid">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">ae_to_pmid</span><span class="p">(</span><span class="n">ae_ids</span><span class="p">,</span> <span class="n">saveto</span><span class="p">):</span>
+    <span class="n">client</span> <span class="o">=</span> <span class="n">SRAweb</span><span class="p">()</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">ae_to_pmid</span><span class="p">(</span><span class="n">ae_ids</span><span class="p">)</span>
+    <span class="n">_print_save_df</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">saveto</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="ena_to_pmid">
+<a class="viewcode-back" href="../../pysradb.html#pysradb.cli.ena_to_pmid">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">ena_to_pmid</span><span class="p">(</span><span class="n">ena_ids</span><span class="p">,</span> <span class="n">saveto</span><span class="p">):</span>
+    <span class="n">client</span> <span class="o">=</span> <span class="n">SRAweb</span><span class="p">()</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">ena_to_pmid</span><span class="p">(</span><span class="n">ena_ids</span><span class="p">)</span>
     <span class="n">_print_save_df</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">saveto</span><span class="p">)</span></div>
 
 
@@ -1132,15 +1443,17 @@
     <span class="c1"># Download the GEO Matrix file</span>
     <span class="n">matrix_file</span> <span class="o">=</span> <span class="n">download_geo_matrix</span><span class="p">(</span><span class="n">accession</span><span class="p">,</span> <span class="n">output_dir</span><span class="o">=</span><span class="n">output_dir</span><span class="p">)</span>
     <span class="n">console</span><span class="o">.</span><span class="n">print</span><span class="p">(</span>
-        <span class="sa">f</span><span class="s2">&quot;[bright_green]✓[/bright_green] Downloaded GEO Matrix file to: [bright_blue]</span><span class="si">{</span><span class="n">matrix_file</span><span class="si">}</span><span class="s2">[/bright_blue]&quot;</span>
+        <span class="sa">f</span><span class="s2">&quot;[bright_green]✓[/bright_green] Downloaded GEO Matrix file to: &quot;</span>
+        <span class="sa">f</span><span class="s2">&quot;[bright_blue]</span><span class="si">{</span><span class="n">matrix_file</span><span class="si">}</span><span class="s2">[/bright_blue]&quot;</span>
     <span class="p">)</span>
 
     <span class="c1"># If --to-tsv is specified, parse the file to TSV</span>
     <span class="k">if</span> <span class="n">to_tsv</span><span class="p">:</span>
         <span class="n">output_tsv</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">output_dir</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">accession</span><span class="si">}</span><span class="s2">_matrix.tsv&quot;</span><span class="p">)</span>
-        <span class="n">df</span> <span class="o">=</span> <span class="n">parse_geo_matrix_to_tsv</span><span class="p">(</span><span class="n">matrix_file</span><span class="p">,</span> <span class="n">output_tsv</span><span class="p">)</span>
+        <span class="c1"># df = parse_geo_matrix_to_tsv(matrix_file, output_tsv)</span>
         <span class="n">console</span><span class="o">.</span><span class="n">print</span><span class="p">(</span>
-            <span class="sa">f</span><span class="s2">&quot;[bright_green]✓[/bright_green] Parsed GEO Matrix file to TSV: [bright_blue]</span><span class="si">{</span><span class="n">output_tsv</span><span class="si">}</span><span class="s2">[/bright_blue]&quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;[bright_green]✓[/bright_green] Parsed GEO Matrix file to TSV: &quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;[bright_blue]</span><span class="si">{</span><span class="n">output_tsv</span><span class="si">}</span><span class="s2">[/bright_blue]&quot;</span>
         <span class="p">)</span></div>
 
 
@@ -1180,7 +1493,10 @@
         <span class="n">action</span><span class="o">=</span><span class="s2">&quot;version&quot;</span><span class="p">,</span>
         <span class="n">version</span><span class="o">=</span><span class="n">dedent</span><span class="p">(</span>
 <span class="w">            </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Choudhary, Saket. &quot;pysradb: A Python Package to Query next-Generation Sequencing Metadata and Data from NCBI Sequence Read Archive.&quot; F1000Research, vol. 8, F1000 (Faculty of 1000 Ltd), Apr. 2019, p. 532 (https://f1000research.com/articles/8-532/v1)</span>
+<span class="sd">        Choudhary, Saket. &quot;pysradb: A Python Package to Query next-Generation Sequencing</span>
+<span class="sd">        Metadata and Data from NCBI Sequence Read Archive.&quot;</span>
+<span class="sd">        F1000Research, vol. 8, F1000 (Faculty of 1000 Ltd), Apr. 2019, p. 532</span>
+<span class="sd">        (https://f1000research.com/articles/8-532/v1)</span>
 
 <span class="sd">        @article{Choudhary2019,</span>
 <span class="sd">        doi = {10.12688/f1000research.18676.1},</span>
@@ -1191,7 +1507,8 @@
 <span class="sd">        volume = {8},</span>
 <span class="sd">        pages = {532},</span>
 <span class="sd">        author = {Saket Choudhary},</span>
-<span class="sd">        title = {pysradb: A {P}ython package to query next-generation sequencing metadata and data from {NCBI} {S}equence {R}ead {A}rchive},</span>
+<span class="sd">        title = {pysradb: A {P}ython package to query next-generation sequencing</span>
+<span class="sd">        metadata and data from {NCBI} {S}equence {R}ead {A}rchive},</span>
 <span class="sd">        journal = {F1000Research}</span>
 <span class="sd">        }</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -1222,11 +1539,22 @@
         <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Enrich metadata with standardized biological attributes using LLMs&quot;</span><span class="p">,</span>
     <span class="p">)</span>
     <span class="n">subparser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
-        <span class="s2">&quot;--enrich-backend&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;--model&quot;</span><span class="p">,</span>
+        <span class="n">dest</span><span class="o">=</span><span class="s2">&quot;enrich_backend&quot;</span><span class="p">,</span>
         <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span>
         <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;LLM backend for enrichment (e.g., &#39;ollama/phi3&#39;, &#39;ollama/llama3.2&#39;). &quot;</span>
+        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;LLM model for enrichment (e.g., &#39;ollama/granite4:3b&#39;, &#39;ollama/llama3.2&#39;). &quot;</span>
         <span class="s2">&quot;If not specified, uses default backend&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">subparser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+        <span class="s2">&quot;--embed-model&quot;</span><span class="p">,</span>
+        <span class="n">dest</span><span class="o">=</span><span class="s2">&quot;embed_model&quot;</span><span class="p">,</span>
+        <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span>
+        <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">help</span><span class="o">=</span><span class="p">(</span>
+            <span class="s2">&quot;Embedding model for enrichment (e.g., &quot;</span>
+            <span class="s2">&quot;&#39;abhinand/MedEmbed-large-v0.1&#39;). If not specified, uses default&quot;</span>
+        <span class="p">),</span>
     <span class="p">)</span>
     <span class="n">subparser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;srp_id&quot;</span><span class="p">,</span> <span class="n">nargs</span><span class="o">=</span><span class="s2">&quot;+&quot;</span><span class="p">)</span>
     <span class="n">subparser</span><span class="o">.</span><span class="n">set_defaults</span><span class="p">(</span><span class="n">func</span><span class="o">=</span><span class="n">metadata</span><span class="p">)</span>
@@ -1270,7 +1598,8 @@
         <span class="n">help</span><span class="o">=</span><span class="p">(</span>
             <span class="s2">&quot;Generates graphs to illustrate the search result. &quot;</span>
             <span class="s2">&quot;By default all graphs are generated. </span><span class="se">\n</span><span class="s2">&quot;</span>
-            <span class="s2">&quot;Alternatively, select a subset from the options below in a space-separated string:</span><span class="se">\n</span><span class="s2">&quot;</span>
+            <span class="s2">&quot;Alternatively, select a subset from the options below &quot;</span>
+            <span class="s2">&quot;in a space-separated string:</span><span class="se">\n</span><span class="s2">&quot;</span>
             <span class="s2">&quot;daterange, organism, source, selection, platform, basecount&quot;</span>
         <span class="p">),</span>
     <span class="p">)</span>
@@ -1293,14 +1622,16 @@
             <span class="s2">&quot;0: run accession only</span><span class="se">\n</span><span class="s2">&quot;</span>
             <span class="s2">&quot;1: run accession and experiment title</span><span class="se">\n</span><span class="s2">&quot;</span>
             <span class="s2">&quot;2: accession numbers, titles and sequencing information</span><span class="se">\n</span><span class="s2">&quot;</span>
-            <span class="s2">&quot;3: records in 2 and other information such as download url, sample attributes, etc&quot;</span>
+            <span class="s2">&quot;3: records in 2 and other information such as download url, &quot;</span>
+            <span class="s2">&quot;sample attributes, etc&quot;</span>
         <span class="p">),</span>
         <span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span>
     <span class="p">)</span>
     <span class="n">subparser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
         <span class="s2">&quot;--run-description&quot;</span><span class="p">,</span>
         <span class="n">action</span><span class="o">=</span><span class="s2">&quot;store_true&quot;</span><span class="p">,</span>
-        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Displays run accessions and descriptions only. Equivalent to --verbosity 1&quot;</span><span class="p">,</span>
+        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Displays run accessions and descriptions only. &quot;</span>
+        <span class="s2">&quot;Equivalent to --verbosity 1&quot;</span><span class="p">,</span>
     <span class="p">)</span>
     <span class="n">subparser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
         <span class="s2">&quot;--detailed&quot;</span><span class="p">,</span>
@@ -1318,8 +1649,10 @@
         <span class="s2">&quot;-q&quot;</span><span class="p">,</span>
         <span class="s2">&quot;--query&quot;</span><span class="p">,</span>
         <span class="n">nargs</span><span class="o">=</span><span class="s2">&quot;+&quot;</span><span class="p">,</span>
-        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Main query string. Note that if no query is supplied, at least one of the &quot;</span>
-        <span class="s2">&quot;following flags must be present:&quot;</span><span class="p">,</span>
+        <span class="n">help</span><span class="o">=</span><span class="p">(</span>
+            <span class="s2">&quot;Main query string. Note that if no query is supplied, at least one of the &quot;</span>
+            <span class="s2">&quot;following flags must be present:&quot;</span>
+        <span class="p">),</span>
     <span class="p">)</span>
     <span class="n">subparser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;-A&quot;</span><span class="p">,</span> <span class="s2">&quot;--accession&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Accession number&quot;</span><span class="p">)</span>
     <span class="n">subparser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
@@ -1341,9 +1674,11 @@
     <span class="n">subparser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
         <span class="s2">&quot;-D&quot;</span><span class="p">,</span>
         <span class="s2">&quot;--publication-date&quot;</span><span class="p">,</span>
-        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Publication date of the run in the format dd-mm-yyyy. If a date range is desired, &quot;</span>
-        <span class="s2">&quot;enter the start date, followed by end date, separated by a colon &#39;:&#39;.</span><span class="se">\n</span><span class="s2"> &quot;</span>
-        <span class="s2">&quot;Example: 01-01-2010:31-12-2010&quot;</span><span class="p">,</span>
+        <span class="n">help</span><span class="o">=</span><span class="p">(</span>
+            <span class="s2">&quot;Publication date of the run in the format dd-mm-yyyy. &quot;</span>
+            <span class="s2">&quot;If a date range is desired, enter the start date, followed by end date, &quot;</span>
+            <span class="s2">&quot;separated by a colon &#39;:&#39;.</span><span class="se">\n</span><span class="s2"> Example: 01-01-2010:31-12-2010&quot;</span>
+        <span class="p">),</span>
     <span class="p">)</span>
     <span class="n">subparser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;-P&quot;</span><span class="p">,</span> <span class="s2">&quot;--platform&quot;</span><span class="p">,</span> <span class="n">nargs</span><span class="o">=</span><span class="s2">&quot;+&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Sequencing platform&quot;</span><span class="p">)</span>
     <span class="n">subparser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;-E&quot;</span><span class="p">,</span> <span class="s2">&quot;--selection&quot;</span><span class="p">,</span> <span class="n">nargs</span><span class="o">=</span><span class="s2">&quot;+&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Library selection&quot;</span><span class="p">)</span>
@@ -1358,15 +1693,22 @@
         <span class="s2">&quot;-I&quot;</span><span class="p">,</span>
         <span class="s2">&quot;--geo-info&quot;</span><span class="p">,</span>
         <span class="n">action</span><span class="o">=</span><span class="s2">&quot;store_true&quot;</span><span class="p">,</span>
-        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Displays information on how to query GEO DataSets via &#39;pysradb search --db geo ...&#39;, &quot;</span>
-        <span class="s2">&quot;including accepted inputs for -G/--geo-query, -Y/--geo-dataset-type and -Z/--geo-entry-type. &quot;</span><span class="p">,</span>
+        <span class="n">help</span><span class="o">=</span><span class="p">(</span>
+            <span class="s2">&quot;Displays information on how to query GEO DataSets via &quot;</span>
+            <span class="s2">&quot;&#39;pysradb search --db geo ...&#39;, &quot;</span>
+            <span class="s2">&quot;including accepted inputs for -G/--geo-query, -Y/--geo-dataset-type &quot;</span>
+            <span class="s2">&quot;and -Z/--geo-entry-type. &quot;</span>
+        <span class="p">),</span>
     <span class="p">)</span>
     <span class="n">subparser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
         <span class="s2">&quot;-G&quot;</span><span class="p">,</span>
         <span class="s2">&quot;--geo-query&quot;</span><span class="p">,</span>
         <span class="n">nargs</span><span class="o">=</span><span class="s2">&quot;+&quot;</span><span class="p">,</span>
-        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Main query string for GEO DataSet. This flag is only used when db is set to be geo.&quot;</span>
-        <span class="s2">&quot;Please refer to &#39;pysradb search --geo-info&#39; for more details.&quot;</span><span class="p">,</span>
+        <span class="n">help</span><span class="o">=</span><span class="p">(</span>
+            <span class="s2">&quot;Main query string for GEO DataSet. &quot;</span>
+            <span class="s2">&quot;This flag is only used when db is set to be geo.&quot;</span>
+            <span class="s2">&quot;Please refer to &#39;pysradb search --geo-info&#39; for more details.&quot;</span>
+        <span class="p">),</span>
     <span class="p">)</span>
     <span class="n">subparser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
         <span class="s2">&quot;-Y&quot;</span><span class="p">,</span>
@@ -1426,7 +1768,7 @@
         <span class="s2">&quot;--expand&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s2">&quot;store_true&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Should sample_attribute be expanded&quot;</span>
     <span class="p">)</span>
     <span class="n">subparser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;gse_ids&quot;</span><span class="p">,</span> <span class="n">nargs</span><span class="o">=</span><span class="s2">&quot;+&quot;</span><span class="p">)</span>
-    <span class="n">subparser</span><span class="o">.</span><span class="n">set_defaults</span><span class="p">(</span><span class="n">func</span><span class="o">=</span><span class="n">gse_to_gsm</span><span class="p">)</span>
+    <span class="n">subparser</span><span class="o">.</span><span class="n">set_defaults</span><span class="p">(</span><span class="n">func</span><span class="o">=</span><span class="n">gse_to_srp</span><span class="p">)</span>
 
     <span class="c1"># pysradb gsm-to-gse</span>
     <span class="n">subparser</span> <span class="o">=</span> <span class="n">subparsers</span><span class="o">.</span><span class="n">add_parser</span><span class="p">(</span><span class="s2">&quot;gsm-to-gse&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Get GSE for a GSM&quot;</span><span class="p">)</span>
@@ -1821,6 +2163,11 @@
         <span class="s2">&quot;srp-to-pmid&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Get PMIDs for SRP accessions&quot;</span>
     <span class="p">)</span>
     <span class="n">subparser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--saveto&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Save output to file&quot;</span><span class="p">)</span>
+    <span class="n">subparser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+        <span class="s2">&quot;--detailed&quot;</span><span class="p">,</span>
+        <span class="n">action</span><span class="o">=</span><span class="s2">&quot;store_true&quot;</span><span class="p">,</span>
+        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Include publication metadata (title, journal, DOI, pub_date, authors)&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
     <span class="n">subparser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;srp_ids&quot;</span><span class="p">,</span> <span class="n">nargs</span><span class="o">=</span><span class="s2">&quot;+&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;SRP accession(s)&quot;</span><span class="p">)</span>
     <span class="n">subparser</span><span class="o">.</span><span class="n">set_defaults</span><span class="p">(</span><span class="n">func</span><span class="o">=</span><span class="n">srp_to_pmid</span><span class="p">)</span>
 
@@ -1829,8 +2176,45 @@
         <span class="s2">&quot;gse-to-pmid&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Get PMIDs for GSE accessions&quot;</span>
     <span class="p">)</span>
     <span class="n">subparser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--saveto&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Save output to file&quot;</span><span class="p">)</span>
+    <span class="n">subparser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+        <span class="s2">&quot;--detailed&quot;</span><span class="p">,</span>
+        <span class="n">action</span><span class="o">=</span><span class="s2">&quot;store_true&quot;</span><span class="p">,</span>
+        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Include publication metadata (title, journal, DOI, pub_date, authors)&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
     <span class="n">subparser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;gse_ids&quot;</span><span class="p">,</span> <span class="n">nargs</span><span class="o">=</span><span class="s2">&quot;+&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;GSE accession(s)&quot;</span><span class="p">)</span>
     <span class="n">subparser</span><span class="o">.</span><span class="n">set_defaults</span><span class="p">(</span><span class="n">func</span><span class="o">=</span><span class="n">gse_to_pmid</span><span class="p">)</span>
+
+    <span class="c1"># pysradb ae-to-pmid</span>
+    <span class="n">subparser</span> <span class="o">=</span> <span class="n">subparsers</span><span class="o">.</span><span class="n">add_parser</span><span class="p">(</span>
+        <span class="s2">&quot;ae-to-pmid&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Get PMIDs for ArrayExpress accessions&quot;</span>
+    <span class="p">)</span>
+    <span class="n">subparser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--saveto&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Save output to file&quot;</span><span class="p">)</span>
+    <span class="n">subparser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;ae_ids&quot;</span><span class="p">,</span> <span class="n">nargs</span><span class="o">=</span><span class="s2">&quot;+&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;ArrayExpress accession(s)&quot;</span><span class="p">)</span>
+    <span class="n">subparser</span><span class="o">.</span><span class="n">set_defaults</span><span class="p">(</span><span class="n">func</span><span class="o">=</span><span class="n">ae_to_pmid</span><span class="p">)</span>
+
+    <span class="c1"># pysradb ena-to-pmid</span>
+    <span class="n">subparser</span> <span class="o">=</span> <span class="n">subparsers</span><span class="o">.</span><span class="n">add_parser</span><span class="p">(</span>
+        <span class="s2">&quot;ena-to-pmid&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Get PMIDs for ENA/BioProject accessions&quot;</span>
+    <span class="p">)</span>
+    <span class="n">subparser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--saveto&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Save output to file&quot;</span><span class="p">)</span>
+    <span class="n">subparser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+        <span class="s2">&quot;ena_ids&quot;</span><span class="p">,</span> <span class="n">nargs</span><span class="o">=</span><span class="s2">&quot;+&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;ENA accession(s) (PRJEB/PRJNA/PRJD)&quot;</span>
+    <span class="p">)</span>
+    <span class="n">subparser</span><span class="o">.</span><span class="n">set_defaults</span><span class="p">(</span><span class="n">func</span><span class="o">=</span><span class="n">ena_to_pmid</span><span class="p">)</span>
+
+    <span class="c1"># pysradb pmid-info</span>
+    <span class="n">subparser</span> <span class="o">=</span> <span class="n">subparsers</span><span class="o">.</span><span class="n">add_parser</span><span class="p">(</span>
+        <span class="s2">&quot;pmid-info&quot;</span><span class="p">,</span>
+        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Get publication metadata and journal metrics for PMIDs, PMCIDs, or DOIs&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">subparser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--saveto&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Save output to file&quot;</span><span class="p">)</span>
+    <span class="n">subparser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+        <span class="s2">&quot;--detailed&quot;</span><span class="p">,</span>
+        <span class="n">action</span><span class="o">=</span><span class="s2">&quot;store_true&quot;</span><span class="p">,</span>
+        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Also look up associated GEO/SRA datasets&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">subparser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;ids&quot;</span><span class="p">,</span> <span class="n">nargs</span><span class="o">=</span><span class="s2">&quot;+&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;PMID(s), PMCID(s), or DOI(s)&quot;</span><span class="p">)</span>
+    <span class="n">subparser</span><span class="o">.</span><span class="n">set_defaults</span><span class="p">(</span><span class="n">func</span><span class="o">=</span><span class="n">pmid_info</span><span class="p">)</span>
 
     <span class="c1"># pysradb pmid-to-gse</span>
     <span class="n">subparser</span> <span class="o">=</span> <span class="n">subparsers</span><span class="o">.</span><span class="n">add_parser</span><span class="p">(</span>
@@ -1884,8 +2268,17 @@
     <span class="n">subparser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;doi_ids&quot;</span><span class="p">,</span> <span class="n">nargs</span><span class="o">=</span><span class="s2">&quot;+&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;DOI(s)&quot;</span><span class="p">)</span>
     <span class="n">subparser</span><span class="o">.</span><span class="n">set_defaults</span><span class="p">(</span><span class="n">func</span><span class="o">=</span><span class="n">doi_to_identifiers</span><span class="p">)</span>
 
-    <span class="n">args</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse_args</span><span class="p">(</span><span class="n">args</span><span class="o">=</span><span class="kc">None</span> <span class="k">if</span> <span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span> <span class="k">else</span> <span class="p">[</span><span class="s2">&quot;--help&quot;</span><span class="p">])</span>
+    <span class="n">parsed_args</span> <span class="o">=</span> <span class="n">args</span> <span class="k">if</span> <span class="n">args</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="p">(</span><span class="kc">None</span> <span class="k">if</span> <span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span> <span class="k">else</span> <span class="p">[</span><span class="s2">&quot;--help&quot;</span><span class="p">])</span>
+    <span class="n">args</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse_args</span><span class="p">(</span><span class="n">parsed_args</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">command</span> <span class="o">==</span> <span class="s2">&quot;metadata&quot;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">enrich</span><span class="p">:</span>
+            <span class="n">backend</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="n">args</span><span class="o">.</span><span class="n">enrich_backend</span> <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">enrich_backend</span> <span class="k">else</span> <span class="s2">&quot;ollama/granite4:3b&quot;</span>
+            <span class="p">)</span>
+            <span class="n">console</span><span class="o">.</span><span class="n">print</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;Enriching metadata with </span><span class="si">{</span><span class="n">backend</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;:&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;-&#39;</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+                <span class="n">style</span><span class="o">=</span><span class="s2">&quot;green&quot;</span><span class="p">,</span>
+            <span class="p">)</span>
         <span class="n">metadata</span><span class="p">(</span>
             <span class="n">args</span><span class="o">.</span><span class="n">srp_id</span><span class="p">,</span>
             <span class="n">args</span><span class="o">.</span><span class="n">assay</span><span class="p">,</span>
@@ -1895,6 +2288,7 @@
             <span class="n">args</span><span class="o">.</span><span class="n">saveto</span><span class="p">,</span>
             <span class="n">args</span><span class="o">.</span><span class="n">enrich</span><span class="p">,</span>
             <span class="n">args</span><span class="o">.</span><span class="n">enrich_backend</span><span class="p">,</span>
+            <span class="n">args</span><span class="o">.</span><span class="n">embed_model</span><span class="p">,</span>
         <span class="p">)</span>
     <span class="k">elif</span> <span class="n">args</span><span class="o">.</span><span class="n">command</span> <span class="o">==</span> <span class="s2">&quot;download&quot;</span><span class="p">:</span>
         <span class="n">download</span><span class="p">(</span>
@@ -1962,9 +2356,15 @@
     <span class="k">elif</span> <span class="n">args</span><span class="o">.</span><span class="n">command</span> <span class="o">==</span> <span class="s2">&quot;geo-matrix&quot;</span><span class="p">:</span>
         <span class="n">geo_matrix</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">accession</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">to_tsv</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">output_dir</span><span class="p">)</span>
     <span class="k">elif</span> <span class="n">args</span><span class="o">.</span><span class="n">command</span> <span class="o">==</span> <span class="s2">&quot;srp-to-pmid&quot;</span><span class="p">:</span>
-        <span class="n">srp_to_pmid</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">srp_ids</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">saveto</span><span class="p">)</span>
+        <span class="n">srp_to_pmid</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">srp_ids</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">saveto</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">detailed</span><span class="p">)</span>
     <span class="k">elif</span> <span class="n">args</span><span class="o">.</span><span class="n">command</span> <span class="o">==</span> <span class="s2">&quot;gse-to-pmid&quot;</span><span class="p">:</span>
-        <span class="n">gse_to_pmid</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">gse_ids</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">saveto</span><span class="p">)</span>
+        <span class="n">gse_to_pmid</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">gse_ids</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">saveto</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">detailed</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">args</span><span class="o">.</span><span class="n">command</span> <span class="o">==</span> <span class="s2">&quot;ae-to-pmid&quot;</span><span class="p">:</span>
+        <span class="n">ae_to_pmid</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">ae_ids</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">saveto</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">args</span><span class="o">.</span><span class="n">command</span> <span class="o">==</span> <span class="s2">&quot;ena-to-pmid&quot;</span><span class="p">:</span>
+        <span class="n">ena_to_pmid</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">ena_ids</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">saveto</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">args</span><span class="o">.</span><span class="n">command</span> <span class="o">==</span> <span class="s2">&quot;pmid-info&quot;</span><span class="p">:</span>
+        <span class="n">pmid_info</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">ids</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">saveto</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">detailed</span><span class="p">)</span>
     <span class="k">elif</span> <span class="n">args</span><span class="o">.</span><span class="n">command</span> <span class="o">==</span> <span class="s2">&quot;pmid-to-gse&quot;</span><span class="p">:</span>
         <span class="n">pmid_to_gse</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">pmid_ids</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">saveto</span><span class="p">)</span>
     <span class="k">elif</span> <span class="n">args</span><span class="o">.</span><span class="n">command</span> <span class="o">==</span> <span class="s2">&quot;pmid-to-srp&quot;</span><span class="p">:</span>
@@ -2017,10 +2417,12 @@
     </aside>
   </div>
 </div><script src="../../_static/documentation_options.js?v=afcbd73c"></script>
-    <script src="../../_static/doctools.js?v=9bcbadda"></script>
-    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../../_static/scripts/furo.js?v=46bd48cc"></script>
+    <script src="../../_static/design-tabs.js?v=f930bc37"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@jupyter-widgets/html-manager@^1.0.1/dist/embed-amd.js"></script>
     <script src="../../_static/copy-button.js?v=5b6a40c7"></script>
     </body>
 </html>

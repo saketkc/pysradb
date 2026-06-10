@@ -13,19 +13,19 @@
             gtag('config', 'G-CKQZFCEENZ');
             
         </script>
-    <link rel="index" title="Index" href="../genindex.html"><link rel="search" title="Search" href="../search.html">
+    <link rel="index" title="Index" href="../genindex.html"><link rel="search" title="Search" href="../search.html"><link rel="next" title="Parallel Download" href="03.ParallelDownload.html"><link rel="prev" title="Python API Demo" href="01.Python-API_demo.html">
+        <link rel="canonical" href="https://saket-choudhary.me/pysradb/notebooks/02.Commandline_download.html">
         <link rel="prefetch" href="../_static/pysradb_v3.png" as="image">
 
-    <!-- Generated with Sphinx 8.2.3 and Furo 2025.09.25 -->
-        <title>Command-line Download - pysradb 3.0.0.dev0 documentation</title>
+    <!-- Generated with Sphinx 9.0.4 and Furo 2025.12.19 -->
+        <title>Command-line Download - pysradb: SRA, ENA, and GEO metadata search</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
-    <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?v=580074bf" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?v=7bdb33bb" />
     <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=4ae1632d" />
-    <link rel="stylesheet" type="text/css" href="../_static/sphinx-dropdown.css?v=995e94df" />
-    <link rel="stylesheet" type="text/css" href="../_static/panels-bootstrap.min.css?v=21c0b90a" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
     <link rel="stylesheet" type="text/css" href="../_static/nbsphinx-code-cells.css?v=2aa19091" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo-extensions.css?v=8dab3a3b" />
-    <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=76ddadce" />
+    <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=c673637a" />
     
     
 
@@ -34,30 +34,69 @@
   body {
     --color-code-background: #eeffcc;
   --color-code-foreground: black;
-  --color-brand-primary: #0066cc;
+  --font-stack: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Segoe UI', sans-serif;
+  --font-stack--monospace: 'SFMono-Regular', ui-monospace, 'Cascadia Code', 'Liberation Mono', Menlo, monospace;
+  --color-brand-primary: #007aff;
   --color-brand-content: #0066cc;
-  --color-code-background: #f5f5f5;
-  --color-inline-code-background: #f0f0f0;
+  --color-api-name: #1d1d1f;
+  --color-api-pre-name: #6e6e73;
+  --color-background-primary: #ffffff;
+  --color-background-secondary: #f5f5f7;
+  --color-background-hover: #f2f2f7;
+  --color-code-background: #f5f5f7;
+  --color-inline-code-background: #f2f2f7;
+  --color-sidebar-background: #fbfbfd;
+  --color-sidebar-background-border: #d2d2d7;
+  --color-toc-background: #ffffff;
+  --color-toc-background-border: #d2d2d7;
+  --color-admonition-background: #f5f5f7;
+  --color-admonition-title-background: #e8f2ff;
   
   }
   @media not print {
     body[data-theme="dark"] {
       --color-code-background: #202020;
   --color-code-foreground: #d0d0d0;
-  --color-brand-primary: #3b82f6;
-  --color-brand-content: #3b82f6;
-  --color-code-background: #1e293b;
-  --color-inline-code-background: #334155;
+  --font-stack: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Segoe UI', sans-serif;
+  --font-stack--monospace: 'SFMono-Regular', ui-monospace, 'Cascadia Code', 'Liberation Mono', Menlo, monospace;
+  --color-brand-primary: #0a84ff;
+  --color-brand-content: #409cff;
+  --color-api-name: #f5f5f7;
+  --color-api-pre-name: #a1a1a6;
+  --color-background-primary: #1d1d1f;
+  --color-background-secondary: #2c2c2e;
+  --color-background-hover: #3a3a3c;
+  --color-code-background: #2c2c2e;
+  --color-inline-code-background: #3a3a3c;
+  --color-sidebar-background: #161617;
+  --color-sidebar-background-border: #38383a;
+  --color-toc-background: #1d1d1f;
+  --color-toc-background-border: #38383a;
+  --color-admonition-background: #2c2c2e;
+  --color-admonition-title-background: #06345f;
   
     }
     @media (prefers-color-scheme: dark) {
       body:not([data-theme="light"]) {
         --color-code-background: #202020;
   --color-code-foreground: #d0d0d0;
-  --color-brand-primary: #3b82f6;
-  --color-brand-content: #3b82f6;
-  --color-code-background: #1e293b;
-  --color-inline-code-background: #334155;
+  --font-stack: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Segoe UI', sans-serif;
+  --font-stack--monospace: 'SFMono-Regular', ui-monospace, 'Cascadia Code', 'Liberation Mono', Menlo, monospace;
+  --color-brand-primary: #0a84ff;
+  --color-brand-content: #409cff;
+  --color-api-name: #f5f5f7;
+  --color-api-pre-name: #a1a1a6;
+  --color-background-primary: #1d1d1f;
+  --color-background-secondary: #2c2c2e;
+  --color-background-hover: #3a3a3c;
+  --color-code-background: #2c2c2e;
+  --color-inline-code-background: #3a3a3c;
+  --color-sidebar-background: #161617;
+  --color-sidebar-background-border: #38383a;
+  --color-toc-background: #1d1d1f;
+  --color-toc-background-border: #38383a;
+  --color-admonition-background: #2c2c2e;
+  --color-admonition-title-background: #06345f;
   
       }
     }
@@ -189,7 +228,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../index.html"><div class="brand">pysradb 3.0.0.dev0 documentation</div></a>
+      <a href="../index.html"><div class="brand">pysradb: SRA, ENA, and GEO metadata search</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -213,7 +252,7 @@
     <img class="sidebar-logo" src="../_static/pysradb_v3.png" alt="Logo"/>
   </div>
   
-  <span class="sidebar-brand-text">pysradb 3.0.0.dev0 documentation</span>
+  <span class="sidebar-brand-text">pysradb: SRA, ENA, and GEO metadata search</span>
   
 </a><form class="sidebar-search-container" method="get" action="../search.html" role="search">
   <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
@@ -221,18 +260,32 @@
   <input type="hidden" name="area" value="default">
 </form>
 <div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
-  <ul>
+  <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../quickstart.html">Quickstart</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../cmdline.html">CLI</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../python-api-usage.html">Python API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mcp.html">MCP server</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../case_studies.html">Case Studies</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../notebooks.html">Tutorials &amp; Notebooks</a></li>
+<li class="toctree-l1 current has-children"><a class="reference internal" href="../notebooks.html">Tutorials &amp; Notebooks</a><input aria-label="Toggle navigation of Tutorials &amp; Notebooks" checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="README.html">pysradb notebooks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="01.Python-API_demo.html">Python API Demo</a></li>
+<li class="toctree-l2 current current-page"><a class="current reference internal" href="#">Command-line Download</a></li>
+<li class="toctree-l2"><a class="reference internal" href="03.ParallelDownload.html">Parallel Download</a></li>
+<li class="toctree-l2"><a class="reference internal" href="04.SRA_to_fastq_conda.html">Converting SRA to FASTQ using Conda</a></li>
+<li class="toctree-l2"><a class="reference internal" href="05.Downloading_subsets_of_a_project.html">Selecting Subsets of a Project</a></li>
+<li class="toctree-l2"><a class="reference internal" href="06.Multiple_SRPs.html">Querying Multiple Projects</a></li>
+<li class="toctree-l2"><a class="reference internal" href="07.Query_Search.html">Query and Search</a></li>
+<li class="toctree-l2"><a class="reference internal" href="08.PMC_DOI_Identifiers.html">Extract Identifiers from PMC/DOI</a></li>
+<li class="toctree-l2"><a class="reference internal" href="09.Metadata_enrichment.html">Metadata Enrichment with Optional LLM Backends</a></li>
+<li class="toctree-l2"><a class="reference internal" href="10.Parse_Bioscience_Search.html">Parse BioScience Search</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="../commands.html">API Documentation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../contributing.html">Contributing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../authors.html">Credits</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../history.html">History</a></li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../modules.html">pysradb</a><input aria-label="Toggle navigation of pysradb" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../modules.html">pysradb</a><input aria-label="Toggle navigation of pysradb" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../pysradb.html">pysradb package</a></li>
 </ul>
 </li>
@@ -256,12 +309,16 @@
         </a>
         <div class="content-icon-container">
           <div class="view-this-page">
-  <a class="muted-link" href="../_sources/notebooks/02.Commandline_download.ipynb.txt" title="View this page">
+  <a class="muted-link" href="https://github.com/saketkc/pysradb/blob/develop/docs/notebooks/02.Commandline_download.ipynb?plain=true" title="View this page">
     <svg><use href="#svg-eye"></use></svg>
     <span class="visually-hidden">View this page</span>
   </a>
-</div>
-<div class="theme-toggle-container theme-toggle-content">
+</div><div class="edit-this-page">
+  <a class="muted-link" href="https://github.com/saketkc/pysradb/edit/develop/docs/notebooks/02.Commandline_download.ipynb" rel="edit" title="Edit this page">
+    <svg><use href="#svg-pencil"></use></svg>
+    <span class="visually-hidden">Edit this page</span>
+  </a>
+</div><div class="theme-toggle-container theme-toggle-content">
             <button class="theme-toggle" aria-label="Toggle Light / Dark / Auto color theme">
               <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
               <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
@@ -278,8 +335,8 @@
 <section id="Command-line-Download">
 <h1>Command-line Download<a class="headerlink" href="#Command-line-Download" title="Link to this heading">¶</a></h1>
 <p>This notebook demonstrates how to use pysradb from the command line to download SRA data.</p>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Install pysradb if not already installed</span>
@@ -296,8 +353,25 @@
 </pre></div>
 </div>
 </div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+pysradb 3.0.0.dev0 is already installed
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+/home/runner/work/pysradb/pysradb/pysradb/download.py:15: TqdmExperimentalWarning: Using `tqdm.autonotebook.tqdm` in notebook mode. Use `tqdm.tqdm` instead to force console mode (e.g. in jupyter console)
+  from tqdm.autonotebook import tqdm
+</pre></div></div>
+</div>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># pip install -U pysradb</span>
@@ -305,7 +379,7 @@
 </div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pysradb<span class="w"> </span>--version
@@ -317,13 +391,13 @@
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-pysradb 2.4.1
+pysradb 3.0.0.dev0
 </pre></div></div>
 </div>
 <section id="Get-metadata-for-SRX-(SRRs/SRS-etc)">
 <h2>Get metadata for SRX (SRRs/SRS etc)<a class="headerlink" href="#Get-metadata-for-SRX-(SRRs/SRS-etc)" title="Link to this heading">¶</a></h2>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pysradb<span class="w"> </span>srx-to-srr<span class="w"> </span>SRX4720625
@@ -335,15 +409,46 @@ pysradb 2.4.1
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-experiment_accession    run_accession   study_accession study_title     experiment_title        experiment_desc organism_taxid  organism_name   library_name    library_strategy        library_source  library_selection       library_layout  sample_accession        sample_title    biosample       bioproject      instrument      instrument_model        instrument_model_desc   total_spots     total_size      run_total_spots run_total_bases
-SRX4720625      SRR7882015      SRP162234       Transcriptomic profile of zebrafish cardiomyocytes throughout heart development GSM3396533: wt_GFPpos_24hpf_rep1; Danio rerio; RNA-Seq  GSM3396533: wt_GFPpos_24hpf_rep1; Danio rerio; RNA-Seq  7955    Danio rerio             RNA-Seq TRANSCRIPTOMIC  cDNA    PAIRED  SRS3805811              SAMN10095723    PRJNA492280     NextSeq 500     NextSeq 500     ILLUMINA        47867961        3470385670      47867961        7230485009
+<span class="ansi-black-intense-fg">Displaying </span><span class="ansi-black-intense-fg ansi-bold">24</span><span class="ansi-black-intense-fg"> columns in chunks of </span><span class="ansi-black-intense-fg ansi-bold">5</span>
+
+<span class="ansi-blue-intense-fg">Columns </span><span class="ansi-blue-intense-fg ansi-bold">1</span><span class="ansi-blue-intense-fg">-</span><span class="ansi-blue-intense-fg ansi-bold">5</span><span class="ansi-blue-intense-fg">:</span>
+<span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold">experimen</span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold">          </span><span class="ansi-blue-intense-fg ansi-bold">           </span><span class="ansi-blue-intense-fg ansi-bold">                           </span><span class="ansi-blue-intense-fg ansi-bold">                   </span>
+<span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold">t_accessi</span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold">run_acce</span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold">study_acc</span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold">                           </span><span class="ansi-blue-intense-fg ansi-bold">                   </span>
+<span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold">on       </span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold">ssion   </span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold">ession   </span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold">study_title              </span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold">experiment_title </span><span class="ansi-blue-intense-fg ansi-bold"> </span>
+ SRX472062  SRR78820  SRP162234  Transcriptomic profile of  GSM3396533:
+ 5          15                   zebrafish cardiomyocytes   wt_GFPpos_24hpf_r
+                                 throughout heart           ep1; Danio rerio;
+                                 development                RNA-Seq
+
+<span class="ansi-blue-intense-fg">Columns </span><span class="ansi-blue-intense-fg ansi-bold">6</span><span class="ansi-blue-intense-fg">-</span><span class="ansi-blue-intense-fg ansi-bold">10</span><span class="ansi-blue-intense-fg">:</span>
+<span class="ansi-blue-intense-fg ansi-bold">                                </span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold">organism_t</span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold">organism_</span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold">library_na</span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold">library_s</span><span class="ansi-blue-intense-fg ansi-bold"> </span>
+<span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold">experiment_desc               </span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold">axid      </span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold">name     </span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold">me        </span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold">trategy  </span><span class="ansi-blue-intense-fg ansi-bold"> </span>
+ GSM3396533:                     7955        Danio                  RNA-Seq
+ wt_GFPpos_24hpf_rep1; Danio                 rerio
+ rerio; RNA-Seq
+
+<span class="ansi-blue-intense-fg">Columns </span><span class="ansi-blue-intense-fg ansi-bold">11</span><span class="ansi-blue-intense-fg">-</span><span class="ansi-blue-intense-fg ansi-bold">15</span><span class="ansi-blue-intense-fg">:</span>
+<span class="ansi-blue-intense-fg ansi-bold">                </span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold">library_selecti</span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold">library_layou</span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold">sample_accessi</span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold">              </span>
+<span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold">library_source</span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold">on             </span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold">t            </span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold">on            </span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold">sample_title</span><span class="ansi-blue-intense-fg ansi-bold"> </span>
+ TRANSCRIPTOMIC  cDNA             PAIRED         SRS3805811
+
+<span class="ansi-blue-intense-fg">Columns </span><span class="ansi-blue-intense-fg ansi-bold">16</span><span class="ansi-blue-intense-fg">-</span><span class="ansi-blue-intense-fg ansi-bold">20</span><span class="ansi-blue-intense-fg">:</span>
+<span class="ansi-blue-intense-fg ansi-bold">             </span><span class="ansi-blue-intense-fg ansi-bold">              </span><span class="ansi-blue-intense-fg ansi-bold">             </span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold">instrument_mode</span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold">instrument_model_de</span><span class="ansi-blue-intense-fg ansi-bold"> </span>
+<span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold">biosample  </span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold">bioproject  </span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold">instrument </span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold">l              </span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold">sc                 </span><span class="ansi-blue-intense-fg ansi-bold"> </span>
+ SAMN1009572  PRJNA492280   NextSeq 500  NextSeq 500      ILLUMINA
+ 3
+
+<span class="ansi-blue-intense-fg">Columns </span><span class="ansi-blue-intense-fg ansi-bold">21</span><span class="ansi-blue-intense-fg">-</span><span class="ansi-blue-intense-fg ansi-bold">24</span><span class="ansi-blue-intense-fg">:</span>
+<span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold">total_spots     </span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold">total_size      </span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold">run_total_spots    </span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold">run_total_bases    </span><span class="ansi-blue-intense-fg ansi-bold"> </span>
+ 47867961          3470385670        47867961             7230485009
+
 </pre></div></div>
 </div>
 </section>
 <section id="Get-detailed-metadata">
 <h2>Get detailed metadata<a class="headerlink" href="#Get-detailed-metadata" title="Link to this heading">¶</a></h2>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pysradb<span class="w"> </span>srx-to-srr<span class="w"> </span>SRX4720625<span class="w"> </span>--detailed
@@ -355,18 +460,97 @@ SRX4720625      SRR7882015      SRP162234       Transcriptomic profile of zebraf
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-experiment_accession    run_accession   study_accession study_title     experiment_title        experiment_desc organism_taxid  organism_name   library_name    library_strategy        library_source  library_selection       library_layout  sample_accession        sample_title    biosample       bioproject      instrument      instrument_model        instrument_model_desc   total_spots     total_size      run_total_spots run_total_bases run_alias       public_filename public_size     public_date     public_md5      public_version  public_semantic_name    public_supertype        public_sratoolkit       aws_url aws_free_egress aws_access_type public_url      ncbi_url        ncbi_free_egress        ncbi_access_type        gcp_url gcp_free_egress gcp_access_type experiment_alias        source_name     tissue  developmental stage     gfp status      genetic background      ena_fastq_http  ena_fastq_http_1        ena_fastq_http_2        ena_fastq_ftp   ena_fastq_ftp_1 ena_fastq_ftp_2
-SRX4720625      SRR7882015      SRP162234       Transcriptomic profile of zebrafish cardiomyocytes throughout heart development GSM3396533: wt_GFPpos_24hpf_rep1; Danio rerio; RNA-Seq  GSM3396533: wt_GFPpos_24hpf_rep1; Danio rerio; RNA-Seq  7955    Danio rerio     &lt;NA&gt;      RNA-Seq TRANSCRIPTOMIC  cDNA    PAIRED  SRS3805811      &lt;NA&gt;      SAMN10095723    PRJNA492280     NextSeq 500     NextSeq 500     ILLUMINA        47867961        3470385670      47867961        7230485009      GSM3396533_r1   SRR7882015.sralite      1881003321      2020-06-14 12:02:25     8161154ca4e9cf674e3f0e4af74c8455        1       SRA Lite        Primary ETL     1       s3://sra-pub-zq-8/SRR7882015/SRR7882015.sralite.1       s3.us-east-1    aws identity    https://sra-downloadb.be-md.ncbi.nlm.nih.gov/sos5/sra-pub-zq-11/SRR007/882/SRR7882015/SRR7882015.sralite.1      https://sra-downloadb.be-md.ncbi.nlm.nih.gov/sos5/sra-pub-zq-11/SRR007/882/SRR7882015/SRR7882015.sralite.1      worldwide       anonymous       gs://sra-pub-zq-107/SRR7882015/SRR7882015.zq.1  gs.us-east1     gcp identity    GSM3396533      FACS-sorted embryo cells        FACS-sorted embryo cells        24 hpf  GFP positive    wild type       &lt;NA&gt;      http://ftp.sra.ebi.ac.uk/vol1/fastq/SRR788/005/SRR7882015/SRR7882015_1.fastq.gz http://ftp.sra.ebi.ac.uk/vol1/fastq/SRR788/005/SRR7882015/SRR7882015_2.fastq.gz &lt;NA&gt;      era-fasp@fasp.sra.ebi.ac.uk:vol1/fastq/SRR788/005/SRR7882015/SRR7882015_1.fastq.gz      era-fasp@fasp.sra.ebi.ac.uk:vol1/fastq/SRR788/005/SRR7882015/SRR7882015_2.fastq.gz
+<span class="ansi-black-intense-fg">Displaying </span><span class="ansi-black-intense-fg ansi-bold">57</span><span class="ansi-black-intense-fg"> columns in chunks of </span><span class="ansi-black-intense-fg ansi-bold">5</span>
+
+<span class="ansi-blue-intense-fg">Columns </span><span class="ansi-blue-intense-fg ansi-bold">1</span><span class="ansi-blue-intense-fg">-</span><span class="ansi-blue-intense-fg ansi-bold">5</span><span class="ansi-blue-intense-fg">:</span>
+<span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold">experimen</span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold">          </span><span class="ansi-blue-intense-fg ansi-bold">           </span><span class="ansi-blue-intense-fg ansi-bold">                           </span><span class="ansi-blue-intense-fg ansi-bold">                   </span>
+<span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold">t_accessi</span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold">run_acce</span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold">study_acc</span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold">                           </span><span class="ansi-blue-intense-fg ansi-bold">                   </span>
+<span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold">on       </span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold">ssion   </span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold">ession   </span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold">study_title              </span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold">experiment_title </span><span class="ansi-blue-intense-fg ansi-bold"> </span>
+ SRX472062  SRR78820  SRP162234  Transcriptomic profile of  GSM3396533:
+ 5          15                   zebrafish cardiomyocytes   wt_GFPpos_24hpf_r
+                                 throughout heart           ep1; Danio rerio;
+                                 development                RNA-Seq
+
+<span class="ansi-blue-intense-fg">Columns </span><span class="ansi-blue-intense-fg ansi-bold">6</span><span class="ansi-blue-intense-fg">-</span><span class="ansi-blue-intense-fg ansi-bold">10</span><span class="ansi-blue-intense-fg">:</span>
+<span class="ansi-blue-intense-fg ansi-bold">                                </span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold">organism_t</span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold">organism_</span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold">library_na</span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold">library_s</span><span class="ansi-blue-intense-fg ansi-bold"> </span>
+<span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold">experiment_desc               </span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold">axid      </span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold">name     </span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold">me        </span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold">trategy  </span><span class="ansi-blue-intense-fg ansi-bold"> </span>
+ GSM3396533:                     7955        Danio      -           RNA-Seq
+ wt_GFPpos_24hpf_rep1; Danio                 rerio
+ rerio; RNA-Seq
+
+<span class="ansi-blue-intense-fg">Columns </span><span class="ansi-blue-intense-fg ansi-bold">11</span><span class="ansi-blue-intense-fg">-</span><span class="ansi-blue-intense-fg ansi-bold">15</span><span class="ansi-blue-intense-fg">:</span>
+<span class="ansi-blue-intense-fg ansi-bold">                </span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold">library_selecti</span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold">library_layou</span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold">sample_accessi</span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold">              </span>
+<span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold">library_source</span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold">on             </span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold">t            </span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold">on            </span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold">sample_title</span><span class="ansi-blue-intense-fg ansi-bold"> </span>
+ TRANSCRIPTOMIC  cDNA             PAIRED         SRS3805811      -
+
+<span class="ansi-blue-intense-fg">Columns </span><span class="ansi-blue-intense-fg ansi-bold">16</span><span class="ansi-blue-intense-fg">-</span><span class="ansi-blue-intense-fg ansi-bold">20</span><span class="ansi-blue-intense-fg">:</span>
+<span class="ansi-blue-intense-fg ansi-bold">             </span><span class="ansi-blue-intense-fg ansi-bold">              </span><span class="ansi-blue-intense-fg ansi-bold">             </span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold">instrument_mode</span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold">instrument_model_de</span><span class="ansi-blue-intense-fg ansi-bold"> </span>
+<span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold">biosample  </span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold">bioproject  </span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold">instrument </span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold">l              </span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold">sc                 </span><span class="ansi-blue-intense-fg ansi-bold"> </span>
+ SAMN1009572  PRJNA492280   NextSeq 500  NextSeq 500      ILLUMINA
+ 3
+
+<span class="ansi-blue-intense-fg">Columns </span><span class="ansi-blue-intense-fg ansi-bold">21</span><span class="ansi-blue-intense-fg">-</span><span class="ansi-blue-intense-fg ansi-bold">25</span><span class="ansi-blue-intense-fg">:</span>
+<span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold">total_spots  </span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold">total_size  </span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold">run_total_spots</span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold">run_total_bases</span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold">run_alias    </span><span class="ansi-blue-intense-fg ansi-bold"> </span>
+ 47867961       3470385670    47867961         7230485009       GSM3396533_r1
+
+<span class="ansi-blue-intense-fg">Columns </span><span class="ansi-blue-intense-fg ansi-bold">26</span><span class="ansi-blue-intense-fg">-</span><span class="ansi-blue-intense-fg ansi-bold">30</span><span class="ansi-blue-intense-fg">:</span>
+<span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold">public_filen</span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold">             </span><span class="ansi-blue-intense-fg ansi-bold">              </span><span class="ansi-blue-intense-fg ansi-bold">                        </span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold">public_vers</span><span class="ansi-blue-intense-fg ansi-bold"> </span>
+<span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold">ame         </span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold">public_size</span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold">public_date </span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold">public_md5            </span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold">ion        </span><span class="ansi-blue-intense-fg ansi-bold"> </span>
+ SRR7882015.s  1881003321   2020-06-14    8161154ca4e9cf674e3f0e  1
+ ralite                     12:02:25      4af74c8455
+
+<span class="ansi-blue-intense-fg">Columns </span><span class="ansi-blue-intense-fg ansi-bold">31</span><span class="ansi-blue-intense-fg">-</span><span class="ansi-blue-intense-fg ansi-bold">35</span><span class="ansi-blue-intense-fg">:</span>
+<span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold">public_sem</span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold">public_sup</span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold">public_srat</span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold">                            </span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold">aws_free_eg</span><span class="ansi-blue-intense-fg ansi-bold"> </span>
+<span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold">antic_name</span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold">ertype    </span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold">oolkit     </span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold">aws_url                   </span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold">ress       </span><span class="ansi-blue-intense-fg ansi-bold"> </span>
+ SRA Lite    Primary     1            s3://sra-pub-zq-8/SRR78820  s3.us-east-
+             ETL                      15/SRR7882015.sralite.1     1
+
+<span class="ansi-blue-intense-fg">Columns </span><span class="ansi-blue-intense-fg ansi-bold">36</span><span class="ansi-blue-intense-fg">-</span><span class="ansi-blue-intense-fg ansi-bold">40</span><span class="ansi-blue-intense-fg">:</span>
+<span class="ansi-blue-intense-fg ansi-bold">          </span><span class="ansi-blue-intense-fg ansi-bold">                         </span><span class="ansi-blue-intense-fg ansi-bold">                        </span><span class="ansi-blue-intense-fg ansi-bold">          </span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold">ncbi_ac</span><span class="ansi-blue-intense-fg ansi-bold"> </span>
+<span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold">aws_acce</span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold">                         </span><span class="ansi-blue-intense-fg ansi-bold">                        </span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold">ncbi_fre</span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold">cess_ty</span><span class="ansi-blue-intense-fg ansi-bold"> </span>
+<span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold">ss_type </span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold">public_url             </span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold">ncbi_url              </span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold">e_egress</span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold">pe     </span><span class="ansi-blue-intense-fg ansi-bold"> </span>
+ aws       https://sra-downloadb.b  https://sra-downloadb.  worldwid  anonymo
+ identity  e-md.ncbi.nlm.nih.gov/s  be-md.ncbi.nlm.nih.gov  e         us
+           os5/sra-pub-zq-11/SRR00  /sos5/sra-pub-zq-11/SR
+           7/882/SRR7882015/SRR788  R007/882/SRR7882015/SR
+           2015.sralite.1           R7882015.sralite.1
+
+<span class="ansi-blue-intense-fg">Columns </span><span class="ansi-blue-intense-fg ansi-bold">41</span><span class="ansi-blue-intense-fg">-</span><span class="ansi-blue-intense-fg ansi-bold">45</span><span class="ansi-blue-intense-fg">:</span>
+<span class="ansi-blue-intense-fg ansi-bold">                          </span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold">gcp_free_e</span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold">gcp_access_</span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold">experiment</span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold">               </span>
+<span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold">gcp_url                 </span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold">gress     </span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold">type       </span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold">_alias    </span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold">source_name  </span><span class="ansi-blue-intense-fg ansi-bold"> </span>
+ gs://sra-pub-zq-107/SRR7  gs.us-east  gcp          GSM3396533  FACS-sorted
+ 882015/SRR7882015.zq.1    1           identity                 embryo cells
+
+<span class="ansi-blue-intense-fg">Columns </span><span class="ansi-blue-intense-fg ansi-bold">46</span><span class="ansi-blue-intense-fg">-</span><span class="ansi-blue-intense-fg ansi-bold">50</span><span class="ansi-blue-intense-fg">:</span>
+<span class="ansi-blue-intense-fg ansi-bold">                    </span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold">developmental </span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold">             </span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold">genetic       </span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold">ena_fastq_h</span><span class="ansi-blue-intense-fg ansi-bold"> </span>
+<span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold">tissue            </span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold">stage         </span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold">gfp status </span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold">background    </span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold">ttp        </span><span class="ansi-blue-intense-fg ansi-bold"> </span>
+ FACS-sorted embryo  24 hpf          GFP          wild type       -
+ cells                               positive
+
+<span class="ansi-blue-intense-fg">Columns </span><span class="ansi-blue-intense-fg ansi-bold">51</span><span class="ansi-blue-intense-fg">-</span><span class="ansi-blue-intense-fg ansi-bold">55</span><span class="ansi-blue-intense-fg">:</span>
+<span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold">ena_fastq_http</span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold">ena_fastq_http</span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold">ena_fastq_f</span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold">ena_fastq_ftp_</span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold">                 </span>
+<span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold">_1            </span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold">_2            </span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold">tp         </span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold">1             </span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold">ena_fastq_ftp_2</span><span class="ansi-blue-intense-fg ansi-bold"> </span>
+ http://ftp.sra  http://ftp.sra  -            era-fasp@fasp.  era-fasp@fasp.s
+ .ebi.ac.uk/vol  .ebi.ac.uk/vol               sra.ebi.ac.uk:  ra.ebi.ac.uk:vo
+ 1/fastq/SRR788  1/fastq/SRR788               vol1/fastq/SRR  l1/fastq/SRR788
+ /005/SRR788201  /005/SRR788201               788/005/SRR788  /005/SRR7882015
+ 5/SRR7882015_1  5/SRR7882015_2               2015/SRR788201  /SRR7882015_2.f
+ .fastq.gz       .fastq.gz                    5_1.fastq.gz    astq.gz
+
+<span class="ansi-blue-intense-fg">Columns </span><span class="ansi-blue-intense-fg ansi-bold">56</span><span class="ansi-blue-intense-fg">-</span><span class="ansi-blue-intense-fg ansi-bold">57</span><span class="ansi-blue-intense-fg">:</span>
+<span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold">study_geo_accession              </span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold">experiment_geo_accession                 </span><span class="ansi-blue-intense-fg ansi-bold"> </span>
+ GSE120236                          GSM3396533
+
 </pre></div></div>
 </div>
 </section>
 <section id="Download-all-runs-for-a-particular-experiment">
 <h2>Download all runs for a particular experiment<a class="headerlink" href="#Download-all-runs-for-a-particular-experiment" title="Link to this heading">¶</a></h2>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pysradb<span class="w"> </span>srx-to-srr<span class="w"> </span>SRX4720625<span class="w"> </span>--detailed<span class="w"> </span><span class="p">|</span><span class="w"> </span>pysradb<span class="w"> </span>download
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;pysradb srx-to-srr SRX4720625 --detailed | pysradb download&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -375,39 +559,644 @@ SRX4720625      SRR7882015      SRP162234       Transcriptomic profile of zebraf
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Checking download URLs
-The following files will be downloaded:
-
-experiment_accession run_accession study_accession public_url                                                                                                 download_url                                                                                          out_dir                                          filesize
-SRX4720625           SRR7882015    SRP162234       https://sra-downloadb.be-md.ncbi.nlm.nih.gov/sos5/sra-pub-zq-11/SRR007/882/SRR7882015/SRR7882015.sralite.1 ftp://ftp-trace.ncbi.nlm.nih.gov/sra/sra-instant/reads/ByRun/sra/SRR/SRR788/SRR7882015/SRR7882015.sra /data/github/pysradb/notebooks/pysradb_downloads 1.9 GB
-
-
-Total size: 1.9 GB
-
-
-  0%|                                                     | 0/1 [00:00&lt;?, ?it/s]^C
-  0%|                                                     | 0/1 [03:01&lt;?, ?it/s]
+pysradb srx-to-srr SRX4720625 --detailed | pysradb download
 </pre></div></div>
 </div>
 </section>
 <section id="Get-metadata-for-entire-project">
 <h2>Get metadata for entire project<a class="headerlink" href="#Get-metadata-for-entire-project" title="Link to this heading">¶</a></h2>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pysradb<span class="w"> </span>metadata<span class="w"> </span>SRP162234<span class="w"> </span>--detailed
 </pre></div>
 </div>
 </div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+<span class="ansi-black-intense-fg">Displaying </span><span class="ansi-black-intense-fg ansi-bold">57</span><span class="ansi-black-intense-fg"> columns in chunks of </span><span class="ansi-black-intense-fg ansi-bold">5</span>
+
+<span class="ansi-blue-intense-fg">Columns </span><span class="ansi-blue-intense-fg ansi-bold">1</span><span class="ansi-blue-intense-fg">-</span><span class="ansi-blue-intense-fg ansi-bold">5</span><span class="ansi-blue-intense-fg">:</span>
+<span class="ansi-blue-intense-fg ansi-bold">          </span><span class="ansi-blue-intense-fg ansi-bold">          </span><span class="ansi-blue-intense-fg ansi-bold">                            </span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold">experime</span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold">                    </span>
+<span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold">run_acce</span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold">study_ac</span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold">                            </span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold">nt_acces</span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold">                    </span>
+<span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold">ssion   </span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold">cession </span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold">study_title               </span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold">sion    </span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold">experiment_title  </span><span class="ansi-blue-intense-fg ansi-bold"> </span>
+ SRR78820  SRP16223  Transcriptomic profile of   SRX47206  GSM3396532:
+ 14        4         zebrafish cardiomyocytes    24        wt_GFPneg_24hpf_re
+                     throughout heart                      p1; Danio rerio;
+                     development                           RNA-Seq
+ SRR78820  SRP16223  Transcriptomic profile of   SRX47206  GSM3396533:
+ 15        4         zebrafish cardiomyocytes    25        wt_GFPpos_24hpf_re
+                     throughout heart                      p1; Danio rerio;
+                     development                           RNA-Seq
+ SRR78820  SRP16223  Transcriptomic profile of   SRX47206  GSM3396534:
+ 16        4         zebrafish cardiomyocytes    26        wt_GFPpos_24hpf_re
+                     throughout heart                      p2; Danio rerio;
+                     development                           RNA-Seq
+ SRR78820  SRP16223  Transcriptomic profile of   SRX47206  GSM3396535:
+ 17        4         zebrafish cardiomyocytes    27        wt_GFPneg_48hpf_re
+                     throughout heart                      p1; Danio rerio;
+                     development                           RNA-Seq
+ SRR78820  SRP16223  Transcriptomic profile of   SRX47206  GSM3396536:
+ 18        4         zebrafish cardiomyocytes    28        wt_GFPpos_48hpf_re
+                     throughout heart                      p1; Danio rerio;
+                     development                           RNA-Seq
+ SRR78820  SRP16223  Transcriptomic profile of   SRX47206  GSM3396537:
+ 19        4         zebrafish cardiomyocytes    29        wt_GFPpos_48hpf_re
+                     throughout heart                      p2; Danio rerio;
+                     development                           RNA-Seq
+ SRR78820  SRP16223  Transcriptomic profile of   SRX47206  GSM3396538:
+ 20        4         zebrafish cardiomyocytes    30        wt_GFPneg_72hpf_re
+                     throughout heart                      p1; Danio rerio;
+                     development                           RNA-Seq
+ SRR78820  SRP16223  Transcriptomic profile of   SRX47206  GSM3396539:
+ 21        4         zebrafish cardiomyocytes    31        wt_GFPpos_72hpf_re
+                     throughout heart                      p1; Danio rerio;
+                     development                           RNA-Seq
+ SRR78820  SRP16223  Transcriptomic profile of   SRX47206  GSM3396540:
+ 22        4         zebrafish cardiomyocytes    32        wt_GFPpos_72hpf_re
+                     throughout heart                      p2; Danio rerio;
+                     development                           RNA-Seq
+ SRR78820  SRP16223  Transcriptomic profile of   SRX47206  GSM3396541:
+ 23        4         zebrafish cardiomyocytes    33        gata5_GFPneg_72hpf
+                     throughout heart                      _rep1; Danio
+                     development                           rerio; RNA-Seq
+ SRR78820  SRP16223  Transcriptomic profile of   SRX47206  GSM3396542:
+ 24        4         zebrafish cardiomyocytes    34        gata5_GFPpos_72hpf
+                     throughout heart                      _rep1; Danio
+                     development                           rerio; RNA-Seq
+ SRR78820  SRP16223  Transcriptomic profile of   SRX47206  GSM3396543:
+ 25        4         zebrafish cardiomyocytes    35        gata5_GFPpos_72hpf
+                     throughout heart                      _rep2; Danio
+                     development                           rerio; RNA-Seq
+ SRR78820  SRP16223  Transcriptomic profile of   SRX47206  GSM3396544:
+ 26        4         zebrafish cardiomyocytes    36        tbx5_GFPneg_72hpf_
+                     throughout heart                      rep1; Danio rerio;
+                     development                           RNA-Seq
+ SRR78820  SRP16223  Transcriptomic profile of   SRX47206  GSM3396545:
+ 27        4         zebrafish cardiomyocytes    37        tbx5_GFPpos_72hpf_
+                     throughout heart                      rep1; Danio rerio;
+                     development                           RNA-Seq
+ SRR78820  SRP16223  Transcriptomic profile of   SRX47206  GSM3396546:
+ 28        4         zebrafish cardiomyocytes    38        tbx5_GFPpos_72hpf_
+                     throughout heart                      rep2; Danio rerio;
+                     development                           RNA-Seq
+ SRR78820  SRP16223  Transcriptomic profile of   SRX47206  GSM3396547:
+ 29        4         zebrafish cardiomyocytes    39        hand2_GFPneg_72hpf
+                     throughout heart                      _rep1; Danio
+                     development                           rerio; RNA-Seq
+ SRR78820  SRP16223  Transcriptomic profile of   SRX47206  GSM3396548:
+ 30        4         zebrafish cardiomyocytes    40        hand2_GFPpos_72hpf
+                     throughout heart                      _rep1; Danio
+                     development                           rerio; RNA-Seq
+ SRR78820  SRP16223  Transcriptomic profile of   SRX47206  GSM3396549:
+ 31        4         zebrafish cardiomyocytes    41        hand2_GFPpos_72hpf
+                     throughout heart                      _rep2; Danio
+                     development                           rerio; RNA-Seq
+
+<span class="ansi-blue-intense-fg">Columns </span><span class="ansi-blue-intense-fg ansi-bold">6</span><span class="ansi-blue-intense-fg">-</span><span class="ansi-blue-intense-fg ansi-bold">10</span><span class="ansi-blue-intense-fg">:</span>
+<span class="ansi-blue-intense-fg ansi-bold">                                 </span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold">organism_</span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold">organism_</span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold">library_na</span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold">library_s</span><span class="ansi-blue-intense-fg ansi-bold"> </span>
+<span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold">experiment_desc                </span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold">taxid    </span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold">name     </span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold">me        </span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold">trategy  </span><span class="ansi-blue-intense-fg ansi-bold"> </span>
+ GSM3396532:                      7955       Danio      -           RNA-Seq
+ wt_GFPneg_24hpf_rep1; Danio                 rerio
+ rerio; RNA-Seq
+ GSM3396533:                      7955       Danio      -           RNA-Seq
+ wt_GFPpos_24hpf_rep1; Danio                 rerio
+ rerio; RNA-Seq
+ GSM3396534:                      7955       Danio      -           RNA-Seq
+ wt_GFPpos_24hpf_rep2; Danio                 rerio
+ rerio; RNA-Seq
+ GSM3396535:                      7955       Danio      -           RNA-Seq
+ wt_GFPneg_48hpf_rep1; Danio                 rerio
+ rerio; RNA-Seq
+ GSM3396536:                      7955       Danio      -           RNA-Seq
+ wt_GFPpos_48hpf_rep1; Danio                 rerio
+ rerio; RNA-Seq
+ GSM3396537:                      7955       Danio      -           RNA-Seq
+ wt_GFPpos_48hpf_rep2; Danio                 rerio
+ rerio; RNA-Seq
+ GSM3396538:                      7955       Danio      -           RNA-Seq
+ wt_GFPneg_72hpf_rep1; Danio                 rerio
+ rerio; RNA-Seq
+ GSM3396539:                      7955       Danio      -           RNA-Seq
+ wt_GFPpos_72hpf_rep1; Danio                 rerio
+ rerio; RNA-Seq
+ GSM3396540:                      7955       Danio      -           RNA-Seq
+ wt_GFPpos_72hpf_rep2; Danio                 rerio
+ rerio; RNA-Seq
+ GSM3396541:                      7955       Danio      -           RNA-Seq
+ gata5_GFPneg_72hpf_rep1; Danio              rerio
+ rerio; RNA-Seq
+ GSM3396542:                      7955       Danio      -           RNA-Seq
+ gata5_GFPpos_72hpf_rep1; Danio              rerio
+ rerio; RNA-Seq
+ GSM3396543:                      7955       Danio      -           RNA-Seq
+ gata5_GFPpos_72hpf_rep2; Danio              rerio
+ rerio; RNA-Seq
+ GSM3396544:                      7955       Danio      -           RNA-Seq
+ tbx5_GFPneg_72hpf_rep1; Danio               rerio
+ rerio; RNA-Seq
+ GSM3396545:                      7955       Danio      -           RNA-Seq
+ tbx5_GFPpos_72hpf_rep1; Danio               rerio
+ rerio; RNA-Seq
+ GSM3396546:                      7955       Danio      -           RNA-Seq
+ tbx5_GFPpos_72hpf_rep2; Danio               rerio
+ rerio; RNA-Seq
+ GSM3396547:                      7955       Danio      -           RNA-Seq
+ hand2_GFPneg_72hpf_rep1; Danio              rerio
+ rerio; RNA-Seq
+ GSM3396548:                      7955       Danio      -           RNA-Seq
+ hand2_GFPpos_72hpf_rep1; Danio              rerio
+ rerio; RNA-Seq
+ GSM3396549:                      7955       Danio      -           RNA-Seq
+ hand2_GFPpos_72hpf_rep2; Danio              rerio
+ rerio; RNA-Seq
+
+<span class="ansi-blue-intense-fg">Columns </span><span class="ansi-blue-intense-fg ansi-bold">11</span><span class="ansi-blue-intense-fg">-</span><span class="ansi-blue-intense-fg ansi-bold">15</span><span class="ansi-blue-intense-fg">:</span>
+<span class="ansi-blue-intense-fg ansi-bold">                </span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold">library_selecti</span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold">library_layou</span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold">sample_accessi</span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold">              </span>
+<span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold">library_source</span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold">on             </span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold">t            </span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold">on            </span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold">sample_title</span><span class="ansi-blue-intense-fg ansi-bold"> </span>
+ TRANSCRIPTOMIC  cDNA             PAIRED         SRS3805810      -
+ TRANSCRIPTOMIC  cDNA             PAIRED         SRS3805811      -
+ TRANSCRIPTOMIC  cDNA             PAIRED         SRS3805812      -
+ TRANSCRIPTOMIC  cDNA             PAIRED         SRS3805813      -
+ TRANSCRIPTOMIC  cDNA             PAIRED         SRS3805814      -
+ TRANSCRIPTOMIC  cDNA             PAIRED         SRS3805815      -
+ TRANSCRIPTOMIC  cDNA             PAIRED         SRS3805816      -
+ TRANSCRIPTOMIC  cDNA             PAIRED         SRS3805817      -
+ TRANSCRIPTOMIC  cDNA             PAIRED         SRS3805818      -
+ TRANSCRIPTOMIC  cDNA             PAIRED         SRS3805819      -
+ TRANSCRIPTOMIC  cDNA             PAIRED         SRS3805820      -
+ TRANSCRIPTOMIC  cDNA             PAIRED         SRS3805821      -
+ TRANSCRIPTOMIC  cDNA             PAIRED         SRS3805822      -
+ TRANSCRIPTOMIC  cDNA             PAIRED         SRS3805823      -
+ TRANSCRIPTOMIC  cDNA             PAIRED         SRS3805824      -
+ TRANSCRIPTOMIC  cDNA             PAIRED         SRS3805825      -
+ TRANSCRIPTOMIC  cDNA             PAIRED         SRS3805826      -
+ TRANSCRIPTOMIC  cDNA             PAIRED         SRS3805827      -
+
+<span class="ansi-blue-intense-fg">Columns </span><span class="ansi-blue-intense-fg ansi-bold">16</span><span class="ansi-blue-intense-fg">-</span><span class="ansi-blue-intense-fg ansi-bold">20</span><span class="ansi-blue-intense-fg">:</span>
+<span class="ansi-blue-intense-fg ansi-bold">             </span><span class="ansi-blue-intense-fg ansi-bold">              </span><span class="ansi-blue-intense-fg ansi-bold">             </span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold">instrument_mode</span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold">instrument_model_de</span><span class="ansi-blue-intense-fg ansi-bold"> </span>
+<span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold">biosample  </span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold">bioproject  </span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold">instrument </span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold">l              </span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold">sc                 </span><span class="ansi-blue-intense-fg ansi-bold"> </span>
+ SAMN1009572  PRJNA492280   NextSeq 500  NextSeq 500      ILLUMINA
+ 4
+ SAMN1009572  PRJNA492280   NextSeq 500  NextSeq 500      ILLUMINA
+ 3
+ SAMN1009580  PRJNA492280   NextSeq 500  NextSeq 500      ILLUMINA
+ 3
+ SAMN1009580  PRJNA492280   NextSeq 500  NextSeq 500      ILLUMINA
+ 1
+ SAMN1009582  PRJNA492280   NextSeq 500  NextSeq 500      ILLUMINA
+ 3
+ SAMN1009582  PRJNA492280   NextSeq 500  NextSeq 500      ILLUMINA
+ 2
+ SAMN1009582  PRJNA492280   NextSeq 500  NextSeq 500      ILLUMINA
+ 1
+ SAMN1009581  PRJNA492280   NextSeq 500  NextSeq 500      ILLUMINA
+ 9
+ SAMN1009581  PRJNA492280   NextSeq 500  NextSeq 500      ILLUMINA
+ 7
+ SAMN1009581  PRJNA492280   NextSeq 500  NextSeq 500      ILLUMINA
+ 1
+ SAMN1009580  PRJNA492280   NextSeq 500  NextSeq 500      ILLUMINA
+ 9
+ SAMN1009580  PRJNA492280   NextSeq 500  NextSeq 500      ILLUMINA
+ 7
+ SAMN1009581  PRJNA492280   NextSeq 500  NextSeq 500      ILLUMINA
+ 6
+ SAMN1009587  PRJNA492280   NextSeq 500  NextSeq 500      ILLUMINA
+ 9
+ SAMN1009587  PRJNA492280   NextSeq 500  NextSeq 500      ILLUMINA
+ 8
+ SAMN1009581  PRJNA492280   NextSeq 500  NextSeq 500      ILLUMINA
+ 4
+ SAMN1009581  PRJNA492280   NextSeq 500  NextSeq 500      ILLUMINA
+ 3
+ SAMN1009580  PRJNA492280   NextSeq 500  NextSeq 500      ILLUMINA
+ 5
+
+<span class="ansi-blue-intense-fg">Columns </span><span class="ansi-blue-intense-fg ansi-bold">21</span><span class="ansi-blue-intense-fg">-</span><span class="ansi-blue-intense-fg ansi-bold">25</span><span class="ansi-blue-intense-fg">:</span>
+<span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold">total_spots  </span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold">total_size  </span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold">run_total_spots</span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold">run_total_bases</span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold">run_alias    </span><span class="ansi-blue-intense-fg ansi-bold"> </span>
+ 21439471       1549237734    21439471         3235130828       GSM3396532_r1
+ 47867961       3470385670    47867961         7230485009       GSM3396533_r1
+ 45108524       3347127540    45108524         6811055984       GSM3396534_r1
+ 25172776       1597637090    25172776         3804459726       GSM3396535_r1
+ 68478641       4227037694    68478641         10362706101      GSM3396536_r1
+ 72822775       4519247080    72822775         11019279496      GSM3396537_r1
+ 17619161       1288448692    17619161         2643010914       GSM3396538_r1
+ 62587832       4050860463    62587832         9407123202       GSM3396539_r1
+ 67147971       4345146386    67147971         10142882964      GSM3396540_r1
+ 27837896       1720418790    27837896         4201863748       GSM3396541_r1
+ 56555130       3467480388    56555130         8562517609       GSM3396542_r1
+ 60833762       3735673536    60833762         9212176075       GSM3396543_r1
+ 49187957       3190641550    49187957         7431177314       GSM3396544_r1
+ 96090300       6245453636    96090300         14525399561      GSM3396545_r1
+ 62838564       4072100836    62838564         9494332347       GSM3396546_r1
+ 30761676       2091196312    30761676         4675774752       GSM3396547_r1
+ 66234287       4470573268    66234287         10067611624      GSM3396548_r1
+ 80003290       5496499311    80003290         12160500080      GSM3396549_r1
+
+<span class="ansi-blue-intense-fg">Columns </span><span class="ansi-blue-intense-fg ansi-bold">26</span><span class="ansi-blue-intense-fg">-</span><span class="ansi-blue-intense-fg ansi-bold">30</span><span class="ansi-blue-intense-fg">:</span>
+<span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold">public_filen</span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold">             </span><span class="ansi-blue-intense-fg ansi-bold">              </span><span class="ansi-blue-intense-fg ansi-bold">                        </span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold">public_vers</span><span class="ansi-blue-intense-fg ansi-bold"> </span>
+<span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold">ame         </span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold">public_size</span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold">public_date </span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold">public_md5            </span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold">ion        </span><span class="ansi-blue-intense-fg ansi-bold"> </span>
+ SRR7882014.s  843819674    2020-06-14    c037ccca37bf4d6abc5813  1
+ ralite                     02:49:28      cc3b31d2f0
+ SRR7882015.s  1881003321   2020-06-14    8161154ca4e9cf674e3f0e  1
+ ralite                     12:02:25      4af74c8455
+ SRR7882016.s  1780836154   2020-06-22    2b5e272ac8b85fb07e8984  1
+ ralite                     13:49:36      2b6fa1e7ff
+ SRR7882017.s  991847394    2020-06-14    26b25df3ca97659b77d69f  1
+ ralite                     11:47:21      b9a2514f07
+ SRR7882018.s  2687036341   2020-06-20    076044f1f92cd47d55c8a8  1
+ ralite                     12:03:19      9e6860e005
+ SRR7882019.s  2861783098   2020-06-22    0906b937e8b613468a5cdc  1
+ ralite                     13:58:14      522532bc7e
+ SRR7882020.s  693263779    2020-06-24    8c1d6436606b28b95450cb  1
+ ralite                     02:36:29      538ea2f066
+ SRR7882021.s  2460093865   2020-06-20    527dc540e148a7288012b1  1
+ ralite                     12:01:27      88ed11541c
+ SRR7882022.s  2649120145   2020-06-22    9d3fcc2b555af694643af3  1
+ ralite                     14:03:06      5393bd9d1d
+ SRR7882023.s  1092395868   2020-06-14    db7d0a7737eb616301bd7f  1
+ ralite                     11:46:37      544c57f455
+ SRR7882024.s  2216823671   2020-06-21    cd4c4270d817343d2f81b3  1
+ ralite                     14:15:12      ff711fb7e4
+ SRR7882025.s  2384360834   2020-06-24    d179a5c3889518879eaaec  1
+ ralite                     02:53:43      1914404090
+ SRR7882026.s  1940747812   2020-06-21    7f896dfee5c74c558c9d95  1
+ ralite                     14:07:10      cbaa047ca2
+ SRR7882027.s  3777195699   2021-06-15    111d6ca4fb00189697d543  1
+ ralite                     02:20:27      d0ca744c3a
+ SRR7882028.s  2472733302   2020-06-24    8e8f270cee4fc7a9c5f450  1
+ ralite                     02:54:40      a34930de4f
+ SRR7882029.s  1179822118   2020-06-20    5a7f09aa682cdee98a6767  1
+ ralite                     11:39:34      3aaf2d205a
+ SRR7882030.s  2532332515   2020-06-22    40e79360fa3d4ea481b829  1
+ ralite                     13:51:55      28909b68b1
+ SRR7882031.s  3062201982   2020-06-22    9942effecf10d150ad5653  1
+ ralite                     13:56:01      39bf207f81
+
+<span class="ansi-blue-intense-fg">Columns </span><span class="ansi-blue-intense-fg ansi-bold">31</span><span class="ansi-blue-intense-fg">-</span><span class="ansi-blue-intense-fg ansi-bold">35</span><span class="ansi-blue-intense-fg">:</span>
+<span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold">public_sem</span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold">public_sup</span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold">public_srat</span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold">                            </span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold">aws_free_eg</span><span class="ansi-blue-intense-fg ansi-bold"> </span>
+<span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold">antic_name</span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold">ertype    </span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold">oolkit     </span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold">aws_url                   </span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold">ress       </span><span class="ansi-blue-intense-fg ansi-bold"> </span>
+ SRA Lite    Primary     1            s3://sra-pub-zq-8/SRR78820  s3.us-east-
+             ETL                      14/SRR7882014.sralite.1     1
+ SRA Lite    Primary     1            s3://sra-pub-zq-8/SRR78820  s3.us-east-
+             ETL                      15/SRR7882015.sralite.1     1
+ SRA Lite    Primary     1            s3://sra-pub-zq-8/SRR78820  s3.us-east-
+             ETL                      16/SRR7882016.sralite.1     1
+ SRA Lite    Primary     1            s3://sra-pub-zq-8/SRR78820  s3.us-east-
+             ETL                      17/SRR7882017.sralite.1     1
+ SRA Lite    Primary     1            s3://sra-pub-zq-4/SRR78820  s3.us-east-
+             ETL                      18/SRR7882018.sralite.1     1
+ SRA Lite    Primary     1            s3://sra-pub-zq-8/SRR78820  s3.us-east-
+             ETL                      19/SRR7882019.sralite.1     1
+ SRA Lite    Primary     1            s3://sra-pub-zq-5/SRR78820  s3.us-east-
+             ETL                      20/SRR7882020.sralite.1     1
+ SRA Lite    Primary     1            s3://sra-pub-zq-4/SRR78820  s3.us-east-
+             ETL                      21/SRR7882021.sralite.1     1
+ SRA Lite    Primary     1            s3://sra-pub-zq-8/SRR78820  s3.us-east-
+             ETL                      22/SRR7882022.sralite.1     1
+ SRA Lite    Primary     1            s3://sra-pub-zq-8/SRR78820  s3.us-east-
+             ETL                      23/SRR7882023.sralite.1     1
+ SRA Lite    Primary     1            s3://sra-pub-zq-9/SRR78820  s3.us-east-
+             ETL                      24/SRR7882024.sralite.1     1
+ SRA Lite    Primary     1            s3://sra-pub-zq-8/SRR78820  s3.us-east-
+             ETL                      25/SRR7882025.sralite.1     1
+ SRA Lite    Primary     1            s3://sra-pub-zq-8/SRR78820  s3.us-east-
+             ETL                      26/SRR7882026.sralite.1     1
+ SRA Lite    Primary     1            s3://sra-pub-zq-9/SRR78820  s3.us-east-
+             ETL                      27/SRR7882027.sralite.1     1
+ SRA Lite    Primary     1            s3://sra-pub-zq-8/SRR78820  s3.us-east-
+             ETL                      28/SRR7882028.sralite.1     1
+ SRA Lite    Primary     1            s3://sra-pub-zq-4/SRR78820  s3.us-east-
+             ETL                      29/SRR7882029.sralite.1     1
+ SRA Lite    Primary     1            s3://sra-pub-zq-8/SRR78820  s3.us-east-
+             ETL                      30/SRR7882030.sralite.1     1
+ SRA Lite    Primary     1            s3://sra-pub-zq-5/SRR78820  s3.us-east-
+             ETL                      31/SRR7882031.sralite.1     1
+
+<span class="ansi-blue-intense-fg">Columns </span><span class="ansi-blue-intense-fg ansi-bold">36</span><span class="ansi-blue-intense-fg">-</span><span class="ansi-blue-intense-fg ansi-bold">40</span><span class="ansi-blue-intense-fg">:</span>
+<span class="ansi-blue-intense-fg ansi-bold">          </span><span class="ansi-blue-intense-fg ansi-bold">                         </span><span class="ansi-blue-intense-fg ansi-bold">                        </span><span class="ansi-blue-intense-fg ansi-bold">          </span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold">ncbi_ac</span><span class="ansi-blue-intense-fg ansi-bold"> </span>
+<span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold">aws_acce</span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold">                         </span><span class="ansi-blue-intense-fg ansi-bold">                        </span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold">ncbi_fre</span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold">cess_ty</span><span class="ansi-blue-intense-fg ansi-bold"> </span>
+<span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold">ss_type </span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold">public_url             </span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold">ncbi_url              </span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold">e_egress</span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold">pe     </span><span class="ansi-blue-intense-fg ansi-bold"> </span>
+ aws       https://sra-downloadb.b  https://sra-downloadb.  worldwid  anonymo
+ identity  e-md.ncbi.nlm.nih.gov/s  be-md.ncbi.nlm.nih.gov  e         us
+           os5/sra-pub-zq-11/SRR00  /sos5/sra-pub-zq-11/SR
+           7/882/SRR7882014/SRR788  R007/882/SRR7882014/SR
+           2014.sralite.1           R7882014.sralite.1
+ aws       https://sra-downloadb.b  https://sra-downloadb.  worldwid  anonymo
+ identity  e-md.ncbi.nlm.nih.gov/s  be-md.ncbi.nlm.nih.gov  e         us
+           os5/sra-pub-zq-11/SRR00  /sos5/sra-pub-zq-11/SR
+           7/882/SRR7882015/SRR788  R007/882/SRR7882015/SR
+           2015.sralite.1           R7882015.sralite.1
+ aws       https://sra-downloadb.b  https://sra-downloadb.  worldwid  anonymo
+ identity  e-md.ncbi.nlm.nih.gov/s  be-md.ncbi.nlm.nih.gov  e         us
+           os5/sra-pub-zq-11/SRR00  /sos5/sra-pub-zq-11/SR
+           7/882/SRR7882016/SRR788  R007/882/SRR7882016/SR
+           2016.sralite.1           R7882016.sralite.1
+ aws       https://sra-downloadb.b  https://sra-downloadb.  worldwid  anonymo
+ identity  e-md.ncbi.nlm.nih.gov/s  be-md.ncbi.nlm.nih.gov  e         us
+           os9/sra-pub-zq-922/SRR0  /sos9/sra-pub-zq-922/S
+           07/882/SRR7882017.srali  RR007/882/SRR7882017.s
+           te.1                     ralite.1
+ aws       https://sra-downloadb.b  https://sra-downloadb.  worldwid  anonymo
+ identity  e-md.ncbi.nlm.nih.gov/s  be-md.ncbi.nlm.nih.gov  e         us
+           os5/sra-pub-zq-11/SRR00  /sos5/sra-pub-zq-11/SR
+           7/882/SRR7882018/SRR788  R007/882/SRR7882018/SR
+           2018.sralite.1           R7882018.sralite.1
+ aws       https://sra-downloadb.b  https://sra-downloadb.  worldwid  anonymo
+ identity  e-md.ncbi.nlm.nih.gov/s  be-md.ncbi.nlm.nih.gov  e         us
+           os5/sra-pub-zq-11/SRR00  /sos5/sra-pub-zq-11/SR
+           7/882/SRR7882019/SRR788  R007/882/SRR7882019/SR
+           2019.sralite.1           R7882019.sralite.1
+ aws       https://sra-downloadb.b  https://sra-downloadb.  worldwid  anonymo
+ identity  e-md.ncbi.nlm.nih.gov/s  be-md.ncbi.nlm.nih.gov  e         us
+           os5/sra-pub-zq-14/SRR00  /sos5/sra-pub-zq-14/SR
+           7/882/SRR7882020.sralit  R007/882/SRR7882020.sr
+           e.1                      alite.1
+ aws       https://sra-downloadb.b  https://sra-downloadb.  worldwid  anonymo
+ identity  e-md.ncbi.nlm.nih.gov/s  be-md.ncbi.nlm.nih.gov  e         us
+           os5/sra-pub-zq-11/SRR00  /sos5/sra-pub-zq-11/SR
+           7/882/SRR7882021/SRR788  R007/882/SRR7882021/SR
+           2021.sralite.1           R7882021.sralite.1
+ aws       https://sra-downloadb.b  https://sra-downloadb.  worldwid  anonymo
+ identity  e-md.ncbi.nlm.nih.gov/s  be-md.ncbi.nlm.nih.gov  e         us
+           os5/sra-pub-zq-11/SRR00  /sos5/sra-pub-zq-11/SR
+           7/882/SRR7882022/SRR788  R007/882/SRR7882022/SR
+           2022.sralite.1           R7882022.sralite.1
+ aws       https://sra-downloadb.b  https://sra-downloadb.  worldwid  anonymo
+ identity  e-md.ncbi.nlm.nih.gov/s  be-md.ncbi.nlm.nih.gov  e         us
+           os9/sra-pub-zq-922/SRR0  /sos9/sra-pub-zq-922/S
+           07/882/SRR7882023.srali  RR007/882/SRR7882023.s
+           te.1                     ralite.1
+ aws       https://sra-downloadb.b  https://sra-downloadb.  worldwid  anonymo
+ identity  e-md.ncbi.nlm.nih.gov/s  be-md.ncbi.nlm.nih.gov  e         us
+           os5/sra-pub-zq-11/SRR00  /sos5/sra-pub-zq-11/SR
+           7/882/SRR7882024/SRR788  R007/882/SRR7882024/SR
+           2024.sralite.1           R7882024.sralite.1
+ aws       https://sra-downloadb.b  https://sra-downloadb.  worldwid  anonymo
+ identity  e-md.ncbi.nlm.nih.gov/s  be-md.ncbi.nlm.nih.gov  e         us
+           os5/sra-pub-zq-11/SRR00  /sos5/sra-pub-zq-11/SR
+           7/882/SRR7882025/SRR788  R007/882/SRR7882025/SR
+           2025.sralite.1           R7882025.sralite.1
+ aws       https://sra-downloadb.b  https://sra-downloadb.  worldwid  anonymo
+ identity  e-md.ncbi.nlm.nih.gov/s  be-md.ncbi.nlm.nih.gov  e         us
+           os5/sra-pub-zq-11/SRR00  /sos5/sra-pub-zq-11/SR
+           7/882/SRR7882026/SRR788  R007/882/SRR7882026/SR
+           2026.sralite.1           R7882026.sralite.1
+ aws       https://sra-downloadb.b  https://sra-downloadb.  worldwid  anonymo
+ identity  e-md.ncbi.nlm.nih.gov/s  be-md.ncbi.nlm.nih.gov  e         us
+           os5/sra-pub-zq-11/SRR00  /sos5/sra-pub-zq-11/SR
+           7/882/SRR7882027/SRR788  R007/882/SRR7882027/SR
+           2027.sralite.1           R7882027.sralite.1
+ aws       https://sra-downloadb.b  https://sra-downloadb.  worldwid  anonymo
+ identity  e-md.ncbi.nlm.nih.gov/s  be-md.ncbi.nlm.nih.gov  e         us
+           os5/sra-pub-zq-11/SRR00  /sos5/sra-pub-zq-11/SR
+           7/882/SRR7882028/SRR788  R007/882/SRR7882028/SR
+           2028.sralite.1           R7882028.sralite.1
+ aws       https://sra-downloadb.b  https://sra-downloadb.  worldwid  anonymo
+ identity  e-md.ncbi.nlm.nih.gov/s  be-md.ncbi.nlm.nih.gov  e         us
+           os5/sra-pub-zq-11/SRR00  /sos5/sra-pub-zq-11/SR
+           7/882/SRR7882029/SRR788  R007/882/SRR7882029/SR
+           2029.sralite.1           R7882029.sralite.1
+ aws       https://sra-downloadb.b  https://sra-downloadb.  worldwid  anonymo
+ identity  e-md.ncbi.nlm.nih.gov/s  be-md.ncbi.nlm.nih.gov  e         us
+           os5/sra-pub-zq-11/SRR00  /sos5/sra-pub-zq-11/SR
+           7/882/SRR7882030/SRR788  R007/882/SRR7882030/SR
+           2030.sralite.1           R7882030.sralite.1
+ aws       https://sra-downloadb.b  https://sra-downloadb.  worldwid  anonymo
+ identity  e-md.ncbi.nlm.nih.gov/s  be-md.ncbi.nlm.nih.gov  e         us
+           os5/sra-pub-zq-11/SRR00  /sos5/sra-pub-zq-11/SR
+           7/882/SRR7882031/SRR788  R007/882/SRR7882031/SR
+           2031.sralite.1           R7882031.sralite.1
+
+<span class="ansi-blue-intense-fg">Columns </span><span class="ansi-blue-intense-fg ansi-bold">41</span><span class="ansi-blue-intense-fg">-</span><span class="ansi-blue-intense-fg ansi-bold">45</span><span class="ansi-blue-intense-fg">:</span>
+<span class="ansi-blue-intense-fg ansi-bold">                          </span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold">gcp_free_e</span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold">gcp_access_</span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold">experiment</span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold">               </span>
+<span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold">gcp_url                 </span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold">gress     </span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold">type       </span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold">_alias    </span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold">source_name  </span><span class="ansi-blue-intense-fg ansi-bold"> </span>
+ gs://sra-pub-zq-107/SRR7  gs.us-east  gcp          GSM3396532  FACS-sorted
+ 882014/SRR7882014.zq.1    1           identity                 embryo cells
+ gs://sra-pub-zq-107/SRR7  gs.us-east  gcp          GSM3396533  FACS-sorted
+ 882015/SRR7882015.zq.1    1           identity                 embryo cells
+ gs://sra-pub-zq-107/SRR7  gs.us-east  gcp          GSM3396534  FACS-sorted
+ 882016/SRR7882016.zq.1    1           identity                 embryo cells
+ gs://sra-pub-zq-107/SRR7  gs.us-east  gcp          GSM3396535  FACS-sorted
+ 882017/SRR7882017.zq.1    1           identity                 embryo cells
+ gs://sra-pub-zq-107/SRR7  gs.us-east  gcp          GSM3396536  FACS-sorted
+ 882018/SRR7882018.zq.1    1           identity                 embryo cells
+ gs://sra-pub-zq-107/SRR7  gs.us-east  gcp          GSM3396537  FACS-sorted
+ 882019/SRR7882019.zq.1    1           identity                 embryo cells
+ gs://sra-pub-zq-105/SRR7  gs.us-east  gcp          GSM3396538  FACS-sorted
+ 882020/SRR7882020.zq.1    1           identity                 embryo cells
+ gs://sra-pub-zq-107/SRR7  gs.us-east  gcp          GSM3396539  FACS-sorted
+ 882021/SRR7882021.zq.1    1           identity                 embryo cells
+ gs://sra-pub-zq-107/SRR7  gs.us-east  gcp          GSM3396540  FACS-sorted
+ 882022/SRR7882022.zq.1    1           identity                 embryo cells
+ gs://sra-pub-zq-107/SRR7  gs.us-east  gcp          GSM3396541  FACS-sorted
+ 882023/SRR7882023.zq.1    1           identity                 embryo cells
+ gs://sra-pub-zq-107/SRR7  gs.us-east  gcp          GSM3396542  FACS-sorted
+ 882024/SRR7882024.zq.1    1           identity                 embryo cells
+ gs://sra-pub-zq-107/SRR7  gs.us-east  gcp          GSM3396543  FACS-sorted
+ 882025/SRR7882025.zq.1    1           identity                 embryo cells
+ gs://sra-pub-zq-107/SRR7  gs.us-east  gcp          GSM3396544  FACS-sorted
+ 882026/SRR7882026.zq.1    1           identity                 embryo cells
+ gs://sra-pub-zq-105/SRR7  gs.us-east  gcp          GSM3396545  FACS-sorted
+ 882027/SRR7882027.noqual  1           identity                 embryo cells
+ .1
+ gs://sra-pub-zq-107/SRR7  gs.us-east  gcp          GSM3396546  FACS-sorted
+ 882028/SRR7882028.zq.1    1           identity                 embryo cells
+ gs://sra-pub-zq-107/SRR7  gs.us-east  gcp          GSM3396547  FACS-sorted
+ 882029/SRR7882029.zq.1    1           identity                 embryo cells
+ gs://sra-pub-zq-107/SRR7  gs.us-east  gcp          GSM3396548  FACS-sorted
+ 882030/SRR7882030.zq.1    1           identity                 embryo cells
+ gs://sra-pub-zq-105/SRR7  gs.us-east  gcp          GSM3396549  FACS-sorted
+ 882031/SRR7882031.zq.1    1           identity                 embryo cells
+
+<span class="ansi-blue-intense-fg">Columns </span><span class="ansi-blue-intense-fg ansi-bold">46</span><span class="ansi-blue-intense-fg">-</span><span class="ansi-blue-intense-fg ansi-bold">50</span><span class="ansi-blue-intense-fg">:</span>
+<span class="ansi-blue-intense-fg ansi-bold">                    </span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold">developmental </span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold">             </span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold">genetic       </span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold">ena_fastq_h</span><span class="ansi-blue-intense-fg ansi-bold"> </span>
+<span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold">tissue            </span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold">stage         </span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold">gfp status </span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold">background    </span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold">ttp        </span><span class="ansi-blue-intense-fg ansi-bold"> </span>
+ FACS-sorted embryo  24 hpf          GFP          wild type       -
+ cells                               negative
+ FACS-sorted embryo  24 hpf          GFP          wild type       -
+ cells                               positive
+ FACS-sorted embryo  24 hpf          GFP          wild type       -
+ cells                               positive
+ FACS-sorted embryo  48 hpf          GFP          wild type       -
+ cells                               negative
+ FACS-sorted embryo  48 hpf          GFP          wild type       -
+ cells                               positive
+ FACS-sorted embryo  48 hpf          GFP          wild type       -
+ cells                               positive
+ FACS-sorted embryo  72 hpf          GFP          wild type       -
+ cells                               negative
+ FACS-sorted embryo  72 hpf          GFP          wild type       -
+ cells                               positive
+ FACS-sorted embryo  72 hpf          GFP          wild type       -
+ cells                               positive
+ FACS-sorted embryo  72 hpf          GFP          gata5           -
+ cells                               negative
+ FACS-sorted embryo  72 hpf          GFP          gata5           -
+ cells                               positive
+ FACS-sorted embryo  72 hpf          GFP          gata5           -
+ cells                               positive
+ FACS-sorted embryo  72 hpf          GFP          tbx5            -
+ cells                               negative
+ FACS-sorted embryo  72 hpf          GFP          tbx5            -
+ cells                               positive
+ FACS-sorted embryo  72 hpf          GFP          tbx5            -
+ cells                               positive
+ FACS-sorted embryo  72 hpf          GFP          hand2           -
+ cells                               negative
+ FACS-sorted embryo  72 hpf          GFP          hand2           -
+ cells                               positive
+ FACS-sorted embryo  72 hpf          GFP          hand2           -
+ cells                               positive
+
+<span class="ansi-blue-intense-fg">Columns </span><span class="ansi-blue-intense-fg ansi-bold">51</span><span class="ansi-blue-intense-fg">-</span><span class="ansi-blue-intense-fg ansi-bold">55</span><span class="ansi-blue-intense-fg">:</span>
+<span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold">ena_fastq_http</span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold">ena_fastq_http</span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold">ena_fastq_f</span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold">ena_fastq_ftp_</span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold">                 </span>
+<span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold">_1            </span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold">_2            </span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold">tp         </span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold">1             </span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold">ena_fastq_ftp_2</span><span class="ansi-blue-intense-fg ansi-bold"> </span>
+ http://ftp.sra  http://ftp.sra  -            era-fasp@fasp.  era-fasp@fasp.s
+ .ebi.ac.uk/vol  .ebi.ac.uk/vol               sra.ebi.ac.uk:  ra.ebi.ac.uk:vo
+ 1/fastq/SRR788  1/fastq/SRR788               vol1/fastq/SRR  l1/fastq/SRR788
+ /004/SRR788201  /004/SRR788201               788/004/SRR788  /004/SRR7882014
+ 4/SRR7882014_1  4/SRR7882014_2               2014/SRR788201  /SRR7882014_2.f
+ .fastq.gz       .fastq.gz                    4_1.fastq.gz    astq.gz
+ http://ftp.sra  http://ftp.sra  -            era-fasp@fasp.  era-fasp@fasp.s
+ .ebi.ac.uk/vol  .ebi.ac.uk/vol               sra.ebi.ac.uk:  ra.ebi.ac.uk:vo
+ 1/fastq/SRR788  1/fastq/SRR788               vol1/fastq/SRR  l1/fastq/SRR788
+ /005/SRR788201  /005/SRR788201               788/005/SRR788  /005/SRR7882015
+ 5/SRR7882015_1  5/SRR7882015_2               2015/SRR788201  /SRR7882015_2.f
+ .fastq.gz       .fastq.gz                    5_1.fastq.gz    astq.gz
+ http://ftp.sra  http://ftp.sra  -            era-fasp@fasp.  era-fasp@fasp.s
+ .ebi.ac.uk/vol  .ebi.ac.uk/vol               sra.ebi.ac.uk:  ra.ebi.ac.uk:vo
+ 1/fastq/SRR788  1/fastq/SRR788               vol1/fastq/SRR  l1/fastq/SRR788
+ /006/SRR788201  /006/SRR788201               788/006/SRR788  /006/SRR7882016
+ 6/SRR7882016_1  6/SRR7882016_2               2016/SRR788201  /SRR7882016_2.f
+ .fastq.gz       .fastq.gz                    6_1.fastq.gz    astq.gz
+ http://ftp.sra  http://ftp.sra  -            era-fasp@fasp.  era-fasp@fasp.s
+ .ebi.ac.uk/vol  .ebi.ac.uk/vol               sra.ebi.ac.uk:  ra.ebi.ac.uk:vo
+ 1/fastq/SRR788  1/fastq/SRR788               vol1/fastq/SRR  l1/fastq/SRR788
+ /007/SRR788201  /007/SRR788201               788/007/SRR788  /007/SRR7882017
+ 7/SRR7882017_1  7/SRR7882017_2               2017/SRR788201  /SRR7882017_2.f
+ .fastq.gz       .fastq.gz                    7_1.fastq.gz    astq.gz
+ http://ftp.sra  http://ftp.sra  -            era-fasp@fasp.  era-fasp@fasp.s
+ .ebi.ac.uk/vol  .ebi.ac.uk/vol               sra.ebi.ac.uk:  ra.ebi.ac.uk:vo
+ 1/fastq/SRR788  1/fastq/SRR788               vol1/fastq/SRR  l1/fastq/SRR788
+ /008/SRR788201  /008/SRR788201               788/008/SRR788  /008/SRR7882018
+ 8/SRR7882018_1  8/SRR7882018_2               2018/SRR788201  /SRR7882018_2.f
+ .fastq.gz       .fastq.gz                    8_1.fastq.gz    astq.gz
+ http://ftp.sra  http://ftp.sra  -            era-fasp@fasp.  era-fasp@fasp.s
+ .ebi.ac.uk/vol  .ebi.ac.uk/vol               sra.ebi.ac.uk:  ra.ebi.ac.uk:vo
+ 1/fastq/SRR788  1/fastq/SRR788               vol1/fastq/SRR  l1/fastq/SRR788
+ /009/SRR788201  /009/SRR788201               788/009/SRR788  /009/SRR7882019
+ 9/SRR7882019_1  9/SRR7882019_2               2019/SRR788201  /SRR7882019_2.f
+ .fastq.gz       .fastq.gz                    9_1.fastq.gz    astq.gz
+ http://ftp.sra  http://ftp.sra  -            era-fasp@fasp.  era-fasp@fasp.s
+ .ebi.ac.uk/vol  .ebi.ac.uk/vol               sra.ebi.ac.uk:  ra.ebi.ac.uk:vo
+ 1/fastq/SRR788  1/fastq/SRR788               vol1/fastq/SRR  l1/fastq/SRR788
+ /000/SRR788202  /000/SRR788202               788/000/SRR788  /000/SRR7882020
+ 0/SRR7882020_1  0/SRR7882020_2               2020/SRR788202  /SRR7882020_2.f
+ .fastq.gz       .fastq.gz                    0_1.fastq.gz    astq.gz
+ http://ftp.sra  http://ftp.sra  -            era-fasp@fasp.  era-fasp@fasp.s
+ .ebi.ac.uk/vol  .ebi.ac.uk/vol               sra.ebi.ac.uk:  ra.ebi.ac.uk:vo
+ 1/fastq/SRR788  1/fastq/SRR788               vol1/fastq/SRR  l1/fastq/SRR788
+ /001/SRR788202  /001/SRR788202               788/001/SRR788  /001/SRR7882021
+ 1/SRR7882021_1  1/SRR7882021_2               2021/SRR788202  /SRR7882021_2.f
+ .fastq.gz       .fastq.gz                    1_1.fastq.gz    astq.gz
+ http://ftp.sra  http://ftp.sra  -            era-fasp@fasp.  era-fasp@fasp.s
+ .ebi.ac.uk/vol  .ebi.ac.uk/vol               sra.ebi.ac.uk:  ra.ebi.ac.uk:vo
+ 1/fastq/SRR788  1/fastq/SRR788               vol1/fastq/SRR  l1/fastq/SRR788
+ /002/SRR788202  /002/SRR788202               788/002/SRR788  /002/SRR7882022
+ 2/SRR7882022_1  2/SRR7882022_2               2022/SRR788202  /SRR7882022_2.f
+ .fastq.gz       .fastq.gz                    2_1.fastq.gz    astq.gz
+ http://ftp.sra  http://ftp.sra  -            era-fasp@fasp.  era-fasp@fasp.s
+ .ebi.ac.uk/vol  .ebi.ac.uk/vol               sra.ebi.ac.uk:  ra.ebi.ac.uk:vo
+ 1/fastq/SRR788  1/fastq/SRR788               vol1/fastq/SRR  l1/fastq/SRR788
+ /003/SRR788202  /003/SRR788202               788/003/SRR788  /003/SRR7882023
+ 3/SRR7882023_1  3/SRR7882023_2               2023/SRR788202  /SRR7882023_2.f
+ .fastq.gz       .fastq.gz                    3_1.fastq.gz    astq.gz
+ http://ftp.sra  http://ftp.sra  -            era-fasp@fasp.  era-fasp@fasp.s
+ .ebi.ac.uk/vol  .ebi.ac.uk/vol               sra.ebi.ac.uk:  ra.ebi.ac.uk:vo
+ 1/fastq/SRR788  1/fastq/SRR788               vol1/fastq/SRR  l1/fastq/SRR788
+ /004/SRR788202  /004/SRR788202               788/004/SRR788  /004/SRR7882024
+ 4/SRR7882024_1  4/SRR7882024_2               2024/SRR788202  /SRR7882024_2.f
+ .fastq.gz       .fastq.gz                    4_1.fastq.gz    astq.gz
+ http://ftp.sra  http://ftp.sra  -            era-fasp@fasp.  era-fasp@fasp.s
+ .ebi.ac.uk/vol  .ebi.ac.uk/vol               sra.ebi.ac.uk:  ra.ebi.ac.uk:vo
+ 1/fastq/SRR788  1/fastq/SRR788               vol1/fastq/SRR  l1/fastq/SRR788
+ /005/SRR788202  /005/SRR788202               788/005/SRR788  /005/SRR7882025
+ 5/SRR7882025_1  5/SRR7882025_2               2025/SRR788202  /SRR7882025_2.f
+ .fastq.gz       .fastq.gz                    5_1.fastq.gz    astq.gz
+ http://ftp.sra  http://ftp.sra  -            era-fasp@fasp.  era-fasp@fasp.s
+ .ebi.ac.uk/vol  .ebi.ac.uk/vol               sra.ebi.ac.uk:  ra.ebi.ac.uk:vo
+ 1/fastq/SRR788  1/fastq/SRR788               vol1/fastq/SRR  l1/fastq/SRR788
+ /006/SRR788202  /006/SRR788202               788/006/SRR788  /006/SRR7882026
+ 6/SRR7882026_1  6/SRR7882026_2               2026/SRR788202  /SRR7882026_2.f
+ .fastq.gz       .fastq.gz                    6_1.fastq.gz    astq.gz
+ http://ftp.sra  http://ftp.sra  -            era-fasp@fasp.  era-fasp@fasp.s
+ .ebi.ac.uk/vol  .ebi.ac.uk/vol               sra.ebi.ac.uk:  ra.ebi.ac.uk:vo
+ 1/fastq/SRR788  1/fastq/SRR788               vol1/fastq/SRR  l1/fastq/SRR788
+ /007/SRR788202  /007/SRR788202               788/007/SRR788  /007/SRR7882027
+ 7/SRR7882027_1  7/SRR7882027_2               2027/SRR788202  /SRR7882027_2.f
+ .fastq.gz       .fastq.gz                    7_1.fastq.gz    astq.gz
+ http://ftp.sra  http://ftp.sra  -            era-fasp@fasp.  era-fasp@fasp.s
+ .ebi.ac.uk/vol  .ebi.ac.uk/vol               sra.ebi.ac.uk:  ra.ebi.ac.uk:vo
+ 1/fastq/SRR788  1/fastq/SRR788               vol1/fastq/SRR  l1/fastq/SRR788
+ /008/SRR788202  /008/SRR788202               788/008/SRR788  /008/SRR7882028
+ 8/SRR7882028_1  8/SRR7882028_2               2028/SRR788202  /SRR7882028_2.f
+ .fastq.gz       .fastq.gz                    8_1.fastq.gz    astq.gz
+ http://ftp.sra  http://ftp.sra  -            era-fasp@fasp.  era-fasp@fasp.s
+ .ebi.ac.uk/vol  .ebi.ac.uk/vol               sra.ebi.ac.uk:  ra.ebi.ac.uk:vo
+ 1/fastq/SRR788  1/fastq/SRR788               vol1/fastq/SRR  l1/fastq/SRR788
+ /009/SRR788202  /009/SRR788202               788/009/SRR788  /009/SRR7882029
+ 9/SRR7882029_1  9/SRR7882029_2               2029/SRR788202  /SRR7882029_2.f
+ .fastq.gz       .fastq.gz                    9_1.fastq.gz    astq.gz
+ http://ftp.sra  http://ftp.sra  -            era-fasp@fasp.  era-fasp@fasp.s
+ .ebi.ac.uk/vol  .ebi.ac.uk/vol               sra.ebi.ac.uk:  ra.ebi.ac.uk:vo
+ 1/fastq/SRR788  1/fastq/SRR788               vol1/fastq/SRR  l1/fastq/SRR788
+ /000/SRR788203  /000/SRR788203               788/000/SRR788  /000/SRR7882030
+ 0/SRR7882030_1  0/SRR7882030_2               2030/SRR788203  /SRR7882030_2.f
+ .fastq.gz       .fastq.gz                    0_1.fastq.gz    astq.gz
+ http://ftp.sra  http://ftp.sra  -            era-fasp@fasp.  era-fasp@fasp.s
+ .ebi.ac.uk/vol  .ebi.ac.uk/vol               sra.ebi.ac.uk:  ra.ebi.ac.uk:vo
+ 1/fastq/SRR788  1/fastq/SRR788               vol1/fastq/SRR  l1/fastq/SRR788
+ /001/SRR788203  /001/SRR788203               788/001/SRR788  /001/SRR7882031
+ 1/SRR7882031_1  1/SRR7882031_2               2031/SRR788203  /SRR7882031_2.f
+ .fastq.gz       .fastq.gz                    1_1.fastq.gz    astq.gz
+
+<span class="ansi-blue-intense-fg">Columns </span><span class="ansi-blue-intense-fg ansi-bold">56</span><span class="ansi-blue-intense-fg">-</span><span class="ansi-blue-intense-fg ansi-bold">57</span><span class="ansi-blue-intense-fg">:</span>
+<span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold">study_geo_accession              </span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold"> </span><span class="ansi-blue-intense-fg ansi-bold">experiment_geo_accession                 </span><span class="ansi-blue-intense-fg ansi-bold"> </span>
+ GSE120236                          GSM3396532
+ GSE120236                          GSM3396533
+ GSE120236                          GSM3396534
+ GSE120236                          GSM3396535
+ GSE120236                          GSM3396536
+ GSE120236                          GSM3396537
+ GSE120236                          GSM3396538
+ GSE120236                          GSM3396539
+ GSE120236                          GSM3396540
+ GSE120236                          GSM3396541
+ GSE120236                          GSM3396542
+ GSE120236                          GSM3396543
+ GSE120236                          GSM3396544
+ GSE120236                          GSM3396545
+ GSE120236                          GSM3396546
+ GSE120236                          GSM3396547
+ GSE120236                          GSM3396548
+ GSE120236                          GSM3396549
+
+</pre></div></div>
+</div>
 </section>
 <section id="Download-an-entire-project!">
 <h2>Download an entire project!<a class="headerlink" href="#Download-an-entire-project!" title="Link to this heading">¶</a></h2>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pysradb<span class="w"> </span>download<span class="w"> </span>-p<span class="w"> </span>SRP162234
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;pysradb download -p SRP162234&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -416,48 +1205,7 @@ Total size: 1.9 GB
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Checking download URLs
-The following files will be downloaded:
-
-run_accession study_accession experiment_accession public_url                                                                                                 download_url                                                                                          out_dir                                          filesize
-SRR7882014    SRP162234       SRX4720624           https://sra-downloadb.be-md.ncbi.nlm.nih.gov/sos5/sra-pub-zq-11/SRR007/882/SRR7882014/SRR7882014.sralite.1 ftp://ftp-trace.ncbi.nlm.nih.gov/sra/sra-instant/reads/ByRun/sra/SRR/SRR788/SRR7882014/SRR7882014.sra /data/github/pysradb/notebooks/pysradb_downloads 843.8 MB
-SRR7882015    SRP162234       SRX4720625           https://sra-downloadb.be-md.ncbi.nlm.nih.gov/sos5/sra-pub-zq-11/SRR007/882/SRR7882015/SRR7882015.sralite.1 ftp://ftp-trace.ncbi.nlm.nih.gov/sra/sra-instant/reads/ByRun/sra/SRR/SRR788/SRR7882015/SRR7882015.sra /data/github/pysradb/notebooks/pysradb_downloads   1.9 GB
-SRR7882016    SRP162234       SRX4720626           https://sra-downloadb.be-md.ncbi.nlm.nih.gov/sos5/sra-pub-zq-11/SRR007/882/SRR7882016/SRR7882016.sralite.1 ftp://ftp-trace.ncbi.nlm.nih.gov/sra/sra-instant/reads/ByRun/sra/SRR/SRR788/SRR7882016/SRR7882016.sra /data/github/pysradb/notebooks/pysradb_downloads   1.8 GB
-SRR7882017    SRP162234       SRX4720627                     https://sra-downloadb.be-md.ncbi.nlm.nih.gov/sos9/sra-pub-zq-922/SRR007/882/SRR7882017.sralite.1 ftp://ftp-trace.ncbi.nlm.nih.gov/sra/sra-instant/reads/ByRun/sra/SRR/SRR788/SRR7882017/SRR7882017.sra /data/github/pysradb/notebooks/pysradb_downloads 991.8 MB
-SRR7882018    SRP162234       SRX4720628           https://sra-downloadb.be-md.ncbi.nlm.nih.gov/sos5/sra-pub-zq-11/SRR007/882/SRR7882018/SRR7882018.sralite.1 ftp://ftp-trace.ncbi.nlm.nih.gov/sra/sra-instant/reads/ByRun/sra/SRR/SRR788/SRR7882018/SRR7882018.sra /data/github/pysradb/notebooks/pysradb_downloads   2.7 GB
-SRR7882019    SRP162234       SRX4720629           https://sra-downloadb.be-md.ncbi.nlm.nih.gov/sos5/sra-pub-zq-11/SRR007/882/SRR7882019/SRR7882019.sralite.1 ftp://ftp-trace.ncbi.nlm.nih.gov/sra/sra-instant/reads/ByRun/sra/SRR/SRR788/SRR7882019/SRR7882019.sra /data/github/pysradb/notebooks/pysradb_downloads   2.9 GB
-SRR7882020    SRP162234       SRX4720630                      https://sra-downloadb.be-md.ncbi.nlm.nih.gov/sos5/sra-pub-zq-14/SRR007/882/SRR7882020.sralite.1 ftp://ftp-trace.ncbi.nlm.nih.gov/sra/sra-instant/reads/ByRun/sra/SRR/SRR788/SRR7882020/SRR7882020.sra /data/github/pysradb/notebooks/pysradb_downloads 693.3 MB
-SRR7882021    SRP162234       SRX4720631           https://sra-downloadb.be-md.ncbi.nlm.nih.gov/sos5/sra-pub-zq-11/SRR007/882/SRR7882021/SRR7882021.sralite.1 ftp://ftp-trace.ncbi.nlm.nih.gov/sra/sra-instant/reads/ByRun/sra/SRR/SRR788/SRR7882021/SRR7882021.sra /data/github/pysradb/notebooks/pysradb_downloads   2.5 GB
-SRR7882022    SRP162234       SRX4720632           https://sra-downloadb.be-md.ncbi.nlm.nih.gov/sos5/sra-pub-zq-11/SRR007/882/SRR7882022/SRR7882022.sralite.1 ftp://ftp-trace.ncbi.nlm.nih.gov/sra/sra-instant/reads/ByRun/sra/SRR/SRR788/SRR7882022/SRR7882022.sra /data/github/pysradb/notebooks/pysradb_downloads   2.6 GB
-SRR7882023    SRP162234       SRX4720633                     https://sra-downloadb.be-md.ncbi.nlm.nih.gov/sos9/sra-pub-zq-922/SRR007/882/SRR7882023.sralite.1 ftp://ftp-trace.ncbi.nlm.nih.gov/sra/sra-instant/reads/ByRun/sra/SRR/SRR788/SRR7882023/SRR7882023.sra /data/github/pysradb/notebooks/pysradb_downloads   1.1 GB
-SRR7882024    SRP162234       SRX4720634           https://sra-downloadb.be-md.ncbi.nlm.nih.gov/sos5/sra-pub-zq-11/SRR007/882/SRR7882024/SRR7882024.sralite.1 ftp://ftp-trace.ncbi.nlm.nih.gov/sra/sra-instant/reads/ByRun/sra/SRR/SRR788/SRR7882024/SRR7882024.sra /data/github/pysradb/notebooks/pysradb_downloads   2.2 GB
-SRR7882025    SRP162234       SRX4720635           https://sra-downloadb.be-md.ncbi.nlm.nih.gov/sos5/sra-pub-zq-11/SRR007/882/SRR7882025/SRR7882025.sralite.1 ftp://ftp-trace.ncbi.nlm.nih.gov/sra/sra-instant/reads/ByRun/sra/SRR/SRR788/SRR7882025/SRR7882025.sra /data/github/pysradb/notebooks/pysradb_downloads   2.4 GB
-SRR7882026    SRP162234       SRX4720636           https://sra-downloadb.be-md.ncbi.nlm.nih.gov/sos5/sra-pub-zq-11/SRR007/882/SRR7882026/SRR7882026.sralite.1 ftp://ftp-trace.ncbi.nlm.nih.gov/sra/sra-instant/reads/ByRun/sra/SRR/SRR788/SRR7882026/SRR7882026.sra /data/github/pysradb/notebooks/pysradb_downloads   1.9 GB
-SRR7882027    SRP162234       SRX4720637           https://sra-downloadb.be-md.ncbi.nlm.nih.gov/sos5/sra-pub-zq-11/SRR007/882/SRR7882027/SRR7882027.sralite.1 ftp://ftp-trace.ncbi.nlm.nih.gov/sra/sra-instant/reads/ByRun/sra/SRR/SRR788/SRR7882027/SRR7882027.sra /data/github/pysradb/notebooks/pysradb_downloads   3.8 GB
-SRR7882028    SRP162234       SRX4720638           https://sra-downloadb.be-md.ncbi.nlm.nih.gov/sos5/sra-pub-zq-11/SRR007/882/SRR7882028/SRR7882028.sralite.1 ftp://ftp-trace.ncbi.nlm.nih.gov/sra/sra-instant/reads/ByRun/sra/SRR/SRR788/SRR7882028/SRR7882028.sra /data/github/pysradb/notebooks/pysradb_downloads   2.5 GB
-SRR7882029    SRP162234       SRX4720639           https://sra-downloadb.be-md.ncbi.nlm.nih.gov/sos5/sra-pub-zq-11/SRR007/882/SRR7882029/SRR7882029.sralite.1 ftp://ftp-trace.ncbi.nlm.nih.gov/sra/sra-instant/reads/ByRun/sra/SRR/SRR788/SRR7882029/SRR7882029.sra /data/github/pysradb/notebooks/pysradb_downloads   1.2 GB
-SRR7882030    SRP162234       SRX4720640           https://sra-downloadb.be-md.ncbi.nlm.nih.gov/sos5/sra-pub-zq-11/SRR007/882/SRR7882030/SRR7882030.sralite.1 ftp://ftp-trace.ncbi.nlm.nih.gov/sra/sra-instant/reads/ByRun/sra/SRR/SRR788/SRR7882030/SRR7882030.sra /data/github/pysradb/notebooks/pysradb_downloads   2.5 GB
-SRR7882031    SRP162234       SRX4720641           https://sra-downloadb.be-md.ncbi.nlm.nih.gov/sos5/sra-pub-zq-11/SRR007/882/SRR7882031/SRR7882031.sralite.1 ftp://ftp-trace.ncbi.nlm.nih.gov/sra/sra-instant/reads/ByRun/sra/SRR/SRR788/SRR7882031/SRR7882031.sra /data/github/pysradb/notebooks/pysradb_downloads   3.1 GB
-
-
-Total size: 37.5 GB
-
-
-
-
-Start download?  [Y/n]: ^C
-Traceback (most recent call last):
-  File &#34;/home/saket/github/2025_iGEM/localcolabfold/colabfold-conda/bin/pysradb&#34;, line 7, in &lt;module&gt;
-    sys.exit(parse_args())
-  File &#34;/data/github/pysradb/pysradb/cli.py&#34;, line 1215, in parse_args
-    download(
-  File &#34;/data/github/pysradb/pysradb/cli.py&#34;, line 111, in download
-    sradb.download(
-  File &#34;/data/github/pysradb/pysradb/sradb.py&#34;, line 1543, in download
-    if not confirm(&#34;Start download? &#34;):
-  File &#34;/data/github/pysradb/pysradb/utils.py&#34;, line 269, in confirm
-    choice = input(&#34;{} [Y/n]: &#34;.format(preceeding_text)).lower()
-KeyboardInterrupt
+pysradb download -p SRP162234
 </pre></div></div>
 </div>
 <script type="application/vnd.jupyter.widget-state+json">
@@ -470,8 +1218,26 @@ KeyboardInterrupt
       <footer>
         
         <div class="related-pages">
-          
-          
+          <a class="next-page" href="03.ParallelDownload.html">
+              <div class="page-info">
+                <div class="context">
+                  <span>Next</span>
+                </div>
+                <div class="title">Parallel Download</div>
+              </div>
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+            </a>
+          <a class="prev-page" href="01.Python-API_demo.html">
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+              <div class="page-info">
+                <div class="context">
+                  <span>Previous</span>
+                </div>
+                
+                <div class="title">Python API Demo</div>
+                
+              </div>
+            </a>
         </div>
         <div class="bottom-of-page">
           <div class="left-details">
@@ -520,12 +1286,14 @@ KeyboardInterrupt
     </aside>
   </div>
 </div><script src="../_static/documentation_options.js?v=afcbd73c"></script>
-    <script src="../_static/doctools.js?v=9bcbadda"></script>
-    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../_static/scripts/furo.js?v=46bd48cc"></script>
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@jupyter-widgets/html-manager@^1.0.1/dist/embed-amd.js"></script>
     <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
-    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-mml-chtml.js"></script>
     <script src="../_static/copy-button.js?v=5b6a40c7"></script>
     </body>
 </html>

@@ -14,17 +14,17 @@
             
         </script>
     <link rel="index" title="Index" href="genindex.html"><link rel="search" title="Search" href="search.html"><link rel="next" title="Python API" href="python-api-usage.html"><link rel="prev" title="Quickstart" href="quickstart.html">
+        <link rel="canonical" href="https://saket-choudhary.me/pysradb/cmdline.html">
         <link rel="prefetch" href="_static/pysradb_v3.png" as="image">
 
-    <!-- Generated with Sphinx 8.2.3 and Furo 2025.09.25 -->
-        <title>CLI - pysradb 3.0.0.dev0 documentation</title>
+    <!-- Generated with Sphinx 9.0.4 and Furo 2025.12.19 -->
+        <title>CLI - pysradb: SRA, ENA, and GEO metadata search</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
-    <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?v=580074bf" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?v=7bdb33bb" />
     <link rel="stylesheet" type="text/css" href="_static/graphviz.css?v=4ae1632d" />
-    <link rel="stylesheet" type="text/css" href="_static/sphinx-dropdown.css?v=995e94df" />
-    <link rel="stylesheet" type="text/css" href="_static/panels-bootstrap.min.css?v=21c0b90a" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-design.min.css?v=95c83b7e" />
     <link rel="stylesheet" type="text/css" href="_static/styles/furo-extensions.css?v=8dab3a3b" />
-    <link rel="stylesheet" type="text/css" href="_static/custom.css?v=76ddadce" />
+    <link rel="stylesheet" type="text/css" href="_static/custom.css?v=c673637a" />
     
     
 
@@ -33,30 +33,69 @@
   body {
     --color-code-background: #eeffcc;
   --color-code-foreground: black;
-  --color-brand-primary: #0066cc;
+  --font-stack: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Segoe UI', sans-serif;
+  --font-stack--monospace: 'SFMono-Regular', ui-monospace, 'Cascadia Code', 'Liberation Mono', Menlo, monospace;
+  --color-brand-primary: #007aff;
   --color-brand-content: #0066cc;
-  --color-code-background: #f5f5f5;
-  --color-inline-code-background: #f0f0f0;
+  --color-api-name: #1d1d1f;
+  --color-api-pre-name: #6e6e73;
+  --color-background-primary: #ffffff;
+  --color-background-secondary: #f5f5f7;
+  --color-background-hover: #f2f2f7;
+  --color-code-background: #f5f5f7;
+  --color-inline-code-background: #f2f2f7;
+  --color-sidebar-background: #fbfbfd;
+  --color-sidebar-background-border: #d2d2d7;
+  --color-toc-background: #ffffff;
+  --color-toc-background-border: #d2d2d7;
+  --color-admonition-background: #f5f5f7;
+  --color-admonition-title-background: #e8f2ff;
   
   }
   @media not print {
     body[data-theme="dark"] {
       --color-code-background: #202020;
   --color-code-foreground: #d0d0d0;
-  --color-brand-primary: #3b82f6;
-  --color-brand-content: #3b82f6;
-  --color-code-background: #1e293b;
-  --color-inline-code-background: #334155;
+  --font-stack: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Segoe UI', sans-serif;
+  --font-stack--monospace: 'SFMono-Regular', ui-monospace, 'Cascadia Code', 'Liberation Mono', Menlo, monospace;
+  --color-brand-primary: #0a84ff;
+  --color-brand-content: #409cff;
+  --color-api-name: #f5f5f7;
+  --color-api-pre-name: #a1a1a6;
+  --color-background-primary: #1d1d1f;
+  --color-background-secondary: #2c2c2e;
+  --color-background-hover: #3a3a3c;
+  --color-code-background: #2c2c2e;
+  --color-inline-code-background: #3a3a3c;
+  --color-sidebar-background: #161617;
+  --color-sidebar-background-border: #38383a;
+  --color-toc-background: #1d1d1f;
+  --color-toc-background-border: #38383a;
+  --color-admonition-background: #2c2c2e;
+  --color-admonition-title-background: #06345f;
   
     }
     @media (prefers-color-scheme: dark) {
       body:not([data-theme="light"]) {
         --color-code-background: #202020;
   --color-code-foreground: #d0d0d0;
-  --color-brand-primary: #3b82f6;
-  --color-brand-content: #3b82f6;
-  --color-code-background: #1e293b;
-  --color-inline-code-background: #334155;
+  --font-stack: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Segoe UI', sans-serif;
+  --font-stack--monospace: 'SFMono-Regular', ui-monospace, 'Cascadia Code', 'Liberation Mono', Menlo, monospace;
+  --color-brand-primary: #0a84ff;
+  --color-brand-content: #409cff;
+  --color-api-name: #f5f5f7;
+  --color-api-pre-name: #a1a1a6;
+  --color-background-primary: #1d1d1f;
+  --color-background-secondary: #2c2c2e;
+  --color-background-hover: #3a3a3c;
+  --color-code-background: #2c2c2e;
+  --color-inline-code-background: #3a3a3c;
+  --color-sidebar-background: #161617;
+  --color-sidebar-background-border: #38383a;
+  --color-toc-background: #1d1d1f;
+  --color-toc-background-border: #38383a;
+  --color-admonition-background: #2c2c2e;
+  --color-admonition-title-background: #06345f;
   
       }
     }
@@ -188,7 +227,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="index.html"><div class="brand">pysradb 3.0.0.dev0 documentation</div></a>
+      <a href="index.html"><div class="brand">pysradb: SRA, ENA, and GEO metadata search</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -212,7 +251,7 @@
     <img class="sidebar-logo" src="_static/pysradb_v3.png" alt="Logo"/>
   </div>
   
-  <span class="sidebar-brand-text">pysradb 3.0.0.dev0 documentation</span>
+  <span class="sidebar-brand-text">pysradb: SRA, ENA, and GEO metadata search</span>
   
 </a><form class="sidebar-search-container" method="get" action="search.html" role="search">
   <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
@@ -225,13 +264,27 @@
 <li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quickstart</a></li>
 <li class="toctree-l1 current current-page"><a class="current reference internal" href="#">CLI</a></li>
 <li class="toctree-l1"><a class="reference internal" href="python-api-usage.html">Python API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="mcp.html">MCP server</a></li>
 <li class="toctree-l1"><a class="reference internal" href="case_studies.html">Case Studies</a></li>
-<li class="toctree-l1"><a class="reference internal" href="notebooks.html">Tutorials &amp; Notebooks</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="notebooks.html">Tutorials &amp; Notebooks</a><input aria-label="Toggle navigation of Tutorials &amp; Notebooks" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/README.html">pysradb notebooks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/01.Python-API_demo.html">Python API Demo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/02.Commandline_download.html">Command-line Download</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/03.ParallelDownload.html">Parallel Download</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/04.SRA_to_fastq_conda.html">Converting SRA to FASTQ using Conda</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/05.Downloading_subsets_of_a_project.html">Selecting Subsets of a Project</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/06.Multiple_SRPs.html">Querying Multiple Projects</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/07.Query_Search.html">Query and Search</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/08.PMC_DOI_Identifiers.html">Extract Identifiers from PMC/DOI</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/09.Metadata_enrichment.html">Metadata Enrichment with Optional LLM Backends</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/10.Parse_Bioscience_Search.html">Parse BioScience Search</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="commands.html">API Documentation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="contributing.html">Contributing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="authors.html">Credits</a></li>
 <li class="toctree-l1"><a class="reference internal" href="history.html">History</a></li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="modules.html">pysradb</a><input aria-label="Toggle navigation of pysradb" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="modules.html">pysradb</a><input aria-label="Toggle navigation of pysradb" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="pysradb.html">pysradb package</a></li>
 </ul>
 </li>
@@ -255,12 +308,16 @@
         </a>
         <div class="content-icon-container">
           <div class="view-this-page">
-  <a class="muted-link" href="_sources/cmdline.md.txt" title="View this page">
+  <a class="muted-link" href="https://github.com/saketkc/pysradb/blob/develop/docs/cmdline.md?plain=true" title="View this page">
     <svg><use href="#svg-eye"></use></svg>
     <span class="visually-hidden">View this page</span>
   </a>
-</div>
-<div class="theme-toggle-container theme-toggle-content">
+</div><div class="edit-this-page">
+  <a class="muted-link" href="https://github.com/saketkc/pysradb/edit/develop/docs/cmdline.md" rel="edit" title="Edit this page">
+    <svg><use href="#svg-pencil"></use></svg>
+    <span class="visually-hidden">Edit this page</span>
+  </a>
+</div><div class="theme-toggle-container theme-toggle-content">
             <button class="theme-toggle" aria-label="Toggle Light / Dark / Auto color theme">
               <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
               <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
@@ -327,53 +384,58 @@ subcommands:
 </div>
 <section id="enriching-metadata">
 <h2>Enriching metadata<a class="headerlink" href="#enriching-metadata" title="Link to this heading">¶</a></h2>
-<p>Extract standardized biological metadata from SRA/GEO datasets using LLMs.</p>
+<p>Metadata enrichment is available as an optional workflow. It uses embedding
+models plus an LLM backend to infer fields such as age, sex, tissue, disease,
+strain, phenotype, cell type, and ethnicity from detailed metadata columns.
+Install the enrichment extra and configure an Ollama, LM Studio, or vLLM
+endpoint before using it.</p>
 <section id="quickstart">
 <h3>Quickstart<a class="headerlink" href="#quickstart" title="Link to this heading">¶</a></h3>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>from<span class="w"> </span>pysradb<span class="w"> </span>import<span class="w"> </span>SRAweb
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">pysradb</span><span class="w"> </span><span class="kn">import</span> <span class="n">SRAweb</span>
 
-<span class="nv">client</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>SRAweb<span class="o">()</span>
+<span class="n">client</span> <span class="o">=</span> <span class="n">SRAweb</span><span class="p">()</span>
 
-<span class="nv">df</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>client.metadata<span class="o">(</span><span class="s2">&quot;GSE286254&quot;</span>,<span class="w"> </span><span class="nv">detailed</span><span class="o">=</span>True,<span class="w"> </span><span class="nv">enrich</span><span class="o">=</span>True<span class="o">)</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">metadata</span><span class="p">(</span>
+    <span class="s2">&quot;GSE286254&quot;</span><span class="p">,</span>
+    <span class="n">detailed</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">enrich</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">enrich_backend</span><span class="o">=</span><span class="s2">&quot;ollama/granite4:3b&quot;</span><span class="p">,</span>
+<span class="p">)</span>
 
-<span class="c1"># Returns original + 9 enriched columns (might not always be complete):</span>
-<span class="c1"># guessed_organ, guessed_tissue, guessed_anatomical_system,</span>
-<span class="c1"># guessed_cell_type, guessed_disease, guessed_sex,</span>
-<span class="c1"># guessed_development_stage, guessed_assay, guessed_organism</span>
+<span class="c1"># Returns identifier columns plus inferred metadata columns:</span>
+<span class="c1"># age, sex, ethnicity, phenotype, cell_type, tissue, strain, disease</span>
 </pre></div>
 </div>
 </section>
 <section id="prerequisites">
 <h3>Prerequisites<a class="headerlink" href="#prerequisites" title="Link to this heading">¶</a></h3>
-<p>Install Ollama: <a class="reference external" href="https://ollama.ai">https://ollama.ai</a></p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ollama<span class="w"> </span>pull<span class="w"> </span>phi3
+<p>Install the optional dependencies and prepare a backend:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>-m<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span><span class="s2">&quot;pysradb[enrichment]&quot;</span>
+ollama<span class="w"> </span>pull<span class="w"> </span>granite4:3b
 </pre></div>
 </div>
 </section>
 <section id="advanced-usage">
 <h3>Advanced Usage<a class="headerlink" href="#advanced-usage" title="Link to this heading">¶</a></h3>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Use different model</span>
-<span class="nv">df</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>client.metadata<span class="o">(</span><span class="s2">&quot;GSE286254&quot;</span>,<span class="w"> </span><span class="nv">detailed</span><span class="o">=</span>True,<span class="w"> </span><span class="nv">enrich</span><span class="o">=</span>True,
-<span class="w">                </span><span class="nv">enrich_backend</span><span class="o">=</span><span class="s2">&quot;ollama/llama3.2&quot;</span><span class="o">)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Use another local Ollama model.</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">metadata</span><span class="p">(</span>
+    <span class="s2">&quot;GSE286254&quot;</span><span class="p">,</span>
+    <span class="n">detailed</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">enrich</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">enrich_backend</span><span class="o">=</span><span class="s2">&quot;ollama/llama3.2&quot;</span><span class="p">,</span>
+<span class="p">)</span>
 
-<span class="c1"># Manual enrichment with custom settings</span>
-from<span class="w"> </span>pysradb.metadata_enrichment<span class="w"> </span>import<span class="w"> </span>create_metadata_extractor,<span class="w"> </span>load_ontology_reference
-
-<span class="c1"># LLM-based extraction</span>
-<span class="nv">extractor_llm</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>create_metadata_extractor<span class="o">(</span><span class="nv">method</span><span class="o">=</span><span class="s2">&quot;llm&quot;</span>,<span class="w"> </span><span class="nv">backend</span><span class="o">=</span><span class="s2">&quot;ollama/phi3&quot;</span><span class="o">)</span>
-<span class="nv">df_enriched</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>extractor_llm.enrich_dataframe<span class="o">(</span>df,<span class="w"> </span><span class="nv">prefix</span><span class="o">=</span><span class="s2">&quot;guessed_&quot;</span><span class="o">)</span>
-
-<span class="c1"># Embedding-based extraction (faster, offline)</span>
-<span class="nv">ontology_ref</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>load_ontology_reference<span class="o">()</span>
-<span class="nv">extractor_emb</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>create_metadata_extractor<span class="o">(</span>
-<span class="w">    </span><span class="nv">method</span><span class="o">=</span><span class="s2">&quot;embedding&quot;</span>,
-<span class="w">    </span><span class="nv">model</span><span class="o">=</span><span class="s2">&quot;FremyCompany/BioLORD-2023&quot;</span>,
-<span class="w">    </span><span class="nv">reference_categories</span><span class="o">=</span>ontology_ref
-<span class="o">)</span>
-<span class="nv">df_enriched</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>extractor_emb.enrich_dataframe<span class="o">(</span>df,<span class="w"> </span><span class="nv">prefix</span><span class="o">=</span><span class="s2">&quot;guessed_&quot;</span><span class="o">)</span>
+<span class="c1"># Use LM Studio or vLLM-compatible endpoints.</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">metadata</span><span class="p">(</span>
+    <span class="s2">&quot;GSE286254&quot;</span><span class="p">,</span>
+    <span class="n">detailed</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">enrich</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">enrich_backend</span><span class="o">=</span><span class="s2">&quot;lmstudio/local-model&quot;</span><span class="p">,</span>
+<span class="p">)</span>
 </pre></div>
 </div>
-<p>See <a class="reference external" href="https://github.com/saketkc/pysradb/blob/develop/notebooks/09.Metadata_Enrichment_with_LLMs.ipynb">Notebook 09</a> for detailed examples.</p>
+<p>See <a class="reference external" href="https://github.com/saketkc/pysradb/blob/develop/notebooks/09.Metadata_enrichment.ipynb">Notebook 09</a>
+for a runnable overview that previews setup without starting local model services.</p>
 </section>
 </section>
 <section id="getting-metadata-for-a-sra-project-srp">
@@ -430,37 +492,24 @@ SRP098789       SRX2536428           SRR5227313    RNA-Seq          SINGLE -
 </section>
 <section id="id1">
 <h2>Enriching metadata<a class="headerlink" href="#id1" title="Link to this heading">¶</a></h2>
-<p>You can enrich metadata with standardized biological attributes using biomedical-specialized LLMs through the <code class="docutils literal notranslate"><span class="pre">--enrich</span></code> flag:</p>
-<section id="basic-enrichment-using-default-backend">
-<h3>Basic enrichment (using default backend)<a class="headerlink" href="#basic-enrichment-using-default-backend" title="Link to this heading">¶</a></h3>
+<p>You can enrich detailed metadata with optional LLM-backed inference through the
+<code class="docutils literal notranslate"><span class="pre">--enrich</span></code> flag. This requires <code class="docutils literal notranslate"><span class="pre">pysradb[enrichment]</span></code> and a running backend such
+as Ollama.</p>
+<section id="basic-enrichment">
+<h3>Basic enrichment<a class="headerlink" href="#basic-enrichment" title="Link to this heading">¶</a></h3>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>$ pysradb metadata GSE286254 --detailed --enrich
 </pre></div>
 </div>
-<p>The default uses <strong>Meditron</strong> (7B parameters, trained on medical literature and guidelines), which is optimized for biomedical text understanding.</p>
-<p>This returns the original metadata plus 9 enriched columns:</p>
-<ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">guessed_organ</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">guessed_tissue</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">guessed_anatomical_system</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">guessed_cell_type</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">guessed_disease</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">guessed_sex</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">guessed_development_stage</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">guessed_assay</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">guessed_organism</span></code></p></li>
-</ul>
+<p>Enrichment returns identifier columns plus inferred columns such as <code class="docutils literal notranslate"><span class="pre">age</span></code>,
+<code class="docutils literal notranslate"><span class="pre">sex</span></code>, <code class="docutils literal notranslate"><span class="pre">ethnicity</span></code>, <code class="docutils literal notranslate"><span class="pre">phenotype</span></code>, <code class="docutils literal notranslate"><span class="pre">cell_type</span></code>, <code class="docutils literal notranslate"><span class="pre">tissue</span></code>, <code class="docutils literal notranslate"><span class="pre">strain</span></code>, and <code class="docutils literal notranslate"><span class="pre">disease</span></code>.</p>
 </section>
-<section id="using-alternative-biomedical-backends">
-<h3>Using alternative biomedical backends<a class="headerlink" href="#using-alternative-biomedical-backends" title="Link to this heading">¶</a></h3>
-<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>$ pysradb metadata GSE286254 --detailed --enrich --enrich-backend ollama/openbiollm-8b
+<section id="using-alternative-backends">
+<h3>Using alternative backends<a class="headerlink" href="#using-alternative-backends" title="Link to this heading">¶</a></h3>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>$ pysradb metadata GSE286254 --detailed --enrich --model ollama/llama3.2
 </pre></div>
 </div>
-<p>Available biomedical backends:</p>
-<ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">ollama/meditron</span></code> (default, 7B - optimized for medical text)</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">ollama/openbiollm-8b</span></code> (8B - trained on 500k+ biomedical entries, superior biomedical performance)</p></li>
-</ul>
-<p>Both models are specialized for biomedical and clinical text understanding, making them ideal for SRA metadata enrichment.</p>
+<p>Supported backend formats are <code class="docutils literal notranslate"><span class="pre">ollama/&lt;model&gt;</span></code>, <code class="docutils literal notranslate"><span class="pre">lmstudio/&lt;model&gt;</span></code>,
+<code class="docutils literal notranslate"><span class="pre">vllm/&lt;model&gt;</span></code>, and <code class="docutils literal notranslate"><span class="pre">vllm</span></code>.</p>
 <p>For more details on enrichment features and prerequisites, see the <a class="reference internal" href="#enriching-metadata"><span class="std std-ref">Enriching metadata</span></a> section above.</p>
 </section>
 </section>
@@ -741,8 +790,8 @@ projects.</p>
 </li>
 <li><a class="reference internal" href="#getting-metadata-for-a-sra-project-srp">Getting metadata for a SRA project (SRP)</a></li>
 <li><a class="reference internal" href="#id1">Enriching metadata</a><ul>
-<li><a class="reference internal" href="#basic-enrichment-using-default-backend">Basic enrichment (using default backend)</a></li>
-<li><a class="reference internal" href="#using-alternative-biomedical-backends">Using alternative biomedical backends</a></li>
+<li><a class="reference internal" href="#basic-enrichment">Basic enrichment</a></li>
+<li><a class="reference internal" href="#using-alternative-backends">Using alternative backends</a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#experiment-accessions-for-a-project-srp-srx">Experiment accessions for a project (SRP =&gt; SRX)</a></li>
@@ -779,10 +828,12 @@ projects.</p>
     </aside>
   </div>
 </div><script src="_static/documentation_options.js?v=afcbd73c"></script>
-    <script src="_static/doctools.js?v=9bcbadda"></script>
-    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="_static/scripts/furo.js?v=46bd48cc"></script>
+    <script src="_static/design-tabs.js?v=f930bc37"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@jupyter-widgets/html-manager@^1.0.1/dist/embed-amd.js"></script>
     <script src="_static/copy-button.js?v=5b6a40c7"></script>
     </body>
 </html>

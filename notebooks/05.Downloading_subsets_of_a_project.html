@@ -13,19 +13,19 @@
             gtag('config', 'G-CKQZFCEENZ');
             
         </script>
-    <link rel="index" title="Index" href="../genindex.html"><link rel="search" title="Search" href="../search.html">
+    <link rel="index" title="Index" href="../genindex.html"><link rel="search" title="Search" href="../search.html"><link rel="next" title="Querying Multiple Projects" href="06.Multiple_SRPs.html"><link rel="prev" title="Converting SRA to FASTQ using Conda" href="04.SRA_to_fastq_conda.html">
+        <link rel="canonical" href="https://saket-choudhary.me/pysradb/notebooks/05.Downloading_subsets_of_a_project.html">
         <link rel="prefetch" href="../_static/pysradb_v3.png" as="image">
 
-    <!-- Generated with Sphinx 8.2.3 and Furo 2025.09.25 -->
-        <title>Downloading Subsets of a Project - pysradb 3.0.0.dev0 documentation</title>
+    <!-- Generated with Sphinx 9.0.4 and Furo 2025.12.19 -->
+        <title>Selecting Subsets of a Project - pysradb: SRA, ENA, and GEO metadata search</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
-    <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?v=580074bf" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?v=7bdb33bb" />
     <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=4ae1632d" />
-    <link rel="stylesheet" type="text/css" href="../_static/sphinx-dropdown.css?v=995e94df" />
-    <link rel="stylesheet" type="text/css" href="../_static/panels-bootstrap.min.css?v=21c0b90a" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
     <link rel="stylesheet" type="text/css" href="../_static/nbsphinx-code-cells.css?v=2aa19091" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo-extensions.css?v=8dab3a3b" />
-    <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=76ddadce" />
+    <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=c673637a" />
     
     
 
@@ -34,30 +34,69 @@
   body {
     --color-code-background: #eeffcc;
   --color-code-foreground: black;
-  --color-brand-primary: #0066cc;
+  --font-stack: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Segoe UI', sans-serif;
+  --font-stack--monospace: 'SFMono-Regular', ui-monospace, 'Cascadia Code', 'Liberation Mono', Menlo, monospace;
+  --color-brand-primary: #007aff;
   --color-brand-content: #0066cc;
-  --color-code-background: #f5f5f5;
-  --color-inline-code-background: #f0f0f0;
+  --color-api-name: #1d1d1f;
+  --color-api-pre-name: #6e6e73;
+  --color-background-primary: #ffffff;
+  --color-background-secondary: #f5f5f7;
+  --color-background-hover: #f2f2f7;
+  --color-code-background: #f5f5f7;
+  --color-inline-code-background: #f2f2f7;
+  --color-sidebar-background: #fbfbfd;
+  --color-sidebar-background-border: #d2d2d7;
+  --color-toc-background: #ffffff;
+  --color-toc-background-border: #d2d2d7;
+  --color-admonition-background: #f5f5f7;
+  --color-admonition-title-background: #e8f2ff;
   
   }
   @media not print {
     body[data-theme="dark"] {
       --color-code-background: #202020;
   --color-code-foreground: #d0d0d0;
-  --color-brand-primary: #3b82f6;
-  --color-brand-content: #3b82f6;
-  --color-code-background: #1e293b;
-  --color-inline-code-background: #334155;
+  --font-stack: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Segoe UI', sans-serif;
+  --font-stack--monospace: 'SFMono-Regular', ui-monospace, 'Cascadia Code', 'Liberation Mono', Menlo, monospace;
+  --color-brand-primary: #0a84ff;
+  --color-brand-content: #409cff;
+  --color-api-name: #f5f5f7;
+  --color-api-pre-name: #a1a1a6;
+  --color-background-primary: #1d1d1f;
+  --color-background-secondary: #2c2c2e;
+  --color-background-hover: #3a3a3c;
+  --color-code-background: #2c2c2e;
+  --color-inline-code-background: #3a3a3c;
+  --color-sidebar-background: #161617;
+  --color-sidebar-background-border: #38383a;
+  --color-toc-background: #1d1d1f;
+  --color-toc-background-border: #38383a;
+  --color-admonition-background: #2c2c2e;
+  --color-admonition-title-background: #06345f;
   
     }
     @media (prefers-color-scheme: dark) {
       body:not([data-theme="light"]) {
         --color-code-background: #202020;
   --color-code-foreground: #d0d0d0;
-  --color-brand-primary: #3b82f6;
-  --color-brand-content: #3b82f6;
-  --color-code-background: #1e293b;
-  --color-inline-code-background: #334155;
+  --font-stack: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Segoe UI', sans-serif;
+  --font-stack--monospace: 'SFMono-Regular', ui-monospace, 'Cascadia Code', 'Liberation Mono', Menlo, monospace;
+  --color-brand-primary: #0a84ff;
+  --color-brand-content: #409cff;
+  --color-api-name: #f5f5f7;
+  --color-api-pre-name: #a1a1a6;
+  --color-background-primary: #1d1d1f;
+  --color-background-secondary: #2c2c2e;
+  --color-background-hover: #3a3a3c;
+  --color-code-background: #2c2c2e;
+  --color-inline-code-background: #3a3a3c;
+  --color-sidebar-background: #161617;
+  --color-sidebar-background-border: #38383a;
+  --color-toc-background: #1d1d1f;
+  --color-toc-background-border: #38383a;
+  --color-admonition-background: #2c2c2e;
+  --color-admonition-title-background: #06345f;
   
       }
     }
@@ -189,7 +228,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../index.html"><div class="brand">pysradb 3.0.0.dev0 documentation</div></a>
+      <a href="../index.html"><div class="brand">pysradb: SRA, ENA, and GEO metadata search</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -213,7 +252,7 @@
     <img class="sidebar-logo" src="../_static/pysradb_v3.png" alt="Logo"/>
   </div>
   
-  <span class="sidebar-brand-text">pysradb 3.0.0.dev0 documentation</span>
+  <span class="sidebar-brand-text">pysradb: SRA, ENA, and GEO metadata search</span>
   
 </a><form class="sidebar-search-container" method="get" action="../search.html" role="search">
   <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
@@ -221,18 +260,32 @@
   <input type="hidden" name="area" value="default">
 </form>
 <div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
-  <ul>
+  <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../quickstart.html">Quickstart</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../cmdline.html">CLI</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../python-api-usage.html">Python API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mcp.html">MCP server</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../case_studies.html">Case Studies</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../notebooks.html">Tutorials &amp; Notebooks</a></li>
+<li class="toctree-l1 current has-children"><a class="reference internal" href="../notebooks.html">Tutorials &amp; Notebooks</a><input aria-label="Toggle navigation of Tutorials &amp; Notebooks" checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="README.html">pysradb notebooks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="01.Python-API_demo.html">Python API Demo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="02.Commandline_download.html">Command-line Download</a></li>
+<li class="toctree-l2"><a class="reference internal" href="03.ParallelDownload.html">Parallel Download</a></li>
+<li class="toctree-l2"><a class="reference internal" href="04.SRA_to_fastq_conda.html">Converting SRA to FASTQ using Conda</a></li>
+<li class="toctree-l2 current current-page"><a class="current reference internal" href="#">Selecting Subsets of a Project</a></li>
+<li class="toctree-l2"><a class="reference internal" href="06.Multiple_SRPs.html">Querying Multiple Projects</a></li>
+<li class="toctree-l2"><a class="reference internal" href="07.Query_Search.html">Query and Search</a></li>
+<li class="toctree-l2"><a class="reference internal" href="08.PMC_DOI_Identifiers.html">Extract Identifiers from PMC/DOI</a></li>
+<li class="toctree-l2"><a class="reference internal" href="09.Metadata_enrichment.html">Metadata Enrichment with Optional LLM Backends</a></li>
+<li class="toctree-l2"><a class="reference internal" href="10.Parse_Bioscience_Search.html">Parse BioScience Search</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="../commands.html">API Documentation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../contributing.html">Contributing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../authors.html">Credits</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../history.html">History</a></li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../modules.html">pysradb</a><input aria-label="Toggle navigation of pysradb" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../modules.html">pysradb</a><input aria-label="Toggle navigation of pysradb" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../pysradb.html">pysradb package</a></li>
 </ul>
 </li>
@@ -256,12 +309,16 @@
         </a>
         <div class="content-icon-container">
           <div class="view-this-page">
-  <a class="muted-link" href="../_sources/notebooks/05.Downloading_subsets_of_a_project.ipynb.txt" title="View this page">
+  <a class="muted-link" href="https://github.com/saketkc/pysradb/blob/develop/docs/notebooks/05.Downloading_subsets_of_a_project.ipynb?plain=true" title="View this page">
     <svg><use href="#svg-eye"></use></svg>
     <span class="visually-hidden">View this page</span>
   </a>
-</div>
-<div class="theme-toggle-container theme-toggle-content">
+</div><div class="edit-this-page">
+  <a class="muted-link" href="https://github.com/saketkc/pysradb/edit/develop/docs/notebooks/05.Downloading_subsets_of_a_project.ipynb" rel="edit" title="Edit this page">
+    <svg><use href="#svg-pencil"></use></svg>
+    <span class="visually-hidden">Edit this page</span>
+  </a>
+</div><div class="theme-toggle-container theme-toggle-content">
             <button class="theme-toggle" aria-label="Toggle Light / Dark / Auto color theme">
               <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
               <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
@@ -275,877 +332,91 @@
         </div>
         <article role="main" id="furo-main-content">
           <p><a class="reference external" href="https://colab.research.google.com/github/saketkc/pysradb/blob/develop/notebooks/05.Downloading_subsets_of_a_project.ipynb"><img alt="Open In Colab" src="https://colab.research.google.com/assets/colab-badge.svg" /></a></p>
-<section id="Downloading-Subsets-of-a-Project">
-<h1>Downloading Subsets of a Project<a class="headerlink" href="#Downloading-Subsets-of-a-Project" title="Link to this heading">¶</a></h1>
-<p>This notebook shows how to filter and download specific samples from a larger SRA project.</p>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
-</pre></div>
-</div>
-<div class="input_area highlight-none notranslate"><div class="highlight"><pre><span></span># Install pysradb if not already installed
-try:
-    import pysradb
-
-    print(f&quot;pysradb {pysradb.__version__} is already installed&quot;)
-except ImportError:
-    print(&quot;Installing pysradb from GitHub...&quot;)
-    import sys
-
-    !{sys.executable} -m pip install -q git+https://github.com/saketkc/pysradb
-    print(&quot;pysradb installed successfully!&quot;)
-</pre></div>
-</div>
-</div>
+<section id="Selecting-Subsets-of-a-Project">
+<h1>Selecting Subsets of a Project<a class="headerlink" href="#Selecting-Subsets-of-a-Project" title="Link to this heading">¶</a></h1>
+<p>This notebook shows the workflow for selecting specific records from a larger SRA or ENA project before downloading data. The live metadata and download commands are shown explicitly, but they are not executed during documentation builds because they can contact external services for a long time and may download large files.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
 </pre></div>
 </div>
-<div class="input_area highlight-none notranslate"><div class="highlight"><pre><span></span>pip install git+https://github.com/saketkc/pysradb.git
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">pysradb.sraweb</span><span class="w"> </span><span class="kn">import</span> <span class="n">SRAweb</span>
+
+<span class="n">db</span> <span class="o">=</span> <span class="n">SRAweb</span><span class="p">()</span>
+<span class="n">db</span>
 </pre></div>
 </div>
 </div>
 <div class="nboutput docutils container">
 <div class="prompt empty docutils container">
 </div>
-<div class="output_area docutils container">
+<div class="output_area stderr docutils container">
 <div class="highlight"><pre>
-Collecting git+https://github.com/saketkc/pysradb.git
-  Cloning https://github.com/saketkc/pysradb.git to /tmp/pip-req-build-3dlg9hp3
-  Running command git clone -q https://github.com/saketkc/pysradb.git /tmp/pip-req-build-3dlg9hp3
-Requirement already satisfied: pandas==0.25.3 in /usr/local/lib/python3.6/dist-packages (from pysradb==0.10.3.dev0) (0.25.3)
-Collecting tqdm==4.41.1
-  Using cached https://files.pythonhosted.org/packages/72/c9/7fc20feac72e79032a7c8138fd0d395dc6d8812b5b9edf53c3afd0b31017/tqdm-4.41.1-py2.py3-none-any.whl
-Collecting requests==2.22.0
-  Using cached https://files.pythonhosted.org/packages/51/bd/23c926cd341ea6b7dd0b2a00aba99ae0f828be89d72b2190f27c11d4b7fb/requests-2.22.0-py2.py3-none-any.whl
-Collecting xmltodict==0.12.0
-  Using cached https://files.pythonhosted.org/packages/28/fd/30d5c1d3ac29ce229f6bdc40bbc20b28f716e8b363140c26eff19122d8a5/xmltodict-0.12.0-py2.py3-none-any.whl
-Requirement already satisfied: python-dateutil&gt;=2.6.1 in /usr/local/lib/python3.6/dist-packages (from pandas==0.25.3-&gt;pysradb==0.10.3.dev0) (2.6.1)
-Requirement already satisfied: pytz&gt;=2017.2 in /usr/local/lib/python3.6/dist-packages (from pandas==0.25.3-&gt;pysradb==0.10.3.dev0) (2018.9)
-Requirement already satisfied: numpy&gt;=1.13.3 in /usr/local/lib/python3.6/dist-packages (from pandas==0.25.3-&gt;pysradb==0.10.3.dev0) (1.17.5)
-Requirement already satisfied: idna&lt;2.9,&gt;=2.5 in /usr/local/lib/python3.6/dist-packages (from requests==2.22.0-&gt;pysradb==0.10.3.dev0) (2.8)
-Requirement already satisfied: urllib3!=1.25.0,!=1.25.1,&lt;1.26,&gt;=1.21.1 in /usr/local/lib/python3.6/dist-packages (from requests==2.22.0-&gt;pysradb==0.10.3.dev0) (1.24.3)
-Requirement already satisfied: certifi&gt;=2017.4.17 in /usr/local/lib/python3.6/dist-packages (from requests==2.22.0-&gt;pysradb==0.10.3.dev0) (2019.11.28)
-Requirement already satisfied: chardet&lt;3.1.0,&gt;=3.0.2 in /usr/local/lib/python3.6/dist-packages (from requests==2.22.0-&gt;pysradb==0.10.3.dev0) (3.0.4)
-Requirement already satisfied: six&gt;=1.5 in /usr/local/lib/python3.6/dist-packages (from python-dateutil&gt;=2.6.1-&gt;pandas==0.25.3-&gt;pysradb==0.10.3.dev0) (1.12.0)
-Building wheels for collected packages: pysradb
-  Building wheel for pysradb (setup.py) ... done
-  Created wheel for pysradb: filename=pysradb-0.10.3.dev0-cp36-none-any.whl size=147411 sha256=6ccd6874b7cde11cb10eae96cb14e86f9cdfe5f1b02b16a3c7eb20879afd6a62
-  Stored in directory: /tmp/pip-ephem-wheel-cache-z9xalsuu/wheels/d5/24/42/81dccabc3a4aac9757e23b7175ad7270090a4b3c203cd4fc8f
-Successfully built pysradb
-<span class="ansi-red-fg">ERROR: google-colab 1.0.0 has requirement requests~=2.21.0, but you&#39;ll have requests 2.22.0 which is incompatible.</span>
-<span class="ansi-red-fg">ERROR: datascience 0.10.6 has requirement folium==0.2.1, but you&#39;ll have folium 0.8.3 which is incompatible.</span>
-Installing collected packages: tqdm, requests, xmltodict, pysradb
-  Found existing installation: tqdm 4.28.1
-    Uninstalling tqdm-4.28.1:
-      Successfully uninstalled tqdm-4.28.1
-  Found existing installation: requests 2.21.0
-    Uninstalling requests-2.21.0:
-      Successfully uninstalled requests-2.21.0
-Successfully installed pysradb-0.10.3.dev0 requests-2.22.0 tqdm-4.41.1 xmltodict-0.12.0
+/home/runner/work/pysradb/pysradb/pysradb/download.py:15: TqdmExperimentalWarning: Using `tqdm.autonotebook.tqdm` in notebook mode. Use `tqdm.tqdm` instead to force console mode (e.g. in jupyter console)
+  from tqdm.autonotebook import tqdm
 </pre></div></div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<div class="admonition warning">
-<p>Data type cannot be displayed: application/vnd.colab-display-data+json</p>
-</div>
-</div>
-</div>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
 </pre></div>
-</div>
-<div class="input_area highlight-none notranslate"><div class="highlight"><pre><span></span>!pysradb --version
-</pre></div>
-</div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-pysradb 0.10.3-dev0
+&lt;pysradb.sraweb.SRAweb at 0x7f9948b73ad0&gt;
 </pre></div></div>
 </div>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+<section id="1.-Fetch-Detailed-Metadata">
+<h2>1. Fetch Detailed Metadata<a class="headerlink" href="#1.-Fetch-Detailed-Metadata" title="Link to this heading">¶</a></h2>
+<p>Start with detailed project metadata. For example, <code class="docutils literal notranslate"><span class="pre">SRP096127</span></code> contains the run <code class="docutils literal notranslate"><span class="pre">SRR5146869</span></code>, which has an auxiliary contig file listed in NCBI SRA.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">sra_metadata</span><span class="p">(</span><span class="s2">&quot;SRP096127&quot;</span><span class="p">,</span> <span class="n">detailed</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
 </pre></div>
 </div>
-<div class="input_area highlight-none notranslate"><div class="highlight"><pre><span></span>from pysradb.sraweb import SRAweb
-
-db = SRAweb()
+<p>NCBI record: <a class="reference external" href="https://trace.ncbi.nlm.nih.gov/Traces/sra/?run=SRR5146869">https://trace.ncbi.nlm.nih.gov/Traces/sra/?run=SRR5146869</a></p>
+</section>
+<section id="2.-Select-Rows-by-URL-Content">
+<h2>2. Select Rows by URL Content<a class="headerlink" href="#2.-Select-Rows-by-URL-Content" title="Link to this heading">¶</a></h2>
+<p>Once the metadata table is available, identify URL columns and filter to rows whose download URLs mention <code class="docutils literal notranslate"><span class="pre">contig</span></code>.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">download_url_cols</span> <span class="o">=</span> <span class="p">[</span><span class="n">col</span> <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span> <span class="k">if</span> <span class="s2">&quot;url&quot;</span> <span class="ow">in</span> <span class="n">col</span><span class="o">.</span><span class="n">lower</span><span class="p">()]</span>
+<span class="n">contig_mask</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">download_url_cols</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span>
+    <span class="k">lambda</span> <span class="n">row</span><span class="p">:</span> <span class="n">row</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">contains</span><span class="p">(</span><span class="s2">&quot;contig&quot;</span><span class="p">,</span> <span class="n">case</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">na</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span><span class="o">.</span><span class="n">any</span><span class="p">(),</span>
+    <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">df_contig_subset</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">contig_mask</span><span class="p">]</span>
+<span class="n">df_contig_subset</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
 </pre></div>
-</div>
-</div>
-<section id="Example-of-a-record-missing-%22SAMPLE_ATTRIBUES%22">
-<h2>Example of a record missing “SAMPLE_ATTRIBUES”<a class="headerlink" href="#Example-of-a-record-missing-%22SAMPLE_ATTRIBUES%22" title="Link to this heading">¶</a></h2>
-<p>It also has an “auxillary” contig file: <a class="reference external" href="https://trace.ncbi.nlm.nih.gov/Traces/sra/?run=SRR5146869">https://trace.ncbi.nlm.nih.gov/Traces/sra/?run=SRR5146869</a></p>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
-</pre></div>
-</div>
-<div class="input_area highlight-none notranslate"><div class="highlight"><pre><span></span>df = db.sra_metadata(&quot;SRP096127&quot;, detailed=True)
-df
-</pre></div>
-</div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
-</pre></div>
-</div>
-<div class="output_area rendered_html docutils container">
-<div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>study_accession</th>
-      <th>experiment_accession</th>
-      <th>experiment_title</th>
-      <th>experiment_desc</th>
-      <th>organism_taxid</th>
-      <th>organism_name</th>
-      <th>library_strategy</th>
-      <th>library_source</th>
-      <th>library_selection</th>
-      <th>sample_accession</th>
-      <th>sample_title</th>
-      <th>instrument</th>
-      <th>total_spots</th>
-      <th>total_size</th>
-      <th>run_accession</th>
-      <th>run_total_spots</th>
-      <th>run_total_bases</th>
-      <th>run_alias</th>
-      <th>sra_url_alt</th>
-      <th>sra_url</th>
-      <th>experiment_alias</th>
-      <th>source_name</th>
-      <th>cell type</th>
-      <th>group</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>0</th>
-      <td>SRP096127</td>
-      <td>SRX2467007</td>
-      <td>GSM2448483: normal.ct-970; Homo sapiens; Bisul...</td>
-      <td>GSM2448483: normal.ct-970; Homo sapiens; Bisul...</td>
-      <td>9606</td>
-      <td>Homo sapiens</td>
-      <td>Bisulfite-Seq</td>
-      <td>GENOMIC</td>
-      <td>RANDOM</td>
-      <td>SRS1899466</td>
-      <td>N/A</td>
-      <td>Illumina HiSeq 2500</td>
-      <td>559547</td>
-      <td>50734487</td>
-      <td>SRR5149059</td>
-      <td>559547</td>
-      <td>83216675</td>
-      <td>GSM2448483_r1</td>
-      <td>https://sra-download.ncbi.nlm.nih.gov/traces/s...</td>
-      <td>https://sra-download.st-va.ncbi.nlm.nih.gov/so...</td>
-      <td>GSM2448483</td>
-      <td>blood serum</td>
-      <td>blood serum</td>
-      <td>healthy control</td>
-    </tr>
-    <tr>
-      <th>1</th>
-      <td>SRP096127</td>
-      <td>SRX2467006</td>
-      <td>GSM2448482: normal.ct-969; Homo sapiens; Bisul...</td>
-      <td>GSM2448482: normal.ct-969; Homo sapiens; Bisul...</td>
-      <td>9606</td>
-      <td>Homo sapiens</td>
-      <td>Bisulfite-Seq</td>
-      <td>GENOMIC</td>
-      <td>RANDOM</td>
-      <td>SRS1899465</td>
-      <td>N/A</td>
-      <td>Illumina HiSeq 2500</td>
-      <td>441577</td>
-      <td>40899268</td>
-      <td>SRR5149058</td>
-      <td>441577</td>
-      <td>65549383</td>
-      <td>GSM2448482_r1</td>
-      <td>https://sra-download.ncbi.nlm.nih.gov/traces/s...</td>
-      <td>https://sra-download.st-va.ncbi.nlm.nih.gov/so...</td>
-      <td>GSM2448482</td>
-      <td>blood serum</td>
-      <td>blood serum</td>
-      <td>healthy control</td>
-    </tr>
-    <tr>
-      <th>2</th>
-      <td>SRP096127</td>
-      <td>SRX2467005</td>
-      <td>GSM2448481: normal.ct-968; Homo sapiens; Bisul...</td>
-      <td>GSM2448481: normal.ct-968; Homo sapiens; Bisul...</td>
-      <td>9606</td>
-      <td>Homo sapiens</td>
-      <td>Bisulfite-Seq</td>
-      <td>GENOMIC</td>
-      <td>RANDOM</td>
-      <td>SRS1899464</td>
-      <td>N/A</td>
-      <td>Illumina HiSeq 2500</td>
-      <td>563378</td>
-      <td>50951134</td>
-      <td>SRR5149057</td>
-      <td>563378</td>
-      <td>83839813</td>
-      <td>GSM2448481_r1</td>
-      <td>https://sra-download.ncbi.nlm.nih.gov/traces/s...</td>
-      <td>https://sra-download.st-va.ncbi.nlm.nih.gov/so...</td>
-      <td>GSM2448481</td>
-      <td>blood serum</td>
-      <td>blood serum</td>
-      <td>healthy control</td>
-    </tr>
-    <tr>
-      <th>3</th>
-      <td>SRP096127</td>
-      <td>SRX2467004</td>
-      <td>GSM2448480: normal.ct-967; Homo sapiens; Bisul...</td>
-      <td>GSM2448480: normal.ct-967; Homo sapiens; Bisul...</td>
-      <td>9606</td>
-      <td>Homo sapiens</td>
-      <td>Bisulfite-Seq</td>
-      <td>GENOMIC</td>
-      <td>RANDOM</td>
-      <td>SRS1899463</td>
-      <td>N/A</td>
-      <td>Illumina HiSeq 2500</td>
-      <td>422878</td>
-      <td>39223860</td>
-      <td>SRR5149056</td>
-      <td>422878</td>
-      <td>62753430</td>
-      <td>GSM2448480_r1</td>
-      <td>https://sra-download.ncbi.nlm.nih.gov/traces/s...</td>
-      <td>https://sra-download.st-va.ncbi.nlm.nih.gov/so...</td>
-      <td>GSM2448480</td>
-      <td>blood serum</td>
-      <td>blood serum</td>
-      <td>healthy control</td>
-    </tr>
-    <tr>
-      <th>4</th>
-      <td>SRP096127</td>
-      <td>SRX2467003</td>
-      <td>GSM2448479: normal.ct-966; Homo sapiens; Bisul...</td>
-      <td>GSM2448479: normal.ct-966; Homo sapiens; Bisul...</td>
-      <td>9606</td>
-      <td>Homo sapiens</td>
-      <td>Bisulfite-Seq</td>
-      <td>GENOMIC</td>
-      <td>RANDOM</td>
-      <td>SRS1899461</td>
-      <td>N/A</td>
-      <td>Illumina HiSeq 2500</td>
-      <td>517254</td>
-      <td>46881651</td>
-      <td>SRR5149055</td>
-      <td>517254</td>
-      <td>77004865</td>
-      <td>GSM2448479_r1</td>
-      <td>https://sra-download.ncbi.nlm.nih.gov/traces/s...</td>
-      <td>https://sra-download.st-va.ncbi.nlm.nih.gov/so...</td>
-      <td>GSM2448479</td>
-      <td>blood serum</td>
-      <td>blood serum</td>
-      <td>healthy control</td>
-    </tr>
-    <tr>
-      <th>...</th>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-    </tr>
-    <tr>
-      <th>2186</th>
-      <td>SRP096127</td>
-      <td>SRX2464821</td>
-      <td>GSM2446284: HCC.ct-5; Homo sapiens; Bisulfite-Seq</td>
-      <td>GSM2446284: HCC.ct-5; Homo sapiens; Bisulfite-Seq</td>
-      <td>9606</td>
-      <td>Homo sapiens</td>
-      <td>Bisulfite-Seq</td>
-      <td>GENOMIC</td>
-      <td>RANDOM</td>
-      <td>SRS1897280</td>
-      <td>N/A</td>
-      <td>Illumina HiSeq 2500</td>
-      <td>1033204</td>
-      <td>83576370</td>
-      <td>SRR5146873</td>
-      <td>1033204</td>
-      <td>196635123</td>
-      <td>GSM2446284_r1</td>
-      <td>https://sra-download.ncbi.nlm.nih.gov/traces/s...</td>
-      <td>https://sra-download.st-va.ncbi.nlm.nih.gov/so...</td>
-      <td>GSM2446284</td>
-      <td>blood serum</td>
-      <td>blood serum</td>
-      <td>hepatocellular carcinoma patient</td>
-    </tr>
-    <tr>
-      <th>2187</th>
-      <td>SRP096127</td>
-      <td>SRX2464820</td>
-      <td>GSM2446283: HCC.ct-4; Homo sapiens; Bisulfite-Seq</td>
-      <td>GSM2446283: HCC.ct-4; Homo sapiens; Bisulfite-Seq</td>
-      <td>9606</td>
-      <td>Homo sapiens</td>
-      <td>Bisulfite-Seq</td>
-      <td>GENOMIC</td>
-      <td>RANDOM</td>
-      <td>SRS1897279</td>
-      <td>N/A</td>
-      <td>Illumina HiSeq 2500</td>
-      <td>840853</td>
-      <td>68410342</td>
-      <td>SRR5146872</td>
-      <td>840853</td>
-      <td>159822416</td>
-      <td>GSM2446283_r1</td>
-      <td>https://sra-download.ncbi.nlm.nih.gov/traces/s...</td>
-      <td>https://sra-download.st-va.ncbi.nlm.nih.gov/so...</td>
-      <td>GSM2446283</td>
-      <td>blood serum</td>
-      <td>blood serum</td>
-      <td>hepatocellular carcinoma patient</td>
-    </tr>
-    <tr>
-      <th>2188</th>
-      <td>SRP096127</td>
-      <td>SRX2464819</td>
-      <td>GSM2446282: HCC.ct-3; Homo sapiens; Bisulfite-Seq</td>
-      <td>GSM2446282: HCC.ct-3; Homo sapiens; Bisulfite-Seq</td>
-      <td>9606</td>
-      <td>Homo sapiens</td>
-      <td>Bisulfite-Seq</td>
-      <td>GENOMIC</td>
-      <td>RANDOM</td>
-      <td>SRS1897278</td>
-      <td>N/A</td>
-      <td>Illumina HiSeq 2500</td>
-      <td>885724</td>
-      <td>71407675</td>
-      <td>SRR5146871</td>
-      <td>885724</td>
-      <td>166270272</td>
-      <td>GSM2446282_r1</td>
-      <td>https://sra-download.ncbi.nlm.nih.gov/traces/s...</td>
-      <td>https://sra-download.st-va.ncbi.nlm.nih.gov/so...</td>
-      <td>GSM2446282</td>
-      <td>blood serum</td>
-      <td>blood serum</td>
-      <td>hepatocellular carcinoma patient</td>
-    </tr>
-    <tr>
-      <th>2189</th>
-      <td>SRP096127</td>
-      <td>SRX2464818</td>
-      <td>GSM2446281: HCC.ct-2; Homo sapiens; Bisulfite-Seq</td>
-      <td>GSM2446281: HCC.ct-2; Homo sapiens; Bisulfite-Seq</td>
-      <td>9606</td>
-      <td>Homo sapiens</td>
-      <td>Bisulfite-Seq</td>
-      <td>GENOMIC</td>
-      <td>RANDOM</td>
-      <td>SRS1897277</td>
-      <td>N/A</td>
-      <td>Illumina HiSeq 2500</td>
-      <td>775684</td>
-      <td>62094237</td>
-      <td>SRR5146870</td>
-      <td>775684</td>
-      <td>145671062</td>
-      <td>GSM2446281_r1</td>
-      <td>https://sra-download.ncbi.nlm.nih.gov/traces/s...</td>
-      <td>https://sra-download.st-va.ncbi.nlm.nih.gov/so...</td>
-      <td>GSM2446281</td>
-      <td>blood serum</td>
-      <td>blood serum</td>
-      <td>hepatocellular carcinoma patient</td>
-    </tr>
-    <tr>
-      <th>2190</th>
-      <td>SRP096127</td>
-      <td>SRX2464817</td>
-      <td>GSM2446280: HCC.ct-1; Homo sapiens; Bisulfite-Seq</td>
-      <td>GSM2446280: HCC.ct-1; Homo sapiens; Bisulfite-Seq</td>
-      <td>9606</td>
-      <td>Homo sapiens</td>
-      <td>Bisulfite-Seq</td>
-      <td>GENOMIC</td>
-      <td>RANDOM</td>
-      <td>SRS1897276</td>
-      <td>N/A</td>
-      <td>Illumina HiSeq 2500</td>
-      <td>1124031</td>
-      <td>89769302</td>
-      <td>SRR5146869</td>
-      <td>1124031</td>
-      <td>212986785</td>
-      <td>GSM2446280_r1</td>
-      <td>https://sra-download.ncbi.nlm.nih.gov/traces/s...</td>
-      <td>https://sra-download.st-va.ncbi.nlm.nih.gov/so...</td>
-      <td>GSM2446280</td>
-      <td>blood serum</td>
-      <td>blood serum</td>
-      <td>hepatocellular carcinoma patient</td>
-    </tr>
-  </tbody>
-</table>
-<p>2191 rows × 24 columns</p>
-</div></div>
-</div>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
-</pre></div>
-</div>
-<div class="input_area highlight-none notranslate"><div class="highlight"><pre><span></span>df_contig_subset = df.loc[df[&quot;sra_url_alt&quot;].str.contains(&quot;contig&quot;)]
-df_contig_subset
-</pre></div>
-</div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
-</pre></div>
-</div>
-<div class="output_area rendered_html docutils container">
-<div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>study_accession</th>
-      <th>experiment_accession</th>
-      <th>experiment_title</th>
-      <th>experiment_desc</th>
-      <th>organism_taxid</th>
-      <th>organism_name</th>
-      <th>library_strategy</th>
-      <th>library_source</th>
-      <th>library_selection</th>
-      <th>sample_accession</th>
-      <th>sample_title</th>
-      <th>instrument</th>
-      <th>total_spots</th>
-      <th>total_size</th>
-      <th>run_accession</th>
-      <th>run_total_spots</th>
-      <th>run_total_bases</th>
-      <th>run_alias</th>
-      <th>sra_url_alt</th>
-      <th>sra_url</th>
-      <th>experiment_alias</th>
-      <th>source_name</th>
-      <th>cell type</th>
-      <th>group</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>0</th>
-      <td>SRP096127</td>
-      <td>SRX2467007</td>
-      <td>GSM2448483: normal.ct-970; Homo sapiens; Bisul...</td>
-      <td>GSM2448483: normal.ct-970; Homo sapiens; Bisul...</td>
-      <td>9606</td>
-      <td>Homo sapiens</td>
-      <td>Bisulfite-Seq</td>
-      <td>GENOMIC</td>
-      <td>RANDOM</td>
-      <td>SRS1899466</td>
-      <td>N/A</td>
-      <td>Illumina HiSeq 2500</td>
-      <td>559547</td>
-      <td>50734487</td>
-      <td>SRR5149059</td>
-      <td>559547</td>
-      <td>83216675</td>
-      <td>GSM2448483_r1</td>
-      <td>https://sra-download.ncbi.nlm.nih.gov/traces/s...</td>
-      <td>https://sra-download.st-va.ncbi.nlm.nih.gov/so...</td>
-      <td>GSM2448483</td>
-      <td>blood serum</td>
-      <td>blood serum</td>
-      <td>healthy control</td>
-    </tr>
-    <tr>
-      <th>1</th>
-      <td>SRP096127</td>
-      <td>SRX2467006</td>
-      <td>GSM2448482: normal.ct-969; Homo sapiens; Bisul...</td>
-      <td>GSM2448482: normal.ct-969; Homo sapiens; Bisul...</td>
-      <td>9606</td>
-      <td>Homo sapiens</td>
-      <td>Bisulfite-Seq</td>
-      <td>GENOMIC</td>
-      <td>RANDOM</td>
-      <td>SRS1899465</td>
-      <td>N/A</td>
-      <td>Illumina HiSeq 2500</td>
-      <td>441577</td>
-      <td>40899268</td>
-      <td>SRR5149058</td>
-      <td>441577</td>
-      <td>65549383</td>
-      <td>GSM2448482_r1</td>
-      <td>https://sra-download.ncbi.nlm.nih.gov/traces/s...</td>
-      <td>https://sra-download.st-va.ncbi.nlm.nih.gov/so...</td>
-      <td>GSM2448482</td>
-      <td>blood serum</td>
-      <td>blood serum</td>
-      <td>healthy control</td>
-    </tr>
-    <tr>
-      <th>2</th>
-      <td>SRP096127</td>
-      <td>SRX2467005</td>
-      <td>GSM2448481: normal.ct-968; Homo sapiens; Bisul...</td>
-      <td>GSM2448481: normal.ct-968; Homo sapiens; Bisul...</td>
-      <td>9606</td>
-      <td>Homo sapiens</td>
-      <td>Bisulfite-Seq</td>
-      <td>GENOMIC</td>
-      <td>RANDOM</td>
-      <td>SRS1899464</td>
-      <td>N/A</td>
-      <td>Illumina HiSeq 2500</td>
-      <td>563378</td>
-      <td>50951134</td>
-      <td>SRR5149057</td>
-      <td>563378</td>
-      <td>83839813</td>
-      <td>GSM2448481_r1</td>
-      <td>https://sra-download.ncbi.nlm.nih.gov/traces/s...</td>
-      <td>https://sra-download.st-va.ncbi.nlm.nih.gov/so...</td>
-      <td>GSM2448481</td>
-      <td>blood serum</td>
-      <td>blood serum</td>
-      <td>healthy control</td>
-    </tr>
-    <tr>
-      <th>3</th>
-      <td>SRP096127</td>
-      <td>SRX2467004</td>
-      <td>GSM2448480: normal.ct-967; Homo sapiens; Bisul...</td>
-      <td>GSM2448480: normal.ct-967; Homo sapiens; Bisul...</td>
-      <td>9606</td>
-      <td>Homo sapiens</td>
-      <td>Bisulfite-Seq</td>
-      <td>GENOMIC</td>
-      <td>RANDOM</td>
-      <td>SRS1899463</td>
-      <td>N/A</td>
-      <td>Illumina HiSeq 2500</td>
-      <td>422878</td>
-      <td>39223860</td>
-      <td>SRR5149056</td>
-      <td>422878</td>
-      <td>62753430</td>
-      <td>GSM2448480_r1</td>
-      <td>https://sra-download.ncbi.nlm.nih.gov/traces/s...</td>
-      <td>https://sra-download.st-va.ncbi.nlm.nih.gov/so...</td>
-      <td>GSM2448480</td>
-      <td>blood serum</td>
-      <td>blood serum</td>
-      <td>healthy control</td>
-    </tr>
-    <tr>
-      <th>4</th>
-      <td>SRP096127</td>
-      <td>SRX2467003</td>
-      <td>GSM2448479: normal.ct-966; Homo sapiens; Bisul...</td>
-      <td>GSM2448479: normal.ct-966; Homo sapiens; Bisul...</td>
-      <td>9606</td>
-      <td>Homo sapiens</td>
-      <td>Bisulfite-Seq</td>
-      <td>GENOMIC</td>
-      <td>RANDOM</td>
-      <td>SRS1899461</td>
-      <td>N/A</td>
-      <td>Illumina HiSeq 2500</td>
-      <td>517254</td>
-      <td>46881651</td>
-      <td>SRR5149055</td>
-      <td>517254</td>
-      <td>77004865</td>
-      <td>GSM2448479_r1</td>
-      <td>https://sra-download.ncbi.nlm.nih.gov/traces/s...</td>
-      <td>https://sra-download.st-va.ncbi.nlm.nih.gov/so...</td>
-      <td>GSM2448479</td>
-      <td>blood serum</td>
-      <td>blood serum</td>
-      <td>healthy control</td>
-    </tr>
-    <tr>
-      <th>...</th>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-    </tr>
-    <tr>
-      <th>2186</th>
-      <td>SRP096127</td>
-      <td>SRX2464821</td>
-      <td>GSM2446284: HCC.ct-5; Homo sapiens; Bisulfite-Seq</td>
-      <td>GSM2446284: HCC.ct-5; Homo sapiens; Bisulfite-Seq</td>
-      <td>9606</td>
-      <td>Homo sapiens</td>
-      <td>Bisulfite-Seq</td>
-      <td>GENOMIC</td>
-      <td>RANDOM</td>
-      <td>SRS1897280</td>
-      <td>N/A</td>
-      <td>Illumina HiSeq 2500</td>
-      <td>1033204</td>
-      <td>83576370</td>
-      <td>SRR5146873</td>
-      <td>1033204</td>
-      <td>196635123</td>
-      <td>GSM2446284_r1</td>
-      <td>https://sra-download.ncbi.nlm.nih.gov/traces/s...</td>
-      <td>https://sra-download.st-va.ncbi.nlm.nih.gov/so...</td>
-      <td>GSM2446284</td>
-      <td>blood serum</td>
-      <td>blood serum</td>
-      <td>hepatocellular carcinoma patient</td>
-    </tr>
-    <tr>
-      <th>2187</th>
-      <td>SRP096127</td>
-      <td>SRX2464820</td>
-      <td>GSM2446283: HCC.ct-4; Homo sapiens; Bisulfite-Seq</td>
-      <td>GSM2446283: HCC.ct-4; Homo sapiens; Bisulfite-Seq</td>
-      <td>9606</td>
-      <td>Homo sapiens</td>
-      <td>Bisulfite-Seq</td>
-      <td>GENOMIC</td>
-      <td>RANDOM</td>
-      <td>SRS1897279</td>
-      <td>N/A</td>
-      <td>Illumina HiSeq 2500</td>
-      <td>840853</td>
-      <td>68410342</td>
-      <td>SRR5146872</td>
-      <td>840853</td>
-      <td>159822416</td>
-      <td>GSM2446283_r1</td>
-      <td>https://sra-download.ncbi.nlm.nih.gov/traces/s...</td>
-      <td>https://sra-download.st-va.ncbi.nlm.nih.gov/so...</td>
-      <td>GSM2446283</td>
-      <td>blood serum</td>
-      <td>blood serum</td>
-      <td>hepatocellular carcinoma patient</td>
-    </tr>
-    <tr>
-      <th>2188</th>
-      <td>SRP096127</td>
-      <td>SRX2464819</td>
-      <td>GSM2446282: HCC.ct-3; Homo sapiens; Bisulfite-Seq</td>
-      <td>GSM2446282: HCC.ct-3; Homo sapiens; Bisulfite-Seq</td>
-      <td>9606</td>
-      <td>Homo sapiens</td>
-      <td>Bisulfite-Seq</td>
-      <td>GENOMIC</td>
-      <td>RANDOM</td>
-      <td>SRS1897278</td>
-      <td>N/A</td>
-      <td>Illumina HiSeq 2500</td>
-      <td>885724</td>
-      <td>71407675</td>
-      <td>SRR5146871</td>
-      <td>885724</td>
-      <td>166270272</td>
-      <td>GSM2446282_r1</td>
-      <td>https://sra-download.ncbi.nlm.nih.gov/traces/s...</td>
-      <td>https://sra-download.st-va.ncbi.nlm.nih.gov/so...</td>
-      <td>GSM2446282</td>
-      <td>blood serum</td>
-      <td>blood serum</td>
-      <td>hepatocellular carcinoma patient</td>
-    </tr>
-    <tr>
-      <th>2189</th>
-      <td>SRP096127</td>
-      <td>SRX2464818</td>
-      <td>GSM2446281: HCC.ct-2; Homo sapiens; Bisulfite-Seq</td>
-      <td>GSM2446281: HCC.ct-2; Homo sapiens; Bisulfite-Seq</td>
-      <td>9606</td>
-      <td>Homo sapiens</td>
-      <td>Bisulfite-Seq</td>
-      <td>GENOMIC</td>
-      <td>RANDOM</td>
-      <td>SRS1897277</td>
-      <td>N/A</td>
-      <td>Illumina HiSeq 2500</td>
-      <td>775684</td>
-      <td>62094237</td>
-      <td>SRR5146870</td>
-      <td>775684</td>
-      <td>145671062</td>
-      <td>GSM2446281_r1</td>
-      <td>https://sra-download.ncbi.nlm.nih.gov/traces/s...</td>
-      <td>https://sra-download.st-va.ncbi.nlm.nih.gov/so...</td>
-      <td>GSM2446281</td>
-      <td>blood serum</td>
-      <td>blood serum</td>
-      <td>hepatocellular carcinoma patient</td>
-    </tr>
-    <tr>
-      <th>2190</th>
-      <td>SRP096127</td>
-      <td>SRX2464817</td>
-      <td>GSM2446280: HCC.ct-1; Homo sapiens; Bisulfite-Seq</td>
-      <td>GSM2446280: HCC.ct-1; Homo sapiens; Bisulfite-Seq</td>
-      <td>9606</td>
-      <td>Homo sapiens</td>
-      <td>Bisulfite-Seq</td>
-      <td>GENOMIC</td>
-      <td>RANDOM</td>
-      <td>SRS1897276</td>
-      <td>N/A</td>
-      <td>Illumina HiSeq 2500</td>
-      <td>1124031</td>
-      <td>89769302</td>
-      <td>SRR5146869</td>
-      <td>1124031</td>
-      <td>212986785</td>
-      <td>GSM2446280_r1</td>
-      <td>https://sra-download.ncbi.nlm.nih.gov/traces/s...</td>
-      <td>https://sra-download.st-va.ncbi.nlm.nih.gov/so...</td>
-      <td>GSM2446280</td>
-      <td>blood serum</td>
-      <td>blood serum</td>
-      <td>hepatocellular carcinoma patient</td>
-    </tr>
-  </tbody>
-</table>
-<p>1654 rows × 24 columns</p>
-</div></div>
-</div>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
-</pre></div>
-</div>
-<div class="input_area highlight-none notranslate"><div class="highlight"><pre><span></span>db.download(df=df_contig_subset, url_col=&quot;sra_url_alt&quot;)
-</pre></div>
-</div>
 </div>
 </section>
-<section id="Example-with-a-fastq-file-(submitted-through-ENA)">
-<h2>Example with a fastq file (submitted through ENA)<a class="headerlink" href="#Example-with-a-fastq-file-(submitted-through-ENA)" title="Link to this heading">¶</a></h2>
-<p><a class="reference external" href="https://trace.ncbi.nlm.nih.gov/Traces/sra/?run=ERR1520686">https://trace.ncbi.nlm.nih.gov/Traces/sra/?run=ERR1520686</a></p>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+<section id="3.-Preview-Before-Downloading">
+<h2>3. Preview Before Downloading<a class="headerlink" href="#3.-Preview-Before-Downloading" title="Link to this heading">¶</a></h2>
+<p>Inspect the accessions and URL column before starting a transfer.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">preview_cols</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;run_accession&quot;</span><span class="p">,</span> <span class="s2">&quot;study_accession&quot;</span><span class="p">,</span> <span class="s2">&quot;experiment_accession&quot;</span><span class="p">]</span>
+<span class="n">preview_cols</span> <span class="o">=</span> <span class="p">[</span><span class="n">col</span> <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">preview_cols</span> <span class="k">if</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">df_contig_subset</span><span class="o">.</span><span class="n">columns</span><span class="p">]</span>
+<span class="n">preview_cols</span> <span class="o">+=</span> <span class="n">download_url_cols</span><span class="p">[:</span><span class="mi">1</span><span class="p">]</span>
+<span class="n">df_contig_subset</span><span class="p">[</span><span class="n">preview_cols</span><span class="p">]</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
 </pre></div>
 </div>
-<div class="input_area highlight-none notranslate"><div class="highlight"><pre><span></span>df = db.sra_metadata(&quot;ERP015299&quot;, detailed=True)
-df
+</section>
+<section id="4.-Download-the-Selected-Rows">
+<h2>4. Download the Selected Rows<a class="headerlink" href="#4.-Download-the-Selected-Rows" title="Link to this heading">¶</a></h2>
+<p>Pass only the selected rows to <code class="docutils literal notranslate"><span class="pre">download</span></code>. Use the URL column that contains the files you want.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">db</span><span class="o">.</span><span class="n">download</span><span class="p">(</span>
+    <span class="n">df</span><span class="o">=</span><span class="n">df_contig_subset</span><span class="p">,</span>
+    <span class="n">url_col</span><span class="o">=</span><span class="n">download_url_cols</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+    <span class="n">out_dir</span><span class="o">=</span><span class="s2">&quot;pysradb_downloads&quot;</span><span class="p">,</span>
+    <span class="n">skip_confirmation</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+<span class="p">)</span>
 </pre></div>
 </div>
+</section>
+<section id="5.-ENA-FASTQ-Example">
+<h2>5. ENA FASTQ Example<a class="headerlink" href="#5.-ENA-FASTQ-Example" title="Link to this heading">¶</a></h2>
+<p>The same pattern works for ENA-backed FASTQ links. For example, <code class="docutils literal notranslate"><span class="pre">ERP015299</span></code> includes the run <code class="docutils literal notranslate"><span class="pre">ERR1520686</span></code>.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">fastq_df</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">sra_metadata</span><span class="p">(</span><span class="s2">&quot;ERP015299&quot;</span><span class="p">,</span> <span class="n">detailed</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">fastq_url_cols</span> <span class="o">=</span> <span class="p">[</span><span class="n">col</span> <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">fastq_df</span><span class="o">.</span><span class="n">columns</span> <span class="k">if</span> <span class="s2">&quot;fastq&quot;</span> <span class="ow">in</span> <span class="n">col</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">and</span> <span class="s2">&quot;url&quot;</span> <span class="ow">in</span> <span class="n">col</span><span class="o">.</span><span class="n">lower</span><span class="p">()]</span>
+<span class="n">fastq_df</span><span class="p">[[</span><span class="s2">&quot;run_accession&quot;</span><span class="p">,</span> <span class="s2">&quot;study_accession&quot;</span><span class="p">,</span> <span class="o">*</span><span class="n">fastq_url_cols</span><span class="p">[:</span><span class="mi">1</span><span class="p">]]]</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
 </div>
-<div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-<span class="ansi-red-fg">---------------------------------------------------------------------------</span>
-<span class="ansi-red-fg">AttributeError</span>                            Traceback (most recent call last)
-<span class="ansi-green-fg">&lt;ipython-input-11-1792c85e0c4f&gt;</span> in <span class="ansi-cyan-fg">&lt;module&gt;</span><span class="ansi-blue-fg">()</span>
-<span class="ansi-green-fg">----&gt; 1</span><span class="ansi-red-fg"> </span>df <span class="ansi-blue-fg">=</span> db<span class="ansi-blue-fg">.</span>sra_metadata<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">&#39;ERP015299&#39;</span><span class="ansi-blue-fg">,</span> detailed<span class="ansi-blue-fg">=</span><span class="ansi-green-fg">True</span><span class="ansi-blue-fg">)</span>
-<span class="ansi-green-intense-fg ansi-bold">      2</span> df
-
-<span class="ansi-green-fg">/usr/local/lib/python3.6/dist-packages/pysradb/sraweb.py</span> in <span class="ansi-cyan-fg">sra_metadata</span><span class="ansi-blue-fg">(self, srp, sample_attribute, detailed, expand_sample_attributes, output_read_lengths, **kwargs)</span>
-<span class="ansi-green-intense-fg ansi-bold">    396</span>                 <span class="ansi-red-fg"># detailed_record[&#34;run_total_spots&#34;] = run_set[&#34;@total_spots&#34;]</span>
-<span class="ansi-green-intense-fg ansi-bold">    397</span>                 <span class="ansi-green-fg">for</span> sample_attribute <span class="ansi-green-fg">in</span> sample_attributes<span class="ansi-blue-fg">:</span>
-<span class="ansi-green-fg">--&gt; 398</span><span class="ansi-red-fg">                     </span>dict_values <span class="ansi-blue-fg">=</span> list<span class="ansi-blue-fg">(</span>sample_attribute<span class="ansi-blue-fg">.</span>values<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">)</span>
-<span class="ansi-green-intense-fg ansi-bold">    399</span>                     detailed_record<span class="ansi-blue-fg">[</span>dict_values<span class="ansi-blue-fg">[</span><span class="ansi-cyan-fg">0</span><span class="ansi-blue-fg">]</span><span class="ansi-blue-fg">]</span> <span class="ansi-blue-fg">=</span> dict_values<span class="ansi-blue-fg">[</span><span class="ansi-cyan-fg">1</span><span class="ansi-blue-fg">]</span>
-<span class="ansi-green-intense-fg ansi-bold">    400</span>                     detailed_records<span class="ansi-blue-fg">.</span>append<span class="ansi-blue-fg">(</span>detailed_record<span class="ansi-blue-fg">)</span>
-
-<span class="ansi-red-fg">AttributeError</span>: &#39;str&#39; object has no attribute &#39;values&#39;
-</pre></div></div>
-</div>
+<p>NCBI record: <a class="reference external" href="https://trace.ncbi.nlm.nih.gov/Traces/sra/?run=ERR1520686">https://trace.ncbi.nlm.nih.gov/Traces/sra/?run=ERR1520686</a></p>
 </section>
 </section>
 
@@ -1154,8 +425,26 @@ df
       <footer>
         
         <div class="related-pages">
-          
-          
+          <a class="next-page" href="06.Multiple_SRPs.html">
+              <div class="page-info">
+                <div class="context">
+                  <span>Next</span>
+                </div>
+                <div class="title">Querying Multiple Projects</div>
+              </div>
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+            </a>
+          <a class="prev-page" href="04.SRA_to_fastq_conda.html">
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+              <div class="page-info">
+                <div class="context">
+                  <span>Previous</span>
+                </div>
+                
+                <div class="title">Converting SRA to FASTQ using Conda</div>
+                
+              </div>
+            </a>
         </div>
         <div class="bottom-of-page">
           <div class="left-details">
@@ -1186,9 +475,12 @@ df
         <div class="toc-tree-container">
           <div class="toc-tree">
             <ul>
-<li><a class="reference internal" href="#">Downloading Subsets of a Project</a><ul>
-<li><a class="reference internal" href="#Example-of-a-record-missing-%22SAMPLE_ATTRIBUES%22">Example of a record missing “SAMPLE_ATTRIBUES”</a></li>
-<li><a class="reference internal" href="#Example-with-a-fastq-file-(submitted-through-ENA)">Example with a fastq file (submitted through ENA)</a></li>
+<li><a class="reference internal" href="#">Selecting Subsets of a Project</a><ul>
+<li><a class="reference internal" href="#1.-Fetch-Detailed-Metadata">1. Fetch Detailed Metadata</a></li>
+<li><a class="reference internal" href="#2.-Select-Rows-by-URL-Content">2. Select Rows by URL Content</a></li>
+<li><a class="reference internal" href="#3.-Preview-Before-Downloading">3. Preview Before Downloading</a></li>
+<li><a class="reference internal" href="#4.-Download-the-Selected-Rows">4. Download the Selected Rows</a></li>
+<li><a class="reference internal" href="#5.-ENA-FASTQ-Example">5. ENA FASTQ Example</a></li>
 </ul>
 </li>
 </ul>
@@ -1201,12 +493,14 @@ df
     </aside>
   </div>
 </div><script src="../_static/documentation_options.js?v=afcbd73c"></script>
-    <script src="../_static/doctools.js?v=9bcbadda"></script>
-    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../_static/scripts/furo.js?v=46bd48cc"></script>
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@jupyter-widgets/html-manager@^1.0.1/dist/embed-amd.js"></script>
     <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
-    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-mml-chtml.js"></script>
     <script src="../_static/copy-button.js?v=5b6a40c7"></script>
     </body>
 </html>

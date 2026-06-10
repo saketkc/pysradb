@@ -14,17 +14,17 @@
             
         </script>
     <link rel="index" title="Index" href="genindex.html"><link rel="search" title="Search" href="search.html"><link rel="next" title="pysradb package" href="pysradb.html"><link rel="prev" title="History" href="history.html">
+        <link rel="canonical" href="https://saket-choudhary.me/pysradb/modules.html">
         <link rel="prefetch" href="_static/pysradb_v3.png" as="image">
 
-    <!-- Generated with Sphinx 8.2.3 and Furo 2025.09.25 -->
-        <title>pysradb - pysradb 3.0.0.dev0 documentation</title>
+    <!-- Generated with Sphinx 9.0.4 and Furo 2025.12.19 -->
+        <title>pysradb - pysradb: SRA, ENA, and GEO metadata search</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
-    <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?v=580074bf" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?v=7bdb33bb" />
     <link rel="stylesheet" type="text/css" href="_static/graphviz.css?v=4ae1632d" />
-    <link rel="stylesheet" type="text/css" href="_static/sphinx-dropdown.css?v=995e94df" />
-    <link rel="stylesheet" type="text/css" href="_static/panels-bootstrap.min.css?v=21c0b90a" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-design.min.css?v=95c83b7e" />
     <link rel="stylesheet" type="text/css" href="_static/styles/furo-extensions.css?v=8dab3a3b" />
-    <link rel="stylesheet" type="text/css" href="_static/custom.css?v=76ddadce" />
+    <link rel="stylesheet" type="text/css" href="_static/custom.css?v=c673637a" />
     
     
 
@@ -33,30 +33,69 @@
   body {
     --color-code-background: #eeffcc;
   --color-code-foreground: black;
-  --color-brand-primary: #0066cc;
+  --font-stack: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Segoe UI', sans-serif;
+  --font-stack--monospace: 'SFMono-Regular', ui-monospace, 'Cascadia Code', 'Liberation Mono', Menlo, monospace;
+  --color-brand-primary: #007aff;
   --color-brand-content: #0066cc;
-  --color-code-background: #f5f5f5;
-  --color-inline-code-background: #f0f0f0;
+  --color-api-name: #1d1d1f;
+  --color-api-pre-name: #6e6e73;
+  --color-background-primary: #ffffff;
+  --color-background-secondary: #f5f5f7;
+  --color-background-hover: #f2f2f7;
+  --color-code-background: #f5f5f7;
+  --color-inline-code-background: #f2f2f7;
+  --color-sidebar-background: #fbfbfd;
+  --color-sidebar-background-border: #d2d2d7;
+  --color-toc-background: #ffffff;
+  --color-toc-background-border: #d2d2d7;
+  --color-admonition-background: #f5f5f7;
+  --color-admonition-title-background: #e8f2ff;
   
   }
   @media not print {
     body[data-theme="dark"] {
       --color-code-background: #202020;
   --color-code-foreground: #d0d0d0;
-  --color-brand-primary: #3b82f6;
-  --color-brand-content: #3b82f6;
-  --color-code-background: #1e293b;
-  --color-inline-code-background: #334155;
+  --font-stack: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Segoe UI', sans-serif;
+  --font-stack--monospace: 'SFMono-Regular', ui-monospace, 'Cascadia Code', 'Liberation Mono', Menlo, monospace;
+  --color-brand-primary: #0a84ff;
+  --color-brand-content: #409cff;
+  --color-api-name: #f5f5f7;
+  --color-api-pre-name: #a1a1a6;
+  --color-background-primary: #1d1d1f;
+  --color-background-secondary: #2c2c2e;
+  --color-background-hover: #3a3a3c;
+  --color-code-background: #2c2c2e;
+  --color-inline-code-background: #3a3a3c;
+  --color-sidebar-background: #161617;
+  --color-sidebar-background-border: #38383a;
+  --color-toc-background: #1d1d1f;
+  --color-toc-background-border: #38383a;
+  --color-admonition-background: #2c2c2e;
+  --color-admonition-title-background: #06345f;
   
     }
     @media (prefers-color-scheme: dark) {
       body:not([data-theme="light"]) {
         --color-code-background: #202020;
   --color-code-foreground: #d0d0d0;
-  --color-brand-primary: #3b82f6;
-  --color-brand-content: #3b82f6;
-  --color-code-background: #1e293b;
-  --color-inline-code-background: #334155;
+  --font-stack: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Segoe UI', sans-serif;
+  --font-stack--monospace: 'SFMono-Regular', ui-monospace, 'Cascadia Code', 'Liberation Mono', Menlo, monospace;
+  --color-brand-primary: #0a84ff;
+  --color-brand-content: #409cff;
+  --color-api-name: #f5f5f7;
+  --color-api-pre-name: #a1a1a6;
+  --color-background-primary: #1d1d1f;
+  --color-background-secondary: #2c2c2e;
+  --color-background-hover: #3a3a3c;
+  --color-code-background: #2c2c2e;
+  --color-inline-code-background: #3a3a3c;
+  --color-sidebar-background: #161617;
+  --color-sidebar-background-border: #38383a;
+  --color-toc-background: #1d1d1f;
+  --color-toc-background-border: #38383a;
+  --color-admonition-background: #2c2c2e;
+  --color-admonition-title-background: #06345f;
   
       }
     }
@@ -188,7 +227,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="index.html"><div class="brand">pysradb 3.0.0.dev0 documentation</div></a>
+      <a href="index.html"><div class="brand">pysradb: SRA, ENA, and GEO metadata search</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -212,7 +251,7 @@
     <img class="sidebar-logo" src="_static/pysradb_v3.png" alt="Logo"/>
   </div>
   
-  <span class="sidebar-brand-text">pysradb 3.0.0.dev0 documentation</span>
+  <span class="sidebar-brand-text">pysradb: SRA, ENA, and GEO metadata search</span>
   
 </a><form class="sidebar-search-container" method="get" action="search.html" role="search">
   <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
@@ -225,13 +264,27 @@
 <li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quickstart</a></li>
 <li class="toctree-l1"><a class="reference internal" href="cmdline.html">CLI</a></li>
 <li class="toctree-l1"><a class="reference internal" href="python-api-usage.html">Python API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="mcp.html">MCP server</a></li>
 <li class="toctree-l1"><a class="reference internal" href="case_studies.html">Case Studies</a></li>
-<li class="toctree-l1"><a class="reference internal" href="notebooks.html">Tutorials &amp; Notebooks</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="notebooks.html">Tutorials &amp; Notebooks</a><input aria-label="Toggle navigation of Tutorials &amp; Notebooks" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/README.html">pysradb notebooks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/01.Python-API_demo.html">Python API Demo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/02.Commandline_download.html">Command-line Download</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/03.ParallelDownload.html">Parallel Download</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/04.SRA_to_fastq_conda.html">Converting SRA to FASTQ using Conda</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/05.Downloading_subsets_of_a_project.html">Selecting Subsets of a Project</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/06.Multiple_SRPs.html">Querying Multiple Projects</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/07.Query_Search.html">Query and Search</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/08.PMC_DOI_Identifiers.html">Extract Identifiers from PMC/DOI</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/09.Metadata_enrichment.html">Metadata Enrichment with Optional LLM Backends</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/10.Parse_Bioscience_Search.html">Parse BioScience Search</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="commands.html">API Documentation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="contributing.html">Contributing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="authors.html">Credits</a></li>
 <li class="toctree-l1"><a class="reference internal" href="history.html">History</a></li>
-<li class="toctree-l1 current has-children current-page"><a class="current reference internal" href="#">pysradb</a><input aria-label="Toggle navigation of pysradb" checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l1 current has-children current-page"><a class="current reference internal" href="#">pysradb</a><input aria-label="Toggle navigation of pysradb" checked="" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="pysradb.html">pysradb package</a></li>
 </ul>
 </li>
@@ -255,12 +308,16 @@
         </a>
         <div class="content-icon-container">
           <div class="view-this-page">
-  <a class="muted-link" href="_sources/modules.rst.txt" title="View this page">
+  <a class="muted-link" href="https://github.com/saketkc/pysradb/blob/develop/docs/modules.rst?plain=true" title="View this page">
     <svg><use href="#svg-eye"></use></svg>
     <span class="visually-hidden">View this page</span>
   </a>
-</div>
-<div class="theme-toggle-container theme-toggle-content">
+</div><div class="edit-this-page">
+  <a class="muted-link" href="https://github.com/saketkc/pysradb/edit/develop/docs/modules.rst" rel="edit" title="Edit this page">
+    <svg><use href="#svg-pencil"></use></svg>
+    <span class="visually-hidden">Edit this page</span>
+  </a>
+</div><div class="theme-toggle-container theme-toggle-content">
             <button class="theme-toggle" aria-label="Toggle Light / Dark / Auto color theme">
               <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
               <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
@@ -285,10 +342,12 @@
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="pysradb.html#pysradb.cli.CustomFormatterArgP"><code class="docutils literal notranslate"><span class="pre">CustomFormatterArgP</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pysradb.html#pysradb.cli.ae_to_pmid"><code class="docutils literal notranslate"><span class="pre">ae_to_pmid()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="pysradb.html#pysradb.cli.doi_to_gse"><code class="docutils literal notranslate"><span class="pre">doi_to_gse()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="pysradb.html#pysradb.cli.doi_to_identifiers"><code class="docutils literal notranslate"><span class="pre">doi_to_identifiers()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="pysradb.html#pysradb.cli.doi_to_srp"><code class="docutils literal notranslate"><span class="pre">doi_to_srp()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="pysradb.html#pysradb.cli.download"><code class="docutils literal notranslate"><span class="pre">download()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pysradb.html#pysradb.cli.ena_to_pmid"><code class="docutils literal notranslate"><span class="pre">ena_to_pmid()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="pysradb.html#pysradb.cli.geo_matrix"><code class="docutils literal notranslate"><span class="pre">geo_matrix()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="pysradb.html#pysradb.cli.get_geo_search_info"><code class="docutils literal notranslate"><span class="pre">get_geo_search_info()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="pysradb.html#pysradb.cli.gse_to_gsm"><code class="docutils literal notranslate"><span class="pre">gse_to_gsm()</span></code></a></li>
@@ -302,6 +361,7 @@
 <li class="toctree-l3"><a class="reference internal" href="pysradb.html#pysradb.cli.metadata"><code class="docutils literal notranslate"><span class="pre">metadata()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="pysradb.html#pysradb.cli.parse_args"><code class="docutils literal notranslate"><span class="pre">parse_args()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="pysradb.html#pysradb.cli.pmc_to_identifiers"><code class="docutils literal notranslate"><span class="pre">pmc_to_identifiers()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pysradb.html#pysradb.cli.pmid_info"><code class="docutils literal notranslate"><span class="pre">pmid_info()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="pysradb.html#pysradb.cli.pmid_to_gse"><code class="docutils literal notranslate"><span class="pre">pmid_to_gse()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="pysradb.html#pysradb.cli.pmid_to_identifiers"><code class="docutils literal notranslate"><span class="pre">pmid_to_identifiers()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="pysradb.html#pysradb.cli.pmid_to_srp"><code class="docutils literal notranslate"><span class="pre">pmid_to_srp()</span></code></a></li>
@@ -331,6 +391,10 @@
 <li class="toctree-l3"><a class="reference internal" href="pysradb.html#pysradb.download.millify"><code class="docutils literal notranslate"><span class="pre">millify()</span></code></a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="pysradb.html#module-pysradb.enrichment">pysradb.enrichment module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pysradb.html#pysradb.enrichment.enrich_df"><code class="docutils literal notranslate"><span class="pre">enrich_df()</span></code></a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="pysradb.html#module-pysradb.exceptions">pysradb.exceptions module</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="pysradb.html#pysradb.exceptions.IncorrectFieldException"><code class="docutils literal notranslate"><span class="pre">IncorrectFieldException</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="pysradb.html#pysradb.exceptions.MissingQueryException"><code class="docutils literal notranslate"><span class="pre">MissingQueryException</span></code></a></li>
@@ -353,24 +417,41 @@
 <li class="toctree-l3"><a class="reference internal" href="pysradb.html#pysradb.geoweb.parse_geo_matrix_to_tsv"><code class="docutils literal notranslate"><span class="pre">parse_geo_matrix_to_tsv()</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="pysradb.html#module-pysradb.metadata_enrichment">pysradb.metadata_enrichment module</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="pysradb.html#pysradb.metadata_enrichment.EmbeddingMetadataExtractor"><code class="docutils literal notranslate"><span class="pre">EmbeddingMetadataExtractor</span></code></a><ul>
-<li class="toctree-l4"><a class="reference internal" href="pysradb.html#pysradb.metadata_enrichment.EmbeddingMetadataExtractor.extract_metadata"><code class="docutils literal notranslate"><span class="pre">EmbeddingMetadataExtractor.extract_metadata()</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="pysradb.html#pysradb.metadata_enrichment.LLMMetadataExtractor"><code class="docutils literal notranslate"><span class="pre">LLMMetadataExtractor</span></code></a><ul>
-<li class="toctree-l4"><a class="reference internal" href="pysradb.html#pysradb.metadata_enrichment.LLMMetadataExtractor.extract_metadata"><code class="docutils literal notranslate"><span class="pre">LLMMetadataExtractor.extract_metadata()</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="pysradb.html#pysradb.metadata_enrichment.MetadataExtractor"><code class="docutils literal notranslate"><span class="pre">MetadataExtractor</span></code></a><ul>
-<li class="toctree-l4"><a class="reference internal" href="pysradb.html#pysradb.metadata_enrichment.MetadataExtractor.enrich_dataframe"><code class="docutils literal notranslate"><span class="pre">MetadataExtractor.enrich_dataframe()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="pysradb.html#pysradb.metadata_enrichment.MetadataExtractor.extract_batch"><code class="docutils literal notranslate"><span class="pre">MetadataExtractor.extract_batch()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="pysradb.html#pysradb.metadata_enrichment.MetadataExtractor.extract_metadata"><code class="docutils literal notranslate"><span class="pre">MetadataExtractor.extract_metadata()</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="pysradb.html#pysradb.metadata_enrichment.apply_dataframe_enrichment"><code class="docutils literal notranslate"><span class="pre">apply_dataframe_enrichment()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="pysradb.html#pysradb.metadata_enrichment.create_metadata_extractor"><code class="docutils literal notranslate"><span class="pre">create_metadata_extractor()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="pysradb.html#pysradb.metadata_enrichment.load_ontology_reference"><code class="docutils literal notranslate"><span class="pre">load_ontology_reference()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="pysradb.html#module-pysradb.mcp_server">pysradb.mcp_server module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pysradb.html#pysradb.mcp_server.convert_accession"><code class="docutils literal notranslate"><span class="pre">convert_accession()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pysradb.html#pysradb.mcp_server.convert_bioproject_to_srp"><code class="docutils literal notranslate"><span class="pre">convert_bioproject_to_srp()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pysradb.html#pysradb.mcp_server.convert_doi_to_pmid"><code class="docutils literal notranslate"><span class="pre">convert_doi_to_pmid()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pysradb.html#pysradb.mcp_server.convert_pmid_to_pmc"><code class="docutils literal notranslate"><span class="pre">convert_pmid_to_pmc()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pysradb.html#pysradb.mcp_server.create_server"><code class="docutils literal notranslate"><span class="pre">create_server()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pysradb.html#pysradb.mcp_server.extract_identifiers_from_text"><code class="docutils literal notranslate"><span class="pre">extract_identifiers_from_text()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pysradb.html#pysradb.mcp_server.get_ena_fastq_urls"><code class="docutils literal notranslate"><span class="pre">get_ena_fastq_urls()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pysradb.html#pysradb.mcp_server.get_gds_results"><code class="docutils literal notranslate"><span class="pre">get_gds_results()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pysradb.html#pysradb.mcp_server.get_geo_matrix_url"><code class="docutils literal notranslate"><span class="pre">get_geo_matrix_url()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pysradb.html#pysradb.mcp_server.get_geo_metadata"><code class="docutils literal notranslate"><span class="pre">get_geo_metadata()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pysradb.html#pysradb.mcp_server.get_geo_supplementary_links"><code class="docutils literal notranslate"><span class="pre">get_geo_supplementary_links()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pysradb.html#pysradb.mcp_server.get_gse_from_doi"><code class="docutils literal notranslate"><span class="pre">get_gse_from_doi()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pysradb.html#pysradb.mcp_server.get_gse_from_pmid"><code class="docutils literal notranslate"><span class="pre">get_gse_from_pmid()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pysradb.html#pysradb.mcp_server.get_gsm_soft_metadata"><code class="docutils literal notranslate"><span class="pre">get_gsm_soft_metadata()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pysradb.html#pysradb.mcp_server.get_identifiers_from_doi"><code class="docutils literal notranslate"><span class="pre">get_identifiers_from_doi()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pysradb.html#pysradb.mcp_server.get_identifiers_from_pmc"><code class="docutils literal notranslate"><span class="pre">get_identifiers_from_pmc()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pysradb.html#pysradb.mcp_server.get_identifiers_from_pmid"><code class="docutils literal notranslate"><span class="pre">get_identifiers_from_pmid()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pysradb.html#pysradb.mcp_server.get_metadata"><code class="docutils literal notranslate"><span class="pre">get_metadata()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pysradb.html#pysradb.mcp_server.get_pmc_fulltext_excerpt"><code class="docutils literal notranslate"><span class="pre">get_pmc_fulltext_excerpt()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pysradb.html#pysradb.mcp_server.get_pmids_for_arrayexpress"><code class="docutils literal notranslate"><span class="pre">get_pmids_for_arrayexpress()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pysradb.html#pysradb.mcp_server.get_pmids_for_bioproject"><code class="docutils literal notranslate"><span class="pre">get_pmids_for_bioproject()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pysradb.html#pysradb.mcp_server.get_pmids_for_ena_or_bioproject"><code class="docutils literal notranslate"><span class="pre">get_pmids_for_ena_or_bioproject()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pysradb.html#pysradb.mcp_server.get_pmids_for_gse"><code class="docutils literal notranslate"><span class="pre">get_pmids_for_gse()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pysradb.html#pysradb.mcp_server.get_pmids_for_sra_accession"><code class="docutils literal notranslate"><span class="pre">get_pmids_for_sra_accession()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pysradb.html#pysradb.mcp_server.get_publication_info"><code class="docutils literal notranslate"><span class="pre">get_publication_info()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pysradb.html#pysradb.mcp_server.get_publication_metadata"><code class="docutils literal notranslate"><span class="pre">get_publication_metadata()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pysradb.html#pysradb.mcp_server.get_sra_metadata"><code class="docutils literal notranslate"><span class="pre">get_sra_metadata()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pysradb.html#pysradb.mcp_server.get_srp_from_doi"><code class="docutils literal notranslate"><span class="pre">get_srp_from_doi()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pysradb.html#pysradb.mcp_server.get_srp_from_pmid"><code class="docutils literal notranslate"><span class="pre">get_srp_from_pmid()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pysradb.html#pysradb.mcp_server.list_capabilities"><code class="docutils literal notranslate"><span class="pre">list_capabilities()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pysradb.html#pysradb.mcp_server.main"><code class="docutils literal notranslate"><span class="pre">main()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pysradb.html#pysradb.mcp_server.map_publication_identifiers"><code class="docutils literal notranslate"><span class="pre">map_publication_identifiers()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pysradb.html#pysradb.mcp_server.search_datasets"><code class="docutils literal notranslate"><span class="pre">search_datasets()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pysradb.html#pysradb.mcp_server.search_pmc_for_external_source"><code class="docutils literal notranslate"><span class="pre">search_pmc_for_external_source()</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="pysradb.html#module-pysradb.search">pysradb.search module</a><ul>
@@ -399,20 +480,26 @@
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="pysradb.html#module-pysradb.sraweb">pysradb.sraweb module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pysradb.html#pysradb.sraweb.OpenAlexError"><code class="docutils literal notranslate"><span class="pre">OpenAlexError</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="pysradb.html#pysradb.sraweb.SRAweb"><code class="docutils literal notranslate"><span class="pre">SRAweb</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pysradb.html#pysradb.sraweb.SRAweb.ae_to_pmid"><code class="docutils literal notranslate"><span class="pre">SRAweb.ae_to_pmid()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="pysradb.html#pysradb.sraweb.SRAweb.bioproject_to_srp"><code class="docutils literal notranslate"><span class="pre">SRAweb.bioproject_to_srp()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="pysradb.html#pysradb.sraweb.SRAweb.create_esummary_params"><code class="docutils literal notranslate"><span class="pre">SRAweb.create_esummary_params()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="pysradb.html#pysradb.sraweb.SRAweb.doi_to_gse"><code class="docutils literal notranslate"><span class="pre">SRAweb.doi_to_gse()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="pysradb.html#pysradb.sraweb.SRAweb.doi_to_identifiers"><code class="docutils literal notranslate"><span class="pre">SRAweb.doi_to_identifiers()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="pysradb.html#pysradb.sraweb.SRAweb.doi_to_pmid"><code class="docutils literal notranslate"><span class="pre">SRAweb.doi_to_pmid()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="pysradb.html#pysradb.sraweb.SRAweb.doi_to_srp"><code class="docutils literal notranslate"><span class="pre">SRAweb.doi_to_srp()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pysradb.html#pysradb.sraweb.SRAweb.download"><code class="docutils literal notranslate"><span class="pre">SRAweb.download()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pysradb.html#pysradb.sraweb.SRAweb.ena_to_pmid"><code class="docutils literal notranslate"><span class="pre">SRAweb.ena_to_pmid()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="pysradb.html#pysradb.sraweb.SRAweb.extract_external_sources"><code class="docutils literal notranslate"><span class="pre">SRAweb.extract_external_sources()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="pysradb.html#pysradb.sraweb.SRAweb.extract_identifiers_from_text"><code class="docutils literal notranslate"><span class="pre">SRAweb.extract_identifiers_from_text()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="pysradb.html#pysradb.sraweb.SRAweb.fetch_bioproject_pmids"><code class="docutils literal notranslate"><span class="pre">SRAweb.fetch_bioproject_pmids()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="pysradb.html#pysradb.sraweb.SRAweb.fetch_ena_fastq"><code class="docutils literal notranslate"><span class="pre">SRAweb.fetch_ena_fastq()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="pysradb.html#pysradb.sraweb.SRAweb.fetch_gds_results"><code class="docutils literal notranslate"><span class="pre">SRAweb.fetch_gds_results()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="pysradb.html#pysradb.sraweb.SRAweb.fetch_gsm_soft"><code class="docutils literal notranslate"><span class="pre">SRAweb.fetch_gsm_soft()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pysradb.html#pysradb.sraweb.SRAweb.fetch_journal_metrics"><code class="docutils literal notranslate"><span class="pre">SRAweb.fetch_journal_metrics()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="pysradb.html#pysradb.sraweb.SRAweb.fetch_pmc_fulltext"><code class="docutils literal notranslate"><span class="pre">SRAweb.fetch_pmc_fulltext()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pysradb.html#pysradb.sraweb.SRAweb.fetch_pmid_metadata"><code class="docutils literal notranslate"><span class="pre">SRAweb.fetch_pmid_metadata()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="pysradb.html#pysradb.sraweb.SRAweb.format_xml"><code class="docutils literal notranslate"><span class="pre">SRAweb.format_xml()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="pysradb.html#pysradb.sraweb.SRAweb.geo_metadata"><code class="docutils literal notranslate"><span class="pre">SRAweb.geo_metadata()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="pysradb.html#pysradb.sraweb.SRAweb.get_efetch_response"><code class="docutils literal notranslate"><span class="pre">SRAweb.get_efetch_response()</span></code></a></li>
@@ -427,6 +514,7 @@
 <li class="toctree-l4"><a class="reference internal" href="pysradb.html#pysradb.sraweb.SRAweb.gsm_to_srx"><code class="docutils literal notranslate"><span class="pre">SRAweb.gsm_to_srx()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="pysradb.html#pysradb.sraweb.SRAweb.metadata"><code class="docutils literal notranslate"><span class="pre">SRAweb.metadata()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="pysradb.html#pysradb.sraweb.SRAweb.pmc_to_identifiers"><code class="docutils literal notranslate"><span class="pre">SRAweb.pmc_to_identifiers()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pysradb.html#pysradb.sraweb.SRAweb.pmid_info"><code class="docutils literal notranslate"><span class="pre">SRAweb.pmid_info()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="pysradb.html#pysradb.sraweb.SRAweb.pmid_to_gse"><code class="docutils literal notranslate"><span class="pre">SRAweb.pmid_to_gse()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="pysradb.html#pysradb.sraweb.SRAweb.pmid_to_identifiers"><code class="docutils literal notranslate"><span class="pre">SRAweb.pmid_to_identifiers()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="pysradb.html#pysradb.sraweb.SRAweb.pmid_to_pmc"><code class="docutils literal notranslate"><span class="pre">SRAweb.pmid_to_pmc()</span></code></a></li>
@@ -535,10 +623,12 @@
     </aside>
   </div>
 </div><script src="_static/documentation_options.js?v=afcbd73c"></script>
-    <script src="_static/doctools.js?v=9bcbadda"></script>
-    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="_static/scripts/furo.js?v=46bd48cc"></script>
+    <script src="_static/design-tabs.js?v=f930bc37"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@jupyter-widgets/html-manager@^1.0.1/dist/embed-amd.js"></script>
     <script src="_static/copy-button.js?v=5b6a40c7"></script>
     </body>
 </html>

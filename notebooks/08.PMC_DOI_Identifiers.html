@@ -13,19 +13,19 @@
             gtag('config', 'G-CKQZFCEENZ');
             
         </script>
-    <link rel="index" title="Index" href="../genindex.html"><link rel="search" title="Search" href="../search.html">
+    <link rel="index" title="Index" href="../genindex.html"><link rel="search" title="Search" href="../search.html"><link rel="next" title="Metadata Enrichment with Optional LLM Backends" href="09.Metadata_enrichment.html"><link rel="prev" title="Query and Search" href="07.Query_Search.html">
+        <link rel="canonical" href="https://saket-choudhary.me/pysradb/notebooks/08.PMC_DOI_Identifiers.html">
         <link rel="prefetch" href="../_static/pysradb_v3.png" as="image">
 
-    <!-- Generated with Sphinx 8.2.3 and Furo 2025.09.25 -->
-        <title>Extract Identifiers from PMC/DOI - pysradb 3.0.0.dev0 documentation</title>
+    <!-- Generated with Sphinx 9.0.4 and Furo 2025.12.19 -->
+        <title>Extract Identifiers from PMC/DOI - pysradb: SRA, ENA, and GEO metadata search</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
-    <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?v=580074bf" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?v=7bdb33bb" />
     <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=4ae1632d" />
-    <link rel="stylesheet" type="text/css" href="../_static/sphinx-dropdown.css?v=995e94df" />
-    <link rel="stylesheet" type="text/css" href="../_static/panels-bootstrap.min.css?v=21c0b90a" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
     <link rel="stylesheet" type="text/css" href="../_static/nbsphinx-code-cells.css?v=2aa19091" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo-extensions.css?v=8dab3a3b" />
-    <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=76ddadce" />
+    <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=c673637a" />
     
     
 
@@ -34,30 +34,69 @@
   body {
     --color-code-background: #eeffcc;
   --color-code-foreground: black;
-  --color-brand-primary: #0066cc;
+  --font-stack: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Segoe UI', sans-serif;
+  --font-stack--monospace: 'SFMono-Regular', ui-monospace, 'Cascadia Code', 'Liberation Mono', Menlo, monospace;
+  --color-brand-primary: #007aff;
   --color-brand-content: #0066cc;
-  --color-code-background: #f5f5f5;
-  --color-inline-code-background: #f0f0f0;
+  --color-api-name: #1d1d1f;
+  --color-api-pre-name: #6e6e73;
+  --color-background-primary: #ffffff;
+  --color-background-secondary: #f5f5f7;
+  --color-background-hover: #f2f2f7;
+  --color-code-background: #f5f5f7;
+  --color-inline-code-background: #f2f2f7;
+  --color-sidebar-background: #fbfbfd;
+  --color-sidebar-background-border: #d2d2d7;
+  --color-toc-background: #ffffff;
+  --color-toc-background-border: #d2d2d7;
+  --color-admonition-background: #f5f5f7;
+  --color-admonition-title-background: #e8f2ff;
   
   }
   @media not print {
     body[data-theme="dark"] {
       --color-code-background: #202020;
   --color-code-foreground: #d0d0d0;
-  --color-brand-primary: #3b82f6;
-  --color-brand-content: #3b82f6;
-  --color-code-background: #1e293b;
-  --color-inline-code-background: #334155;
+  --font-stack: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Segoe UI', sans-serif;
+  --font-stack--monospace: 'SFMono-Regular', ui-monospace, 'Cascadia Code', 'Liberation Mono', Menlo, monospace;
+  --color-brand-primary: #0a84ff;
+  --color-brand-content: #409cff;
+  --color-api-name: #f5f5f7;
+  --color-api-pre-name: #a1a1a6;
+  --color-background-primary: #1d1d1f;
+  --color-background-secondary: #2c2c2e;
+  --color-background-hover: #3a3a3c;
+  --color-code-background: #2c2c2e;
+  --color-inline-code-background: #3a3a3c;
+  --color-sidebar-background: #161617;
+  --color-sidebar-background-border: #38383a;
+  --color-toc-background: #1d1d1f;
+  --color-toc-background-border: #38383a;
+  --color-admonition-background: #2c2c2e;
+  --color-admonition-title-background: #06345f;
   
     }
     @media (prefers-color-scheme: dark) {
       body:not([data-theme="light"]) {
         --color-code-background: #202020;
   --color-code-foreground: #d0d0d0;
-  --color-brand-primary: #3b82f6;
-  --color-brand-content: #3b82f6;
-  --color-code-background: #1e293b;
-  --color-inline-code-background: #334155;
+  --font-stack: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Segoe UI', sans-serif;
+  --font-stack--monospace: 'SFMono-Regular', ui-monospace, 'Cascadia Code', 'Liberation Mono', Menlo, monospace;
+  --color-brand-primary: #0a84ff;
+  --color-brand-content: #409cff;
+  --color-api-name: #f5f5f7;
+  --color-api-pre-name: #a1a1a6;
+  --color-background-primary: #1d1d1f;
+  --color-background-secondary: #2c2c2e;
+  --color-background-hover: #3a3a3c;
+  --color-code-background: #2c2c2e;
+  --color-inline-code-background: #3a3a3c;
+  --color-sidebar-background: #161617;
+  --color-sidebar-background-border: #38383a;
+  --color-toc-background: #1d1d1f;
+  --color-toc-background-border: #38383a;
+  --color-admonition-background: #2c2c2e;
+  --color-admonition-title-background: #06345f;
   
       }
     }
@@ -189,7 +228,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../index.html"><div class="brand">pysradb 3.0.0.dev0 documentation</div></a>
+      <a href="../index.html"><div class="brand">pysradb: SRA, ENA, and GEO metadata search</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -213,7 +252,7 @@
     <img class="sidebar-logo" src="../_static/pysradb_v3.png" alt="Logo"/>
   </div>
   
-  <span class="sidebar-brand-text">pysradb 3.0.0.dev0 documentation</span>
+  <span class="sidebar-brand-text">pysradb: SRA, ENA, and GEO metadata search</span>
   
 </a><form class="sidebar-search-container" method="get" action="../search.html" role="search">
   <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
@@ -221,18 +260,32 @@
   <input type="hidden" name="area" value="default">
 </form>
 <div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
-  <ul>
+  <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../quickstart.html">Quickstart</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../cmdline.html">CLI</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../python-api-usage.html">Python API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mcp.html">MCP server</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../case_studies.html">Case Studies</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../notebooks.html">Tutorials &amp; Notebooks</a></li>
+<li class="toctree-l1 current has-children"><a class="reference internal" href="../notebooks.html">Tutorials &amp; Notebooks</a><input aria-label="Toggle navigation of Tutorials &amp; Notebooks" checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="README.html">pysradb notebooks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="01.Python-API_demo.html">Python API Demo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="02.Commandline_download.html">Command-line Download</a></li>
+<li class="toctree-l2"><a class="reference internal" href="03.ParallelDownload.html">Parallel Download</a></li>
+<li class="toctree-l2"><a class="reference internal" href="04.SRA_to_fastq_conda.html">Converting SRA to FASTQ using Conda</a></li>
+<li class="toctree-l2"><a class="reference internal" href="05.Downloading_subsets_of_a_project.html">Selecting Subsets of a Project</a></li>
+<li class="toctree-l2"><a class="reference internal" href="06.Multiple_SRPs.html">Querying Multiple Projects</a></li>
+<li class="toctree-l2"><a class="reference internal" href="07.Query_Search.html">Query and Search</a></li>
+<li class="toctree-l2 current current-page"><a class="current reference internal" href="#">Extract Identifiers from PMC/DOI</a></li>
+<li class="toctree-l2"><a class="reference internal" href="09.Metadata_enrichment.html">Metadata Enrichment with Optional LLM Backends</a></li>
+<li class="toctree-l2"><a class="reference internal" href="10.Parse_Bioscience_Search.html">Parse BioScience Search</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="../commands.html">API Documentation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../contributing.html">Contributing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../authors.html">Credits</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../history.html">History</a></li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../modules.html">pysradb</a><input aria-label="Toggle navigation of pysradb" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../modules.html">pysradb</a><input aria-label="Toggle navigation of pysradb" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../pysradb.html">pysradb package</a></li>
 </ul>
 </li>
@@ -256,12 +309,16 @@
         </a>
         <div class="content-icon-container">
           <div class="view-this-page">
-  <a class="muted-link" href="../_sources/notebooks/08.PMC_DOI_Identifiers.ipynb.txt" title="View this page">
+  <a class="muted-link" href="https://github.com/saketkc/pysradb/blob/develop/docs/notebooks/08.PMC_DOI_Identifiers.ipynb?plain=true" title="View this page">
     <svg><use href="#svg-eye"></use></svg>
     <span class="visually-hidden">View this page</span>
   </a>
-</div>
-<div class="theme-toggle-container theme-toggle-content">
+</div><div class="edit-this-page">
+  <a class="muted-link" href="https://github.com/saketkc/pysradb/edit/develop/docs/notebooks/08.PMC_DOI_Identifiers.ipynb" rel="edit" title="Edit this page">
+    <svg><use href="#svg-pencil"></use></svg>
+    <span class="visually-hidden">Edit this page</span>
+  </a>
+</div><div class="theme-toggle-container theme-toggle-content">
             <button class="theme-toggle" aria-label="Toggle Light / Dark / Auto color theme">
               <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
               <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
@@ -278,8 +335,8 @@
 <section id="Extract-Identifiers-from-PMC/DOI">
 <h1>Extract Identifiers from PMC/DOI<a class="headerlink" href="#Extract-Identifiers-from-PMC/DOI" title="Link to this heading">¶</a></h1>
 <p>This notebook shows how to extract SRA identifiers from PubMed Central articles and DOI references.</p>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Install pysradb if not already installed</span>
@@ -296,6 +353,23 @@
 </pre></div>
 </div>
 </div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+pysradb 3.0.0.dev0 is already installed
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+/home/runner/work/pysradb/pysradb/pysradb/download.py:15: TqdmExperimentalWarning: Using `tqdm.autonotebook.tqdm` in notebook mode. Use `tqdm.tqdm` instead to force console mode (e.g. in jupyter console)
+  from tqdm.autonotebook import tqdm
+</pre></div></div>
+</div>
 <section id="Extracting-Database-Identifiers-from-Literature-(PMC/DOI)">
 <h2>Extracting Database Identifiers from Literature (PMC/DOI)<a class="headerlink" href="#Extracting-Database-Identifiers-from-Literature-(PMC/DOI)" title="Link to this heading">¶</a></h2>
 <p>This notebook demonstrates how to extract database identifiers (GSE, PRJNA, SRP, SRR, SRX, SRS) from:</p>
@@ -308,8 +382,8 @@
 <section id="Setup">
 <h2>Setup<a class="headerlink" href="#Setup" title="Link to this heading">¶</a></h2>
 <p>First, let’s import pysradb and create a connection:</p>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">pysradb.sraweb</span><span class="w"> </span><span class="kn">import</span> <span class="n">SRAweb</span>
@@ -319,21 +393,12 @@
 </pre></div>
 </div>
 </div>
-<div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area stderr docutils container">
-<div class="highlight"><pre>
-/Users/saket/github/pysradb/pysradb/utils.py:14: TqdmExperimentalWarning: Using `tqdm.autonotebook.tqdm` in notebook mode. Use `tqdm.tqdm` instead to force console mode (e.g. in jupyter console)
-  from tqdm.autonotebook import tqdm
-</pre></div></div>
-</div>
 </section>
 <section id="Example-1:-Extract-Identifiers-from-PMID">
 <h2>Example 1: Extract Identifiers from PMID<a class="headerlink" href="#Example-1:-Extract-Identifiers-from-PMID" title="Link to this heading">¶</a></h2>
 <p>Let’s extract all database identifiers from a PubMed article using its PMID:</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Extract all identifiers from PMID 39528918</span>
@@ -354,7 +419,7 @@ Identifiers found for PMID 39528918:
 </pre></div></div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
 </pre></div>
 </div>
 <div class="output_area rendered_html docutils container">
@@ -392,7 +457,7 @@ Identifiers found for PMID 39528918:
       <td>39528918</td>
       <td>PMC11552371</td>
       <td>GSE253406</td>
-      <td>None</td>
+      <td>PRJNA1065472</td>
       <td>SRP484103</td>
       <td>None</td>
       <td>None</td>
@@ -407,7 +472,7 @@ Identifiers found for PMID 39528918:
 <h2>Example 2: Get Only GSE IDs from PMID<a class="headerlink" href="#Example-2:-Get-Only-GSE-IDs-from-PMID" title="Link to this heading">¶</a></h2>
 <p>Sometimes you only need specific identifier types:</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Get only GSE identifiers</span>
@@ -426,7 +491,7 @@ GSE identifiers:
 </pre></div></div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
 </pre></div>
 </div>
 <div class="output_area rendered_html docutils container">
@@ -469,7 +534,7 @@ GSE identifiers:
 <h2>Example 3: Get Only SRP IDs from PMID<a class="headerlink" href="#Example-3:-Get-Only-SRP-IDs-from-PMID" title="Link to this heading">¶</a></h2>
 <p><strong>Important:</strong> Even if the paper only mentions GSE IDs, pysradb will automatically convert them to SRP!</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Get only SRP identifiers</span>
@@ -489,7 +554,7 @@ SRP identifiers (auto-converted from GSE if needed):
 </pre></div></div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
 </pre></div>
 </div>
 <div class="output_area rendered_html docutils container">
@@ -532,7 +597,7 @@ SRP identifiers (auto-converted from GSE if needed):
 <h2>Example 4: Process Multiple PMIDs<a class="headerlink" href="#Example-4:-Process-Multiple-PMIDs" title="Link to this heading">¶</a></h2>
 <p>You can batch process multiple PMIDs at once:</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Process multiple PMIDs</span>
@@ -553,7 +618,7 @@ Identifiers from 2 PMIDs:
 </pre></div></div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
 </pre></div>
 </div>
 <div class="output_area rendered_html docutils container">
@@ -591,7 +656,7 @@ Identifiers from 2 PMIDs:
       <td>39528918</td>
       <td>PMC11552371</td>
       <td>GSE253406</td>
-      <td>None</td>
+      <td>PRJNA1065472</td>
       <td>SRP484103</td>
       <td>None</td>
       <td>None</td>
@@ -601,9 +666,9 @@ Identifiers from 2 PMIDs:
       <th>1</th>
       <td>27373336</td>
       <td>PMC4958508</td>
-      <td>None</td>
-      <td>None</td>
-      <td>None</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
       <td>None</td>
       <td>None</td>
       <td>None</td>
@@ -617,7 +682,7 @@ Identifiers from 2 PMIDs:
 <h2>Example 5: Extract from PMC ID<a class="headerlink" href="#Example-5:-Extract-from-PMC-ID" title="Link to this heading">¶</a></h2>
 <p>If you have a PMC ID directly, you can use it:</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Extract from PMC ID</span>
@@ -636,7 +701,7 @@ Identifiers from PMC article:
 </pre></div></div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
 </pre></div>
 </div>
 <div class="output_area rendered_html docutils container">
@@ -687,7 +752,7 @@ Identifiers from PMC article:
 <h2>Example 6: Extract from DOI<a class="headerlink" href="#Example-6:-Extract-from-DOI" title="Link to this heading">¶</a></h2>
 <p>You can also extract identifiers directly from a DOI:</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Extract from DOI</span>
@@ -708,7 +773,7 @@ Identifiers from DOI 10.12688/f1000research.18676.1:
 </pre></div></div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
 </pre></div>
 </div>
 <div class="output_area rendered_html docutils container">
@@ -748,7 +813,7 @@ Identifiers from DOI 10.12688/f1000research.18676.1:
       <td>31114675</td>
       <td>PMC6505635</td>
       <td>GSE100007,GSE24355,GSE25842,GSE41637</td>
-      <td>None</td>
+      <td>PRJNA132809,PRJNA135759,PRJNA152347,PRJNA390315</td>
       <td>SRP000941,SRP003870,SRP005378,SRP010679,SRP109126</td>
       <td>SRR403882,SRR403883,SRR403884,SRR403885,SRR403...</td>
       <td>SRX118285,SRX118286,SRX118287,SRX118288,SRX118...</td>
@@ -762,7 +827,7 @@ Identifiers from DOI 10.12688/f1000research.18676.1:
 <section id="Example-7:-Get-GSE-from-DOI">
 <h2>Example 7: Get GSE from DOI<a class="headerlink" href="#Example-7:-Get-GSE-from-DOI" title="Link to this heading">¶</a></h2>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Get only GSE from DOI</span>
@@ -780,8 +845,17 @@ Identifiers from DOI 10.12688/f1000research.18676.1:
 GSE identifiers from DOI:
 </pre></div></div>
 </div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+/home/runner/work/pysradb/pysradb/pysradb/sraweb.py:3634: UserWarning: Network error while getting PMID for DOI 10.12688/f1000research.18676.1: 429 Client Error: Too Many Requests for url: https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi?db=pubmed&amp;term=10.12688%2Ff1000research.18676.1%5BDOI%5D&amp;retmode=json
+  warnings.warn(f&#34;Network error while getting PMID for DOI {doi}: {e}&#34;)
+</pre></div></div>
+</div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
 </pre></div>
 </div>
 <div class="output_area rendered_html docutils container">
@@ -813,9 +887,9 @@ GSE identifiers from DOI:
     <tr>
       <th>0</th>
       <td>10.12688/f1000research.18676.1</td>
-      <td>31114675</td>
-      <td>PMC6505635</td>
-      <td>GSE100007,GSE24355,GSE25842,GSE41637</td>
+      <td>&lt;NA&gt;</td>
+      <td>&lt;NA&gt;</td>
+      <td>&lt;NA&gt;</td>
     </tr>
   </tbody>
 </table>
@@ -826,7 +900,7 @@ GSE identifiers from DOI:
 <h2>Example 8: Complete Workflow - DOI to Data Download<a class="headerlink" href="#Example-8:-Complete-Workflow---DOI-to-Data-Download" title="Link to this heading">¶</a></h2>
 <p>Here’s a complete workflow from DOI to downloading the actual data:</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Step 1: Extract SRP from DOI</span>
@@ -838,22 +912,28 @@ GSE identifiers from DOI:
 </pre></div>
 </div>
 </div>
-<div class="nboutput nblast docutils container">
+<div class="nboutput docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
 Step 1: Extracting identifiers from DOI: 10.12688/f1000research.18676.1
-                              doi      pmid      pmc_id  \
-0  10.12688/f1000research.18676.1  31114675  PMC6505635
-
-                                             srp_ids
-0  SRP000941,SRP003870,SRP005378,SRP010679,SRP109126
+                              doi  pmid pmc_id srp_ids
+0  10.12688/f1000research.18676.1  &lt;NA&gt;   &lt;NA&gt;    &lt;NA&gt;
 
 </pre></div></div>
 </div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+/home/runner/work/pysradb/pysradb/pysradb/sraweb.py:3634: UserWarning: Network error while getting PMID for DOI 10.12688/f1000research.18676.1: 429 Client Error: Too Many Requests for url: https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi?db=pubmed&amp;term=10.12688%2Ff1000research.18676.1%5BDOI%5D&amp;retmode=json
+  warnings.warn(f&#34;Network error while getting PMID for DOI {doi}: {e}&#34;)
+</pre></div></div>
+</div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Step 2: Extract SRP ID from results</span>
@@ -880,60 +960,7 @@ Step 1: Extracting identifiers from DOI: 10.12688/f1000research.18676.1
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Step 2: Found SRP ID: SRP000941
-
-Step 3: Getting metadata for SRP000941
-Found 2207 samples
-     study_accession                                     study_title  \
-16         SRP000941  UCSD Human Reference Epigenome Mapping Project
-1055       SRP000941  UCSD Human Reference Epigenome Mapping Project
-1053       SRP000941  UCSD Human Reference Epigenome Mapping Project
-1054       SRP000941  UCSD Human Reference Epigenome Mapping Project
-968        SRP000941  UCSD Human Reference Epigenome Mapping Project
-
-     experiment_accession                                   experiment_title  \
-16              SRX027874  Reference Epigenome: ChIP-Seq Analysis of H3K9...
-1055            SRX006235  Reference Epigenome: ChIP-Seq Analysis of H3K3...
-1053            SRX006237  Reference Epigenome: ChIP-Seq Analysis of H3K4...
-1054            SRX006236  Reference Epigenome: ChIP-Seq Analysis of H3K4...
-968             SRX006240  Whole genome shotgun bisulfite sequencing of t...
-
-                                        experiment_desc organism_taxid  \
-16    Reference Epigenome: ChIP-Seq Analysis of H3K9...           9606
-1055  Reference Epigenome: ChIP-Seq Analysis of H3K3...           9606
-1053  Reference Epigenome: ChIP-Seq Analysis of H3K4...           9606
-1054  Reference Epigenome: ChIP-Seq Analysis of H3K4...           9606
-968   Whole genome shotgun bisulfite sequencing of t...           9606
-
-     organism_name        library_name library_strategy library_source  ...  \
-16    Homo sapiens               LL218         ChIP-Seq        GENOMIC  ...
-1055  Homo sapiens               LL220         ChIP-Seq        GENOMIC  ...
-1053  Homo sapiens               LL227         ChIP-Seq        GENOMIC  ...
-1054  Homo sapiens               LL228         ChIP-Seq        GENOMIC  ...
-968   Homo sapiens  methylC-seq_h1_r2b    Bisulfite-Seq        GENOMIC  ...
-
-         biosample bioproject                   instrument  \
-16    SAMN00004698       &lt;NA&gt;  Illumina Genome Analyzer II
-1055  SAMN00004459       &lt;NA&gt;  Illumina Genome Analyzer II
-1053  SAMN00004459       &lt;NA&gt;  Illumina Genome Analyzer II
-1054  SAMN00004459       &lt;NA&gt;  Illumina Genome Analyzer II
-968   SAMN00004462       &lt;NA&gt;  Illumina Genome Analyzer II
-
-                 instrument_model instrument_model_desc total_spots  \
-16    Illumina Genome Analyzer II              ILLUMINA    59041190
-1055  Illumina Genome Analyzer II              ILLUMINA    12466602
-1053  Illumina Genome Analyzer II              ILLUMINA     7763232
-1054  Illumina Genome Analyzer II              ILLUMINA     7110370
-968   Illumina Genome Analyzer II              ILLUMINA   544393574
-
-       total_size run_accession run_total_spots run_total_bases
-16     1555248627     SRR018453        11642838       419142168
-1055    223017616     SRR018454        12466602       448797672
-1053    204130918     SRR018455         7763232       279476352
-1054    185053545     SRR018456         7110370       255973320
-968   32242220269     SRR018975        16729745      1455487815
-
-[5 rows x 24 columns]
+No SRP IDs found for this DOI
 </pre></div></div>
 </div>
 </section>
@@ -941,7 +968,7 @@ Found 2207 samples
 <h2>Example 9: Batch Processing Literature<a class="headerlink" href="#Example-9:-Batch-Processing-Literature" title="Link to this heading">¶</a></h2>
 <p>Process multiple papers from a literature search:</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Simulate PMIDs from a literature search</span>
@@ -964,16 +991,36 @@ Found 2207 samples
 <div class="nboutput docutils container">
 <div class="prompt empty docutils container">
 </div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+/home/runner/work/pysradb/pysradb/pysradb/sraweb.py:3689: UserWarning: Failed to get PMC ID for PMID 39528918: 429 Client Error: Too Many Requests for url: https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esummary.fcgi?db=pubmed&amp;id=39528918&amp;retmode=json
+  warnings.warn(f&#34;Failed to get PMC ID for PMID {pmid}: {e}&#34;)
+/home/runner/work/pysradb/pysradb/pysradb/sraweb.py:3689: UserWarning: Failed to get PMC ID for PMID 27373336: 429 Client Error: Too Many Requests for url: https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esummary.fcgi?db=pubmed&amp;id=27373336&amp;retmode=json
+  warnings.warn(f&#34;Failed to get PMC ID for PMID {pmid}: {e}&#34;)
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
 Processed 3 papers
-Found 1 papers with SRA data
+Found 0 papers with SRA data
 
 Papers with SRA data:
 </pre></div></div>
 </div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+/home/runner/work/pysradb/pysradb/pysradb/sraweb.py:3689: UserWarning: Failed to get PMC ID for PMID 30873266: 429 Client Error: Too Many Requests for url: https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esummary.fcgi?db=pubmed&amp;id=30873266&amp;retmode=json
+  warnings.warn(f&#34;Failed to get PMC ID for PMID {pmid}: {e}&#34;)
+</pre></div></div>
+</div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
 </pre></div>
 </div>
 <div class="output_area rendered_html docutils container">
@@ -1006,17 +1053,6 @@ Papers with SRA data:
     </tr>
   </thead>
   <tbody>
-    <tr>
-      <th>0</th>
-      <td>39528918</td>
-      <td>PMC11552371</td>
-      <td>GSE253406</td>
-      <td>None</td>
-      <td>SRP484103</td>
-      <td>None</td>
-      <td>None</td>
-      <td>None</td>
-    </tr>
   </tbody>
 </table>
 </div></div>
@@ -1026,7 +1062,7 @@ Papers with SRA data:
 <h2>Example 10: Extract Identifiers from Custom Text<a class="headerlink" href="#Example-10:-Extract-Identifiers-from-Custom-Text" title="Link to this heading">¶</a></h2>
 <p>You can also extract identifiers from any text:</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Custom text with database identifiers</span>
@@ -1080,16 +1116,25 @@ Identifiers found in text:
 </pre></div>
 </div>
 </div>
-<div class="nboutput nblast docutils container">
+<div class="nboutput docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
 PMID to PMC conversion:
-{&#39;27373336&#39;: &#39;PMC4958508&#39;}
+{&#39;27373336&#39;: None}
 
 DOI to PMID conversion:
-{&#39;10.12688/f1000research.18676.1&#39;: &#39;31114675&#39;}
+{&#39;10.12688/f1000research.18676.1&#39;: None}
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+/home/runner/work/pysradb/pysradb/pysradb/sraweb.py:3634: UserWarning: Network error while getting PMID for DOI 10.12688/f1000research.18676.1: 429 Client Error: Too Many Requests for url: https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi?db=pubmed&amp;term=10.12688%2Ff1000research.18676.1%5BDOI%5D&amp;retmode=json
+  warnings.warn(f&#34;Network error while getting PMID for DOI {doi}: {e}&#34;)
 </pre></div></div>
 </div>
 <div class="nbinput nblast docutils container">
@@ -1108,8 +1153,26 @@ DOI to PMID conversion:
       <footer>
         
         <div class="related-pages">
-          
-          
+          <a class="next-page" href="09.Metadata_enrichment.html">
+              <div class="page-info">
+                <div class="context">
+                  <span>Next</span>
+                </div>
+                <div class="title">Metadata Enrichment with Optional LLM Backends</div>
+              </div>
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+            </a>
+          <a class="prev-page" href="07.Query_Search.html">
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+              <div class="page-info">
+                <div class="context">
+                  <span>Previous</span>
+                </div>
+                
+                <div class="title">Query and Search</div>
+                
+              </div>
+            </a>
         </div>
         <div class="bottom-of-page">
           <div class="left-details">
@@ -1166,12 +1229,14 @@ DOI to PMID conversion:
     </aside>
   </div>
 </div><script src="../_static/documentation_options.js?v=afcbd73c"></script>
-    <script src="../_static/doctools.js?v=9bcbadda"></script>
-    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../_static/scripts/furo.js?v=46bd48cc"></script>
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@jupyter-widgets/html-manager@^1.0.1/dist/embed-amd.js"></script>
     <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
-    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-mml-chtml.js"></script>
     <script src="../_static/copy-button.js?v=5b6a40c7"></script>
     </body>
 </html>

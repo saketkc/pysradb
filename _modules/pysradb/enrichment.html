@@ -1,0 +1,834 @@
+<!doctype html>
+<html class="no-js" lang="en" data-content_root="../../">
+  <head><meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="color-scheme" content="light dark">
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-CKQZFCEENZ"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            
+            gtag('config', 'G-CKQZFCEENZ');
+            
+        </script>
+    <link rel="index" title="Index" href="../../genindex.html"><link rel="search" title="Search" href="../../search.html">
+        <link rel="canonical" href="https://saket-choudhary.me/pysradb/_modules/pysradb/enrichment.html">
+        <link rel="prefetch" href="../../_static/pysradb_v3.png" as="image">
+
+    <!-- Generated with Sphinx 9.0.4 and Furo 2025.12.19 -->
+        <title>pysradb.enrichment - pysradb: SRA, ENA, and GEO metadata search</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?v=7bdb33bb" />
+    <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=4ae1632d" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/furo-extensions.css?v=8dab3a3b" />
+    <link rel="stylesheet" type="text/css" href="../../_static/custom.css?v=c673637a" />
+    
+    
+
+
+<style>
+  body {
+    --color-code-background: #eeffcc;
+  --color-code-foreground: black;
+  --font-stack: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Segoe UI', sans-serif;
+  --font-stack--monospace: 'SFMono-Regular', ui-monospace, 'Cascadia Code', 'Liberation Mono', Menlo, monospace;
+  --color-brand-primary: #007aff;
+  --color-brand-content: #0066cc;
+  --color-api-name: #1d1d1f;
+  --color-api-pre-name: #6e6e73;
+  --color-background-primary: #ffffff;
+  --color-background-secondary: #f5f5f7;
+  --color-background-hover: #f2f2f7;
+  --color-code-background: #f5f5f7;
+  --color-inline-code-background: #f2f2f7;
+  --color-sidebar-background: #fbfbfd;
+  --color-sidebar-background-border: #d2d2d7;
+  --color-toc-background: #ffffff;
+  --color-toc-background-border: #d2d2d7;
+  --color-admonition-background: #f5f5f7;
+  --color-admonition-title-background: #e8f2ff;
+  
+  }
+  @media not print {
+    body[data-theme="dark"] {
+      --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  --font-stack: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Segoe UI', sans-serif;
+  --font-stack--monospace: 'SFMono-Regular', ui-monospace, 'Cascadia Code', 'Liberation Mono', Menlo, monospace;
+  --color-brand-primary: #0a84ff;
+  --color-brand-content: #409cff;
+  --color-api-name: #f5f5f7;
+  --color-api-pre-name: #a1a1a6;
+  --color-background-primary: #1d1d1f;
+  --color-background-secondary: #2c2c2e;
+  --color-background-hover: #3a3a3c;
+  --color-code-background: #2c2c2e;
+  --color-inline-code-background: #3a3a3c;
+  --color-sidebar-background: #161617;
+  --color-sidebar-background-border: #38383a;
+  --color-toc-background: #1d1d1f;
+  --color-toc-background-border: #38383a;
+  --color-admonition-background: #2c2c2e;
+  --color-admonition-title-background: #06345f;
+  
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  --font-stack: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Segoe UI', sans-serif;
+  --font-stack--monospace: 'SFMono-Regular', ui-monospace, 'Cascadia Code', 'Liberation Mono', Menlo, monospace;
+  --color-brand-primary: #0a84ff;
+  --color-brand-content: #409cff;
+  --color-api-name: #f5f5f7;
+  --color-api-pre-name: #a1a1a6;
+  --color-background-primary: #1d1d1f;
+  --color-background-secondary: #2c2c2e;
+  --color-background-hover: #3a3a3c;
+  --color-code-background: #2c2c2e;
+  --color-inline-code-background: #3a3a3c;
+  --color-sidebar-background: #161617;
+  --color-sidebar-background-border: #38383a;
+  --color-toc-background: #1d1d1f;
+  --color-toc-background-border: #38383a;
+  --color-admonition-background: #2c2c2e;
+  --color-admonition-title-background: #06345f;
+  
+      }
+    }
+  }
+</style></head>
+  <body>
+    
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-with-moon" viewBox="0 0 24 24">
+    <title>Auto light/dark, in light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path style="opacity: 50%" d="M 5.411 14.504 C 5.471 14.504 5.532 14.504 5.591 14.504 C 3.639 16.319 4.383 19.569 6.931 20.352 C 7.693 20.586 8.512 20.551 9.25 20.252 C 8.023 23.207 4.056 23.725 2.11 21.184 C 0.166 18.642 1.702 14.949 4.874 14.536 C 5.051 14.512 5.231 14.5 5.411 14.5 L 5.411 14.504 Z"/>
+      <line x1="14.5" y1="3.25" x2="14.5" y2="1.25"/>
+      <line x1="14.5" y1="15.85" x2="14.5" y2="17.85"/>
+      <line x1="10.044" y1="5.094" x2="8.63" y2="3.68"/>
+      <line x1="19" y1="14.05" x2="20.414" y2="15.464"/>
+      <line x1="8.2" y1="9.55" x2="6.2" y2="9.55"/>
+      <line x1="20.8" y1="9.55" x2="22.8" y2="9.55"/>
+      <line x1="10.044" y1="14.006" x2="8.63" y2="15.42"/>
+      <line x1="19" y1="5.05" x2="20.414" y2="3.636"/>
+      <circle cx="14.5" cy="9.55" r="3.6"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon-with-sun" viewBox="0 0 24 24">
+    <title>Auto light/dark, in dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path d="M 8.282 7.007 C 8.385 7.007 8.494 7.007 8.595 7.007 C 5.18 10.184 6.481 15.869 10.942 17.24 C 12.275 17.648 13.706 17.589 15 17.066 C 12.851 22.236 5.91 23.143 2.505 18.696 C -0.897 14.249 1.791 7.786 7.342 7.063 C 7.652 7.021 7.965 7 8.282 7 L 8.282 7.007 Z"/>
+      <line style="opacity: 50%" x1="18" y1="3.705" x2="18" y2="2.5"/>
+      <line style="opacity: 50%" x1="18" y1="11.295" x2="18" y2="12.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="4.816" x2="14.464" y2="3.964"/>
+      <line style="opacity: 50%" x1="20.711" y1="10.212" x2="21.563" y2="11.063"/>
+      <line style="opacity: 50%" x1="14.205" y1="7.5" x2="13.001" y2="7.5"/>
+      <line style="opacity: 50%" x1="21.795" y1="7.5" x2="23" y2="7.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="10.184" x2="14.464" y2="11.036"/>
+      <line style="opacity: 50%" x1="20.711" y1="4.789" x2="21.563" y2="3.937"/>
+      <circle style="opacity: 50%" cx="18" cy="7.5" r="2.169"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-pencil" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-pencil-code">
+      <path d="M4 20h4l10.5 -10.5a2.828 2.828 0 1 0 -4 -4l-10.5 10.5v4" />
+      <path d="M13.5 6.5l4 4" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+  <symbol id="svg-eye" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-eye-code">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
+      <path
+        d="M11.11 17.958c-3.209 -.307 -5.91 -2.293 -8.11 -5.958c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6c-.21 .352 -.427 .688 -.647 1.008" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation" aria-label="Toggle site navigation sidebar">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc" aria-label="Toggle table of contents sidebar">
+<label class="overlay sidebar-overlay" for="__navigation"></label>
+<label class="overlay toc-overlay" for="__toc"></label>
+
+<a class="skip-to-content muted-link" href="#furo-main-content">Skip to content</a>
+
+
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <span class="icon"><svg><use href="#svg-menu"></use></svg></span>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="../../index.html"><div class="brand">pysradb: SRA, ENA, and GEO metadata search</div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle" aria-label="Toggle Light / Dark / Auto color theme">
+          <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+          <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon no-toc" for="__toc">
+        <span class="icon"><svg><use href="#svg-toc"></use></svg></span>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="../../index.html">
+  <div class="sidebar-logo-container">
+    <img class="sidebar-logo" src="../../_static/pysradb_v3.png" alt="Logo"/>
+  </div>
+  
+  <span class="sidebar-brand-text">pysradb: SRA, ENA, and GEO metadata search</span>
+  
+</a><form class="sidebar-search-container" method="get" action="../../search.html" role="search">
+  <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
+  <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../quickstart.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../cmdline.html">CLI</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../python-api-usage.html">Python API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../mcp.html">MCP server</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../case_studies.html">Case Studies</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../notebooks.html">Tutorials &amp; Notebooks</a><input aria-label="Toggle navigation of Tutorials &amp; Notebooks" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../notebooks/README.html">pysradb notebooks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../notebooks/01.Python-API_demo.html">Python API Demo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../notebooks/02.Commandline_download.html">Command-line Download</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../notebooks/03.ParallelDownload.html">Parallel Download</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../notebooks/04.SRA_to_fastq_conda.html">Converting SRA to FASTQ using Conda</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../notebooks/05.Downloading_subsets_of_a_project.html">Selecting Subsets of a Project</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../notebooks/06.Multiple_SRPs.html">Querying Multiple Projects</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../notebooks/07.Query_Search.html">Query and Search</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../notebooks/08.PMC_DOI_Identifiers.html">Extract Identifiers from PMC/DOI</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../notebooks/09.Metadata_enrichment.html">Metadata Enrichment with Optional LLM Backends</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../notebooks/10.Parse_Bioscience_Search.html">Parse BioScience Search</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../commands.html">API Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../contributing.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../authors.html">Credits</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../history.html">History</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../modules.html">pysradb</a><input aria-label="Toggle navigation of pysradb" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../pysradb.html">pysradb package</a></li>
+</ul>
+</li>
+</ul>
+
+</div>
+</div>
+
+      </div>
+      
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
+        <div class="content-icon-container">
+          <div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle" aria-label="Toggle Light / Dark / Auto color theme">
+              <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+              <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon no-toc" for="__toc">
+            <span class="icon"><svg><use href="#svg-toc"></use></svg></span>
+          </label>
+        </div>
+        <article role="main" id="furo-main-content">
+          <h1>Source code for pysradb.enrichment</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span><span class="w"> </span><span class="nn">concurrent.futures</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">importlib.util</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">math</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">time</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">langchain_core.prompts</span><span class="w"> </span><span class="kn">import</span> <span class="n">ChatPromptTemplate</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">langchain_ollama</span><span class="w"> </span><span class="kn">import</span> <span class="n">ChatOllama</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">langchain_openai</span><span class="w"> </span><span class="kn">import</span> <span class="n">ChatOpenAI</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">langgraph.graph</span><span class="w"> </span><span class="kn">import</span> <span class="n">END</span><span class="p">,</span> <span class="n">START</span><span class="p">,</span> <span class="n">StateGraph</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">rich.console</span><span class="w"> </span><span class="kn">import</span> <span class="n">Console</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sentence_transformers</span><span class="w"> </span><span class="kn">import</span> <span class="n">SentenceTransformer</span><span class="p">,</span> <span class="n">util</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">tqdm</span><span class="w"> </span><span class="kn">import</span> <span class="n">tqdm</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing_extensions</span><span class="w"> </span><span class="kn">import</span> <span class="n">TypedDict</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">.utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">confirm</span>
+
+<span class="n">console</span> <span class="o">=</span> <span class="n">Console</span><span class="p">()</span>
+<span class="n">_EMBEDDING_MODELS</span> <span class="o">=</span> <span class="p">{}</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_get_embedding_model</span><span class="p">(</span><span class="n">model_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">model_name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">_EMBEDDING_MODELS</span><span class="p">:</span>
+        <span class="n">console</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s2">&quot;Setting up embedding model...&quot;</span><span class="p">)</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s2">&quot;TOKENIZERS_PARALLELISM&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;false&quot;</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s2">&quot;HF_HUB_DISABLE_PROGRESS_BARS&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;1&quot;</span>
+        <span class="n">_EMBEDDING_MODELS</span><span class="p">[</span><span class="n">model_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">SentenceTransformer</span><span class="p">(</span><span class="n">model_name</span><span class="p">)</span>
+        <span class="n">console</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s2">&quot;Embedding model set up complete&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">_EMBEDDING_MODELS</span><span class="p">[</span><span class="n">model_name</span><span class="p">]</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_warn_if_vllm_missing</span><span class="p">():</span>
+    <span class="k">if</span> <span class="n">importlib</span><span class="o">.</span><span class="n">util</span><span class="o">.</span><span class="n">find_spec</span><span class="p">(</span><span class="s2">&quot;vllm&quot;</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">console</span><span class="o">.</span><span class="n">print</span><span class="p">(</span>
+            <span class="s2">&quot;[yellow]vLLM backend selected, but the optional &#39;vllm&#39; dependency &quot;</span>
+            <span class="s2">&quot;is not installed. Install it with `pip install pysradb[vllm]` &quot;</span>
+            <span class="s2">&quot;(Linux) if you plan to run a local vLLM server. If you are using &quot;</span>
+            <span class="s2">&quot;a remote vLLM endpoint, you can ignore this warning.[/yellow]&quot;</span>
+        <span class="p">)</span>
+
+
+<div class="viewcode-block" id="enrich_df">
+<a class="viewcode-back" href="../../pysradb.html#pysradb.enrichment.enrich_df">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">enrich_df</span><span class="p">(</span>
+    <span class="n">detailed_df</span><span class="p">,</span>
+    <span class="n">basic_cols</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[],</span>
+    <span class="n">enrichment_backend</span><span class="o">=</span><span class="s2">&quot;ollama/granite4:3b&quot;</span><span class="p">,</span>
+    <span class="n">embedding_model</span><span class="o">=</span><span class="s2">&quot;abhinand/MedEmbed-large-v0.1&quot;</span><span class="p">,</span>
+<span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_coerce_str</span><span class="p">(</span><span class="n">value</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">value</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">float</span><span class="p">)</span> <span class="ow">and</span> <span class="n">math</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">value</span><span class="p">):</span>
+            <span class="k">return</span> <span class="kc">None</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">value</span>
+        <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_normalized</span><span class="p">(</span><span class="n">value</span><span class="p">):</span>
+        <span class="n">text</span> <span class="o">=</span> <span class="n">_coerce_str</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">text</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span>
+        <span class="k">return</span> <span class="n">text</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">filter_dict</span><span class="p">(</span><span class="n">d</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">keys</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">({</span><span class="n">k</span><span class="p">:</span> <span class="n">d</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">keys</span> <span class="k">if</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">d</span><span class="p">})</span>
+
+    <span class="n">model</span> <span class="o">=</span> <span class="n">_get_embedding_model</span><span class="p">(</span><span class="n">embedding_model</span><span class="p">)</span>
+    <span class="n">console</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s2">&quot;Enriching metadata in progress...&quot;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">enrichment_backend</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;ollama/&quot;</span><span class="p">):</span>
+        <span class="n">ollama_model</span> <span class="o">=</span> <span class="n">enrichment_backend</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;ollama/&quot;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">llm</span> <span class="o">=</span> <span class="n">ChatOllama</span><span class="p">(</span>
+            <span class="n">model</span><span class="o">=</span><span class="n">ollama_model</span><span class="p">,</span>
+            <span class="n">temperature</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+        <span class="p">)</span>
+    <span class="k">elif</span> <span class="n">enrichment_backend</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;lmstudio/&quot;</span><span class="p">):</span>
+        <span class="n">lmstudio_model</span> <span class="o">=</span> <span class="n">enrichment_backend</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;lmstudio/&quot;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">llm</span> <span class="o">=</span> <span class="n">ChatOpenAI</span><span class="p">(</span>
+            <span class="n">model</span><span class="o">=</span><span class="n">lmstudio_model</span><span class="p">,</span>
+            <span class="n">base_url</span><span class="o">=</span><span class="s2">&quot;http://localhost:1234/v1&quot;</span><span class="p">,</span>
+            <span class="n">api_key</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">temperature</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+        <span class="p">)</span>
+    <span class="k">elif</span> <span class="n">enrichment_backend</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;vllm/&quot;</span><span class="p">):</span>
+        <span class="n">_warn_if_vllm_missing</span><span class="p">()</span>
+        <span class="n">vllm_model</span> <span class="o">=</span> <span class="n">enrichment_backend</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;vllm/&quot;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">llm</span> <span class="o">=</span> <span class="n">ChatOpenAI</span><span class="p">(</span>
+            <span class="n">model</span><span class="o">=</span><span class="n">vllm_model</span><span class="p">,</span>
+            <span class="n">base_url</span><span class="o">=</span><span class="s2">&quot;http://localhost:8000/v1&quot;</span><span class="p">,</span>
+            <span class="n">api_key</span><span class="o">=</span><span class="s2">&quot;EMPTY&quot;</span><span class="p">,</span>  <span class="c1"># type: ignore</span>
+            <span class="n">temperature</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+        <span class="p">)</span>
+    <span class="k">elif</span> <span class="n">enrichment_backend</span> <span class="o">==</span> <span class="s2">&quot;vllm&quot;</span><span class="p">:</span>
+        <span class="n">_warn_if_vllm_missing</span><span class="p">()</span>
+        <span class="n">llm</span> <span class="o">=</span> <span class="n">ChatOpenAI</span><span class="p">(</span>
+            <span class="n">model</span><span class="o">=</span><span class="s2">&quot;ibm-granite/granite-4.0-micro&quot;</span><span class="p">,</span>
+            <span class="n">base_url</span><span class="o">=</span><span class="s2">&quot;http://localhost:8000/v1&quot;</span><span class="p">,</span>
+            <span class="n">api_key</span><span class="o">=</span><span class="s2">&quot;EMPTY&quot;</span><span class="p">,</span>  <span class="c1"># type: ignore</span>
+            <span class="n">temperature</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+        <span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+            <span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;Unsupported enrichment_backend: </span><span class="si">{</span><span class="n">enrichment_backend</span><span class="si">}</span><span class="s2">. &quot;</span>
+                <span class="s2">&quot;Supported formats: &#39;ollama/&lt;model&gt;&#39;, &#39;lmstudio/&lt;model&gt;&#39;, &quot;</span>
+                <span class="s2">&quot;&#39;vllm/&lt;model&gt;&#39;, or &#39;vllm&#39;&quot;</span>
+            <span class="p">)</span>
+        <span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_relevant_keys</span><span class="p">(</span><span class="n">term</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">embeddings</span><span class="p">,</span> <span class="n">keys</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">keys</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">return</span> <span class="p">[]</span>
+        <span class="n">query</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="n">term</span><span class="p">,</span> <span class="n">convert_to_tensor</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">similarities</span> <span class="o">=</span> <span class="n">util</span><span class="o">.</span><span class="n">cos_sim</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="n">embeddings</span><span class="p">)</span>
+        <span class="c1"># Keep dimension to handle single-element case</span>
+        <span class="n">similarities</span> <span class="o">=</span> <span class="n">similarities</span><span class="o">.</span><span class="n">squeeze</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">similarities</span><span class="o">.</span><span class="n">dim</span><span class="p">()</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="c1"># Single element case</span>
+            <span class="k">return</span> <span class="p">[</span><span class="n">keys</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span> <span class="k">if</span> <span class="n">similarities</span><span class="o">.</span><span class="n">item</span><span class="p">()</span> <span class="o">&gt;</span> <span class="mf">0.8</span> <span class="k">else</span> <span class="p">[]</span>
+        <span class="n">relevant_keys</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">similarity</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">similarities</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">similarity</span> <span class="o">&gt;</span> <span class="mf">0.8</span><span class="p">:</span>
+                <span class="n">relevant_keys</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">keys</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+        <span class="k">return</span> <span class="n">relevant_keys</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_sex_keys</span><span class="p">(</span><span class="n">embeddings</span><span class="p">,</span> <span class="n">keys</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]):</span>
+        <span class="k">return</span> <span class="n">get_relevant_keys</span><span class="p">(</span><span class="s2">&quot;sex&quot;</span><span class="p">,</span> <span class="n">embeddings</span><span class="p">,</span> <span class="n">keys</span><span class="p">)</span> <span class="o">+</span> <span class="n">get_relevant_keys</span><span class="p">(</span>
+            <span class="s2">&quot;gender&quot;</span><span class="p">,</span> <span class="n">embeddings</span><span class="p">,</span> <span class="n">keys</span>
+        <span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_age_keys</span><span class="p">(</span><span class="n">embeddings</span><span class="p">,</span> <span class="n">keys</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]):</span>
+        <span class="k">return</span> <span class="n">get_relevant_keys</span><span class="p">(</span><span class="s2">&quot;age&quot;</span><span class="p">,</span> <span class="n">embeddings</span><span class="p">,</span> <span class="n">keys</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_cell_type_keys</span><span class="p">(</span><span class="n">embeddings</span><span class="p">,</span> <span class="n">keys</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]):</span>
+        <span class="k">return</span> <span class="n">get_relevant_keys</span><span class="p">(</span><span class="s2">&quot;cell type&quot;</span><span class="p">,</span> <span class="n">embeddings</span><span class="p">,</span> <span class="n">keys</span><span class="p">)</span> <span class="o">+</span> <span class="n">get_relevant_keys</span><span class="p">(</span>
+            <span class="s2">&quot;histological&quot;</span><span class="p">,</span> <span class="n">embeddings</span><span class="p">,</span> <span class="n">keys</span>
+        <span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_tissue_keys</span><span class="p">(</span><span class="n">embeddings</span><span class="p">,</span> <span class="n">keys</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]):</span>
+        <span class="k">return</span> <span class="p">(</span>
+            <span class="n">get_relevant_keys</span><span class="p">(</span><span class="s2">&quot;tissue&quot;</span><span class="p">,</span> <span class="n">embeddings</span><span class="p">,</span> <span class="n">keys</span><span class="p">)</span>
+            <span class="o">+</span> <span class="n">get_relevant_keys</span><span class="p">(</span><span class="s2">&quot;organ&quot;</span><span class="p">,</span> <span class="n">embeddings</span><span class="p">,</span> <span class="n">keys</span><span class="p">)</span>
+            <span class="o">+</span> <span class="n">get_relevant_keys</span><span class="p">(</span><span class="s2">&quot;body site&quot;</span><span class="p">,</span> <span class="n">embeddings</span><span class="p">,</span> <span class="n">keys</span><span class="p">)</span>
+            <span class="o">+</span> <span class="n">get_relevant_keys</span><span class="p">(</span><span class="s2">&quot;tumor site&quot;</span><span class="p">,</span> <span class="n">embeddings</span><span class="p">,</span> <span class="n">keys</span><span class="p">)</span>
+        <span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_phenotype_keys</span><span class="p">(</span><span class="n">embeddings</span><span class="p">,</span> <span class="n">keys</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]):</span>
+        <span class="k">return</span> <span class="n">get_relevant_keys</span><span class="p">(</span><span class="s2">&quot;phenotype&quot;</span><span class="p">,</span> <span class="n">embeddings</span><span class="p">,</span> <span class="n">keys</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_strain_keys</span><span class="p">(</span><span class="n">embeddings</span><span class="p">,</span> <span class="n">keys</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]):</span>
+        <span class="k">return</span> <span class="n">get_relevant_keys</span><span class="p">(</span><span class="s2">&quot;strain&quot;</span><span class="p">,</span> <span class="n">embeddings</span><span class="p">,</span> <span class="n">keys</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_ethnicity_keys</span><span class="p">(</span><span class="n">embeddings</span><span class="p">,</span> <span class="n">keys</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]):</span>
+        <span class="k">return</span> <span class="n">get_relevant_keys</span><span class="p">(</span><span class="s2">&quot;ethnicity&quot;</span><span class="p">,</span> <span class="n">embeddings</span><span class="p">,</span> <span class="n">keys</span><span class="p">)</span> <span class="o">+</span> <span class="n">get_relevant_keys</span><span class="p">(</span>
+            <span class="s2">&quot;population&quot;</span><span class="p">,</span> <span class="n">embeddings</span><span class="p">,</span> <span class="n">keys</span>
+        <span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_disease_keys</span><span class="p">(</span><span class="n">embeddings</span><span class="p">,</span> <span class="n">keys</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]):</span>
+        <span class="k">return</span> <span class="p">(</span>
+            <span class="n">get_relevant_keys</span><span class="p">(</span><span class="s2">&quot;disease&quot;</span><span class="p">,</span> <span class="n">embeddings</span><span class="p">,</span> <span class="n">keys</span><span class="p">)</span>
+            <span class="o">+</span> <span class="n">get_relevant_keys</span><span class="p">(</span><span class="s2">&quot;tumor&quot;</span><span class="p">,</span> <span class="n">embeddings</span><span class="p">,</span> <span class="n">keys</span><span class="p">)</span>
+            <span class="o">+</span> <span class="n">get_relevant_keys</span><span class="p">(</span><span class="s2">&quot;infection&quot;</span><span class="p">,</span> <span class="n">embeddings</span><span class="p">,</span> <span class="n">keys</span><span class="p">)</span>
+            <span class="o">+</span> <span class="n">get_relevant_keys</span><span class="p">(</span><span class="s2">&quot;cancer&quot;</span><span class="p">,</span> <span class="n">embeddings</span><span class="p">,</span> <span class="n">keys</span><span class="p">)</span>
+            <span class="o">+</span> <span class="n">get_relevant_keys</span><span class="p">(</span><span class="s2">&quot;study disease&quot;</span><span class="p">,</span> <span class="n">embeddings</span><span class="p">,</span> <span class="n">keys</span><span class="p">)</span>
+            <span class="o">+</span> <span class="n">get_tissue_keys</span><span class="p">(</span><span class="n">embeddings</span><span class="p">,</span> <span class="n">keys</span><span class="p">)</span>
+            <span class="o">+</span> <span class="n">get_relevant_keys</span><span class="p">(</span><span class="s2">&quot;source&quot;</span><span class="p">,</span> <span class="n">embeddings</span><span class="p">,</span> <span class="n">keys</span><span class="p">)</span>
+            <span class="o">+</span> <span class="n">get_relevant_keys</span><span class="p">(</span><span class="s2">&quot;subject status&quot;</span><span class="p">,</span> <span class="n">embeddings</span><span class="p">,</span> <span class="n">keys</span><span class="p">)</span>
+        <span class="p">)</span>
+
+    <span class="c1"># def get_host_keys(embeddings, keys: list[str]):</span>
+    <span class="c1">#     return get_relevant_keys(&quot;host&quot;, embeddings, keys)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_refined_keys</span><span class="p">(</span><span class="n">raw_keys</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+        <span class="n">keys</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">raw_keys</span><span class="p">:</span>
+            <span class="n">refined_key</span> <span class="o">=</span> <span class="n">key</span><span class="o">.</span><span class="n">rstrip</span><span class="p">(</span><span class="s2">&quot;0123456789&quot;</span><span class="p">)</span>
+            <span class="n">keys</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                <span class="n">refined_key</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;ArrayExpress-&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+                <span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+                <span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;-&quot;</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="p">)</span>
+                <span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;%&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+                <span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;*&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+                <span class="c1"># .replace(&quot;_&quot;, &quot; &quot;) &lt;-- muted by choice</span>
+            <span class="p">)</span>
+        <span class="k">return</span> <span class="n">keys</span>
+
+    <span class="n">system_prompt</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">{sys_prompt}</span><span class="s2">&quot;</span>
+    <span class="n">user_prompt</span> <span class="o">=</span> <span class="s2">&quot;information: </span><span class="si">{info}</span><span class="s2">&quot;</span>
+
+    <span class="n">na_strings</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;missing&quot;</span><span class="p">,</span> <span class="s2">&quot;not applicable&quot;</span><span class="p">,</span> <span class="s2">&quot;unknown&quot;</span><span class="p">,</span> <span class="s2">&quot;na&quot;</span><span class="p">,</span> <span class="s2">&quot;n/a&quot;</span><span class="p">,</span> <span class="s2">&quot;not collected&quot;</span><span class="p">]</span>
+
+    <span class="n">prompt_template</span> <span class="o">=</span> <span class="n">ChatPromptTemplate</span><span class="p">(</span>
+        <span class="p">[(</span><span class="s2">&quot;system&quot;</span><span class="p">,</span> <span class="n">system_prompt</span><span class="p">),</span> <span class="p">(</span><span class="s2">&quot;user&quot;</span><span class="p">,</span> <span class="n">user_prompt</span><span class="p">)]</span>
+    <span class="p">)</span>
+
+    <span class="k">class</span><span class="w"> </span><span class="nc">TissueOutput</span><span class="p">(</span><span class="n">TypedDict</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Inferred tissue name.&quot;&quot;&quot;</span>
+
+        <span class="n">tissue</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span>
+
+    <span class="k">class</span><span class="w"> </span><span class="nc">DiseaseOutput</span><span class="p">(</span><span class="n">TypedDict</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Inferred disease name.&quot;&quot;&quot;</span>
+
+        <span class="n">disease</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span>
+
+    <span class="k">class</span><span class="w"> </span><span class="nc">State</span><span class="p">(</span><span class="n">TypedDict</span><span class="p">):</span>
+        <span class="n">attributes</span><span class="p">:</span> <span class="nb">dict</span>
+        <span class="n">embeddings</span><span class="p">:</span> <span class="nb">object</span>
+        <span class="n">raw_keys</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span>
+        <span class="n">age</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span>
+        <span class="n">sex</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span>
+        <span class="n">ethnicity</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span>
+        <span class="n">phenotype</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span>
+        <span class="n">cell_type</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span>
+        <span class="n">tissue</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span>
+        <span class="n">strain</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span>
+        <span class="n">disease</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span>
+
+    <span class="c1"># Nodes</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">estimate_age</span><span class="p">(</span><span class="n">state</span><span class="p">:</span> <span class="n">State</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Function to estimate age from available data&quot;&quot;&quot;</span>
+        <span class="n">keys</span> <span class="o">=</span> <span class="n">get_age_keys</span><span class="p">(</span><span class="n">state</span><span class="p">[</span><span class="s2">&quot;embeddings&quot;</span><span class="p">],</span> <span class="n">state</span><span class="p">[</span><span class="s2">&quot;raw_keys&quot;</span><span class="p">])</span>
+        <span class="k">if</span> <span class="n">keys</span><span class="p">:</span>
+            <span class="n">key</span> <span class="o">=</span> <span class="n">keys</span><span class="o">.</span><span class="n">pop</span><span class="p">()</span>
+            <span class="n">age_value</span> <span class="o">=</span> <span class="n">state</span><span class="p">[</span><span class="s2">&quot;attributes&quot;</span><span class="p">][</span><span class="n">key</span><span class="p">]</span>
+            <span class="n">age_text</span> <span class="o">=</span> <span class="n">_coerce_str</span><span class="p">(</span><span class="n">age_value</span><span class="p">)</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">age_text</span><span class="p">:</span>
+                <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;age&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">}</span>
+            <span class="k">if</span> <span class="n">_normalized</span><span class="p">(</span><span class="n">age_text</span><span class="p">)</span> <span class="ow">in</span> <span class="n">na_strings</span><span class="p">:</span>
+                <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;age&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">}</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;age&quot;</span><span class="p">:</span> <span class="n">age_text</span><span class="p">}</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;age&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">}</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">estimate_sex</span><span class="p">(</span><span class="n">state</span><span class="p">:</span> <span class="n">State</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Function to estimate sex&quot;&quot;&quot;</span>
+        <span class="c1"># This counts on the phenomenon that there is always one attribute related</span>
+        <span class="c1"># to sex (if it is there) and it is quite unambiguous</span>
+        <span class="n">keys</span> <span class="o">=</span> <span class="n">get_sex_keys</span><span class="p">(</span><span class="n">state</span><span class="p">[</span><span class="s2">&quot;embeddings&quot;</span><span class="p">],</span> <span class="n">state</span><span class="p">[</span><span class="s2">&quot;raw_keys&quot;</span><span class="p">])</span>
+        <span class="k">if</span> <span class="n">keys</span><span class="p">:</span>
+            <span class="n">key</span> <span class="o">=</span> <span class="n">keys</span><span class="o">.</span><span class="n">pop</span><span class="p">()</span>
+            <span class="n">sex_value</span> <span class="o">=</span> <span class="n">_normalized</span><span class="p">(</span><span class="n">state</span><span class="p">[</span><span class="s2">&quot;attributes&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">key</span><span class="p">))</span>
+            <span class="k">if</span> <span class="n">sex_value</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;male&quot;</span><span class="p">,</span> <span class="s2">&quot;m&quot;</span><span class="p">]:</span>
+                <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;sex&quot;</span><span class="p">:</span> <span class="s2">&quot;Male&quot;</span><span class="p">}</span>
+            <span class="k">elif</span> <span class="n">sex_value</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;female&quot;</span><span class="p">,</span> <span class="s2">&quot;f&quot;</span><span class="p">]:</span>
+                <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;sex&quot;</span><span class="p">:</span> <span class="s2">&quot;Female&quot;</span><span class="p">}</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;sex&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">}</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;sex&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">}</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">estimate_tissue</span><span class="p">(</span><span class="n">state</span><span class="p">:</span> <span class="n">State</span><span class="p">):</span>
+        <span class="n">keys</span> <span class="o">=</span> <span class="n">get_tissue_keys</span><span class="p">(</span><span class="n">state</span><span class="p">[</span><span class="s2">&quot;embeddings&quot;</span><span class="p">],</span> <span class="n">state</span><span class="p">[</span><span class="s2">&quot;raw_keys&quot;</span><span class="p">])</span>
+        <span class="k">if</span> <span class="n">keys</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">keys</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="n">tissue</span> <span class="o">=</span> <span class="n">state</span><span class="p">[</span><span class="s2">&quot;attributes&quot;</span><span class="p">][</span><span class="n">keys</span><span class="o">.</span><span class="n">pop</span><span class="p">()]</span>
+                <span class="n">tissue_text</span> <span class="o">=</span> <span class="n">_coerce_str</span><span class="p">(</span><span class="n">tissue</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">tissue_text</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">_normalized</span><span class="p">(</span><span class="n">tissue_text</span><span class="p">)</span> <span class="ow">in</span> <span class="n">na_strings</span><span class="p">:</span>
+                        <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;tissue&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">}</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;tissue&quot;</span><span class="p">:</span> <span class="n">tissue_text</span><span class="p">}</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;tissue&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">}</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">info_json</span> <span class="o">=</span> <span class="n">filter_dict</span><span class="p">(</span><span class="n">state</span><span class="p">[</span><span class="s2">&quot;attributes&quot;</span><span class="p">],</span> <span class="n">keys</span><span class="p">)</span>
+                <span class="n">sys_prompt</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">                    You will infer the correct tissue from the given information.</span>
+<span class="s2">                    Do not use information information that are not clear tissue names.</span>
+<span class="s2">                    For example, do not use numbers, URLs and pathology for tissue</span>
+<span class="s2">                    names. You can use an organ name as tissue too.</span>
+<span class="s2">                &quot;&quot;&quot;</span>
+                <span class="n">prompt</span> <span class="o">=</span> <span class="n">prompt_template</span><span class="o">.</span><span class="n">invoke</span><span class="p">(</span>
+                    <span class="p">{</span><span class="s2">&quot;sys_prompt&quot;</span><span class="p">:</span> <span class="n">sys_prompt</span><span class="p">,</span> <span class="s2">&quot;info&quot;</span><span class="p">:</span> <span class="n">info_json</span><span class="p">}</span>
+                <span class="p">)</span>
+                <span class="n">structured_llm</span> <span class="o">=</span> <span class="n">llm</span><span class="o">.</span><span class="n">with_structured_output</span><span class="p">(</span><span class="n">TissueOutput</span><span class="p">)</span>
+                <span class="n">result</span> <span class="o">=</span> <span class="n">structured_llm</span><span class="o">.</span><span class="n">invoke</span><span class="p">(</span><span class="n">prompt</span><span class="p">)</span>
+                <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;tissue&quot;</span><span class="p">:</span> <span class="n">result</span><span class="p">[</span><span class="s2">&quot;tissue&quot;</span><span class="p">]}</span>  <span class="c1"># type: ignore</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;tissue&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">}</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">estimate_strain</span><span class="p">(</span><span class="n">state</span><span class="p">:</span> <span class="n">State</span><span class="p">):</span>
+        <span class="n">keys</span> <span class="o">=</span> <span class="n">get_strain_keys</span><span class="p">(</span><span class="n">state</span><span class="p">[</span><span class="s2">&quot;embeddings&quot;</span><span class="p">],</span> <span class="n">state</span><span class="p">[</span><span class="s2">&quot;raw_keys&quot;</span><span class="p">])</span>
+        <span class="k">if</span> <span class="n">keys</span><span class="p">:</span>
+            <span class="n">key</span> <span class="o">=</span> <span class="n">keys</span><span class="o">.</span><span class="n">pop</span><span class="p">()</span>
+            <span class="k">if</span> <span class="s2">&quot;host&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">key</span><span class="p">:</span>
+                <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;strain&quot;</span><span class="p">:</span> <span class="n">state</span><span class="p">[</span><span class="s2">&quot;attributes&quot;</span><span class="p">][</span><span class="n">key</span><span class="p">]}</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;strain&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">}</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;strain&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">}</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">estimate_phenotype</span><span class="p">(</span><span class="n">state</span><span class="p">:</span> <span class="n">State</span><span class="p">):</span>
+        <span class="n">keys</span> <span class="o">=</span> <span class="n">get_phenotype_keys</span><span class="p">(</span><span class="n">state</span><span class="p">[</span><span class="s2">&quot;embeddings&quot;</span><span class="p">],</span> <span class="n">state</span><span class="p">[</span><span class="s2">&quot;raw_keys&quot;</span><span class="p">])</span>
+        <span class="k">if</span> <span class="n">keys</span><span class="p">:</span>
+            <span class="n">key</span> <span class="o">=</span> <span class="n">keys</span><span class="o">.</span><span class="n">pop</span><span class="p">()</span>
+            <span class="k">if</span> <span class="s2">&quot;host&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">key</span><span class="p">:</span>
+                <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;phenotype&quot;</span><span class="p">:</span> <span class="n">state</span><span class="p">[</span><span class="s2">&quot;attributes&quot;</span><span class="p">][</span><span class="n">key</span><span class="p">]}</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;phenotype&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">}</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;phenotype&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">}</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">estimate_cell_type</span><span class="p">(</span><span class="n">state</span><span class="p">:</span> <span class="n">State</span><span class="p">):</span>
+        <span class="n">keys</span> <span class="o">=</span> <span class="n">get_cell_type_keys</span><span class="p">(</span><span class="n">state</span><span class="p">[</span><span class="s2">&quot;embeddings&quot;</span><span class="p">],</span> <span class="n">state</span><span class="p">[</span><span class="s2">&quot;raw_keys&quot;</span><span class="p">])</span>
+        <span class="k">if</span> <span class="n">keys</span><span class="p">:</span>
+            <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;cell_type&quot;</span><span class="p">:</span> <span class="n">state</span><span class="p">[</span><span class="s2">&quot;attributes&quot;</span><span class="p">][</span><span class="n">keys</span><span class="o">.</span><span class="n">pop</span><span class="p">()]}</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;cell_type&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">}</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">estimate_ethnicity</span><span class="p">(</span><span class="n">state</span><span class="p">:</span> <span class="n">State</span><span class="p">):</span>
+        <span class="n">keys</span> <span class="o">=</span> <span class="n">get_ethnicity_keys</span><span class="p">(</span><span class="n">state</span><span class="p">[</span><span class="s2">&quot;embeddings&quot;</span><span class="p">],</span> <span class="n">state</span><span class="p">[</span><span class="s2">&quot;raw_keys&quot;</span><span class="p">])</span>
+        <span class="k">if</span> <span class="n">keys</span><span class="p">:</span>
+            <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;ethnicity&quot;</span><span class="p">:</span> <span class="n">state</span><span class="p">[</span><span class="s2">&quot;attributes&quot;</span><span class="p">][</span><span class="n">keys</span><span class="o">.</span><span class="n">pop</span><span class="p">()]}</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;ethnicity&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">}</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">estimate_disease</span><span class="p">(</span><span class="n">state</span><span class="p">:</span> <span class="n">State</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Function to estimate disease from available data.&quot;&quot;&quot;</span>
+        <span class="n">keys</span> <span class="o">=</span> <span class="n">get_disease_keys</span><span class="p">(</span><span class="n">state</span><span class="p">[</span><span class="s2">&quot;embeddings&quot;</span><span class="p">],</span> <span class="n">state</span><span class="p">[</span><span class="s2">&quot;raw_keys&quot;</span><span class="p">])</span>
+        <span class="k">if</span> <span class="n">keys</span><span class="p">:</span>
+            <span class="c1"># If there&#39;s an explicit &quot;disease&quot; key, use it directly</span>
+            <span class="k">if</span> <span class="s2">&quot;disease&quot;</span> <span class="ow">in</span> <span class="n">keys</span><span class="p">:</span>
+                <span class="n">disease_value</span> <span class="o">=</span> <span class="n">_coerce_str</span><span class="p">(</span><span class="n">state</span><span class="p">[</span><span class="s2">&quot;attributes&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;disease&quot;</span><span class="p">))</span>
+                <span class="k">if</span> <span class="n">disease_value</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;disease&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">}</span>
+                <span class="k">if</span> <span class="n">_normalized</span><span class="p">(</span><span class="n">disease_value</span><span class="p">)</span> <span class="ow">in</span> <span class="n">na_strings</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;disease&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">}</span>
+                <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;disease&quot;</span><span class="p">:</span> <span class="n">disease_value</span><span class="p">}</span>
+            <span class="c1"># Otherwise, use LLM to infer from available data</span>
+            <span class="n">info_json</span> <span class="o">=</span> <span class="n">filter_dict</span><span class="p">(</span><span class="n">state</span><span class="p">[</span><span class="s2">&quot;attributes&quot;</span><span class="p">],</span> <span class="n">keys</span><span class="p">)</span>
+            <span class="n">sys_prompt</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">                You will infer the disease or condition from the given information.</span>
+<span class="s2">                Consider all available data including disease names, tumor types,</span>
+<span class="s2">                infection status, cancer types, and subject health status.</span>
+<span class="s2">                If the subject is healthy or normal, return null.</span>
+<span class="s2">                Do not use unclear values like numbers, URLs, or file paths.</span>
+<span class="s2">                Return only the disease/condition name or null if none can be inferred.</span>
+<span class="s2">            &quot;&quot;&quot;</span>
+            <span class="n">prompt</span> <span class="o">=</span> <span class="n">prompt_template</span><span class="o">.</span><span class="n">invoke</span><span class="p">(</span>
+                <span class="p">{</span><span class="s2">&quot;sys_prompt&quot;</span><span class="p">:</span> <span class="n">sys_prompt</span><span class="p">,</span> <span class="s2">&quot;info&quot;</span><span class="p">:</span> <span class="n">info_json</span><span class="p">}</span>
+            <span class="p">)</span>
+            <span class="n">structured_llm</span> <span class="o">=</span> <span class="n">llm</span><span class="o">.</span><span class="n">with_structured_output</span><span class="p">(</span><span class="n">DiseaseOutput</span><span class="p">)</span>
+            <span class="n">result</span> <span class="o">=</span> <span class="n">structured_llm</span><span class="o">.</span><span class="n">invoke</span><span class="p">(</span><span class="n">prompt</span><span class="p">)</span>
+            <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;disease&quot;</span><span class="p">:</span> <span class="n">result</span><span class="p">[</span><span class="s2">&quot;disease&quot;</span><span class="p">]</span> <span class="k">if</span> <span class="n">result</span> <span class="k">else</span> <span class="kc">None</span><span class="p">}</span>  <span class="c1"># type: ignore</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;disease&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">}</span>
+
+    <span class="n">workflow_graph_builder</span> <span class="o">=</span> <span class="n">StateGraph</span><span class="p">(</span><span class="n">State</span><span class="p">)</span>
+
+    <span class="n">workflow_graph_builder</span><span class="o">.</span><span class="n">add_node</span><span class="p">(</span><span class="s2">&quot;estimate_age&quot;</span><span class="p">,</span> <span class="n">estimate_age</span><span class="p">)</span>
+    <span class="n">workflow_graph_builder</span><span class="o">.</span><span class="n">add_node</span><span class="p">(</span><span class="s2">&quot;estimate_sex&quot;</span><span class="p">,</span> <span class="n">estimate_sex</span><span class="p">)</span>
+    <span class="n">workflow_graph_builder</span><span class="o">.</span><span class="n">add_node</span><span class="p">(</span><span class="s2">&quot;estimate_tissue&quot;</span><span class="p">,</span> <span class="n">estimate_tissue</span><span class="p">)</span>
+    <span class="n">workflow_graph_builder</span><span class="o">.</span><span class="n">add_node</span><span class="p">(</span><span class="s2">&quot;estimate_strain&quot;</span><span class="p">,</span> <span class="n">estimate_strain</span><span class="p">)</span>
+    <span class="n">workflow_graph_builder</span><span class="o">.</span><span class="n">add_node</span><span class="p">(</span><span class="s2">&quot;estimate_phenotype&quot;</span><span class="p">,</span> <span class="n">estimate_phenotype</span><span class="p">)</span>
+    <span class="n">workflow_graph_builder</span><span class="o">.</span><span class="n">add_node</span><span class="p">(</span><span class="s2">&quot;estimate_cell_type&quot;</span><span class="p">,</span> <span class="n">estimate_cell_type</span><span class="p">)</span>
+    <span class="n">workflow_graph_builder</span><span class="o">.</span><span class="n">add_node</span><span class="p">(</span><span class="s2">&quot;estimate_ethnicity&quot;</span><span class="p">,</span> <span class="n">estimate_ethnicity</span><span class="p">)</span>
+    <span class="n">workflow_graph_builder</span><span class="o">.</span><span class="n">add_node</span><span class="p">(</span><span class="s2">&quot;estimate_disease&quot;</span><span class="p">,</span> <span class="n">estimate_disease</span><span class="p">)</span>
+
+    <span class="n">workflow_graph_builder</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="n">START</span><span class="p">,</span> <span class="s2">&quot;estimate_age&quot;</span><span class="p">)</span>
+    <span class="n">workflow_graph_builder</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="n">START</span><span class="p">,</span> <span class="s2">&quot;estimate_sex&quot;</span><span class="p">)</span>
+    <span class="n">workflow_graph_builder</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="n">START</span><span class="p">,</span> <span class="s2">&quot;estimate_tissue&quot;</span><span class="p">)</span>
+    <span class="n">workflow_graph_builder</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="n">START</span><span class="p">,</span> <span class="s2">&quot;estimate_strain&quot;</span><span class="p">)</span>
+    <span class="n">workflow_graph_builder</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="n">START</span><span class="p">,</span> <span class="s2">&quot;estimate_phenotype&quot;</span><span class="p">)</span>
+    <span class="n">workflow_graph_builder</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="n">START</span><span class="p">,</span> <span class="s2">&quot;estimate_cell_type&quot;</span><span class="p">)</span>
+    <span class="n">workflow_graph_builder</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="n">START</span><span class="p">,</span> <span class="s2">&quot;estimate_ethnicity&quot;</span><span class="p">)</span>
+    <span class="n">workflow_graph_builder</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="n">START</span><span class="p">,</span> <span class="s2">&quot;estimate_disease&quot;</span><span class="p">)</span>
+
+    <span class="n">workflow_graph_builder</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="s2">&quot;estimate_age&quot;</span><span class="p">,</span> <span class="n">END</span><span class="p">)</span>
+    <span class="n">workflow_graph_builder</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="s2">&quot;estimate_sex&quot;</span><span class="p">,</span> <span class="n">END</span><span class="p">)</span>
+    <span class="n">workflow_graph_builder</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="s2">&quot;estimate_tissue&quot;</span><span class="p">,</span> <span class="n">END</span><span class="p">)</span>
+    <span class="n">workflow_graph_builder</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="s2">&quot;estimate_strain&quot;</span><span class="p">,</span> <span class="n">END</span><span class="p">)</span>
+    <span class="n">workflow_graph_builder</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="s2">&quot;estimate_phenotype&quot;</span><span class="p">,</span> <span class="n">END</span><span class="p">)</span>
+    <span class="n">workflow_graph_builder</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="s2">&quot;estimate_cell_type&quot;</span><span class="p">,</span> <span class="n">END</span><span class="p">)</span>
+    <span class="n">workflow_graph_builder</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="s2">&quot;estimate_ethnicity&quot;</span><span class="p">,</span> <span class="n">END</span><span class="p">)</span>
+    <span class="n">workflow_graph_builder</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="s2">&quot;estimate_disease&quot;</span><span class="p">,</span> <span class="n">END</span><span class="p">)</span>
+
+    <span class="n">workflow</span> <span class="o">=</span> <span class="n">workflow_graph_builder</span><span class="o">.</span><span class="n">compile</span><span class="p">()</span>
+
+    <span class="n">ENRICHED_COLS</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="s2">&quot;age&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;sex&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;ethnicity&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;phenotype&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;cell_type&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;tissue&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;strain&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;disease&quot;</span><span class="p">,</span>
+    <span class="p">]</span>
+
+    <span class="c1"># Pandas can infer numeric dtypes for pre-existing enrichment columns.</span>
+    <span class="c1"># Force object-compatible columns so string outputs (e.g., &quot;PDX1&quot;) do not</span>
+    <span class="c1"># fail assignment on newer pandas versions.</span>
+    <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">ENRICHED_COLS</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">detailed_df</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
+            <span class="n">detailed_df</span><span class="p">[</span><span class="n">col</span><span class="p">]</span> <span class="o">=</span> <span class="n">detailed_df</span><span class="p">[</span><span class="n">col</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s2">&quot;object&quot;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">detailed_df</span><span class="p">[</span><span class="n">col</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">NA</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="n">detailed_df</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s2">&quot;object&quot;</span><span class="p">)</span>
+
+    <span class="n">max_preview_rows</span> <span class="o">=</span> <span class="mi">15</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">detailed_df</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">max_preview_rows</span><span class="p">:</span>
+        <span class="n">proceed_all</span> <span class="o">=</span> <span class="n">confirm</span><span class="p">(</span>
+            <span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;Dataframe has </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">detailed_df</span><span class="p">)</span><span class="si">}</span><span class="s2"> rows. &quot;</span>
+                <span class="s2">&quot;More rows will take longer to enrich. &quot;</span>
+                <span class="s2">&quot;Enrich all rows? Choose &#39;n&#39; to enrich only the first 15 for &quot;</span>
+                <span class="s2">&quot;a quick review.&quot;</span>
+            <span class="p">)</span>
+        <span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">proceed_all</span><span class="p">:</span>
+            <span class="n">detailed_df</span> <span class="o">=</span> <span class="n">detailed_df</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="n">max_preview_rows</span><span class="p">)</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+
+    <span class="n">attribute_cols</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="p">[</span><span class="n">col</span> <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">detailed_df</span><span class="o">.</span><span class="n">columns</span> <span class="k">if</span> <span class="n">col</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">basic_cols</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">basic_cols</span>
+        <span class="k">else</span> <span class="nb">list</span><span class="p">(</span><span class="n">detailed_df</span><span class="o">.</span><span class="n">columns</span><span class="p">)</span>
+    <span class="p">)</span>
+    <span class="n">refined_keys</span> <span class="o">=</span> <span class="n">get_refined_keys</span><span class="p">(</span><span class="n">attribute_cols</span><span class="p">)</span>
+    <span class="n">key_embeddings</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="n">refined_keys</span><span class="p">,</span> <span class="n">convert_to_tensor</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_enrich_row</span><span class="p">(</span><span class="n">item</span><span class="p">):</span>
+        <span class="n">i</span><span class="p">,</span> <span class="n">each_row</span> <span class="o">=</span> <span class="n">item</span>
+        <span class="n">state</span> <span class="o">=</span> <span class="n">workflow</span><span class="o">.</span><span class="n">invoke</span><span class="p">(</span>
+            <span class="p">{</span>
+                <span class="s2">&quot;attributes&quot;</span><span class="p">:</span> <span class="n">each_row</span><span class="o">.</span><span class="n">to_dict</span><span class="p">(),</span>
+                <span class="s2">&quot;embeddings&quot;</span><span class="p">:</span> <span class="n">key_embeddings</span><span class="p">,</span>
+                <span class="s2">&quot;raw_keys&quot;</span><span class="p">:</span> <span class="n">attribute_cols</span><span class="p">,</span>
+            <span class="p">}</span>  <span class="c1"># type: ignore</span>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="n">i</span><span class="p">,</span> <span class="p">{</span><span class="n">col</span><span class="p">:</span> <span class="n">state</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">col</span><span class="p">)</span> <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">ENRICHED_COLS</span><span class="p">}</span>
+
+    <span class="n">rows</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">detailed_df</span><span class="p">[</span><span class="n">attribute_cols</span><span class="p">]</span><span class="o">.</span><span class="n">iterrows</span><span class="p">())</span>
+    <span class="n">start_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">perf_counter</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">rows</span><span class="p">:</span>
+        <span class="n">max_workers</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">cpu_count</span><span class="p">()</span> <span class="ow">or</span> <span class="mi">4</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">rows</span><span class="p">))</span>
+        <span class="k">with</span> <span class="n">concurrent</span><span class="o">.</span><span class="n">futures</span><span class="o">.</span><span class="n">ThreadPoolExecutor</span><span class="p">(</span><span class="n">max_workers</span><span class="o">=</span><span class="n">max_workers</span><span class="p">)</span> <span class="k">as</span> <span class="n">executor</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">enriched</span> <span class="ow">in</span> <span class="n">tqdm</span><span class="p">(</span>
+                <span class="n">executor</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">_enrich_row</span><span class="p">,</span> <span class="n">rows</span><span class="p">),</span>
+                <span class="n">total</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">rows</span><span class="p">),</span>
+                <span class="n">desc</span><span class="o">=</span><span class="s2">&quot;Enriching rows&quot;</span><span class="p">,</span>
+            <span class="p">):</span>
+                <span class="k">for</span> <span class="n">col</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">enriched</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                    <span class="n">detailed_df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">col</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>  <span class="c1"># type: ignore</span>
+    <span class="n">elapsed</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">perf_counter</span><span class="p">()</span> <span class="o">-</span> <span class="n">start_time</span>
+    <span class="n">console</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Enrichment completed in </span><span class="si">{</span><span class="n">elapsed</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2"> seconds.&quot;</span><span class="p">)</span>
+    <span class="c1"># existing_basic_cols = (</span>
+    <span class="c1">#     [col for col in basic_cols if col in detailed_df.columns]</span>
+    <span class="c1">#     if basic_cols</span>
+    <span class="c1">#     else attribute_cols</span>
+    <span class="c1"># )</span>
+    <span class="n">id_col</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="k">if</span> <span class="s2">&quot;Sample&quot;</span> <span class="ow">in</span> <span class="n">detailed_df</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
+        <span class="n">id_col</span> <span class="o">=</span> <span class="s2">&quot;Sample&quot;</span>
+    <span class="k">elif</span> <span class="s2">&quot;Accession&quot;</span> <span class="ow">in</span> <span class="n">detailed_df</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
+        <span class="n">id_col</span> <span class="o">=</span> <span class="s2">&quot;Accession&quot;</span>
+    <span class="k">elif</span> <span class="s2">&quot;experiment_accession&quot;</span> <span class="ow">in</span> <span class="n">detailed_df</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
+        <span class="n">id_col</span> <span class="o">=</span> <span class="s2">&quot;experiment_accession&quot;</span>
+
+    <span class="k">if</span> <span class="n">id_col</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span>
+            <span class="s2">&quot;Expected one of [&#39;Sample&#39;, &#39;Accession&#39;, &#39;experiment_accession&#39;] &quot;</span>
+            <span class="s2">&quot;in detailed_df.&quot;</span>
+        <span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">detailed_df</span><span class="p">[[</span><span class="n">id_col</span><span class="p">]</span> <span class="o">+</span> <span class="n">ENRICHED_COLS</span><span class="p">]</span></div>
+
+</pre></div>
+        </article>
+      </div>
+      <footer>
+        
+        <div class="related-pages">
+          
+          
+        </div>
+        <div class="bottom-of-page">
+          <div class="left-details">
+            <div class="copyright">
+                Copyright &#169; 2023, Saket Choudhary
+            </div>
+            Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
+            
+            <a href="https://github.com/pradyunsg/furo">Furo</a>
+            
+          </div>
+          <div class="right-details">
+            
+          </div>
+        </div>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer no-toc">
+      
+      
+      
+    </aside>
+  </div>
+</div><script src="../../_static/documentation_options.js?v=afcbd73c"></script>
+    <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../../_static/scripts/furo.js?v=46bd48cc"></script>
+    <script src="../../_static/design-tabs.js?v=f930bc37"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@jupyter-widgets/html-manager@^1.0.1/dist/embed-amd.js"></script>
+    <script src="../../_static/copy-button.js?v=5b6a40c7"></script>
+    </body>
+</html>
