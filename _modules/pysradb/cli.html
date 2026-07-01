@@ -1372,36 +1372,36 @@
 
 <div class="viewcode-block" id="pmid_to_gse">
 <a class="viewcode-back" href="../../pysradb.html#pysradb.cli.pmid_to_gse">[docs]</a>
-<span class="k">def</span><span class="w"> </span><span class="nf">pmid_to_gse</span><span class="p">(</span><span class="n">pmid_ids</span><span class="p">,</span> <span class="n">saveto</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">pmid_to_gse</span><span class="p">(</span><span class="n">pmid_ids</span><span class="p">,</span> <span class="n">saveto</span><span class="p">,</span> <span class="n">retries</span><span class="o">=</span><span class="mi">3</span><span class="p">):</span>
     <span class="n">client</span> <span class="o">=</span> <span class="n">SRAweb</span><span class="p">()</span>
-    <span class="n">df</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">pmid_to_gse</span><span class="p">(</span><span class="n">pmid_ids</span><span class="p">)</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">pmid_to_gse</span><span class="p">(</span><span class="n">pmid_ids</span><span class="p">,</span> <span class="n">retries</span><span class="o">=</span><span class="n">retries</span><span class="p">)</span>
     <span class="n">_print_save_df</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">saveto</span><span class="p">)</span></div>
 
 
 
 <div class="viewcode-block" id="pmid_to_srp">
 <a class="viewcode-back" href="../../pysradb.html#pysradb.cli.pmid_to_srp">[docs]</a>
-<span class="k">def</span><span class="w"> </span><span class="nf">pmid_to_srp</span><span class="p">(</span><span class="n">pmid_ids</span><span class="p">,</span> <span class="n">saveto</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">pmid_to_srp</span><span class="p">(</span><span class="n">pmid_ids</span><span class="p">,</span> <span class="n">saveto</span><span class="p">,</span> <span class="n">retries</span><span class="o">=</span><span class="mi">3</span><span class="p">):</span>
     <span class="n">client</span> <span class="o">=</span> <span class="n">SRAweb</span><span class="p">()</span>
-    <span class="n">df</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">pmid_to_srp</span><span class="p">(</span><span class="n">pmid_ids</span><span class="p">)</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">pmid_to_srp</span><span class="p">(</span><span class="n">pmid_ids</span><span class="p">,</span> <span class="n">retries</span><span class="o">=</span><span class="n">retries</span><span class="p">)</span>
     <span class="n">_print_save_df</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">saveto</span><span class="p">)</span></div>
 
 
 
 <div class="viewcode-block" id="pmc_to_identifiers">
 <a class="viewcode-back" href="../../pysradb.html#pysradb.cli.pmc_to_identifiers">[docs]</a>
-<span class="k">def</span><span class="w"> </span><span class="nf">pmc_to_identifiers</span><span class="p">(</span><span class="n">pmc_ids</span><span class="p">,</span> <span class="n">saveto</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">pmc_to_identifiers</span><span class="p">(</span><span class="n">pmc_ids</span><span class="p">,</span> <span class="n">saveto</span><span class="p">,</span> <span class="n">retries</span><span class="o">=</span><span class="mi">3</span><span class="p">):</span>
     <span class="n">client</span> <span class="o">=</span> <span class="n">SRAweb</span><span class="p">()</span>
-    <span class="n">df</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">pmc_to_identifiers</span><span class="p">(</span><span class="n">pmc_ids</span><span class="p">)</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">pmc_to_identifiers</span><span class="p">(</span><span class="n">pmc_ids</span><span class="p">,</span> <span class="n">retries</span><span class="o">=</span><span class="n">retries</span><span class="p">)</span>
     <span class="n">_print_save_df</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">saveto</span><span class="p">)</span></div>
 
 
 
 <div class="viewcode-block" id="pmid_to_identifiers">
 <a class="viewcode-back" href="../../pysradb.html#pysradb.cli.pmid_to_identifiers">[docs]</a>
-<span class="k">def</span><span class="w"> </span><span class="nf">pmid_to_identifiers</span><span class="p">(</span><span class="n">pmid_ids</span><span class="p">,</span> <span class="n">saveto</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">pmid_to_identifiers</span><span class="p">(</span><span class="n">pmid_ids</span><span class="p">,</span> <span class="n">saveto</span><span class="p">,</span> <span class="n">retries</span><span class="o">=</span><span class="mi">3</span><span class="p">):</span>
     <span class="n">client</span> <span class="o">=</span> <span class="n">SRAweb</span><span class="p">()</span>
-    <span class="n">df</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">pmid_to_identifiers</span><span class="p">(</span><span class="n">pmid_ids</span><span class="p">)</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">pmid_to_identifiers</span><span class="p">(</span><span class="n">pmid_ids</span><span class="p">,</span> <span class="n">retries</span><span class="o">=</span><span class="n">retries</span><span class="p">)</span>
     <span class="n">_print_save_df</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">saveto</span><span class="p">)</span></div>
 
 
@@ -2221,6 +2221,12 @@
         <span class="s2">&quot;pmid-to-gse&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Get GSE accessions from PMIDs&quot;</span>
     <span class="p">)</span>
     <span class="n">subparser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--saveto&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Save output to file&quot;</span><span class="p">)</span>
+    <span class="n">subparser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+        <span class="s2">&quot;--retries&quot;</span><span class="p">,</span>
+        <span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span>
+        <span class="n">default</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Number of additional retries for failed PubMed/PMC requests&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
     <span class="n">subparser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;pmid_ids&quot;</span><span class="p">,</span> <span class="n">nargs</span><span class="o">=</span><span class="s2">&quot;+&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;PMID(s)&quot;</span><span class="p">)</span>
     <span class="n">subparser</span><span class="o">.</span><span class="n">set_defaults</span><span class="p">(</span><span class="n">func</span><span class="o">=</span><span class="n">pmid_to_gse</span><span class="p">)</span>
 
@@ -2229,6 +2235,12 @@
         <span class="s2">&quot;pmid-to-srp&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Get SRP accessions from PMIDs&quot;</span>
     <span class="p">)</span>
     <span class="n">subparser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--saveto&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Save output to file&quot;</span><span class="p">)</span>
+    <span class="n">subparser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+        <span class="s2">&quot;--retries&quot;</span><span class="p">,</span>
+        <span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span>
+        <span class="n">default</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Number of additional retries for failed PubMed/PMC requests&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
     <span class="n">subparser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;pmid_ids&quot;</span><span class="p">,</span> <span class="n">nargs</span><span class="o">=</span><span class="s2">&quot;+&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;PMID(s)&quot;</span><span class="p">)</span>
     <span class="n">subparser</span><span class="o">.</span><span class="n">set_defaults</span><span class="p">(</span><span class="n">func</span><span class="o">=</span><span class="n">pmid_to_srp</span><span class="p">)</span>
 
@@ -2237,6 +2249,12 @@
         <span class="s2">&quot;pmc-to-identifiers&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Extract database identifiers from PMC articles&quot;</span>
     <span class="p">)</span>
     <span class="n">subparser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--saveto&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Save output to file&quot;</span><span class="p">)</span>
+    <span class="n">subparser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+        <span class="s2">&quot;--retries&quot;</span><span class="p">,</span>
+        <span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span>
+        <span class="n">default</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Number of additional retries for failed PMC full-text requests&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
     <span class="n">subparser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;pmc_ids&quot;</span><span class="p">,</span> <span class="n">nargs</span><span class="o">=</span><span class="s2">&quot;+&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;PMC ID(s)&quot;</span><span class="p">)</span>
     <span class="n">subparser</span><span class="o">.</span><span class="n">set_defaults</span><span class="p">(</span><span class="n">func</span><span class="o">=</span><span class="n">pmc_to_identifiers</span><span class="p">)</span>
 
@@ -2245,6 +2263,12 @@
         <span class="s2">&quot;pmid-to-identifiers&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Extract database identifiers from PubMed articles&quot;</span>
     <span class="p">)</span>
     <span class="n">subparser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--saveto&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Save output to file&quot;</span><span class="p">)</span>
+    <span class="n">subparser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+        <span class="s2">&quot;--retries&quot;</span><span class="p">,</span>
+        <span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span>
+        <span class="n">default</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Number of additional retries for failed PubMed/PMC requests&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
     <span class="n">subparser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;pmid_ids&quot;</span><span class="p">,</span> <span class="n">nargs</span><span class="o">=</span><span class="s2">&quot;+&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;PMID(s)&quot;</span><span class="p">)</span>
     <span class="n">subparser</span><span class="o">.</span><span class="n">set_defaults</span><span class="p">(</span><span class="n">func</span><span class="o">=</span><span class="n">pmid_to_identifiers</span><span class="p">)</span>
 
@@ -2366,13 +2390,13 @@
     <span class="k">elif</span> <span class="n">args</span><span class="o">.</span><span class="n">command</span> <span class="o">==</span> <span class="s2">&quot;pmid-info&quot;</span><span class="p">:</span>
         <span class="n">pmid_info</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">ids</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">saveto</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">detailed</span><span class="p">)</span>
     <span class="k">elif</span> <span class="n">args</span><span class="o">.</span><span class="n">command</span> <span class="o">==</span> <span class="s2">&quot;pmid-to-gse&quot;</span><span class="p">:</span>
-        <span class="n">pmid_to_gse</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">pmid_ids</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">saveto</span><span class="p">)</span>
+        <span class="n">pmid_to_gse</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">pmid_ids</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">saveto</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">retries</span><span class="p">)</span>
     <span class="k">elif</span> <span class="n">args</span><span class="o">.</span><span class="n">command</span> <span class="o">==</span> <span class="s2">&quot;pmid-to-srp&quot;</span><span class="p">:</span>
-        <span class="n">pmid_to_srp</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">pmid_ids</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">saveto</span><span class="p">)</span>
+        <span class="n">pmid_to_srp</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">pmid_ids</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">saveto</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">retries</span><span class="p">)</span>
     <span class="k">elif</span> <span class="n">args</span><span class="o">.</span><span class="n">command</span> <span class="o">==</span> <span class="s2">&quot;pmc-to-identifiers&quot;</span><span class="p">:</span>
-        <span class="n">pmc_to_identifiers</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">pmc_ids</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">saveto</span><span class="p">)</span>
+        <span class="n">pmc_to_identifiers</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">pmc_ids</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">saveto</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">retries</span><span class="p">)</span>
     <span class="k">elif</span> <span class="n">args</span><span class="o">.</span><span class="n">command</span> <span class="o">==</span> <span class="s2">&quot;pmid-to-identifiers&quot;</span><span class="p">:</span>
-        <span class="n">pmid_to_identifiers</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">pmid_ids</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">saveto</span><span class="p">)</span>
+        <span class="n">pmid_to_identifiers</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">pmid_ids</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">saveto</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">retries</span><span class="p">)</span>
     <span class="k">elif</span> <span class="n">args</span><span class="o">.</span><span class="n">command</span> <span class="o">==</span> <span class="s2">&quot;doi-to-gse&quot;</span><span class="p">:</span>
         <span class="n">doi_to_gse</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">doi_ids</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">saveto</span><span class="p">)</span>
     <span class="k">elif</span> <span class="n">args</span><span class="o">.</span><span class="n">command</span> <span class="o">==</span> <span class="s2">&quot;doi-to-srp&quot;</span><span class="p">:</span>

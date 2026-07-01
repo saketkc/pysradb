@@ -453,7 +453,7 @@ Pull a model locally with: ollama pull granite4:3b
 <span class="n">df</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">metadata</span><span class="p">(</span><span class="s2">&quot;GSE155673&quot;</span><span class="p">)</span>
 <span class="n">display</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">())</span>
 
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;To enrich this table with Ollama, run:&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;To enrich this table with Ollama, run:&quot;</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;db.metadata(&quot;GSE155673&quot;, enrich=True, enrich_backend=&quot;ollama/granite4:3b&quot;)&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -600,16 +600,16 @@ db.metadata(&#34;GSE155673&#34;, enrich=True, enrich_backend=&#34;ollama/granite
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">enrichment_example</span> <span class="o">=</span> <span class="s1">&#39;&#39;&#39;</span>
-<span class="s1">from pysradb import SRAweb</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">enrichment_example</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">from pysradb import SRAweb</span>
 
-<span class="s1">db = SRAweb()</span>
-<span class="s1">df = db.metadata(</span>
-<span class="s1">    &quot;GSE155673&quot;,</span>
-<span class="s1">    enrich=True,</span>
-<span class="s1">    enrich_backend=&quot;ollama/granite4:3b&quot;,</span>
-<span class="s1">)</span>
-<span class="s1">&#39;&#39;&#39;</span>
+<span class="s2">db = SRAweb()</span>
+<span class="s2">df = db.metadata(</span>
+<span class="s2">    &quot;GSE155673&quot;,</span>
+<span class="s2">    enrich=True,</span>
+<span class="s2">    enrich_backend=&quot;ollama/granite4:3b&quot;,</span>
+<span class="s2">)</span>
+<span class="s2">&quot;&quot;&quot;</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">enrichment_example</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -667,14 +667,14 @@ age, sex, ethnicity, phenotype, cell_type, tissue, strain, disease
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">embedding_example</span> <span class="o">=</span> <span class="s1">&#39;&#39;&#39;</span>
-<span class="s1">df = db.metadata(</span>
-<span class="s1">    &quot;GSE155673&quot;,</span>
-<span class="s1">    enrich=True,</span>
-<span class="s1">    enrich_backend=&quot;ollama/granite4:3b&quot;,</span>
-<span class="s1">    embedding_model=&quot;abhinand/MedEmbed-large-v0.1&quot;,</span>
-<span class="s1">)</span>
-<span class="s1">&#39;&#39;&#39;</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">embedding_example</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">df = db.metadata(</span>
+<span class="s2">    &quot;GSE155673&quot;,</span>
+<span class="s2">    enrich=True,</span>
+<span class="s2">    enrich_backend=&quot;ollama/granite4:3b&quot;,</span>
+<span class="s2">    embedding_model=&quot;abhinand/MedEmbed-large-v0.1&quot;,</span>
+<span class="s2">)</span>
+<span class="s2">&quot;&quot;&quot;</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">embedding_example</span><span class="p">)</span>
 </pre></div>
 </div>

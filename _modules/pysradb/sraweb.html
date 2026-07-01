@@ -4124,15 +4124,35 @@
         <span class="k">return</span> <span class="n">doi_pmid_mapping</span></div>
 
 
+    <span class="k">def</span><span class="w"> </span><span class="nf">_get_with_retries</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">url</span><span class="p">,</span> <span class="n">params</span><span class="p">,</span> <span class="n">retries</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">60</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Run a GET request with optional additional retries.&quot;&quot;&quot;</span>
+        <span class="n">retries</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="n">retries</span><span class="p">))</span>
+        <span class="n">last_error</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="k">for</span> <span class="n">attempt</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">retries</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">)</span>
+                <span class="n">response</span><span class="o">.</span><span class="n">raise_for_status</span><span class="p">()</span>
+                <span class="k">return</span> <span class="n">response</span>
+            <span class="k">except</span> <span class="n">requests</span><span class="o">.</span><span class="n">RequestException</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                <span class="n">last_error</span> <span class="o">=</span> <span class="n">e</span>
+                <span class="k">if</span> <span class="n">attempt</span> <span class="o">&lt;</span> <span class="n">retries</span><span class="p">:</span>
+                    <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sleep_time</span> <span class="o">*</span> <span class="p">(</span><span class="mi">2</span><span class="o">**</span><span class="n">attempt</span><span class="p">))</span>
+
+        <span class="k">raise</span> <span class="n">last_error</span>
+
 <div class="viewcode-block" id="SRAweb.pmid_to_pmc">
 <a class="viewcode-back" href="../../pysradb.html#pysradb.sraweb.SRAweb.pmid_to_pmc">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">pmid_to_pmc</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pmids</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">pmid_to_pmc</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pmids</span><span class="p">,</span> <span class="n">retries</span><span class="o">=</span><span class="mi">3</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Convert PMID(s) to PMC ID(s)</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        pmids: list or str</span>
 <span class="sd">              PMID(s)</span>
+<span class="sd">        retries: int</span>
+<span class="sd">              Number of additional retries for failed PubMed requests.</span>
+<span class="sd">              Default: 3</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
@@ -4153,8 +4173,9 @@
                     <span class="s2">&quot;retmode&quot;</span><span class="p">:</span> <span class="s2">&quot;json&quot;</span><span class="p">,</span>
                 <span class="p">}</span>
 
-                <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">summary_url</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="n">summary_params</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">60</span><span class="p">)</span>
-                <span class="n">response</span><span class="o">.</span><span class="n">raise_for_status</span><span class="p">()</span>
+                <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_with_retries</span><span class="p">(</span>
+                    <span class="n">summary_url</span><span class="p">,</span> <span class="n">summary_params</span><span class="p">,</span> <span class="n">retries</span><span class="o">=</span><span class="n">retries</span>
+                <span class="p">)</span>
                 <span class="n">result</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
 
                 <span class="c1"># Extract PMC ID from articleids</span>
@@ -4179,13 +4200,16 @@
 
 <div class="viewcode-block" id="SRAweb.fetch_pmc_fulltext">
 <a class="viewcode-back" href="../../pysradb.html#pysradb.sraweb.SRAweb.fetch_pmc_fulltext">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">fetch_pmc_fulltext</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pmc_id</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">fetch_pmc_fulltext</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pmc_id</span><span class="p">,</span> <span class="n">retries</span><span class="o">=</span><span class="mi">3</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Fetch full text from PMC article</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        pmc_id: str</span>
 <span class="sd">               PMC ID (can be with or without &#39;PMC&#39; prefix)</span>
+<span class="sd">        retries: int</span>
+<span class="sd">               Number of additional retries for failed PMC requests.</span>
+<span class="sd">               Default: 3</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
@@ -4200,8 +4224,7 @@
             <span class="n">fetch_url</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">base_url</span><span class="p">[</span><span class="s2">&quot;efetch&quot;</span><span class="p">]</span>
             <span class="n">fetch_params</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;db&quot;</span><span class="p">:</span> <span class="s2">&quot;pmc&quot;</span><span class="p">,</span> <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="n">pmc_id</span><span class="p">,</span> <span class="s2">&quot;retmode&quot;</span><span class="p">:</span> <span class="s2">&quot;xml&quot;</span><span class="p">}</span>
 
-            <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">fetch_url</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="n">fetch_params</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">60</span><span class="p">)</span>
-            <span class="n">response</span><span class="o">.</span><span class="n">raise_for_status</span><span class="p">()</span>
+            <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_with_retries</span><span class="p">(</span><span class="n">fetch_url</span><span class="p">,</span> <span class="n">fetch_params</span><span class="p">,</span> <span class="n">retries</span><span class="o">=</span><span class="n">retries</span><span class="p">)</span>
 
             <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sleep_time</span><span class="p">)</span>
             <span class="k">return</span> <span class="n">response</span><span class="o">.</span><span class="n">text</span>
@@ -4257,7 +4280,7 @@
 
 <div class="viewcode-block" id="SRAweb.pmc_to_identifiers">
 <a class="viewcode-back" href="../../pysradb.html#pysradb.sraweb.SRAweb.pmc_to_identifiers">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">pmc_to_identifiers</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pmc_ids</span><span class="p">,</span> <span class="n">convert_missing</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">pmc_to_identifiers</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pmc_ids</span><span class="p">,</span> <span class="n">convert_missing</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">retries</span><span class="o">=</span><span class="mi">3</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Extract database identifiers from PMC articles</span>
 
 <span class="sd">        Parameters</span>
@@ -4267,6 +4290,9 @@
 <span class="sd">        convert_missing: bool</span>
 <span class="sd">                        If True, automatically convert GSE↔SRP when one is found but not the other</span>
 <span class="sd">                        Default: True</span>
+<span class="sd">        retries: int</span>
+<span class="sd">                Number of additional retries for failed PMC full-text requests.</span>
+<span class="sd">                Default: 3</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
@@ -4280,7 +4306,7 @@
 
         <span class="k">for</span> <span class="n">pmc_id</span> <span class="ow">in</span> <span class="n">pmc_ids</span><span class="p">:</span>
             <span class="c1"># Fetch full text</span>
-            <span class="n">fulltext</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fetch_pmc_fulltext</span><span class="p">(</span><span class="n">pmc_id</span><span class="p">)</span>
+            <span class="n">fulltext</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fetch_pmc_fulltext</span><span class="p">(</span><span class="n">pmc_id</span><span class="p">,</span> <span class="n">retries</span><span class="o">=</span><span class="n">retries</span><span class="p">)</span>
 
             <span class="k">if</span> <span class="n">fulltext</span><span class="p">:</span>
                 <span class="c1"># Extract identifiers</span>
@@ -4411,13 +4437,16 @@
 
 <div class="viewcode-block" id="SRAweb.pmid_to_identifiers">
 <a class="viewcode-back" href="../../pysradb.html#pysradb.sraweb.SRAweb.pmid_to_identifiers">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">pmid_to_identifiers</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pmids</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">pmid_to_identifiers</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pmids</span><span class="p">,</span> <span class="n">retries</span><span class="o">=</span><span class="mi">3</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Extract database identifiers from PubMed articles via PMC</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        pmids: list or str</span>
 <span class="sd">              PMID(s)</span>
+<span class="sd">        retries: int</span>
+<span class="sd">              Number of additional retries for failed PubMed/PMC requests.</span>
+<span class="sd">              Default: 3</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
@@ -4428,14 +4457,14 @@
             <span class="n">pmids</span> <span class="o">=</span> <span class="p">[</span><span class="n">pmids</span><span class="p">]</span>
 
         <span class="c1"># First convert PMIDs to PMC IDs</span>
-        <span class="n">pmid_pmc_mapping</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">pmid_to_pmc</span><span class="p">(</span><span class="n">pmids</span><span class="p">)</span>
+        <span class="n">pmid_pmc_mapping</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">pmid_to_pmc</span><span class="p">(</span><span class="n">pmids</span><span class="p">,</span> <span class="n">retries</span><span class="o">=</span><span class="n">retries</span><span class="p">)</span>
 
         <span class="n">results</span> <span class="o">=</span> <span class="p">[]</span>
 
         <span class="k">for</span> <span class="n">pmid</span><span class="p">,</span> <span class="n">pmc_id</span> <span class="ow">in</span> <span class="n">pmid_pmc_mapping</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
             <span class="k">if</span> <span class="n">pmc_id</span><span class="p">:</span>
                 <span class="c1"># Get identifiers from PMC</span>
-                <span class="n">pmc_results</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">pmc_to_identifiers</span><span class="p">([</span><span class="n">pmc_id</span><span class="p">])</span>
+                <span class="n">pmc_results</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">pmc_to_identifiers</span><span class="p">([</span><span class="n">pmc_id</span><span class="p">],</span> <span class="n">retries</span><span class="o">=</span><span class="n">retries</span><span class="p">)</span>
 
                 <span class="k">if</span> <span class="ow">not</span> <span class="n">pmc_results</span><span class="o">.</span><span class="n">empty</span><span class="p">:</span>
                     <span class="n">result</span> <span class="o">=</span> <span class="n">pmc_results</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">to_dict</span><span class="p">()</span>
@@ -4485,39 +4514,45 @@
 
 <div class="viewcode-block" id="SRAweb.pmid_to_gse">
 <a class="viewcode-back" href="../../pysradb.html#pysradb.sraweb.SRAweb.pmid_to_gse">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">pmid_to_gse</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pmids</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">pmid_to_gse</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pmids</span><span class="p">,</span> <span class="n">retries</span><span class="o">=</span><span class="mi">3</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Get GSE identifiers from PMID(s)</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        pmids: list or str</span>
 <span class="sd">              PMID(s)</span>
+<span class="sd">        retries: int</span>
+<span class="sd">              Number of additional retries for failed PubMed/PMC requests.</span>
+<span class="sd">              Default: 3</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        results_df: pandas.DataFrame</span>
 <span class="sd">                   DataFrame with PMIDs and GSE identifiers</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">full_results</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">pmid_to_identifiers</span><span class="p">(</span><span class="n">pmids</span><span class="p">)</span>
+        <span class="n">full_results</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">pmid_to_identifiers</span><span class="p">(</span><span class="n">pmids</span><span class="p">,</span> <span class="n">retries</span><span class="o">=</span><span class="n">retries</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">full_results</span><span class="p">[[</span><span class="s2">&quot;pmid&quot;</span><span class="p">,</span> <span class="s2">&quot;pmc_id&quot;</span><span class="p">,</span> <span class="s2">&quot;gse_ids&quot;</span><span class="p">]]</span></div>
 
 
 <div class="viewcode-block" id="SRAweb.pmid_to_srp">
 <a class="viewcode-back" href="../../pysradb.html#pysradb.sraweb.SRAweb.pmid_to_srp">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">pmid_to_srp</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pmids</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">pmid_to_srp</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pmids</span><span class="p">,</span> <span class="n">retries</span><span class="o">=</span><span class="mi">3</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Get SRP identifiers from PMID(s)</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        pmids: list or str</span>
 <span class="sd">              PMID(s)</span>
+<span class="sd">        retries: int</span>
+<span class="sd">              Number of additional retries for failed PubMed/PMC requests.</span>
+<span class="sd">              Default: 3</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        results_df: pandas.DataFrame</span>
 <span class="sd">                   DataFrame with PMIDs and SRP identifiers</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">full_results</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">pmid_to_identifiers</span><span class="p">(</span><span class="n">pmids</span><span class="p">)</span>
+        <span class="n">full_results</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">pmid_to_identifiers</span><span class="p">(</span><span class="n">pmids</span><span class="p">,</span> <span class="n">retries</span><span class="o">=</span><span class="n">retries</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">full_results</span><span class="p">[[</span><span class="s2">&quot;pmid&quot;</span><span class="p">,</span> <span class="s2">&quot;pmc_id&quot;</span><span class="p">,</span> <span class="s2">&quot;srp_ids&quot;</span><span class="p">]]</span></div>
 
 

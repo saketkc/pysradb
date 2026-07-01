@@ -179,7 +179,7 @@
     "df = db.metadata(\"GSE155673\")\n",
     "display(df.head())\n",
     "\n",
-    "print('To enrich this table with Ollama, run:')\n",
+    "print(\"To enrich this table with Ollama, run:\")\n",
     "print('db.metadata(\"GSE155673\", enrich=True, enrich_backend=\"ollama/granite4:3b\")')"
    ]
   },
@@ -224,7 +224,7 @@
    },
    "outputs": [],
    "source": [
-    "enrichment_example = '''\n",
+    "enrichment_example = \"\"\"\n",
     "from pysradb import SRAweb\n",
     "\n",
     "db = SRAweb()\n",
@@ -233,7 +233,7 @@
     "    enrich=True,\n",
     "    enrich_backend=\"ollama/granite4:3b\",\n",
     ")\n",
-    "'''\n",
+    "\"\"\"\n",
     "print(enrichment_example)"
    ]
   },
@@ -438,14 +438,14 @@
    },
    "outputs": [],
    "source": [
-    "embedding_example = '''\n",
+    "embedding_example = \"\"\"\n",
     "df = db.metadata(\n",
     "    \"GSE155673\",\n",
     "    enrich=True,\n",
     "    enrich_backend=\"ollama/granite4:3b\",\n",
     "    embedding_model=\"abhinand/MedEmbed-large-v0.1\",\n",
     ")\n",
-    "'''\n",
+    "\"\"\"\n",
     "print(embedding_example)"
    ]
   }
