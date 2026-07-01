@@ -4,6 +4,7 @@ import time
 
 import pandas as pd
 import pytest
+import requests
 
 from pysradb.sraweb import SRAweb
 from tests.conftest import skip_on_network_failure
@@ -611,6 +612,34 @@ def test_extract_identifiers_from_text(sraweb_connection):
     assert "SRP067890" in identifiers["srp"]
     assert "PRJNA123456" in identifiers["prjna"]
     assert "SRR1234567" in identifiers["srr"]
+
+
+def test_fetch_pmc_fulltext_retries(monkeypatch):
+    """Test PMC full-text fetch retries transient request failures."""
+
+    class Response:
+        text = "<article/>"
+
+        def raise_for_status(self):
+            return None
+
+    client = SRAweb()
+    client.sleep_time = 0.5
+    calls = []
+    sleeps = []
+
+    def fake_get(url, params, timeout):
+        calls.append((url, params, timeout))
+        if len(calls) < 3:
+            raise requests.RequestException("temporary failure")
+        return Response()
+
+    monkeypatch.setattr("pysradb.sraweb.requests.get", fake_get)
+    monkeypatch.setattr("pysradb.sraweb.time.sleep", sleeps.append)
+
+    assert client.fetch_pmc_fulltext("PMC123", retries=2) == "<article/>"
+    assert len(calls) == 3
+    assert sleeps == [0.5, 1.0, 0.5]
 
 
 @pytest.mark.slow

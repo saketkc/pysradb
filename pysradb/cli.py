@@ -946,27 +946,27 @@ def ena_to_pmid(ena_ids, saveto):
     _print_save_df(df, saveto)
 
 
-def pmid_to_gse(pmid_ids, saveto):
+def pmid_to_gse(pmid_ids, saveto, retries=3):
     client = SRAweb()
-    df = client.pmid_to_gse(pmid_ids)
+    df = client.pmid_to_gse(pmid_ids, retries=retries)
     _print_save_df(df, saveto)
 
 
-def pmid_to_srp(pmid_ids, saveto):
+def pmid_to_srp(pmid_ids, saveto, retries=3):
     client = SRAweb()
-    df = client.pmid_to_srp(pmid_ids)
+    df = client.pmid_to_srp(pmid_ids, retries=retries)
     _print_save_df(df, saveto)
 
 
-def pmc_to_identifiers(pmc_ids, saveto):
+def pmc_to_identifiers(pmc_ids, saveto, retries=3):
     client = SRAweb()
-    df = client.pmc_to_identifiers(pmc_ids)
+    df = client.pmc_to_identifiers(pmc_ids, retries=retries)
     _print_save_df(df, saveto)
 
 
-def pmid_to_identifiers(pmid_ids, saveto):
+def pmid_to_identifiers(pmid_ids, saveto, retries=3):
     client = SRAweb()
-    df = client.pmid_to_identifiers(pmid_ids)
+    df = client.pmid_to_identifiers(pmid_ids, retries=retries)
     _print_save_df(df, saveto)
 
 
@@ -1771,6 +1771,12 @@ def parse_args(args=None):
         "pmid-to-gse", help="Get GSE accessions from PMIDs"
     )
     subparser.add_argument("--saveto", help="Save output to file")
+    subparser.add_argument(
+        "--retries",
+        type=int,
+        default=3,
+        help="Number of additional retries for failed PubMed/PMC requests",
+    )
     subparser.add_argument("pmid_ids", nargs="+", help="PMID(s)")
     subparser.set_defaults(func=pmid_to_gse)
 
@@ -1779,6 +1785,12 @@ def parse_args(args=None):
         "pmid-to-srp", help="Get SRP accessions from PMIDs"
     )
     subparser.add_argument("--saveto", help="Save output to file")
+    subparser.add_argument(
+        "--retries",
+        type=int,
+        default=3,
+        help="Number of additional retries for failed PubMed/PMC requests",
+    )
     subparser.add_argument("pmid_ids", nargs="+", help="PMID(s)")
     subparser.set_defaults(func=pmid_to_srp)
 
@@ -1787,6 +1799,12 @@ def parse_args(args=None):
         "pmc-to-identifiers", help="Extract database identifiers from PMC articles"
     )
     subparser.add_argument("--saveto", help="Save output to file")
+    subparser.add_argument(
+        "--retries",
+        type=int,
+        default=3,
+        help="Number of additional retries for failed PMC full-text requests",
+    )
     subparser.add_argument("pmc_ids", nargs="+", help="PMC ID(s)")
     subparser.set_defaults(func=pmc_to_identifiers)
 
@@ -1795,6 +1813,12 @@ def parse_args(args=None):
         "pmid-to-identifiers", help="Extract database identifiers from PubMed articles"
     )
     subparser.add_argument("--saveto", help="Save output to file")
+    subparser.add_argument(
+        "--retries",
+        type=int,
+        default=3,
+        help="Number of additional retries for failed PubMed/PMC requests",
+    )
     subparser.add_argument("pmid_ids", nargs="+", help="PMID(s)")
     subparser.set_defaults(func=pmid_to_identifiers)
 
@@ -1916,13 +1940,13 @@ def parse_args(args=None):
     elif args.command == "pmid-info":
         pmid_info(args.ids, args.saveto, args.detailed)
     elif args.command == "pmid-to-gse":
-        pmid_to_gse(args.pmid_ids, args.saveto)
+        pmid_to_gse(args.pmid_ids, args.saveto, args.retries)
     elif args.command == "pmid-to-srp":
-        pmid_to_srp(args.pmid_ids, args.saveto)
+        pmid_to_srp(args.pmid_ids, args.saveto, args.retries)
     elif args.command == "pmc-to-identifiers":
-        pmc_to_identifiers(args.pmc_ids, args.saveto)
+        pmc_to_identifiers(args.pmc_ids, args.saveto, args.retries)
     elif args.command == "pmid-to-identifiers":
-        pmid_to_identifiers(args.pmid_ids, args.saveto)
+        pmid_to_identifiers(args.pmid_ids, args.saveto, args.retries)
     elif args.command == "doi-to-gse":
         doi_to_gse(args.doi_ids, args.saveto)
     elif args.command == "doi-to-srp":

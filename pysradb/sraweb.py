@@ -3641,13 +3641,33 @@ class SRAweb(object):
 
         return doi_pmid_mapping
 
-    def pmid_to_pmc(self, pmids):
+    def _get_with_retries(self, url, params, retries=3, timeout=60):
+        """Run a GET request with optional additional retries."""
+        retries = max(0, int(retries))
+        last_error = None
+
+        for attempt in range(retries + 1):
+            try:
+                response = requests.get(url, params=params, timeout=timeout)
+                response.raise_for_status()
+                return response
+            except requests.RequestException as e:
+                last_error = e
+                if attempt < retries:
+                    time.sleep(self.sleep_time * (2**attempt))
+
+        raise last_error
+
+    def pmid_to_pmc(self, pmids, retries=3):
         """Convert PMID(s) to PMC ID(s)
 
         Parameters
         ----------
         pmids: list or str
               PMID(s)
+        retries: int
+              Number of additional retries for failed PubMed requests.
+              Default: 3
 
         Returns
         -------
@@ -3668,8 +3688,9 @@ class SRAweb(object):
                     "retmode": "json",
                 }
 
-                response = requests.get(summary_url, params=summary_params, timeout=60)
-                response.raise_for_status()
+                response = self._get_with_retries(
+                    summary_url, summary_params, retries=retries
+                )
                 result = response.json()
 
                 # Extract PMC ID from articleids
@@ -3691,13 +3712,16 @@ class SRAweb(object):
 
         return pmid_pmc_mapping
 
-    def fetch_pmc_fulltext(self, pmc_id):
+    def fetch_pmc_fulltext(self, pmc_id, retries=3):
         """Fetch full text from PMC article
 
         Parameters
         ----------
         pmc_id: str
                PMC ID (can be with or without 'PMC' prefix)
+        retries: int
+               Number of additional retries for failed PMC requests.
+               Default: 3
 
         Returns
         -------
@@ -3712,8 +3736,7 @@ class SRAweb(object):
             fetch_url = self.base_url["efetch"]
             fetch_params = {"db": "pmc", "id": pmc_id, "retmode": "xml"}
 
-            response = requests.get(fetch_url, params=fetch_params, timeout=60)
-            response.raise_for_status()
+            response = self._get_with_retries(fetch_url, fetch_params, retries=retries)
 
             time.sleep(self.sleep_time)
             return response.text
@@ -3763,7 +3786,7 @@ class SRAweb(object):
 
         return identifiers
 
-    def pmc_to_identifiers(self, pmc_ids, convert_missing=True):
+    def pmc_to_identifiers(self, pmc_ids, convert_missing=True, retries=3):
         """Extract database identifiers from PMC articles
 
         Parameters
@@ -3773,6 +3796,9 @@ class SRAweb(object):
         convert_missing: bool
                         If True, automatically convert GSE↔SRP when one is found but not the other
                         Default: True
+        retries: int
+                Number of additional retries for failed PMC full-text requests.
+                Default: 3
 
         Returns
         -------
@@ -3786,7 +3812,7 @@ class SRAweb(object):
 
         for pmc_id in pmc_ids:
             # Fetch full text
-            fulltext = self.fetch_pmc_fulltext(pmc_id)
+            fulltext = self.fetch_pmc_fulltext(pmc_id, retries=retries)
 
             if fulltext:
                 # Extract identifiers
@@ -3914,13 +3940,16 @@ class SRAweb(object):
 
         return pd.DataFrame(results)
 
-    def pmid_to_identifiers(self, pmids):
+    def pmid_to_identifiers(self, pmids, retries=3):
         """Extract database identifiers from PubMed articles via PMC
 
         Parameters
         ----------
         pmids: list or str
               PMID(s)
+        retries: int
+              Number of additional retries for failed PubMed/PMC requests.
+              Default: 3
 
         Returns
         -------
@@ -3931,14 +3960,14 @@ class SRAweb(object):
             pmids = [pmids]
 
         # First convert PMIDs to PMC IDs
-        pmid_pmc_mapping = self.pmid_to_pmc(pmids)
+        pmid_pmc_mapping = self.pmid_to_pmc(pmids, retries=retries)
 
         results = []
 
         for pmid, pmc_id in pmid_pmc_mapping.items():
             if pmc_id:
                 # Get identifiers from PMC
-                pmc_results = self.pmc_to_identifiers([pmc_id])
+                pmc_results = self.pmc_to_identifiers([pmc_id], retries=retries)
 
                 if not pmc_results.empty:
                     result = pmc_results.iloc[0].to_dict()
@@ -3985,36 +4014,42 @@ class SRAweb(object):
 
         return pd.DataFrame(results)
 
-    def pmid_to_gse(self, pmids):
+    def pmid_to_gse(self, pmids, retries=3):
         """Get GSE identifiers from PMID(s)
 
         Parameters
         ----------
         pmids: list or str
               PMID(s)
+        retries: int
+              Number of additional retries for failed PubMed/PMC requests.
+              Default: 3
 
         Returns
         -------
         results_df: pandas.DataFrame
                    DataFrame with PMIDs and GSE identifiers
         """
-        full_results = self.pmid_to_identifiers(pmids)
+        full_results = self.pmid_to_identifiers(pmids, retries=retries)
         return full_results[["pmid", "pmc_id", "gse_ids"]]
 
-    def pmid_to_srp(self, pmids):
+    def pmid_to_srp(self, pmids, retries=3):
         """Get SRP identifiers from PMID(s)
 
         Parameters
         ----------
         pmids: list or str
               PMID(s)
+        retries: int
+              Number of additional retries for failed PubMed/PMC requests.
+              Default: 3
 
         Returns
         -------
         results_df: pandas.DataFrame
                    DataFrame with PMIDs and SRP identifiers
         """
-        full_results = self.pmid_to_identifiers(pmids)
+        full_results = self.pmid_to_identifiers(pmids, retries=retries)
         return full_results[["pmid", "pmc_id", "srp_ids"]]
 
     def doi_to_identifiers(self, dois):
