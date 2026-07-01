@@ -946,27 +946,27 @@ def ena_to_pmid(ena_ids, saveto):
     _print_save_df(df, saveto)
 
 
-def pmid_to_gse(pmid_ids, saveto, retries=3):
-    client = SRAweb()
-    df = client.pmid_to_gse(pmid_ids, retries=retries)
+def pmid_to_gse(pmid_ids, saveto, retries=3, timeout=60):
+    client = SRAweb(retries=retries, timeout=timeout)
+    df = client.pmid_to_gse(pmid_ids)
     _print_save_df(df, saveto)
 
 
-def pmid_to_srp(pmid_ids, saveto, retries=3):
-    client = SRAweb()
-    df = client.pmid_to_srp(pmid_ids, retries=retries)
+def pmid_to_srp(pmid_ids, saveto, retries=3, timeout=60):
+    client = SRAweb(retries=retries, timeout=timeout)
+    df = client.pmid_to_srp(pmid_ids)
     _print_save_df(df, saveto)
 
 
-def pmc_to_identifiers(pmc_ids, saveto, retries=3):
-    client = SRAweb()
-    df = client.pmc_to_identifiers(pmc_ids, retries=retries)
+def pmc_to_identifiers(pmc_ids, saveto, retries=3, timeout=60):
+    client = SRAweb(retries=retries, timeout=timeout)
+    df = client.pmc_to_identifiers(pmc_ids)
     _print_save_df(df, saveto)
 
 
-def pmid_to_identifiers(pmid_ids, saveto, retries=3):
-    client = SRAweb()
-    df = client.pmid_to_identifiers(pmid_ids, retries=retries)
+def pmid_to_identifiers(pmid_ids, saveto, retries=3, timeout=60):
+    client = SRAweb(retries=retries, timeout=timeout)
+    df = client.pmid_to_identifiers(pmid_ids)
     _print_save_df(df, saveto)
 
 
@@ -1020,9 +1020,7 @@ def parse_args(args=None):
             """\
     pysradb: Query NGS metadata and data from NCBI Sequence Read Archive.
     version: {}.
-    Citation: 10.12688/f1000research.18676.1""".format(
-                __version__
-            )
+    Citation: 10.12688/f1000research.18676.1""".format(__version__)
         ),
         formatter_class=CustomFormatterArgP,
     )
@@ -1777,6 +1775,12 @@ def parse_args(args=None):
         default=3,
         help="Number of additional retries for failed PubMed/PMC requests",
     )
+    subparser.add_argument(
+        "--timeout",
+        type=int,
+        default=60,
+        help="Timeout in seconds for failed PubMed/PMC requests",
+    )
     subparser.add_argument("pmid_ids", nargs="+", help="PMID(s)")
     subparser.set_defaults(func=pmid_to_gse)
 
@@ -1790,6 +1794,12 @@ def parse_args(args=None):
         type=int,
         default=3,
         help="Number of additional retries for failed PubMed/PMC requests",
+    )
+    subparser.add_argument(
+        "--timeout",
+        type=int,
+        default=60,
+        help="Timeout in seconds for failed PubMed/PMC requests",
     )
     subparser.add_argument("pmid_ids", nargs="+", help="PMID(s)")
     subparser.set_defaults(func=pmid_to_srp)
@@ -1805,6 +1815,12 @@ def parse_args(args=None):
         default=3,
         help="Number of additional retries for failed PMC full-text requests",
     )
+    subparser.add_argument(
+        "--timeout",
+        type=int,
+        default=60,
+        help="Timeout in seconds for failed PMC full-text requests",
+    )
     subparser.add_argument("pmc_ids", nargs="+", help="PMC ID(s)")
     subparser.set_defaults(func=pmc_to_identifiers)
 
@@ -1818,6 +1834,12 @@ def parse_args(args=None):
         type=int,
         default=3,
         help="Number of additional retries for failed PubMed/PMC requests",
+    )
+    subparser.add_argument(
+        "--timeout",
+        type=int,
+        default=60,
+        help="Timeout in seconds for failed PubMed/PMC requests",
     )
     subparser.add_argument("pmid_ids", nargs="+", help="PMID(s)")
     subparser.set_defaults(func=pmid_to_identifiers)
@@ -1940,13 +1962,13 @@ def parse_args(args=None):
     elif args.command == "pmid-info":
         pmid_info(args.ids, args.saveto, args.detailed)
     elif args.command == "pmid-to-gse":
-        pmid_to_gse(args.pmid_ids, args.saveto, args.retries)
+        pmid_to_gse(args.pmid_ids, args.saveto, args.retries, args.timeout)
     elif args.command == "pmid-to-srp":
-        pmid_to_srp(args.pmid_ids, args.saveto, args.retries)
+        pmid_to_srp(args.pmid_ids, args.saveto, args.retries, args.timeout)
     elif args.command == "pmc-to-identifiers":
-        pmc_to_identifiers(args.pmc_ids, args.saveto, args.retries)
+        pmc_to_identifiers(args.pmc_ids, args.saveto, args.retries, args.timeout)
     elif args.command == "pmid-to-identifiers":
-        pmid_to_identifiers(args.pmid_ids, args.saveto, args.retries)
+        pmid_to_identifiers(args.pmid_ids, args.saveto, args.retries, args.timeout)
     elif args.command == "doi-to-gse":
         doi_to_gse(args.doi_ids, args.saveto)
     elif args.command == "doi-to-srp":
