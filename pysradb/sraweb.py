@@ -232,7 +232,7 @@ class SRAweb(object):
                 "retmax": "50",
             }
 
-            response = self._get_with_retries(
+            response = self._send_retryable_request(
                 search_url,
                 params=search_params,
             )
@@ -250,7 +250,7 @@ class SRAweb(object):
             for uid in sra_uids[:10]:  # Limit to first 10
                 try:
                     summary_params = {"db": "sra", "id": uid, "retmode": "json"}
-                    summary_response = self._get_with_retries(
+                    summary_response = self._send_retryable_request(
                         summary_url,
                         params=summary_params,
                         retries=self.retries,
@@ -291,7 +291,7 @@ class SRAweb(object):
         """
         payload = self.ena_params.copy()
         payload += [("accession", srp)]
-        request = self._get_with_retries(
+        request = self._send_retryable_request(
             self.ena_fastq_search_url, params=OrderedDict(payload)
         )
         request_text = request.text.strip()
@@ -388,7 +388,7 @@ class SRAweb(object):
         if isinstance(term, list):
             term = " OR ".join(term)
         payload += [("term", term)]
-        request = requests.post(self.base_url["esearch"], data=OrderedDict(payload))
+        request = self._send_retryable_request(self.base_url["esearch"], data=OrderedDict(payload), method="post")
         try:
             esearch_response = request.json()
         except JSONDecodeError:
@@ -401,7 +401,7 @@ class SRAweb(object):
 
             retry_after = request.headers.get("Retry-After", 1)
             time.sleep(int(retry_after))
-            request = requests.post(self.base_url["esearch"], data=OrderedDict(payload))
+            request = self._send_retryable_request(self.base_url["esearch"], data=OrderedDict(payload), method="post")
             try:
                 esearch_response = request.json()
             except JSONDecodeError as e:
@@ -437,7 +437,7 @@ class SRAweb(object):
             payload += self.create_esummary_params(esearch_response["esearchresult"])
             payload = OrderedDict(payload)
             payload["retstart"] = retstart
-            request = self._get_with_retries(
+            request = self._send_retryable_request(
                 self.base_url["esummary"], params=OrderedDict(payload)
             )
             try:
@@ -478,7 +478,7 @@ class SRAweb(object):
             term = " OR ".join(term)
         payload += [("term", term)]
 
-        request = self._get_with_retries(
+        request = self._send_retryable_request(
             self.base_url["esearch"], params=OrderedDict(payload)
         )
         esearch_response = request.json()
@@ -503,7 +503,7 @@ class SRAweb(object):
             payload += self.create_esummary_params(esearch_response["esearchresult"])
             payload = OrderedDict(payload)
             payload["retstart"] = retstart
-            request = self._get_with_retries(
+            request = self._send_retryable_request(
                 self.base_url["efetch"], params=OrderedDict(payload)
             )
             request_text = request.text.strip()
@@ -526,7 +526,7 @@ class SRAweb(object):
                         raise RuntimeError(error_msg.strip())
                 time.sleep(int(retry_after))
                 # try again
-                request = self._get_with_retries(
+                request = self._send_retryable_request(
                     self.base_url["efetch"], params=OrderedDict(payload)
                 )
                 request_text = request.text.strip()
@@ -1069,7 +1069,7 @@ class SRAweb(object):
         for gsm in gsm_ids:
             try:
                 url = f"https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc={gsm}&targ=self&form=text&view=full"
-                response = self._get_with_retries(url)
+                response = self._send_retryable_request(url)
                 response.raise_for_status()
 
                 # Parse SOFT format
@@ -1544,7 +1544,7 @@ class SRAweb(object):
 
     def _pysraweb_get_json(self, path, params=None, timeout=30):
         url = f"{self.pysraweb_api_url.rstrip('/')}/{path.lstrip('/')}"
-        response = self._get_with_retries(url, params=params)
+        response = self._send_retryable_request(url, params=params)
         response.raise_for_status()
         return response.json()
 
@@ -2359,7 +2359,7 @@ class SRAweb(object):
                     ("retmode", "xml"),
                 ]
 
-                request = self._get_with_retries(
+                request = self._send_retryable_request(
                     self.base_url["efetch"], params=OrderedDict(payload)
                 )
                 xml_text = request.text.strip()
@@ -2560,7 +2560,7 @@ class SRAweb(object):
               List of PMIDs found
         """
         try:
-            r = self._get_with_retries(
+            r = self._send_retryable_request(
                 "https://www.ebi.ac.uk/europepmc/webservices/rest/search",
                 params={
                     "query": f'"{query}"',
@@ -2648,7 +2648,7 @@ class SRAweb(object):
         else:
             query = f'"{raw_id}"'
         try:
-            r = self._get_with_retries(
+            r = self._send_retryable_request(
                 "https://www.ebi.ac.uk/europepmc/webservices/rest/search",
                 params={
                     "query": query,
@@ -2674,7 +2674,7 @@ class SRAweb(object):
 
     def _elink_ids(self, pmid, db, linkname):
         """Get linked database IDs for a PMID via NCBI elink."""
-        r = self._get_with_retries(
+        r = self._send_retryable_request(
             "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/elink.fcgi",
             params=self._ncbi_params(
                 {"dbfrom": "pubmed", "db": db, "id": pmid, "retmode": "json"}
@@ -2696,7 +2696,7 @@ class SRAweb(object):
         try:
             gds_ids = self._elink_ids(pmid, "gds", "pubmed_gds")
             if gds_ids:
-                r = self._get_with_retries(
+                r = self._send_retryable_request(
                     self.base_url["esummary"],
                     params=self._ncbi_params(
                         {"db": "gds", "id": ",".join(gds_ids[:5]), "retmode": "json"}
@@ -2714,7 +2714,7 @@ class SRAweb(object):
 
             sra_ids = self._elink_ids(pmid, "sra", "pubmed_sra")
             if sra_ids:
-                r = self._get_with_retries(
+                r = self._send_retryable_request(
                     self.base_url["esummary"],
                     params=self._ncbi_params(
                         {"db": "sra", "id": ",".join(sra_ids[:5]), "retmode": "json"}
@@ -2826,7 +2826,7 @@ class SRAweb(object):
     def _fetch_pmid_metadata_ncbi(self, pmids, results):
         """Batch-query NCBI PubMed efetch for full author names, populating *results* in-place."""
         try:
-            r = self._get_with_retries(
+            r = self._send_retryable_request(
                 self.base_url["efetch"],
                 params=self._ncbi_params(
                     {"db": "pubmed", "id": ",".join(pmids), "retmode": "xml"}
@@ -2882,7 +2882,7 @@ class SRAweb(object):
     def _fetch_pmid_metadata_epmc(self, pmid, results):
         """Query Europe PMC for a single PMID, populating *results* dict in-place."""
         try:
-            r = self._get_with_retries(
+            r = self._send_retryable_request(
                 "https://www.ebi.ac.uk/europepmc/webservices/rest/search",
                 params={
                     "query": f"ext_id:{pmid} src:med",
@@ -2934,7 +2934,7 @@ class SRAweb(object):
         if self.openalex_email:
             params["mailto"] = self.openalex_email
 
-        r = self._get_with_retries(
+        r = self._send_retryable_request(
             url,
             params=params,
             retries=retries,
@@ -3189,7 +3189,7 @@ class SRAweb(object):
                 "retmax": "10",
             }
 
-            response = self._get_with_retries(search_url, params=search_params)
+            response = self._send_retryable_request(search_url, params=search_params)
             result = response.json()
             geo_uids = result["esearchresult"]["idlist"]
 
@@ -3204,7 +3204,7 @@ class SRAweb(object):
                     "retmode": "json",
                 }
 
-                summary_response = self._get_with_retries(
+                summary_response = self._send_retryable_request(
                     summary_url, params=summary_params
                 )
                 summary_result = summary_response.json()
@@ -3245,7 +3245,7 @@ class SRAweb(object):
                 "retmax": "5",
             }
 
-            response = self._get_with_retries(search_url, params=search_params)
+            response = self._send_retryable_request(search_url, params=search_params)
             result = response.json()
             sra_uids = result["esearchresult"]["idlist"]
 
@@ -3259,7 +3259,7 @@ class SRAweb(object):
                     "retmode": "json",
                 }
 
-                elink_response = self._get_with_retries(elink_url, params=elink_params)
+                elink_response = self._send_retryable_request(elink_url, params=elink_params)
                 elink_result = elink_response.json()
 
                 if "linksets" in elink_result:
@@ -3278,7 +3278,7 @@ class SRAweb(object):
                                             "retmode": "json",
                                         }
 
-                                        summary_response = self._get_with_retries(
+                                        summary_response = self._send_retryable_request(
                                             summary_url,
                                             params=summary_params,
                                         )
@@ -3321,7 +3321,7 @@ class SRAweb(object):
                 "retmax": "10",
             }
 
-            response = self._get_with_retries(search_url, params=search_params)
+            response = self._send_retryable_request(search_url, params=search_params)
             result = response.json()
 
             pmc_ids = result.get("esearchresult", {}).get("idlist", [])
@@ -3336,7 +3336,7 @@ class SRAweb(object):
                 "retmode": "json",
             }
 
-            summary_response = self._get_with_retries(
+            summary_response = self._send_retryable_request(
                 summary_url, params=summary_params
             )
             summary_result = summary_response.json()
@@ -3395,7 +3395,7 @@ class SRAweb(object):
                     "retmax": "10",
                 }
 
-                response = self._get_with_retries(search_url, params=search_params)
+                response = self._send_retryable_request(search_url, params=search_params)
                 result = response.json()
 
                 pmc_ids = result["esearchresult"]["idlist"]
@@ -3412,7 +3412,7 @@ class SRAweb(object):
                     "retmode": "json",
                 }
 
-                summary_response = self._get_with_retries(
+                summary_response = self._send_retryable_request(
                     summary_url, params=summary_params
                 )
                 summary_result = summary_response.json()
@@ -3572,7 +3572,7 @@ class SRAweb(object):
             pmid = pd.NA
             try:
                 # Step 1: resolve accession to BioProject numeric ID
-                r = self._get_with_retries(
+                r = self._send_retryable_request(
                     self.base_url["esearch"],
                     params={
                         "db": "bioproject",
@@ -3584,7 +3584,7 @@ class SRAweb(object):
 
                 if bp_ids:
                     # Step 2: elink BioProject → PubMed
-                    r2 = self._get_with_retries(
+                    r2 = self._send_retryable_request(
                         "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/elink.fcgi",
                         params={
                             "dbfrom": "bioproject",
@@ -3643,7 +3643,7 @@ class SRAweb(object):
                     "retmode": "json",
                 }
 
-                response = self._get_with_retries(search_url, params=search_params)
+                response = self._send_retryable_request(search_url, params=search_params)
                 result = response.json()
 
                 id_list = result.get("esearchresult", {}).get("idlist", [])
@@ -3665,22 +3665,24 @@ class SRAweb(object):
 
         return doi_pmid_mapping
 
-    def _get_with_retries(
+    def _send_retryable_request(
         self,
         url,
         params=None,
+        data=None,
         retries=None,
         timeout=None,
         non_retryable_status_codes=None,
+        method="get",
     ):
-        """Run a GET request with optional additional retries."""
+        """Run a request with optional additional retries."""
         retries = max(0, int(retries if retries is not None else self.retries))
         timeout = timeout if timeout is not None else self.timeout
         last_error: BaseException | None = None
 
         for attempt in range(retries + 1):
             try:
-                response = requests.get(url, params=params, timeout=timeout)
+                response = requests.request(method, url, params=params, data=data, timeout=timeout)
                 if (
                     non_retryable_status_codes
                     and response.status_code in non_retryable_status_codes
@@ -3728,7 +3730,7 @@ class SRAweb(object):
                     "retmode": "json",
                 }
 
-                response = self._get_with_retries(summary_url, summary_params)
+                response = self._send_retryable_request(summary_url, summary_params)
                 result = response.json()
 
                 # Extract PMC ID from articleids
@@ -3774,7 +3776,7 @@ class SRAweb(object):
             fetch_url = self.base_url["efetch"]
             fetch_params = {"db": "pmc", "id": pmc_id, "retmode": "xml"}
 
-            response = self._get_with_retries(fetch_url, fetch_params, retries=retries)
+            response = self._send_retryable_request(fetch_url, fetch_params, retries=retries)
 
             time.sleep(self.sleep_time)
             return response.text
