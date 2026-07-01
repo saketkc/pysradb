@@ -388,7 +388,9 @@ class SRAweb(object):
         if isinstance(term, list):
             term = " OR ".join(term)
         payload += [("term", term)]
-        request = self._send_retryable_request(self.base_url["esearch"], data=OrderedDict(payload), method="post")
+        request = self._send_retryable_request(
+            self.base_url["esearch"], data=OrderedDict(payload), method="post"
+        )
         try:
             esearch_response = request.json()
         except JSONDecodeError:
@@ -401,7 +403,9 @@ class SRAweb(object):
 
             retry_after = request.headers.get("Retry-After", 1)
             time.sleep(int(retry_after))
-            request = self._send_retryable_request(self.base_url["esearch"], data=OrderedDict(payload), method="post")
+            request = self._send_retryable_request(
+                self.base_url["esearch"], data=OrderedDict(payload), method="post"
+            )
             try:
                 esearch_response = request.json()
             except JSONDecodeError as e:
@@ -2918,7 +2922,7 @@ class SRAweb(object):
         except Exception:
             pass
 
-    def _openalex_request(self, url, params=None, retries=3, timeout=30):
+    def _openalex_request(self, url, params=None, retries=None, timeout=None):
         """Make an authenticated OpenAlex API request.
 
         Raises
@@ -3259,7 +3263,9 @@ class SRAweb(object):
                     "retmode": "json",
                 }
 
-                elink_response = self._send_retryable_request(elink_url, params=elink_params)
+                elink_response = self._send_retryable_request(
+                    elink_url, params=elink_params
+                )
                 elink_result = elink_response.json()
 
                 if "linksets" in elink_result:
@@ -3395,7 +3401,9 @@ class SRAweb(object):
                     "retmax": "10",
                 }
 
-                response = self._send_retryable_request(search_url, params=search_params)
+                response = self._send_retryable_request(
+                    search_url, params=search_params
+                )
                 result = response.json()
 
                 pmc_ids = result["esearchresult"]["idlist"]
@@ -3643,7 +3651,9 @@ class SRAweb(object):
                     "retmode": "json",
                 }
 
-                response = self._send_retryable_request(search_url, params=search_params)
+                response = self._send_retryable_request(
+                    search_url, params=search_params
+                )
                 result = response.json()
 
                 id_list = result.get("esearchresult", {}).get("idlist", [])
@@ -3682,7 +3692,9 @@ class SRAweb(object):
 
         for attempt in range(retries + 1):
             try:
-                response = requests.request(method, url, params=params, data=data, timeout=timeout)
+                response = requests.request(
+                    method, url, params=params, data=data, timeout=timeout
+                )
                 if (
                     non_retryable_status_codes
                     and response.status_code in non_retryable_status_codes
@@ -3694,7 +3706,7 @@ class SRAweb(object):
             except requests.RequestException as e:
                 last_error = e
 
-                if attempt == retries - 1:
+                if attempt == retries:
                     raise last_error
 
                 if attempt < retries:
@@ -3776,7 +3788,9 @@ class SRAweb(object):
             fetch_url = self.base_url["efetch"]
             fetch_params = {"db": "pmc", "id": pmc_id, "retmode": "xml"}
 
-            response = self._send_retryable_request(fetch_url, fetch_params, retries=retries)
+            response = self._send_retryable_request(
+                fetch_url, fetch_params, retries=retries
+            )
 
             time.sleep(self.sleep_time)
             return response.text
