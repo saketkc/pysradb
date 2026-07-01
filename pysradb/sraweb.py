@@ -113,6 +113,10 @@ class SRAweb(object):
         openalex_email: string
                  Email for OpenAlex polite pool (higher rate limits).
                  Falls back to OPENALEX_EMAIL environment variable.
+        retries: int
+                 Number of retries for failed HTTP requests. Default 3.
+        timeout: int
+                 Timeout in seconds for HTTP requests. Default 60.
         verbose: bool
                  Print warning/info messages. Default True.
         """
@@ -3719,9 +3723,6 @@ class SRAweb(object):
         ----------
         pmids: list or str
               PMID(s)
-        retries: int
-              Number of additional retries for failed PubMed requests.
-              Default: 3
 
         Returns
         -------
@@ -3850,9 +3851,6 @@ class SRAweb(object):
         convert_missing: bool
                         If True, automatically convert GSE↔SRP when one is found but not the other
                         Default: True
-        retries: int
-                Number of additional retries for failed PMC full-text requests.
-                Default: 3
 
         Returns
         -------
@@ -4001,9 +3999,6 @@ class SRAweb(object):
         ----------
         pmids: list or str
               PMID(s)
-        retries: int
-              Number of additional retries for failed PubMed/PMC requests.
-              Default: 3
 
         Returns
         -------
@@ -4075,9 +4070,6 @@ class SRAweb(object):
         ----------
         pmids: list or str
               PMID(s)
-        retries: int
-              Number of additional retries for failed PubMed/PMC requests.
-              Default: 3
 
         Returns
         -------
@@ -4094,9 +4086,6 @@ class SRAweb(object):
         ----------
         pmids: list or str
               PMID(s)
-        retries: int
-              Number of additional retries for failed PubMed/PMC requests.
-              Default: 3
 
         Returns
         -------
