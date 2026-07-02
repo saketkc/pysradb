@@ -9,7 +9,6 @@ import time
 import warnings
 from collections import OrderedDict
 from json.decoder import JSONDecodeError
-from types import AsyncGeneratorType
 from xml.etree import ElementTree as ET
 from xml.parsers.expat import ExpatError
 from xml.sax.saxutils import escape

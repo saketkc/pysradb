@@ -628,13 +628,13 @@ def test_fetch_pmc_fulltext_retries(monkeypatch):
     calls = []
     sleeps = []
 
-    def fake_get(url, params, timeout):
+    def fake_request(method, url, params=None, data=None, timeout=None):
         calls.append((url, params, timeout))
         if len(calls) < 3:
             raise requests.RequestException("temporary failure")
         return Response()
 
-    monkeypatch.setattr("pysradb.sraweb.requests.get", fake_get)
+    monkeypatch.setattr("pysradb.sraweb.requests.request", fake_request)
     monkeypatch.setattr("pysradb.sraweb.time.sleep", sleeps.append)
 
     assert client.fetch_pmc_fulltext("PMC123", retries=2) == "<article/>"
