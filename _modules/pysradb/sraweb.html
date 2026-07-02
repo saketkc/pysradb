@@ -422,7 +422,13 @@
 <a class="viewcode-back" href="../../pysradb.html#pysradb.sraweb.SRAweb">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">SRAweb</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span> <span class="n">api_key</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">openalex_api_key</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">openalex_email</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">True</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">api_key</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">openalex_api_key</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">openalex_email</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">retries</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">3</span><span class="p">,</span>
+        <span class="n">timeout</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">60</span><span class="p">,</span>
+        <span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
     <span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Initialize SRAweb for API-based access to SRA data.</span>
@@ -439,6 +445,10 @@
 <span class="sd">        openalex_email: string</span>
 <span class="sd">                 Email for OpenAlex polite pool (higher rate limits).</span>
 <span class="sd">                 Falls back to OPENALEX_EMAIL environment variable.</span>
+<span class="sd">        retries: int</span>
+<span class="sd">                 Number of retries for failed HTTP requests. Default 3.</span>
+<span class="sd">        timeout: int</span>
+<span class="sd">                 Timeout in seconds for HTTP requests. Default 60.</span>
 <span class="sd">        verbose: bool</span>
 <span class="sd">                 Print warning/info messages. Default True.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -488,6 +498,8 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">openalex_api_key</span> <span class="o">=</span> <span class="n">openalex_api_key</span> <span class="ow">or</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;OPENALEX_API_KEY&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">openalex_email</span> <span class="o">=</span> <span class="n">openalex_email</span> <span class="ow">or</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;OPENALEX_EMAIL&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span> <span class="o">=</span> <span class="n">verbose</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">retries</span> <span class="o">=</span> <span class="n">retries</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">timeout</span> <span class="o">=</span> <span class="n">timeout</span>
 
 <div class="viewcode-block" id="SRAweb.format_xml">
 <a class="viewcode-back" href="../../pysradb.html#pysradb.sraweb.SRAweb.format_xml">[docs]</a>
@@ -564,7 +576,10 @@
                 <span class="s2">&quot;retmax&quot;</span><span class="p">:</span> <span class="s2">&quot;50&quot;</span><span class="p">,</span>
             <span class="p">}</span>
 
-            <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">search_url</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="n">search_params</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">30</span><span class="p">)</span>
+            <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_send_retryable_request</span><span class="p">(</span>
+                <span class="n">search_url</span><span class="p">,</span>
+                <span class="n">params</span><span class="o">=</span><span class="n">search_params</span><span class="p">,</span>
+            <span class="p">)</span>
             <span class="n">result</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
             <span class="n">sra_uids</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;esearchresult&quot;</span><span class="p">,</span> <span class="p">{})</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;idlist&quot;</span><span class="p">,</span> <span class="p">[])</span>
 
@@ -579,9 +594,11 @@
             <span class="k">for</span> <span class="n">uid</span> <span class="ow">in</span> <span class="n">sra_uids</span><span class="p">[:</span><span class="mi">10</span><span class="p">]:</span>  <span class="c1"># Limit to first 10</span>
                 <span class="k">try</span><span class="p">:</span>
                     <span class="n">summary_params</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;db&quot;</span><span class="p">:</span> <span class="s2">&quot;sra&quot;</span><span class="p">,</span> <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="n">uid</span><span class="p">,</span> <span class="s2">&quot;retmode&quot;</span><span class="p">:</span> <span class="s2">&quot;json&quot;</span><span class="p">}</span>
-
-                    <span class="n">summary_response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
-                        <span class="n">summary_url</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="n">summary_params</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">30</span>
+                    <span class="n">summary_response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_send_retryable_request</span><span class="p">(</span>
+                        <span class="n">summary_url</span><span class="p">,</span>
+                        <span class="n">params</span><span class="o">=</span><span class="n">summary_params</span><span class="p">,</span>
+                        <span class="n">retries</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">retries</span><span class="p">,</span>
+                        <span class="n">timeout</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">timeout</span><span class="p">,</span>
                     <span class="p">)</span>
                     <span class="n">summary_result</span> <span class="o">=</span> <span class="n">summary_response</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
 
@@ -621,7 +638,9 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">payload</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ena_params</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
         <span class="n">payload</span> <span class="o">+=</span> <span class="p">[(</span><span class="s2">&quot;accession&quot;</span><span class="p">,</span> <span class="n">srp</span><span class="p">)]</span>
-        <span class="n">request</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ena_fastq_search_url</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="n">OrderedDict</span><span class="p">(</span><span class="n">payload</span><span class="p">))</span>
+        <span class="n">request</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_send_retryable_request</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">ena_fastq_search_url</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="n">OrderedDict</span><span class="p">(</span><span class="n">payload</span><span class="p">)</span>
+        <span class="p">)</span>
         <span class="n">request_text</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">text</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
         <span class="n">urls</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">request_text</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">):</span>
@@ -722,7 +741,9 @@
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">term</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
             <span class="n">term</span> <span class="o">=</span> <span class="s2">&quot; OR &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">term</span><span class="p">)</span>
         <span class="n">payload</span> <span class="o">+=</span> <span class="p">[(</span><span class="s2">&quot;term&quot;</span><span class="p">,</span> <span class="n">term</span><span class="p">)]</span>
-        <span class="n">request</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">base_url</span><span class="p">[</span><span class="s2">&quot;esearch&quot;</span><span class="p">],</span> <span class="n">data</span><span class="o">=</span><span class="n">OrderedDict</span><span class="p">(</span><span class="n">payload</span><span class="p">))</span>
+        <span class="n">request</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_send_retryable_request</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">base_url</span><span class="p">[</span><span class="s2">&quot;esearch&quot;</span><span class="p">],</span> <span class="n">data</span><span class="o">=</span><span class="n">OrderedDict</span><span class="p">(</span><span class="n">payload</span><span class="p">),</span> <span class="n">method</span><span class="o">=</span><span class="s2">&quot;post&quot;</span>
+        <span class="p">)</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="n">esearch_response</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
         <span class="k">except</span> <span class="n">JSONDecodeError</span><span class="p">:</span>
@@ -735,7 +756,9 @@
 
             <span class="n">retry_after</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">headers</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;Retry-After&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
             <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">retry_after</span><span class="p">))</span>
-            <span class="n">request</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">base_url</span><span class="p">[</span><span class="s2">&quot;esearch&quot;</span><span class="p">],</span> <span class="n">data</span><span class="o">=</span><span class="n">OrderedDict</span><span class="p">(</span><span class="n">payload</span><span class="p">))</span>
+            <span class="n">request</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_send_retryable_request</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">base_url</span><span class="p">[</span><span class="s2">&quot;esearch&quot;</span><span class="p">],</span> <span class="n">data</span><span class="o">=</span><span class="n">OrderedDict</span><span class="p">(</span><span class="n">payload</span><span class="p">),</span> <span class="n">method</span><span class="o">=</span><span class="s2">&quot;post&quot;</span>
+            <span class="p">)</span>
             <span class="k">try</span><span class="p">:</span>
                 <span class="n">esearch_response</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
             <span class="k">except</span> <span class="n">JSONDecodeError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
@@ -757,7 +780,10 @@
         <span class="k">if</span> <span class="s2">&quot;error&quot;</span> <span class="ow">in</span> <span class="n">esearch_response</span><span class="p">:</span>
             <span class="c1"># API rate limite exceeded</span>
             <span class="n">esearch_response</span> <span class="o">=</span> <span class="n">_retry_response</span><span class="p">(</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">base_url</span><span class="p">[</span><span class="s2">&quot;esearch&quot;</span><span class="p">],</span> <span class="n">payload</span><span class="p">,</span> <span class="s2">&quot;esearchresult&quot;</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">base_url</span><span class="p">[</span><span class="s2">&quot;esearch&quot;</span><span class="p">],</span>
+                <span class="n">payload</span><span class="p">,</span>
+                <span class="s2">&quot;esearchresult&quot;</span><span class="p">,</span>
+                <span class="n">max_retries</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">retries</span><span class="p">,</span>
             <span class="p">)</span>
 
         <span class="n">n_records</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">esearch_response</span><span class="p">[</span><span class="s2">&quot;esearchresult&quot;</span><span class="p">][</span><span class="s2">&quot;count&quot;</span><span class="p">])</span>
@@ -768,18 +794,28 @@
             <span class="n">payload</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">create_esummary_params</span><span class="p">(</span><span class="n">esearch_response</span><span class="p">[</span><span class="s2">&quot;esearchresult&quot;</span><span class="p">])</span>
             <span class="n">payload</span> <span class="o">=</span> <span class="n">OrderedDict</span><span class="p">(</span><span class="n">payload</span><span class="p">)</span>
             <span class="n">payload</span><span class="p">[</span><span class="s2">&quot;retstart&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">retstart</span>
-            <span class="n">request</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
+            <span class="n">request</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_send_retryable_request</span><span class="p">(</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">base_url</span><span class="p">[</span><span class="s2">&quot;esummary&quot;</span><span class="p">],</span> <span class="n">params</span><span class="o">=</span><span class="n">OrderedDict</span><span class="p">(</span><span class="n">payload</span><span class="p">)</span>
             <span class="p">)</span>
             <span class="k">try</span><span class="p">:</span>
                 <span class="n">response</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
             <span class="k">except</span> <span class="n">JSONDecodeError</span><span class="p">:</span>
                 <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
-                <span class="n">response</span> <span class="o">=</span> <span class="n">_retry_response</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">base_url</span><span class="p">[</span><span class="s2">&quot;esummary&quot;</span><span class="p">],</span> <span class="n">payload</span><span class="p">,</span> <span class="s2">&quot;result&quot;</span><span class="p">)</span>
+                <span class="n">response</span> <span class="o">=</span> <span class="n">_retry_response</span><span class="p">(</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">base_url</span><span class="p">[</span><span class="s2">&quot;esummary&quot;</span><span class="p">],</span>
+                    <span class="n">payload</span><span class="p">,</span>
+                    <span class="s2">&quot;result&quot;</span><span class="p">,</span>
+                    <span class="n">max_retries</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">retries</span><span class="p">,</span>
+                <span class="p">)</span>
 
             <span class="k">if</span> <span class="s2">&quot;error&quot;</span> <span class="ow">in</span> <span class="n">response</span><span class="p">:</span>
                 <span class="c1"># API rate limite exceeded</span>
-                <span class="n">response</span> <span class="o">=</span> <span class="n">_retry_response</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">base_url</span><span class="p">[</span><span class="s2">&quot;esummary&quot;</span><span class="p">],</span> <span class="n">payload</span><span class="p">,</span> <span class="s2">&quot;result&quot;</span><span class="p">)</span>
+                <span class="n">response</span> <span class="o">=</span> <span class="n">_retry_response</span><span class="p">(</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">base_url</span><span class="p">[</span><span class="s2">&quot;esummary&quot;</span><span class="p">],</span>
+                    <span class="n">payload</span><span class="p">,</span>
+                    <span class="s2">&quot;result&quot;</span><span class="p">,</span>
+                    <span class="n">max_retries</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">retries</span><span class="p">,</span>
+                <span class="p">)</span>
             <span class="k">if</span> <span class="n">retstart</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
                 <span class="n">results</span> <span class="o">=</span> <span class="n">response</span><span class="p">[</span><span class="s2">&quot;result&quot;</span><span class="p">]</span>
             <span class="k">else</span><span class="p">:</span>
@@ -802,7 +838,9 @@
             <span class="n">term</span> <span class="o">=</span> <span class="s2">&quot; OR &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">term</span><span class="p">)</span>
         <span class="n">payload</span> <span class="o">+=</span> <span class="p">[(</span><span class="s2">&quot;term&quot;</span><span class="p">,</span> <span class="n">term</span><span class="p">)]</span>
 
-        <span class="n">request</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">base_url</span><span class="p">[</span><span class="s2">&quot;esearch&quot;</span><span class="p">],</span> <span class="n">params</span><span class="o">=</span><span class="n">OrderedDict</span><span class="p">(</span><span class="n">payload</span><span class="p">))</span>
+        <span class="n">request</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_send_retryable_request</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">base_url</span><span class="p">[</span><span class="s2">&quot;esearch&quot;</span><span class="p">],</span> <span class="n">params</span><span class="o">=</span><span class="n">OrderedDict</span><span class="p">(</span><span class="n">payload</span><span class="p">)</span>
+        <span class="p">)</span>
         <span class="n">esearch_response</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
         <span class="k">if</span> <span class="s2">&quot;esummaryresult&quot;</span> <span class="ow">in</span> <span class="n">esearch_response</span><span class="p">:</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span><span class="p">:</span>
@@ -811,7 +849,10 @@
         <span class="k">if</span> <span class="s2">&quot;error&quot;</span> <span class="ow">in</span> <span class="n">esearch_response</span><span class="p">:</span>
             <span class="c1"># API rate limite exceeded</span>
             <span class="n">esearch_response</span> <span class="o">=</span> <span class="n">_retry_response</span><span class="p">(</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">base_url</span><span class="p">[</span><span class="s2">&quot;esearch&quot;</span><span class="p">],</span> <span class="n">payload</span><span class="p">,</span> <span class="s2">&quot;esearchresult&quot;</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">base_url</span><span class="p">[</span><span class="s2">&quot;esearch&quot;</span><span class="p">],</span>
+                <span class="n">payload</span><span class="p">,</span>
+                <span class="s2">&quot;esearchresult&quot;</span><span class="p">,</span>
+                <span class="n">max_retries</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">retries</span><span class="p">,</span>
             <span class="p">)</span>
 
         <span class="n">n_records</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">esearch_response</span><span class="p">[</span><span class="s2">&quot;esearchresult&quot;</span><span class="p">][</span><span class="s2">&quot;count&quot;</span><span class="p">])</span>
@@ -822,7 +863,9 @@
             <span class="n">payload</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">create_esummary_params</span><span class="p">(</span><span class="n">esearch_response</span><span class="p">[</span><span class="s2">&quot;esearchresult&quot;</span><span class="p">])</span>
             <span class="n">payload</span> <span class="o">=</span> <span class="n">OrderedDict</span><span class="p">(</span><span class="n">payload</span><span class="p">)</span>
             <span class="n">payload</span><span class="p">[</span><span class="s2">&quot;retstart&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">retstart</span>
-            <span class="n">request</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">base_url</span><span class="p">[</span><span class="s2">&quot;efetch&quot;</span><span class="p">],</span> <span class="n">params</span><span class="o">=</span><span class="n">OrderedDict</span><span class="p">(</span><span class="n">payload</span><span class="p">))</span>
+            <span class="n">request</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_send_retryable_request</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">base_url</span><span class="p">[</span><span class="s2">&quot;efetch&quot;</span><span class="p">],</span> <span class="n">params</span><span class="o">=</span><span class="n">OrderedDict</span><span class="p">(</span><span class="n">payload</span><span class="p">)</span>
+            <span class="p">)</span>
             <span class="n">request_text</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">text</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
             <span class="k">try</span><span class="p">:</span>
                 <span class="n">request_json</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
@@ -843,7 +886,7 @@
                         <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="n">error_msg</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span>
                 <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">retry_after</span><span class="p">))</span>
                 <span class="c1"># try again</span>
-                <span class="n">request</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
+                <span class="n">request</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_send_retryable_request</span><span class="p">(</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">base_url</span><span class="p">[</span><span class="s2">&quot;efetch&quot;</span><span class="p">],</span> <span class="n">params</span><span class="o">=</span><span class="n">OrderedDict</span><span class="p">(</span><span class="n">payload</span><span class="p">)</span>
                 <span class="p">)</span>
                 <span class="n">request_text</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">text</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
@@ -1395,7 +1438,7 @@
         <span class="k">for</span> <span class="n">gsm</span> <span class="ow">in</span> <span class="n">gsm_ids</span><span class="p">:</span>
             <span class="k">try</span><span class="p">:</span>
                 <span class="n">url</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=</span><span class="si">{</span><span class="n">gsm</span><span class="si">}</span><span class="s2">&amp;targ=self&amp;form=text&amp;view=full&quot;</span>
-                <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">30</span><span class="p">)</span>
+                <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_send_retryable_request</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
                 <span class="n">response</span><span class="o">.</span><span class="n">raise_for_status</span><span class="p">()</span>
 
                 <span class="c1"># Parse SOFT format</span>
@@ -1874,7 +1917,7 @@
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_pysraweb_get_json</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">30</span><span class="p">):</span>
         <span class="n">url</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">pysraweb_api_url</span><span class="o">.</span><span class="n">rstrip</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">)</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">path</span><span class="o">.</span><span class="n">lstrip</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
-        <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">)</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_send_retryable_request</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">)</span>
         <span class="n">response</span><span class="o">.</span><span class="n">raise_for_status</span><span class="p">()</span>
         <span class="k">return</span> <span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
 
@@ -2763,7 +2806,7 @@
                     <span class="p">(</span><span class="s2">&quot;retmode&quot;</span><span class="p">,</span> <span class="s2">&quot;xml&quot;</span><span class="p">),</span>
                 <span class="p">]</span>
 
-                <span class="n">request</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
+                <span class="n">request</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_send_retryable_request</span><span class="p">(</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">base_url</span><span class="p">[</span><span class="s2">&quot;efetch&quot;</span><span class="p">],</span> <span class="n">params</span><span class="o">=</span><span class="n">OrderedDict</span><span class="p">(</span><span class="n">payload</span><span class="p">)</span>
                 <span class="p">)</span>
                 <span class="n">xml_text</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">text</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
@@ -2968,7 +3011,7 @@
 <span class="sd">              List of PMIDs found</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">try</span><span class="p">:</span>
-            <span class="n">r</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
+            <span class="n">r</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_send_retryable_request</span><span class="p">(</span>
                 <span class="s2">&quot;https://www.ebi.ac.uk/europepmc/webservices/rest/search&quot;</span><span class="p">,</span>
                 <span class="n">params</span><span class="o">=</span><span class="p">{</span>
                     <span class="s2">&quot;query&quot;</span><span class="p">:</span> <span class="sa">f</span><span class="s1">&#39;&quot;</span><span class="si">{</span><span class="n">query</span><span class="si">}</span><span class="s1">&quot;&#39;</span><span class="p">,</span>
@@ -2976,7 +3019,6 @@
                     <span class="s2">&quot;format&quot;</span><span class="p">:</span> <span class="s2">&quot;json&quot;</span><span class="p">,</span>
                     <span class="s2">&quot;pageSize&quot;</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span>
                 <span class="p">},</span>
-                <span class="n">timeout</span><span class="o">=</span><span class="mi">60</span><span class="p">,</span>
             <span class="p">)</span>
             <span class="n">r</span><span class="o">.</span><span class="n">raise_for_status</span><span class="p">()</span>
             <span class="n">hits</span> <span class="o">=</span> <span class="n">r</span><span class="o">.</span><span class="n">json</span><span class="p">()</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;resultList&quot;</span><span class="p">,</span> <span class="p">{})</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;result&quot;</span><span class="p">,</span> <span class="p">[])</span>
@@ -3060,7 +3102,7 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="n">query</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;&quot;</span><span class="si">{</span><span class="n">raw_id</span><span class="si">}</span><span class="s1">&quot;&#39;</span>
         <span class="k">try</span><span class="p">:</span>
-            <span class="n">r</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
+            <span class="n">r</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_send_retryable_request</span><span class="p">(</span>
                 <span class="s2">&quot;https://www.ebi.ac.uk/europepmc/webservices/rest/search&quot;</span><span class="p">,</span>
                 <span class="n">params</span><span class="o">=</span><span class="p">{</span>
                     <span class="s2">&quot;query&quot;</span><span class="p">:</span> <span class="n">query</span><span class="p">,</span>
@@ -3068,7 +3110,6 @@
                     <span class="s2">&quot;format&quot;</span><span class="p">:</span> <span class="s2">&quot;json&quot;</span><span class="p">,</span>
                     <span class="s2">&quot;pageSize&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
                 <span class="p">},</span>
-                <span class="n">timeout</span><span class="o">=</span><span class="mi">60</span><span class="p">,</span>
             <span class="p">)</span>
             <span class="n">r</span><span class="o">.</span><span class="n">raise_for_status</span><span class="p">()</span>
             <span class="n">hits</span> <span class="o">=</span> <span class="n">r</span><span class="o">.</span><span class="n">json</span><span class="p">()</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;resultList&quot;</span><span class="p">,</span> <span class="p">{})</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;result&quot;</span><span class="p">,</span> <span class="p">[])</span>
@@ -3087,12 +3128,11 @@
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_elink_ids</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pmid</span><span class="p">,</span> <span class="n">db</span><span class="p">,</span> <span class="n">linkname</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Get linked database IDs for a PMID via NCBI elink.&quot;&quot;&quot;</span>
-        <span class="n">r</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
+        <span class="n">r</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_send_retryable_request</span><span class="p">(</span>
             <span class="s2">&quot;https://eutils.ncbi.nlm.nih.gov/entrez/eutils/elink.fcgi&quot;</span><span class="p">,</span>
             <span class="n">params</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_ncbi_params</span><span class="p">(</span>
                 <span class="p">{</span><span class="s2">&quot;dbfrom&quot;</span><span class="p">:</span> <span class="s2">&quot;pubmed&quot;</span><span class="p">,</span> <span class="s2">&quot;db&quot;</span><span class="p">:</span> <span class="n">db</span><span class="p">,</span> <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="n">pmid</span><span class="p">,</span> <span class="s2">&quot;retmode&quot;</span><span class="p">:</span> <span class="s2">&quot;json&quot;</span><span class="p">}</span>
             <span class="p">),</span>
-            <span class="n">timeout</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span>
         <span class="p">)</span>
         <span class="n">r</span><span class="o">.</span><span class="n">raise_for_status</span><span class="p">()</span>
         <span class="k">for</span> <span class="n">ls</span> <span class="ow">in</span> <span class="n">r</span><span class="o">.</span><span class="n">json</span><span class="p">()</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;linksets&quot;</span><span class="p">,</span> <span class="p">[]):</span>
@@ -3110,31 +3150,32 @@
         <span class="k">try</span><span class="p">:</span>
             <span class="n">gds_ids</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_elink_ids</span><span class="p">(</span><span class="n">pmid</span><span class="p">,</span> <span class="s2">&quot;gds&quot;</span><span class="p">,</span> <span class="s2">&quot;pubmed_gds&quot;</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">gds_ids</span><span class="p">:</span>
-                <span class="n">r</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
+                <span class="n">r</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_send_retryable_request</span><span class="p">(</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">base_url</span><span class="p">[</span><span class="s2">&quot;esummary&quot;</span><span class="p">],</span>
                     <span class="n">params</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_ncbi_params</span><span class="p">(</span>
                         <span class="p">{</span><span class="s2">&quot;db&quot;</span><span class="p">:</span> <span class="s2">&quot;gds&quot;</span><span class="p">,</span> <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="s2">&quot;,&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">gds_ids</span><span class="p">[:</span><span class="mi">5</span><span class="p">]),</span> <span class="s2">&quot;retmode&quot;</span><span class="p">:</span> <span class="s2">&quot;json&quot;</span><span class="p">}</span>
                     <span class="p">),</span>
-                    <span class="n">timeout</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span>
                 <span class="p">)</span>
                 <span class="n">r</span><span class="o">.</span><span class="n">raise_for_status</span><span class="p">()</span>
+
                 <span class="n">data</span> <span class="o">=</span> <span class="n">r</span><span class="o">.</span><span class="n">json</span><span class="p">()</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;result&quot;</span><span class="p">,</span> <span class="p">{})</span>
                 <span class="n">gse_accs</span> <span class="o">=</span> <span class="p">{</span>
                     <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">gid</span><span class="p">,</span> <span class="p">{})</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;accession&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span> <span class="k">for</span> <span class="n">gid</span> <span class="ow">in</span> <span class="n">gds_ids</span><span class="p">[:</span><span class="mi">5</span><span class="p">]</span>
                 <span class="p">}</span>
                 <span class="n">gse</span> <span class="o">=</span> <span class="s2">&quot;, &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">sorted</span><span class="p">(</span><span class="n">a</span> <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">gse_accs</span> <span class="k">if</span> <span class="n">a</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;GSE&quot;</span><span class="p">)))</span>
+
             <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sleep_time</span><span class="p">)</span>
 
             <span class="n">sra_ids</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_elink_ids</span><span class="p">(</span><span class="n">pmid</span><span class="p">,</span> <span class="s2">&quot;sra&quot;</span><span class="p">,</span> <span class="s2">&quot;pubmed_sra&quot;</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">sra_ids</span><span class="p">:</span>
-                <span class="n">r</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
+                <span class="n">r</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_send_retryable_request</span><span class="p">(</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">base_url</span><span class="p">[</span><span class="s2">&quot;esummary&quot;</span><span class="p">],</span>
                     <span class="n">params</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_ncbi_params</span><span class="p">(</span>
                         <span class="p">{</span><span class="s2">&quot;db&quot;</span><span class="p">:</span> <span class="s2">&quot;sra&quot;</span><span class="p">,</span> <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="s2">&quot;,&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">sra_ids</span><span class="p">[:</span><span class="mi">5</span><span class="p">]),</span> <span class="s2">&quot;retmode&quot;</span><span class="p">:</span> <span class="s2">&quot;json&quot;</span><span class="p">}</span>
                     <span class="p">),</span>
-                    <span class="n">timeout</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span>
                 <span class="p">)</span>
                 <span class="n">r</span><span class="o">.</span><span class="n">raise_for_status</span><span class="p">()</span>
+
                 <span class="n">data</span> <span class="o">=</span> <span class="n">r</span><span class="o">.</span><span class="n">json</span><span class="p">()</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;result&quot;</span><span class="p">,</span> <span class="p">{})</span>
                 <span class="n">srp_accs</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
                 <span class="k">for</span> <span class="n">sid</span> <span class="ow">in</span> <span class="n">sra_ids</span><span class="p">[:</span><span class="mi">5</span><span class="p">]:</span>
@@ -3143,6 +3184,7 @@
                             <span class="sa">r</span><span class="s1">&#39;acc=&quot;(SRP\d+)&quot;&#39;</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">sid</span><span class="p">,</span> <span class="p">{})</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;expxml&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
                         <span class="p">)</span>
                     <span class="p">)</span>
+
                 <span class="n">srp</span> <span class="o">=</span> <span class="s2">&quot;, &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">sorted</span><span class="p">(</span><span class="n">srp_accs</span><span class="p">))</span>
             <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sleep_time</span><span class="p">)</span>
         <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
@@ -3241,12 +3283,11 @@
     <span class="k">def</span><span class="w"> </span><span class="nf">_fetch_pmid_metadata_ncbi</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pmids</span><span class="p">,</span> <span class="n">results</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Batch-query NCBI PubMed efetch for full author names, populating *results* in-place.&quot;&quot;&quot;</span>
         <span class="k">try</span><span class="p">:</span>
-            <span class="n">r</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
+            <span class="n">r</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_send_retryable_request</span><span class="p">(</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">base_url</span><span class="p">[</span><span class="s2">&quot;efetch&quot;</span><span class="p">],</span>
                 <span class="n">params</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_ncbi_params</span><span class="p">(</span>
                     <span class="p">{</span><span class="s2">&quot;db&quot;</span><span class="p">:</span> <span class="s2">&quot;pubmed&quot;</span><span class="p">,</span> <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="s2">&quot;,&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">pmids</span><span class="p">),</span> <span class="s2">&quot;retmode&quot;</span><span class="p">:</span> <span class="s2">&quot;xml&quot;</span><span class="p">}</span>
                 <span class="p">),</span>
-                <span class="n">timeout</span><span class="o">=</span><span class="mi">60</span><span class="p">,</span>
             <span class="p">)</span>
             <span class="n">r</span><span class="o">.</span><span class="n">raise_for_status</span><span class="p">()</span>
             <span class="n">xml_text</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;&lt;!DOCTYPE[^&gt;]*&gt;&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">r</span><span class="o">.</span><span class="n">content</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s2">&quot;utf-8&quot;</span><span class="p">))</span>
@@ -3298,7 +3339,7 @@
     <span class="k">def</span><span class="w"> </span><span class="nf">_fetch_pmid_metadata_epmc</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pmid</span><span class="p">,</span> <span class="n">results</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Query Europe PMC for a single PMID, populating *results* dict in-place.&quot;&quot;&quot;</span>
         <span class="k">try</span><span class="p">:</span>
-            <span class="n">r</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
+            <span class="n">r</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_send_retryable_request</span><span class="p">(</span>
                 <span class="s2">&quot;https://www.ebi.ac.uk/europepmc/webservices/rest/search&quot;</span><span class="p">,</span>
                 <span class="n">params</span><span class="o">=</span><span class="p">{</span>
                     <span class="s2">&quot;query&quot;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;ext_id:</span><span class="si">{</span><span class="n">pmid</span><span class="si">}</span><span class="s2"> src:med&quot;</span><span class="p">,</span>
@@ -3306,7 +3347,6 @@
                     <span class="s2">&quot;format&quot;</span><span class="p">:</span> <span class="s2">&quot;json&quot;</span><span class="p">,</span>
                     <span class="s2">&quot;pageSize&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
                 <span class="p">},</span>
-                <span class="n">timeout</span><span class="o">=</span><span class="mi">60</span><span class="p">,</span>
             <span class="p">)</span>
             <span class="n">r</span><span class="o">.</span><span class="n">raise_for_status</span><span class="p">()</span>
             <span class="n">hits</span> <span class="o">=</span> <span class="n">r</span><span class="o">.</span><span class="n">json</span><span class="p">()</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;resultList&quot;</span><span class="p">,</span> <span class="p">{})</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;result&quot;</span><span class="p">,</span> <span class="p">[])</span>
@@ -3335,7 +3375,7 @@
         <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
             <span class="k">pass</span>
 
-    <span class="k">def</span><span class="w"> </span><span class="nf">_openalex_request</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">url</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">30</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_openalex_request</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">url</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">retries</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Make an authenticated OpenAlex API request.</span>
 
 <span class="sd">        Raises</span>
@@ -3350,7 +3390,15 @@
             <span class="n">params</span><span class="p">[</span><span class="s2">&quot;api_key&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">openalex_api_key</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">openalex_email</span><span class="p">:</span>
             <span class="n">params</span><span class="p">[</span><span class="s2">&quot;mailto&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">openalex_email</span>
-        <span class="n">r</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">)</span>
+
+        <span class="n">r</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_send_retryable_request</span><span class="p">(</span>
+            <span class="n">url</span><span class="p">,</span>
+            <span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">,</span>
+            <span class="n">retries</span><span class="o">=</span><span class="n">retries</span><span class="p">,</span>
+            <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">,</span>
+            <span class="n">non_retryable_status_codes</span><span class="o">=</span><span class="p">(</span><span class="mi">429</span><span class="p">,</span> <span class="mi">401</span><span class="p">,</span> <span class="mi">403</span><span class="p">),</span>
+        <span class="p">)</span>
+
         <span class="k">if</span> <span class="n">r</span><span class="o">.</span><span class="n">status_code</span> <span class="ow">in</span> <span class="p">(</span><span class="mi">429</span><span class="p">,</span> <span class="mi">401</span><span class="p">,</span> <span class="mi">403</span><span class="p">):</span>
             <span class="k">try</span><span class="p">:</span>
                 <span class="n">body</span> <span class="o">=</span> <span class="n">r</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
@@ -3604,8 +3652,7 @@
                 <span class="s2">&quot;retmax&quot;</span><span class="p">:</span> <span class="s2">&quot;10&quot;</span><span class="p">,</span>
             <span class="p">}</span>
 
-            <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">search_url</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="n">search_params</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">30</span><span class="p">)</span>
-            <span class="n">response</span><span class="o">.</span><span class="n">raise_for_status</span><span class="p">()</span>
+            <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_send_retryable_request</span><span class="p">(</span><span class="n">search_url</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="n">search_params</span><span class="p">)</span>
             <span class="n">result</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
             <span class="n">geo_uids</span> <span class="o">=</span> <span class="n">result</span><span class="p">[</span><span class="s2">&quot;esearchresult&quot;</span><span class="p">][</span><span class="s2">&quot;idlist&quot;</span><span class="p">]</span>
 
@@ -3620,10 +3667,9 @@
                     <span class="s2">&quot;retmode&quot;</span><span class="p">:</span> <span class="s2">&quot;json&quot;</span><span class="p">,</span>
                 <span class="p">}</span>
 
-                <span class="n">summary_response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
-                    <span class="n">summary_url</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="n">summary_params</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">30</span>
+                <span class="n">summary_response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_send_retryable_request</span><span class="p">(</span>
+                    <span class="n">summary_url</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="n">summary_params</span>
                 <span class="p">)</span>
-                <span class="n">summary_response</span><span class="o">.</span><span class="n">raise_for_status</span><span class="p">()</span>
                 <span class="n">summary_result</span> <span class="o">=</span> <span class="n">summary_response</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
 
                 <span class="k">for</span> <span class="n">uid</span> <span class="ow">in</span> <span class="n">geo_uids</span><span class="p">:</span>
@@ -3651,8 +3697,6 @@
 <span class="sd">        gse_ids: list</span>
 <span class="sd">                List of GSE IDs found</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="kn">import</span><span class="w"> </span><span class="nn">requests</span>
-
         <span class="n">gse_ids</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="c1"># First, search for the SRP in SRA database to get UIDs</span>
@@ -3664,8 +3708,7 @@
                 <span class="s2">&quot;retmax&quot;</span><span class="p">:</span> <span class="s2">&quot;5&quot;</span><span class="p">,</span>
             <span class="p">}</span>
 
-            <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">search_url</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="n">search_params</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">30</span><span class="p">)</span>
-            <span class="n">response</span><span class="o">.</span><span class="n">raise_for_status</span><span class="p">()</span>
+            <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_send_retryable_request</span><span class="p">(</span><span class="n">search_url</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="n">search_params</span><span class="p">)</span>
             <span class="n">result</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
             <span class="n">sra_uids</span> <span class="o">=</span> <span class="n">result</span><span class="p">[</span><span class="s2">&quot;esearchresult&quot;</span><span class="p">][</span><span class="s2">&quot;idlist&quot;</span><span class="p">]</span>
 
@@ -3679,10 +3722,9 @@
                     <span class="s2">&quot;retmode&quot;</span><span class="p">:</span> <span class="s2">&quot;json&quot;</span><span class="p">,</span>
                 <span class="p">}</span>
 
-                <span class="n">elink_response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
-                    <span class="n">elink_url</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="n">elink_params</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">30</span>
+                <span class="n">elink_response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_send_retryable_request</span><span class="p">(</span>
+                    <span class="n">elink_url</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="n">elink_params</span>
                 <span class="p">)</span>
-                <span class="n">elink_response</span><span class="o">.</span><span class="n">raise_for_status</span><span class="p">()</span>
                 <span class="n">elink_result</span> <span class="o">=</span> <span class="n">elink_response</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
 
                 <span class="k">if</span> <span class="s2">&quot;linksets&quot;</span> <span class="ow">in</span> <span class="n">elink_result</span><span class="p">:</span>
@@ -3701,12 +3743,10 @@
                                             <span class="s2">&quot;retmode&quot;</span><span class="p">:</span> <span class="s2">&quot;json&quot;</span><span class="p">,</span>
                                         <span class="p">}</span>
 
-                                        <span class="n">summary_response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
+                                        <span class="n">summary_response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_send_retryable_request</span><span class="p">(</span>
                                             <span class="n">summary_url</span><span class="p">,</span>
                                             <span class="n">params</span><span class="o">=</span><span class="n">summary_params</span><span class="p">,</span>
-                                            <span class="n">timeout</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span>
                                         <span class="p">)</span>
-                                        <span class="n">summary_response</span><span class="o">.</span><span class="n">raise_for_status</span><span class="p">()</span>
                                         <span class="n">summary_result</span> <span class="o">=</span> <span class="n">summary_response</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
 
                                         <span class="k">for</span> <span class="n">uid</span> <span class="ow">in</span> <span class="n">geo_uids</span><span class="p">:</span>
@@ -3746,8 +3786,7 @@
                 <span class="s2">&quot;retmax&quot;</span><span class="p">:</span> <span class="s2">&quot;10&quot;</span><span class="p">,</span>
             <span class="p">}</span>
 
-            <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">search_url</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="n">search_params</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">60</span><span class="p">)</span>
-            <span class="n">response</span><span class="o">.</span><span class="n">raise_for_status</span><span class="p">()</span>
+            <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_send_retryable_request</span><span class="p">(</span><span class="n">search_url</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="n">search_params</span><span class="p">)</span>
             <span class="n">result</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
 
             <span class="n">pmc_ids</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;esearchresult&quot;</span><span class="p">,</span> <span class="p">{})</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;idlist&quot;</span><span class="p">,</span> <span class="p">[])</span>
@@ -3762,8 +3801,8 @@
                 <span class="s2">&quot;retmode&quot;</span><span class="p">:</span> <span class="s2">&quot;json&quot;</span><span class="p">,</span>
             <span class="p">}</span>
 
-            <span class="n">summary_response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
-                <span class="n">summary_url</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="n">summary_params</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">60</span>
+            <span class="n">summary_response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_send_retryable_request</span><span class="p">(</span>
+                <span class="n">summary_url</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="n">summary_params</span>
             <span class="p">)</span>
             <span class="n">summary_result</span> <span class="o">=</span> <span class="n">summary_response</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
 
@@ -3823,8 +3862,9 @@
                     <span class="s2">&quot;retmax&quot;</span><span class="p">:</span> <span class="s2">&quot;10&quot;</span><span class="p">,</span>
                 <span class="p">}</span>
 
-                <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">search_url</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="n">search_params</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">60</span><span class="p">)</span>
-                <span class="n">response</span><span class="o">.</span><span class="n">raise_for_status</span><span class="p">()</span>
+                <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_send_retryable_request</span><span class="p">(</span>
+                    <span class="n">search_url</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="n">search_params</span>
+                <span class="p">)</span>
                 <span class="n">result</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
 
                 <span class="n">pmc_ids</span> <span class="o">=</span> <span class="n">result</span><span class="p">[</span><span class="s2">&quot;esearchresult&quot;</span><span class="p">][</span><span class="s2">&quot;idlist&quot;</span><span class="p">]</span>
@@ -3841,8 +3881,8 @@
                     <span class="s2">&quot;retmode&quot;</span><span class="p">:</span> <span class="s2">&quot;json&quot;</span><span class="p">,</span>
                 <span class="p">}</span>
 
-                <span class="n">summary_response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
-                    <span class="n">summary_url</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="n">summary_params</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">60</span>
+                <span class="n">summary_response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_send_retryable_request</span><span class="p">(</span>
+                    <span class="n">summary_url</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="n">summary_params</span>
                 <span class="p">)</span>
                 <span class="n">summary_result</span> <span class="o">=</span> <span class="n">summary_response</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
 
@@ -4022,21 +4062,19 @@
             <span class="n">pmid</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">NA</span>
             <span class="k">try</span><span class="p">:</span>
                 <span class="c1"># Step 1: resolve accession to BioProject numeric ID</span>
-                <span class="n">r</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
+                <span class="n">r</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_send_retryable_request</span><span class="p">(</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">base_url</span><span class="p">[</span><span class="s2">&quot;esearch&quot;</span><span class="p">],</span>
                     <span class="n">params</span><span class="o">=</span><span class="p">{</span>
                         <span class="s2">&quot;db&quot;</span><span class="p">:</span> <span class="s2">&quot;bioproject&quot;</span><span class="p">,</span>
                         <span class="s2">&quot;term&quot;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">acc</span><span class="si">}</span><span class="s2">[Project Accession]&quot;</span><span class="p">,</span>
                         <span class="s2">&quot;retmode&quot;</span><span class="p">:</span> <span class="s2">&quot;json&quot;</span><span class="p">,</span>
                     <span class="p">},</span>
-                    <span class="n">timeout</span><span class="o">=</span><span class="mi">60</span><span class="p">,</span>
                 <span class="p">)</span>
-                <span class="n">r</span><span class="o">.</span><span class="n">raise_for_status</span><span class="p">()</span>
                 <span class="n">bp_ids</span> <span class="o">=</span> <span class="n">r</span><span class="o">.</span><span class="n">json</span><span class="p">()</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;esearchresult&quot;</span><span class="p">,</span> <span class="p">{})</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;idlist&quot;</span><span class="p">,</span> <span class="p">[])</span>
 
                 <span class="k">if</span> <span class="n">bp_ids</span><span class="p">:</span>
                     <span class="c1"># Step 2: elink BioProject → PubMed</span>
-                    <span class="n">r2</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
+                    <span class="n">r2</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_send_retryable_request</span><span class="p">(</span>
                         <span class="s2">&quot;https://eutils.ncbi.nlm.nih.gov/entrez/eutils/elink.fcgi&quot;</span><span class="p">,</span>
                         <span class="n">params</span><span class="o">=</span><span class="p">{</span>
                             <span class="s2">&quot;dbfrom&quot;</span><span class="p">:</span> <span class="s2">&quot;bioproject&quot;</span><span class="p">,</span>
@@ -4044,9 +4082,7 @@
                             <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="n">bp_ids</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
                             <span class="s2">&quot;retmode&quot;</span><span class="p">:</span> <span class="s2">&quot;json&quot;</span><span class="p">,</span>
                         <span class="p">},</span>
-                        <span class="n">timeout</span><span class="o">=</span><span class="mi">60</span><span class="p">,</span>
                     <span class="p">)</span>
-                    <span class="n">r2</span><span class="o">.</span><span class="n">raise_for_status</span><span class="p">()</span>
                     <span class="n">pmids</span> <span class="o">=</span> <span class="p">[]</span>
                     <span class="k">for</span> <span class="n">ls</span> <span class="ow">in</span> <span class="n">r2</span><span class="o">.</span><span class="n">json</span><span class="p">()</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;linksets&quot;</span><span class="p">,</span> <span class="p">[]):</span>
                         <span class="k">for</span> <span class="n">ldb</span> <span class="ow">in</span> <span class="n">ls</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;linksetdbs&quot;</span><span class="p">,</span> <span class="p">[]):</span>
@@ -4100,8 +4136,9 @@
                     <span class="s2">&quot;retmode&quot;</span><span class="p">:</span> <span class="s2">&quot;json&quot;</span><span class="p">,</span>
                 <span class="p">}</span>
 
-                <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">search_url</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="n">search_params</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">60</span><span class="p">)</span>
-                <span class="n">response</span><span class="o">.</span><span class="n">raise_for_status</span><span class="p">()</span>
+                <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_send_retryable_request</span><span class="p">(</span>
+                    <span class="n">search_url</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="n">search_params</span>
+                <span class="p">)</span>
                 <span class="n">result</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
 
                 <span class="n">id_list</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;esearchresult&quot;</span><span class="p">,</span> <span class="p">{})</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;idlist&quot;</span><span class="p">,</span> <span class="p">[])</span>
@@ -4124,35 +4161,52 @@
         <span class="k">return</span> <span class="n">doi_pmid_mapping</span></div>
 
 
-    <span class="k">def</span><span class="w"> </span><span class="nf">_get_with_retries</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">url</span><span class="p">,</span> <span class="n">params</span><span class="p">,</span> <span class="n">retries</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">60</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Run a GET request with optional additional retries.&quot;&quot;&quot;</span>
-        <span class="n">retries</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="n">retries</span><span class="p">))</span>
-        <span class="n">last_error</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_send_retryable_request</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">url</span><span class="p">,</span>
+        <span class="n">params</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">data</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">retries</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">timeout</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">non_retryable_status_codes</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">method</span><span class="o">=</span><span class="s2">&quot;get&quot;</span><span class="p">,</span>
+    <span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Run a request with optional additional retries.&quot;&quot;&quot;</span>
+        <span class="n">retries</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="n">retries</span> <span class="k">if</span> <span class="n">retries</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">retries</span><span class="p">))</span>
+        <span class="n">timeout</span> <span class="o">=</span> <span class="n">timeout</span> <span class="k">if</span> <span class="n">timeout</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">timeout</span>
+        <span class="n">last_error</span><span class="p">:</span> <span class="ne">BaseException</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
 
         <span class="k">for</span> <span class="n">attempt</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">retries</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
             <span class="k">try</span><span class="p">:</span>
-                <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">)</span>
+                <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">request</span><span class="p">(</span>
+                    <span class="n">method</span><span class="p">,</span> <span class="n">url</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span>
+                <span class="p">)</span>
+                <span class="k">if</span> <span class="p">(</span>
+                    <span class="n">non_retryable_status_codes</span>
+                    <span class="ow">and</span> <span class="n">response</span><span class="o">.</span><span class="n">status_code</span> <span class="ow">in</span> <span class="n">non_retryable_status_codes</span>
+                <span class="p">):</span>
+                    <span class="k">return</span> <span class="n">response</span>
+
                 <span class="n">response</span><span class="o">.</span><span class="n">raise_for_status</span><span class="p">()</span>
                 <span class="k">return</span> <span class="n">response</span>
             <span class="k">except</span> <span class="n">requests</span><span class="o">.</span><span class="n">RequestException</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
                 <span class="n">last_error</span> <span class="o">=</span> <span class="n">e</span>
+
+                <span class="k">if</span> <span class="n">attempt</span> <span class="o">==</span> <span class="n">retries</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="n">last_error</span>
+
                 <span class="k">if</span> <span class="n">attempt</span> <span class="o">&lt;</span> <span class="n">retries</span><span class="p">:</span>
                     <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sleep_time</span> <span class="o">*</span> <span class="p">(</span><span class="mi">2</span><span class="o">**</span><span class="n">attempt</span><span class="p">))</span>
 
-        <span class="k">raise</span> <span class="n">last_error</span>
-
 <div class="viewcode-block" id="SRAweb.pmid_to_pmc">
 <a class="viewcode-back" href="../../pysradb.html#pysradb.sraweb.SRAweb.pmid_to_pmc">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">pmid_to_pmc</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pmids</span><span class="p">,</span> <span class="n">retries</span><span class="o">=</span><span class="mi">3</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">pmid_to_pmc</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pmids</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Convert PMID(s) to PMC ID(s)</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        pmids: list or str</span>
 <span class="sd">              PMID(s)</span>
-<span class="sd">        retries: int</span>
-<span class="sd">              Number of additional retries for failed PubMed requests.</span>
-<span class="sd">              Default: 3</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
@@ -4173,9 +4227,7 @@
                     <span class="s2">&quot;retmode&quot;</span><span class="p">:</span> <span class="s2">&quot;json&quot;</span><span class="p">,</span>
                 <span class="p">}</span>
 
-                <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_with_retries</span><span class="p">(</span>
-                    <span class="n">summary_url</span><span class="p">,</span> <span class="n">summary_params</span><span class="p">,</span> <span class="n">retries</span><span class="o">=</span><span class="n">retries</span>
-                <span class="p">)</span>
+                <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_send_retryable_request</span><span class="p">(</span><span class="n">summary_url</span><span class="p">,</span> <span class="n">summary_params</span><span class="p">)</span>
                 <span class="n">result</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
 
                 <span class="c1"># Extract PMC ID from articleids</span>
@@ -4224,7 +4276,9 @@
             <span class="n">fetch_url</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">base_url</span><span class="p">[</span><span class="s2">&quot;efetch&quot;</span><span class="p">]</span>
             <span class="n">fetch_params</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;db&quot;</span><span class="p">:</span> <span class="s2">&quot;pmc&quot;</span><span class="p">,</span> <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="n">pmc_id</span><span class="p">,</span> <span class="s2">&quot;retmode&quot;</span><span class="p">:</span> <span class="s2">&quot;xml&quot;</span><span class="p">}</span>
 
-            <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_with_retries</span><span class="p">(</span><span class="n">fetch_url</span><span class="p">,</span> <span class="n">fetch_params</span><span class="p">,</span> <span class="n">retries</span><span class="o">=</span><span class="n">retries</span><span class="p">)</span>
+            <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_send_retryable_request</span><span class="p">(</span>
+                <span class="n">fetch_url</span><span class="p">,</span> <span class="n">fetch_params</span><span class="p">,</span> <span class="n">retries</span><span class="o">=</span><span class="n">retries</span>
+            <span class="p">)</span>
 
             <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sleep_time</span><span class="p">)</span>
             <span class="k">return</span> <span class="n">response</span><span class="o">.</span><span class="n">text</span>
@@ -4280,7 +4334,7 @@
 
 <div class="viewcode-block" id="SRAweb.pmc_to_identifiers">
 <a class="viewcode-back" href="../../pysradb.html#pysradb.sraweb.SRAweb.pmc_to_identifiers">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">pmc_to_identifiers</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pmc_ids</span><span class="p">,</span> <span class="n">convert_missing</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">retries</span><span class="o">=</span><span class="mi">3</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">pmc_to_identifiers</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pmc_ids</span><span class="p">,</span> <span class="n">convert_missing</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Extract database identifiers from PMC articles</span>
 
 <span class="sd">        Parameters</span>
@@ -4290,9 +4344,6 @@
 <span class="sd">        convert_missing: bool</span>
 <span class="sd">                        If True, automatically convert GSE↔SRP when one is found but not the other</span>
 <span class="sd">                        Default: True</span>
-<span class="sd">        retries: int</span>
-<span class="sd">                Number of additional retries for failed PMC full-text requests.</span>
-<span class="sd">                Default: 3</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
@@ -4306,7 +4357,7 @@
 
         <span class="k">for</span> <span class="n">pmc_id</span> <span class="ow">in</span> <span class="n">pmc_ids</span><span class="p">:</span>
             <span class="c1"># Fetch full text</span>
-            <span class="n">fulltext</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fetch_pmc_fulltext</span><span class="p">(</span><span class="n">pmc_id</span><span class="p">,</span> <span class="n">retries</span><span class="o">=</span><span class="n">retries</span><span class="p">)</span>
+            <span class="n">fulltext</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fetch_pmc_fulltext</span><span class="p">(</span><span class="n">pmc_id</span><span class="p">)</span>
 
             <span class="k">if</span> <span class="n">fulltext</span><span class="p">:</span>
                 <span class="c1"># Extract identifiers</span>
@@ -4437,16 +4488,13 @@
 
 <div class="viewcode-block" id="SRAweb.pmid_to_identifiers">
 <a class="viewcode-back" href="../../pysradb.html#pysradb.sraweb.SRAweb.pmid_to_identifiers">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">pmid_to_identifiers</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pmids</span><span class="p">,</span> <span class="n">retries</span><span class="o">=</span><span class="mi">3</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">pmid_to_identifiers</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pmids</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Extract database identifiers from PubMed articles via PMC</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        pmids: list or str</span>
 <span class="sd">              PMID(s)</span>
-<span class="sd">        retries: int</span>
-<span class="sd">              Number of additional retries for failed PubMed/PMC requests.</span>
-<span class="sd">              Default: 3</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
@@ -4457,14 +4505,14 @@
             <span class="n">pmids</span> <span class="o">=</span> <span class="p">[</span><span class="n">pmids</span><span class="p">]</span>
 
         <span class="c1"># First convert PMIDs to PMC IDs</span>
-        <span class="n">pmid_pmc_mapping</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">pmid_to_pmc</span><span class="p">(</span><span class="n">pmids</span><span class="p">,</span> <span class="n">retries</span><span class="o">=</span><span class="n">retries</span><span class="p">)</span>
+        <span class="n">pmid_pmc_mapping</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">pmid_to_pmc</span><span class="p">(</span><span class="n">pmids</span><span class="p">)</span>
 
         <span class="n">results</span> <span class="o">=</span> <span class="p">[]</span>
 
         <span class="k">for</span> <span class="n">pmid</span><span class="p">,</span> <span class="n">pmc_id</span> <span class="ow">in</span> <span class="n">pmid_pmc_mapping</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
             <span class="k">if</span> <span class="n">pmc_id</span><span class="p">:</span>
                 <span class="c1"># Get identifiers from PMC</span>
-                <span class="n">pmc_results</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">pmc_to_identifiers</span><span class="p">([</span><span class="n">pmc_id</span><span class="p">],</span> <span class="n">retries</span><span class="o">=</span><span class="n">retries</span><span class="p">)</span>
+                <span class="n">pmc_results</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">pmc_to_identifiers</span><span class="p">([</span><span class="n">pmc_id</span><span class="p">])</span>
 
                 <span class="k">if</span> <span class="ow">not</span> <span class="n">pmc_results</span><span class="o">.</span><span class="n">empty</span><span class="p">:</span>
                     <span class="n">result</span> <span class="o">=</span> <span class="n">pmc_results</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">to_dict</span><span class="p">()</span>
@@ -4514,45 +4562,39 @@
 
 <div class="viewcode-block" id="SRAweb.pmid_to_gse">
 <a class="viewcode-back" href="../../pysradb.html#pysradb.sraweb.SRAweb.pmid_to_gse">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">pmid_to_gse</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pmids</span><span class="p">,</span> <span class="n">retries</span><span class="o">=</span><span class="mi">3</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">pmid_to_gse</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pmids</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Get GSE identifiers from PMID(s)</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        pmids: list or str</span>
 <span class="sd">              PMID(s)</span>
-<span class="sd">        retries: int</span>
-<span class="sd">              Number of additional retries for failed PubMed/PMC requests.</span>
-<span class="sd">              Default: 3</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        results_df: pandas.DataFrame</span>
 <span class="sd">                   DataFrame with PMIDs and GSE identifiers</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">full_results</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">pmid_to_identifiers</span><span class="p">(</span><span class="n">pmids</span><span class="p">,</span> <span class="n">retries</span><span class="o">=</span><span class="n">retries</span><span class="p">)</span>
+        <span class="n">full_results</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">pmid_to_identifiers</span><span class="p">(</span><span class="n">pmids</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">full_results</span><span class="p">[[</span><span class="s2">&quot;pmid&quot;</span><span class="p">,</span> <span class="s2">&quot;pmc_id&quot;</span><span class="p">,</span> <span class="s2">&quot;gse_ids&quot;</span><span class="p">]]</span></div>
 
 
 <div class="viewcode-block" id="SRAweb.pmid_to_srp">
 <a class="viewcode-back" href="../../pysradb.html#pysradb.sraweb.SRAweb.pmid_to_srp">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">pmid_to_srp</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pmids</span><span class="p">,</span> <span class="n">retries</span><span class="o">=</span><span class="mi">3</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">pmid_to_srp</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pmids</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Get SRP identifiers from PMID(s)</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        pmids: list or str</span>
 <span class="sd">              PMID(s)</span>
-<span class="sd">        retries: int</span>
-<span class="sd">              Number of additional retries for failed PubMed/PMC requests.</span>
-<span class="sd">              Default: 3</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        results_df: pandas.DataFrame</span>
 <span class="sd">                   DataFrame with PMIDs and SRP identifiers</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">full_results</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">pmid_to_identifiers</span><span class="p">(</span><span class="n">pmids</span><span class="p">,</span> <span class="n">retries</span><span class="o">=</span><span class="n">retries</span><span class="p">)</span>
+        <span class="n">full_results</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">pmid_to_identifiers</span><span class="p">(</span><span class="n">pmids</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">full_results</span><span class="p">[[</span><span class="s2">&quot;pmid&quot;</span><span class="p">,</span> <span class="s2">&quot;pmc_id&quot;</span><span class="p">,</span> <span class="s2">&quot;srp_ids&quot;</span><span class="p">]]</span></div>
 
 
