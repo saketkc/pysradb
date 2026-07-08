@@ -589,6 +589,36 @@ def test_gse_to_pmid_multiple(sraweb_connection):
     assert "pmid" in df.columns
 
 
+def test_gse_to_pmid_title_fallback(monkeypatch):
+    """GSE resolves to a PMID via GEO title when PMC/EuropePMC miss."""
+    client = SRAweb()
+
+    def fake_send(url, params=None, **kwargs):
+        class Response:
+            def __init__(self, payload):
+                self._payload = payload
+
+            def json(self):
+                return self._payload
+
+        if "esearch" in url and params.get("db") == "gds":
+            return Response({"esearchresult": {"idlist": ["200303928"]}})
+        if "esummary" in url and params.get("db") == "gds":
+            return Response(
+                {"result": {"200303928": {"title": "RegVelo: dynamics of single cells"}}}
+            )
+        if "esearch" in url and params.get("db") == "pubmed":
+            return Response({"esearchresult": {"idlist": ["42119563"]}})
+        raise AssertionError(f"unexpected request: {url} {params}")
+
+    monkeypatch.setattr(client, "search_pmc_for_external_sources", lambda *a, **k: [])
+    monkeypatch.setattr(client, "_search_europepmc", lambda *a, **k: [])
+    monkeypatch.setattr(client, "_send_retryable_request", fake_send)
+
+    df = client.gse_to_pmid("GSE303928")
+    assert df.loc[0, "pmid"] == "42119563"
+
+
 def test_pmid_to_pmc(sraweb_connection):
     """Test PMID to PMC conversion"""
     mapping = sraweb_connection.pmid_to_pmc("27373336")

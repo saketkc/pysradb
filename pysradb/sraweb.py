@@ -2553,6 +2553,34 @@ class SRAweb(object):
 
         return str(min(pmid_ints))
 
+    def _search_pubmed_by_gse_title(self, gse_acc):
+        """Resolve a GSE to PMIDs by matching its GEO title against PubMed.
+
+        Covers recent GSEs not yet linked to their paper in PMC/Europe PMC.
+        """
+        try:
+            r = self._send_retryable_request(
+                self.base_url["esearch"],
+                params={"db": "gds", "term": f"{gse_acc}[ACCN]", "retmode": "json"},
+            )
+            ids = r.json().get("esearchresult", {}).get("idlist", [])
+            if not ids:
+                return []
+            r2 = self._send_retryable_request(
+                self.base_url["esummary"],
+                params={"db": "gds", "id": ids[0], "retmode": "json"},
+            )
+            title = r2.json().get("result", {}).get(ids[0], {}).get("title")
+            if not title:
+                return []
+            r3 = self._send_retryable_request(
+                self.base_url["esearch"],
+                params={"db": "pubmed", "term": f"{title}[Title]", "retmode": "json"},
+            )
+            return r3.json().get("esearchresult", {}).get("idlist", [])
+        except Exception:
+            return []
+
     def _search_europepmc(self, query):
         """Search Europe PMC for PMIDs matching a query string
 
@@ -3511,6 +3539,9 @@ class SRAweb(object):
             # Fallback: Europe PMC
             if not pmids:
                 pmids = self._search_europepmc(gse_acc)
+            # Fallback: GEO title match
+            if not pmids:
+                pmids = self._search_pubmed_by_gse_title(gse_acc)
             smallest_pmid = self._get_smallest_pmid(pmids) if pmids else pd.NA
 
             results.append(
