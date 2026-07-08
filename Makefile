@@ -1,6 +1,9 @@
 .PHONY: clean clean-test clean-pyc clean-build docs help
 .DEFAULT_GOAL := help
 
+# Use python3 if a bare `python` isn't on PATH (macOS ships only python3).
+PYTHON ?= $(shell command -v python || command -v python3)
+
 define BROWSER_PYSCRIPT
 import os, webbrowser, sys
 
@@ -24,10 +27,10 @@ for line in sys.stdin:
 endef
 export PRINT_HELP_PYSCRIPT
 
-BROWSER := python -c "$$BROWSER_PYSCRIPT"
+BROWSER := $(PYTHON) -c "$$BROWSER_PYSCRIPT"
 
 help:
-	@python -c "$$PRINT_HELP_PYSCRIPT" < $(MAKEFILE_LIST)
+	@$(PYTHON) -c "$$PRINT_HELP_PYSCRIPT" < $(MAKEFILE_LIST)
 
 clean: clean-build clean-pyc clean-test ## remove all build, test, coverage and Python artifacts
 
@@ -35,8 +38,8 @@ clean-build: ## remove build artifacts
 	rm -fr build/
 	rm -fr dist/
 	rm -fr .eggs/
-	find . -name '*.egg-info' -exec rm -fr {} +
-	find . -name '*.egg' -exec rm -f {} +
+	find . -path ./.venv\* -prune -o -name '*.egg-info' -exec rm -fr {} +
+	find . -path ./.venv\* -prune -o -name '*.egg' -exec rm -f {} +
 
 clean-pyc: ## remove Python file artifacts
 	find . -name '*.pyc' -exec rm -f {} +
@@ -76,12 +79,12 @@ servedocs: docs ## compile the docs watching for changes
 	watchmedo shell-command -p '*.md|*.rst' -c '$(MAKE) -C docs html' -R -D .
 
 release: dist ## package and upload a release
-	python -m build
+	$(PYTHON) -m build
 	twine upload dist/*
 
 dist: clean ## builds source and wheel package
-	python -m build
+	$(PYTHON) -m build
 	ls -l dist
 
 install: clean ## install the package to the active Python's site-packages
-	pip install -e .
+	@if command -v uv >/dev/null 2>&1; then uv pip install -e .; else $(PYTHON) -m pip install -e .; fi
