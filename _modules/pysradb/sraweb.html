@@ -2895,31 +2895,19 @@
         <span class="n">unique_bioprojects</span> <span class="o">=</span> <span class="n">metadata_df</span><span class="p">[</span><span class="s2">&quot;bioproject&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">dropna</span><span class="p">()</span><span class="o">.</span><span class="n">unique</span><span class="p">()</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
         <span class="n">bioproject_pmids</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fetch_bioproject_pmids</span><span class="p">(</span><span class="n">unique_bioprojects</span><span class="p">)</span>
 
-        <span class="c1"># If no BioProject PMIDs found, try fallback search</span>
-        <span class="n">external_pmids</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="nb">any</span><span class="p">(</span><span class="n">pmids</span> <span class="k">for</span> <span class="n">pmids</span> <span class="ow">in</span> <span class="n">bioproject_pmids</span><span class="o">.</span><span class="n">values</span><span class="p">()):</span>
-            <span class="n">external_pmids</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_search_fallback_pmids</span><span class="p">(</span><span class="n">srp_accessions</span><span class="p">)</span>
-
-        <span class="c1"># If still no PMIDs, try Europe PMC as final fallback</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="n">external_pmids</span><span class="p">:</span>
-            <span class="k">for</span> <span class="n">srp_acc</span> <span class="ow">in</span> <span class="n">srp_accessions</span><span class="p">:</span>
-                <span class="n">epmc_pmids</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_search_europepmc</span><span class="p">(</span><span class="n">srp_acc</span><span class="p">)</span>
-                <span class="k">if</span> <span class="n">epmc_pmids</span><span class="p">:</span>
-                    <span class="n">external_pmids</span> <span class="o">=</span> <span class="n">epmc_pmids</span>
-                    <span class="k">break</span>
-
-        <span class="c1"># Build results - one row per unique SRP accession</span>
         <span class="n">results</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">metadata_df</span><span class="o">.</span><span class="n">iterrows</span><span class="p">():</span>
             <span class="n">srp_acc</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_extract_sra_accession</span><span class="p">(</span><span class="n">row</span><span class="p">)</span>
             <span class="n">bioproject</span> <span class="o">=</span> <span class="n">row</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;bioproject&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
 
-            <span class="c1"># Get PMIDs (BioProject takes priority over external)</span>
             <span class="n">pmids</span> <span class="o">=</span> <span class="n">bioproject_pmids</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">bioproject</span><span class="p">,</span> <span class="p">[])</span>
-            <span class="k">if</span> <span class="ow">not</span> <span class="n">pmids</span> <span class="ow">and</span> <span class="n">external_pmids</span><span class="p">:</span>
-                <span class="n">pmids</span> <span class="o">=</span> <span class="n">external_pmids</span>
 
-            <span class="c1"># Add result with smallest PMID (if any found)</span>
+            <span class="c1"># Fallback must run per-accession</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">pmids</span> <span class="ow">and</span> <span class="n">srp_acc</span><span class="p">:</span>
+                <span class="n">pmids</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_search_fallback_pmids</span><span class="p">(</span>
+                    <span class="p">[</span><span class="n">srp_acc</span><span class="p">]</span>
+                <span class="p">)</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">_search_europepmc</span><span class="p">(</span><span class="n">srp_acc</span><span class="p">)</span>
+
             <span class="n">smallest_pmid</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_smallest_pmid</span><span class="p">(</span><span class="n">pmids</span><span class="p">)</span> <span class="k">if</span> <span class="n">pmids</span> <span class="k">else</span> <span class="n">pd</span><span class="o">.</span><span class="n">NA</span>
             <span class="n">results</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
                 <span class="p">{</span>
