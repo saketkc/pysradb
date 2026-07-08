@@ -2997,6 +2997,34 @@
 
         <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="nb">min</span><span class="p">(</span><span class="n">pmid_ints</span><span class="p">))</span>
 
+    <span class="k">def</span><span class="w"> </span><span class="nf">_search_pubmed_by_gse_title</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">gse_acc</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Resolve a GSE to PMIDs by matching its GEO title against PubMed.</span>
+
+<span class="sd">        Covers recent GSEs not yet linked to their paper in PMC/Europe PMC.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">r</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_send_retryable_request</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">base_url</span><span class="p">[</span><span class="s2">&quot;esearch&quot;</span><span class="p">],</span>
+                <span class="n">params</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;db&quot;</span><span class="p">:</span> <span class="s2">&quot;gds&quot;</span><span class="p">,</span> <span class="s2">&quot;term&quot;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">gse_acc</span><span class="si">}</span><span class="s2">[ACCN]&quot;</span><span class="p">,</span> <span class="s2">&quot;retmode&quot;</span><span class="p">:</span> <span class="s2">&quot;json&quot;</span><span class="p">},</span>
+            <span class="p">)</span>
+            <span class="n">ids</span> <span class="o">=</span> <span class="n">r</span><span class="o">.</span><span class="n">json</span><span class="p">()</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;esearchresult&quot;</span><span class="p">,</span> <span class="p">{})</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;idlist&quot;</span><span class="p">,</span> <span class="p">[])</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">ids</span><span class="p">:</span>
+                <span class="k">return</span> <span class="p">[]</span>
+            <span class="n">r2</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_send_retryable_request</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">base_url</span><span class="p">[</span><span class="s2">&quot;esummary&quot;</span><span class="p">],</span>
+                <span class="n">params</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;db&quot;</span><span class="p">:</span> <span class="s2">&quot;gds&quot;</span><span class="p">,</span> <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="n">ids</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="s2">&quot;retmode&quot;</span><span class="p">:</span> <span class="s2">&quot;json&quot;</span><span class="p">},</span>
+            <span class="p">)</span>
+            <span class="n">title</span> <span class="o">=</span> <span class="n">r2</span><span class="o">.</span><span class="n">json</span><span class="p">()</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;result&quot;</span><span class="p">,</span> <span class="p">{})</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">ids</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="p">{})</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;title&quot;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">title</span><span class="p">:</span>
+                <span class="k">return</span> <span class="p">[]</span>
+            <span class="n">r3</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_send_retryable_request</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">base_url</span><span class="p">[</span><span class="s2">&quot;esearch&quot;</span><span class="p">],</span>
+                <span class="n">params</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;db&quot;</span><span class="p">:</span> <span class="s2">&quot;pubmed&quot;</span><span class="p">,</span> <span class="s2">&quot;term&quot;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">title</span><span class="si">}</span><span class="s2">[Title]&quot;</span><span class="p">,</span> <span class="s2">&quot;retmode&quot;</span><span class="p">:</span> <span class="s2">&quot;json&quot;</span><span class="p">},</span>
+            <span class="p">)</span>
+            <span class="k">return</span> <span class="n">r3</span><span class="o">.</span><span class="n">json</span><span class="p">()</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;esearchresult&quot;</span><span class="p">,</span> <span class="p">{})</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;idlist&quot;</span><span class="p">,</span> <span class="p">[])</span>
+        <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+            <span class="k">return</span> <span class="p">[]</span>
+
     <span class="k">def</span><span class="w"> </span><span class="nf">_search_europepmc</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">query</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Search Europe PMC for PMIDs matching a query string</span>
 
@@ -3984,6 +4012,9 @@
             <span class="c1"># Fallback: Europe PMC</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="n">pmids</span><span class="p">:</span>
                 <span class="n">pmids</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_search_europepmc</span><span class="p">(</span><span class="n">gse_acc</span><span class="p">)</span>
+            <span class="c1"># Fallback: GEO title match</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">pmids</span><span class="p">:</span>
+                <span class="n">pmids</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_search_pubmed_by_gse_title</span><span class="p">(</span><span class="n">gse_acc</span><span class="p">)</span>
             <span class="n">smallest_pmid</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_smallest_pmid</span><span class="p">(</span><span class="n">pmids</span><span class="p">)</span> <span class="k">if</span> <span class="n">pmids</span> <span class="k">else</span> <span class="n">pd</span><span class="o">.</span><span class="n">NA</span>
 
             <span class="n">results</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
