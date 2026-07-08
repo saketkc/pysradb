@@ -571,6 +571,35 @@ def test_srp_to_pmid_multiple(sraweb_connection):
     assert "pmid" in df.columns
 
 
+def test_srp_to_pmid_no_batch_broadcast(monkeypatch):
+    """A fallback PMID found for one SRP must not be broadcast to the other
+    SRPs in the same batch."""
+    client = SRAweb()
+
+    meta = pd.DataFrame(
+        [
+            {"study_accession": "SRP000001", "bioproject": "PRJNA1"},
+            {"study_accession": "SRP000002", "bioproject": "PRJNA2"},
+        ]
+    )
+    monkeypatch.setattr(client, "sra_metadata", lambda *a, **k: meta)
+    # No BioProject-linked PMIDs, so the per-accession fallback runs.
+    monkeypatch.setattr(
+        client, "fetch_bioproject_pmids", lambda bps: {bp: [] for bp in bps}
+    )
+    monkeypatch.setattr(client, "_search_fallback_pmids", lambda accs: [])
+    # Only the first accession has a EuropePMC hit.
+    monkeypatch.setattr(
+        client,
+        "_search_europepmc",
+        lambda acc: ["12345"] if acc == "SRP000001" else [],
+    )
+
+    df = client.srp_to_pmid(["SRP000001", "SRP000002"]).set_index("srp_accession")
+    assert df.loc["SRP000001", "pmid"] == "12345"
+    assert pd.isna(df.loc["SRP000002", "pmid"])  # must NOT inherit SRP000001's PMID
+
+
 def test_gse_to_pmid(sraweb_connection):
     """Test GSE to PMID functionality"""
     df = sraweb_connection.gse_to_pmid("GSE253406")
@@ -605,7 +634,11 @@ def test_gse_to_pmid_title_fallback(monkeypatch):
             return Response({"esearchresult": {"idlist": ["200303928"]}})
         if "esummary" in url and params.get("db") == "gds":
             return Response(
-                {"result": {"200303928": {"title": "RegVelo: dynamics of single cells"}}}
+                {
+                    "result": {
+                        "200303928": {"title": "RegVelo: dynamics of single cells"}
+                    }
+                }
             )
         if "esearch" in url and params.get("db") == "pubmed":
             return Response({"esearchresult": {"idlist": ["42119563"]}})

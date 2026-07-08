@@ -2452,31 +2452,19 @@ class SRAweb(object):
         unique_bioprojects = metadata_df["bioproject"].dropna().unique().tolist()
         bioproject_pmids = self.fetch_bioproject_pmids(unique_bioprojects)
 
-        # If no BioProject PMIDs found, try fallback search
-        external_pmids = []
-        if not any(pmids for pmids in bioproject_pmids.values()):
-            external_pmids = self._search_fallback_pmids(srp_accessions)
-
-        # If still no PMIDs, try Europe PMC as final fallback
-        if not external_pmids:
-            for srp_acc in srp_accessions:
-                epmc_pmids = self._search_europepmc(srp_acc)
-                if epmc_pmids:
-                    external_pmids = epmc_pmids
-                    break
-
-        # Build results - one row per unique SRP accession
         results = []
         for _, row in metadata_df.iterrows():
             srp_acc = self._extract_sra_accession(row)
             bioproject = row.get("bioproject", "")
 
-            # Get PMIDs (BioProject takes priority over external)
             pmids = bioproject_pmids.get(bioproject, [])
-            if not pmids and external_pmids:
-                pmids = external_pmids
 
-            # Add result with smallest PMID (if any found)
+            # Fallback must run per-accession
+            if not pmids and srp_acc:
+                pmids = self._search_fallback_pmids(
+                    [srp_acc]
+                ) or self._search_europepmc(srp_acc)
+
             smallest_pmid = self._get_smallest_pmid(pmids) if pmids else pd.NA
             results.append(
                 {
