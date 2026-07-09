@@ -409,6 +409,13 @@
     <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s2">&quot;Failed to fetch esummary. API rate limit exceeded.&quot;</span><span class="p">)</span>
 
 
+<div class="viewcode-block" id="RateLimitError">
+<a class="viewcode-back" href="../../pysradb.html#pysradb.sraweb.RateLimitError">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">RateLimitError</span><span class="p">(</span><span class="ne">BaseException</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Raised on an NCBI/EBI rate-limit response&quot;&quot;&quot;</span></div>
+
+
+
 <div class="viewcode-block" id="get_retmax">
 <a class="viewcode-back" href="../../pysradb.html#pysradb.sraweb.get_retmax">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">get_retmax</span><span class="p">(</span><span class="n">n_records</span><span class="p">,</span> <span class="n">retmax</span><span class="o">=</span><span class="mi">500</span><span class="p">):</span>
@@ -4214,12 +4221,31 @@
                 <span class="p">):</span>
                     <span class="k">return</span> <span class="n">response</span>
 
+                <span class="c1"># NCBI/EBI throttle: HTTP 429/503, or a 200 body reporting a rate limit.</span>
+                <span class="n">is_ncbi_ebi</span> <span class="o">=</span> <span class="s2">&quot;ncbi.nlm.nih.gov&quot;</span> <span class="ow">in</span> <span class="n">url</span> <span class="ow">or</span> <span class="s2">&quot;ebi.ac.uk&quot;</span> <span class="ow">in</span> <span class="n">url</span>
+                <span class="n">rate_limited</span> <span class="o">=</span> <span class="n">is_ncbi_ebi</span> <span class="ow">and</span> <span class="n">response</span><span class="o">.</span><span class="n">status_code</span> <span class="ow">in</span> <span class="p">(</span><span class="mi">429</span><span class="p">,</span> <span class="mi">503</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">is_ncbi_ebi</span> <span class="ow">and</span> <span class="n">response</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">200</span><span class="p">:</span>
+                    <span class="n">body</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">text</span><span class="p">[:</span><span class="mi">600</span><span class="p">]</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+                    <span class="k">if</span> <span class="s2">&quot;rate limit&quot;</span> <span class="ow">in</span> <span class="n">body</span> <span class="ow">or</span> <span class="s2">&quot;too many requests&quot;</span> <span class="ow">in</span> <span class="n">body</span><span class="p">:</span>
+                        <span class="n">rate_limited</span> <span class="o">=</span> <span class="kc">True</span>
+                <span class="k">if</span> <span class="n">rate_limited</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">attempt</span> <span class="o">==</span> <span class="n">retries</span><span class="p">:</span>
+                        <span class="k">raise</span> <span class="n">RateLimitError</span><span class="p">(</span>
+                            <span class="sa">f</span><span class="s2">&quot;rate limited (HTTP </span><span class="si">{</span><span class="n">response</span><span class="o">.</span><span class="n">status_code</span><span class="si">}</span><span class="s2">) for </span><span class="si">{</span><span class="n">url</span><span class="si">}</span><span class="s2">&quot;</span>
+                        <span class="p">)</span>
+                    <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sleep_time</span> <span class="o">*</span> <span class="p">(</span><span class="mi">2</span><span class="o">**</span><span class="n">attempt</span><span class="p">))</span>
+                    <span class="k">continue</span>
+
                 <span class="n">response</span><span class="o">.</span><span class="n">raise_for_status</span><span class="p">()</span>
                 <span class="k">return</span> <span class="n">response</span>
             <span class="k">except</span> <span class="n">requests</span><span class="o">.</span><span class="n">RequestException</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
                 <span class="n">last_error</span> <span class="o">=</span> <span class="n">e</span>
-
+                <span class="n">status</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="nb">getattr</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="s2">&quot;response&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span> <span class="s2">&quot;status_code&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
                 <span class="k">if</span> <span class="n">attempt</span> <span class="o">==</span> <span class="n">retries</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">status</span> <span class="ow">in</span> <span class="p">(</span><span class="mi">429</span><span class="p">,</span> <span class="mi">503</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span>
+                        <span class="s2">&quot;ncbi.nlm.nih.gov&quot;</span> <span class="ow">in</span> <span class="n">url</span> <span class="ow">or</span> <span class="s2">&quot;ebi.ac.uk&quot;</span> <span class="ow">in</span> <span class="n">url</span>
+                    <span class="p">):</span>
+                        <span class="k">raise</span> <span class="n">RateLimitError</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">))</span> <span class="kn">from</span><span class="w"> </span><span class="nn">e</span>
                     <span class="k">raise</span> <span class="n">last_error</span>
 
                 <span class="k">if</span> <span class="n">attempt</span> <span class="o">&lt;</span> <span class="n">retries</span><span class="p">:</span>
