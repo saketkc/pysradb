@@ -3712,6 +3712,14 @@ class SRAweb(object):
         timeout = timeout if timeout is not None else self.timeout
         last_error: BaseException | None = None
 
+        if self.api_key and params is not None and "eutils.ncbi.nlm.nih.gov" in url:
+            if isinstance(params, dict) and "api_key" not in params:
+                params = {**params, "api_key": self.api_key}
+            elif isinstance(params, (list, tuple)) and not any(
+                p and p[0] == "api_key" for p in params
+            ):
+                params = list(params) + [("api_key", self.api_key)]
+
         for attempt in range(retries + 1):
             try:
                 response = requests.request(
