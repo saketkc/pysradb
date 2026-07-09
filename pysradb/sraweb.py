@@ -81,6 +81,10 @@ def _retry_response(base_url, payload, key, max_retries=10):
     raise RuntimeError("Failed to fetch esummary. API rate limit exceeded.")
 
 
+class RateLimitError(BaseException):
+    """Raised on an NCBI/EBI rate-limit response"""
+
+
 def get_retmax(n_records, retmax=500):
     """Get retstart and retmax till n_records are exhausted"""
     for i in range(0, n_records, retmax):
@@ -3731,12 +3735,31 @@ class SRAweb(object):
                 ):
                     return response
 
+                # NCBI/EBI throttle: HTTP 429/503, or a 200 body reporting a rate limit.
+                is_ncbi_ebi = "ncbi.nlm.nih.gov" in url or "ebi.ac.uk" in url
+                rate_limited = is_ncbi_ebi and response.status_code in (429, 503)
+                if is_ncbi_ebi and response.status_code == 200:
+                    body = response.text[:600].lower()
+                    if "rate limit" in body or "too many requests" in body:
+                        rate_limited = True
+                if rate_limited:
+                    if attempt == retries:
+                        raise RateLimitError(
+                            f"rate limited (HTTP {response.status_code}) for {url}"
+                        )
+                    time.sleep(self.sleep_time * (2**attempt))
+                    continue
+
                 response.raise_for_status()
                 return response
             except requests.RequestException as e:
                 last_error = e
-
+                status = getattr(getattr(e, "response", None), "status_code", None)
                 if attempt == retries:
+                    if status in (429, 503) and (
+                        "ncbi.nlm.nih.gov" in url or "ebi.ac.uk" in url
+                    ):
+                        raise RateLimitError(str(e)) from e
                     raise last_error
 
                 if attempt < retries:
