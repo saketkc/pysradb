@@ -1388,8 +1388,8 @@ the search result output (Refer to #88)</p>
 <dl class="py exception">
 <dt class="sig sig-object py" id="pysradb.sraweb.RateLimitError">
 <span class="property"><span class="k"><span class="pre">exception</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">pysradb.sraweb.</span></span><span class="sig-name descname"><span class="pre">RateLimitError</span></span><a class="reference internal" href="_modules/pysradb/sraweb.html#RateLimitError"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysradb.sraweb.RateLimitError" title="Link to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">BaseException</span></code></p>
-<p>Raised on an NCBI/EBI rate-limit response</p>
+<dd><p>Bases: <a class="reference internal" href="#pysradb.sraweb.TransientAPIError" title="pysradb.sraweb.TransientAPIError"><code class="xref py py-class docutils literal notranslate"><span class="pre">TransientAPIError</span></code></a></p>
+<p>NCBI/EBI 429/503 or rate-limit body.</p>
 </dd></dl>
 
 <dl class="py class">
@@ -2181,6 +2181,20 @@ requests on the OpenAlex API.</p>
 
 </dd></dl>
 
+<dl class="py exception">
+<dt class="sig sig-object py" id="pysradb.sraweb.ServerError">
+<span class="property"><span class="k"><span class="pre">exception</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">pysradb.sraweb.</span></span><span class="sig-name descname"><span class="pre">ServerError</span></span><a class="reference internal" href="_modules/pysradb/sraweb.html#ServerError"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysradb.sraweb.ServerError" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pysradb.sraweb.TransientAPIError" title="pysradb.sraweb.TransientAPIError"><code class="xref py py-class docutils literal notranslate"><span class="pre">TransientAPIError</span></code></a></p>
+<p>NCBI/EBI 5xx, timeout, or connection error.</p>
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="pysradb.sraweb.TransientAPIError">
+<span class="property"><span class="k"><span class="pre">exception</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">pysradb.sraweb.</span></span><span class="sig-name descname"><span class="pre">TransientAPIError</span></span><a class="reference internal" href="_modules/pysradb/sraweb.html#TransientAPIError"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysradb.sraweb.TransientAPIError" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">BaseException</span></code></p>
+<p>BaseException so <code class="docutils literal notranslate"><span class="pre">except</span> <span class="pre">Exception</span></code> can’t swallow it into a NULL result.</p>
+</dd></dl>
+
 <dl class="py function">
 <dt class="sig sig-object py" id="pysradb.sraweb.get_retmax">
 <span class="sig-prename descclassname"><span class="pre">pysradb.sraweb.</span></span><span class="sig-name descname"><span class="pre">get_retmax</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n_records</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">retmax</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">500</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysradb/sraweb.html#get_retmax"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysradb.sraweb.get_retmax" title="Link to this definition">¶</a></dt>
@@ -2666,6 +2680,8 @@ errors.</p>
 <li><a class="reference internal" href="#pysradb.sraweb.SRAweb.xml_to_json"><code class="docutils literal notranslate"><span class="pre">SRAweb.xml_to_json()</span></code></a></li>
 </ul>
 </li>
+<li><a class="reference internal" href="#pysradb.sraweb.ServerError"><code class="docutils literal notranslate"><span class="pre">ServerError</span></code></a></li>
+<li><a class="reference internal" href="#pysradb.sraweb.TransientAPIError"><code class="docutils literal notranslate"><span class="pre">TransientAPIError</span></code></a></li>
 <li><a class="reference internal" href="#pysradb.sraweb.get_retmax"><code class="docutils literal notranslate"><span class="pre">get_retmax()</span></code></a></li>
 <li><a class="reference internal" href="#pysradb.sraweb.xmlescape"><code class="docutils literal notranslate"><span class="pre">xmlescape()</span></code></a></li>
 </ul>
