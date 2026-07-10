@@ -72,17 +72,25 @@ def _retry_response(base_url, payload, key, max_retries=10):
         try:
             request = requests.get(base_url, params=OrderedDict(payload))
             response = request.json()
-            results = response[key]
+            _ = response[key]
             return response
-        except KeyError:
-            # sleep for increasing times
+        except (KeyError, ValueError, requests.RequestException):
+            # missing key, bad body (5xx), or network error -> back off
             time.sleep(index + 1)
             continue
-    raise RuntimeError("Failed to fetch esummary. API rate limit exceeded.")
+    raise RateLimitError("Failed to fetch esummary. API rate limit exceeded.")
 
 
-class RateLimitError(BaseException):
-    """Raised on an NCBI/EBI rate-limit response"""
+class TransientAPIError(BaseException):
+    """BaseException so ``except Exception`` can't swallow it into a NULL result."""
+
+
+class RateLimitError(TransientAPIError):
+    """NCBI/EBI 429/503 or rate-limit body."""
+
+
+class ServerError(TransientAPIError):
+    """NCBI/EBI 5xx, timeout, or connection error."""
 
 
 def get_retmax(n_records, retmax=500):
@@ -3724,7 +3732,10 @@ class SRAweb(object):
             ):
                 params = list(params) + [("api_key", self.api_key)]
 
+        is_ncbi_ebi = "ncbi.nlm.nih.gov" in url or "ebi.ac.uk" in url
+
         for attempt in range(retries + 1):
+            last_attempt = attempt == retries
             try:
                 response = requests.request(
                     method, url, params=params, data=data, timeout=timeout
@@ -3735,18 +3746,20 @@ class SRAweb(object):
                 ):
                     return response
 
-                # NCBI/EBI throttle: HTTP 429/503, or a 200 body reporting a rate limit.
-                is_ncbi_ebi = "ncbi.nlm.nih.gov" in url or "ebi.ac.uk" in url
-                rate_limited = is_ncbi_ebi and response.status_code in (429, 503)
-                if is_ncbi_ebi and response.status_code == 200:
+                # transient NCBI/EBI failure -> retry, then raise (never NULL)
+                transient = None
+                if is_ncbi_ebi and response.status_code in (429, 503):
+                    transient = (RateLimitError, "rate limited")
+                elif is_ncbi_ebi and response.status_code == 200:
                     body = response.text[:600].lower()
                     if "rate limit" in body or "too many requests" in body:
-                        rate_limited = True
-                if rate_limited:
-                    if attempt == retries:
-                        raise RateLimitError(
-                            f"rate limited (HTTP {response.status_code}) for {url}"
-                        )
+                        transient = (RateLimitError, "rate limited")
+                elif is_ncbi_ebi and response.status_code >= 500:
+                    transient = (ServerError, "server error")
+                if transient:
+                    exc, label = transient
+                    if last_attempt:
+                        raise exc(f"{label} (HTTP {response.status_code}) for {url}")
                     time.sleep(self.sleep_time * (2**attempt))
                     continue
 
@@ -3755,15 +3768,16 @@ class SRAweb(object):
             except requests.RequestException as e:
                 last_error = e
                 status = getattr(getattr(e, "response", None), "status_code", None)
-                if attempt == retries:
-                    if status in (429, 503) and (
-                        "ncbi.nlm.nih.gov" in url or "ebi.ac.uk" in url
+                if last_attempt:
+                    # 429/503/5xx/network -> transient (raise); 4xx -> real error
+                    if is_ncbi_ebi and (
+                        status is None or status in (429, 503) or status >= 500
                     ):
-                        raise RateLimitError(str(e)) from e
+                        if status in (429, 503):
+                            raise RateLimitError(str(e)) from e
+                        raise ServerError(str(e)) from e
                     raise last_error
-
-                if attempt < retries:
-                    time.sleep(self.sleep_time * (2**attempt))
+                time.sleep(self.sleep_time * (2**attempt))
 
     def pmid_to_pmc(self, pmids):
         """Convert PMID(s) to PMC ID(s)
