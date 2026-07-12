@@ -682,6 +682,7 @@ def test_fetch_pmc_fulltext_retries(monkeypatch):
 
     class Response:
         text = "<article/>"
+        status_code = 200
 
         def raise_for_status(self):
             return None
