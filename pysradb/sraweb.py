@@ -2900,9 +2900,13 @@ class SRAweb(object):
                 if a.findtext("LastName")
             )
 
+            # itertext() keeps text after inline markup (<i>, <sub>); findtext truncates at it.
+            title_el = article.find(".//ArticleTitle")
+            title = "".join(title_el.itertext()).strip() if title_el is not None else ""
+
             results[pmid] = {
                 "pmid": pmid,
-                "title": article.findtext(".//ArticleTitle", ""),
+                "title": title,
                 "journal": (
                     journal_el.findtext("Title", "") if journal_el is not None else ""
                 ),
