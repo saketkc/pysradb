@@ -3359,9 +3359,13 @@
                 <span class="k">if</span> <span class="n">a</span><span class="o">.</span><span class="n">findtext</span><span class="p">(</span><span class="s2">&quot;LastName&quot;</span><span class="p">)</span>
             <span class="p">)</span>
 
+            <span class="c1"># itertext() keeps text after inline markup (&lt;i&gt;, &lt;sub&gt;); findtext truncates at it.</span>
+            <span class="n">title_el</span> <span class="o">=</span> <span class="n">article</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;.//ArticleTitle&quot;</span><span class="p">)</span>
+            <span class="n">title</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">title_el</span><span class="o">.</span><span class="n">itertext</span><span class="p">())</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="k">if</span> <span class="n">title_el</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="s2">&quot;&quot;</span>
+
             <span class="n">results</span><span class="p">[</span><span class="n">pmid</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
                 <span class="s2">&quot;pmid&quot;</span><span class="p">:</span> <span class="n">pmid</span><span class="p">,</span>
-                <span class="s2">&quot;title&quot;</span><span class="p">:</span> <span class="n">article</span><span class="o">.</span><span class="n">findtext</span><span class="p">(</span><span class="s2">&quot;.//ArticleTitle&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">),</span>
+                <span class="s2">&quot;title&quot;</span><span class="p">:</span> <span class="n">title</span><span class="p">,</span>
                 <span class="s2">&quot;journal&quot;</span><span class="p">:</span> <span class="p">(</span>
                     <span class="n">journal_el</span><span class="o">.</span><span class="n">findtext</span><span class="p">(</span><span class="s2">&quot;Title&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span> <span class="k">if</span> <span class="n">journal_el</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="s2">&quot;&quot;</span>
                 <span class="p">),</span>
