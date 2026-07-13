@@ -2347,6 +2347,33 @@ class SRAweb(object):
         instance.search()
         return instance.get_df()[["experiment_accession", "experiment_title"]]
 
+    def _bioproject_uid(self, bioproject):
+        """Resolve a BioProject accession to its NCBI numeric UID.
+
+        Parameters
+        ----------
+        bioproject: str
+                   BioProject accession (e.g. PRJNA123456, PRJEB39301, PRJDB13786)
+
+        Returns
+        -------
+        uid: str or None
+            The numeric UID, or None when NCBI holds no such project.
+        """
+        try:
+            response = self._send_retryable_request(
+                self.base_url["esearch"],
+                params={
+                    "db": "bioproject",
+                    "term": f"{bioproject}[Project Accession]",
+                    "retmode": "json",
+                },
+            )
+            idlist = response.json().get("esearchresult", {}).get("idlist", [])
+            return idlist[0] if idlist else None
+        except Exception:
+            return None
+
     def fetch_bioproject_pmids(self, bioprojects):
         """Fetch PMIDs for given BioProject accessions
 
@@ -2370,11 +2397,19 @@ class SRAweb(object):
                 continue
 
             try:
+                uid = self._bioproject_uid(bioproject)
+                if not uid:
+                    bioproject_pmids[bioproject] = self._search_pmc_by_bioproject(
+                        bioproject
+                    )
+                    time.sleep(self.sleep_time)
+                    continue
+
                 payload = self.efetch_params.copy()
                 payload = [param for param in payload if param[0] != "retmode"]
                 payload += [
                     ("db", "bioproject"),
-                    ("id", bioproject),
+                    ("id", uid),
                     ("retmode", "xml"),
                 ]
 
@@ -2397,9 +2432,20 @@ class SRAweb(object):
                             records = [records]
 
                         for record in records:
-                            project_descr = record.get("Project", {}).get(
-                                "ProjectDescr", {}
+                            project = record.get("Project", {})
+
+                            archive = (
+                                project.get("ProjectID", {}).get("ArchiveID", {}) or {}
                             )
+                            got = archive.get("@accession")
+                            if got and got != bioproject:
+                                warnings.warn(
+                                    f"BioProject {bioproject} resolved to {got}; "
+                                    "discarding its publications"
+                                )
+                                continue
+
+                            project_descr = project.get("ProjectDescr", {})
                             publications = project_descr.get("Publication", [])
 
                             if not isinstance(publications, list):
@@ -2417,12 +2463,14 @@ class SRAweb(object):
                                     pmids.append(pub_id)
 
                 except ExpatError:
-                    # XML parsing failed --> Look for PMID patterns in the raw text
-                    pmid_pattern = r'id="(\d+)"'
-                    matches = re.findall(pmid_pattern, xml_text)
-                    pmids = [
-                        match for match in matches if len(match) >= 7
-                    ]  # PMIDs are typically 7+ digits
+                    if f'accession="{bioproject}"' in xml_text:
+                        pmid_pattern = r'id="(\d+)"'
+                        matches = re.findall(pmid_pattern, xml_text)
+                        pmids = [
+                            match for match in matches if len(match) >= 7
+                        ]  # PMIDs are typically 7+ digits
+                    else:
+                        pmids = []
 
                 # If no PMIDs found in bioproject XML, try searching PMC by bioproject ID
                 if not pmids:

@@ -487,6 +487,30 @@ def test_fetch_bioproject_pmids_multiple(sraweb_connection):
     assert result["PRJNA200000"] == []
 
 
+def test_fetch_bioproject_pmids_does_not_collide_prjdb_onto_prjna(sraweb_connection):
+    """A non-NCBI accession must not inherit the same-numbered NCBI project's paper.
+
+    efetch db=bioproject takes a numeric UID. Handed an accession it keeps only the
+    digits, so PRJDB13786 used to return PRJNA13786 -- and with it PMID 17727727, a
+    2007 rice paper -- for an unrelated 2022 study of parasitic plants. PRJEB is
+    affected the same way.
+    """
+    result = sraweb_connection.fetch_bioproject_pmids(["PRJDB13786", "PRJNA13786"])
+
+    # the DDBJ project genuinely has no linked publication
+    assert result["PRJDB13786"] == []
+    # ...and the NCBI project it used to be confused with still resolves
+    assert "17727727" in result["PRJNA13786"]
+
+
+def test_fetch_bioproject_pmids_still_finds_real_publications(sraweb_connection):
+    """The collision guard must not mute genuine BioProject -> PubMed links."""
+    result = sraweb_connection.fetch_bioproject_pmids("PRJDB6316")
+
+    # PRJDB6316 backs GEA experiment E-GEAD-282, whose IDF declares PMID 30952781
+    assert "30952781" in result["PRJDB6316"]
+
+
 def test_search_pmc_by_bioproject(sraweb_connection):
     """Test PMC search fallback for bioproject IDs"""
     # PRJEB39301 doesn't have PMIDs in bioproject XML but is cited in PMC (PMC8379757)
