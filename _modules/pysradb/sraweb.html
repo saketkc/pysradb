@@ -439,6 +439,9 @@
 
 
 
+<span class="n">TRUNCATED_TITLE_LENGTH</span> <span class="o">=</span> <span class="mi">80</span>
+
+
 <div class="viewcode-block" id="SRAweb">
 <a class="viewcode-back" href="../../pysradb.html#pysradb.sraweb.SRAweb">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">SRAweb</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
@@ -482,6 +485,10 @@
         <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">base_url</span><span class="p">[</span><span class="s2">&quot;efetch&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
             <span class="s2">&quot;https://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi&quot;</span>
+        <span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">base_url</span><span class="p">[</span><span class="s2">&quot;europepmc&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="s2">&quot;https://www.ebi.ac.uk/europepmc/webservices/rest/search&quot;</span>
         <span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">ena_fastq_search_url</span> <span class="o">=</span> <span class="s2">&quot;https://www.ebi.ac.uk/ena/portal/api/filereport&quot;</span>
@@ -2958,13 +2965,14 @@
         <span class="c1"># Get metadata to extract BioProject information</span>
         <span class="n">metadata_df</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sra_metadata</span><span class="p">(</span><span class="n">srp_accessions</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">metadata_df</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">metadata_df</span><span class="o">.</span><span class="n">empty</span><span class="p">:</span>
-            <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;srp_accession&quot;</span><span class="p">,</span> <span class="s2">&quot;bioproject&quot;</span><span class="p">,</span> <span class="s2">&quot;pmid&quot;</span><span class="p">])</span>
+            <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;srp_accession&quot;</span><span class="p">,</span> <span class="s2">&quot;bioproject&quot;</span><span class="p">,</span> <span class="s2">&quot;pmid&quot;</span><span class="p">,</span> <span class="s2">&quot;doi&quot;</span><span class="p">])</span>
 
         <span class="c1"># Try to get PMIDs via BioProject first</span>
         <span class="n">unique_bioprojects</span> <span class="o">=</span> <span class="n">metadata_df</span><span class="p">[</span><span class="s2">&quot;bioproject&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">dropna</span><span class="p">()</span><span class="o">.</span><span class="n">unique</span><span class="p">()</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
         <span class="n">bioproject_pmids</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fetch_bioproject_pmids</span><span class="p">(</span><span class="n">unique_bioprojects</span><span class="p">)</span>
 
         <span class="n">results</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">title_hits</span> <span class="o">=</span> <span class="p">{}</span>  <span class="c1"># study_title -&gt; (pmid, doi)</span>
         <span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">metadata_df</span><span class="o">.</span><span class="n">iterrows</span><span class="p">():</span>
             <span class="n">srp_acc</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_extract_sra_accession</span><span class="p">(</span><span class="n">row</span><span class="p">)</span>
             <span class="n">bioproject</span> <span class="o">=</span> <span class="n">row</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;bioproject&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
@@ -2977,12 +2985,21 @@
                     <span class="p">[</span><span class="n">srp_acc</span><span class="p">]</span>
                 <span class="p">)</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">_search_europepmc</span><span class="p">(</span><span class="n">srp_acc</span><span class="p">)</span>
 
-            <span class="n">smallest_pmid</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_smallest_pmid</span><span class="p">(</span><span class="n">pmids</span><span class="p">)</span> <span class="k">if</span> <span class="n">pmids</span> <span class="k">else</span> <span class="n">pd</span><span class="o">.</span><span class="n">NA</span>
+            <span class="k">if</span> <span class="n">pmids</span><span class="p">:</span>
+                <span class="n">pmid</span><span class="p">,</span> <span class="n">doi</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_publication_for</span><span class="p">(</span><span class="n">pmids</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="c1"># sra_metadata is one row per run; search each title once</span>
+                <span class="n">title</span> <span class="o">=</span> <span class="n">row</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;study_title&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">title</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">title_hits</span><span class="p">:</span>
+                    <span class="n">title_hits</span><span class="p">[</span><span class="n">title</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_publication_for</span><span class="p">([],</span> <span class="n">title</span><span class="p">)</span>
+                <span class="n">pmid</span><span class="p">,</span> <span class="n">doi</span> <span class="o">=</span> <span class="n">title_hits</span><span class="p">[</span><span class="n">title</span><span class="p">]</span>
+
             <span class="n">results</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
                 <span class="p">{</span>
                     <span class="s2">&quot;srp_accession&quot;</span><span class="p">:</span> <span class="n">srp_acc</span><span class="p">,</span>
                     <span class="s2">&quot;bioproject&quot;</span><span class="p">:</span> <span class="n">bioproject</span><span class="p">,</span>
-                    <span class="s2">&quot;pmid&quot;</span><span class="p">:</span> <span class="n">smallest_pmid</span><span class="p">,</span>
+                    <span class="s2">&quot;pmid&quot;</span><span class="p">:</span> <span class="n">pmid</span><span class="p">,</span>
+                    <span class="s2">&quot;doi&quot;</span><span class="p">:</span> <span class="n">doi</span><span class="p">,</span>
                 <span class="p">}</span>
             <span class="p">)</span>
 
@@ -3054,11 +3071,8 @@
 
         <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="nb">min</span><span class="p">(</span><span class="n">pmid_ints</span><span class="p">))</span>
 
-    <span class="k">def</span><span class="w"> </span><span class="nf">_search_pubmed_by_gse_title</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">gse_acc</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Resolve a GSE to PMIDs by matching its GEO title against PubMed.</span>
-
-<span class="sd">        Covers recent GSEs not yet linked to their paper in PMC/Europe PMC.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_geo_title</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">gse_acc</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Fetch the GEO series title for a GSE accession, empty if unknown&quot;&quot;&quot;</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="n">r</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_send_retryable_request</span><span class="p">(</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">base_url</span><span class="p">[</span><span class="s2">&quot;esearch&quot;</span><span class="p">],</span>
@@ -3066,14 +3080,101 @@
             <span class="p">)</span>
             <span class="n">ids</span> <span class="o">=</span> <span class="n">r</span><span class="o">.</span><span class="n">json</span><span class="p">()</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;esearchresult&quot;</span><span class="p">,</span> <span class="p">{})</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;idlist&quot;</span><span class="p">,</span> <span class="p">[])</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="n">ids</span><span class="p">:</span>
-                <span class="k">return</span> <span class="p">[]</span>
+                <span class="k">return</span> <span class="s2">&quot;&quot;</span>
             <span class="n">r2</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_send_retryable_request</span><span class="p">(</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">base_url</span><span class="p">[</span><span class="s2">&quot;esummary&quot;</span><span class="p">],</span>
                 <span class="n">params</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;db&quot;</span><span class="p">:</span> <span class="s2">&quot;gds&quot;</span><span class="p">,</span> <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="n">ids</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="s2">&quot;retmode&quot;</span><span class="p">:</span> <span class="s2">&quot;json&quot;</span><span class="p">},</span>
             <span class="p">)</span>
-            <span class="n">title</span> <span class="o">=</span> <span class="n">r2</span><span class="o">.</span><span class="n">json</span><span class="p">()</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;result&quot;</span><span class="p">,</span> <span class="p">{})</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">ids</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="p">{})</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;title&quot;</span><span class="p">)</span>
-            <span class="k">if</span> <span class="ow">not</span> <span class="n">title</span><span class="p">:</span>
-                <span class="k">return</span> <span class="p">[]</span>
+            <span class="k">return</span> <span class="n">r2</span><span class="o">.</span><span class="n">json</span><span class="p">()</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;result&quot;</span><span class="p">,</span> <span class="p">{})</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">ids</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="p">{})</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;title&quot;</span><span class="p">)</span> <span class="ow">or</span> <span class="s2">&quot;&quot;</span>
+        <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+            <span class="k">return</span> <span class="s2">&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_publication_for</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pmids</span><span class="p">,</span> <span class="n">title</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Resolve a study to a PMID, falling back to a title search</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        pmids: list</span>
+<span class="sd">               PMIDs found by accession-linked lookups (may be empty)</span>
+<span class="sd">        title: str</span>
+<span class="sd">               Study title, searched only when pmids is empty</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        (pmid, doi): tuple of str or pandas.NA</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">pmids</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_smallest_pmid</span><span class="p">(</span><span class="n">pmids</span><span class="p">),</span> <span class="n">pd</span><span class="o">.</span><span class="n">NA</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_search_publication_by_title</span><span class="p">(</span><span class="n">title</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_bioproject_title</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">bp_id</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Fetch the study title for a BioProject UID, empty if unknown&quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">r</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_send_retryable_request</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">base_url</span><span class="p">[</span><span class="s2">&quot;esummary&quot;</span><span class="p">],</span>
+                <span class="n">params</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;db&quot;</span><span class="p">:</span> <span class="s2">&quot;bioproject&quot;</span><span class="p">,</span> <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="n">bp_id</span><span class="p">,</span> <span class="s2">&quot;retmode&quot;</span><span class="p">:</span> <span class="s2">&quot;json&quot;</span><span class="p">},</span>
+            <span class="p">)</span>
+            <span class="n">record</span> <span class="o">=</span> <span class="n">r</span><span class="o">.</span><span class="n">json</span><span class="p">()</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;result&quot;</span><span class="p">,</span> <span class="p">{})</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">bp_id</span><span class="p">),</span> <span class="p">{})</span>
+            <span class="k">return</span> <span class="n">record</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;project_title&quot;</span><span class="p">)</span> <span class="ow">or</span> <span class="s2">&quot;&quot;</span>
+        <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+            <span class="k">return</span> <span class="s2">&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_arrayexpress_title</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ae_acc</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Fetch the study title for an ArrayExpress accession via BioStudies&quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">r</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_send_retryable_request</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;https://www.ebi.ac.uk/biostudies/api/v1/studies/</span><span class="si">{</span><span class="n">ae_acc</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="p">)</span>
+            <span class="n">r</span><span class="o">.</span><span class="n">raise_for_status</span><span class="p">()</span>
+            <span class="k">for</span> <span class="n">attr</span> <span class="ow">in</span> <span class="n">r</span><span class="o">.</span><span class="n">json</span><span class="p">()</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;attributes&quot;</span><span class="p">,</span> <span class="p">[]):</span>
+                <span class="k">if</span> <span class="n">attr</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;name&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;title&quot;</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="n">attr</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;value&quot;</span><span class="p">)</span> <span class="ow">or</span> <span class="s2">&quot;&quot;</span>
+        <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+            <span class="k">pass</span>
+        <span class="k">return</span> <span class="s2">&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_search_publication_by_title</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">title</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Find a study&#39;s publication by title</span>
+
+<span class="sd">        Europe PMC indexes MEDLINE, PMC and preprint servers (bioRxiv/medRxiv,</span>
+<span class="sd">        source PPR) in one title index. Preprint-only studies resolve here with a</span>
+<span class="sd">        DOI and no PMID.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        title: str</span>
+<span class="sd">               Study title (e.g. study_title from sra_metadata or a GEO title)</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        (pmid, doi): tuple of str or pandas.NA</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">title</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">NA</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">NA</span>
+        <span class="n">candidates</span> <span class="o">=</span> <span class="p">[</span><span class="n">title</span><span class="p">]</span>
+        <span class="c1"># SRA/GEO truncate long titles, leaving a half word the phrase match trips on</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">title</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="n">TRUNCATED_TITLE_LENGTH</span> <span class="ow">and</span> <span class="s2">&quot; &quot;</span> <span class="ow">in</span> <span class="n">title</span><span class="p">:</span>
+            <span class="n">candidates</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">title</span><span class="o">.</span><span class="n">rsplit</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="k">for</span> <span class="n">query_title</span> <span class="ow">in</span> <span class="n">candidates</span><span class="p">:</span>
+            <span class="n">hits</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_epmc_search</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;TITLE:&quot;</span><span class="si">{</span><span class="n">query_title</span><span class="si">}</span><span class="s1">&quot;&#39;</span><span class="p">,</span> <span class="n">page_size</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+            <span class="c1"># a since-published preprint appears twice; the journal version has the PMID</span>
+            <span class="k">for</span> <span class="n">hit</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">hits</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">h</span><span class="p">:</span> <span class="ow">not</span> <span class="n">h</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;pmid&quot;</span><span class="p">)):</span>
+                <span class="n">pmid</span><span class="p">,</span> <span class="n">doi</span> <span class="o">=</span> <span class="n">hit</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;pmid&quot;</span><span class="p">),</span> <span class="n">hit</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;doi&quot;</span><span class="p">)</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">pmid</span> <span class="ow">and</span> <span class="n">doi</span><span class="p">:</span>
+                    <span class="c1"># EPMC omits the PMID on some records PubMed does index</span>
+                    <span class="n">pmid</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">doi_to_pmid</span><span class="p">(</span><span class="n">doi</span><span class="p">)</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">doi</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">pmid</span> <span class="ow">or</span> <span class="n">doi</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="n">pmid</span> <span class="ow">or</span> <span class="n">pd</span><span class="o">.</span><span class="n">NA</span><span class="p">,</span> <span class="n">doi</span> <span class="ow">or</span> <span class="n">pd</span><span class="o">.</span><span class="n">NA</span>
+        <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">NA</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">NA</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_search_pubmed_by_title</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">title</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Resolve a study title to PMIDs via PubMed</span>
+
+<span class="sd">        Covers recent studies not yet linked to their paper in PMC/Europe PMC.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">title</span><span class="p">:</span>
+            <span class="k">return</span> <span class="p">[]</span>
+        <span class="k">try</span><span class="p">:</span>
             <span class="n">r3</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_send_retryable_request</span><span class="p">(</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">base_url</span><span class="p">[</span><span class="s2">&quot;esearch&quot;</span><span class="p">],</span>
                 <span class="n">params</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;db&quot;</span><span class="p">:</span> <span class="s2">&quot;pubmed&quot;</span><span class="p">,</span> <span class="s2">&quot;term&quot;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">title</span><span class="si">}</span><span class="s2">[Title]&quot;</span><span class="p">,</span> <span class="s2">&quot;retmode&quot;</span><span class="p">:</span> <span class="s2">&quot;json&quot;</span><span class="p">},</span>
@@ -3081,6 +3182,25 @@
             <span class="k">return</span> <span class="n">r3</span><span class="o">.</span><span class="n">json</span><span class="p">()</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;esearchresult&quot;</span><span class="p">,</span> <span class="p">{})</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;idlist&quot;</span><span class="p">,</span> <span class="p">[])</span>
         <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
             <span class="k">return</span> <span class="p">[]</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_epmc_search</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">query</span><span class="p">,</span> <span class="n">result_type</span><span class="o">=</span><span class="s2">&quot;lite&quot;</span><span class="p">,</span> <span class="n">page_size</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Run a Europe PMC search; empty list on failure&quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">r</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_send_retryable_request</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">base_url</span><span class="p">[</span><span class="s2">&quot;europepmc&quot;</span><span class="p">],</span>
+                <span class="n">params</span><span class="o">=</span><span class="p">{</span>
+                    <span class="s2">&quot;query&quot;</span><span class="p">:</span> <span class="n">query</span><span class="p">,</span>
+                    <span class="s2">&quot;resultType&quot;</span><span class="p">:</span> <span class="n">result_type</span><span class="p">,</span>
+                    <span class="s2">&quot;format&quot;</span><span class="p">:</span> <span class="s2">&quot;json&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;pageSize&quot;</span><span class="p">:</span> <span class="n">page_size</span><span class="p">,</span>
+                <span class="p">},</span>
+            <span class="p">)</span>
+            <span class="n">r</span><span class="o">.</span><span class="n">raise_for_status</span><span class="p">()</span>
+            <span class="n">hits</span> <span class="o">=</span> <span class="n">r</span><span class="o">.</span><span class="n">json</span><span class="p">()</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;resultList&quot;</span><span class="p">,</span> <span class="p">{})</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;result&quot;</span><span class="p">,</span> <span class="p">[])</span>
+        <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+            <span class="k">return</span> <span class="p">[]</span>
+        <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sleep_time</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">hits</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_search_europepmc</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">query</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Search Europe PMC for PMIDs matching a query string</span>
@@ -3095,21 +3215,8 @@
 <span class="sd">        pmids: list</span>
 <span class="sd">              List of PMIDs found</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">try</span><span class="p">:</span>
-            <span class="n">r</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_send_retryable_request</span><span class="p">(</span>
-                <span class="s2">&quot;https://www.ebi.ac.uk/europepmc/webservices/rest/search&quot;</span><span class="p">,</span>
-                <span class="n">params</span><span class="o">=</span><span class="p">{</span>
-                    <span class="s2">&quot;query&quot;</span><span class="p">:</span> <span class="sa">f</span><span class="s1">&#39;&quot;</span><span class="si">{</span><span class="n">query</span><span class="si">}</span><span class="s1">&quot;&#39;</span><span class="p">,</span>
-                    <span class="s2">&quot;resultType&quot;</span><span class="p">:</span> <span class="s2">&quot;lite&quot;</span><span class="p">,</span>
-                    <span class="s2">&quot;format&quot;</span><span class="p">:</span> <span class="s2">&quot;json&quot;</span><span class="p">,</span>
-                    <span class="s2">&quot;pageSize&quot;</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span>
-                <span class="p">},</span>
-            <span class="p">)</span>
-            <span class="n">r</span><span class="o">.</span><span class="n">raise_for_status</span><span class="p">()</span>
-            <span class="n">hits</span> <span class="o">=</span> <span class="n">r</span><span class="o">.</span><span class="n">json</span><span class="p">()</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;resultList&quot;</span><span class="p">,</span> <span class="p">{})</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;result&quot;</span><span class="p">,</span> <span class="p">[])</span>
-            <span class="k">return</span> <span class="p">[</span><span class="n">h</span><span class="p">[</span><span class="s2">&quot;pmid&quot;</span><span class="p">]</span> <span class="k">for</span> <span class="n">h</span> <span class="ow">in</span> <span class="n">hits</span> <span class="k">if</span> <span class="n">h</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;pmid&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">h</span><span class="p">[</span><span class="s2">&quot;pmid&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">isdigit</span><span class="p">()]</span>
-        <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
-            <span class="k">return</span> <span class="p">[]</span>
+        <span class="n">hits</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_epmc_search</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;&quot;</span><span class="si">{</span><span class="n">query</span><span class="si">}</span><span class="s1">&quot;&#39;</span><span class="p">,</span> <span class="n">page_size</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+        <span class="k">return</span> <span class="p">[</span><span class="n">h</span><span class="p">[</span><span class="s2">&quot;pmid&quot;</span><span class="p">]</span> <span class="k">for</span> <span class="n">h</span> <span class="ow">in</span> <span class="n">hits</span> <span class="k">if</span> <span class="n">h</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;pmid&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">h</span><span class="p">[</span><span class="s2">&quot;pmid&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">isdigit</span><span class="p">()]</span>
 
 <div class="viewcode-block" id="SRAweb.pmid_info">
 <a class="viewcode-back" href="../../pysradb.html#pysradb.sraweb.SRAweb.pmid_info">[docs]</a>
@@ -3186,23 +3293,9 @@
             <span class="n">query</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;ext_id:</span><span class="si">{</span><span class="n">raw_id</span><span class="si">}</span><span class="s2"> src:med&quot;</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">query</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;&quot;</span><span class="si">{</span><span class="n">raw_id</span><span class="si">}</span><span class="s1">&quot;&#39;</span>
-        <span class="k">try</span><span class="p">:</span>
-            <span class="n">r</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_send_retryable_request</span><span class="p">(</span>
-                <span class="s2">&quot;https://www.ebi.ac.uk/europepmc/webservices/rest/search&quot;</span><span class="p">,</span>
-                <span class="n">params</span><span class="o">=</span><span class="p">{</span>
-                    <span class="s2">&quot;query&quot;</span><span class="p">:</span> <span class="n">query</span><span class="p">,</span>
-                    <span class="s2">&quot;resultType&quot;</span><span class="p">:</span> <span class="s2">&quot;lite&quot;</span><span class="p">,</span>
-                    <span class="s2">&quot;format&quot;</span><span class="p">:</span> <span class="s2">&quot;json&quot;</span><span class="p">,</span>
-                    <span class="s2">&quot;pageSize&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
-                <span class="p">},</span>
-            <span class="p">)</span>
-            <span class="n">r</span><span class="o">.</span><span class="n">raise_for_status</span><span class="p">()</span>
-            <span class="n">hits</span> <span class="o">=</span> <span class="n">r</span><span class="o">.</span><span class="n">json</span><span class="p">()</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;resultList&quot;</span><span class="p">,</span> <span class="p">{})</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;result&quot;</span><span class="p">,</span> <span class="p">[])</span>
-            <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sleep_time</span><span class="p">)</span>
-            <span class="k">if</span> <span class="n">hits</span> <span class="ow">and</span> <span class="n">hits</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;pmid&quot;</span><span class="p">):</span>
-                <span class="k">return</span> <span class="n">hits</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s2">&quot;pmid&quot;</span><span class="p">]</span>
-        <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
-            <span class="k">pass</span>
+        <span class="n">hits</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_epmc_search</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">hits</span> <span class="ow">and</span> <span class="n">hits</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;pmid&quot;</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">hits</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s2">&quot;pmid&quot;</span><span class="p">]</span>
         <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">NA</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_ncbi_params</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">params</span><span class="p">):</span>
@@ -3428,17 +3521,7 @@
     <span class="k">def</span><span class="w"> </span><span class="nf">_fetch_pmid_metadata_epmc</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pmid</span><span class="p">,</span> <span class="n">results</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Query Europe PMC for a single PMID, populating *results* dict in-place.&quot;&quot;&quot;</span>
         <span class="k">try</span><span class="p">:</span>
-            <span class="n">r</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_send_retryable_request</span><span class="p">(</span>
-                <span class="s2">&quot;https://www.ebi.ac.uk/europepmc/webservices/rest/search&quot;</span><span class="p">,</span>
-                <span class="n">params</span><span class="o">=</span><span class="p">{</span>
-                    <span class="s2">&quot;query&quot;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;ext_id:</span><span class="si">{</span><span class="n">pmid</span><span class="si">}</span><span class="s2"> src:med&quot;</span><span class="p">,</span>
-                    <span class="s2">&quot;resultType&quot;</span><span class="p">:</span> <span class="s2">&quot;core&quot;</span><span class="p">,</span>
-                    <span class="s2">&quot;format&quot;</span><span class="p">:</span> <span class="s2">&quot;json&quot;</span><span class="p">,</span>
-                    <span class="s2">&quot;pageSize&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
-                <span class="p">},</span>
-            <span class="p">)</span>
-            <span class="n">r</span><span class="o">.</span><span class="n">raise_for_status</span><span class="p">()</span>
-            <span class="n">hits</span> <span class="o">=</span> <span class="n">r</span><span class="o">.</span><span class="n">json</span><span class="p">()</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;resultList&quot;</span><span class="p">,</span> <span class="p">{})</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;result&quot;</span><span class="p">,</span> <span class="p">[])</span>
+            <span class="n">hits</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_epmc_search</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;ext_id:</span><span class="si">{</span><span class="n">pmid</span><span class="si">}</span><span class="s2"> src:med&quot;</span><span class="p">,</span> <span class="n">result_type</span><span class="o">=</span><span class="s2">&quot;core&quot;</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">hits</span><span class="p">:</span>
                 <span class="n">hit</span> <span class="o">=</span> <span class="n">hits</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
                 <span class="n">journal_obj</span> <span class="o">=</span> <span class="n">hit</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;journalInfo&quot;</span><span class="p">,</span> <span class="p">{})</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;journal&quot;</span><span class="p">,</span> <span class="p">{})</span>
@@ -3460,7 +3543,6 @@
                     <span class="s2">&quot;authors&quot;</span><span class="p">:</span> <span class="n">authors</span><span class="p">,</span>
                     <span class="s2">&quot;issn&quot;</span><span class="p">:</span> <span class="n">journal_obj</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;essn&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span> <span class="ow">or</span> <span class="n">journal_obj</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;issn&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">),</span>
                 <span class="p">}</span>
-            <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sleep_time</span><span class="p">)</span>
         <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
             <span class="k">pass</span>
 
@@ -4073,17 +4155,13 @@
             <span class="c1"># Fallback: Europe PMC</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="n">pmids</span><span class="p">:</span>
                 <span class="n">pmids</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_search_europepmc</span><span class="p">(</span><span class="n">gse_acc</span><span class="p">)</span>
-            <span class="c1"># Fallback: GEO title match</span>
+            <span class="c1"># fall back to the GEO title, PubMed first then Europe PMC</span>
+            <span class="n">title</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span> <span class="k">if</span> <span class="n">pmids</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">_geo_title</span><span class="p">(</span><span class="n">gse_acc</span><span class="p">)</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="n">pmids</span><span class="p">:</span>
-                <span class="n">pmids</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_search_pubmed_by_gse_title</span><span class="p">(</span><span class="n">gse_acc</span><span class="p">)</span>
-            <span class="n">smallest_pmid</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_smallest_pmid</span><span class="p">(</span><span class="n">pmids</span><span class="p">)</span> <span class="k">if</span> <span class="n">pmids</span> <span class="k">else</span> <span class="n">pd</span><span class="o">.</span><span class="n">NA</span>
+                <span class="n">pmids</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_search_pubmed_by_title</span><span class="p">(</span><span class="n">title</span><span class="p">)</span>
 
-            <span class="n">results</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
-                <span class="p">{</span>
-                    <span class="s2">&quot;gse_accession&quot;</span><span class="p">:</span> <span class="n">gse_acc</span><span class="p">,</span>
-                    <span class="s2">&quot;pmid&quot;</span><span class="p">:</span> <span class="n">smallest_pmid</span><span class="p">,</span>
-                <span class="p">}</span>
-            <span class="p">)</span>
+            <span class="n">pmid</span><span class="p">,</span> <span class="n">doi</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_publication_for</span><span class="p">(</span><span class="n">pmids</span><span class="p">,</span> <span class="n">title</span><span class="p">)</span>
+            <span class="n">results</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="s2">&quot;gse_accession&quot;</span><span class="p">:</span> <span class="n">gse_acc</span><span class="p">,</span> <span class="s2">&quot;pmid&quot;</span><span class="p">:</span> <span class="n">pmid</span><span class="p">,</span> <span class="s2">&quot;doi&quot;</span><span class="p">:</span> <span class="n">doi</span><span class="p">})</span>
 
         <span class="n">result_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">results</span><span class="p">)</span>
 
@@ -4106,24 +4184,19 @@
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        ae_pmid_df: pandas.DataFrame</span>
-<span class="sd">                   DataFrame with columns [ae_accession, pmid]</span>
+<span class="sd">                   DataFrame with columns [ae_accession, pmid, doi]</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">ae_accessions</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
             <span class="n">ae_accessions</span> <span class="o">=</span> <span class="p">[</span><span class="n">ae_accessions</span><span class="p">]</span>
 
         <span class="n">results</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">acc</span> <span class="ow">in</span> <span class="n">ae_accessions</span><span class="p">:</span>
-            <span class="n">pmid</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">NA</span>
-            <span class="n">pmids</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_search_europepmc</span><span class="p">(</span><span class="n">acc</span><span class="p">)</span>
-            <span class="k">if</span> <span class="n">pmids</span><span class="p">:</span>
-                <span class="n">pmid</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_smallest_pmid</span><span class="p">(</span><span class="n">pmids</span><span class="p">)</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="n">pmc_pmids</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">search_pmc_for_external_sources</span><span class="p">([</span><span class="n">acc</span><span class="p">])</span>
-                <span class="k">if</span> <span class="n">pmc_pmids</span><span class="p">:</span>
-                    <span class="n">pmid</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_smallest_pmid</span><span class="p">(</span><span class="n">pmc_pmids</span><span class="p">)</span>
-
-            <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sleep_time</span><span class="p">)</span>
-            <span class="n">results</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="s2">&quot;ae_accession&quot;</span><span class="p">:</span> <span class="n">acc</span><span class="p">,</span> <span class="s2">&quot;pmid&quot;</span><span class="p">:</span> <span class="n">pmid</span><span class="p">})</span>
+            <span class="n">pmids</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_search_europepmc</span><span class="p">(</span><span class="n">acc</span><span class="p">)</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">search_pmc_for_external_sources</span><span class="p">(</span>
+                <span class="p">[</span><span class="n">acc</span><span class="p">]</span>
+            <span class="p">)</span>
+            <span class="n">title</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span> <span class="k">if</span> <span class="n">pmids</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">_arrayexpress_title</span><span class="p">(</span><span class="n">acc</span><span class="p">)</span>
+            <span class="n">pmid</span><span class="p">,</span> <span class="n">doi</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_publication_for</span><span class="p">(</span><span class="n">pmids</span><span class="p">,</span> <span class="n">title</span><span class="p">)</span>
+            <span class="n">results</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="s2">&quot;ae_accession&quot;</span><span class="p">:</span> <span class="n">acc</span><span class="p">,</span> <span class="s2">&quot;pmid&quot;</span><span class="p">:</span> <span class="n">pmid</span><span class="p">,</span> <span class="s2">&quot;doi&quot;</span><span class="p">:</span> <span class="n">doi</span><span class="p">})</span>
 
         <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">results</span><span class="p">)</span></div>
 
@@ -4144,14 +4217,14 @@
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        ena_pmid_df: pandas.DataFrame</span>
-<span class="sd">                    DataFrame with columns [ena_accession, pmid]</span>
+<span class="sd">                    DataFrame with columns [ena_accession, pmid, doi]</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">ena_accessions</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
             <span class="n">ena_accessions</span> <span class="o">=</span> <span class="p">[</span><span class="n">ena_accessions</span><span class="p">]</span>
 
         <span class="n">results</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">acc</span> <span class="ow">in</span> <span class="n">ena_accessions</span><span class="p">:</span>
-            <span class="n">pmid</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">NA</span>
+            <span class="n">pmids</span><span class="p">,</span> <span class="n">title</span> <span class="o">=</span> <span class="p">[],</span> <span class="s2">&quot;&quot;</span>
             <span class="k">try</span><span class="p">:</span>
                 <span class="c1"># Step 1: resolve accession to BioProject numeric ID</span>
                 <span class="n">r</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_send_retryable_request</span><span class="p">(</span>
@@ -4175,26 +4248,23 @@
                             <span class="s2">&quot;retmode&quot;</span><span class="p">:</span> <span class="s2">&quot;json&quot;</span><span class="p">,</span>
                         <span class="p">},</span>
                     <span class="p">)</span>
-                    <span class="n">pmids</span> <span class="o">=</span> <span class="p">[]</span>
                     <span class="k">for</span> <span class="n">ls</span> <span class="ow">in</span> <span class="n">r2</span><span class="o">.</span><span class="n">json</span><span class="p">()</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;linksets&quot;</span><span class="p">,</span> <span class="p">[]):</span>
                         <span class="k">for</span> <span class="n">ldb</span> <span class="ow">in</span> <span class="n">ls</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;linksetdbs&quot;</span><span class="p">,</span> <span class="p">[]):</span>
                             <span class="n">pmids</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">ldb</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;links&quot;</span><span class="p">,</span> <span class="p">[]))</span>
 
-                    <span class="k">if</span> <span class="n">pmids</span><span class="p">:</span>
-                        <span class="n">pmid</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_smallest_pmid</span><span class="p">(</span><span class="n">pmids</span><span class="p">)</span>
-
-                <span class="c1"># Fallback: Europe PMC</span>
-                <span class="k">if</span> <span class="n">pd</span><span class="o">.</span><span class="n">isna</span><span class="p">(</span><span class="n">pmid</span><span class="p">):</span>
-                    <span class="n">epmc_pmids</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_search_europepmc</span><span class="p">(</span><span class="n">acc</span><span class="p">)</span>
-                    <span class="k">if</span> <span class="n">epmc_pmids</span><span class="p">:</span>
-                        <span class="n">pmid</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_smallest_pmid</span><span class="p">(</span><span class="n">epmc_pmids</span><span class="p">)</span>
+                <span class="c1"># fall back to Europe PMC, then the BioProject title</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">pmids</span><span class="p">:</span>
+                    <span class="n">pmids</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_search_europepmc</span><span class="p">(</span><span class="n">acc</span><span class="p">)</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">pmids</span> <span class="ow">and</span> <span class="n">bp_ids</span><span class="p">:</span>
+                    <span class="n">title</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_bioproject_title</span><span class="p">(</span><span class="n">bp_ids</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
 
                 <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sleep_time</span><span class="p">)</span>
 
             <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
                 <span class="k">pass</span>
 
-            <span class="n">results</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="s2">&quot;ena_accession&quot;</span><span class="p">:</span> <span class="n">acc</span><span class="p">,</span> <span class="s2">&quot;pmid&quot;</span><span class="p">:</span> <span class="n">pmid</span><span class="p">})</span>
+            <span class="n">pmid</span><span class="p">,</span> <span class="n">doi</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_publication_for</span><span class="p">(</span><span class="n">pmids</span><span class="p">,</span> <span class="n">title</span><span class="p">)</span>
+            <span class="n">results</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="s2">&quot;ena_accession&quot;</span><span class="p">:</span> <span class="n">acc</span><span class="p">,</span> <span class="s2">&quot;pmid&quot;</span><span class="p">:</span> <span class="n">pmid</span><span class="p">,</span> <span class="s2">&quot;doi&quot;</span><span class="p">:</span> <span class="n">doi</span><span class="p">})</span>
 
         <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">results</span><span class="p">)</span></div>
 

@@ -649,8 +649,17 @@ GSE87328    SRP090415
 <h2>Converting SRP to PMID<a class="headerlink" href="#converting-srp-to-pmid" title="Link to this heading">¶</a></h2>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>$ pysradb srp-to-pmid SRP045778
 
-srp_accession bioproject pmid
-SRP045778     PRJNA257197 27373336
+srp_accession bioproject  pmid     doi
+SRP045778     PRJNA257197 27373336 -
+</pre></div>
+</div>
+<p>If nothing links a publication to the accession, pysradb matches the study
+title against Europe PMC, which indexes preprints alongside PubMed. A
+preprint-only study reports a <code class="docutils literal notranslate"><span class="pre">doi</span></code> and no <code class="docutils literal notranslate"><span class="pre">pmid</span></code>:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>$ pysradb srp-to-pmid SRP491131
+
+srp_accession bioproject   pmid doi
+SRP491131     PRJNA1079357 -    10.1101/2024.02.23.581433
 </pre></div>
 </div>
 </section>
@@ -658,8 +667,8 @@ SRP045778     PRJNA257197 27373336
 <h2>Converting GSE to PMID<a class="headerlink" href="#converting-gse-to-pmid" title="Link to this heading">¶</a></h2>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>$ pysradb gse-to-pmid GSE253406
 
-gse_accession pmid
-GSE253406     39528918
+gse_accession pmid     doi
+GSE253406     39528918 -
 </pre></div>
 </div>
 </section>

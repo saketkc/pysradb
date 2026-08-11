@@ -298,15 +298,24 @@ But not all SRPs will have an associated GEO id (GSE):
 
     $ pysradb srp-to-pmid SRP045778
 
-    srp_accession bioproject pmid
-    SRP045778     PRJNA257197 27373336
+    srp_accession bioproject  pmid     doi
+    SRP045778     PRJNA257197 27373336 -
+
+If nothing links a publication to the accession, pysradb matches the study
+title against Europe PMC, which indexes preprints alongside PubMed. A
+preprint-only study reports a `doi` and no `pmid`:
+
+    $ pysradb srp-to-pmid SRP491131
+
+    srp_accession bioproject   pmid doi
+    SRP491131     PRJNA1079357 -    10.1101/2024.02.23.581433
 
 ## Converting GSE to PMID
 
     $ pysradb gse-to-pmid GSE253406
 
-    gse_accession pmid
-    GSE253406     39528918
+    gse_accession pmid     doi
+    GSE253406     39528918 -
 
 ## Extracting identifiers from PMC/DOI
 

@@ -620,10 +620,13 @@ doesn’t need to be exact.</p>
 <span class="n">pmids_df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
 </pre></div>
 </div>
-<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>sra_accession   bioproject      pmid
-SRP002605      PRJNA129385   20703300
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>sra_accession   bioproject      pmid       doi
+SRP002605      PRJNA129385   20703300   &lt;NA&gt;
 </pre></div>
 </div>
+<p>If nothing links a publication to the accession, pysradb matches the study
+title against Europe PMC, which indexes preprints alongside PubMed. A
+preprint-only study reports a <code class="docutils literal notranslate"><span class="pre">doi</span></code> and no <code class="docutils literal notranslate"><span class="pre">pmid</span></code>.</p>
 <p>You can also get PMIDs for other SRA accession types:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Get PMIDs for run accessions (SRR)</span>
 <span class="n">srr_pmids</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">srr_to_pmid</span><span class="p">(</span><span class="s1">&#39;SRR057511&#39;</span><span class="p">)</span>

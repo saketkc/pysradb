@@ -184,9 +184,9 @@
     "        print(f\"\\nUnique GSE IDs:\\n{sorted(unique_studies)}\")\n",
     "\n",
     "    # Display summary information\n",
-    "    print(f\"\\n{'='*80}\")\n",
+    "    print(f\"\\n{'=' * 80}\")\n",
     "    print(\"DATASET SUMMARY\")\n",
-    "    print(f\"{'='*80}\")\n",
+    "    print(f\"{'=' * 80}\")\n",
     "    print(f\"Total runs: {len(df)}\")\n",
     "\n",
     "    if \"sample_scientific_name\" in df.columns:\n",
@@ -245,7 +245,7 @@
     "    summary_df = df[available_columns].copy()\n",
     "\n",
     "    print(\"\\nParse Bioscience Dataset Summary:\")\n",
-    "    print(f\"{'='*80}\\n\")\n",
+    "    print(f\"{'=' * 80}\\n\")\n",
     "    display(summary_df.head(20))  # Show first 20 entries\n",
     "\n",
     "    if len(summary_df) > 20:\n",
@@ -302,7 +302,7 @@
     "    studies_summary = studies_summary.sort_values(\"num_experiments\", ascending=False)\n",
     "\n",
     "    print(\"\\nStudy-level Summary:\")\n",
-    "    print(f\"{'='*80}\\n\")\n",
+    "    print(f\"{'=' * 80}\\n\")\n",
     "    display(studies_summary)"
    ]
   },
@@ -344,7 +344,7 @@
     "        study_info = df[study_info_cols].drop_duplicates(subset=[\"study_alias\"])\n",
     "\n",
     "        print(\"\\nStudy Titles and Descriptions:\")\n",
-    "        print(f\"{'='*80}\\n\")\n",
+    "        print(f\"{'=' * 80}\\n\")\n",
     "\n",
     "        for idx, row in study_info.iterrows():\n",
     "            print(f\"GSE: {row['study_alias']}\")\n",
@@ -353,7 +353,7 @@
     "            for col in title_cols:\n",
     "                if col in row and pd.notna(row[col]):\n",
     "                    print(f\"{col}: {row[col][:300]}...\")  # Truncate long descriptions\n",
-    "            print(f\"{'-'*80}\\n\")"
+    "            print(f\"{'-' * 80}\\n\")"
    ]
   },
   {

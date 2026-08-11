@@ -999,12 +999,14 @@ the <code class="docutils literal notranslate"><span class="pre">pysradb-mcp</sp
 <dt class="sig sig-object py" id="pysradb.mcp_server.get_pmids_for_gse">
 <span class="sig-prename descclassname"><span class="pre">pysradb.mcp_server.</span></span><span class="sig-name descname"><span class="pre">get_pmids_for_gse</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">gse</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">detailed</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">limit</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">20</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/pysradb/mcp_server.html#get_pmids_for_gse"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysradb.mcp_server.get_pmids_for_gse" title="Link to this definition">¶</a></dt>
 <dd><p>Get PMIDs for GSE accessions.</p>
+<p>Preprint-only studies have no PMID and report a doi instead.</p>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="pysradb.mcp_server.get_pmids_for_sra_accession">
 <span class="sig-prename descclassname"><span class="pre">pysradb.mcp_server.</span></span><span class="sig-name descname"><span class="pre">get_pmids_for_sra_accession</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">accession</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">detailed</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">limit</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">20</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/pysradb/mcp_server.html#get_pmids_for_sra_accession"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysradb.mcp_server.get_pmids_for_sra_accession" title="Link to this definition">¶</a></dt>
 <dd><p>Get PMIDs for SRP, SRR, SRX, SRS, or other SRA accessions.</p>
+<p>Preprint-only studies have no PMID and report a doi instead.</p>
 </dd></dl>
 
 <dl class="py function">
@@ -1409,7 +1411,7 @@ the search result output (Refer to #88)</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><dl class="simple">
-<dt>ae_pmid_df: pandas.DataFrame</dt><dd><p>DataFrame with columns [ae_accession, pmid]</p>
+<dt>ae_pmid_df: pandas.DataFrame</dt><dd><p>DataFrame with columns [ae_accession, pmid, doi]</p>
 </dd>
 </dl>
 </dd>
@@ -1565,7 +1567,7 @@ accessions, with Europe PMC as fallback.</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><dl class="simple">
-<dt>ena_pmid_df: pandas.DataFrame</dt><dd><p>DataFrame with columns [ena_accession, pmid]</p>
+<dt>ena_pmid_df: pandas.DataFrame</dt><dd><p>DataFrame with columns [ena_accession, pmid, doi]</p>
 </dd>
 </dl>
 </dd>
