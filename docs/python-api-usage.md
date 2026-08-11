@@ -302,8 +302,12 @@ pmids_df = client.srp_to_pmid('SRP002605')
 pmids_df.head()
 ```
 
-    sra_accession   bioproject      pmid
-    SRP002605      PRJNA129385   20703300
+    sra_accession   bioproject      pmid       doi
+    SRP002605      PRJNA129385   20703300   <NA>
+
+If nothing links a publication to the accession, pysradb matches the study
+title against Europe PMC, which indexes preprints alongside PubMed. A
+preprint-only study reports a `doi` and no `pmid`.
 
 You can also get PMIDs for other SRA accession types:
 

@@ -232,9 +232,9 @@ def test_gsm_to_gse_multiple_gses(sraweb_connection):
     study_aliases = df["study_alias"].tolist()
     expected_gses = {"GSE233587", "GSE234305"}
     actual_gses = set(study_aliases)
-    assert expected_gses.issubset(
-        actual_gses
-    ), f"Expected {expected_gses} to be subset of {actual_gses}"
+    assert expected_gses.issubset(actual_gses), (
+        f"Expected {expected_gses} to be subset of {actual_gses}"
+    )
 
     assert "GSE234305" in study_aliases
 
@@ -370,9 +370,9 @@ def test_gse_to_srp_multiple_srps(sraweb_connection):
     # Check for the known SRP accessions
     expected_srps = {"SRP411077", "SRP439808"}
     actual_srps = set(study_accessions)
-    assert expected_srps.issubset(
-        actual_srps
-    ), f"Expected {expected_srps} to be subset of {actual_srps}"
+    assert expected_srps.issubset(actual_srps), (
+        f"Expected {expected_srps} to be subset of {actual_srps}"
+    )
 
 
 def test_geo_metadata_for_gse_without_srp(sraweb_connection):
@@ -409,18 +409,18 @@ def test_geo_metadata_covid19_characteristics(sraweb_connection):
 
     # Verify custom characteristics are captured
     assert "disease_severity" in df.columns, "disease_severity column should exist"
-    assert (
-        "days_since_symptom_onset" in df.columns
-    ), "days_since_symptom_onset column should exist"
+    assert "days_since_symptom_onset" in df.columns, (
+        "days_since_symptom_onset column should exist"
+    )
 
     # Verify values for GSM4712885
     sample_severity = sample["disease_severity"].iloc[0]
-    assert pd.notna(
-        sample_severity
-    ), "disease_severity should not be NA for COVID sample"
-    assert "Severe" in str(
-        sample_severity
-    ), f"Expected 'Severe', got: {sample_severity}"
+    assert pd.notna(sample_severity), (
+        "disease_severity should not be NA for COVID sample"
+    )
+    assert "Severe" in str(sample_severity), (
+        f"Expected 'Severe', got: {sample_severity}"
+    )
 
     days_onset = sample["days_since_symptom_onset"].iloc[0]
     assert pd.notna(days_onset), "days_since_symptom_onset should not be NA"
@@ -447,23 +447,23 @@ def test_geo_metadata_covid19_characteristics(sraweb_connection):
     ]
 
     for field in expected_soft_fields:
-        assert (
-            field in df.columns
-        ), f"SOFT field '{field}' should be captured in detailed mode"
-        assert pd.notna(
-            sample[field].iloc[0]
-        ), f"SOFT field '{field}' should have a value"
+        assert field in df.columns, (
+            f"SOFT field '{field}' should be captured in detailed mode"
+        )
+        assert pd.notna(sample[field].iloc[0]), (
+            f"SOFT field '{field}' should have a value"
+        )
 
     # Verify specific values for comprehensive check
-    assert "Illumina" in str(
-        sample["sample_instrument_model"].iloc[0]
-    ), "Should capture instrument model"
-    assert (
-        sample["sample_library_strategy"].iloc[0] == "RNA-Seq"
-    ), "Should capture library strategy"
-    assert (
-        str(sample["sample_taxid_ch1"].iloc[0]) == "9606"
-    ), "Should capture taxid (human)"
+    assert "Illumina" in str(sample["sample_instrument_model"].iloc[0]), (
+        "Should capture instrument model"
+    )
+    assert sample["sample_library_strategy"].iloc[0] == "RNA-Seq", (
+        "Should capture library strategy"
+    )
+    assert str(sample["sample_taxid_ch1"].iloc[0]) == "9606", (
+        "Should capture taxid (human)"
+    )
 
 
 def test_fetch_bioproject_pmids(sraweb_connection):
@@ -674,6 +674,125 @@ def test_gse_to_pmid_title_fallback(monkeypatch):
 
     df = client.gse_to_pmid("GSE303928")
     assert df.loc[0, "pmid"] == "42119563"
+
+
+def test_search_publication_by_title_prefers_pmid_over_preprint(monkeypatch):
+    """A since-published preprint appears twice; the journal version wins."""
+    client = SRAweb()
+    monkeypatch.setattr(
+        client,
+        "_epmc_search",
+        lambda *a, **k: [
+            {"source": "PPR", "pmid": None, "doi": "10.1101/2024.12.11.627935"},
+            {"source": "MED", "pmid": "42119563", "doi": "10.1016/j.cell.2026.04.022"},
+        ],
+    )
+    monkeypatch.setattr(
+        client,
+        "doi_to_pmid",
+        lambda doi: pytest.fail("PubMed lookup wasted: EPMC already gave a PMID"),
+    )
+    assert client._search_publication_by_title("RegVelo") == (
+        "42119563",
+        "10.1016/j.cell.2026.04.022",
+    )
+    assert client._search_publication_by_title("") == (pd.NA, pd.NA)
+
+
+def test_search_publication_by_title_retries_truncated_title(monkeypatch):
+    """SRA/GEO truncate long titles; the search retries without the half word."""
+    client = SRAweb()
+    title = "SIGNAL-seq: Multimodal Single-cell Inter- and Intra-cellular Signalling Analysi"
+    title += "s I"  # the truncated form NCBI returns
+    seen = []
+
+    def fake_epmc(query, **kwargs):
+        seen.append(query)
+        if query.endswith('Analysis I"'):
+            return []
+        return [{"source": "PPR", "doi": "10.1101/2024.02.23.581433"}]
+
+    monkeypatch.setattr(client, "_epmc_search", fake_epmc)
+    monkeypatch.setattr(client, "doi_to_pmid", lambda doi: {doi: None})
+
+    assert client._search_publication_by_title(title) == (
+        pd.NA,
+        "10.1101/2024.02.23.581433",
+    )
+    assert len(seen) == 2 and seen[1].endswith('Analysis"')
+
+
+def test_search_publication_by_title_no_retry_for_short_title(monkeypatch):
+    """Short titles were never truncated, so the retry is waste."""
+    client = SRAweb()
+    seen = []
+    monkeypatch.setattr(
+        client, "_epmc_search", lambda query, **k: seen.append(query) or []
+    )
+    client._search_publication_by_title("A short study title")
+    assert len(seen) == 1
+
+
+def test_srp_to_pmid_title_fallback(monkeypatch):
+    """A study nothing links to resolves by title, once per study not per run."""
+    client = SRAweb()
+    monkeypatch.setattr(
+        client,
+        "sra_metadata",
+        lambda *a, **k: pd.DataFrame(
+            [
+                {
+                    "study_accession": "SRP491131",
+                    "bioproject": "PRJNA1079357",
+                    "study_title": "SIGNAL-seq",
+                    "run_accession": run,
+                }
+                for run in ("SRR27939349", "SRR27939350", "SRR27939351")
+            ]
+        ),
+    )
+    monkeypatch.setattr(client, "fetch_bioproject_pmids", lambda bps: {})
+    monkeypatch.setattr(client, "_search_fallback_pmids", lambda accs: [])
+    monkeypatch.setattr(client, "_search_europepmc", lambda acc: [])
+    calls = []
+    monkeypatch.setattr(
+        client,
+        "_search_publication_by_title",
+        lambda title: calls.append(title) or (pd.NA, "10.1101/2024.02.23.581433"),
+    )
+
+    df = client.srp_to_pmid("SRP491131")
+    assert pd.isna(df.loc[0, "pmid"])
+    assert df.loc[0, "doi"] == "10.1101/2024.02.23.581433"
+    assert len(calls) == 1
+
+
+def test_ae_to_pmid_title_fallback(monkeypatch):
+    """An ArrayExpress study nothing links to falls back to its BioStudies title."""
+    client = SRAweb()
+    monkeypatch.setattr(client, "_search_europepmc", lambda acc: [])
+    monkeypatch.setattr(client, "search_pmc_for_external_sources", lambda accs: [])
+    monkeypatch.setattr(client, "_arrayexpress_title", lambda acc: "Some AE study")
+    monkeypatch.setattr(
+        client,
+        "_search_publication_by_title",
+        lambda title: ("12345678", "10.1000/xyz") if title == "Some AE study" else None,
+    )
+
+    df = client.ae_to_pmid("E-MTAB-2600")
+    assert df.loc[0, "pmid"] == "12345678"
+    assert df.loc[0, "doi"] == "10.1000/xyz"
+
+
+def test_publication_for_skips_title_search_when_linked(monkeypatch):
+    """Linked PMIDs must not trigger a title search."""
+    client = SRAweb()
+    monkeypatch.setattr(
+        client,
+        "_search_publication_by_title",
+        lambda title: pytest.fail("title search ran despite a linked PMID"),
+    )
+    assert client._publication_for(["99", "11"], "unused title") == ("11", pd.NA)
 
 
 def test_pmid_to_pmc(sraweb_connection):

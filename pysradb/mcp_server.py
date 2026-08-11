@@ -386,7 +386,10 @@ def get_pmids_for_sra_accession(
     detailed: bool = False,
     limit: int = DEFAULT_RECORDS_LIMIT,
 ) -> dict[str, Any]:
-    """Get PMIDs for SRP, SRR, SRX, SRS, or other SRA accessions."""
+    """Get PMIDs for SRP, SRR, SRX, SRS, or other SRA accessions.
+
+    Preprint-only studies have no PMID and report a doi instead.
+    """
     client = _client()
     prefix = accession[:3].upper()
     if prefix == "SRP":
@@ -407,7 +410,10 @@ def get_pmids_for_gse(
     detailed: bool = False,
     limit: int = DEFAULT_RECORDS_LIMIT,
 ) -> dict[str, Any]:
-    """Get PMIDs for GSE accessions."""
+    """Get PMIDs for GSE accessions.
+
+    Preprint-only studies have no PMID and report a doi instead.
+    """
     return _limited_records(_client().gse_to_pmid(gse, detailed=detailed), limit=limit)
 
 

@@ -1020,9 +1020,7 @@ def parse_args(args=None):
             """\
     pysradb: Query NGS metadata and data from NCBI Sequence Read Archive.
     version: {}.
-    Citation: 10.12688/f1000research.18676.1""".format(
-                __version__
-            )
+    Citation: 10.12688/f1000research.18676.1""".format(__version__)
         ),
         formatter_class=CustomFormatterArgP,
     )

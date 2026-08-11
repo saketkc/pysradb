@@ -1304,7 +1304,7 @@ class EnaSearch(QuerySearch):
                 rf'run_accession="{self.fields["accession"]}") AND '
             )
         if self.fields["organism"]:
-            term += rf'tax_eq({scientific_name_to_taxid(self.fields["organism"])}) AND '
+            term += rf"tax_eq({scientific_name_to_taxid(self.fields['organism'])}) AND "
         if self.fields["layout"]:
             term += rf'library_layout="{self.fields["layout"].upper()}" AND '
         if self.fields["mbases"]:

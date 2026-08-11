@@ -99,6 +99,9 @@ def get_retmax(n_records, retmax=500):
         yield i
 
 
+TRUNCATED_TITLE_LENGTH = 80
+
+
 class SRAweb(object):
     def __init__(
         self,
@@ -140,6 +143,10 @@ class SRAweb(object):
         )
         self.base_url["efetch"] = (
             "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi"
+        )
+
+        self.base_url["europepmc"] = (
+            "https://www.ebi.ac.uk/europepmc/webservices/rest/search"
         )
 
         self.ena_fastq_search_url = "https://www.ebi.ac.uk/ena/portal/api/filereport"
@@ -2506,13 +2513,14 @@ class SRAweb(object):
         # Get metadata to extract BioProject information
         metadata_df = self.sra_metadata(srp_accessions)
         if metadata_df is None or metadata_df.empty:
-            return pd.DataFrame(columns=["srp_accession", "bioproject", "pmid"])
+            return pd.DataFrame(columns=["srp_accession", "bioproject", "pmid", "doi"])
 
         # Try to get PMIDs via BioProject first
         unique_bioprojects = metadata_df["bioproject"].dropna().unique().tolist()
         bioproject_pmids = self.fetch_bioproject_pmids(unique_bioprojects)
 
         results = []
+        title_hits = {}  # study_title -> (pmid, doi)
         for _, row in metadata_df.iterrows():
             srp_acc = self._extract_sra_accession(row)
             bioproject = row.get("bioproject", "")
@@ -2525,12 +2533,21 @@ class SRAweb(object):
                     [srp_acc]
                 ) or self._search_europepmc(srp_acc)
 
-            smallest_pmid = self._get_smallest_pmid(pmids) if pmids else pd.NA
+            if pmids:
+                pmid, doi = self._publication_for(pmids, "")
+            else:
+                # sra_metadata is one row per run; search each title once
+                title = row.get("study_title", "")
+                if title not in title_hits:
+                    title_hits[title] = self._publication_for([], title)
+                pmid, doi = title_hits[title]
+
             results.append(
                 {
                     "srp_accession": srp_acc,
                     "bioproject": bioproject,
-                    "pmid": smallest_pmid,
+                    "pmid": pmid,
+                    "doi": doi,
                 }
             )
 
@@ -2601,11 +2618,8 @@ class SRAweb(object):
 
         return str(min(pmid_ints))
 
-    def _search_pubmed_by_gse_title(self, gse_acc):
-        """Resolve a GSE to PMIDs by matching its GEO title against PubMed.
-
-        Covers recent GSEs not yet linked to their paper in PMC/Europe PMC.
-        """
+    def _geo_title(self, gse_acc):
+        """Fetch the GEO series title for a GSE accession, empty if unknown"""
         try:
             r = self._send_retryable_request(
                 self.base_url["esearch"],
@@ -2613,14 +2627,101 @@ class SRAweb(object):
             )
             ids = r.json().get("esearchresult", {}).get("idlist", [])
             if not ids:
-                return []
+                return ""
             r2 = self._send_retryable_request(
                 self.base_url["esummary"],
                 params={"db": "gds", "id": ids[0], "retmode": "json"},
             )
-            title = r2.json().get("result", {}).get(ids[0], {}).get("title")
-            if not title:
-                return []
+            return r2.json().get("result", {}).get(ids[0], {}).get("title") or ""
+        except Exception:
+            return ""
+
+    def _publication_for(self, pmids, title):
+        """Resolve a study to a PMID, falling back to a title search
+
+        Parameters
+        ----------
+        pmids: list
+               PMIDs found by accession-linked lookups (may be empty)
+        title: str
+               Study title, searched only when pmids is empty
+
+        Returns
+        -------
+        (pmid, doi): tuple of str or pandas.NA
+        """
+        if pmids:
+            return self._get_smallest_pmid(pmids), pd.NA
+        return self._search_publication_by_title(title)
+
+    def _bioproject_title(self, bp_id):
+        """Fetch the study title for a BioProject UID, empty if unknown"""
+        try:
+            r = self._send_retryable_request(
+                self.base_url["esummary"],
+                params={"db": "bioproject", "id": bp_id, "retmode": "json"},
+            )
+            record = r.json().get("result", {}).get(str(bp_id), {})
+            return record.get("project_title") or ""
+        except Exception:
+            return ""
+
+    def _arrayexpress_title(self, ae_acc):
+        """Fetch the study title for an ArrayExpress accession via BioStudies"""
+        try:
+            r = self._send_retryable_request(
+                f"https://www.ebi.ac.uk/biostudies/api/v1/studies/{ae_acc}"
+            )
+            r.raise_for_status()
+            for attr in r.json().get("attributes", []):
+                if attr.get("name", "").lower() == "title":
+                    return attr.get("value") or ""
+        except Exception:
+            pass
+        return ""
+
+    def _search_publication_by_title(self, title):
+        """Find a study's publication by title
+
+        Europe PMC indexes MEDLINE, PMC and preprint servers (bioRxiv/medRxiv,
+        source PPR) in one title index. Preprint-only studies resolve here with a
+        DOI and no PMID.
+
+        Parameters
+        ----------
+        title: str
+               Study title (e.g. study_title from sra_metadata or a GEO title)
+
+        Returns
+        -------
+        (pmid, doi): tuple of str or pandas.NA
+        """
+        if not title:
+            return pd.NA, pd.NA
+        candidates = [title]
+        # SRA/GEO truncate long titles, leaving a half word the phrase match trips on
+        if len(title) >= TRUNCATED_TITLE_LENGTH and " " in title:
+            candidates.append(title.rsplit(" ", 1)[0])
+        for query_title in candidates:
+            hits = self._epmc_search(f'TITLE:"{query_title}"', page_size=5)
+            # a since-published preprint appears twice; the journal version has the PMID
+            for hit in sorted(hits, key=lambda h: not h.get("pmid")):
+                pmid, doi = hit.get("pmid"), hit.get("doi")
+                if not pmid and doi:
+                    # EPMC omits the PMID on some records PubMed does index
+                    pmid = self.doi_to_pmid(doi).get(doi)
+                if pmid or doi:
+                    return pmid or pd.NA, doi or pd.NA
+        return pd.NA, pd.NA
+
+    def _search_pubmed_by_title(self, title):
+        """Resolve a study title to PMIDs via PubMed
+
+        Covers recent studies not yet linked to their paper in PMC/Europe PMC.
+        """
+        if not title:
+            return []
+        try:
             r3 = self._send_retryable_request(
                 self.base_url["esearch"],
                 params={"db": "pubmed", "term": f"{title}[Title]", "retmode": "json"},
@@ -2628,6 +2729,25 @@ class SRAweb(object):
             return r3.json().get("esearchresult", {}).get("idlist", [])
         except Exception:
             return []
+
+    def _epmc_search(self, query, result_type="lite", page_size=1):
+        """Run a Europe PMC search; empty list on failure"""
+        try:
+            r = self._send_retryable_request(
+                self.base_url["europepmc"],
+                params={
+                    "query": query,
+                    "resultType": result_type,
+                    "format": "json",
+                    "pageSize": page_size,
+                },
+            )
+            r.raise_for_status()
+            hits = r.json().get("resultList", {}).get("result", [])
+        except Exception:
+            return []
+        time.sleep(self.sleep_time)
+        return hits
 
     def _search_europepmc(self, query):
         """Search Europe PMC for PMIDs matching a query string
@@ -2642,21 +2762,8 @@ class SRAweb(object):
         pmids: list
               List of PMIDs found
         """
-        try:
-            r = self._send_retryable_request(
-                "https://www.ebi.ac.uk/europepmc/webservices/rest/search",
-                params={
-                    "query": f'"{query}"',
-                    "resultType": "lite",
-                    "format": "json",
-                    "pageSize": 10,
-                },
-            )
-            r.raise_for_status()
-            hits = r.json().get("resultList", {}).get("result", [])
-            return [h["pmid"] for h in hits if h.get("pmid") and h["pmid"].isdigit()]
-        except Exception:
-            return []
+        hits = self._epmc_search(f'"{query}"', page_size=10)
+        return [h["pmid"] for h in hits if h.get("pmid") and h["pmid"].isdigit()]
 
     def pmid_info(self, ids, detailed=False, skip_journal_metrics=False):
         """Get publication metadata and journal metrics for PMIDs, PMCIDs, or DOIs.
@@ -2730,23 +2837,9 @@ class SRAweb(object):
             query = f"ext_id:{raw_id} src:med"
         else:
             query = f'"{raw_id}"'
-        try:
-            r = self._send_retryable_request(
-                "https://www.ebi.ac.uk/europepmc/webservices/rest/search",
-                params={
-                    "query": query,
-                    "resultType": "lite",
-                    "format": "json",
-                    "pageSize": 1,
-                },
-            )
-            r.raise_for_status()
-            hits = r.json().get("resultList", {}).get("result", [])
-            time.sleep(self.sleep_time)
-            if hits and hits[0].get("pmid"):
-                return hits[0]["pmid"]
-        except Exception:
-            pass
+        hits = self._epmc_search(query)
+        if hits and hits[0].get("pmid"):
+            return hits[0]["pmid"]
         return pd.NA
 
     def _ncbi_params(self, params):
@@ -2969,17 +3062,7 @@ class SRAweb(object):
     def _fetch_pmid_metadata_epmc(self, pmid, results):
         """Query Europe PMC for a single PMID, populating *results* dict in-place."""
         try:
-            r = self._send_retryable_request(
-                "https://www.ebi.ac.uk/europepmc/webservices/rest/search",
-                params={
-                    "query": f"ext_id:{pmid} src:med",
-                    "resultType": "core",
-                    "format": "json",
-                    "pageSize": 1,
-                },
-            )
-            r.raise_for_status()
-            hits = r.json().get("resultList", {}).get("result", [])
+            hits = self._epmc_search(f"ext_id:{pmid} src:med", result_type="core")
             if hits:
                 hit = hits[0]
                 journal_obj = hit.get("journalInfo", {}).get("journal", {})
@@ -3001,7 +3084,6 @@ class SRAweb(object):
                     "authors": authors,
                     "issn": journal_obj.get("essn", "") or journal_obj.get("issn", ""),
                 }
-            time.sleep(self.sleep_time)
         except Exception:
             pass
 
@@ -3591,17 +3673,13 @@ class SRAweb(object):
             # Fallback: Europe PMC
             if not pmids:
                 pmids = self._search_europepmc(gse_acc)
-            # Fallback: GEO title match
+            # fall back to the GEO title, PubMed first then Europe PMC
+            title = "" if pmids else self._geo_title(gse_acc)
             if not pmids:
-                pmids = self._search_pubmed_by_gse_title(gse_acc)
-            smallest_pmid = self._get_smallest_pmid(pmids) if pmids else pd.NA
+                pmids = self._search_pubmed_by_title(title)
 
-            results.append(
-                {
-                    "gse_accession": gse_acc,
-                    "pmid": smallest_pmid,
-                }
-            )
+            pmid, doi = self._publication_for(pmids, title)
+            results.append({"gse_accession": gse_acc, "pmid": pmid, "doi": doi})
 
         result_df = pd.DataFrame(results)
 
@@ -3621,24 +3699,19 @@ class SRAweb(object):
         Returns
         -------
         ae_pmid_df: pandas.DataFrame
-                   DataFrame with columns [ae_accession, pmid]
+                   DataFrame with columns [ae_accession, pmid, doi]
         """
         if isinstance(ae_accessions, str):
             ae_accessions = [ae_accessions]
 
         results = []
         for acc in ae_accessions:
-            pmid = pd.NA
-            pmids = self._search_europepmc(acc)
-            if pmids:
-                pmid = self._get_smallest_pmid(pmids)
-            else:
-                pmc_pmids = self.search_pmc_for_external_sources([acc])
-                if pmc_pmids:
-                    pmid = self._get_smallest_pmid(pmc_pmids)
-
-            time.sleep(self.sleep_time)
-            results.append({"ae_accession": acc, "pmid": pmid})
+            pmids = self._search_europepmc(acc) or self.search_pmc_for_external_sources(
+                [acc]
+            )
+            title = "" if pmids else self._arrayexpress_title(acc)
+            pmid, doi = self._publication_for(pmids, title)
+            results.append({"ae_accession": acc, "pmid": pmid, "doi": doi})
 
         return pd.DataFrame(results)
 
@@ -3656,14 +3729,14 @@ class SRAweb(object):
         Returns
         -------
         ena_pmid_df: pandas.DataFrame
-                    DataFrame with columns [ena_accession, pmid]
+                    DataFrame with columns [ena_accession, pmid, doi]
         """
         if isinstance(ena_accessions, str):
             ena_accessions = [ena_accessions]
 
         results = []
         for acc in ena_accessions:
-            pmid = pd.NA
+            pmids, title = [], ""
             try:
                 # Step 1: resolve accession to BioProject numeric ID
                 r = self._send_retryable_request(
@@ -3687,26 +3760,23 @@ class SRAweb(object):
                             "retmode": "json",
                         },
                     )
-                    pmids = []
                     for ls in r2.json().get("linksets", []):
                         for ldb in ls.get("linksetdbs", []):
                             pmids.extend(str(x) for x in ldb.get("links", []))
 
-                    if pmids:
-                        pmid = self._get_smallest_pmid(pmids)
-
-                # Fallback: Europe PMC
-                if pd.isna(pmid):
-                    epmc_pmids = self._search_europepmc(acc)
-                    if epmc_pmids:
-                        pmid = self._get_smallest_pmid(epmc_pmids)
+                # fall back to Europe PMC, then the BioProject title
+                if not pmids:
+                    pmids = self._search_europepmc(acc)
+                if not pmids and bp_ids:
+                    title = self._bioproject_title(bp_ids[0])
 
                 time.sleep(self.sleep_time)
 
             except Exception:
                 pass
 
-            results.append({"ena_accession": acc, "pmid": pmid})
+            pmid, doi = self._publication_for(pmids, title)
+            results.append({"ena_accession": acc, "pmid": pmid, "doi": doi})
 
         return pd.DataFrame(results)
 
