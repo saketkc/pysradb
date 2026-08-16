@@ -1,6 +1,7 @@
 """Utilities to interact with SRA online"""
 
 import concurrent.futures
+import datetime
 import json
 import os
 import re
@@ -19,6 +20,82 @@ import xmltodict
 
 from .download import download_file, get_file_size
 from .search import SraSearch
+
+# Max lag after deposit for a PMC hit to still count as the study's own paper;
+# the PMC search is free-text on the accession, so later papers citing the data
+# match too.
+# negative lag to account for papers predating deposit (preprints)
+PMC_MAX_LAG_YEARS = 3.0
+
+_DAYS_PER_YEAR = 365.25
+
+
+def _parse_pmc_date(article):
+    """Best-effort publication date from a PMC esummary record.
+
+    sortdate is always YYYY/MM/DD; pubdate/epubdate are free text, often
+    year-only.
+    """
+    raw = (article.get("sortdate") or "").strip()
+    if raw:
+        try:
+            return datetime.datetime.strptime(raw[:10], "%Y/%m/%d").date()
+        except ValueError:
+            pass
+    for key in ("epubdate", "pubdate", "printpubdate"):
+        raw = (article.get(key) or "").strip()
+        if not raw:
+            continue
+        for fmt in ("%Y %b %d", "%Y %b", "%Y"):
+            try:
+                return datetime.datetime.strptime(raw, fmt).date()
+            except ValueError:
+                continue
+    return None
+
+
+def _submission_date(xml_text):
+    """Deposit date from BioProject XML, e.g. <Submission submitted="2016-05-04">.
+    """
+    if not xml_text:
+        return None
+    match = re.search(r'<Submission[^>]*\ssubmitted="(\d{4}-\d{2}-\d{2})"', xml_text)
+    if not match:
+        return None
+    try:
+        return datetime.datetime.strptime(match.group(1), "%Y-%m-%d").date()
+    except ValueError:
+        return None
+
+
+def _parse_epmc_date(hit):
+    """Publication date from a Europe PMC lite hit.
+
+    firstPublicationDate is ISO; pubYear is the year-only fallback.
+    """
+    raw = (hit.get("firstPublicationDate") or "").strip()
+    if raw:
+        try:
+            return datetime.datetime.strptime(raw[:10], "%Y-%m-%d").date()
+        except ValueError:
+            pass
+    year = (hit.get("pubYear") or "").strip()
+    if year.isdigit() and len(year) == 4:
+        return datetime.date(int(year), 1, 1)
+    return None
+
+
+def _within_publication_window(pub_date, study_date):
+    """Is pub_date plausibly the paper for a study deposited on study_date?
+
+    A missing date passes; it is not evidence of a bad match.
+    """
+    if pub_date is None or study_date is None:
+        return True
+    lag = (pub_date - study_date).days / _DAYS_PER_YEAR
+    return lag <= PMC_MAX_LAG_YEARS
+
+
 from .utils import confirm
 
 warnings.simplefilter(action="ignore", category=FutureWarning)
@@ -2481,7 +2558,9 @@ class SRAweb(object):
 
                 # If no PMIDs found in bioproject XML, try searching PMC by bioproject ID
                 if not pmids:
-                    pmids = self._search_pmc_by_bioproject(bioproject)
+                    pmids = self._search_pmc_by_bioproject(
+                        bioproject, study_date=_submission_date(xml_text)
+                    )
 
                 bioproject_pmids[bioproject] = list(set(pmids))  # Remove duplicates
                 time.sleep(self.sleep_time)
@@ -2749,13 +2828,19 @@ class SRAweb(object):
         time.sleep(self.sleep_time)
         return hits
 
-    def _search_europepmc(self, query):
+    def _search_europepmc(self, query, study_date=None):
         """Search Europe PMC for PMIDs matching a query string
+
+        Matches any article mentioning the accession, so study_date applies the
+        same window as the PMC search. Pass it wherever that search filters, or a
+        hit rejected there comes back through this fallback.
 
         Parameters
         ----------
         query: str
                Search query (e.g. an accession like 'SRP033481' or 'GSE12345')
+        study_date: datetime.date, optional
+               Deposit date of the study; hits outside the window are dropped.
 
         Returns
         -------
@@ -2763,7 +2848,13 @@ class SRAweb(object):
               List of PMIDs found
         """
         hits = self._epmc_search(f'"{query}"', page_size=10)
-        return [h["pmid"] for h in hits if h.get("pmid") and h["pmid"].isdigit()]
+        return [
+            h["pmid"]
+            for h in hits
+            if h.get("pmid")
+            and h["pmid"].isdigit()
+            and _within_publication_window(_parse_epmc_date(h), study_date)
+        ]
 
     def pmid_info(self, ids, detailed=False, skip_journal_metrics=False):
         """Get publication metadata and journal metrics for PMIDs, PMCIDs, or DOIs.
@@ -3467,16 +3558,22 @@ class SRAweb(object):
 
         return gse_ids
 
-    def _search_pmc_by_bioproject(self, bioproject_id):
+    def _search_pmc_by_bioproject(self, bioproject_id, study_date=None):
         """Search PubMed Central for PMIDs using BioProject accession ID
 
         This provides a fallback mechanism when the BioProject XML doesn't contain
         publication metadata but the research has been published and is cited in PMC.
 
+        Free-text search, so it also matches papers that merely cite the project.
+        study_date discards hits more than PMC_MAX_LAG_YEARS later; omitting it
+        leaves the search unfiltered.
+
         Parameters
         ----------
         bioproject_id: str
                       BioProject accession ID (e.g., PRJEB39301, PRJNA123456)
+        study_date: datetime.date, optional
+                      Deposit date of the study the accession belongs to.
 
         Returns
         -------
@@ -3497,7 +3594,7 @@ class SRAweb(object):
 
             pmc_ids = result.get("esearchresult", {}).get("idlist", [])
             if not pmc_ids:
-                return self._search_europepmc(bioproject_id)
+                return self._search_europepmc(bioproject_id, study_date=study_date)
 
             # Get primary PMIDs for each PMC article
             summary_url = "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esummary.fcgi"
@@ -3517,6 +3614,13 @@ class SRAweb(object):
             for pmc_id in pmc_ids:
                 if pmc_id in summary_result.get("result", {}):
                     article = summary_result["result"][pmc_id]
+
+                    # outside the deposit window means a citing paper, not this study
+                    if not _within_publication_window(
+                        _parse_pmc_date(article), study_date
+                    ):
+                        continue
+
                     articleids = article.get("articleids", [])
 
                     # Find the primary PMID
@@ -3530,7 +3634,7 @@ class SRAweb(object):
             if pmids:
                 return pmids
 
-            return self._search_europepmc(bioproject_id)
+            return self._search_europepmc(bioproject_id, study_date=study_date)
 
         except Exception as e:
             # Silently fail and return empty list for fallback mechanism
